@@ -641,14 +641,7 @@ global sg_mtl_context_desc: type <cimport, nodecl> = @record{
   drawable_userdata_cb: function(pointer): pointer,
   user_data: pointer
 }
-global sg_metal_context_desc: type <cimport, nodecl> = @record{
-  device: pointer,
-  renderpass_descriptor_cb: function(): pointer,
-  renderpass_descriptor_userdata_cb: function(pointer): pointer,
-  drawable_cb: function(): pointer,
-  drawable_userdata_cb: function(pointer): pointer,
-  user_data: pointer
-}
+global sg_metal_context_desc: type = @sg_mtl_context_desc
 global sg_d3d11_context_desc: type <cimport, nodecl> = @record{
   device: pointer,
   device_context: pointer,

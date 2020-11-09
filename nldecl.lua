@@ -110,11 +110,11 @@ function nldecl.pointer_type(node, decl)
   end
 end
 
-function nldecl.boolean_type(node, decl)
+function nldecl.boolean_type()
   emitter:add('boolean')
 end
 
-function nldecl.void_type(_)
+function nldecl.void_type()
   emitter:add('void')
 end
 
@@ -186,12 +186,9 @@ function nldecl.union_type(node, decl)
 end
 
 function nldecl.enumeral_type(node, decl)
-  -- enum may be cint or cuint depending on the values
-  local named = not node:anonymous()
+  local typename = gccutils.get_id(node)
   if not decl then
-    if named then
-      local typename = gccutils.get_id(node)
-      assert(typename)
+    if typename then
       emitter:add(typename)
     else
       local nltype = gccutils.get_enum_nltype(node)
@@ -199,7 +196,6 @@ function nldecl.enumeral_type(node, decl)
     end
     return
   end
-  assert(named)
   local nltype = gccutils.get_enum_nltype(node)
   emitter:add_ln('enum('..nltype..'){')
   emitter:inc_indent()
@@ -324,19 +320,45 @@ local function visit_type_decl(typename, type)
   emitter:add_ln()
 end
 
+local function visit_unnamed_enum_decl(node)
+  local nltype = gccutils.get_enum_nltype(node)
+  for fieldnode in chain(node:values()) do
+    local fieldname = fieldnode:purpose():value()
+    if nldecl.can_decl(fieldname) then
+      local fieldvalue = fieldnode:value():value()
+      emitter:add_indent('global '..fieldname..': '..nltype..' <comptime> = ')
+      emitter:add_ln(fieldvalue)
+    end
+  end
+end
+
 function nldecl.type_decl(node)
   local typename = node:name():value()
-  local type = node:type()
+  if not nldecl.can_decl(typename) then return end
+  local type = node:type():main_variant()
+  local name = gccutils.get_id(type)
+  if typename == name then
+    -- ignore
+    return
+  end
   local kind = type:code()
   if (kind == 'void_type' or
       kind == 'integer_type' or
       kind == 'real_type' or
       kind == 'array_type') and
      (not nldecl.include_names[typename]) then
+    -- ignore aliases for these types
     return
   end
-  assert(typename and #typename > 0)
-  visit_type_decl(typename, type)
+  if name and nldecl.declared_names[name] then
+    -- alias type name
+    assert(typename and #typename > 0)
+    emitter:add_indent('global '..typename..': type = @'..name)
+    emitter:add_ln()
+  else
+    -- define the type
+    visit_type_decl(typename, type)
+  end
 end
 
 function nldecl.parm_decl()
@@ -347,15 +369,38 @@ function nldecl.field_decl()
   -- ignored, already processed in record_type/union_type
 end
 
+local pending_type
+local function finish_pending_type(node)
+  local ret = false
+  if not pending_type then return ret end
+  if node and node:code() == 'type_decl' and pending_type:main_variant() == node:type():main_variant() then
+    -- should be a typedef on an unnamed type
+    local typename = gccutils.get_id(node)
+    visit_type_decl(typename, node:type())
+    ret = true
+  elseif pending_type:code() == 'enumeral_type' then
+    -- declare anonymous enum enum as comptime variables
+    visit_unnamed_enum_decl(pending_type)
+  end
+  pending_type = nil
+  return ret
+end
+
 function nldecl.install()
   gcc.set_asm_file_name(gcc.HOST_BIT_BUCKET)
   gcc.register_callback(gcc.PLUGIN_FINISH_DECL, function(node)
-    visit(node, nldecl.emitter)
+    if finish_pending_type(node) then return end
+    visit(node)
   end)
   gcc.register_callback(gcc.PLUGIN_FINISH_TYPE, function(node)
+    finish_pending_type()
     local typename = gccutils.get_id(node)
     if typename then
       visit_type_decl(typename, node)
+    else
+      -- schedule to be declared on next PLUGIN_FINISH_DECL,
+      -- because maybe the name is there
+      pending_type = node
     end
   end)
   gcc.register_callback(gcc.PLUGIN_START_UNIT, function()
@@ -364,6 +409,7 @@ function nldecl.install()
     end
   end)
   gcc.register_callback(gcc.PLUGIN_FINISH_UNIT, function()
+    finish_pending_type()
     if nldecl.append_code then
       emitter:add(nldecl.append_code)
     end

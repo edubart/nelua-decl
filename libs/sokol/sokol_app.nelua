@@ -10,6 +10,9 @@ linklib 'dl'
 linklib 'pthread'
 linklib 'GL'
 ]]
+global SAPP_MAX_TOUCHPOINTS: cint <comptime> = 8
+global SAPP_MAX_MOUSEBUTTONS: cint <comptime> = 3
+global SAPP_MAX_KEYCODES: cint <comptime> = 512
 global sapp_event_type: type <cimport, nodecl> = @enum(cint){
   SAPP_EVENTTYPE_INVALID = 0,
   SAPP_EVENTTYPE_KEY_DOWN = 1,
@@ -172,6 +175,10 @@ global sapp_mousebutton: type <cimport, nodecl> = @enum(cint){
   SAPP_MOUSEBUTTON_RIGHT = 1,
   SAPP_MOUSEBUTTON_MIDDLE = 2
 }
+global SAPP_MODIFIER_SHIFT: cint <comptime> = 1
+global SAPP_MODIFIER_CTRL: cint <comptime> = 2
+global SAPP_MODIFIER_ALT: cint <comptime> = 4
+global SAPP_MODIFIER_SUPER: cint <comptime> = 8
 global sapp_event: type <cimport, nodecl> = @record{
   frame_count: uint64,
   type: sapp_event_type,

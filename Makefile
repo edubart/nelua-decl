@@ -37,3 +37,6 @@ test-sokol: sokol
 	cd libs/sokol && nelua sokol-test.nelua
 test-miniaudio: miniaudio
 	cd libs/miniaudio && nelua miniaudio-test.nelua pluck.wav
+
+dev-test:
+	gcc $(GCCPLUGIN) -S test/test.c -fplugin-arg-gcclua-script=test/test.lua > test/test.nelua

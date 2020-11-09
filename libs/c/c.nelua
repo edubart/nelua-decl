@@ -275,6 +275,11 @@ global function fminl(__x: clongdouble, __y: clongdouble): clongdouble <cimport,
 global function fmal(__x: clongdouble, __y: clongdouble, __z: clongdouble): clongdouble <cimport, nodecl> end
 global function scalbl(__x: clongdouble, __n: clongdouble): clongdouble <cimport, nodecl> end
 global signgam: cint <cimport, nodecl>
+global FP_NAN: cint <comptime> = 0
+global FP_INFINITE: cint <comptime> = 1
+global FP_ZERO: cint <comptime> = 2
+global FP_SUBNORMAL: cint <comptime> = 3
+global FP_NORMAL: cint <comptime> = 4
 global sigset_t: type <cimport, nodecl> = @record{
   __val: [16]culong
 }
@@ -336,10 +341,60 @@ global siginfo_t: type <cimport, nodecl> = @record{
     }
   }
 }
-global sigval_t: type <cimport, nodecl> = @record{
-  sival_int: cint,
-  sival_ptr: pointer
-}
+global SI_ASYNCNL: cint <comptime> = -60
+global SI_DETHREAD: cint <comptime> = -7
+global SI_TKILL: cint <comptime> = -6
+global SI_SIGIO: cint <comptime> = -5
+global SI_ASYNCIO: cint <comptime> = -4
+global SI_MESGQ: cint <comptime> = -3
+global SI_TIMER: cint <comptime> = -2
+global SI_QUEUE: cint <comptime> = -1
+global SI_USER: cint <comptime> = 0
+global SI_KERNEL: cint <comptime> = 128
+global ILL_ILLOPC: cint <comptime> = 1
+global ILL_ILLOPN: cint <comptime> = 2
+global ILL_ILLADR: cint <comptime> = 3
+global ILL_ILLTRP: cint <comptime> = 4
+global ILL_PRVOPC: cint <comptime> = 5
+global ILL_PRVREG: cint <comptime> = 6
+global ILL_COPROC: cint <comptime> = 7
+global ILL_BADSTK: cint <comptime> = 8
+global ILL_BADIADDR: cint <comptime> = 9
+global FPE_INTDIV: cint <comptime> = 1
+global FPE_INTOVF: cint <comptime> = 2
+global FPE_FLTDIV: cint <comptime> = 3
+global FPE_FLTOVF: cint <comptime> = 4
+global FPE_FLTUND: cint <comptime> = 5
+global FPE_FLTRES: cint <comptime> = 6
+global FPE_FLTINV: cint <comptime> = 7
+global FPE_FLTSUB: cint <comptime> = 8
+global FPE_FLTUNK: cint <comptime> = 14
+global FPE_CONDTRAP: cint <comptime> = 15
+global SEGV_MAPERR: cint <comptime> = 1
+global SEGV_ACCERR: cint <comptime> = 2
+global SEGV_BNDERR: cint <comptime> = 3
+global SEGV_PKUERR: cint <comptime> = 4
+global SEGV_ACCADI: cint <comptime> = 5
+global SEGV_ADIDERR: cint <comptime> = 6
+global SEGV_ADIPERR: cint <comptime> = 7
+global BUS_ADRALN: cint <comptime> = 1
+global BUS_ADRERR: cint <comptime> = 2
+global BUS_OBJERR: cint <comptime> = 3
+global BUS_MCEERR_AR: cint <comptime> = 4
+global BUS_MCEERR_AO: cint <comptime> = 5
+global CLD_EXITED: cint <comptime> = 1
+global CLD_KILLED: cint <comptime> = 2
+global CLD_DUMPED: cint <comptime> = 3
+global CLD_TRAPPED: cint <comptime> = 4
+global CLD_STOPPED: cint <comptime> = 5
+global CLD_CONTINUED: cint <comptime> = 6
+global POLL_IN: cint <comptime> = 1
+global POLL_OUT: cint <comptime> = 2
+global POLL_MSG: cint <comptime> = 3
+global POLL_ERR: cint <comptime> = 4
+global POLL_PRI: cint <comptime> = 5
+global POLL_HUP: cint <comptime> = 6
+global sigval_t: type = @sigval
 global pthread_attr_t: type <cimport, forwarddecl> = @union{}
 global sigevent: type <cimport, nodecl> = @record{
   sigev_value: __sigval_t,
@@ -354,19 +409,11 @@ global sigevent: type <cimport, nodecl> = @record{
     }
   }
 }
-global sigevent_t: type <cimport, nodecl> = @record{
-  sigev_value: __sigval_t,
-  sigev_signo: cint,
-  sigev_notify: cint,
-  _sigev_un: record{
-    _pad: [12]cint,
-    _tid: cint,
-    _sigev_thread: record{
-      _function: function(__sigval_t),
-      _attribute: *pthread_attr_t
-    }
-  }
-}
+global sigevent_t: type = @sigevent
+global SIGEV_SIGNAL: cint <comptime> = 0
+global SIGEV_NONE: cint <comptime> = 1
+global SIGEV_THREAD: cint <comptime> = 2
+global SIGEV_THREAD_ID: cint <comptime> = 4
 global function signal(__sig: cint, __handler: __sighandler_t): __sighandler_t <cimport, nodecl> end
 global function kill(__pid: cint, __sig: cint): cint <cimport, nodecl> end
 global function killpg(__pgrp: cint, __sig: cint): cint <cimport, nodecl> end
@@ -456,6 +503,8 @@ global ucontext_t: type <cimport, nodecl> = @record{
   __ssp: [4]culonglong
 }
 global function siginterrupt(__sig: cint, __interrupt: cint): cint <cimport, nodecl> end
+global SS_ONSTACK: cint <comptime> = 1
+global SS_DISABLE: cint <comptime> = 2
 global function sigaltstack(__ss: *stack_t, __oss: *stack_t): cint <cimport, nodecl> end
 global sigstack: type <cimport, nodecl> = @record{
   ss_sp: pointer,

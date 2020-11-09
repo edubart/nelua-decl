@@ -6,7 +6,7 @@ if not L then
 end
 luaL_openlibs(L)
 luaL_loadstring(L, [[
-print 'hello word'
+print 'hello world'
 ]])
 lua_call(L, 0, 0)
 lua_close(L)
