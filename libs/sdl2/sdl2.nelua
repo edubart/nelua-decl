@@ -1,0 +1,2304 @@
+##[[
+linklib 'SDL2'
+cdefine 'SDL_MAIN_HANDLED'
+cinclude '<SDL2/SDL.h>'
+]]
+global function SDL_GetPlatform(): cstring <cimport, nodecl> end
+global SDL_bool: type <cimport, nodecl> = @enum(cint){
+  SDL_FALSE = 0,
+  SDL_TRUE = 1
+}
+global SDL_DUMMY_ENUM: type <cimport, nodecl> = @enum(cint){
+  DUMMY_ENUM_VALUE = 0
+}
+global function SDL_malloc(size: csize): pointer <cimport, nodecl> end
+global function SDL_calloc(nmemb: csize, size: csize): pointer <cimport, nodecl> end
+global function SDL_realloc(mem: pointer, size: csize): pointer <cimport, nodecl> end
+global function SDL_free(mem: pointer) <cimport, nodecl> end
+global SDL_malloc_func: type <cimport, nodecl> = @function(csize): pointer
+global SDL_calloc_func: type <cimport, nodecl> = @function(csize, csize): pointer
+global SDL_realloc_func: type <cimport, nodecl> = @function(pointer, csize): pointer
+global SDL_free_func: type <cimport, nodecl> = @function(pointer)
+global function SDL_GetMemoryFunctions(malloc_func: *SDL_malloc_func, calloc_func: *SDL_calloc_func, realloc_func: *SDL_realloc_func, free_func: *SDL_free_func) <cimport, nodecl> end
+global function SDL_SetMemoryFunctions(malloc_func: SDL_malloc_func, calloc_func: SDL_calloc_func, realloc_func: SDL_realloc_func, free_func: SDL_free_func): cint <cimport, nodecl> end
+global function SDL_GetNumAllocations(): cint <cimport, nodecl> end
+global function SDL_getenv(name: cstring): cstring <cimport, nodecl> end
+global function SDL_setenv(name: cstring, value: cstring, overwrite: cint): cint <cimport, nodecl> end
+global function SDL_qsort(base: pointer, nmemb: csize, size: csize, compare: function(pointer, pointer): cint) <cimport, nodecl> end
+global function SDL_abs(x: cint): cint <cimport, nodecl> end
+global function SDL_isdigit(x: cint): cint <cimport, nodecl> end
+global function SDL_isspace(x: cint): cint <cimport, nodecl> end
+global function SDL_isupper(x: cint): cint <cimport, nodecl> end
+global function SDL_islower(x: cint): cint <cimport, nodecl> end
+global function SDL_toupper(x: cint): cint <cimport, nodecl> end
+global function SDL_tolower(x: cint): cint <cimport, nodecl> end
+global function SDL_memset(dst: pointer, c: cint, len: csize): pointer <cimport, nodecl> end
+global function SDL_memcpy(dst: pointer, src: pointer, len: csize): pointer <cimport, nodecl> end
+global function SDL_memmove(dst: pointer, src: pointer, len: csize): pointer <cimport, nodecl> end
+global function SDL_memcmp(s1: pointer, s2: pointer, len: csize): cint <cimport, nodecl> end
+global function SDL_wcslen(wstr: *cint): csize <cimport, nodecl> end
+global function SDL_wcslcpy(dst: *cint, src: *cint, maxlen: csize): csize <cimport, nodecl> end
+global function SDL_wcslcat(dst: *cint, src: *cint, maxlen: csize): csize <cimport, nodecl> end
+global function SDL_wcsdup(wstr: *cint): *cint <cimport, nodecl> end
+global function SDL_wcsstr(haystack: *cint, needle: *cint): *cint <cimport, nodecl> end
+global function SDL_wcscmp(str1: *cint, str2: *cint): cint <cimport, nodecl> end
+global function SDL_wcsncmp(str1: *cint, str2: *cint, maxlen: csize): cint <cimport, nodecl> end
+global function SDL_strlen(str: cstring): csize <cimport, nodecl> end
+global function SDL_strlcpy(dst: cstring, src: cstring, maxlen: csize): csize <cimport, nodecl> end
+global function SDL_utf8strlcpy(dst: cstring, src: cstring, dst_bytes: csize): csize <cimport, nodecl> end
+global function SDL_strlcat(dst: cstring, src: cstring, maxlen: csize): csize <cimport, nodecl> end
+global function SDL_strdup(str: cstring): cstring <cimport, nodecl> end
+global function SDL_strrev(str: cstring): cstring <cimport, nodecl> end
+global function SDL_strupr(str: cstring): cstring <cimport, nodecl> end
+global function SDL_strlwr(str: cstring): cstring <cimport, nodecl> end
+global function SDL_strchr(str: cstring, c: cint): cstring <cimport, nodecl> end
+global function SDL_strrchr(str: cstring, c: cint): cstring <cimport, nodecl> end
+global function SDL_strstr(haystack: cstring, needle: cstring): cstring <cimport, nodecl> end
+global function SDL_strtokr(s1: cstring, s2: cstring, saveptr: *cstring): cstring <cimport, nodecl> end
+global function SDL_utf8strlen(str: cstring): csize <cimport, nodecl> end
+global function SDL_itoa(value: cint, str: cstring, radix: cint): cstring <cimport, nodecl> end
+global function SDL_uitoa(value: cuint, str: cstring, radix: cint): cstring <cimport, nodecl> end
+global function SDL_ltoa(value: clong, str: cstring, radix: cint): cstring <cimport, nodecl> end
+global function SDL_ultoa(value: culong, str: cstring, radix: cint): cstring <cimport, nodecl> end
+global function SDL_lltoa(value: int64, str: cstring, radix: cint): cstring <cimport, nodecl> end
+global function SDL_ulltoa(value: uint64, str: cstring, radix: cint): cstring <cimport, nodecl> end
+global function SDL_atoi(str: cstring): cint <cimport, nodecl> end
+global function SDL_atof(str: cstring): float64 <cimport, nodecl> end
+global function SDL_strtol(str: cstring, endp: *cstring, base: cint): clong <cimport, nodecl> end
+global function SDL_strtoul(str: cstring, endp: *cstring, base: cint): culong <cimport, nodecl> end
+global function SDL_strtoll(str: cstring, endp: *cstring, base: cint): int64 <cimport, nodecl> end
+global function SDL_strtoull(str: cstring, endp: *cstring, base: cint): uint64 <cimport, nodecl> end
+global function SDL_strtod(str: cstring, endp: *cstring): float64 <cimport, nodecl> end
+global function SDL_strcmp(str1: cstring, str2: cstring): cint <cimport, nodecl> end
+global function SDL_strncmp(str1: cstring, str2: cstring, maxlen: csize): cint <cimport, nodecl> end
+global function SDL_strcasecmp(str1: cstring, str2: cstring): cint <cimport, nodecl> end
+global function SDL_strncasecmp(str1: cstring, str2: cstring, len: csize): cint <cimport, nodecl> end
+global function SDL_sscanf(text: cstring, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function SDL_snprintf(text: cstring, maxlen: csize, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function SDL_acos(x: float64): float64 <cimport, nodecl> end
+global function SDL_acosf(x: float32): float32 <cimport, nodecl> end
+global function SDL_asin(x: float64): float64 <cimport, nodecl> end
+global function SDL_asinf(x: float32): float32 <cimport, nodecl> end
+global function SDL_atan(x: float64): float64 <cimport, nodecl> end
+global function SDL_atanf(x: float32): float32 <cimport, nodecl> end
+global function SDL_atan2(x: float64, y: float64): float64 <cimport, nodecl> end
+global function SDL_atan2f(x: float32, y: float32): float32 <cimport, nodecl> end
+global function SDL_ceil(x: float64): float64 <cimport, nodecl> end
+global function SDL_ceilf(x: float32): float32 <cimport, nodecl> end
+global function SDL_copysign(x: float64, y: float64): float64 <cimport, nodecl> end
+global function SDL_copysignf(x: float32, y: float32): float32 <cimport, nodecl> end
+global function SDL_cos(x: float64): float64 <cimport, nodecl> end
+global function SDL_cosf(x: float32): float32 <cimport, nodecl> end
+global function SDL_exp(x: float64): float64 <cimport, nodecl> end
+global function SDL_expf(x: float32): float32 <cimport, nodecl> end
+global function SDL_fabs(x: float64): float64 <cimport, nodecl> end
+global function SDL_fabsf(x: float32): float32 <cimport, nodecl> end
+global function SDL_floor(x: float64): float64 <cimport, nodecl> end
+global function SDL_floorf(x: float32): float32 <cimport, nodecl> end
+global function SDL_fmod(x: float64, y: float64): float64 <cimport, nodecl> end
+global function SDL_fmodf(x: float32, y: float32): float32 <cimport, nodecl> end
+global function SDL_log(x: float64): float64 <cimport, nodecl> end
+global function SDL_logf(x: float32): float32 <cimport, nodecl> end
+global function SDL_log10(x: float64): float64 <cimport, nodecl> end
+global function SDL_log10f(x: float32): float32 <cimport, nodecl> end
+global function SDL_pow(x: float64, y: float64): float64 <cimport, nodecl> end
+global function SDL_powf(x: float32, y: float32): float32 <cimport, nodecl> end
+global function SDL_scalbn(x: float64, n: cint): float64 <cimport, nodecl> end
+global function SDL_scalbnf(x: float32, n: cint): float32 <cimport, nodecl> end
+global function SDL_sin(x: float64): float64 <cimport, nodecl> end
+global function SDL_sinf(x: float32): float32 <cimport, nodecl> end
+global function SDL_sqrt(x: float64): float64 <cimport, nodecl> end
+global function SDL_sqrtf(x: float32): float32 <cimport, nodecl> end
+global function SDL_tan(x: float64): float64 <cimport, nodecl> end
+global function SDL_tanf(x: float32): float32 <cimport, nodecl> end
+global SDL_iconv_t: type <cimport, nodecl> = @pointer
+global function SDL_iconv_open(tocode: cstring, fromcode: cstring): SDL_iconv_t <cimport, nodecl> end
+global function SDL_iconv_close(cd: SDL_iconv_t): cint <cimport, nodecl> end
+global function SDL_iconv(cd: SDL_iconv_t, inbuf: *cstring, inbytesleft: *csize, outbuf: *cstring, outbytesleft: *csize): csize <cimport, nodecl> end
+global function SDL_iconv_string(tocode: cstring, fromcode: cstring, inbuf: cstring, inbytesleft: csize): cstring <cimport, nodecl> end
+global SDL_main_func: type <cimport, nodecl> = @function(cint, *cstring): cint
+global function SDL_main(argc: cint, argv: *cstring): cint <cimport, nodecl> end
+global function SDL_SetMainReady() <cimport, nodecl> end
+global SDL_AssertState: type <cimport, nodecl> = @enum(cint){
+  SDL_ASSERTION_RETRY = 0,
+  SDL_ASSERTION_BREAK = 1,
+  SDL_ASSERTION_ABORT = 2,
+  SDL_ASSERTION_IGNORE = 3,
+  SDL_ASSERTION_ALWAYS_IGNORE = 4
+}
+global SDL_AssertData: type <cimport, forwarddecl> = @record{}
+global SDL_AssertData: type <cimport, nodecl> = @record{
+  always_ignore: cint,
+  trigger_count: cuint,
+  condition: cstring,
+  filename: cstring,
+  linenum: cint,
+  Function: cstring,
+  next: *SDL_AssertData
+}
+global function SDL_ReportAssertion(a1: *SDL_AssertData, a2: cstring, a3: cstring, a4: cint): SDL_AssertState <cimport, nodecl> end
+global SDL_AssertionHandler: type <cimport, nodecl> = @function(*SDL_AssertData, pointer): SDL_AssertState
+global function SDL_SetAssertionHandler(handler: SDL_AssertionHandler, userdata: pointer) <cimport, nodecl> end
+global function SDL_GetDefaultAssertionHandler(): SDL_AssertionHandler <cimport, nodecl> end
+global function SDL_GetAssertionHandler(puserdata: *pointer): SDL_AssertionHandler <cimport, nodecl> end
+global function SDL_GetAssertionReport(): *SDL_AssertData <cimport, nodecl> end
+global function SDL_ResetAssertionReport() <cimport, nodecl> end
+global function SDL_AtomicTryLock(lock: *cint): SDL_bool <cimport, nodecl> end
+global function SDL_AtomicLock(lock: *cint) <cimport, nodecl> end
+global function SDL_AtomicUnlock(lock: *cint) <cimport, nodecl> end
+global function SDL_MemoryBarrierReleaseFunction() <cimport, nodecl> end
+global function SDL_MemoryBarrierAcquireFunction() <cimport, nodecl> end
+global SDL_atomic_t: type <cimport, nodecl> = @record{
+  value: cint
+}
+global function SDL_AtomicCAS(a: *SDL_atomic_t, oldval: cint, newval: cint): SDL_bool <cimport, nodecl> end
+global function SDL_AtomicSet(a: *SDL_atomic_t, v: cint): cint <cimport, nodecl> end
+global function SDL_AtomicGet(a: *SDL_atomic_t): cint <cimport, nodecl> end
+global function SDL_AtomicAdd(a: *SDL_atomic_t, v: cint): cint <cimport, nodecl> end
+global function SDL_AtomicCASPtr(a: *pointer, oldval: pointer, newval: pointer): SDL_bool <cimport, nodecl> end
+global function SDL_AtomicSetPtr(a: *pointer, v: pointer): pointer <cimport, nodecl> end
+global function SDL_AtomicGetPtr(a: *pointer): pointer <cimport, nodecl> end
+global function SDL_SetError(fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function SDL_GetError(): cstring <cimport, nodecl> end
+global function SDL_ClearError() <cimport, nodecl> end
+global SDL_errorcode: type <cimport, nodecl> = @enum(cint){
+  SDL_ENOMEM = 0,
+  SDL_EFREAD = 1,
+  SDL_EFWRITE = 2,
+  SDL_EFSEEK = 3,
+  SDL_UNSUPPORTED = 4,
+  SDL_LASTERROR = 5
+}
+global function SDL_Error(code: SDL_errorcode): cint <cimport, nodecl> end
+global SDL_mutex: type <cimport, forwarddecl> = @record{}
+global function SDL_CreateMutex(): *SDL_mutex <cimport, nodecl> end
+global function SDL_LockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
+global function SDL_TryLockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
+global function SDL_UnlockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
+global function SDL_DestroyMutex(mutex: *SDL_mutex) <cimport, nodecl> end
+global SDL_semaphore: type <cimport, forwarddecl> = @record{}
+global SDL_sem: type <cimport, forwarddecl> = @record{}
+global function SDL_CreateSemaphore(initial_value: uint32): *SDL_sem <cimport, nodecl> end
+global function SDL_DestroySemaphore(sem: *SDL_sem) <cimport, nodecl> end
+global function SDL_SemWait(sem: *SDL_sem): cint <cimport, nodecl> end
+global function SDL_SemTryWait(sem: *SDL_sem): cint <cimport, nodecl> end
+global function SDL_SemWaitTimeout(sem: *SDL_sem, ms: uint32): cint <cimport, nodecl> end
+global function SDL_SemPost(sem: *SDL_sem): cint <cimport, nodecl> end
+global function SDL_SemValue(sem: *SDL_sem): uint32 <cimport, nodecl> end
+global SDL_cond: type <cimport, forwarddecl> = @record{}
+global function SDL_CreateCond(): *SDL_cond <cimport, nodecl> end
+global function SDL_DestroyCond(cond: *SDL_cond) <cimport, nodecl> end
+global function SDL_CondSignal(cond: *SDL_cond): cint <cimport, nodecl> end
+global function SDL_CondBroadcast(cond: *SDL_cond): cint <cimport, nodecl> end
+global function SDL_CondWait(cond: *SDL_cond, mutex: *SDL_mutex): cint <cimport, nodecl> end
+global function SDL_CondWaitTimeout(cond: *SDL_cond, mutex: *SDL_mutex, ms: uint32): cint <cimport, nodecl> end
+global SDL_Thread: type <cimport, forwarddecl> = @record{}
+global SDL_ThreadPriority: type <cimport, nodecl> = @enum(cint){
+  SDL_THREAD_PRIORITY_LOW = 0,
+  SDL_THREAD_PRIORITY_NORMAL = 1,
+  SDL_THREAD_PRIORITY_HIGH = 2,
+  SDL_THREAD_PRIORITY_TIME_CRITICAL = 3
+}
+global SDL_ThreadFunction: type <cimport, nodecl> = @function(pointer): cint
+global function SDL_CreateThread(fn: SDL_ThreadFunction, name: cstring, data: pointer): *SDL_Thread <cimport, nodecl> end
+global function SDL_CreateThreadWithStackSize(fn: SDL_ThreadFunction, name: cstring, stacksize: csize, data: pointer): *SDL_Thread <cimport, nodecl> end
+global function SDL_GetThreadName(thread: *SDL_Thread): cstring <cimport, nodecl> end
+global function SDL_ThreadID(): culong <cimport, nodecl> end
+global function SDL_GetThreadID(thread: *SDL_Thread): culong <cimport, nodecl> end
+global function SDL_SetThreadPriority(priority: SDL_ThreadPriority): cint <cimport, nodecl> end
+global function SDL_WaitThread(thread: *SDL_Thread, status: *cint) <cimport, nodecl> end
+global function SDL_DetachThread(thread: *SDL_Thread) <cimport, nodecl> end
+global function SDL_TLSCreate(): cuint <cimport, nodecl> end
+global function SDL_TLSGet(id: cuint): pointer <cimport, nodecl> end
+global function SDL_TLSSet(id: cuint, value: pointer, destructor: function(pointer)): cint <cimport, nodecl> end
+global SDL_RWops: type <cimport, forwarddecl> = @record{}
+global SDL_RWops: type <cimport, nodecl> = @record{
+  size: function(*SDL_RWops): int64,
+  seek: function(*SDL_RWops, int64, cint): int64,
+  read: function(*SDL_RWops, pointer, csize, csize): csize,
+  write: function(*SDL_RWops, pointer, csize, csize): csize,
+  close: function(*SDL_RWops): cint,
+  type: uint32,
+  hidden: record{
+    stdio: record{
+      autoclose: SDL_bool,
+      fp: pointer
+    },
+    mem: record{
+      base: *uint8,
+      here: *uint8,
+      stop: *uint8
+    },
+    unknown: record{
+      data1: pointer,
+      data2: pointer
+    }
+  }
+}
+global function SDL_RWFromFile(file: cstring, mode: cstring): *SDL_RWops <cimport, nodecl> end
+global function SDL_RWFromFP(fp: pointer, autoclose: SDL_bool): *SDL_RWops <cimport, nodecl> end
+global function SDL_RWFromMem(mem: pointer, size: cint): *SDL_RWops <cimport, nodecl> end
+global function SDL_RWFromConstMem(mem: pointer, size: cint): *SDL_RWops <cimport, nodecl> end
+global function SDL_AllocRW(): *SDL_RWops <cimport, nodecl> end
+global function SDL_FreeRW(area: *SDL_RWops) <cimport, nodecl> end
+global function SDL_RWsize(context: *SDL_RWops): int64 <cimport, nodecl> end
+global function SDL_RWseek(context: *SDL_RWops, offset: int64, whence: cint): int64 <cimport, nodecl> end
+global function SDL_RWtell(context: *SDL_RWops): int64 <cimport, nodecl> end
+global function SDL_RWread(context: *SDL_RWops, ptr: pointer, size: csize, maxnum: csize): csize <cimport, nodecl> end
+global function SDL_RWwrite(context: *SDL_RWops, ptr: pointer, size: csize, num: csize): csize <cimport, nodecl> end
+global function SDL_RWclose(context: *SDL_RWops): cint <cimport, nodecl> end
+global function SDL_LoadFile_RW(src: *SDL_RWops, datasize: *csize, freesrc: cint): pointer <cimport, nodecl> end
+global function SDL_LoadFile(file: cstring, datasize: *csize): pointer <cimport, nodecl> end
+global function SDL_ReadU8(src: *SDL_RWops): uint8 <cimport, nodecl> end
+global function SDL_ReadLE16(src: *SDL_RWops): uint16 <cimport, nodecl> end
+global function SDL_ReadBE16(src: *SDL_RWops): uint16 <cimport, nodecl> end
+global function SDL_ReadLE32(src: *SDL_RWops): uint32 <cimport, nodecl> end
+global function SDL_ReadBE32(src: *SDL_RWops): uint32 <cimport, nodecl> end
+global function SDL_ReadLE64(src: *SDL_RWops): uint64 <cimport, nodecl> end
+global function SDL_ReadBE64(src: *SDL_RWops): uint64 <cimport, nodecl> end
+global function SDL_WriteU8(dst: *SDL_RWops, value: uint8): csize <cimport, nodecl> end
+global function SDL_WriteLE16(dst: *SDL_RWops, value: uint16): csize <cimport, nodecl> end
+global function SDL_WriteBE16(dst: *SDL_RWops, value: uint16): csize <cimport, nodecl> end
+global function SDL_WriteLE32(dst: *SDL_RWops, value: uint32): csize <cimport, nodecl> end
+global function SDL_WriteBE32(dst: *SDL_RWops, value: uint32): csize <cimport, nodecl> end
+global function SDL_WriteLE64(dst: *SDL_RWops, value: uint64): csize <cimport, nodecl> end
+global function SDL_WriteBE64(dst: *SDL_RWops, value: uint64): csize <cimport, nodecl> end
+global SDL_AudioCallback: type <cimport, nodecl> = @function(pointer, *uint8, cint)
+global SDL_AudioSpec: type <cimport, nodecl> = @record{
+  freq: cint,
+  format: cushort,
+  channels: uint8,
+  silence: uint8,
+  samples: uint16,
+  padding: uint16,
+  size: uint32,
+  callback: SDL_AudioCallback,
+  userdata: pointer
+}
+global SDL_AudioCVT: type <cimport, forwarddecl> = @record{}
+global SDL_AudioFilter: type <cimport, nodecl> = @function(*SDL_AudioCVT, cushort)
+global SDL_AudioCVT: type <cimport, nodecl> = @record{
+  needed: cint,
+  src_format: cushort,
+  dst_format: cushort,
+  rate_incr: float64,
+  buf: *uint8,
+  len: cint,
+  len_cvt: cint,
+  len_mult: cint,
+  len_ratio: float64,
+  filters: [10]SDL_AudioFilter,
+  filter_index: cint
+}
+global function SDL_GetNumAudioDrivers(): cint <cimport, nodecl> end
+global function SDL_GetAudioDriver(index: cint): cstring <cimport, nodecl> end
+global function SDL_AudioInit(driver_name: cstring): cint <cimport, nodecl> end
+global function SDL_AudioQuit() <cimport, nodecl> end
+global function SDL_GetCurrentAudioDriver(): cstring <cimport, nodecl> end
+global function SDL_OpenAudio(desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec): cint <cimport, nodecl> end
+global function SDL_GetNumAudioDevices(iscapture: cint): cint <cimport, nodecl> end
+global function SDL_GetAudioDeviceName(index: cint, iscapture: cint): cstring <cimport, nodecl> end
+global function SDL_OpenAudioDevice(device: cstring, iscapture: cint, desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec, allowed_changes: cint): cuint <cimport, nodecl> end
+global SDL_AudioStatus: type <cimport, nodecl> = @enum(cint){
+  SDL_AUDIO_STOPPED = 0,
+  SDL_AUDIO_PLAYING = 1,
+  SDL_AUDIO_PAUSED = 2
+}
+global function SDL_GetAudioStatus(): SDL_AudioStatus <cimport, nodecl> end
+global function SDL_GetAudioDeviceStatus(dev: cuint): SDL_AudioStatus <cimport, nodecl> end
+global function SDL_PauseAudio(pause_on: cint) <cimport, nodecl> end
+global function SDL_PauseAudioDevice(dev: cuint, pause_on: cint) <cimport, nodecl> end
+global function SDL_LoadWAV_RW(src: *SDL_RWops, freesrc: cint, spec: *SDL_AudioSpec, audio_buf: **uint8, audio_len: *uint32): *SDL_AudioSpec <cimport, nodecl> end
+global function SDL_FreeWAV(audio_buf: *uint8) <cimport, nodecl> end
+global function SDL_BuildAudioCVT(cvt: *SDL_AudioCVT, src_format: cushort, src_channels: uint8, src_rate: cint, dst_format: cushort, dst_channels: uint8, dst_rate: cint): cint <cimport, nodecl> end
+global function SDL_ConvertAudio(cvt: *SDL_AudioCVT): cint <cimport, nodecl> end
+global SDL_AudioStream: type <cimport, forwarddecl> = @record{}
+global function SDL_NewAudioStream(src_format: cushort, src_channels: uint8, src_rate: cint, dst_format: cushort, dst_channels: uint8, dst_rate: cint): *SDL_AudioStream <cimport, nodecl> end
+global function SDL_AudioStreamPut(stream: *SDL_AudioStream, buf: pointer, len: cint): cint <cimport, nodecl> end
+global function SDL_AudioStreamGet(stream: *SDL_AudioStream, buf: pointer, len: cint): cint <cimport, nodecl> end
+global function SDL_AudioStreamAvailable(stream: *SDL_AudioStream): cint <cimport, nodecl> end
+global function SDL_AudioStreamFlush(stream: *SDL_AudioStream): cint <cimport, nodecl> end
+global function SDL_AudioStreamClear(stream: *SDL_AudioStream) <cimport, nodecl> end
+global function SDL_FreeAudioStream(stream: *SDL_AudioStream) <cimport, nodecl> end
+global function SDL_MixAudio(dst: *uint8, src: *uint8, len: uint32, volume: cint) <cimport, nodecl> end
+global function SDL_MixAudioFormat(dst: *uint8, src: *uint8, format: cushort, len: uint32, volume: cint) <cimport, nodecl> end
+global function SDL_QueueAudio(dev: cuint, data: pointer, len: uint32): cint <cimport, nodecl> end
+global function SDL_DequeueAudio(dev: cuint, data: pointer, len: uint32): uint32 <cimport, nodecl> end
+global function SDL_GetQueuedAudioSize(dev: cuint): uint32 <cimport, nodecl> end
+global function SDL_ClearQueuedAudio(dev: cuint) <cimport, nodecl> end
+global function SDL_LockAudio() <cimport, nodecl> end
+global function SDL_LockAudioDevice(dev: cuint) <cimport, nodecl> end
+global function SDL_UnlockAudio() <cimport, nodecl> end
+global function SDL_UnlockAudioDevice(dev: cuint) <cimport, nodecl> end
+global function SDL_CloseAudio() <cimport, nodecl> end
+global function SDL_CloseAudioDevice(dev: cuint) <cimport, nodecl> end
+global function SDL_SetClipboardText(text: cstring): cint <cimport, nodecl> end
+global function SDL_GetClipboardText(): cstring <cimport, nodecl> end
+global function SDL_HasClipboardText(): SDL_bool <cimport, nodecl> end
+global function SDL_GetCPUCount(): cint <cimport, nodecl> end
+global function SDL_GetCPUCacheLineSize(): cint <cimport, nodecl> end
+global function SDL_HasRDTSC(): SDL_bool <cimport, nodecl> end
+global function SDL_HasAltiVec(): SDL_bool <cimport, nodecl> end
+global function SDL_HasMMX(): SDL_bool <cimport, nodecl> end
+global function SDL_Has3DNow(): SDL_bool <cimport, nodecl> end
+global function SDL_HasSSE(): SDL_bool <cimport, nodecl> end
+global function SDL_HasSSE2(): SDL_bool <cimport, nodecl> end
+global function SDL_HasSSE3(): SDL_bool <cimport, nodecl> end
+global function SDL_HasSSE41(): SDL_bool <cimport, nodecl> end
+global function SDL_HasSSE42(): SDL_bool <cimport, nodecl> end
+global function SDL_HasAVX(): SDL_bool <cimport, nodecl> end
+global function SDL_HasAVX2(): SDL_bool <cimport, nodecl> end
+global function SDL_HasAVX512F(): SDL_bool <cimport, nodecl> end
+global function SDL_HasARMSIMD(): SDL_bool <cimport, nodecl> end
+global function SDL_HasNEON(): SDL_bool <cimport, nodecl> end
+global function SDL_GetSystemRAM(): cint <cimport, nodecl> end
+global function SDL_SIMDGetAlignment(): csize <cimport, nodecl> end
+global function SDL_SIMDAlloc(len: csize): pointer <cimport, nodecl> end
+global function SDL_SIMDFree(ptr: pointer) <cimport, nodecl> end
+global SDL_PixelType: type <cimport, nodecl> = @enum(cint){
+  SDL_PIXELTYPE_UNKNOWN = 0,
+  SDL_PIXELTYPE_INDEX1 = 1,
+  SDL_PIXELTYPE_INDEX4 = 2,
+  SDL_PIXELTYPE_INDEX8 = 3,
+  SDL_PIXELTYPE_PACKED8 = 4,
+  SDL_PIXELTYPE_PACKED16 = 5,
+  SDL_PIXELTYPE_PACKED32 = 6,
+  SDL_PIXELTYPE_ARRAYU8 = 7,
+  SDL_PIXELTYPE_ARRAYU16 = 8,
+  SDL_PIXELTYPE_ARRAYU32 = 9,
+  SDL_PIXELTYPE_ARRAYF16 = 10,
+  SDL_PIXELTYPE_ARRAYF32 = 11
+}
+global SDL_BitmapOrder: type <cimport, nodecl> = @enum(cint){
+  SDL_BITMAPORDER_NONE = 0,
+  SDL_BITMAPORDER_4321 = 1,
+  SDL_BITMAPORDER_1234 = 2
+}
+global SDL_PackedOrder: type <cimport, nodecl> = @enum(cint){
+  SDL_PACKEDORDER_NONE = 0,
+  SDL_PACKEDORDER_XRGB = 1,
+  SDL_PACKEDORDER_RGBX = 2,
+  SDL_PACKEDORDER_ARGB = 3,
+  SDL_PACKEDORDER_RGBA = 4,
+  SDL_PACKEDORDER_XBGR = 5,
+  SDL_PACKEDORDER_BGRX = 6,
+  SDL_PACKEDORDER_ABGR = 7,
+  SDL_PACKEDORDER_BGRA = 8
+}
+global SDL_ArrayOrder: type <cimport, nodecl> = @enum(cint){
+  SDL_ARRAYORDER_NONE = 0,
+  SDL_ARRAYORDER_RGB = 1,
+  SDL_ARRAYORDER_RGBA = 2,
+  SDL_ARRAYORDER_ARGB = 3,
+  SDL_ARRAYORDER_BGR = 4,
+  SDL_ARRAYORDER_BGRA = 5,
+  SDL_ARRAYORDER_ABGR = 6
+}
+global SDL_PackedLayout: type <cimport, nodecl> = @enum(cint){
+  SDL_PACKEDLAYOUT_NONE = 0,
+  SDL_PACKEDLAYOUT_332 = 1,
+  SDL_PACKEDLAYOUT_4444 = 2,
+  SDL_PACKEDLAYOUT_1555 = 3,
+  SDL_PACKEDLAYOUT_5551 = 4,
+  SDL_PACKEDLAYOUT_565 = 5,
+  SDL_PACKEDLAYOUT_8888 = 6,
+  SDL_PACKEDLAYOUT_2101010 = 7,
+  SDL_PACKEDLAYOUT_1010102 = 8
+}
+global SDL_PixelFormatEnum: type <cimport, nodecl> = @enum(cint){
+  SDL_PIXELFORMAT_UNKNOWN = 0,
+  SDL_PIXELFORMAT_INDEX1LSB = 286261504,
+  SDL_PIXELFORMAT_INDEX1MSB = 287310080,
+  SDL_PIXELFORMAT_INDEX4LSB = 303039488,
+  SDL_PIXELFORMAT_INDEX4MSB = 304088064,
+  SDL_PIXELFORMAT_INDEX8 = 318769153,
+  SDL_PIXELFORMAT_RGB332 = 336660481,
+  SDL_PIXELFORMAT_RGB444 = 353504258,
+  SDL_PIXELFORMAT_BGR444 = 357698562,
+  SDL_PIXELFORMAT_RGB555 = 353570562,
+  SDL_PIXELFORMAT_BGR555 = 357764866,
+  SDL_PIXELFORMAT_ARGB4444 = 355602434,
+  SDL_PIXELFORMAT_RGBA4444 = 356651010,
+  SDL_PIXELFORMAT_ABGR4444 = 359796738,
+  SDL_PIXELFORMAT_BGRA4444 = 360845314,
+  SDL_PIXELFORMAT_ARGB1555 = 355667970,
+  SDL_PIXELFORMAT_RGBA5551 = 356782082,
+  SDL_PIXELFORMAT_ABGR1555 = 359862274,
+  SDL_PIXELFORMAT_BGRA5551 = 360976386,
+  SDL_PIXELFORMAT_RGB565 = 353701890,
+  SDL_PIXELFORMAT_BGR565 = 357896194,
+  SDL_PIXELFORMAT_RGB24 = 386930691,
+  SDL_PIXELFORMAT_BGR24 = 390076419,
+  SDL_PIXELFORMAT_RGB888 = 370546692,
+  SDL_PIXELFORMAT_RGBX8888 = 371595268,
+  SDL_PIXELFORMAT_BGR888 = 374740996,
+  SDL_PIXELFORMAT_BGRX8888 = 375789572,
+  SDL_PIXELFORMAT_ARGB8888 = 372645892,
+  SDL_PIXELFORMAT_RGBA8888 = 373694468,
+  SDL_PIXELFORMAT_ABGR8888 = 376840196,
+  SDL_PIXELFORMAT_BGRA8888 = 377888772,
+  SDL_PIXELFORMAT_ARGB2101010 = 372711428,
+  SDL_PIXELFORMAT_RGBA32 = 376840196,
+  SDL_PIXELFORMAT_ARGB32 = 377888772,
+  SDL_PIXELFORMAT_BGRA32 = 372645892,
+  SDL_PIXELFORMAT_ABGR32 = 373694468,
+  SDL_PIXELFORMAT_YV12 = 842094169,
+  SDL_PIXELFORMAT_IYUV = 1448433993,
+  SDL_PIXELFORMAT_YUY2 = 844715353,
+  SDL_PIXELFORMAT_UYVY = 1498831189,
+  SDL_PIXELFORMAT_YVYU = 1431918169,
+  SDL_PIXELFORMAT_NV12 = 842094158,
+  SDL_PIXELFORMAT_NV21 = 825382478,
+  SDL_PIXELFORMAT_EXTERNAL_OES = 542328143
+}
+global SDL_Color: type <cimport, nodecl> = @record{
+  r: uint8,
+  g: uint8,
+  b: uint8,
+  a: uint8
+}
+global SDL_Palette: type <cimport, nodecl> = @record{
+  ncolors: cint,
+  colors: *SDL_Color,
+  version: uint32,
+  refcount: cint
+}
+global SDL_PixelFormat: type <cimport, forwarddecl> = @record{}
+global SDL_PixelFormat: type <cimport, nodecl> = @record{
+  format: uint32,
+  palette: *SDL_Palette,
+  BitsPerPixel: uint8,
+  BytesPerPixel: uint8,
+  padding: [2]uint8,
+  Rmask: uint32,
+  Gmask: uint32,
+  Bmask: uint32,
+  Amask: uint32,
+  Rloss: uint8,
+  Gloss: uint8,
+  Bloss: uint8,
+  Aloss: uint8,
+  Rshift: uint8,
+  Gshift: uint8,
+  Bshift: uint8,
+  Ashift: uint8,
+  refcount: cint,
+  next: *SDL_PixelFormat
+}
+global function SDL_GetPixelFormatName(format: uint32): cstring <cimport, nodecl> end
+global function SDL_PixelFormatEnumToMasks(format: uint32, bpp: *cint, Rmask: *uint32, Gmask: *uint32, Bmask: *uint32, Amask: *uint32): SDL_bool <cimport, nodecl> end
+global function SDL_MasksToPixelFormatEnum(bpp: cint, Rmask: uint32, Gmask: uint32, Bmask: uint32, Amask: uint32): uint32 <cimport, nodecl> end
+global function SDL_AllocFormat(pixel_format: uint32): *SDL_PixelFormat <cimport, nodecl> end
+global function SDL_FreeFormat(format: *SDL_PixelFormat) <cimport, nodecl> end
+global function SDL_AllocPalette(ncolors: cint): *SDL_Palette <cimport, nodecl> end
+global function SDL_SetPixelFormatPalette(format: *SDL_PixelFormat, palette: *SDL_Palette): cint <cimport, nodecl> end
+global function SDL_SetPaletteColors(palette: *SDL_Palette, colors: *SDL_Color, firstcolor: cint, ncolors: cint): cint <cimport, nodecl> end
+global function SDL_FreePalette(palette: *SDL_Palette) <cimport, nodecl> end
+global function SDL_MapRGB(format: *SDL_PixelFormat, r: uint8, g: uint8, b: uint8): uint32 <cimport, nodecl> end
+global function SDL_MapRGBA(format: *SDL_PixelFormat, r: uint8, g: uint8, b: uint8, a: uint8): uint32 <cimport, nodecl> end
+global function SDL_GetRGB(pixel: uint32, format: *SDL_PixelFormat, r: *uint8, g: *uint8, b: *uint8) <cimport, nodecl> end
+global function SDL_GetRGBA(pixel: uint32, format: *SDL_PixelFormat, r: *uint8, g: *uint8, b: *uint8, a: *uint8) <cimport, nodecl> end
+global function SDL_CalculateGammaRamp(gamma: float32, ramp: *uint16) <cimport, nodecl> end
+global SDL_Point: type <cimport, nodecl> = @record{
+  x: cint,
+  y: cint
+}
+global SDL_FPoint: type <cimport, nodecl> = @record{
+  x: float32,
+  y: float32
+}
+global SDL_Rect: type <cimport, nodecl> = @record{
+  x: cint,
+  y: cint,
+  w: cint,
+  h: cint
+}
+global SDL_FRect: type <cimport, nodecl> = @record{
+  x: float32,
+  y: float32,
+  w: float32,
+  h: float32
+}
+global function SDL_HasIntersection(A: *SDL_Rect, B: *SDL_Rect): SDL_bool <cimport, nodecl> end
+global function SDL_IntersectRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect): SDL_bool <cimport, nodecl> end
+global function SDL_UnionRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect) <cimport, nodecl> end
+global function SDL_EnclosePoints(points: *SDL_Point, count: cint, clip: *SDL_Rect, result: *SDL_Rect): SDL_bool <cimport, nodecl> end
+global function SDL_IntersectRectAndLine(rect: *SDL_Rect, X1: *cint, Y1: *cint, X2: *cint, Y2: *cint): SDL_bool <cimport, nodecl> end
+global SDL_BlendMode: type <cimport, nodecl> = @enum(cint){
+  SDL_BLENDMODE_NONE = 0,
+  SDL_BLENDMODE_BLEND = 1,
+  SDL_BLENDMODE_ADD = 2,
+  SDL_BLENDMODE_MOD = 4,
+  SDL_BLENDMODE_MUL = 8,
+  SDL_BLENDMODE_INVALID = 2147483647
+}
+global SDL_BlendOperation: type <cimport, nodecl> = @enum(cint){
+  SDL_BLENDOPERATION_ADD = 1,
+  SDL_BLENDOPERATION_SUBTRACT = 2,
+  SDL_BLENDOPERATION_REV_SUBTRACT = 3,
+  SDL_BLENDOPERATION_MINIMUM = 4,
+  SDL_BLENDOPERATION_MAXIMUM = 5
+}
+global SDL_BlendFactor: type <cimport, nodecl> = @enum(cint){
+  SDL_BLENDFACTOR_ZERO = 1,
+  SDL_BLENDFACTOR_ONE = 2,
+  SDL_BLENDFACTOR_SRC_COLOR = 3,
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR = 4,
+  SDL_BLENDFACTOR_SRC_ALPHA = 5,
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA = 6,
+  SDL_BLENDFACTOR_DST_COLOR = 7,
+  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR = 8,
+  SDL_BLENDFACTOR_DST_ALPHA = 9,
+  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA = 10
+}
+global function SDL_ComposeCustomBlendMode(srcColorFactor: SDL_BlendFactor, dstColorFactor: SDL_BlendFactor, colorOperation: SDL_BlendOperation, srcAlphaFactor: SDL_BlendFactor, dstAlphaFactor: SDL_BlendFactor, alphaOperation: SDL_BlendOperation): SDL_BlendMode <cimport, nodecl> end
+global SDL_BlitMap: type <cimport, forwarddecl> = @record{}
+global SDL_Surface: type <cimport, nodecl> = @record{
+  flags: uint32,
+  format: *SDL_PixelFormat,
+  w: cint,
+  h: cint,
+  pitch: cint,
+  pixels: pointer,
+  userdata: pointer,
+  locked: cint,
+  lock_data: pointer,
+  clip_rect: SDL_Rect,
+  map: *SDL_BlitMap,
+  refcount: cint
+}
+global SDL_blit: type <cimport, nodecl> = @function(*SDL_Surface, *SDL_Rect, *SDL_Surface, *SDL_Rect): cint
+global SDL_YUV_CONVERSION_MODE: type <cimport, nodecl> = @enum(cint){
+  SDL_YUV_CONVERSION_JPEG = 0,
+  SDL_YUV_CONVERSION_BT601 = 1,
+  SDL_YUV_CONVERSION_BT709 = 2,
+  SDL_YUV_CONVERSION_AUTOMATIC = 3
+}
+global function SDL_CreateRGBSurface(flags: uint32, width: cint, height: cint, depth: cint, Rmask: uint32, Gmask: uint32, Bmask: uint32, Amask: uint32): *SDL_Surface <cimport, nodecl> end
+global function SDL_CreateRGBSurfaceWithFormat(flags: uint32, width: cint, height: cint, depth: cint, format: uint32): *SDL_Surface <cimport, nodecl> end
+global function SDL_CreateRGBSurfaceFrom(pixels: pointer, width: cint, height: cint, depth: cint, pitch: cint, Rmask: uint32, Gmask: uint32, Bmask: uint32, Amask: uint32): *SDL_Surface <cimport, nodecl> end
+global function SDL_CreateRGBSurfaceWithFormatFrom(pixels: pointer, width: cint, height: cint, depth: cint, pitch: cint, format: uint32): *SDL_Surface <cimport, nodecl> end
+global function SDL_FreeSurface(surface: *SDL_Surface) <cimport, nodecl> end
+global function SDL_SetSurfacePalette(surface: *SDL_Surface, palette: *SDL_Palette): cint <cimport, nodecl> end
+global function SDL_LockSurface(surface: *SDL_Surface): cint <cimport, nodecl> end
+global function SDL_UnlockSurface(surface: *SDL_Surface) <cimport, nodecl> end
+global function SDL_LoadBMP_RW(src: *SDL_RWops, freesrc: cint): *SDL_Surface <cimport, nodecl> end
+global function SDL_SaveBMP_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: cint): cint <cimport, nodecl> end
+global function SDL_SetSurfaceRLE(surface: *SDL_Surface, flag: cint): cint <cimport, nodecl> end
+global function SDL_SetColorKey(surface: *SDL_Surface, flag: cint, key: uint32): cint <cimport, nodecl> end
+global function SDL_HasColorKey(surface: *SDL_Surface): SDL_bool <cimport, nodecl> end
+global function SDL_GetColorKey(surface: *SDL_Surface, key: *uint32): cint <cimport, nodecl> end
+global function SDL_SetSurfaceColorMod(surface: *SDL_Surface, r: uint8, g: uint8, b: uint8): cint <cimport, nodecl> end
+global function SDL_GetSurfaceColorMod(surface: *SDL_Surface, r: *uint8, g: *uint8, b: *uint8): cint <cimport, nodecl> end
+global function SDL_SetSurfaceAlphaMod(surface: *SDL_Surface, alpha: uint8): cint <cimport, nodecl> end
+global function SDL_GetSurfaceAlphaMod(surface: *SDL_Surface, alpha: *uint8): cint <cimport, nodecl> end
+global function SDL_SetSurfaceBlendMode(surface: *SDL_Surface, blendMode: SDL_BlendMode): cint <cimport, nodecl> end
+global function SDL_GetSurfaceBlendMode(surface: *SDL_Surface, blendMode: *SDL_BlendMode): cint <cimport, nodecl> end
+global function SDL_SetClipRect(surface: *SDL_Surface, rect: *SDL_Rect): SDL_bool <cimport, nodecl> end
+global function SDL_GetClipRect(surface: *SDL_Surface, rect: *SDL_Rect) <cimport, nodecl> end
+global function SDL_DuplicateSurface(surface: *SDL_Surface): *SDL_Surface <cimport, nodecl> end
+global function SDL_ConvertSurface(src: *SDL_Surface, fmt: *SDL_PixelFormat, flags: uint32): *SDL_Surface <cimport, nodecl> end
+global function SDL_ConvertSurfaceFormat(src: *SDL_Surface, pixel_format: uint32, flags: uint32): *SDL_Surface <cimport, nodecl> end
+global function SDL_ConvertPixels(width: cint, height: cint, src_format: uint32, src: pointer, src_pitch: cint, dst_format: uint32, dst: pointer, dst_pitch: cint): cint <cimport, nodecl> end
+global function SDL_FillRect(dst: *SDL_Surface, rect: *SDL_Rect, color: uint32): cint <cimport, nodecl> end
+global function SDL_FillRects(dst: *SDL_Surface, rects: *SDL_Rect, count: cint, color: uint32): cint <cimport, nodecl> end
+global function SDL_UpperBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_LowerBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_SoftStretch(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_UpperBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_LowerBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_SetYUVConversionMode(mode: SDL_YUV_CONVERSION_MODE) <cimport, nodecl> end
+global function SDL_GetYUVConversionMode(): SDL_YUV_CONVERSION_MODE <cimport, nodecl> end
+global function SDL_GetYUVConversionModeForResolution(width: cint, height: cint): SDL_YUV_CONVERSION_MODE <cimport, nodecl> end
+global SDL_DisplayMode: type <cimport, nodecl> = @record{
+  format: uint32,
+  w: cint,
+  h: cint,
+  refresh_rate: cint,
+  driverdata: pointer
+}
+global SDL_Window: type <cimport, forwarddecl> = @record{}
+global SDL_WindowFlags: type <cimport, nodecl> = @enum(cint){
+  SDL_WINDOW_FULLSCREEN = 1,
+  SDL_WINDOW_OPENGL = 2,
+  SDL_WINDOW_SHOWN = 4,
+  SDL_WINDOW_HIDDEN = 8,
+  SDL_WINDOW_BORDERLESS = 16,
+  SDL_WINDOW_RESIZABLE = 32,
+  SDL_WINDOW_MINIMIZED = 64,
+  SDL_WINDOW_MAXIMIZED = 128,
+  SDL_WINDOW_INPUT_GRABBED = 256,
+  SDL_WINDOW_INPUT_FOCUS = 512,
+  SDL_WINDOW_MOUSE_FOCUS = 1024,
+  SDL_WINDOW_FULLSCREEN_DESKTOP = 4097,
+  SDL_WINDOW_FOREIGN = 2048,
+  SDL_WINDOW_ALLOW_HIGHDPI = 8192,
+  SDL_WINDOW_MOUSE_CAPTURE = 16384,
+  SDL_WINDOW_ALWAYS_ON_TOP = 32768,
+  SDL_WINDOW_SKIP_TASKBAR = 65536,
+  SDL_WINDOW_UTILITY = 131072,
+  SDL_WINDOW_TOOLTIP = 262144,
+  SDL_WINDOW_POPUP_MENU = 524288,
+  SDL_WINDOW_VULKAN = 268435456
+}
+global SDL_WindowEventID: type <cimport, nodecl> = @enum(cint){
+  SDL_WINDOWEVENT_NONE = 0,
+  SDL_WINDOWEVENT_SHOWN = 1,
+  SDL_WINDOWEVENT_HIDDEN = 2,
+  SDL_WINDOWEVENT_EXPOSED = 3,
+  SDL_WINDOWEVENT_MOVED = 4,
+  SDL_WINDOWEVENT_RESIZED = 5,
+  SDL_WINDOWEVENT_SIZE_CHANGED = 6,
+  SDL_WINDOWEVENT_MINIMIZED = 7,
+  SDL_WINDOWEVENT_MAXIMIZED = 8,
+  SDL_WINDOWEVENT_RESTORED = 9,
+  SDL_WINDOWEVENT_ENTER = 10,
+  SDL_WINDOWEVENT_LEAVE = 11,
+  SDL_WINDOWEVENT_FOCUS_GAINED = 12,
+  SDL_WINDOWEVENT_FOCUS_LOST = 13,
+  SDL_WINDOWEVENT_CLOSE = 14,
+  SDL_WINDOWEVENT_TAKE_FOCUS = 15,
+  SDL_WINDOWEVENT_HIT_TEST = 16
+}
+global SDL_DisplayEventID: type <cimport, nodecl> = @enum(cint){
+  SDL_DISPLAYEVENT_NONE = 0,
+  SDL_DISPLAYEVENT_ORIENTATION = 1
+}
+global SDL_DisplayOrientation: type <cimport, nodecl> = @enum(cint){
+  SDL_ORIENTATION_UNKNOWN = 0,
+  SDL_ORIENTATION_LANDSCAPE = 1,
+  SDL_ORIENTATION_LANDSCAPE_FLIPPED = 2,
+  SDL_ORIENTATION_PORTRAIT = 3,
+  SDL_ORIENTATION_PORTRAIT_FLIPPED = 4
+}
+global SDL_GLContext: type <cimport, nodecl> = @pointer
+global SDL_GLattr: type <cimport, nodecl> = @enum(cint){
+  SDL_GL_RED_SIZE = 0,
+  SDL_GL_GREEN_SIZE = 1,
+  SDL_GL_BLUE_SIZE = 2,
+  SDL_GL_ALPHA_SIZE = 3,
+  SDL_GL_BUFFER_SIZE = 4,
+  SDL_GL_DOUBLEBUFFER = 5,
+  SDL_GL_DEPTH_SIZE = 6,
+  SDL_GL_STENCIL_SIZE = 7,
+  SDL_GL_ACCUM_RED_SIZE = 8,
+  SDL_GL_ACCUM_GREEN_SIZE = 9,
+  SDL_GL_ACCUM_BLUE_SIZE = 10,
+  SDL_GL_ACCUM_ALPHA_SIZE = 11,
+  SDL_GL_STEREO = 12,
+  SDL_GL_MULTISAMPLEBUFFERS = 13,
+  SDL_GL_MULTISAMPLESAMPLES = 14,
+  SDL_GL_ACCELERATED_VISUAL = 15,
+  SDL_GL_RETAINED_BACKING = 16,
+  SDL_GL_CONTEXT_MAJOR_VERSION = 17,
+  SDL_GL_CONTEXT_MINOR_VERSION = 18,
+  SDL_GL_CONTEXT_EGL = 19,
+  SDL_GL_CONTEXT_FLAGS = 20,
+  SDL_GL_CONTEXT_PROFILE_MASK = 21,
+  SDL_GL_SHARE_WITH_CURRENT_CONTEXT = 22,
+  SDL_GL_FRAMEBUFFER_SRGB_CAPABLE = 23,
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR = 24,
+  SDL_GL_CONTEXT_RESET_NOTIFICATION = 25,
+  SDL_GL_CONTEXT_NO_ERROR = 26
+}
+global SDL_GLprofile: type <cimport, nodecl> = @enum(cint){
+  SDL_GL_CONTEXT_PROFILE_CORE = 1,
+  SDL_GL_CONTEXT_PROFILE_COMPATIBILITY = 2,
+  SDL_GL_CONTEXT_PROFILE_ES = 4
+}
+global SDL_GLcontextFlag: type <cimport, nodecl> = @enum(cint){
+  SDL_GL_CONTEXT_DEBUG_FLAG = 1,
+  SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 2,
+  SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG = 4,
+  SDL_GL_CONTEXT_RESET_ISOLATION_FLAG = 8
+}
+global SDL_GLcontextReleaseFlag: type <cimport, nodecl> = @enum(cint){
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE = 0,
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = 1
+}
+global SDL_GLContextResetNotification: type <cimport, nodecl> = @enum(cint){
+  SDL_GL_CONTEXT_RESET_NO_NOTIFICATION = 0,
+  SDL_GL_CONTEXT_RESET_LOSE_CONTEXT = 1
+}
+global function SDL_GetNumVideoDrivers(): cint <cimport, nodecl> end
+global function SDL_GetVideoDriver(index: cint): cstring <cimport, nodecl> end
+global function SDL_VideoInit(driver_name: cstring): cint <cimport, nodecl> end
+global function SDL_VideoQuit() <cimport, nodecl> end
+global function SDL_GetCurrentVideoDriver(): cstring <cimport, nodecl> end
+global function SDL_GetNumVideoDisplays(): cint <cimport, nodecl> end
+global function SDL_GetDisplayName(displayIndex: cint): cstring <cimport, nodecl> end
+global function SDL_GetDisplayBounds(displayIndex: cint, rect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_GetDisplayUsableBounds(displayIndex: cint, rect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_GetDisplayDPI(displayIndex: cint, ddpi: *float32, hdpi: *float32, vdpi: *float32): cint <cimport, nodecl> end
+global function SDL_GetDisplayOrientation(displayIndex: cint): SDL_DisplayOrientation <cimport, nodecl> end
+global function SDL_GetNumDisplayModes(displayIndex: cint): cint <cimport, nodecl> end
+global function SDL_GetDisplayMode(displayIndex: cint, modeIndex: cint, mode: *SDL_DisplayMode): cint <cimport, nodecl> end
+global function SDL_GetDesktopDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode): cint <cimport, nodecl> end
+global function SDL_GetCurrentDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode): cint <cimport, nodecl> end
+global function SDL_GetClosestDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode, closest: *SDL_DisplayMode): *SDL_DisplayMode <cimport, nodecl> end
+global function SDL_GetWindowDisplayIndex(window: *SDL_Window): cint <cimport, nodecl> end
+global function SDL_SetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint <cimport, nodecl> end
+global function SDL_GetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint <cimport, nodecl> end
+global function SDL_GetWindowPixelFormat(window: *SDL_Window): uint32 <cimport, nodecl> end
+global function SDL_CreateWindow(title: cstring, x: cint, y: cint, w: cint, h: cint, flags: uint32): *SDL_Window <cimport, nodecl> end
+global function SDL_CreateWindowFrom(data: pointer): *SDL_Window <cimport, nodecl> end
+global function SDL_GetWindowID(window: *SDL_Window): uint32 <cimport, nodecl> end
+global function SDL_GetWindowFromID(id: uint32): *SDL_Window <cimport, nodecl> end
+global function SDL_GetWindowFlags(window: *SDL_Window): uint32 <cimport, nodecl> end
+global function SDL_SetWindowTitle(window: *SDL_Window, title: cstring) <cimport, nodecl> end
+global function SDL_GetWindowTitle(window: *SDL_Window): cstring <cimport, nodecl> end
+global function SDL_SetWindowIcon(window: *SDL_Window, icon: *SDL_Surface) <cimport, nodecl> end
+global function SDL_SetWindowData(window: *SDL_Window, name: cstring, userdata: pointer): pointer <cimport, nodecl> end
+global function SDL_GetWindowData(window: *SDL_Window, name: cstring): pointer <cimport, nodecl> end
+global function SDL_SetWindowPosition(window: *SDL_Window, x: cint, y: cint) <cimport, nodecl> end
+global function SDL_GetWindowPosition(window: *SDL_Window, x: *cint, y: *cint) <cimport, nodecl> end
+global function SDL_SetWindowSize(window: *SDL_Window, w: cint, h: cint) <cimport, nodecl> end
+global function SDL_GetWindowSize(window: *SDL_Window, w: *cint, h: *cint) <cimport, nodecl> end
+global function SDL_GetWindowBordersSize(window: *SDL_Window, top: *cint, left: *cint, bottom: *cint, right: *cint): cint <cimport, nodecl> end
+global function SDL_SetWindowMinimumSize(window: *SDL_Window, min_w: cint, min_h: cint) <cimport, nodecl> end
+global function SDL_GetWindowMinimumSize(window: *SDL_Window, w: *cint, h: *cint) <cimport, nodecl> end
+global function SDL_SetWindowMaximumSize(window: *SDL_Window, max_w: cint, max_h: cint) <cimport, nodecl> end
+global function SDL_GetWindowMaximumSize(window: *SDL_Window, w: *cint, h: *cint) <cimport, nodecl> end
+global function SDL_SetWindowBordered(window: *SDL_Window, bordered: SDL_bool) <cimport, nodecl> end
+global function SDL_SetWindowResizable(window: *SDL_Window, resizable: SDL_bool) <cimport, nodecl> end
+global function SDL_ShowWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_HideWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_RaiseWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_MaximizeWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_MinimizeWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_RestoreWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_SetWindowFullscreen(window: *SDL_Window, flags: uint32): cint <cimport, nodecl> end
+global function SDL_GetWindowSurface(window: *SDL_Window): *SDL_Surface <cimport, nodecl> end
+global function SDL_UpdateWindowSurface(window: *SDL_Window): cint <cimport, nodecl> end
+global function SDL_UpdateWindowSurfaceRects(window: *SDL_Window, rects: *SDL_Rect, numrects: cint): cint <cimport, nodecl> end
+global function SDL_SetWindowGrab(window: *SDL_Window, grabbed: SDL_bool) <cimport, nodecl> end
+global function SDL_GetWindowGrab(window: *SDL_Window): SDL_bool <cimport, nodecl> end
+global function SDL_GetGrabbedWindow(): *SDL_Window <cimport, nodecl> end
+global function SDL_SetWindowBrightness(window: *SDL_Window, brightness: float32): cint <cimport, nodecl> end
+global function SDL_GetWindowBrightness(window: *SDL_Window): float32 <cimport, nodecl> end
+global function SDL_SetWindowOpacity(window: *SDL_Window, opacity: float32): cint <cimport, nodecl> end
+global function SDL_GetWindowOpacity(window: *SDL_Window, out_opacity: *float32): cint <cimport, nodecl> end
+global function SDL_SetWindowModalFor(modal_window: *SDL_Window, parent_window: *SDL_Window): cint <cimport, nodecl> end
+global function SDL_SetWindowInputFocus(window: *SDL_Window): cint <cimport, nodecl> end
+global function SDL_SetWindowGammaRamp(window: *SDL_Window, red: *uint16, green: *uint16, blue: *uint16): cint <cimport, nodecl> end
+global function SDL_GetWindowGammaRamp(window: *SDL_Window, red: *uint16, green: *uint16, blue: *uint16): cint <cimport, nodecl> end
+global SDL_HitTestResult: type <cimport, nodecl> = @enum(cint){
+  SDL_HITTEST_NORMAL = 0,
+  SDL_HITTEST_DRAGGABLE = 1,
+  SDL_HITTEST_RESIZE_TOPLEFT = 2,
+  SDL_HITTEST_RESIZE_TOP = 3,
+  SDL_HITTEST_RESIZE_TOPRIGHT = 4,
+  SDL_HITTEST_RESIZE_RIGHT = 5,
+  SDL_HITTEST_RESIZE_BOTTOMRIGHT = 6,
+  SDL_HITTEST_RESIZE_BOTTOM = 7,
+  SDL_HITTEST_RESIZE_BOTTOMLEFT = 8,
+  SDL_HITTEST_RESIZE_LEFT = 9
+}
+global SDL_HitTest: type <cimport, nodecl> = @function(*SDL_Window, *SDL_Point, pointer): SDL_HitTestResult
+global function SDL_SetWindowHitTest(window: *SDL_Window, callback: SDL_HitTest, callback_data: pointer): cint <cimport, nodecl> end
+global function SDL_DestroyWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_IsScreenSaverEnabled(): SDL_bool <cimport, nodecl> end
+global function SDL_EnableScreenSaver() <cimport, nodecl> end
+global function SDL_DisableScreenSaver() <cimport, nodecl> end
+global function SDL_GL_LoadLibrary(path: cstring): cint <cimport, nodecl> end
+global function SDL_GL_GetProcAddress(proc: cstring): pointer <cimport, nodecl> end
+global function SDL_GL_UnloadLibrary() <cimport, nodecl> end
+global function SDL_GL_ExtensionSupported(extension: cstring): SDL_bool <cimport, nodecl> end
+global function SDL_GL_ResetAttributes() <cimport, nodecl> end
+global function SDL_GL_SetAttribute(attr: SDL_GLattr, value: cint): cint <cimport, nodecl> end
+global function SDL_GL_GetAttribute(attr: SDL_GLattr, value: *cint): cint <cimport, nodecl> end
+global function SDL_GL_CreateContext(window: *SDL_Window): SDL_GLContext <cimport, nodecl> end
+global function SDL_GL_MakeCurrent(window: *SDL_Window, context: SDL_GLContext): cint <cimport, nodecl> end
+global function SDL_GL_GetCurrentWindow(): *SDL_Window <cimport, nodecl> end
+global function SDL_GL_GetCurrentContext(): SDL_GLContext <cimport, nodecl> end
+global function SDL_GL_GetDrawableSize(window: *SDL_Window, w: *cint, h: *cint) <cimport, nodecl> end
+global function SDL_GL_SetSwapInterval(interval: cint): cint <cimport, nodecl> end
+global function SDL_GL_GetSwapInterval(): cint <cimport, nodecl> end
+global function SDL_GL_SwapWindow(window: *SDL_Window) <cimport, nodecl> end
+global function SDL_GL_DeleteContext(context: SDL_GLContext) <cimport, nodecl> end
+global SDL_Scancode: type <cimport, nodecl> = @enum(cint){
+  SDL_SCANCODE_UNKNOWN = 0,
+  SDL_SCANCODE_A = 4,
+  SDL_SCANCODE_B = 5,
+  SDL_SCANCODE_C = 6,
+  SDL_SCANCODE_D = 7,
+  SDL_SCANCODE_E = 8,
+  SDL_SCANCODE_F = 9,
+  SDL_SCANCODE_G = 10,
+  SDL_SCANCODE_H = 11,
+  SDL_SCANCODE_I = 12,
+  SDL_SCANCODE_J = 13,
+  SDL_SCANCODE_K = 14,
+  SDL_SCANCODE_L = 15,
+  SDL_SCANCODE_M = 16,
+  SDL_SCANCODE_N = 17,
+  SDL_SCANCODE_O = 18,
+  SDL_SCANCODE_P = 19,
+  SDL_SCANCODE_Q = 20,
+  SDL_SCANCODE_R = 21,
+  SDL_SCANCODE_S = 22,
+  SDL_SCANCODE_T = 23,
+  SDL_SCANCODE_U = 24,
+  SDL_SCANCODE_V = 25,
+  SDL_SCANCODE_W = 26,
+  SDL_SCANCODE_X = 27,
+  SDL_SCANCODE_Y = 28,
+  SDL_SCANCODE_Z = 29,
+  SDL_SCANCODE_1 = 30,
+  SDL_SCANCODE_2 = 31,
+  SDL_SCANCODE_3 = 32,
+  SDL_SCANCODE_4 = 33,
+  SDL_SCANCODE_5 = 34,
+  SDL_SCANCODE_6 = 35,
+  SDL_SCANCODE_7 = 36,
+  SDL_SCANCODE_8 = 37,
+  SDL_SCANCODE_9 = 38,
+  SDL_SCANCODE_0 = 39,
+  SDL_SCANCODE_RETURN = 40,
+  SDL_SCANCODE_ESCAPE = 41,
+  SDL_SCANCODE_BACKSPACE = 42,
+  SDL_SCANCODE_TAB = 43,
+  SDL_SCANCODE_SPACE = 44,
+  SDL_SCANCODE_MINUS = 45,
+  SDL_SCANCODE_EQUALS = 46,
+  SDL_SCANCODE_LEFTBRACKET = 47,
+  SDL_SCANCODE_RIGHTBRACKET = 48,
+  SDL_SCANCODE_BACKSLASH = 49,
+  SDL_SCANCODE_NONUSHASH = 50,
+  SDL_SCANCODE_SEMICOLON = 51,
+  SDL_SCANCODE_APOSTROPHE = 52,
+  SDL_SCANCODE_GRAVE = 53,
+  SDL_SCANCODE_COMMA = 54,
+  SDL_SCANCODE_PERIOD = 55,
+  SDL_SCANCODE_SLASH = 56,
+  SDL_SCANCODE_CAPSLOCK = 57,
+  SDL_SCANCODE_F1 = 58,
+  SDL_SCANCODE_F2 = 59,
+  SDL_SCANCODE_F3 = 60,
+  SDL_SCANCODE_F4 = 61,
+  SDL_SCANCODE_F5 = 62,
+  SDL_SCANCODE_F6 = 63,
+  SDL_SCANCODE_F7 = 64,
+  SDL_SCANCODE_F8 = 65,
+  SDL_SCANCODE_F9 = 66,
+  SDL_SCANCODE_F10 = 67,
+  SDL_SCANCODE_F11 = 68,
+  SDL_SCANCODE_F12 = 69,
+  SDL_SCANCODE_PRINTSCREEN = 70,
+  SDL_SCANCODE_SCROLLLOCK = 71,
+  SDL_SCANCODE_PAUSE = 72,
+  SDL_SCANCODE_INSERT = 73,
+  SDL_SCANCODE_HOME = 74,
+  SDL_SCANCODE_PAGEUP = 75,
+  SDL_SCANCODE_DELETE = 76,
+  SDL_SCANCODE_END = 77,
+  SDL_SCANCODE_PAGEDOWN = 78,
+  SDL_SCANCODE_RIGHT = 79,
+  SDL_SCANCODE_LEFT = 80,
+  SDL_SCANCODE_DOWN = 81,
+  SDL_SCANCODE_UP = 82,
+  SDL_SCANCODE_NUMLOCKCLEAR = 83,
+  SDL_SCANCODE_KP_DIVIDE = 84,
+  SDL_SCANCODE_KP_MULTIPLY = 85,
+  SDL_SCANCODE_KP_MINUS = 86,
+  SDL_SCANCODE_KP_PLUS = 87,
+  SDL_SCANCODE_KP_ENTER = 88,
+  SDL_SCANCODE_KP_1 = 89,
+  SDL_SCANCODE_KP_2 = 90,
+  SDL_SCANCODE_KP_3 = 91,
+  SDL_SCANCODE_KP_4 = 92,
+  SDL_SCANCODE_KP_5 = 93,
+  SDL_SCANCODE_KP_6 = 94,
+  SDL_SCANCODE_KP_7 = 95,
+  SDL_SCANCODE_KP_8 = 96,
+  SDL_SCANCODE_KP_9 = 97,
+  SDL_SCANCODE_KP_0 = 98,
+  SDL_SCANCODE_KP_PERIOD = 99,
+  SDL_SCANCODE_NONUSBACKSLASH = 100,
+  SDL_SCANCODE_APPLICATION = 101,
+  SDL_SCANCODE_POWER = 102,
+  SDL_SCANCODE_KP_EQUALS = 103,
+  SDL_SCANCODE_F13 = 104,
+  SDL_SCANCODE_F14 = 105,
+  SDL_SCANCODE_F15 = 106,
+  SDL_SCANCODE_F16 = 107,
+  SDL_SCANCODE_F17 = 108,
+  SDL_SCANCODE_F18 = 109,
+  SDL_SCANCODE_F19 = 110,
+  SDL_SCANCODE_F20 = 111,
+  SDL_SCANCODE_F21 = 112,
+  SDL_SCANCODE_F22 = 113,
+  SDL_SCANCODE_F23 = 114,
+  SDL_SCANCODE_F24 = 115,
+  SDL_SCANCODE_EXECUTE = 116,
+  SDL_SCANCODE_HELP = 117,
+  SDL_SCANCODE_MENU = 118,
+  SDL_SCANCODE_SELECT = 119,
+  SDL_SCANCODE_STOP = 120,
+  SDL_SCANCODE_AGAIN = 121,
+  SDL_SCANCODE_UNDO = 122,
+  SDL_SCANCODE_CUT = 123,
+  SDL_SCANCODE_COPY = 124,
+  SDL_SCANCODE_PASTE = 125,
+  SDL_SCANCODE_FIND = 126,
+  SDL_SCANCODE_MUTE = 127,
+  SDL_SCANCODE_VOLUMEUP = 128,
+  SDL_SCANCODE_VOLUMEDOWN = 129,
+  SDL_SCANCODE_KP_COMMA = 133,
+  SDL_SCANCODE_KP_EQUALSAS400 = 134,
+  SDL_SCANCODE_INTERNATIONAL1 = 135,
+  SDL_SCANCODE_INTERNATIONAL2 = 136,
+  SDL_SCANCODE_INTERNATIONAL3 = 137,
+  SDL_SCANCODE_INTERNATIONAL4 = 138,
+  SDL_SCANCODE_INTERNATIONAL5 = 139,
+  SDL_SCANCODE_INTERNATIONAL6 = 140,
+  SDL_SCANCODE_INTERNATIONAL7 = 141,
+  SDL_SCANCODE_INTERNATIONAL8 = 142,
+  SDL_SCANCODE_INTERNATIONAL9 = 143,
+  SDL_SCANCODE_LANG1 = 144,
+  SDL_SCANCODE_LANG2 = 145,
+  SDL_SCANCODE_LANG3 = 146,
+  SDL_SCANCODE_LANG4 = 147,
+  SDL_SCANCODE_LANG5 = 148,
+  SDL_SCANCODE_LANG6 = 149,
+  SDL_SCANCODE_LANG7 = 150,
+  SDL_SCANCODE_LANG8 = 151,
+  SDL_SCANCODE_LANG9 = 152,
+  SDL_SCANCODE_ALTERASE = 153,
+  SDL_SCANCODE_SYSREQ = 154,
+  SDL_SCANCODE_CANCEL = 155,
+  SDL_SCANCODE_CLEAR = 156,
+  SDL_SCANCODE_PRIOR = 157,
+  SDL_SCANCODE_RETURN2 = 158,
+  SDL_SCANCODE_SEPARATOR = 159,
+  SDL_SCANCODE_OUT = 160,
+  SDL_SCANCODE_OPER = 161,
+  SDL_SCANCODE_CLEARAGAIN = 162,
+  SDL_SCANCODE_CRSEL = 163,
+  SDL_SCANCODE_EXSEL = 164,
+  SDL_SCANCODE_KP_00 = 176,
+  SDL_SCANCODE_KP_000 = 177,
+  SDL_SCANCODE_THOUSANDSSEPARATOR = 178,
+  SDL_SCANCODE_DECIMALSEPARATOR = 179,
+  SDL_SCANCODE_CURRENCYUNIT = 180,
+  SDL_SCANCODE_CURRENCYSUBUNIT = 181,
+  SDL_SCANCODE_KP_LEFTPAREN = 182,
+  SDL_SCANCODE_KP_RIGHTPAREN = 183,
+  SDL_SCANCODE_KP_LEFTBRACE = 184,
+  SDL_SCANCODE_KP_RIGHTBRACE = 185,
+  SDL_SCANCODE_KP_TAB = 186,
+  SDL_SCANCODE_KP_BACKSPACE = 187,
+  SDL_SCANCODE_KP_A = 188,
+  SDL_SCANCODE_KP_B = 189,
+  SDL_SCANCODE_KP_C = 190,
+  SDL_SCANCODE_KP_D = 191,
+  SDL_SCANCODE_KP_E = 192,
+  SDL_SCANCODE_KP_F = 193,
+  SDL_SCANCODE_KP_XOR = 194,
+  SDL_SCANCODE_KP_POWER = 195,
+  SDL_SCANCODE_KP_PERCENT = 196,
+  SDL_SCANCODE_KP_LESS = 197,
+  SDL_SCANCODE_KP_GREATER = 198,
+  SDL_SCANCODE_KP_AMPERSAND = 199,
+  SDL_SCANCODE_KP_DBLAMPERSAND = 200,
+  SDL_SCANCODE_KP_VERTICALBAR = 201,
+  SDL_SCANCODE_KP_DBLVERTICALBAR = 202,
+  SDL_SCANCODE_KP_COLON = 203,
+  SDL_SCANCODE_KP_HASH = 204,
+  SDL_SCANCODE_KP_SPACE = 205,
+  SDL_SCANCODE_KP_AT = 206,
+  SDL_SCANCODE_KP_EXCLAM = 207,
+  SDL_SCANCODE_KP_MEMSTORE = 208,
+  SDL_SCANCODE_KP_MEMRECALL = 209,
+  SDL_SCANCODE_KP_MEMCLEAR = 210,
+  SDL_SCANCODE_KP_MEMADD = 211,
+  SDL_SCANCODE_KP_MEMSUBTRACT = 212,
+  SDL_SCANCODE_KP_MEMMULTIPLY = 213,
+  SDL_SCANCODE_KP_MEMDIVIDE = 214,
+  SDL_SCANCODE_KP_PLUSMINUS = 215,
+  SDL_SCANCODE_KP_CLEAR = 216,
+  SDL_SCANCODE_KP_CLEARENTRY = 217,
+  SDL_SCANCODE_KP_BINARY = 218,
+  SDL_SCANCODE_KP_OCTAL = 219,
+  SDL_SCANCODE_KP_DECIMAL = 220,
+  SDL_SCANCODE_KP_HEXADECIMAL = 221,
+  SDL_SCANCODE_LCTRL = 224,
+  SDL_SCANCODE_LSHIFT = 225,
+  SDL_SCANCODE_LALT = 226,
+  SDL_SCANCODE_LGUI = 227,
+  SDL_SCANCODE_RCTRL = 228,
+  SDL_SCANCODE_RSHIFT = 229,
+  SDL_SCANCODE_RALT = 230,
+  SDL_SCANCODE_RGUI = 231,
+  SDL_SCANCODE_MODE = 257,
+  SDL_SCANCODE_AUDIONEXT = 258,
+  SDL_SCANCODE_AUDIOPREV = 259,
+  SDL_SCANCODE_AUDIOSTOP = 260,
+  SDL_SCANCODE_AUDIOPLAY = 261,
+  SDL_SCANCODE_AUDIOMUTE = 262,
+  SDL_SCANCODE_MEDIASELECT = 263,
+  SDL_SCANCODE_WWW = 264,
+  SDL_SCANCODE_MAIL = 265,
+  SDL_SCANCODE_CALCULATOR = 266,
+  SDL_SCANCODE_COMPUTER = 267,
+  SDL_SCANCODE_AC_SEARCH = 268,
+  SDL_SCANCODE_AC_HOME = 269,
+  SDL_SCANCODE_AC_BACK = 270,
+  SDL_SCANCODE_AC_FORWARD = 271,
+  SDL_SCANCODE_AC_STOP = 272,
+  SDL_SCANCODE_AC_REFRESH = 273,
+  SDL_SCANCODE_AC_BOOKMARKS = 274,
+  SDL_SCANCODE_BRIGHTNESSDOWN = 275,
+  SDL_SCANCODE_BRIGHTNESSUP = 276,
+  SDL_SCANCODE_DISPLAYSWITCH = 277,
+  SDL_SCANCODE_KBDILLUMTOGGLE = 278,
+  SDL_SCANCODE_KBDILLUMDOWN = 279,
+  SDL_SCANCODE_KBDILLUMUP = 280,
+  SDL_SCANCODE_EJECT = 281,
+  SDL_SCANCODE_SLEEP = 282,
+  SDL_SCANCODE_APP1 = 283,
+  SDL_SCANCODE_APP2 = 284,
+  SDL_SCANCODE_AUDIOREWIND = 285,
+  SDL_SCANCODE_AUDIOFASTFORWARD = 286,
+  SDL_NUM_SCANCODES = 512
+}
+global SDL_KeyCode: type <cimport, nodecl> = @enum(cint){
+  SDLK_UNKNOWN = 0,
+  SDLK_RETURN = 13,
+  SDLK_ESCAPE = 27,
+  SDLK_BACKSPACE = 8,
+  SDLK_TAB = 9,
+  SDLK_SPACE = 32,
+  SDLK_EXCLAIM = 33,
+  SDLK_QUOTEDBL = 34,
+  SDLK_HASH = 35,
+  SDLK_PERCENT = 37,
+  SDLK_DOLLAR = 36,
+  SDLK_AMPERSAND = 38,
+  SDLK_QUOTE = 39,
+  SDLK_LEFTPAREN = 40,
+  SDLK_RIGHTPAREN = 41,
+  SDLK_ASTERISK = 42,
+  SDLK_PLUS = 43,
+  SDLK_COMMA = 44,
+  SDLK_MINUS = 45,
+  SDLK_PERIOD = 46,
+  SDLK_SLASH = 47,
+  SDLK_0 = 48,
+  SDLK_1 = 49,
+  SDLK_2 = 50,
+  SDLK_3 = 51,
+  SDLK_4 = 52,
+  SDLK_5 = 53,
+  SDLK_6 = 54,
+  SDLK_7 = 55,
+  SDLK_8 = 56,
+  SDLK_9 = 57,
+  SDLK_COLON = 58,
+  SDLK_SEMICOLON = 59,
+  SDLK_LESS = 60,
+  SDLK_EQUALS = 61,
+  SDLK_GREATER = 62,
+  SDLK_QUESTION = 63,
+  SDLK_AT = 64,
+  SDLK_LEFTBRACKET = 91,
+  SDLK_BACKSLASH = 92,
+  SDLK_RIGHTBRACKET = 93,
+  SDLK_CARET = 94,
+  SDLK_UNDERSCORE = 95,
+  SDLK_BACKQUOTE = 96,
+  SDLK_a = 97,
+  SDLK_b = 98,
+  SDLK_c = 99,
+  SDLK_d = 100,
+  SDLK_e = 101,
+  SDLK_f = 102,
+  SDLK_g = 103,
+  SDLK_h = 104,
+  SDLK_i = 105,
+  SDLK_j = 106,
+  SDLK_k = 107,
+  SDLK_l = 108,
+  SDLK_m = 109,
+  SDLK_n = 110,
+  SDLK_o = 111,
+  SDLK_p = 112,
+  SDLK_q = 113,
+  SDLK_r = 114,
+  SDLK_s = 115,
+  SDLK_t = 116,
+  SDLK_u = 117,
+  SDLK_v = 118,
+  SDLK_w = 119,
+  SDLK_x = 120,
+  SDLK_y = 121,
+  SDLK_z = 122,
+  SDLK_CAPSLOCK = 1073741881,
+  SDLK_F1 = 1073741882,
+  SDLK_F2 = 1073741883,
+  SDLK_F3 = 1073741884,
+  SDLK_F4 = 1073741885,
+  SDLK_F5 = 1073741886,
+  SDLK_F6 = 1073741887,
+  SDLK_F7 = 1073741888,
+  SDLK_F8 = 1073741889,
+  SDLK_F9 = 1073741890,
+  SDLK_F10 = 1073741891,
+  SDLK_F11 = 1073741892,
+  SDLK_F12 = 1073741893,
+  SDLK_PRINTSCREEN = 1073741894,
+  SDLK_SCROLLLOCK = 1073741895,
+  SDLK_PAUSE = 1073741896,
+  SDLK_INSERT = 1073741897,
+  SDLK_HOME = 1073741898,
+  SDLK_PAGEUP = 1073741899,
+  SDLK_DELETE = 127,
+  SDLK_END = 1073741901,
+  SDLK_PAGEDOWN = 1073741902,
+  SDLK_RIGHT = 1073741903,
+  SDLK_LEFT = 1073741904,
+  SDLK_DOWN = 1073741905,
+  SDLK_UP = 1073741906,
+  SDLK_NUMLOCKCLEAR = 1073741907,
+  SDLK_KP_DIVIDE = 1073741908,
+  SDLK_KP_MULTIPLY = 1073741909,
+  SDLK_KP_MINUS = 1073741910,
+  SDLK_KP_PLUS = 1073741911,
+  SDLK_KP_ENTER = 1073741912,
+  SDLK_KP_1 = 1073741913,
+  SDLK_KP_2 = 1073741914,
+  SDLK_KP_3 = 1073741915,
+  SDLK_KP_4 = 1073741916,
+  SDLK_KP_5 = 1073741917,
+  SDLK_KP_6 = 1073741918,
+  SDLK_KP_7 = 1073741919,
+  SDLK_KP_8 = 1073741920,
+  SDLK_KP_9 = 1073741921,
+  SDLK_KP_0 = 1073741922,
+  SDLK_KP_PERIOD = 1073741923,
+  SDLK_APPLICATION = 1073741925,
+  SDLK_POWER = 1073741926,
+  SDLK_KP_EQUALS = 1073741927,
+  SDLK_F13 = 1073741928,
+  SDLK_F14 = 1073741929,
+  SDLK_F15 = 1073741930,
+  SDLK_F16 = 1073741931,
+  SDLK_F17 = 1073741932,
+  SDLK_F18 = 1073741933,
+  SDLK_F19 = 1073741934,
+  SDLK_F20 = 1073741935,
+  SDLK_F21 = 1073741936,
+  SDLK_F22 = 1073741937,
+  SDLK_F23 = 1073741938,
+  SDLK_F24 = 1073741939,
+  SDLK_EXECUTE = 1073741940,
+  SDLK_HELP = 1073741941,
+  SDLK_MENU = 1073741942,
+  SDLK_SELECT = 1073741943,
+  SDLK_STOP = 1073741944,
+  SDLK_AGAIN = 1073741945,
+  SDLK_UNDO = 1073741946,
+  SDLK_CUT = 1073741947,
+  SDLK_COPY = 1073741948,
+  SDLK_PASTE = 1073741949,
+  SDLK_FIND = 1073741950,
+  SDLK_MUTE = 1073741951,
+  SDLK_VOLUMEUP = 1073741952,
+  SDLK_VOLUMEDOWN = 1073741953,
+  SDLK_KP_COMMA = 1073741957,
+  SDLK_KP_EQUALSAS400 = 1073741958,
+  SDLK_ALTERASE = 1073741977,
+  SDLK_SYSREQ = 1073741978,
+  SDLK_CANCEL = 1073741979,
+  SDLK_CLEAR = 1073741980,
+  SDLK_PRIOR = 1073741981,
+  SDLK_RETURN2 = 1073741982,
+  SDLK_SEPARATOR = 1073741983,
+  SDLK_OUT = 1073741984,
+  SDLK_OPER = 1073741985,
+  SDLK_CLEARAGAIN = 1073741986,
+  SDLK_CRSEL = 1073741987,
+  SDLK_EXSEL = 1073741988,
+  SDLK_KP_00 = 1073742000,
+  SDLK_KP_000 = 1073742001,
+  SDLK_THOUSANDSSEPARATOR = 1073742002,
+  SDLK_DECIMALSEPARATOR = 1073742003,
+  SDLK_CURRENCYUNIT = 1073742004,
+  SDLK_CURRENCYSUBUNIT = 1073742005,
+  SDLK_KP_LEFTPAREN = 1073742006,
+  SDLK_KP_RIGHTPAREN = 1073742007,
+  SDLK_KP_LEFTBRACE = 1073742008,
+  SDLK_KP_RIGHTBRACE = 1073742009,
+  SDLK_KP_TAB = 1073742010,
+  SDLK_KP_BACKSPACE = 1073742011,
+  SDLK_KP_A = 1073742012,
+  SDLK_KP_B = 1073742013,
+  SDLK_KP_C = 1073742014,
+  SDLK_KP_D = 1073742015,
+  SDLK_KP_E = 1073742016,
+  SDLK_KP_F = 1073742017,
+  SDLK_KP_XOR = 1073742018,
+  SDLK_KP_POWER = 1073742019,
+  SDLK_KP_PERCENT = 1073742020,
+  SDLK_KP_LESS = 1073742021,
+  SDLK_KP_GREATER = 1073742022,
+  SDLK_KP_AMPERSAND = 1073742023,
+  SDLK_KP_DBLAMPERSAND = 1073742024,
+  SDLK_KP_VERTICALBAR = 1073742025,
+  SDLK_KP_DBLVERTICALBAR = 1073742026,
+  SDLK_KP_COLON = 1073742027,
+  SDLK_KP_HASH = 1073742028,
+  SDLK_KP_SPACE = 1073742029,
+  SDLK_KP_AT = 1073742030,
+  SDLK_KP_EXCLAM = 1073742031,
+  SDLK_KP_MEMSTORE = 1073742032,
+  SDLK_KP_MEMRECALL = 1073742033,
+  SDLK_KP_MEMCLEAR = 1073742034,
+  SDLK_KP_MEMADD = 1073742035,
+  SDLK_KP_MEMSUBTRACT = 1073742036,
+  SDLK_KP_MEMMULTIPLY = 1073742037,
+  SDLK_KP_MEMDIVIDE = 1073742038,
+  SDLK_KP_PLUSMINUS = 1073742039,
+  SDLK_KP_CLEAR = 1073742040,
+  SDLK_KP_CLEARENTRY = 1073742041,
+  SDLK_KP_BINARY = 1073742042,
+  SDLK_KP_OCTAL = 1073742043,
+  SDLK_KP_DECIMAL = 1073742044,
+  SDLK_KP_HEXADECIMAL = 1073742045,
+  SDLK_LCTRL = 1073742048,
+  SDLK_LSHIFT = 1073742049,
+  SDLK_LALT = 1073742050,
+  SDLK_LGUI = 1073742051,
+  SDLK_RCTRL = 1073742052,
+  SDLK_RSHIFT = 1073742053,
+  SDLK_RALT = 1073742054,
+  SDLK_RGUI = 1073742055,
+  SDLK_MODE = 1073742081,
+  SDLK_AUDIONEXT = 1073742082,
+  SDLK_AUDIOPREV = 1073742083,
+  SDLK_AUDIOSTOP = 1073742084,
+  SDLK_AUDIOPLAY = 1073742085,
+  SDLK_AUDIOMUTE = 1073742086,
+  SDLK_MEDIASELECT = 1073742087,
+  SDLK_WWW = 1073742088,
+  SDLK_MAIL = 1073742089,
+  SDLK_CALCULATOR = 1073742090,
+  SDLK_COMPUTER = 1073742091,
+  SDLK_AC_SEARCH = 1073742092,
+  SDLK_AC_HOME = 1073742093,
+  SDLK_AC_BACK = 1073742094,
+  SDLK_AC_FORWARD = 1073742095,
+  SDLK_AC_STOP = 1073742096,
+  SDLK_AC_REFRESH = 1073742097,
+  SDLK_AC_BOOKMARKS = 1073742098,
+  SDLK_BRIGHTNESSDOWN = 1073742099,
+  SDLK_BRIGHTNESSUP = 1073742100,
+  SDLK_DISPLAYSWITCH = 1073742101,
+  SDLK_KBDILLUMTOGGLE = 1073742102,
+  SDLK_KBDILLUMDOWN = 1073742103,
+  SDLK_KBDILLUMUP = 1073742104,
+  SDLK_EJECT = 1073742105,
+  SDLK_SLEEP = 1073742106,
+  SDLK_APP1 = 1073742107,
+  SDLK_APP2 = 1073742108,
+  SDLK_AUDIOREWIND = 1073742109,
+  SDLK_AUDIOFASTFORWARD = 1073742110
+}
+global SDL_Keymod: type <cimport, nodecl> = @enum(cint){
+  KMOD_NONE = 0,
+  KMOD_LSHIFT = 1,
+  KMOD_RSHIFT = 2,
+  KMOD_LCTRL = 64,
+  KMOD_RCTRL = 128,
+  KMOD_LALT = 256,
+  KMOD_RALT = 512,
+  KMOD_LGUI = 1024,
+  KMOD_RGUI = 2048,
+  KMOD_NUM = 4096,
+  KMOD_CAPS = 8192,
+  KMOD_MODE = 16384,
+  KMOD_RESERVED = 32768
+}
+global SDL_Keysym: type <cimport, nodecl> = @record{
+  scancode: SDL_Scancode,
+  sym: cint,
+  mod: uint16,
+  unused: uint32
+}
+global function SDL_GetKeyboardFocus(): *SDL_Window <cimport, nodecl> end
+global function SDL_GetKeyboardState(numkeys: *cint): *uint8 <cimport, nodecl> end
+global function SDL_GetModState(): SDL_Keymod <cimport, nodecl> end
+global function SDL_SetModState(modstate: SDL_Keymod) <cimport, nodecl> end
+global function SDL_GetKeyFromScancode(scancode: SDL_Scancode): cint <cimport, nodecl> end
+global function SDL_GetScancodeFromKey(key: cint): SDL_Scancode <cimport, nodecl> end
+global function SDL_GetScancodeName(scancode: SDL_Scancode): cstring <cimport, nodecl> end
+global function SDL_GetScancodeFromName(name: cstring): SDL_Scancode <cimport, nodecl> end
+global function SDL_GetKeyName(key: cint): cstring <cimport, nodecl> end
+global function SDL_GetKeyFromName(name: cstring): cint <cimport, nodecl> end
+global function SDL_StartTextInput() <cimport, nodecl> end
+global function SDL_IsTextInputActive(): SDL_bool <cimport, nodecl> end
+global function SDL_StopTextInput() <cimport, nodecl> end
+global function SDL_SetTextInputRect(rect: *SDL_Rect) <cimport, nodecl> end
+global function SDL_HasScreenKeyboardSupport(): SDL_bool <cimport, nodecl> end
+global function SDL_IsScreenKeyboardShown(window: *SDL_Window): SDL_bool <cimport, nodecl> end
+global SDL_Cursor: type <cimport, forwarddecl> = @record{}
+global SDL_SystemCursor: type <cimport, nodecl> = @enum(cint){
+  SDL_SYSTEM_CURSOR_ARROW = 0,
+  SDL_SYSTEM_CURSOR_IBEAM = 1,
+  SDL_SYSTEM_CURSOR_WAIT = 2,
+  SDL_SYSTEM_CURSOR_CROSSHAIR = 3,
+  SDL_SYSTEM_CURSOR_WAITARROW = 4,
+  SDL_SYSTEM_CURSOR_SIZENWSE = 5,
+  SDL_SYSTEM_CURSOR_SIZENESW = 6,
+  SDL_SYSTEM_CURSOR_SIZEWE = 7,
+  SDL_SYSTEM_CURSOR_SIZENS = 8,
+  SDL_SYSTEM_CURSOR_SIZEALL = 9,
+  SDL_SYSTEM_CURSOR_NO = 10,
+  SDL_SYSTEM_CURSOR_HAND = 11,
+  SDL_NUM_SYSTEM_CURSORS = 12
+}
+global SDL_MouseWheelDirection: type <cimport, nodecl> = @enum(cint){
+  SDL_MOUSEWHEEL_NORMAL = 0,
+  SDL_MOUSEWHEEL_FLIPPED = 1
+}
+global function SDL_GetMouseFocus(): *SDL_Window <cimport, nodecl> end
+global function SDL_GetMouseState(x: *cint, y: *cint): uint32 <cimport, nodecl> end
+global function SDL_GetGlobalMouseState(x: *cint, y: *cint): uint32 <cimport, nodecl> end
+global function SDL_GetRelativeMouseState(x: *cint, y: *cint): uint32 <cimport, nodecl> end
+global function SDL_WarpMouseInWindow(window: *SDL_Window, x: cint, y: cint) <cimport, nodecl> end
+global function SDL_WarpMouseGlobal(x: cint, y: cint): cint <cimport, nodecl> end
+global function SDL_SetRelativeMouseMode(enabled: SDL_bool): cint <cimport, nodecl> end
+global function SDL_CaptureMouse(enabled: SDL_bool): cint <cimport, nodecl> end
+global function SDL_GetRelativeMouseMode(): SDL_bool <cimport, nodecl> end
+global function SDL_CreateCursor(data: *uint8, mask: *uint8, w: cint, h: cint, hot_x: cint, hot_y: cint): *SDL_Cursor <cimport, nodecl> end
+global function SDL_CreateColorCursor(surface: *SDL_Surface, hot_x: cint, hot_y: cint): *SDL_Cursor <cimport, nodecl> end
+global function SDL_CreateSystemCursor(id: SDL_SystemCursor): *SDL_Cursor <cimport, nodecl> end
+global function SDL_SetCursor(cursor: *SDL_Cursor) <cimport, nodecl> end
+global function SDL_GetCursor(): *SDL_Cursor <cimport, nodecl> end
+global function SDL_GetDefaultCursor(): *SDL_Cursor <cimport, nodecl> end
+global function SDL_FreeCursor(cursor: *SDL_Cursor) <cimport, nodecl> end
+global function SDL_ShowCursor(toggle: cint): cint <cimport, nodecl> end
+global SDL_Joystick: type <cimport, forwarddecl> = @record{}
+global SDL_JoystickGUID: type <cimport, nodecl> = @record{
+  data: [16]uint8
+}
+global SDL_JoystickType: type <cimport, nodecl> = @enum(cint){
+  SDL_JOYSTICK_TYPE_UNKNOWN = 0,
+  SDL_JOYSTICK_TYPE_GAMECONTROLLER = 1,
+  SDL_JOYSTICK_TYPE_WHEEL = 2,
+  SDL_JOYSTICK_TYPE_ARCADE_STICK = 3,
+  SDL_JOYSTICK_TYPE_FLIGHT_STICK = 4,
+  SDL_JOYSTICK_TYPE_DANCE_PAD = 5,
+  SDL_JOYSTICK_TYPE_GUITAR = 6,
+  SDL_JOYSTICK_TYPE_DRUM_KIT = 7,
+  SDL_JOYSTICK_TYPE_ARCADE_PAD = 8,
+  SDL_JOYSTICK_TYPE_THROTTLE = 9
+}
+global SDL_JoystickPowerLevel: type <cimport, nodecl> = @enum(cint){
+  SDL_JOYSTICK_POWER_UNKNOWN = -1,
+  SDL_JOYSTICK_POWER_EMPTY = 0,
+  SDL_JOYSTICK_POWER_LOW = 1,
+  SDL_JOYSTICK_POWER_MEDIUM = 2,
+  SDL_JOYSTICK_POWER_FULL = 3,
+  SDL_JOYSTICK_POWER_WIRED = 4,
+  SDL_JOYSTICK_POWER_MAX = 5
+}
+global function SDL_LockJoysticks() <cimport, nodecl> end
+global function SDL_UnlockJoysticks() <cimport, nodecl> end
+global function SDL_NumJoysticks(): cint <cimport, nodecl> end
+global function SDL_JoystickNameForIndex(device_index: cint): cstring <cimport, nodecl> end
+global function SDL_JoystickGetDevicePlayerIndex(device_index: cint): cint <cimport, nodecl> end
+global function SDL_JoystickGetDeviceGUID(device_index: cint): SDL_JoystickGUID <cimport, nodecl> end
+global function SDL_JoystickGetDeviceVendor(device_index: cint): uint16 <cimport, nodecl> end
+global function SDL_JoystickGetDeviceProduct(device_index: cint): uint16 <cimport, nodecl> end
+global function SDL_JoystickGetDeviceProductVersion(device_index: cint): uint16 <cimport, nodecl> end
+global function SDL_JoystickGetDeviceType(device_index: cint): SDL_JoystickType <cimport, nodecl> end
+global function SDL_JoystickGetDeviceInstanceID(device_index: cint): cint <cimport, nodecl> end
+global function SDL_JoystickOpen(device_index: cint): *SDL_Joystick <cimport, nodecl> end
+global function SDL_JoystickFromInstanceID(instance_id: cint): *SDL_Joystick <cimport, nodecl> end
+global function SDL_JoystickFromPlayerIndex(player_index: cint): *SDL_Joystick <cimport, nodecl> end
+global function SDL_JoystickName(joystick: *SDL_Joystick): cstring <cimport, nodecl> end
+global function SDL_JoystickGetPlayerIndex(joystick: *SDL_Joystick): cint <cimport, nodecl> end
+global function SDL_JoystickSetPlayerIndex(joystick: *SDL_Joystick, player_index: cint) <cimport, nodecl> end
+global function SDL_JoystickGetGUID(joystick: *SDL_Joystick): SDL_JoystickGUID <cimport, nodecl> end
+global function SDL_JoystickGetVendor(joystick: *SDL_Joystick): uint16 <cimport, nodecl> end
+global function SDL_JoystickGetProduct(joystick: *SDL_Joystick): uint16 <cimport, nodecl> end
+global function SDL_JoystickGetProductVersion(joystick: *SDL_Joystick): uint16 <cimport, nodecl> end
+global function SDL_JoystickGetType(joystick: *SDL_Joystick): SDL_JoystickType <cimport, nodecl> end
+global function SDL_JoystickGetGUIDString(guid: SDL_JoystickGUID, pszGUID: cstring, cbGUID: cint) <cimport, nodecl> end
+global function SDL_JoystickGetGUIDFromString(pchGUID: cstring): SDL_JoystickGUID <cimport, nodecl> end
+global function SDL_JoystickGetAttached(joystick: *SDL_Joystick): SDL_bool <cimport, nodecl> end
+global function SDL_JoystickInstanceID(joystick: *SDL_Joystick): cint <cimport, nodecl> end
+global function SDL_JoystickNumAxes(joystick: *SDL_Joystick): cint <cimport, nodecl> end
+global function SDL_JoystickNumBalls(joystick: *SDL_Joystick): cint <cimport, nodecl> end
+global function SDL_JoystickNumHats(joystick: *SDL_Joystick): cint <cimport, nodecl> end
+global function SDL_JoystickNumButtons(joystick: *SDL_Joystick): cint <cimport, nodecl> end
+global function SDL_JoystickUpdate() <cimport, nodecl> end
+global function SDL_JoystickEventState(state: cint): cint <cimport, nodecl> end
+global function SDL_JoystickGetAxis(joystick: *SDL_Joystick, axis: cint): int16 <cimport, nodecl> end
+global function SDL_JoystickGetAxisInitialState(joystick: *SDL_Joystick, axis: cint, state: *int16): SDL_bool <cimport, nodecl> end
+global function SDL_JoystickGetHat(joystick: *SDL_Joystick, hat: cint): uint8 <cimport, nodecl> end
+global function SDL_JoystickGetBall(joystick: *SDL_Joystick, ball: cint, dx: *cint, dy: *cint): cint <cimport, nodecl> end
+global function SDL_JoystickGetButton(joystick: *SDL_Joystick, button: cint): uint8 <cimport, nodecl> end
+global function SDL_JoystickRumble(joystick: *SDL_Joystick, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint <cimport, nodecl> end
+global function SDL_JoystickClose(joystick: *SDL_Joystick) <cimport, nodecl> end
+global function SDL_JoystickCurrentPowerLevel(joystick: *SDL_Joystick): SDL_JoystickPowerLevel <cimport, nodecl> end
+global SDL_GameController: type <cimport, forwarddecl> = @record{}
+global SDL_GameControllerType: type <cimport, nodecl> = @enum(cint){
+  SDL_CONTROLLER_TYPE_UNKNOWN = 0,
+  SDL_CONTROLLER_TYPE_XBOX360 = 1,
+  SDL_CONTROLLER_TYPE_XBOXONE = 2,
+  SDL_CONTROLLER_TYPE_PS3 = 3,
+  SDL_CONTROLLER_TYPE_PS4 = 4,
+  SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO = 5
+}
+global SDL_GameControllerBindType: type <cimport, nodecl> = @enum(cint){
+  SDL_CONTROLLER_BINDTYPE_NONE = 0,
+  SDL_CONTROLLER_BINDTYPE_BUTTON = 1,
+  SDL_CONTROLLER_BINDTYPE_AXIS = 2,
+  SDL_CONTROLLER_BINDTYPE_HAT = 3
+}
+global SDL_GameControllerButtonBind: type <cimport, nodecl> = @record{
+  bindType: SDL_GameControllerBindType,
+  value: record{
+    button: cint,
+    axis: cint,
+    hat: record{
+      hat: cint,
+      hat_mask: cint
+    }
+  }
+}
+global function SDL_GameControllerAddMappingsFromRW(rw: *SDL_RWops, freerw: cint): cint <cimport, nodecl> end
+global function SDL_GameControllerAddMapping(mappingString: cstring): cint <cimport, nodecl> end
+global function SDL_GameControllerNumMappings(): cint <cimport, nodecl> end
+global function SDL_GameControllerMappingForIndex(mapping_index: cint): cstring <cimport, nodecl> end
+global function SDL_GameControllerMappingForGUID(guid: SDL_JoystickGUID): cstring <cimport, nodecl> end
+global function SDL_GameControllerMapping(gamecontroller: *SDL_GameController): cstring <cimport, nodecl> end
+global function SDL_IsGameController(joystick_index: cint): SDL_bool <cimport, nodecl> end
+global function SDL_GameControllerNameForIndex(joystick_index: cint): cstring <cimport, nodecl> end
+global function SDL_GameControllerTypeForIndex(joystick_index: cint): SDL_GameControllerType <cimport, nodecl> end
+global function SDL_GameControllerMappingForDeviceIndex(joystick_index: cint): cstring <cimport, nodecl> end
+global function SDL_GameControllerOpen(joystick_index: cint): *SDL_GameController <cimport, nodecl> end
+global function SDL_GameControllerFromInstanceID(joyid: cint): *SDL_GameController <cimport, nodecl> end
+global function SDL_GameControllerFromPlayerIndex(player_index: cint): *SDL_GameController <cimport, nodecl> end
+global function SDL_GameControllerName(gamecontroller: *SDL_GameController): cstring <cimport, nodecl> end
+global function SDL_GameControllerGetType(gamecontroller: *SDL_GameController): SDL_GameControllerType <cimport, nodecl> end
+global function SDL_GameControllerGetPlayerIndex(gamecontroller: *SDL_GameController): cint <cimport, nodecl> end
+global function SDL_GameControllerSetPlayerIndex(gamecontroller: *SDL_GameController, player_index: cint) <cimport, nodecl> end
+global function SDL_GameControllerGetVendor(gamecontroller: *SDL_GameController): uint16 <cimport, nodecl> end
+global function SDL_GameControllerGetProduct(gamecontroller: *SDL_GameController): uint16 <cimport, nodecl> end
+global function SDL_GameControllerGetProductVersion(gamecontroller: *SDL_GameController): uint16 <cimport, nodecl> end
+global function SDL_GameControllerGetAttached(gamecontroller: *SDL_GameController): SDL_bool <cimport, nodecl> end
+global function SDL_GameControllerGetJoystick(gamecontroller: *SDL_GameController): *SDL_Joystick <cimport, nodecl> end
+global function SDL_GameControllerEventState(state: cint): cint <cimport, nodecl> end
+global function SDL_GameControllerUpdate() <cimport, nodecl> end
+global SDL_GameControllerAxis: type <cimport, nodecl> = @enum(cint){
+  SDL_CONTROLLER_AXIS_INVALID = -1,
+  SDL_CONTROLLER_AXIS_LEFTX = 0,
+  SDL_CONTROLLER_AXIS_LEFTY = 1,
+  SDL_CONTROLLER_AXIS_RIGHTX = 2,
+  SDL_CONTROLLER_AXIS_RIGHTY = 3,
+  SDL_CONTROLLER_AXIS_TRIGGERLEFT = 4,
+  SDL_CONTROLLER_AXIS_TRIGGERRIGHT = 5,
+  SDL_CONTROLLER_AXIS_MAX = 6
+}
+global function SDL_GameControllerGetAxisFromString(pchString: cstring): SDL_GameControllerAxis <cimport, nodecl> end
+global function SDL_GameControllerGetStringForAxis(axis: SDL_GameControllerAxis): cstring <cimport, nodecl> end
+global function SDL_GameControllerGetBindForAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): SDL_GameControllerButtonBind <cimport, nodecl> end
+global function SDL_GameControllerGetAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): int16 <cimport, nodecl> end
+global SDL_GameControllerButton: type <cimport, nodecl> = @enum(cint){
+  SDL_CONTROLLER_BUTTON_INVALID = -1,
+  SDL_CONTROLLER_BUTTON_A = 0,
+  SDL_CONTROLLER_BUTTON_B = 1,
+  SDL_CONTROLLER_BUTTON_X = 2,
+  SDL_CONTROLLER_BUTTON_Y = 3,
+  SDL_CONTROLLER_BUTTON_BACK = 4,
+  SDL_CONTROLLER_BUTTON_GUIDE = 5,
+  SDL_CONTROLLER_BUTTON_START = 6,
+  SDL_CONTROLLER_BUTTON_LEFTSTICK = 7,
+  SDL_CONTROLLER_BUTTON_RIGHTSTICK = 8,
+  SDL_CONTROLLER_BUTTON_LEFTSHOULDER = 9,
+  SDL_CONTROLLER_BUTTON_RIGHTSHOULDER = 10,
+  SDL_CONTROLLER_BUTTON_DPAD_UP = 11,
+  SDL_CONTROLLER_BUTTON_DPAD_DOWN = 12,
+  SDL_CONTROLLER_BUTTON_DPAD_LEFT = 13,
+  SDL_CONTROLLER_BUTTON_DPAD_RIGHT = 14,
+  SDL_CONTROLLER_BUTTON_MAX = 15
+}
+global function SDL_GameControllerGetButtonFromString(pchString: cstring): SDL_GameControllerButton <cimport, nodecl> end
+global function SDL_GameControllerGetStringForButton(button: SDL_GameControllerButton): cstring <cimport, nodecl> end
+global function SDL_GameControllerGetBindForButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): SDL_GameControllerButtonBind <cimport, nodecl> end
+global function SDL_GameControllerGetButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): uint8 <cimport, nodecl> end
+global function SDL_GameControllerRumble(gamecontroller: *SDL_GameController, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint <cimport, nodecl> end
+global function SDL_GameControllerClose(gamecontroller: *SDL_GameController) <cimport, nodecl> end
+global SDL_TouchDeviceType: type <cimport, nodecl> = @enum(cint){
+  SDL_TOUCH_DEVICE_INVALID = -1,
+  SDL_TOUCH_DEVICE_DIRECT = 0,
+  SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE = 1,
+  SDL_TOUCH_DEVICE_INDIRECT_RELATIVE = 2
+}
+global SDL_Finger: type <cimport, nodecl> = @record{
+  id: clong,
+  x: float32,
+  y: float32,
+  pressure: float32
+}
+global function SDL_GetNumTouchDevices(): cint <cimport, nodecl> end
+global function SDL_GetTouchDevice(index: cint): clong <cimport, nodecl> end
+global function SDL_GetTouchDeviceType(touchID: clong): SDL_TouchDeviceType <cimport, nodecl> end
+global function SDL_GetNumTouchFingers(touchID: clong): cint <cimport, nodecl> end
+global function SDL_GetTouchFinger(touchID: clong, index: cint): *SDL_Finger <cimport, nodecl> end
+global function SDL_RecordGesture(touchId: clong): cint <cimport, nodecl> end
+global function SDL_SaveAllDollarTemplates(dst: *SDL_RWops): cint <cimport, nodecl> end
+global function SDL_SaveDollarTemplate(gestureId: clong, dst: *SDL_RWops): cint <cimport, nodecl> end
+global function SDL_LoadDollarTemplates(touchId: clong, src: *SDL_RWops): cint <cimport, nodecl> end
+global SDL_EventType: type <cimport, nodecl> = @enum(cint){
+  SDL_FIRSTEVENT = 0,
+  SDL_QUIT = 256,
+  SDL_APP_TERMINATING = 257,
+  SDL_APP_LOWMEMORY = 258,
+  SDL_APP_WILLENTERBACKGROUND = 259,
+  SDL_APP_DIDENTERBACKGROUND = 260,
+  SDL_APP_WILLENTERFOREGROUND = 261,
+  SDL_APP_DIDENTERFOREGROUND = 262,
+  SDL_DISPLAYEVENT = 336,
+  SDL_WINDOWEVENT = 512,
+  SDL_SYSWMEVENT = 513,
+  SDL_KEYDOWN = 768,
+  SDL_KEYUP = 769,
+  SDL_TEXTEDITING = 770,
+  SDL_TEXTINPUT = 771,
+  SDL_KEYMAPCHANGED = 772,
+  SDL_MOUSEMOTION = 1024,
+  SDL_MOUSEBUTTONDOWN = 1025,
+  SDL_MOUSEBUTTONUP = 1026,
+  SDL_MOUSEWHEEL = 1027,
+  SDL_JOYAXISMOTION = 1536,
+  SDL_JOYBALLMOTION = 1537,
+  SDL_JOYHATMOTION = 1538,
+  SDL_JOYBUTTONDOWN = 1539,
+  SDL_JOYBUTTONUP = 1540,
+  SDL_JOYDEVICEADDED = 1541,
+  SDL_JOYDEVICEREMOVED = 1542,
+  SDL_CONTROLLERAXISMOTION = 1616,
+  SDL_CONTROLLERBUTTONDOWN = 1617,
+  SDL_CONTROLLERBUTTONUP = 1618,
+  SDL_CONTROLLERDEVICEADDED = 1619,
+  SDL_CONTROLLERDEVICEREMOVED = 1620,
+  SDL_CONTROLLERDEVICEREMAPPED = 1621,
+  SDL_FINGERDOWN = 1792,
+  SDL_FINGERUP = 1793,
+  SDL_FINGERMOTION = 1794,
+  SDL_DOLLARGESTURE = 2048,
+  SDL_DOLLARRECORD = 2049,
+  SDL_MULTIGESTURE = 2050,
+  SDL_CLIPBOARDUPDATE = 2304,
+  SDL_DROPFILE = 4096,
+  SDL_DROPTEXT = 4097,
+  SDL_DROPBEGIN = 4098,
+  SDL_DROPCOMPLETE = 4099,
+  SDL_AUDIODEVICEADDED = 4352,
+  SDL_AUDIODEVICEREMOVED = 4353,
+  SDL_SENSORUPDATE = 4608,
+  SDL_RENDER_TARGETS_RESET = 8192,
+  SDL_RENDER_DEVICE_RESET = 8193,
+  SDL_USEREVENT = 32768,
+  SDL_LASTEVENT = 65535
+}
+global SDL_CommonEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32
+}
+global SDL_DisplayEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  display: uint32,
+  event: uint8,
+  padding1: uint8,
+  padding2: uint8,
+  padding3: uint8,
+  data1: int32
+}
+global SDL_WindowEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  event: uint8,
+  padding1: uint8,
+  padding2: uint8,
+  padding3: uint8,
+  data1: int32,
+  data2: int32
+}
+global SDL_KeyboardEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  state: uint8,
+  Repeat: uint8,
+  padding2: uint8,
+  padding3: uint8,
+  keysym: SDL_Keysym
+}
+global SDL_TextEditingEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  text: [32]cchar,
+  start: int32,
+  length: int32
+}
+global SDL_TextInputEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  text: [32]cchar
+}
+global SDL_MouseMotionEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  which: uint32,
+  state: uint32,
+  x: int32,
+  y: int32,
+  xrel: int32,
+  yrel: int32
+}
+global SDL_MouseButtonEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  which: uint32,
+  button: uint8,
+  state: uint8,
+  clicks: uint8,
+  padding1: uint8,
+  x: int32,
+  y: int32
+}
+global SDL_MouseWheelEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  which: uint32,
+  x: int32,
+  y: int32,
+  direction: uint32
+}
+global SDL_JoyAxisEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  axis: uint8,
+  padding1: uint8,
+  padding2: uint8,
+  padding3: uint8,
+  value: int16,
+  padding4: uint16
+}
+global SDL_JoyBallEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  ball: uint8,
+  padding1: uint8,
+  padding2: uint8,
+  padding3: uint8,
+  xrel: int16,
+  yrel: int16
+}
+global SDL_JoyHatEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  hat: uint8,
+  value: uint8,
+  padding1: uint8,
+  padding2: uint8
+}
+global SDL_JoyButtonEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  button: uint8,
+  state: uint8,
+  padding1: uint8,
+  padding2: uint8
+}
+global SDL_JoyDeviceEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: int32
+}
+global SDL_ControllerAxisEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  axis: uint8,
+  padding1: uint8,
+  padding2: uint8,
+  padding3: uint8,
+  value: int16,
+  padding4: uint16
+}
+global SDL_ControllerButtonEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  button: uint8,
+  state: uint8,
+  padding1: uint8,
+  padding2: uint8
+}
+global SDL_ControllerDeviceEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: int32
+}
+global SDL_AudioDeviceEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: uint32,
+  iscapture: uint8,
+  padding1: uint8,
+  padding2: uint8,
+  padding3: uint8
+}
+global SDL_TouchFingerEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  touchId: clong,
+  fingerId: clong,
+  x: float32,
+  y: float32,
+  dx: float32,
+  dy: float32,
+  pressure: float32,
+  windowID: uint32
+}
+global SDL_MultiGestureEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  touchId: clong,
+  dTheta: float32,
+  dDist: float32,
+  x: float32,
+  y: float32,
+  numFingers: uint16,
+  padding: uint16
+}
+global SDL_DollarGestureEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  touchId: clong,
+  gestureId: clong,
+  numFingers: uint32,
+  error: float32,
+  x: float32,
+  y: float32
+}
+global SDL_DropEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  file: cstring,
+  windowID: uint32
+}
+global SDL_SensorEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: int32,
+  data: [6]float32
+}
+global SDL_QuitEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32
+}
+global SDL_OSEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32
+}
+global SDL_UserEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  code: int32,
+  data1: pointer,
+  data2: pointer
+}
+global SDL_SysWMmsg: type <cimport, forwarddecl> = @record{}
+global SDL_SysWMEvent: type <cimport, nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  msg: *SDL_SysWMmsg
+}
+global SDL_Event: type <cimport, nodecl> = @record{
+  type: uint32,
+  common: SDL_CommonEvent,
+  display: SDL_DisplayEvent,
+  window: SDL_WindowEvent,
+  key: SDL_KeyboardEvent,
+  edit: SDL_TextEditingEvent,
+  text: SDL_TextInputEvent,
+  motion: SDL_MouseMotionEvent,
+  button: SDL_MouseButtonEvent,
+  wheel: SDL_MouseWheelEvent,
+  jaxis: SDL_JoyAxisEvent,
+  jball: SDL_JoyBallEvent,
+  jhat: SDL_JoyHatEvent,
+  jbutton: SDL_JoyButtonEvent,
+  jdevice: SDL_JoyDeviceEvent,
+  caxis: SDL_ControllerAxisEvent,
+  cbutton: SDL_ControllerButtonEvent,
+  cdevice: SDL_ControllerDeviceEvent,
+  adevice: SDL_AudioDeviceEvent,
+  sensor: SDL_SensorEvent,
+  quit: SDL_QuitEvent,
+  user: SDL_UserEvent,
+  syswm: SDL_SysWMEvent,
+  tfinger: SDL_TouchFingerEvent,
+  mgesture: SDL_MultiGestureEvent,
+  dgesture: SDL_DollarGestureEvent,
+  drop: SDL_DropEvent,
+  padding: [56]uint8
+}
+global function SDL_PumpEvents() <cimport, nodecl> end
+global SDL_eventaction: type <cimport, nodecl> = @enum(cint){
+  SDL_ADDEVENT = 0,
+  SDL_PEEKEVENT = 1,
+  SDL_GETEVENT = 2
+}
+global function SDL_PeepEvents(events: *SDL_Event, numevents: cint, action: SDL_eventaction, minType: uint32, maxType: uint32): cint <cimport, nodecl> end
+global function SDL_HasEvent(type: uint32): SDL_bool <cimport, nodecl> end
+global function SDL_HasEvents(minType: uint32, maxType: uint32): SDL_bool <cimport, nodecl> end
+global function SDL_FlushEvent(type: uint32) <cimport, nodecl> end
+global function SDL_FlushEvents(minType: uint32, maxType: uint32) <cimport, nodecl> end
+global function SDL_PollEvent(event: *SDL_Event): cint <cimport, nodecl> end
+global function SDL_WaitEvent(event: *SDL_Event): cint <cimport, nodecl> end
+global function SDL_WaitEventTimeout(event: *SDL_Event, timeout: cint): cint <cimport, nodecl> end
+global function SDL_PushEvent(event: *SDL_Event): cint <cimport, nodecl> end
+global SDL_EventFilter: type <cimport, nodecl> = @function(pointer, *SDL_Event): cint
+global function SDL_SetEventFilter(filter: SDL_EventFilter, userdata: pointer) <cimport, nodecl> end
+global function SDL_GetEventFilter(filter: *SDL_EventFilter, userdata: *pointer): SDL_bool <cimport, nodecl> end
+global function SDL_AddEventWatch(filter: SDL_EventFilter, userdata: pointer) <cimport, nodecl> end
+global function SDL_DelEventWatch(filter: SDL_EventFilter, userdata: pointer) <cimport, nodecl> end
+global function SDL_FilterEvents(filter: SDL_EventFilter, userdata: pointer) <cimport, nodecl> end
+global function SDL_EventState(type: uint32, state: cint): uint8 <cimport, nodecl> end
+global function SDL_RegisterEvents(numevents: cint): uint32 <cimport, nodecl> end
+global function SDL_GetBasePath(): cstring <cimport, nodecl> end
+global function SDL_GetPrefPath(org: cstring, app: cstring): cstring <cimport, nodecl> end
+global SDL_Haptic: type <cimport, forwarddecl> = @record{}
+global SDL_HapticDirection: type <cimport, nodecl> = @record{
+  type: uint8,
+  dir: [3]int32
+}
+global SDL_HapticConstant: type <cimport, nodecl> = @record{
+  type: uint16,
+  direction: SDL_HapticDirection,
+  length: uint32,
+  delay: uint16,
+  button: uint16,
+  interval: uint16,
+  level: int16,
+  attack_length: uint16,
+  attack_level: uint16,
+  fade_length: uint16,
+  fade_level: uint16
+}
+global SDL_HapticPeriodic: type <cimport, nodecl> = @record{
+  type: uint16,
+  direction: SDL_HapticDirection,
+  length: uint32,
+  delay: uint16,
+  button: uint16,
+  interval: uint16,
+  period: uint16,
+  magnitude: int16,
+  offset: int16,
+  phase: uint16,
+  attack_length: uint16,
+  attack_level: uint16,
+  fade_length: uint16,
+  fade_level: uint16
+}
+global SDL_HapticCondition: type <cimport, nodecl> = @record{
+  type: uint16,
+  direction: SDL_HapticDirection,
+  length: uint32,
+  delay: uint16,
+  button: uint16,
+  interval: uint16,
+  right_sat: [3]uint16,
+  left_sat: [3]uint16,
+  right_coeff: [3]int16,
+  left_coeff: [3]int16,
+  deadband: [3]uint16,
+  center: [3]int16
+}
+global SDL_HapticRamp: type <cimport, nodecl> = @record{
+  type: uint16,
+  direction: SDL_HapticDirection,
+  length: uint32,
+  delay: uint16,
+  button: uint16,
+  interval: uint16,
+  start: int16,
+  End: int16,
+  attack_length: uint16,
+  attack_level: uint16,
+  fade_length: uint16,
+  fade_level: uint16
+}
+global SDL_HapticLeftRight: type <cimport, nodecl> = @record{
+  type: uint16,
+  length: uint32,
+  large_magnitude: uint16,
+  small_magnitude: uint16
+}
+global SDL_HapticCustom: type <cimport, nodecl> = @record{
+  type: uint16,
+  direction: SDL_HapticDirection,
+  length: uint32,
+  delay: uint16,
+  button: uint16,
+  interval: uint16,
+  channels: uint8,
+  period: uint16,
+  samples: uint16,
+  data: *uint16,
+  attack_length: uint16,
+  attack_level: uint16,
+  fade_length: uint16,
+  fade_level: uint16
+}
+global SDL_HapticEffect: type <cimport, nodecl> = @record{
+  type: uint16,
+  constant: SDL_HapticConstant,
+  periodic: SDL_HapticPeriodic,
+  condition: SDL_HapticCondition,
+  ramp: SDL_HapticRamp,
+  leftright: SDL_HapticLeftRight,
+  custom: SDL_HapticCustom
+}
+global function SDL_NumHaptics(): cint <cimport, nodecl> end
+global function SDL_HapticName(device_index: cint): cstring <cimport, nodecl> end
+global function SDL_HapticOpen(device_index: cint): *SDL_Haptic <cimport, nodecl> end
+global function SDL_HapticOpened(device_index: cint): cint <cimport, nodecl> end
+global function SDL_HapticIndex(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_MouseIsHaptic(): cint <cimport, nodecl> end
+global function SDL_HapticOpenFromMouse(): *SDL_Haptic <cimport, nodecl> end
+global function SDL_JoystickIsHaptic(joystick: *SDL_Joystick): cint <cimport, nodecl> end
+global function SDL_HapticOpenFromJoystick(joystick: *SDL_Joystick): *SDL_Haptic <cimport, nodecl> end
+global function SDL_HapticClose(haptic: *SDL_Haptic) <cimport, nodecl> end
+global function SDL_HapticNumEffects(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticNumEffectsPlaying(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticQuery(haptic: *SDL_Haptic): cuint <cimport, nodecl> end
+global function SDL_HapticNumAxes(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticEffectSupported(haptic: *SDL_Haptic, effect: *SDL_HapticEffect): cint <cimport, nodecl> end
+global function SDL_HapticNewEffect(haptic: *SDL_Haptic, effect: *SDL_HapticEffect): cint <cimport, nodecl> end
+global function SDL_HapticUpdateEffect(haptic: *SDL_Haptic, effect: cint, data: *SDL_HapticEffect): cint <cimport, nodecl> end
+global function SDL_HapticRunEffect(haptic: *SDL_Haptic, effect: cint, iterations: uint32): cint <cimport, nodecl> end
+global function SDL_HapticStopEffect(haptic: *SDL_Haptic, effect: cint): cint <cimport, nodecl> end
+global function SDL_HapticDestroyEffect(haptic: *SDL_Haptic, effect: cint) <cimport, nodecl> end
+global function SDL_HapticGetEffectStatus(haptic: *SDL_Haptic, effect: cint): cint <cimport, nodecl> end
+global function SDL_HapticSetGain(haptic: *SDL_Haptic, gain: cint): cint <cimport, nodecl> end
+global function SDL_HapticSetAutocenter(haptic: *SDL_Haptic, autocenter: cint): cint <cimport, nodecl> end
+global function SDL_HapticPause(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticUnpause(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticStopAll(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticRumbleSupported(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticRumbleInit(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global function SDL_HapticRumblePlay(haptic: *SDL_Haptic, strength: float32, length: uint32): cint <cimport, nodecl> end
+global function SDL_HapticRumbleStop(haptic: *SDL_Haptic): cint <cimport, nodecl> end
+global SDL_HintPriority: type <cimport, nodecl> = @enum(cint){
+  SDL_HINT_DEFAULT = 0,
+  SDL_HINT_NORMAL = 1,
+  SDL_HINT_OVERRIDE = 2
+}
+global function SDL_SetHintWithPriority(name: cstring, value: cstring, priority: SDL_HintPriority): SDL_bool <cimport, nodecl> end
+global function SDL_SetHint(name: cstring, value: cstring): SDL_bool <cimport, nodecl> end
+global function SDL_GetHint(name: cstring): cstring <cimport, nodecl> end
+global function SDL_GetHintBoolean(name: cstring, default_value: SDL_bool): SDL_bool <cimport, nodecl> end
+global SDL_HintCallback: type <cimport, nodecl> = @function(pointer, cstring, cstring, cstring)
+global function SDL_AddHintCallback(name: cstring, callback: SDL_HintCallback, userdata: pointer) <cimport, nodecl> end
+global function SDL_DelHintCallback(name: cstring, callback: SDL_HintCallback, userdata: pointer) <cimport, nodecl> end
+global function SDL_ClearHints() <cimport, nodecl> end
+global function SDL_LoadObject(sofile: cstring): pointer <cimport, nodecl> end
+global function SDL_LoadFunction(handle: pointer, name: cstring): pointer <cimport, nodecl> end
+global function SDL_UnloadObject(handle: pointer) <cimport, nodecl> end
+global SDL_LogCategory: type <cimport, nodecl> = @enum(cint){
+  SDL_LOG_CATEGORY_APPLICATION = 0,
+  SDL_LOG_CATEGORY_ERROR = 1,
+  SDL_LOG_CATEGORY_ASSERT = 2,
+  SDL_LOG_CATEGORY_SYSTEM = 3,
+  SDL_LOG_CATEGORY_AUDIO = 4,
+  SDL_LOG_CATEGORY_VIDEO = 5,
+  SDL_LOG_CATEGORY_RENDER = 6,
+  SDL_LOG_CATEGORY_INPUT = 7,
+  SDL_LOG_CATEGORY_TEST = 8,
+  SDL_LOG_CATEGORY_RESERVED1 = 9,
+  SDL_LOG_CATEGORY_RESERVED2 = 10,
+  SDL_LOG_CATEGORY_RESERVED3 = 11,
+  SDL_LOG_CATEGORY_RESERVED4 = 12,
+  SDL_LOG_CATEGORY_RESERVED5 = 13,
+  SDL_LOG_CATEGORY_RESERVED6 = 14,
+  SDL_LOG_CATEGORY_RESERVED7 = 15,
+  SDL_LOG_CATEGORY_RESERVED8 = 16,
+  SDL_LOG_CATEGORY_RESERVED9 = 17,
+  SDL_LOG_CATEGORY_RESERVED10 = 18,
+  SDL_LOG_CATEGORY_CUSTOM = 19
+}
+global SDL_LogPriority: type <cimport, nodecl> = @enum(cint){
+  SDL_LOG_PRIORITY_VERBOSE = 1,
+  SDL_LOG_PRIORITY_DEBUG = 2,
+  SDL_LOG_PRIORITY_INFO = 3,
+  SDL_LOG_PRIORITY_WARN = 4,
+  SDL_LOG_PRIORITY_ERROR = 5,
+  SDL_LOG_PRIORITY_CRITICAL = 6,
+  SDL_NUM_LOG_PRIORITIES = 7
+}
+global function SDL_LogSetAllPriority(priority: SDL_LogPriority) <cimport, nodecl> end
+global function SDL_LogSetPriority(category: cint, priority: SDL_LogPriority) <cimport, nodecl> end
+global function SDL_LogGetPriority(category: cint): SDL_LogPriority <cimport, nodecl> end
+global function SDL_LogResetPriorities() <cimport, nodecl> end
+global function SDL_Log(fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function SDL_LogVerbose(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function SDL_LogDebug(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function SDL_LogInfo(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function SDL_LogWarn(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function SDL_LogError(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function SDL_LogCritical(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function SDL_LogMessage(category: cint, priority: SDL_LogPriority, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global SDL_LogOutputFunction: type <cimport, nodecl> = @function(pointer, cint, SDL_LogPriority, cstring)
+global function SDL_LogGetOutputFunction(callback: *SDL_LogOutputFunction, userdata: *pointer) <cimport, nodecl> end
+global function SDL_LogSetOutputFunction(callback: SDL_LogOutputFunction, userdata: pointer) <cimport, nodecl> end
+global SDL_MessageBoxFlags: type <cimport, nodecl> = @enum(cint){
+  SDL_MESSAGEBOX_ERROR = 16,
+  SDL_MESSAGEBOX_WARNING = 32,
+  SDL_MESSAGEBOX_INFORMATION = 64,
+  SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT = 128,
+  SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT = 256
+}
+global SDL_MessageBoxButtonFlags: type <cimport, nodecl> = @enum(cint){
+  SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = 1,
+  SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = 2
+}
+global SDL_MessageBoxButtonData: type <cimport, nodecl> = @record{
+  flags: uint32,
+  buttonid: cint,
+  text: cstring
+}
+global SDL_MessageBoxColor: type <cimport, nodecl> = @record{
+  r: uint8,
+  g: uint8,
+  b: uint8
+}
+global SDL_MessageBoxColorType: type <cimport, nodecl> = @enum(cint){
+  SDL_MESSAGEBOX_COLOR_BACKGROUND = 0,
+  SDL_MESSAGEBOX_COLOR_TEXT = 1,
+  SDL_MESSAGEBOX_COLOR_BUTTON_BORDER = 2,
+  SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND = 3,
+  SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED = 4,
+  SDL_MESSAGEBOX_COLOR_MAX = 5
+}
+global SDL_MessageBoxColorScheme: type <cimport, nodecl> = @record{
+  colors: [5]SDL_MessageBoxColor
+}
+global SDL_MessageBoxData: type <cimport, nodecl> = @record{
+  flags: uint32,
+  window: *SDL_Window,
+  title: cstring,
+  message: cstring,
+  numbuttons: cint,
+  buttons: *SDL_MessageBoxButtonData,
+  colorScheme: *SDL_MessageBoxColorScheme
+}
+global function SDL_ShowMessageBox(messageboxdata: *SDL_MessageBoxData, buttonid: *cint): cint <cimport, nodecl> end
+global function SDL_ShowSimpleMessageBox(flags: uint32, title: cstring, message: cstring, window: *SDL_Window): cint <cimport, nodecl> end
+global SDL_MetalView: type <cimport, nodecl> = @pointer
+global function SDL_Metal_CreateView(window: *SDL_Window): SDL_MetalView <cimport, nodecl> end
+global function SDL_Metal_DestroyView(view: SDL_MetalView) <cimport, nodecl> end
+global SDL_PowerState: type <cimport, nodecl> = @enum(cint){
+  SDL_POWERSTATE_UNKNOWN = 0,
+  SDL_POWERSTATE_ON_BATTERY = 1,
+  SDL_POWERSTATE_NO_BATTERY = 2,
+  SDL_POWERSTATE_CHARGING = 3,
+  SDL_POWERSTATE_CHARGED = 4
+}
+global function SDL_GetPowerInfo(secs: *cint, pct: *cint): SDL_PowerState <cimport, nodecl> end
+global SDL_RendererFlags: type <cimport, nodecl> = @enum(cint){
+  SDL_RENDERER_SOFTWARE = 1,
+  SDL_RENDERER_ACCELERATED = 2,
+  SDL_RENDERER_PRESENTVSYNC = 4,
+  SDL_RENDERER_TARGETTEXTURE = 8
+}
+global SDL_RendererInfo: type <cimport, nodecl> = @record{
+  name: cstring,
+  flags: uint32,
+  num_texture_formats: uint32,
+  texture_formats: [16]uint32,
+  max_texture_width: cint,
+  max_texture_height: cint
+}
+global SDL_ScaleMode: type <cimport, nodecl> = @enum(cint){
+  SDL_ScaleModeNearest = 0,
+  SDL_ScaleModeLinear = 1,
+  SDL_ScaleModeBest = 2
+}
+global SDL_TextureAccess: type <cimport, nodecl> = @enum(cint){
+  SDL_TEXTUREACCESS_STATIC = 0,
+  SDL_TEXTUREACCESS_STREAMING = 1,
+  SDL_TEXTUREACCESS_TARGET = 2
+}
+global SDL_TextureModulate: type <cimport, nodecl> = @enum(cint){
+  SDL_TEXTUREMODULATE_NONE = 0,
+  SDL_TEXTUREMODULATE_COLOR = 1,
+  SDL_TEXTUREMODULATE_ALPHA = 2
+}
+global SDL_RendererFlip: type <cimport, nodecl> = @enum(cint){
+  SDL_FLIP_NONE = 0,
+  SDL_FLIP_HORIZONTAL = 1,
+  SDL_FLIP_VERTICAL = 2
+}
+global SDL_Renderer: type <cimport, forwarddecl> = @record{}
+global SDL_Texture: type <cimport, forwarddecl> = @record{}
+global function SDL_GetNumRenderDrivers(): cint <cimport, nodecl> end
+global function SDL_GetRenderDriverInfo(index: cint, info: *SDL_RendererInfo): cint <cimport, nodecl> end
+global function SDL_CreateWindowAndRenderer(width: cint, height: cint, window_flags: uint32, window: **SDL_Window, renderer: **SDL_Renderer): cint <cimport, nodecl> end
+global function SDL_CreateRenderer(window: *SDL_Window, index: cint, flags: uint32): *SDL_Renderer <cimport, nodecl> end
+global function SDL_CreateSoftwareRenderer(surface: *SDL_Surface): *SDL_Renderer <cimport, nodecl> end
+global function SDL_GetRenderer(window: *SDL_Window): *SDL_Renderer <cimport, nodecl> end
+global function SDL_GetRendererInfo(renderer: *SDL_Renderer, info: *SDL_RendererInfo): cint <cimport, nodecl> end
+global function SDL_GetRendererOutputSize(renderer: *SDL_Renderer, w: *cint, h: *cint): cint <cimport, nodecl> end
+global function SDL_CreateTexture(renderer: *SDL_Renderer, format: uint32, access: cint, w: cint, h: cint): *SDL_Texture <cimport, nodecl> end
+global function SDL_CreateTextureFromSurface(renderer: *SDL_Renderer, surface: *SDL_Surface): *SDL_Texture <cimport, nodecl> end
+global function SDL_QueryTexture(texture: *SDL_Texture, format: *uint32, access: *cint, w: *cint, h: *cint): cint <cimport, nodecl> end
+global function SDL_SetTextureColorMod(texture: *SDL_Texture, r: uint8, g: uint8, b: uint8): cint <cimport, nodecl> end
+global function SDL_GetTextureColorMod(texture: *SDL_Texture, r: *uint8, g: *uint8, b: *uint8): cint <cimport, nodecl> end
+global function SDL_SetTextureAlphaMod(texture: *SDL_Texture, alpha: uint8): cint <cimport, nodecl> end
+global function SDL_GetTextureAlphaMod(texture: *SDL_Texture, alpha: *uint8): cint <cimport, nodecl> end
+global function SDL_SetTextureBlendMode(texture: *SDL_Texture, blendMode: SDL_BlendMode): cint <cimport, nodecl> end
+global function SDL_GetTextureBlendMode(texture: *SDL_Texture, blendMode: *SDL_BlendMode): cint <cimport, nodecl> end
+global function SDL_SetTextureScaleMode(texture: *SDL_Texture, scaleMode: SDL_ScaleMode): cint <cimport, nodecl> end
+global function SDL_GetTextureScaleMode(texture: *SDL_Texture, scaleMode: *SDL_ScaleMode): cint <cimport, nodecl> end
+global function SDL_UpdateTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: pointer, pitch: cint): cint <cimport, nodecl> end
+global function SDL_UpdateYUVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Yplane: *uint8, Ypitch: cint, Uplane: *uint8, Upitch: cint, Vplane: *uint8, Vpitch: cint): cint <cimport, nodecl> end
+global function SDL_LockTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: *pointer, pitch: *cint): cint <cimport, nodecl> end
+global function SDL_LockTextureToSurface(texture: *SDL_Texture, rect: *SDL_Rect, surface: **SDL_Surface): cint <cimport, nodecl> end
+global function SDL_UnlockTexture(texture: *SDL_Texture) <cimport, nodecl> end
+global function SDL_RenderTargetSupported(renderer: *SDL_Renderer): SDL_bool <cimport, nodecl> end
+global function SDL_SetRenderTarget(renderer: *SDL_Renderer, texture: *SDL_Texture): cint <cimport, nodecl> end
+global function SDL_GetRenderTarget(renderer: *SDL_Renderer): *SDL_Texture <cimport, nodecl> end
+global function SDL_RenderSetLogicalSize(renderer: *SDL_Renderer, w: cint, h: cint): cint <cimport, nodecl> end
+global function SDL_RenderGetLogicalSize(renderer: *SDL_Renderer, w: *cint, h: *cint) <cimport, nodecl> end
+global function SDL_RenderSetIntegerScale(renderer: *SDL_Renderer, enable: SDL_bool): cint <cimport, nodecl> end
+global function SDL_RenderGetIntegerScale(renderer: *SDL_Renderer): SDL_bool <cimport, nodecl> end
+global function SDL_RenderSetViewport(renderer: *SDL_Renderer, rect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_RenderGetViewport(renderer: *SDL_Renderer, rect: *SDL_Rect) <cimport, nodecl> end
+global function SDL_RenderSetClipRect(renderer: *SDL_Renderer, rect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_RenderGetClipRect(renderer: *SDL_Renderer, rect: *SDL_Rect) <cimport, nodecl> end
+global function SDL_RenderIsClipEnabled(renderer: *SDL_Renderer): SDL_bool <cimport, nodecl> end
+global function SDL_RenderSetScale(renderer: *SDL_Renderer, scaleX: float32, scaleY: float32): cint <cimport, nodecl> end
+global function SDL_RenderGetScale(renderer: *SDL_Renderer, scaleX: *float32, scaleY: *float32) <cimport, nodecl> end
+global function SDL_SetRenderDrawColor(renderer: *SDL_Renderer, r: uint8, g: uint8, b: uint8, a: uint8): cint <cimport, nodecl> end
+global function SDL_GetRenderDrawColor(renderer: *SDL_Renderer, r: *uint8, g: *uint8, b: *uint8, a: *uint8): cint <cimport, nodecl> end
+global function SDL_SetRenderDrawBlendMode(renderer: *SDL_Renderer, blendMode: SDL_BlendMode): cint <cimport, nodecl> end
+global function SDL_GetRenderDrawBlendMode(renderer: *SDL_Renderer, blendMode: *SDL_BlendMode): cint <cimport, nodecl> end
+global function SDL_RenderClear(renderer: *SDL_Renderer): cint <cimport, nodecl> end
+global function SDL_RenderDrawPoint(renderer: *SDL_Renderer, x: cint, y: cint): cint <cimport, nodecl> end
+global function SDL_RenderDrawPoints(renderer: *SDL_Renderer, points: *SDL_Point, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderDrawLine(renderer: *SDL_Renderer, x1: cint, y1: cint, x2: cint, y2: cint): cint <cimport, nodecl> end
+global function SDL_RenderDrawLines(renderer: *SDL_Renderer, points: *SDL_Point, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderDrawRect(renderer: *SDL_Renderer, rect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_RenderDrawRects(renderer: *SDL_Renderer, rects: *SDL_Rect, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderFillRect(renderer: *SDL_Renderer, rect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_RenderFillRects(renderer: *SDL_Renderer, rects: *SDL_Rect, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderCopy(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_RenderCopyEx(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_Rect, angle: float64, center: *SDL_Point, flip: SDL_RendererFlip): cint <cimport, nodecl> end
+global function SDL_RenderDrawPointF(renderer: *SDL_Renderer, x: float32, y: float32): cint <cimport, nodecl> end
+global function SDL_RenderDrawPointsF(renderer: *SDL_Renderer, points: *SDL_FPoint, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderDrawLineF(renderer: *SDL_Renderer, x1: float32, y1: float32, x2: float32, y2: float32): cint <cimport, nodecl> end
+global function SDL_RenderDrawLinesF(renderer: *SDL_Renderer, points: *SDL_FPoint, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderDrawRectF(renderer: *SDL_Renderer, rect: *SDL_FRect): cint <cimport, nodecl> end
+global function SDL_RenderDrawRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderFillRectF(renderer: *SDL_Renderer, rect: *SDL_FRect): cint <cimport, nodecl> end
+global function SDL_RenderFillRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect, count: cint): cint <cimport, nodecl> end
+global function SDL_RenderCopyF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect): cint <cimport, nodecl> end
+global function SDL_RenderCopyExF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect, angle: float64, center: *SDL_FPoint, flip: SDL_RendererFlip): cint <cimport, nodecl> end
+global function SDL_RenderReadPixels(renderer: *SDL_Renderer, rect: *SDL_Rect, format: uint32, pixels: pointer, pitch: cint): cint <cimport, nodecl> end
+global function SDL_RenderPresent(renderer: *SDL_Renderer) <cimport, nodecl> end
+global function SDL_DestroyTexture(texture: *SDL_Texture) <cimport, nodecl> end
+global function SDL_DestroyRenderer(renderer: *SDL_Renderer) <cimport, nodecl> end
+global function SDL_RenderFlush(renderer: *SDL_Renderer): cint <cimport, nodecl> end
+global function SDL_GL_BindTexture(texture: *SDL_Texture, texw: *float32, texh: *float32): cint <cimport, nodecl> end
+global function SDL_GL_UnbindTexture(texture: *SDL_Texture): cint <cimport, nodecl> end
+global function SDL_RenderGetMetalLayer(renderer: *SDL_Renderer): pointer <cimport, nodecl> end
+global function SDL_RenderGetMetalCommandEncoder(renderer: *SDL_Renderer): pointer <cimport, nodecl> end
+global SDL_Sensor: type <cimport, forwarddecl> = @record{}
+global SDL_SensorType: type <cimport, nodecl> = @enum(cint){
+  SDL_SENSOR_INVALID = -1,
+  SDL_SENSOR_UNKNOWN = 0,
+  SDL_SENSOR_ACCEL = 1,
+  SDL_SENSOR_GYRO = 2
+}
+global function SDL_NumSensors(): cint <cimport, nodecl> end
+global function SDL_SensorGetDeviceName(device_index: cint): cstring <cimport, nodecl> end
+global function SDL_SensorGetDeviceType(device_index: cint): SDL_SensorType <cimport, nodecl> end
+global function SDL_SensorGetDeviceNonPortableType(device_index: cint): cint <cimport, nodecl> end
+global function SDL_SensorGetDeviceInstanceID(device_index: cint): cint <cimport, nodecl> end
+global function SDL_SensorOpen(device_index: cint): *SDL_Sensor <cimport, nodecl> end
+global function SDL_SensorFromInstanceID(instance_id: cint): *SDL_Sensor <cimport, nodecl> end
+global function SDL_SensorGetName(sensor: *SDL_Sensor): cstring <cimport, nodecl> end
+global function SDL_SensorGetType(sensor: *SDL_Sensor): SDL_SensorType <cimport, nodecl> end
+global function SDL_SensorGetNonPortableType(sensor: *SDL_Sensor): cint <cimport, nodecl> end
+global function SDL_SensorGetInstanceID(sensor: *SDL_Sensor): cint <cimport, nodecl> end
+global function SDL_SensorGetData(sensor: *SDL_Sensor, data: *float32, num_values: cint): cint <cimport, nodecl> end
+global function SDL_SensorClose(sensor: *SDL_Sensor) <cimport, nodecl> end
+global function SDL_SensorUpdate() <cimport, nodecl> end
+global function SDL_CreateShapedWindow(title: cstring, x: cuint, y: cuint, w: cuint, h: cuint, flags: uint32): *SDL_Window <cimport, nodecl> end
+global function SDL_IsShapedWindow(window: *SDL_Window): SDL_bool <cimport, nodecl> end
+global WindowShapeMode: type <cimport, nodecl> = @enum(cint){
+  ShapeModeDefault = 0,
+  ShapeModeBinarizeAlpha = 1,
+  ShapeModeReverseBinarizeAlpha = 2,
+  ShapeModeColorKey = 3
+}
+global SDL_WindowShapeParams: type <cimport, nodecl> = @record{
+  binarizationCutoff: uint8,
+  colorKey: SDL_Color
+}
+global SDL_WindowShapeMode: type <cimport, nodecl> = @record{
+  mode: WindowShapeMode,
+  parameters: SDL_WindowShapeParams
+}
+global function SDL_SetWindowShape(window: *SDL_Window, shape: *SDL_Surface, shape_mode: *SDL_WindowShapeMode): cint <cimport, nodecl> end
+global function SDL_GetShapedWindowMode(window: *SDL_Window, shape_mode: *SDL_WindowShapeMode): cint <cimport, nodecl> end
+global function SDL_LinuxSetThreadPriority(threadID: int64, priority: cint): cint <cimport, nodecl> end
+global function SDL_IsTablet(): SDL_bool <cimport, nodecl> end
+global function SDL_OnApplicationWillTerminate() <cimport, nodecl> end
+global function SDL_OnApplicationDidReceiveMemoryWarning() <cimport, nodecl> end
+global function SDL_OnApplicationWillResignActive() <cimport, nodecl> end
+global function SDL_OnApplicationDidEnterBackground() <cimport, nodecl> end
+global function SDL_OnApplicationWillEnterForeground() <cimport, nodecl> end
+global function SDL_OnApplicationDidBecomeActive() <cimport, nodecl> end
+global function SDL_GetTicks(): uint32 <cimport, nodecl> end
+global function SDL_GetPerformanceCounter(): uint64 <cimport, nodecl> end
+global function SDL_GetPerformanceFrequency(): uint64 <cimport, nodecl> end
+global function SDL_Delay(ms: uint32) <cimport, nodecl> end
+global SDL_TimerCallback: type <cimport, nodecl> = @function(uint32, pointer): uint32
+global function SDL_AddTimer(interval: uint32, callback: SDL_TimerCallback, param: pointer): cint <cimport, nodecl> end
+global function SDL_RemoveTimer(id: cint): SDL_bool <cimport, nodecl> end
+global SDL_version: type <cimport, nodecl> = @record{
+  major: uint8,
+  minor: uint8,
+  patch: uint8
+}
+global function SDL_GetVersion(ver: *SDL_version) <cimport, nodecl> end
+global function SDL_GetRevision(): cstring <cimport, nodecl> end
+global function SDL_GetRevisionNumber(): cint <cimport, nodecl> end
+global function SDL_Init(flags: uint32): cint <cimport, nodecl> end
+global function SDL_InitSubSystem(flags: uint32): cint <cimport, nodecl> end
+global function SDL_QuitSubSystem(flags: uint32) <cimport, nodecl> end
+global function SDL_WasInit(flags: uint32): uint32 <cimport, nodecl> end
+global function SDL_Quit() <cimport, nodecl> end

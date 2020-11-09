@@ -1,0 +1,4 @@
+nelua_cache
+/gcc-lua-cdecl
+/test
+*.h

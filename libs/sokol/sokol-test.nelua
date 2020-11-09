@@ -1,0 +1,45 @@
+## cflags '-I.'
+
+require 'sokol_app'
+require 'sokol_gfx'
+require 'sokol_glue'
+
+local pass_action: sg_pass_action
+
+local function init()
+  local desc: sg_desc = {
+    context = sapp_sgcontext()
+  }
+  sg_setup(&desc)
+  pass_action = {
+    colors = {
+      {action=sg_action.SG_ACTION_CLEAR, val={1.0, 0.0, 0.0, 1.0}},
+      {},
+      {},
+      {}
+    }
+  }
+end
+
+local function frame()
+  local g: float32 = pass_action.colors[0].val[1] + 0.01_f32
+  if g > 1.0_f32 then g = 0.0_f32 end
+  pass_action.colors[0].val[1] = g
+  sg_begin_default_pass(&pass_action, sapp_width(), sapp_height())
+  sg_end_pass()
+  sg_commit()
+end
+
+local function cleanup()
+  sg_shutdown()
+end
+
+local desc: sapp_desc = {
+  init_cb = init,
+  frame_cb = frame,
+  cleanup_cb = cleanup,
+  width = 512,
+  height = 512,
+  window_title = "Sokol Clear",
+}
+sapp_run(&desc)

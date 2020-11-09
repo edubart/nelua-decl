@@ -1,0 +1,623 @@
+##[[
+linklib 'glfw'
+linklib 'GL'
+cinclude '<GLFW/glfw3.h>'
+]]
+global function glClearIndex(c: float32) <cimport, nodecl> end
+global function glClearColor(red: float32, green: float32, blue: float32, alpha: float32) <cimport, nodecl> end
+global function glClear(mask: cuint) <cimport, nodecl> end
+global function glIndexMask(mask: cuint) <cimport, nodecl> end
+global function glColorMask(red: cuchar, green: cuchar, blue: cuchar, alpha: cuchar) <cimport, nodecl> end
+global function glAlphaFunc(func: cuint, ref: float32) <cimport, nodecl> end
+global function glBlendFunc(sfactor: cuint, dfactor: cuint) <cimport, nodecl> end
+global function glLogicOp(opcode: cuint) <cimport, nodecl> end
+global function glCullFace(mode: cuint) <cimport, nodecl> end
+global function glFrontFace(mode: cuint) <cimport, nodecl> end
+global function glPointSize(size: float32) <cimport, nodecl> end
+global function glLineWidth(width: float32) <cimport, nodecl> end
+global function glLineStipple(factor: cint, pattern: cushort) <cimport, nodecl> end
+global function glPolygonMode(face: cuint, mode: cuint) <cimport, nodecl> end
+global function glPolygonOffset(factor: float32, units: float32) <cimport, nodecl> end
+global function glPolygonStipple(mask: *cuchar) <cimport, nodecl> end
+global function glGetPolygonStipple(mask: *cuchar) <cimport, nodecl> end
+global function glEdgeFlag(flag: cuchar) <cimport, nodecl> end
+global function glEdgeFlagv(flag: *cuchar) <cimport, nodecl> end
+global function glScissor(x: cint, y: cint, width: cint, height: cint) <cimport, nodecl> end
+global function glClipPlane(plane: cuint, equation: *float64) <cimport, nodecl> end
+global function glGetClipPlane(plane: cuint, equation: *float64) <cimport, nodecl> end
+global function glDrawBuffer(mode: cuint) <cimport, nodecl> end
+global function glReadBuffer(mode: cuint) <cimport, nodecl> end
+global function glEnable(cap: cuint) <cimport, nodecl> end
+global function glDisable(cap: cuint) <cimport, nodecl> end
+global function glIsEnabled(cap: cuint): cuchar <cimport, nodecl> end
+global function glEnableClientState(cap: cuint) <cimport, nodecl> end
+global function glDisableClientState(cap: cuint) <cimport, nodecl> end
+global function glGetBooleanv(pname: cuint, params: *cuchar) <cimport, nodecl> end
+global function glGetDoublev(pname: cuint, params: *float64) <cimport, nodecl> end
+global function glGetFloatv(pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetIntegerv(pname: cuint, params: *cint) <cimport, nodecl> end
+global function glPushAttrib(mask: cuint) <cimport, nodecl> end
+global function glPopAttrib() <cimport, nodecl> end
+global function glPushClientAttrib(mask: cuint) <cimport, nodecl> end
+global function glPopClientAttrib() <cimport, nodecl> end
+global function glRenderMode(mode: cuint): cint <cimport, nodecl> end
+global function glGetError(): cuint <cimport, nodecl> end
+global function glGetString(name: cuint): *cuchar <cimport, nodecl> end
+global function glFinish() <cimport, nodecl> end
+global function glFlush() <cimport, nodecl> end
+global function glHint(target: cuint, mode: cuint) <cimport, nodecl> end
+global function glClearDepth(depth: float64) <cimport, nodecl> end
+global function glDepthFunc(func: cuint) <cimport, nodecl> end
+global function glDepthMask(flag: cuchar) <cimport, nodecl> end
+global function glDepthRange(near_val: float64, far_val: float64) <cimport, nodecl> end
+global function glClearAccum(red: float32, green: float32, blue: float32, alpha: float32) <cimport, nodecl> end
+global function glAccum(op: cuint, value: float32) <cimport, nodecl> end
+global function glMatrixMode(mode: cuint) <cimport, nodecl> end
+global function glOrtho(left: float64, right: float64, bottom: float64, top: float64, near_val: float64, far_val: float64) <cimport, nodecl> end
+global function glFrustum(left: float64, right: float64, bottom: float64, top: float64, near_val: float64, far_val: float64) <cimport, nodecl> end
+global function glViewport(x: cint, y: cint, width: cint, height: cint) <cimport, nodecl> end
+global function glPushMatrix() <cimport, nodecl> end
+global function glPopMatrix() <cimport, nodecl> end
+global function glLoadIdentity() <cimport, nodecl> end
+global function glLoadMatrixd(m: *float64) <cimport, nodecl> end
+global function glLoadMatrixf(m: *float32) <cimport, nodecl> end
+global function glMultMatrixd(m: *float64) <cimport, nodecl> end
+global function glMultMatrixf(m: *float32) <cimport, nodecl> end
+global function glRotated(angle: float64, x: float64, y: float64, z: float64) <cimport, nodecl> end
+global function glRotatef(angle: float32, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function glScaled(x: float64, y: float64, z: float64) <cimport, nodecl> end
+global function glScalef(x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function glTranslated(x: float64, y: float64, z: float64) <cimport, nodecl> end
+global function glTranslatef(x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function glIsList(list: cuint): cuchar <cimport, nodecl> end
+global function glDeleteLists(list: cuint, range: cint) <cimport, nodecl> end
+global function glGenLists(range: cint): cuint <cimport, nodecl> end
+global function glNewList(list: cuint, mode: cuint) <cimport, nodecl> end
+global function glEndList() <cimport, nodecl> end
+global function glCallList(list: cuint) <cimport, nodecl> end
+global function glCallLists(n: cint, type: cuint, lists: pointer) <cimport, nodecl> end
+global function glListBase(base: cuint) <cimport, nodecl> end
+global function glBegin(mode: cuint) <cimport, nodecl> end
+global function glEnd() <cimport, nodecl> end
+global function glVertex2d(x: float64, y: float64) <cimport, nodecl> end
+global function glVertex2f(x: float32, y: float32) <cimport, nodecl> end
+global function glVertex2i(x: cint, y: cint) <cimport, nodecl> end
+global function glVertex2s(x: cshort, y: cshort) <cimport, nodecl> end
+global function glVertex3d(x: float64, y: float64, z: float64) <cimport, nodecl> end
+global function glVertex3f(x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function glVertex3i(x: cint, y: cint, z: cint) <cimport, nodecl> end
+global function glVertex3s(x: cshort, y: cshort, z: cshort) <cimport, nodecl> end
+global function glVertex4d(x: float64, y: float64, z: float64, w: float64) <cimport, nodecl> end
+global function glVertex4f(x: float32, y: float32, z: float32, w: float32) <cimport, nodecl> end
+global function glVertex4i(x: cint, y: cint, z: cint, w: cint) <cimport, nodecl> end
+global function glVertex4s(x: cshort, y: cshort, z: cshort, w: cshort) <cimport, nodecl> end
+global function glVertex2dv(v: *float64) <cimport, nodecl> end
+global function glVertex2fv(v: *float32) <cimport, nodecl> end
+global function glVertex2iv(v: *cint) <cimport, nodecl> end
+global function glVertex2sv(v: *cshort) <cimport, nodecl> end
+global function glVertex3dv(v: *float64) <cimport, nodecl> end
+global function glVertex3fv(v: *float32) <cimport, nodecl> end
+global function glVertex3iv(v: *cint) <cimport, nodecl> end
+global function glVertex3sv(v: *cshort) <cimport, nodecl> end
+global function glVertex4dv(v: *float64) <cimport, nodecl> end
+global function glVertex4fv(v: *float32) <cimport, nodecl> end
+global function glVertex4iv(v: *cint) <cimport, nodecl> end
+global function glVertex4sv(v: *cshort) <cimport, nodecl> end
+global function glNormal3b(nx: cschar, ny: cschar, nz: cschar) <cimport, nodecl> end
+global function glNormal3d(nx: float64, ny: float64, nz: float64) <cimport, nodecl> end
+global function glNormal3f(nx: float32, ny: float32, nz: float32) <cimport, nodecl> end
+global function glNormal3i(nx: cint, ny: cint, nz: cint) <cimport, nodecl> end
+global function glNormal3s(nx: cshort, ny: cshort, nz: cshort) <cimport, nodecl> end
+global function glNormal3bv(v: *cschar) <cimport, nodecl> end
+global function glNormal3dv(v: *float64) <cimport, nodecl> end
+global function glNormal3fv(v: *float32) <cimport, nodecl> end
+global function glNormal3iv(v: *cint) <cimport, nodecl> end
+global function glNormal3sv(v: *cshort) <cimport, nodecl> end
+global function glIndexd(c: float64) <cimport, nodecl> end
+global function glIndexf(c: float32) <cimport, nodecl> end
+global function glIndexi(c: cint) <cimport, nodecl> end
+global function glIndexs(c: cshort) <cimport, nodecl> end
+global function glIndexub(c: cuchar) <cimport, nodecl> end
+global function glIndexdv(c: *float64) <cimport, nodecl> end
+global function glIndexfv(c: *float32) <cimport, nodecl> end
+global function glIndexiv(c: *cint) <cimport, nodecl> end
+global function glIndexsv(c: *cshort) <cimport, nodecl> end
+global function glIndexubv(c: *cuchar) <cimport, nodecl> end
+global function glColor3b(red: cschar, green: cschar, blue: cschar) <cimport, nodecl> end
+global function glColor3d(red: float64, green: float64, blue: float64) <cimport, nodecl> end
+global function glColor3f(red: float32, green: float32, blue: float32) <cimport, nodecl> end
+global function glColor3i(red: cint, green: cint, blue: cint) <cimport, nodecl> end
+global function glColor3s(red: cshort, green: cshort, blue: cshort) <cimport, nodecl> end
+global function glColor3ub(red: cuchar, green: cuchar, blue: cuchar) <cimport, nodecl> end
+global function glColor3ui(red: cuint, green: cuint, blue: cuint) <cimport, nodecl> end
+global function glColor3us(red: cushort, green: cushort, blue: cushort) <cimport, nodecl> end
+global function glColor4b(red: cschar, green: cschar, blue: cschar, alpha: cschar) <cimport, nodecl> end
+global function glColor4d(red: float64, green: float64, blue: float64, alpha: float64) <cimport, nodecl> end
+global function glColor4f(red: float32, green: float32, blue: float32, alpha: float32) <cimport, nodecl> end
+global function glColor4i(red: cint, green: cint, blue: cint, alpha: cint) <cimport, nodecl> end
+global function glColor4s(red: cshort, green: cshort, blue: cshort, alpha: cshort) <cimport, nodecl> end
+global function glColor4ub(red: cuchar, green: cuchar, blue: cuchar, alpha: cuchar) <cimport, nodecl> end
+global function glColor4ui(red: cuint, green: cuint, blue: cuint, alpha: cuint) <cimport, nodecl> end
+global function glColor4us(red: cushort, green: cushort, blue: cushort, alpha: cushort) <cimport, nodecl> end
+global function glColor3bv(v: *cschar) <cimport, nodecl> end
+global function glColor3dv(v: *float64) <cimport, nodecl> end
+global function glColor3fv(v: *float32) <cimport, nodecl> end
+global function glColor3iv(v: *cint) <cimport, nodecl> end
+global function glColor3sv(v: *cshort) <cimport, nodecl> end
+global function glColor3ubv(v: *cuchar) <cimport, nodecl> end
+global function glColor3uiv(v: *cuint) <cimport, nodecl> end
+global function glColor3usv(v: *cushort) <cimport, nodecl> end
+global function glColor4bv(v: *cschar) <cimport, nodecl> end
+global function glColor4dv(v: *float64) <cimport, nodecl> end
+global function glColor4fv(v: *float32) <cimport, nodecl> end
+global function glColor4iv(v: *cint) <cimport, nodecl> end
+global function glColor4sv(v: *cshort) <cimport, nodecl> end
+global function glColor4ubv(v: *cuchar) <cimport, nodecl> end
+global function glColor4uiv(v: *cuint) <cimport, nodecl> end
+global function glColor4usv(v: *cushort) <cimport, nodecl> end
+global function glTexCoord1d(s: float64) <cimport, nodecl> end
+global function glTexCoord1f(s: float32) <cimport, nodecl> end
+global function glTexCoord1i(s: cint) <cimport, nodecl> end
+global function glTexCoord1s(s: cshort) <cimport, nodecl> end
+global function glTexCoord2d(s: float64, t: float64) <cimport, nodecl> end
+global function glTexCoord2f(s: float32, t: float32) <cimport, nodecl> end
+global function glTexCoord2i(s: cint, t: cint) <cimport, nodecl> end
+global function glTexCoord2s(s: cshort, t: cshort) <cimport, nodecl> end
+global function glTexCoord3d(s: float64, t: float64, r: float64) <cimport, nodecl> end
+global function glTexCoord3f(s: float32, t: float32, r: float32) <cimport, nodecl> end
+global function glTexCoord3i(s: cint, t: cint, r: cint) <cimport, nodecl> end
+global function glTexCoord3s(s: cshort, t: cshort, r: cshort) <cimport, nodecl> end
+global function glTexCoord4d(s: float64, t: float64, r: float64, q: float64) <cimport, nodecl> end
+global function glTexCoord4f(s: float32, t: float32, r: float32, q: float32) <cimport, nodecl> end
+global function glTexCoord4i(s: cint, t: cint, r: cint, q: cint) <cimport, nodecl> end
+global function glTexCoord4s(s: cshort, t: cshort, r: cshort, q: cshort) <cimport, nodecl> end
+global function glTexCoord1dv(v: *float64) <cimport, nodecl> end
+global function glTexCoord1fv(v: *float32) <cimport, nodecl> end
+global function glTexCoord1iv(v: *cint) <cimport, nodecl> end
+global function glTexCoord1sv(v: *cshort) <cimport, nodecl> end
+global function glTexCoord2dv(v: *float64) <cimport, nodecl> end
+global function glTexCoord2fv(v: *float32) <cimport, nodecl> end
+global function glTexCoord2iv(v: *cint) <cimport, nodecl> end
+global function glTexCoord2sv(v: *cshort) <cimport, nodecl> end
+global function glTexCoord3dv(v: *float64) <cimport, nodecl> end
+global function glTexCoord3fv(v: *float32) <cimport, nodecl> end
+global function glTexCoord3iv(v: *cint) <cimport, nodecl> end
+global function glTexCoord3sv(v: *cshort) <cimport, nodecl> end
+global function glTexCoord4dv(v: *float64) <cimport, nodecl> end
+global function glTexCoord4fv(v: *float32) <cimport, nodecl> end
+global function glTexCoord4iv(v: *cint) <cimport, nodecl> end
+global function glTexCoord4sv(v: *cshort) <cimport, nodecl> end
+global function glRasterPos2d(x: float64, y: float64) <cimport, nodecl> end
+global function glRasterPos2f(x: float32, y: float32) <cimport, nodecl> end
+global function glRasterPos2i(x: cint, y: cint) <cimport, nodecl> end
+global function glRasterPos2s(x: cshort, y: cshort) <cimport, nodecl> end
+global function glRasterPos3d(x: float64, y: float64, z: float64) <cimport, nodecl> end
+global function glRasterPos3f(x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function glRasterPos3i(x: cint, y: cint, z: cint) <cimport, nodecl> end
+global function glRasterPos3s(x: cshort, y: cshort, z: cshort) <cimport, nodecl> end
+global function glRasterPos4d(x: float64, y: float64, z: float64, w: float64) <cimport, nodecl> end
+global function glRasterPos4f(x: float32, y: float32, z: float32, w: float32) <cimport, nodecl> end
+global function glRasterPos4i(x: cint, y: cint, z: cint, w: cint) <cimport, nodecl> end
+global function glRasterPos4s(x: cshort, y: cshort, z: cshort, w: cshort) <cimport, nodecl> end
+global function glRasterPos2dv(v: *float64) <cimport, nodecl> end
+global function glRasterPos2fv(v: *float32) <cimport, nodecl> end
+global function glRasterPos2iv(v: *cint) <cimport, nodecl> end
+global function glRasterPos2sv(v: *cshort) <cimport, nodecl> end
+global function glRasterPos3dv(v: *float64) <cimport, nodecl> end
+global function glRasterPos3fv(v: *float32) <cimport, nodecl> end
+global function glRasterPos3iv(v: *cint) <cimport, nodecl> end
+global function glRasterPos3sv(v: *cshort) <cimport, nodecl> end
+global function glRasterPos4dv(v: *float64) <cimport, nodecl> end
+global function glRasterPos4fv(v: *float32) <cimport, nodecl> end
+global function glRasterPos4iv(v: *cint) <cimport, nodecl> end
+global function glRasterPos4sv(v: *cshort) <cimport, nodecl> end
+global function glRectd(x1: float64, y1: float64, x2: float64, y2: float64) <cimport, nodecl> end
+global function glRectf(x1: float32, y1: float32, x2: float32, y2: float32) <cimport, nodecl> end
+global function glRecti(x1: cint, y1: cint, x2: cint, y2: cint) <cimport, nodecl> end
+global function glRects(x1: cshort, y1: cshort, x2: cshort, y2: cshort) <cimport, nodecl> end
+global function glRectdv(v1: *float64, v2: *float64) <cimport, nodecl> end
+global function glRectfv(v1: *float32, v2: *float32) <cimport, nodecl> end
+global function glRectiv(v1: *cint, v2: *cint) <cimport, nodecl> end
+global function glRectsv(v1: *cshort, v2: *cshort) <cimport, nodecl> end
+global function glVertexPointer(size: cint, type: cuint, stride: cint, ptr: pointer) <cimport, nodecl> end
+global function glNormalPointer(type: cuint, stride: cint, ptr: pointer) <cimport, nodecl> end
+global function glColorPointer(size: cint, type: cuint, stride: cint, ptr: pointer) <cimport, nodecl> end
+global function glIndexPointer(type: cuint, stride: cint, ptr: pointer) <cimport, nodecl> end
+global function glTexCoordPointer(size: cint, type: cuint, stride: cint, ptr: pointer) <cimport, nodecl> end
+global function glEdgeFlagPointer(stride: cint, ptr: pointer) <cimport, nodecl> end
+global function glGetPointerv(pname: cuint, params: *pointer) <cimport, nodecl> end
+global function glArrayElement(i: cint) <cimport, nodecl> end
+global function glDrawArrays(mode: cuint, first: cint, count: cint) <cimport, nodecl> end
+global function glDrawElements(mode: cuint, count: cint, type: cuint, indices: pointer) <cimport, nodecl> end
+global function glInterleavedArrays(format: cuint, stride: cint, pointer: pointer) <cimport, nodecl> end
+global function glShadeModel(mode: cuint) <cimport, nodecl> end
+global function glLightf(light: cuint, pname: cuint, param: float32) <cimport, nodecl> end
+global function glLighti(light: cuint, pname: cuint, param: cint) <cimport, nodecl> end
+global function glLightfv(light: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glLightiv(light: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glGetLightfv(light: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetLightiv(light: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glLightModelf(pname: cuint, param: float32) <cimport, nodecl> end
+global function glLightModeli(pname: cuint, param: cint) <cimport, nodecl> end
+global function glLightModelfv(pname: cuint, params: *float32) <cimport, nodecl> end
+global function glLightModeliv(pname: cuint, params: *cint) <cimport, nodecl> end
+global function glMaterialf(face: cuint, pname: cuint, param: float32) <cimport, nodecl> end
+global function glMateriali(face: cuint, pname: cuint, param: cint) <cimport, nodecl> end
+global function glMaterialfv(face: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glMaterialiv(face: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glGetMaterialfv(face: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetMaterialiv(face: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glColorMaterial(face: cuint, mode: cuint) <cimport, nodecl> end
+global function glPixelZoom(xfactor: float32, yfactor: float32) <cimport, nodecl> end
+global function glPixelStoref(pname: cuint, param: float32) <cimport, nodecl> end
+global function glPixelStorei(pname: cuint, param: cint) <cimport, nodecl> end
+global function glPixelTransferf(pname: cuint, param: float32) <cimport, nodecl> end
+global function glPixelTransferi(pname: cuint, param: cint) <cimport, nodecl> end
+global function glPixelMapfv(map: cuint, mapsize: cint, values: *float32) <cimport, nodecl> end
+global function glPixelMapuiv(map: cuint, mapsize: cint, values: *cuint) <cimport, nodecl> end
+global function glPixelMapusv(map: cuint, mapsize: cint, values: *cushort) <cimport, nodecl> end
+global function glGetPixelMapfv(map: cuint, values: *float32) <cimport, nodecl> end
+global function glGetPixelMapuiv(map: cuint, values: *cuint) <cimport, nodecl> end
+global function glGetPixelMapusv(map: cuint, values: *cushort) <cimport, nodecl> end
+global function glBitmap(width: cint, height: cint, xorig: float32, yorig: float32, xmove: float32, ymove: float32, bitmap: *cuchar) <cimport, nodecl> end
+global function glReadPixels(x: cint, y: cint, width: cint, height: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glDrawPixels(width: cint, height: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glCopyPixels(x: cint, y: cint, width: cint, height: cint, type: cuint) <cimport, nodecl> end
+global function glStencilFunc(func: cuint, ref: cint, mask: cuint) <cimport, nodecl> end
+global function glStencilMask(mask: cuint) <cimport, nodecl> end
+global function glStencilOp(fail: cuint, zfail: cuint, zpass: cuint) <cimport, nodecl> end
+global function glClearStencil(s: cint) <cimport, nodecl> end
+global function glTexGend(coord: cuint, pname: cuint, param: float64) <cimport, nodecl> end
+global function glTexGenf(coord: cuint, pname: cuint, param: float32) <cimport, nodecl> end
+global function glTexGeni(coord: cuint, pname: cuint, param: cint) <cimport, nodecl> end
+global function glTexGendv(coord: cuint, pname: cuint, params: *float64) <cimport, nodecl> end
+global function glTexGenfv(coord: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glTexGeniv(coord: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glGetTexGendv(coord: cuint, pname: cuint, params: *float64) <cimport, nodecl> end
+global function glGetTexGenfv(coord: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetTexGeniv(coord: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glTexEnvf(target: cuint, pname: cuint, param: float32) <cimport, nodecl> end
+global function glTexEnvi(target: cuint, pname: cuint, param: cint) <cimport, nodecl> end
+global function glTexEnvfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glTexEnviv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glGetTexEnvfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetTexEnviv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glTexParameterf(target: cuint, pname: cuint, param: float32) <cimport, nodecl> end
+global function glTexParameteri(target: cuint, pname: cuint, param: cint) <cimport, nodecl> end
+global function glTexParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glTexParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glGetTexParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetTexParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glGetTexLevelParameterfv(target: cuint, level: cint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetTexLevelParameteriv(target: cuint, level: cint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glTexImage1D(target: cuint, level: cint, internalFormat: cint, width: cint, border: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glTexImage2D(target: cuint, level: cint, internalFormat: cint, width: cint, height: cint, border: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glGetTexImage(target: cuint, level: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glGenTextures(n: cint, textures: *cuint) <cimport, nodecl> end
+global function glDeleteTextures(n: cint, textures: *cuint) <cimport, nodecl> end
+global function glBindTexture(target: cuint, texture: cuint) <cimport, nodecl> end
+global function glPrioritizeTextures(n: cint, textures: *cuint, priorities: *float32) <cimport, nodecl> end
+global function glAreTexturesResident(n: cint, textures: *cuint, residences: *cuchar): cuchar <cimport, nodecl> end
+global function glIsTexture(texture: cuint): cuchar <cimport, nodecl> end
+global function glTexSubImage1D(target: cuint, level: cint, xoffset: cint, width: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glTexSubImage2D(target: cuint, level: cint, xoffset: cint, yoffset: cint, width: cint, height: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glCopyTexImage1D(target: cuint, level: cint, internalformat: cuint, x: cint, y: cint, width: cint, border: cint) <cimport, nodecl> end
+global function glCopyTexImage2D(target: cuint, level: cint, internalformat: cuint, x: cint, y: cint, width: cint, height: cint, border: cint) <cimport, nodecl> end
+global function glCopyTexSubImage1D(target: cuint, level: cint, xoffset: cint, x: cint, y: cint, width: cint) <cimport, nodecl> end
+global function glCopyTexSubImage2D(target: cuint, level: cint, xoffset: cint, yoffset: cint, x: cint, y: cint, width: cint, height: cint) <cimport, nodecl> end
+global function glMap1d(target: cuint, u1: float64, u2: float64, stride: cint, order: cint, points: *float64) <cimport, nodecl> end
+global function glMap1f(target: cuint, u1: float32, u2: float32, stride: cint, order: cint, points: *float32) <cimport, nodecl> end
+global function glMap2d(target: cuint, u1: float64, u2: float64, ustride: cint, uorder: cint, v1: float64, v2: float64, vstride: cint, vorder: cint, points: *float64) <cimport, nodecl> end
+global function glMap2f(target: cuint, u1: float32, u2: float32, ustride: cint, uorder: cint, v1: float32, v2: float32, vstride: cint, vorder: cint, points: *float32) <cimport, nodecl> end
+global function glGetMapdv(target: cuint, query: cuint, v: *float64) <cimport, nodecl> end
+global function glGetMapfv(target: cuint, query: cuint, v: *float32) <cimport, nodecl> end
+global function glGetMapiv(target: cuint, query: cuint, v: *cint) <cimport, nodecl> end
+global function glEvalCoord1d(u: float64) <cimport, nodecl> end
+global function glEvalCoord1f(u: float32) <cimport, nodecl> end
+global function glEvalCoord1dv(u: *float64) <cimport, nodecl> end
+global function glEvalCoord1fv(u: *float32) <cimport, nodecl> end
+global function glEvalCoord2d(u: float64, v: float64) <cimport, nodecl> end
+global function glEvalCoord2f(u: float32, v: float32) <cimport, nodecl> end
+global function glEvalCoord2dv(u: *float64) <cimport, nodecl> end
+global function glEvalCoord2fv(u: *float32) <cimport, nodecl> end
+global function glMapGrid1d(un: cint, u1: float64, u2: float64) <cimport, nodecl> end
+global function glMapGrid1f(un: cint, u1: float32, u2: float32) <cimport, nodecl> end
+global function glMapGrid2d(un: cint, u1: float64, u2: float64, vn: cint, v1: float64, v2: float64) <cimport, nodecl> end
+global function glMapGrid2f(un: cint, u1: float32, u2: float32, vn: cint, v1: float32, v2: float32) <cimport, nodecl> end
+global function glEvalPoint1(i: cint) <cimport, nodecl> end
+global function glEvalPoint2(i: cint, j: cint) <cimport, nodecl> end
+global function glEvalMesh1(mode: cuint, i1: cint, i2: cint) <cimport, nodecl> end
+global function glEvalMesh2(mode: cuint, i1: cint, i2: cint, j1: cint, j2: cint) <cimport, nodecl> end
+global function glFogf(pname: cuint, param: float32) <cimport, nodecl> end
+global function glFogi(pname: cuint, param: cint) <cimport, nodecl> end
+global function glFogfv(pname: cuint, params: *float32) <cimport, nodecl> end
+global function glFogiv(pname: cuint, params: *cint) <cimport, nodecl> end
+global function glFeedbackBuffer(size: cint, type: cuint, buffer: *float32) <cimport, nodecl> end
+global function glPassThrough(token: float32) <cimport, nodecl> end
+global function glSelectBuffer(size: cint, buffer: *cuint) <cimport, nodecl> end
+global function glInitNames() <cimport, nodecl> end
+global function glLoadName(name: cuint) <cimport, nodecl> end
+global function glPushName(name: cuint) <cimport, nodecl> end
+global function glPopName() <cimport, nodecl> end
+global function glDrawRangeElements(mode: cuint, start: cuint, End: cuint, count: cint, type: cuint, indices: pointer) <cimport, nodecl> end
+global function glTexImage3D(target: cuint, level: cint, internalFormat: cint, width: cint, height: cint, depth: cint, border: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glTexSubImage3D(target: cuint, level: cint, xoffset: cint, yoffset: cint, zoffset: cint, width: cint, height: cint, depth: cint, format: cuint, type: cuint, pixels: pointer) <cimport, nodecl> end
+global function glCopyTexSubImage3D(target: cuint, level: cint, xoffset: cint, yoffset: cint, zoffset: cint, x: cint, y: cint, width: cint, height: cint) <cimport, nodecl> end
+global function glColorTable(target: cuint, internalformat: cuint, width: cint, format: cuint, type: cuint, table: pointer) <cimport, nodecl> end
+global function glColorSubTable(target: cuint, start: cint, count: cint, format: cuint, type: cuint, data: pointer) <cimport, nodecl> end
+global function glColorTableParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glColorTableParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glCopyColorSubTable(target: cuint, start: cint, x: cint, y: cint, width: cint) <cimport, nodecl> end
+global function glCopyColorTable(target: cuint, internalformat: cuint, x: cint, y: cint, width: cint) <cimport, nodecl> end
+global function glGetColorTable(target: cuint, format: cuint, type: cuint, table: pointer) <cimport, nodecl> end
+global function glGetColorTableParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetColorTableParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glBlendEquation(mode: cuint) <cimport, nodecl> end
+global function glBlendColor(red: float32, green: float32, blue: float32, alpha: float32) <cimport, nodecl> end
+global function glHistogram(target: cuint, width: cint, internalformat: cuint, sink: cuchar) <cimport, nodecl> end
+global function glResetHistogram(target: cuint) <cimport, nodecl> end
+global function glGetHistogram(target: cuint, reset: cuchar, format: cuint, type: cuint, values: pointer) <cimport, nodecl> end
+global function glGetHistogramParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetHistogramParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glMinmax(target: cuint, internalformat: cuint, sink: cuchar) <cimport, nodecl> end
+global function glResetMinmax(target: cuint) <cimport, nodecl> end
+global function glGetMinmax(target: cuint, reset: cuchar, format: cuint, types: cuint, values: pointer) <cimport, nodecl> end
+global function glGetMinmaxParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetMinmaxParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glConvolutionFilter1D(target: cuint, internalformat: cuint, width: cint, format: cuint, type: cuint, image: pointer) <cimport, nodecl> end
+global function glConvolutionFilter2D(target: cuint, internalformat: cuint, width: cint, height: cint, format: cuint, type: cuint, image: pointer) <cimport, nodecl> end
+global function glConvolutionParameterf(target: cuint, pname: cuint, params: float32) <cimport, nodecl> end
+global function glConvolutionParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glConvolutionParameteri(target: cuint, pname: cuint, params: cint) <cimport, nodecl> end
+global function glConvolutionParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glCopyConvolutionFilter1D(target: cuint, internalformat: cuint, x: cint, y: cint, width: cint) <cimport, nodecl> end
+global function glCopyConvolutionFilter2D(target: cuint, internalformat: cuint, x: cint, y: cint, width: cint, height: cint) <cimport, nodecl> end
+global function glGetConvolutionFilter(target: cuint, format: cuint, type: cuint, image: pointer) <cimport, nodecl> end
+global function glGetConvolutionParameterfv(target: cuint, pname: cuint, params: *float32) <cimport, nodecl> end
+global function glGetConvolutionParameteriv(target: cuint, pname: cuint, params: *cint) <cimport, nodecl> end
+global function glSeparableFilter2D(target: cuint, internalformat: cuint, width: cint, height: cint, format: cuint, type: cuint, row: pointer, column: pointer) <cimport, nodecl> end
+global function glGetSeparableFilter(target: cuint, format: cuint, type: cuint, row: pointer, column: pointer, span: pointer) <cimport, nodecl> end
+global function glActiveTexture(texture: cuint) <cimport, nodecl> end
+global function glClientActiveTexture(texture: cuint) <cimport, nodecl> end
+global function glCompressedTexImage1D(target: cuint, level: cint, internalformat: cuint, width: cint, border: cint, imageSize: cint, data: pointer) <cimport, nodecl> end
+global function glCompressedTexImage2D(target: cuint, level: cint, internalformat: cuint, width: cint, height: cint, border: cint, imageSize: cint, data: pointer) <cimport, nodecl> end
+global function glCompressedTexImage3D(target: cuint, level: cint, internalformat: cuint, width: cint, height: cint, depth: cint, border: cint, imageSize: cint, data: pointer) <cimport, nodecl> end
+global function glCompressedTexSubImage1D(target: cuint, level: cint, xoffset: cint, width: cint, format: cuint, imageSize: cint, data: pointer) <cimport, nodecl> end
+global function glCompressedTexSubImage2D(target: cuint, level: cint, xoffset: cint, yoffset: cint, width: cint, height: cint, format: cuint, imageSize: cint, data: pointer) <cimport, nodecl> end
+global function glCompressedTexSubImage3D(target: cuint, level: cint, xoffset: cint, yoffset: cint, zoffset: cint, width: cint, height: cint, depth: cint, format: cuint, imageSize: cint, data: pointer) <cimport, nodecl> end
+global function glGetCompressedTexImage(target: cuint, lod: cint, img: pointer) <cimport, nodecl> end
+global function glMultiTexCoord1d(target: cuint, s: float64) <cimport, nodecl> end
+global function glMultiTexCoord1dv(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord1f(target: cuint, s: float32) <cimport, nodecl> end
+global function glMultiTexCoord1fv(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord1i(target: cuint, s: cint) <cimport, nodecl> end
+global function glMultiTexCoord1iv(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord1s(target: cuint, s: cshort) <cimport, nodecl> end
+global function glMultiTexCoord1sv(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glMultiTexCoord2d(target: cuint, s: float64, t: float64) <cimport, nodecl> end
+global function glMultiTexCoord2dv(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord2f(target: cuint, s: float32, t: float32) <cimport, nodecl> end
+global function glMultiTexCoord2fv(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord2i(target: cuint, s: cint, t: cint) <cimport, nodecl> end
+global function glMultiTexCoord2iv(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord2s(target: cuint, s: cshort, t: cshort) <cimport, nodecl> end
+global function glMultiTexCoord2sv(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glMultiTexCoord3d(target: cuint, s: float64, t: float64, r: float64) <cimport, nodecl> end
+global function glMultiTexCoord3dv(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord3f(target: cuint, s: float32, t: float32, r: float32) <cimport, nodecl> end
+global function glMultiTexCoord3fv(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord3i(target: cuint, s: cint, t: cint, r: cint) <cimport, nodecl> end
+global function glMultiTexCoord3iv(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord3s(target: cuint, s: cshort, t: cshort, r: cshort) <cimport, nodecl> end
+global function glMultiTexCoord3sv(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glMultiTexCoord4d(target: cuint, s: float64, t: float64, r: float64, q: float64) <cimport, nodecl> end
+global function glMultiTexCoord4dv(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord4f(target: cuint, s: float32, t: float32, r: float32, q: float32) <cimport, nodecl> end
+global function glMultiTexCoord4fv(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord4i(target: cuint, s: cint, t: cint, r: cint, q: cint) <cimport, nodecl> end
+global function glMultiTexCoord4iv(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord4s(target: cuint, s: cshort, t: cshort, r: cshort, q: cshort) <cimport, nodecl> end
+global function glMultiTexCoord4sv(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glLoadTransposeMatrixd(m: *float64) <cimport, nodecl> end
+global function glLoadTransposeMatrixf(m: *float32) <cimport, nodecl> end
+global function glMultTransposeMatrixd(m: *float64) <cimport, nodecl> end
+global function glMultTransposeMatrixf(m: *float32) <cimport, nodecl> end
+global function glSampleCoverage(value: float32, invert: cuchar) <cimport, nodecl> end
+global function glActiveTextureARB(texture: cuint) <cimport, nodecl> end
+global function glClientActiveTextureARB(texture: cuint) <cimport, nodecl> end
+global function glMultiTexCoord1dARB(target: cuint, s: float64) <cimport, nodecl> end
+global function glMultiTexCoord1dvARB(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord1fARB(target: cuint, s: float32) <cimport, nodecl> end
+global function glMultiTexCoord1fvARB(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord1iARB(target: cuint, s: cint) <cimport, nodecl> end
+global function glMultiTexCoord1ivARB(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord1sARB(target: cuint, s: cshort) <cimport, nodecl> end
+global function glMultiTexCoord1svARB(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glMultiTexCoord2dARB(target: cuint, s: float64, t: float64) <cimport, nodecl> end
+global function glMultiTexCoord2dvARB(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord2fARB(target: cuint, s: float32, t: float32) <cimport, nodecl> end
+global function glMultiTexCoord2fvARB(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord2iARB(target: cuint, s: cint, t: cint) <cimport, nodecl> end
+global function glMultiTexCoord2ivARB(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord2sARB(target: cuint, s: cshort, t: cshort) <cimport, nodecl> end
+global function glMultiTexCoord2svARB(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glMultiTexCoord3dARB(target: cuint, s: float64, t: float64, r: float64) <cimport, nodecl> end
+global function glMultiTexCoord3dvARB(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord3fARB(target: cuint, s: float32, t: float32, r: float32) <cimport, nodecl> end
+global function glMultiTexCoord3fvARB(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord3iARB(target: cuint, s: cint, t: cint, r: cint) <cimport, nodecl> end
+global function glMultiTexCoord3ivARB(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord3sARB(target: cuint, s: cshort, t: cshort, r: cshort) <cimport, nodecl> end
+global function glMultiTexCoord3svARB(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glMultiTexCoord4dARB(target: cuint, s: float64, t: float64, r: float64, q: float64) <cimport, nodecl> end
+global function glMultiTexCoord4dvARB(target: cuint, v: *float64) <cimport, nodecl> end
+global function glMultiTexCoord4fARB(target: cuint, s: float32, t: float32, r: float32, q: float32) <cimport, nodecl> end
+global function glMultiTexCoord4fvARB(target: cuint, v: *float32) <cimport, nodecl> end
+global function glMultiTexCoord4iARB(target: cuint, s: cint, t: cint, r: cint, q: cint) <cimport, nodecl> end
+global function glMultiTexCoord4ivARB(target: cuint, v: *cint) <cimport, nodecl> end
+global function glMultiTexCoord4sARB(target: cuint, s: cshort, t: cshort, r: cshort, q: cshort) <cimport, nodecl> end
+global function glMultiTexCoord4svARB(target: cuint, v: *cshort) <cimport, nodecl> end
+global function glBlendEquationSeparateATI(modeRGB: cuint, modeA: cuint) <cimport, nodecl> end
+global GLFWglproc: type <cimport, nodecl> = @function()
+global GLFWmonitor: type <cimport, forwarddecl> = @record{}
+global GLFWwindow: type <cimport, forwarddecl> = @record{}
+global GLFWcursor: type <cimport, forwarddecl> = @record{}
+global GLFWerrorfun: type <cimport, nodecl> = @function(cint, cstring)
+global GLFWwindowposfun: type <cimport, nodecl> = @function(*GLFWwindow, cint, cint)
+global GLFWwindowsizefun: type <cimport, nodecl> = @function(*GLFWwindow, cint, cint)
+global GLFWwindowclosefun: type <cimport, nodecl> = @function(*GLFWwindow)
+global GLFWwindowrefreshfun: type <cimport, nodecl> = @function(*GLFWwindow)
+global GLFWwindowfocusfun: type <cimport, nodecl> = @function(*GLFWwindow, cint)
+global GLFWwindowiconifyfun: type <cimport, nodecl> = @function(*GLFWwindow, cint)
+global GLFWwindowmaximizefun: type <cimport, nodecl> = @function(*GLFWwindow, cint)
+global GLFWframebuffersizefun: type <cimport, nodecl> = @function(*GLFWwindow, cint, cint)
+global GLFWwindowcontentscalefun: type <cimport, nodecl> = @function(*GLFWwindow, float32, float32)
+global GLFWmousebuttonfun: type <cimport, nodecl> = @function(*GLFWwindow, cint, cint, cint)
+global GLFWcursorposfun: type <cimport, nodecl> = @function(*GLFWwindow, float64, float64)
+global GLFWcursorenterfun: type <cimport, nodecl> = @function(*GLFWwindow, cint)
+global GLFWscrollfun: type <cimport, nodecl> = @function(*GLFWwindow, float64, float64)
+global GLFWkeyfun: type <cimport, nodecl> = @function(*GLFWwindow, cint, cint, cint, cint)
+global GLFWcharfun: type <cimport, nodecl> = @function(*GLFWwindow, cuint)
+global GLFWcharmodsfun: type <cimport, nodecl> = @function(*GLFWwindow, cuint, cint)
+global GLFWdropfun: type <cimport, nodecl> = @function(*GLFWwindow, cint, *cstring)
+global GLFWmonitorfun: type <cimport, nodecl> = @function(*GLFWmonitor, cint)
+global GLFWjoystickfun: type <cimport, nodecl> = @function(cint, cint)
+global GLFWvidmode: type <cimport, nodecl> = @record{
+  width: cint,
+  height: cint,
+  redBits: cint,
+  greenBits: cint,
+  blueBits: cint,
+  refreshRate: cint
+}
+global GLFWgammaramp: type <cimport, nodecl> = @record{
+  red: *cushort,
+  green: *cushort,
+  blue: *cushort,
+  size: cuint
+}
+global GLFWimage: type <cimport, nodecl> = @record{
+  width: cint,
+  height: cint,
+  pixels: *cuchar
+}
+global GLFWgamepadstate: type <cimport, nodecl> = @record{
+  buttons: [15]cuchar,
+  axes: [6]float32
+}
+global function glfwInit(): cint <cimport, nodecl> end
+global function glfwTerminate() <cimport, nodecl> end
+global function glfwInitHint(hint: cint, value: cint) <cimport, nodecl> end
+global function glfwGetVersion(major: *cint, minor: *cint, rev: *cint) <cimport, nodecl> end
+global function glfwGetVersionString(): cstring <cimport, nodecl> end
+global function glfwGetError(description: *cstring): cint <cimport, nodecl> end
+global function glfwSetErrorCallback(callback: GLFWerrorfun): GLFWerrorfun <cimport, nodecl> end
+global function glfwGetMonitors(count: *cint): **GLFWmonitor <cimport, nodecl> end
+global function glfwGetPrimaryMonitor(): *GLFWmonitor <cimport, nodecl> end
+global function glfwGetMonitorPos(monitor: *GLFWmonitor, xpos: *cint, ypos: *cint) <cimport, nodecl> end
+global function glfwGetMonitorWorkarea(monitor: *GLFWmonitor, xpos: *cint, ypos: *cint, width: *cint, height: *cint) <cimport, nodecl> end
+global function glfwGetMonitorPhysicalSize(monitor: *GLFWmonitor, widthMM: *cint, heightMM: *cint) <cimport, nodecl> end
+global function glfwGetMonitorContentScale(monitor: *GLFWmonitor, xscale: *float32, yscale: *float32) <cimport, nodecl> end
+global function glfwGetMonitorName(monitor: *GLFWmonitor): cstring <cimport, nodecl> end
+global function glfwSetMonitorUserPointer(monitor: *GLFWmonitor, pointer: pointer) <cimport, nodecl> end
+global function glfwGetMonitorUserPointer(monitor: *GLFWmonitor): pointer <cimport, nodecl> end
+global function glfwSetMonitorCallback(callback: GLFWmonitorfun): GLFWmonitorfun <cimport, nodecl> end
+global function glfwGetVideoModes(monitor: *GLFWmonitor, count: *cint): *GLFWvidmode <cimport, nodecl> end
+global function glfwGetVideoMode(monitor: *GLFWmonitor): *GLFWvidmode <cimport, nodecl> end
+global function glfwSetGamma(monitor: *GLFWmonitor, gamma: float32) <cimport, nodecl> end
+global function glfwGetGammaRamp(monitor: *GLFWmonitor): *GLFWgammaramp <cimport, nodecl> end
+global function glfwSetGammaRamp(monitor: *GLFWmonitor, ramp: *GLFWgammaramp) <cimport, nodecl> end
+global function glfwDefaultWindowHints() <cimport, nodecl> end
+global function glfwWindowHint(hint: cint, value: cint) <cimport, nodecl> end
+global function glfwWindowHintString(hint: cint, value: cstring) <cimport, nodecl> end
+global function glfwCreateWindow(width: cint, height: cint, title: cstring, monitor: *GLFWmonitor, share: *GLFWwindow): *GLFWwindow <cimport, nodecl> end
+global function glfwDestroyWindow(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwWindowShouldClose(window: *GLFWwindow): cint <cimport, nodecl> end
+global function glfwSetWindowShouldClose(window: *GLFWwindow, value: cint) <cimport, nodecl> end
+global function glfwSetWindowTitle(window: *GLFWwindow, title: cstring) <cimport, nodecl> end
+global function glfwSetWindowIcon(window: *GLFWwindow, count: cint, images: *GLFWimage) <cimport, nodecl> end
+global function glfwGetWindowPos(window: *GLFWwindow, xpos: *cint, ypos: *cint) <cimport, nodecl> end
+global function glfwSetWindowPos(window: *GLFWwindow, xpos: cint, ypos: cint) <cimport, nodecl> end
+global function glfwGetWindowSize(window: *GLFWwindow, width: *cint, height: *cint) <cimport, nodecl> end
+global function glfwSetWindowSizeLimits(window: *GLFWwindow, minwidth: cint, minheight: cint, maxwidth: cint, maxheight: cint) <cimport, nodecl> end
+global function glfwSetWindowAspectRatio(window: *GLFWwindow, numer: cint, denom: cint) <cimport, nodecl> end
+global function glfwSetWindowSize(window: *GLFWwindow, width: cint, height: cint) <cimport, nodecl> end
+global function glfwGetFramebufferSize(window: *GLFWwindow, width: *cint, height: *cint) <cimport, nodecl> end
+global function glfwGetWindowFrameSize(window: *GLFWwindow, left: *cint, top: *cint, right: *cint, bottom: *cint) <cimport, nodecl> end
+global function glfwGetWindowContentScale(window: *GLFWwindow, xscale: *float32, yscale: *float32) <cimport, nodecl> end
+global function glfwGetWindowOpacity(window: *GLFWwindow): float32 <cimport, nodecl> end
+global function glfwSetWindowOpacity(window: *GLFWwindow, opacity: float32) <cimport, nodecl> end
+global function glfwIconifyWindow(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwRestoreWindow(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwMaximizeWindow(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwShowWindow(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwHideWindow(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwFocusWindow(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwRequestWindowAttention(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwGetWindowMonitor(window: *GLFWwindow): *GLFWmonitor <cimport, nodecl> end
+global function glfwSetWindowMonitor(window: *GLFWwindow, monitor: *GLFWmonitor, xpos: cint, ypos: cint, width: cint, height: cint, refreshRate: cint) <cimport, nodecl> end
+global function glfwGetWindowAttrib(window: *GLFWwindow, attrib: cint): cint <cimport, nodecl> end
+global function glfwSetWindowAttrib(window: *GLFWwindow, attrib: cint, value: cint) <cimport, nodecl> end
+global function glfwSetWindowUserPointer(window: *GLFWwindow, pointer: pointer) <cimport, nodecl> end
+global function glfwGetWindowUserPointer(window: *GLFWwindow): pointer <cimport, nodecl> end
+global function glfwSetWindowPosCallback(window: *GLFWwindow, callback: GLFWwindowposfun): GLFWwindowposfun <cimport, nodecl> end
+global function glfwSetWindowSizeCallback(window: *GLFWwindow, callback: GLFWwindowsizefun): GLFWwindowsizefun <cimport, nodecl> end
+global function glfwSetWindowCloseCallback(window: *GLFWwindow, callback: GLFWwindowclosefun): GLFWwindowclosefun <cimport, nodecl> end
+global function glfwSetWindowRefreshCallback(window: *GLFWwindow, callback: GLFWwindowrefreshfun): GLFWwindowrefreshfun <cimport, nodecl> end
+global function glfwSetWindowFocusCallback(window: *GLFWwindow, callback: GLFWwindowfocusfun): GLFWwindowfocusfun <cimport, nodecl> end
+global function glfwSetWindowIconifyCallback(window: *GLFWwindow, callback: GLFWwindowiconifyfun): GLFWwindowiconifyfun <cimport, nodecl> end
+global function glfwSetWindowMaximizeCallback(window: *GLFWwindow, callback: GLFWwindowmaximizefun): GLFWwindowmaximizefun <cimport, nodecl> end
+global function glfwSetFramebufferSizeCallback(window: *GLFWwindow, callback: GLFWframebuffersizefun): GLFWframebuffersizefun <cimport, nodecl> end
+global function glfwSetWindowContentScaleCallback(window: *GLFWwindow, callback: GLFWwindowcontentscalefun): GLFWwindowcontentscalefun <cimport, nodecl> end
+global function glfwPollEvents() <cimport, nodecl> end
+global function glfwWaitEvents() <cimport, nodecl> end
+global function glfwWaitEventsTimeout(timeout: float64) <cimport, nodecl> end
+global function glfwPostEmptyEvent() <cimport, nodecl> end
+global function glfwGetInputMode(window: *GLFWwindow, mode: cint): cint <cimport, nodecl> end
+global function glfwSetInputMode(window: *GLFWwindow, mode: cint, value: cint) <cimport, nodecl> end
+global function glfwRawMouseMotionSupported(): cint <cimport, nodecl> end
+global function glfwGetKeyName(key: cint, scancode: cint): cstring <cimport, nodecl> end
+global function glfwGetKeyScancode(key: cint): cint <cimport, nodecl> end
+global function glfwGetKey(window: *GLFWwindow, key: cint): cint <cimport, nodecl> end
+global function glfwGetMouseButton(window: *GLFWwindow, button: cint): cint <cimport, nodecl> end
+global function glfwGetCursorPos(window: *GLFWwindow, xpos: *float64, ypos: *float64) <cimport, nodecl> end
+global function glfwSetCursorPos(window: *GLFWwindow, xpos: float64, ypos: float64) <cimport, nodecl> end
+global function glfwCreateCursor(image: *GLFWimage, xhot: cint, yhot: cint): *GLFWcursor <cimport, nodecl> end
+global function glfwCreateStandardCursor(shape: cint): *GLFWcursor <cimport, nodecl> end
+global function glfwDestroyCursor(cursor: *GLFWcursor) <cimport, nodecl> end
+global function glfwSetCursor(window: *GLFWwindow, cursor: *GLFWcursor) <cimport, nodecl> end
+global function glfwSetKeyCallback(window: *GLFWwindow, callback: GLFWkeyfun): GLFWkeyfun <cimport, nodecl> end
+global function glfwSetCharCallback(window: *GLFWwindow, callback: GLFWcharfun): GLFWcharfun <cimport, nodecl> end
+global function glfwSetCharModsCallback(window: *GLFWwindow, callback: GLFWcharmodsfun): GLFWcharmodsfun <cimport, nodecl> end
+global function glfwSetMouseButtonCallback(window: *GLFWwindow, callback: GLFWmousebuttonfun): GLFWmousebuttonfun <cimport, nodecl> end
+global function glfwSetCursorPosCallback(window: *GLFWwindow, callback: GLFWcursorposfun): GLFWcursorposfun <cimport, nodecl> end
+global function glfwSetCursorEnterCallback(window: *GLFWwindow, callback: GLFWcursorenterfun): GLFWcursorenterfun <cimport, nodecl> end
+global function glfwSetScrollCallback(window: *GLFWwindow, callback: GLFWscrollfun): GLFWscrollfun <cimport, nodecl> end
+global function glfwSetDropCallback(window: *GLFWwindow, callback: GLFWdropfun): GLFWdropfun <cimport, nodecl> end
+global function glfwJoystickPresent(jid: cint): cint <cimport, nodecl> end
+global function glfwGetJoystickAxes(jid: cint, count: *cint): *float32 <cimport, nodecl> end
+global function glfwGetJoystickButtons(jid: cint, count: *cint): *cuchar <cimport, nodecl> end
+global function glfwGetJoystickHats(jid: cint, count: *cint): *cuchar <cimport, nodecl> end
+global function glfwGetJoystickName(jid: cint): cstring <cimport, nodecl> end
+global function glfwGetJoystickGUID(jid: cint): cstring <cimport, nodecl> end
+global function glfwSetJoystickUserPointer(jid: cint, pointer: pointer) <cimport, nodecl> end
+global function glfwGetJoystickUserPointer(jid: cint): pointer <cimport, nodecl> end
+global function glfwJoystickIsGamepad(jid: cint): cint <cimport, nodecl> end
+global function glfwSetJoystickCallback(callback: GLFWjoystickfun): GLFWjoystickfun <cimport, nodecl> end
+global function glfwUpdateGamepadMappings(string: cstring): cint <cimport, nodecl> end
+global function glfwGetGamepadName(jid: cint): cstring <cimport, nodecl> end
+global function glfwGetGamepadState(jid: cint, state: *GLFWgamepadstate): cint <cimport, nodecl> end
+global function glfwSetClipboardString(window: *GLFWwindow, string: cstring) <cimport, nodecl> end
+global function glfwGetClipboardString(window: *GLFWwindow): cstring <cimport, nodecl> end
+global function glfwGetTime(): float64 <cimport, nodecl> end
+global function glfwSetTime(time: float64) <cimport, nodecl> end
+global function glfwGetTimerValue(): uint64 <cimport, nodecl> end
+global function glfwGetTimerFrequency(): uint64 <cimport, nodecl> end
+global function glfwMakeContextCurrent(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwGetCurrentContext(): *GLFWwindow <cimport, nodecl> end
+global function glfwSwapBuffers(window: *GLFWwindow) <cimport, nodecl> end
+global function glfwSwapInterval(interval: cint) <cimport, nodecl> end
+global function glfwExtensionSupported(extension: cstring): cint <cimport, nodecl> end
+global function glfwGetProcAddress(procname: cstring): GLFWglproc <cimport, nodecl> end
+global function glfwVulkanSupported(): cint <cimport, nodecl> end
+global function glfwGetRequiredInstanceExtensions(count: *uint32): *cstring <cimport, nodecl> end

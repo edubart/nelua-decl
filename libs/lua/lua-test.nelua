@@ -1,0 +1,12 @@
+require 'lua'
+
+local L = luaL_newstate()
+if not L then
+  error 'failed to open lua'
+end
+luaL_openlibs(L)
+luaL_loadstring(L, [[
+print 'hello word'
+]])
+lua_call(L, 0, 0)
+lua_close(L)

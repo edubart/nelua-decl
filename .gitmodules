@@ -1,0 +1,3 @@
+[submodule "gcc-lua"]
+	path = gcc-lua
+	url = https://git.colberg.org/gcc-lua

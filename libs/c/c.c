@@ -1,0 +1,9 @@
+#include <ctype.h>
+#include <errno.h>
+#include <locale.h>
+#include <math.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
