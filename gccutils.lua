@@ -80,6 +80,7 @@ function gccutils.node_ctype2nltype(node)
 
     -- try to detect fixed types using the name
     if nltype and node:code() == 'integer_type' and nltype:match('^c') then
+      ctype = ctype:lower()
       if nltype:match('^cu') then
         if ctype:match('int64') then nltype = 'uint64'
         elseif ctype:match('int32') then nltype = 'uint32'

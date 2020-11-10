@@ -1,6 +1,6 @@
 GCCPLUGIN=-fplugin=./gcc-lua/gcc/gcclua.so
 
-all: c lua sdl2 miniaudio sokol
+all: c lua sdl2 miniaudio sokol stb
 
 c:
 	gcc $(GCCPLUGIN) -S libs/c/c.c -fplugin-arg-gcclua-script=libs/c/c.lua > libs/c/c.nelua
@@ -17,8 +17,11 @@ sokol:
 	gcc $(GCCPLUGIN) -S libs/sokol/sokol_time.c -fplugin-arg-gcclua-script=libs/sokol/sokol_time.lua > libs/sokol/sokol_time.nelua
 miniaudio:
 	gcc $(GCCPLUGIN) -S libs/miniaudio/miniaudio.c -fplugin-arg-gcclua-script=libs/miniaudio/miniaudio.lua > libs/miniaudio/miniaudio.nelua
+stb:
+	gcc $(GCCPLUGIN) -S libs/stb/stb_image.c -fplugin-arg-gcclua-script=libs/stb/stb_image.lua > libs/stb/stb_image.nelua
+	gcc $(GCCPLUGIN) -S libs/stb/stb_image_write.c -fplugin-arg-gcclua-script=libs/stb/stb_image_write.lua > libs/stb/stb_image_write.nelua
 
-download: download-miniaudio download-sokol
+download: download-miniaudio download-sokol download-stb
 download-miniaudio:
 	wget -O libs/miniaudio/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
 download-sokol:
@@ -26,8 +29,11 @@ download-sokol:
 	wget -O libs/sokol/sokol_app.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_app.h
 	wget -O libs/sokol/sokol_audio.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_audio.h
 	wget -O libs/sokol/sokol_time.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_time.h
+download-stb:
+	wget -O libs/stb/stb_image.h https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
+	wget -O libs/stb/stb_image_write.h https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h
 
-test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio
+test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-stb
 test-lua: lua
 	cd libs/lua && nelua lua-test.nelua
 test-glfw: glfw
@@ -38,6 +44,8 @@ test-sokol: sokol
 	cd libs/sokol && nelua sokol-test.nelua
 test-miniaudio: miniaudio
 	cd libs/miniaudio && nelua miniaudio-test.nelua pluck.wav
+test-stb:
+	cd libs/stb && nelua stb-test.nelua
 
 dev-test:
 	gcc $(GCCPLUGIN) -S test/test.c -fplugin-arg-gcclua-script=test/test.lua > test/test.nelua

@@ -1,53 +1,28 @@
-require 'math'
 require 'glfw'
 
-local do_redraw: boolean = false
-local width: cint
-local height: cint
-
+local g: float32 = 0.0_f32
 local function draw()
-  local r: number = math.random()
-  local g: number = math.random()
-  local b: number = math.random()
-  local l: number = math.sqrt(r * r + g * g + b * b)
-  glClearColor(r/l,g/l,b/l,1.0)
-  glClear(0x00004000)
+  g = g + 0.01_f32
+  if g > 1.0_f32 then g = 0.0_f32 end
+  glClearColor(1.0,g,0.0,1.0)
+  glClear(GL_COLOR_BUFFER_BIT)
 end
 
-local function framebufferSizeFun(window: *GLFWwindow, w: cint , h: cint)
-  width = w
-  height = h > 0 and h or 1
-  do_redraw = true
+glfwInit()
+local window = glfwCreateWindow(512, 512, "GLFW Window", nilptr, nilptr)
+if not window then
+  error "Could not create window"
 end
+glfwMakeContextCurrent(window)
+glfwSwapInterval(1)
 
-local function windowRefreshFun(window: *GLFWwindow)
+while glfwWindowShouldClose(window) == 0 do
   draw()
   glfwSwapBuffers(window)
-  do_redraw = false
-end
-
-local function go()
-  glfwInit()
-  local window = glfwCreateWindow(400, 400, "Test Window", nilptr, nilptr)
-  assert(window, "Could not create window")
-
-  glfwSetFramebufferSizeCallback(window, framebufferSizeFun)
-  glfwSetWindowRefreshCallback(window, windowRefreshFun)
-
-  glfwGetFramebufferSize(window, &width, &height)
-  framebufferSizeFun(window, width, height)
-
-  glfwMakeContextCurrent(window)
-  glfwSwapInterval(1)
-
-  while glfwWindowShouldClose(window) == 0 do
-    if do_redraw then
-      windowRefreshFun(window)
-    end
-    glfwWaitEvents()
+  glfwPollEvents()
+  if glfwGetTime() > 1.0 then
+    break
   end
-
-  glfwTerminate()
 end
 
-go()
+glfwTerminate()

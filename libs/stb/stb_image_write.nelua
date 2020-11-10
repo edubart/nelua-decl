@@ -1,0 +1,20 @@
+##[[
+cdefine 'STB_IMAGE_WRITE_STATIC'
+cdefine 'STB_IMAGE_WRITE_IMPLEMENTATION'
+cinclude '"stb_image_write.h"'
+]]
+global stbi_write_tga_with_rle: cint <cimport, nodecl>
+global stbi_write_png_compression_level: cint <cimport, nodecl>
+global stbi_write_force_png_filter: cint <cimport, nodecl>
+global function stbi_write_png(filename: cstring, w: cint, h: cint, comp: cint, data: pointer, stride_in_bytes: cint): cint <cimport, nodecl> end
+global function stbi_write_bmp(filename: cstring, w: cint, h: cint, comp: cint, data: pointer): cint <cimport, nodecl> end
+global function stbi_write_tga(filename: cstring, w: cint, h: cint, comp: cint, data: pointer): cint <cimport, nodecl> end
+global function stbi_write_hdr(filename: cstring, w: cint, h: cint, comp: cint, data: *float32): cint <cimport, nodecl> end
+global function stbi_write_jpg(filename: cstring, x: cint, y: cint, comp: cint, data: pointer, quality: cint): cint <cimport, nodecl> end
+global stbi_write_func: type <cimport, nodecl> = @function(pointer, pointer, cint)
+global function stbi_write_png_to_func(func: function(pointer, pointer, cint), context: pointer, w: cint, h: cint, comp: cint, data: pointer, stride_in_bytes: cint): cint <cimport, nodecl> end
+global function stbi_write_bmp_to_func(func: function(pointer, pointer, cint), context: pointer, w: cint, h: cint, comp: cint, data: pointer): cint <cimport, nodecl> end
+global function stbi_write_tga_to_func(func: function(pointer, pointer, cint), context: pointer, w: cint, h: cint, comp: cint, data: pointer): cint <cimport, nodecl> end
+global function stbi_write_hdr_to_func(func: function(pointer, pointer, cint), context: pointer, w: cint, h: cint, comp: cint, data: *float32): cint <cimport, nodecl> end
+global function stbi_write_jpg_to_func(func: function(pointer, pointer, cint), context: pointer, x: cint, y: cint, comp: cint, data: pointer, quality: cint): cint <cimport, nodecl> end
+global function stbi_flip_vertically_on_write(flip_boolean: cint) <cimport, nodecl> end

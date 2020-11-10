@@ -4,12 +4,17 @@ require 'miniaudio'
 require 'C.arg'
 require 'C.stdio'
 
+local stop_event: ma_event
+
 local function data_callback(pDevice: *ma_device, pOutput: pointer, pInput: pointer, frameCount: uint32)
   local pDecoder = (@*ma_decoder)(pDevice.pUserData)
   if not pDecoder then
     return
   end
-  ma_decoder_read_pcm_frames(pDecoder, pOutput, frameCount)
+  local read = ma_decoder_read_pcm_frames(pDecoder, pOutput, frameCount)
+  if read == 0 then
+    ma_event_signal(&stop_event)
+  end
 end
 
 local result: ma_result
@@ -19,6 +24,10 @@ local device: ma_device
 
 if C.argc < 2 then
   error "No input file."
+end
+
+if ma_event_init(&stop_event) ~= 0 then
+  error "Failed to init event."
 end
 
 result = ma_decoder_init_file(C.argv[1], nilptr, &decoder)
@@ -44,8 +53,8 @@ if ma_device_start(&device) ~= 0 then
   error "Failed to start playback device."
 end
 
-print("Press Enter to quit...")
-C.getchar()
+ma_event_wait(&stop_event)
 
 ma_device_uninit(&device)
 ma_decoder_uninit(&decoder)
+ma_event_uninit(&stop_event)

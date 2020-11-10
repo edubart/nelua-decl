@@ -20,7 +20,7 @@ end
 SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 SDL_RenderClear(renderer)
 SDL_RenderPresent(renderer)
-SDL_Delay(2000)
+SDL_Delay(1000)
 SDL_DestroyRenderer(renderer)
 SDL_DestroyWindow(window)
 SDL_Quit()

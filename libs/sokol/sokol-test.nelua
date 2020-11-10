@@ -67,7 +67,7 @@ local function frame()
   end
 
   -- quit after a while
-  if stm_ms(stm_since(start_time)) > 2000 then
+  if stm_ms(stm_since(start_time)) > 1000 then
     sapp_quit()
   end
 end

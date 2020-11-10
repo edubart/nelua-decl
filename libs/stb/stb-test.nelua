@@ -1,0 +1,32 @@
+## cflags '-I.'
+
+require 'stb_image'
+require 'stb_image_write'
+require 'memory'
+
+local function remove(pathname: cstring): cint <cimport,cinclude'<stdio.h>',nodecl> end
+
+-- Create a test image
+local R: [3]byte = {255,0,0}
+local B: [3]byte = {0,255,0}
+local G: [3]byte = {0,0,255}
+local W: [3]byte = {255,255,255}
+local image: [4][4][3]byte = {
+  {R,R,G,G},
+  {R,R,G,G},
+  {B,B,W,W},
+  {B,B,W,W},
+}
+
+-- Save the image
+stbi_write_png("test_image.png", 4, 4, 3, &image[0][0][0], 4*3);
+
+-- Load the image and compare
+local x: cint, y: cint, c: cint
+local data = stbi_load("test_image.png", &x, &y, &c, 3)
+assert(x == 4 and y == 4 and c == 3)
+assert(memory.equals(&image, data, 4*4*3))
+stbi_image_free(data)
+
+-- Delete the image file
+remove("test_image.png")
