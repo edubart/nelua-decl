@@ -60,7 +60,6 @@ for example the `libs/sdl2/sdl2-test.nelua` file.
 
 ## Todo
 
-* Import macro constants
 * Support unions
 * Support bitfields
 * Support unnamed fields

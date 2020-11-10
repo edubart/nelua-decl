@@ -17,6 +17,8 @@ nldecl.include_filters = {}
 nldecl.exclude_filters = {}
 nldecl.predeclared_names = {}
 nldecl.declared_names = {}
+nldecl.macro_filters = {}
+nldecl.include_macros = {}
 
 function nldecl.can_decl(declname, forwarddecl)
   if not declname or #declname == 0 then
@@ -386,6 +388,67 @@ local function finish_pending_type(node)
   return ret
 end
 
+local function eval_macro_value(value)
+  if not value then return end
+  value = value:gsub('%s+$','') -- right trim
+  value = value:gsub('^%(',''):gsub('%)$','') -- trim parenthesis
+  local intvalue = value:lower():gsub('u?l?l?$', '')
+  local floatvalue = value:lower():gsub('f$', '')
+  if intvalue:match('^-?%d+$') then
+    return intvalue
+  elseif intvalue:match('^-?0x%x+$') then
+    return intvalue
+  elseif floatvalue:match('-?%d+%.%d+') then
+    return floatvalue
+  elseif value:match('^"[^"\\]+"$') then
+    return value
+  end
+end
+
+local function process_macros()
+  local cppcmd = 'gcc -E -P -dD ' .. gcc.get_main_input_filename()
+  local file = assert(io.popen(cppcmd))
+  for line in file:lines() do
+    local name, value = line:match('^#define ([A-Za-z0-9_]+)%s+([^%s]+.*)')
+    local foundnltype
+    if name then -- is a macro constant
+      -- find in customized macros
+      for nltype,patts in pairs(nldecl.include_macros) do
+        for patt,forcevalue in pairs(patts) do
+          if name == patt and nldecl.can_decl(name) then
+            foundnltype = nltype
+            if forcevalue == false then
+              value = nil
+            elseif forcevalue ~= true then
+              value = tostring(forcevalue)
+            end
+            goto just_found
+          end
+        end
+      end
+      -- find in macro patterns
+      for nltype,patts in pairs(nldecl.macro_filters) do
+        for _,patt in ipairs(patts) do
+          if name:match(patt) and nldecl.can_decl(name) then
+            foundnltype = nltype
+            goto just_found
+          end
+        end
+      end
+    end
+::just_found::
+    if foundnltype then
+      local parsedvalue = eval_macro_value(value)
+      if parsedvalue then
+        emitter:add_ln('global '..name..': '..foundnltype..' <comptime> = '..parsedvalue)
+      else
+        emitter:add_ln('global '..name..': '..foundnltype..' <cimport, nodecl, const>')
+      end
+    end
+  end
+  file:close()
+end
+
 function nldecl.install()
   gcc.set_asm_file_name(gcc.HOST_BIT_BUCKET)
   gcc.register_callback(gcc.PLUGIN_FINISH_DECL, function(node)
@@ -410,6 +473,7 @@ function nldecl.install()
   end)
   gcc.register_callback(gcc.PLUGIN_FINISH_UNIT, function()
     finish_pending_type()
+    process_macros()
     if nldecl.append_code then
       emitter:add(nldecl.append_code)
     end
@@ -423,5 +487,6 @@ function nldecl.install()
 end
 
 nldecl.install()
+
 
 return nldecl

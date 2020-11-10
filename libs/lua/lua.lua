@@ -17,7 +17,54 @@ nldecl.generalize_pointers = {
   FILE = true,
   CallInfo = true,
 }
+nldecl.macro_filters = {
+  cint = {
+    '^LUA_OP',
+    '^LUA_HOOK',
+    '^LUA_MASK',
+    '^LUA_RIDX_',
+  },
+}
+nldecl.include_macros = {
+  cint = {
+    LUA_MULTRET = true,
+    LUA_NOREF = true,
+    LUA_REFNIL = true,
+    LUA_REGISTRYINDEX = true,
 
+    LUA_VERSION_NUM = false,
+    LUA_VERSION_RELEASE_NUM = false,
+
+    LUA_OK = true,
+    LUA_YIELD = true,
+    LUA_ERRRUN = true,
+    LUA_ERRSYNTAX = true,
+    LUA_ERRMEM = true,
+    LUA_ERRERR = true,
+    LUA_ERRFILE = true,
+
+    LUA_TNONE = true,
+    LUA_TNIL = true,
+    LUA_TBOOLEAN = true,
+    LUA_TLIGHTUSERDATA = true,
+    LUA_TNUMBER = true,
+    LUA_TSTRING = true,
+    LUA_TTABLE = true,
+    LUA_TFUNCTION = true,
+    LUA_TUSERDATA = true,
+    LUA_TTHREAD = true,
+    LUA_NUMTYPES = true,
+  },
+  cstring = {
+    LUA_VERSION_MAJOR = false,
+    LUA_VERSION_MINOR = false,
+    LUA_VERSION_RELEASE = false,
+    LUA_VERSION = false,
+    LUA_RELEASE = false,
+    LUA_COPYRIGHT = false,
+    LUA_AUTHORS = false,
+  }
+}
 nldecl.prepend_code = [=[
 ##[[
 linklib 'lua'
@@ -26,10 +73,8 @@ cinclude '<lauxlib.h>'
 cinclude '<lualib.h>'
 ]]
 ]=]
-
--- bind some functions manually because
--- they are defined as macros
 nldecl.append_code = [[
+-- Defined in C macros
 global function lua_call(L: *lua_State, nargs: cint, nresults: cint) <cimport, nodecl> end
 global function lua_pcall(L: *lua_State,nargs: cint, nresults: cint, errfunc: cint): cint <cimport, nodecl> end
 global function lua_yield(L: *lua_State, nresults: cint): cint <cimport, nodecl> end

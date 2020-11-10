@@ -211,6 +211,67 @@ global luaL_Stream: type <cimport, nodecl> = @record{
   f: pointer,
   closef: lua_CFunction
 }
+global LUA_VERSION_MAJOR: cstring <cimport, nodecl, const>
+global LUA_VERSION_MINOR: cstring <cimport, nodecl, const>
+global LUA_VERSION_RELEASE: cstring <cimport, nodecl, const>
+global LUA_VERSION_NUM: cint <cimport, nodecl, const>
+global LUA_VERSION_RELEASE_NUM: cint <cimport, nodecl, const>
+global LUA_VERSION: cstring <cimport, nodecl, const>
+global LUA_RELEASE: cstring <cimport, nodecl, const>
+global LUA_COPYRIGHT: cstring <cimport, nodecl, const>
+global LUA_AUTHORS: cstring <cimport, nodecl, const>
+global LUA_MULTRET: cint <comptime> = -1
+global LUA_REGISTRYINDEX: cint <cimport, nodecl, const>
+global LUA_OK: cint <comptime> = 0
+global LUA_YIELD: cint <comptime> = 1
+global LUA_ERRRUN: cint <comptime> = 2
+global LUA_ERRSYNTAX: cint <comptime> = 3
+global LUA_ERRMEM: cint <comptime> = 4
+global LUA_ERRERR: cint <comptime> = 5
+global LUA_TNONE: cint <comptime> = -1
+global LUA_TNIL: cint <comptime> = 0
+global LUA_TBOOLEAN: cint <comptime> = 1
+global LUA_TLIGHTUSERDATA: cint <comptime> = 2
+global LUA_TNUMBER: cint <comptime> = 3
+global LUA_TSTRING: cint <comptime> = 4
+global LUA_TTABLE: cint <comptime> = 5
+global LUA_TFUNCTION: cint <comptime> = 6
+global LUA_TUSERDATA: cint <comptime> = 7
+global LUA_TTHREAD: cint <comptime> = 8
+global LUA_NUMTYPES: cint <comptime> = 9
+global LUA_RIDX_MAINTHREAD: cint <comptime> = 1
+global LUA_RIDX_GLOBALS: cint <comptime> = 2
+global LUA_RIDX_LAST: cint <cimport, nodecl, const>
+global LUA_OPADD: cint <comptime> = 0
+global LUA_OPSUB: cint <comptime> = 1
+global LUA_OPMUL: cint <comptime> = 2
+global LUA_OPMOD: cint <comptime> = 3
+global LUA_OPPOW: cint <comptime> = 4
+global LUA_OPDIV: cint <comptime> = 5
+global LUA_OPIDIV: cint <comptime> = 6
+global LUA_OPBAND: cint <comptime> = 7
+global LUA_OPBOR: cint <comptime> = 8
+global LUA_OPBXOR: cint <comptime> = 9
+global LUA_OPSHL: cint <comptime> = 10
+global LUA_OPSHR: cint <comptime> = 11
+global LUA_OPUNM: cint <comptime> = 12
+global LUA_OPBNOT: cint <comptime> = 13
+global LUA_OPEQ: cint <comptime> = 0
+global LUA_OPLT: cint <comptime> = 1
+global LUA_OPLE: cint <comptime> = 2
+global LUA_HOOKCALL: cint <comptime> = 0
+global LUA_HOOKRET: cint <comptime> = 1
+global LUA_HOOKLINE: cint <comptime> = 2
+global LUA_HOOKCOUNT: cint <comptime> = 3
+global LUA_HOOKTAILCALL: cint <comptime> = 4
+global LUA_MASKCALL: cint <cimport, nodecl, const>
+global LUA_MASKRET: cint <cimport, nodecl, const>
+global LUA_MASKLINE: cint <cimport, nodecl, const>
+global LUA_MASKCOUNT: cint <cimport, nodecl, const>
+global LUA_ERRFILE: cint <cimport, nodecl, const>
+global LUA_NOREF: cint <comptime> = -2
+global LUA_REFNIL: cint <comptime> = -1
+-- Defined in C macros
 global function lua_call(L: *lua_State, nargs: cint, nresults: cint) <cimport, nodecl> end
 global function lua_pcall(L: *lua_State,nargs: cint, nresults: cint, errfunc: cint): cint <cimport, nodecl> end
 global function lua_yield(L: *lua_State, nresults: cint): cint <cimport, nodecl> end

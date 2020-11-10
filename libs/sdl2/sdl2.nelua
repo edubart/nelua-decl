@@ -8,9 +8,6 @@ global SDL_bool: type <cimport, nodecl> = @enum(cint){
   SDL_FALSE = 0,
   SDL_TRUE = 1
 }
-global SDL_DUMMY_ENUM: type <cimport, nodecl> = @enum(cint){
-  DUMMY_ENUM_VALUE = 0
-}
 global function SDL_malloc(size: csize): pointer <cimport, nodecl> end
 global function SDL_calloc(nmemb: csize, size: csize): pointer <cimport, nodecl> end
 global function SDL_realloc(mem: pointer, size: csize): pointer <cimport, nodecl> end
@@ -2302,3 +2299,253 @@ global function SDL_InitSubSystem(flags: uint32): cint <cimport, nodecl> end
 global function SDL_QuitSubSystem(flags: uint32) <cimport, nodecl> end
 global function SDL_WasInit(flags: uint32): uint32 <cimport, nodecl> end
 global function SDL_Quit() <cimport, nodecl> end
+global SDL_ICONV_ERROR: csize <cimport, nodecl, const>
+global SDL_ICONV_E2BIG: csize <cimport, nodecl, const>
+global SDL_ICONV_EILSEQ: csize <cimport, nodecl, const>
+global SDL_ICONV_EINVAL: csize <cimport, nodecl, const>
+global SDL_LIL_ENDIAN: cint <comptime> = 1234
+global SDL_BIG_ENDIAN: cint <comptime> = 4321
+global SDL_BYTEORDER: cint <cimport, nodecl, const>
+global SDL_MUTEX_TIMEDOUT: cint <comptime> = 1
+global SDL_MUTEX_MAXWAIT: uint32 <cimport, nodecl, const>
+global SDL_RWOPS_UNKNOWN: uint32 <comptime> = 0
+global SDL_RWOPS_WINFILE: uint32 <comptime> = 1
+global SDL_RWOPS_STDFILE: uint32 <comptime> = 2
+global SDL_RWOPS_JNIFILE: uint32 <comptime> = 3
+global SDL_RWOPS_MEMORY: uint32 <comptime> = 4
+global SDL_RWOPS_MEMORY_RO: uint32 <comptime> = 5
+global SDL_AUDIO_MASK_BITSIZE: uint16 <comptime> = 0xff
+global SDL_AUDIO_MASK_DATATYPE: uint16 <cimport, nodecl, const>
+global SDL_AUDIO_MASK_ENDIAN: uint16 <cimport, nodecl, const>
+global SDL_AUDIO_MASK_SIGNED: uint16 <cimport, nodecl, const>
+global SDL_AUDIO_ALLOW_FREQUENCY_CHANGE: uint16 <comptime> = 0x00000001
+global SDL_AUDIO_ALLOW_FORMAT_CHANGE: uint16 <comptime> = 0x00000002
+global SDL_AUDIO_ALLOW_CHANNELS_CHANGE: uint16 <comptime> = 0x00000004
+global SDL_AUDIO_ALLOW_SAMPLES_CHANGE: uint16 <comptime> = 0x00000008
+global SDL_AUDIO_ALLOW_ANY_CHANGE: uint16 <cimport, nodecl, const>
+global SDL_AUDIOCVT_MAX_FILTERS: cint <comptime> = 9
+global SDL_MIX_MAXVOLUME: cint <comptime> = 128
+global SDL_CACHELINE_SIZE: cint <comptime> = 128
+global SDL_ALPHA_OPAQUE: uint8 <comptime> = 255
+global SDL_ALPHA_TRANSPARENT: uint8 <comptime> = 0
+global SDL_SWSURFACE: uint32 <comptime> = 0
+global SDL_PREALLOC: uint32 <comptime> = 0x00000001
+global SDL_RLEACCEL: uint32 <comptime> = 0x00000002
+global SDL_DONTFREE: uint32 <comptime> = 0x00000004
+global SDL_SIMD_ALIGNED: uint32 <comptime> = 0x00000008
+global SDL_WINDOWPOS_UNDEFINED_MASK: uint32 <comptime> = 0x1fff0000
+global SDL_WINDOWPOS_UNDEFINED: uint32 <cimport, nodecl, const>
+global SDL_WINDOWPOS_CENTERED_MASK: uint32 <comptime> = 0x2fff0000
+global SDL_WINDOWPOS_CENTERED: uint32 <cimport, nodecl, const>
+global SDL_BUTTON_LEFT: uint8 <comptime> = 1
+global SDL_BUTTON_MIDDLE: uint8 <comptime> = 2
+global SDL_BUTTON_RIGHT: uint8 <comptime> = 3
+global SDL_BUTTON_X1: uint8 <comptime> = 4
+global SDL_BUTTON_X2: uint8 <comptime> = 5
+global SDL_BUTTON_LMASK: uint8 <cimport, nodecl, const>
+global SDL_BUTTON_MMASK: uint8 <cimport, nodecl, const>
+global SDL_BUTTON_RMASK: uint8 <cimport, nodecl, const>
+global SDL_BUTTON_X1MASK: uint8 <cimport, nodecl, const>
+global SDL_BUTTON_X2MASK: uint8 <cimport, nodecl, const>
+global SDL_JOYSTICK_AXIS_MAX: cint <comptime> = 32767
+global SDL_JOYSTICK_AXIS_MIN: cint <comptime> = -32768
+global SDL_HAT_CENTERED: uint8 <comptime> = 0x00
+global SDL_HAT_UP: uint8 <comptime> = 0x01
+global SDL_HAT_RIGHT: uint8 <comptime> = 0x02
+global SDL_HAT_DOWN: uint8 <comptime> = 0x04
+global SDL_HAT_LEFT: uint8 <comptime> = 0x08
+global SDL_HAT_RIGHTUP: uint8 <cimport, nodecl, const>
+global SDL_HAT_RIGHTDOWN: uint8 <cimport, nodecl, const>
+global SDL_HAT_LEFTUP: uint8 <cimport, nodecl, const>
+global SDL_HAT_LEFTDOWN: uint8 <cimport, nodecl, const>
+global SDL_TOUCH_MOUSEID: uint32 <cimport, nodecl, const>
+global SDL_MOUSE_TOUCHID: int64 <cimport, nodecl, const>
+global SDL_RELEASED: int8 <comptime> = 0
+global SDL_PRESSED: int8 <comptime> = 1
+global SDL_TEXTEDITINGEVENT_TEXT_SIZE: cint <comptime> = 32
+global SDL_TEXTINPUTEVENT_TEXT_SIZE: cint <comptime> = 32
+global SDL_QUERY: cint <comptime> = -1
+global SDL_IGNORE: cint <comptime> = 0
+global SDL_DISABLE: cint <comptime> = 0
+global SDL_ENABLE: cint <comptime> = 1
+global SDL_HAPTIC_CONSTANT: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_SINE: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_LEFTRIGHT: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_TRIANGLE: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_SAWTOOTHUP: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_SAWTOOTHDOWN: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_RAMP: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_SPRING: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_DAMPER: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_INERTIA: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_FRICTION: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_CUSTOM: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_GAIN: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_AUTOCENTER: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_STATUS: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_PAUSE: uint32 <cimport, nodecl, const>
+global SDL_HAPTIC_POLAR: uint32 <comptime> = 0
+global SDL_HAPTIC_CARTESIAN: uint32 <comptime> = 1
+global SDL_HAPTIC_SPHERICAL: uint32 <comptime> = 2
+global SDL_HAPTIC_INFINITY: uint32 <comptime> = 4294967295
+global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring <comptime> = "SDL_FRAMEBUFFER_ACCELERATION"
+global SDL_HINT_RENDER_DRIVER: cstring <comptime> = "SDL_RENDER_DRIVER"
+global SDL_HINT_RENDER_OPENGL_SHADERS: cstring <comptime> = "SDL_RENDER_OPENGL_SHADERS"
+global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring <comptime> = "SDL_RENDER_DIRECT3D_THREADSAFE"
+global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring <comptime> = "SDL_RENDER_DIRECT3D11_DEBUG"
+global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring <comptime> = "SDL_RENDER_LOGICAL_SIZE_MODE"
+global SDL_HINT_RENDER_SCALE_QUALITY: cstring <comptime> = "SDL_RENDER_SCALE_QUALITY"
+global SDL_HINT_RENDER_VSYNC: cstring <comptime> = "SDL_RENDER_VSYNC"
+global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring <comptime> = "SDL_VIDEO_ALLOW_SCREENSAVER"
+global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring <comptime> = "SDL_VIDEO_EXTERNAL_CONTEXT"
+global SDL_HINT_VIDEO_X11_XVIDMODE: cstring <comptime> = "SDL_VIDEO_X11_XVIDMODE"
+global SDL_HINT_VIDEO_X11_XINERAMA: cstring <comptime> = "SDL_VIDEO_X11_XINERAMA"
+global SDL_HINT_VIDEO_X11_XRANDR: cstring <comptime> = "SDL_VIDEO_X11_XRANDR"
+global SDL_HINT_VIDEO_X11_WINDOW_VISUALID: cstring <comptime> = "SDL_VIDEO_X11_WINDOW_VISUALID"
+global SDL_HINT_VIDEO_X11_NET_WM_PING: cstring <comptime> = "SDL_VIDEO_X11_NET_WM_PING"
+global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring <comptime> = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
+global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring <comptime> = "SDL_VIDEO_X11_FORCE_EGL"
+global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring <comptime> = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
+global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring <comptime> = "SDL_WINDOWS_INTRESOURCE_ICON"
+global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring <comptime> = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
+global SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: cstring <comptime> = "SDL_WINDOWS_ENABLE_MESSAGELOOP"
+global SDL_HINT_GRAB_KEYBOARD: cstring <comptime> = "SDL_GRAB_KEYBOARD"
+global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_TIME"
+global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_RADIUS"
+global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_NORMAL_SPEED_SCALE"
+global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_RELATIVE_SPEED_SCALE"
+global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring <comptime> = "SDL_MOUSE_RELATIVE_MODE_WARP"
+global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring <comptime> = "SDL_MOUSE_FOCUS_CLICKTHROUGH"
+global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring <comptime> = "SDL_TOUCH_MOUSE_EVENTS"
+global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring <comptime> = "SDL_MOUSE_TOUCH_EVENTS"
+global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring <comptime> = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS"
+global SDL_HINT_IDLE_TIMER_DISABLED: cstring <comptime> = "SDL_IOS_IDLE_TIMER_DISABLED"
+global SDL_HINT_ORIENTATIONS: cstring <comptime> = "SDL_IOS_ORIENTATIONS"
+global SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS: cstring <comptime> = "SDL_APPLE_TV_CONTROLLER_UI_EVENTS"
+global SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION: cstring <comptime> = "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION"
+global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring <comptime> = "SDL_IOS_HIDE_HOME_INDICATOR"
+global SDL_HINT_ACCELEROMETER_AS_JOYSTICK: cstring <comptime> = "SDL_ACCELEROMETER_AS_JOYSTICK"
+global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring <comptime> = "SDL_TV_REMOTE_AS_JOYSTICK"
+global SDL_HINT_XINPUT_ENABLED: cstring <comptime> = "SDL_XINPUT_ENABLED"
+global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring <comptime> = "SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING"
+global SDL_HINT_GAMECONTROLLERTYPE: cstring <comptime> = "SDL_GAMECONTROLLERTYPE"
+global SDL_HINT_GAMECONTROLLERCONFIG: cstring <comptime> = "SDL_GAMECONTROLLERCONFIG"
+global SDL_HINT_GAMECONTROLLERCONFIG_FILE: cstring <comptime> = "SDL_GAMECONTROLLERCONFIG_FILE"
+global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES: cstring <comptime> = "SDL_GAMECONTROLLER_IGNORE_DEVICES"
+global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT: cstring <comptime> = "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
+global SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: cstring <comptime> = "SDL_GAMECONTROLLER_USE_BUTTON_LABELS"
+global SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS: cstring <comptime> = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS"
+global SDL_HINT_JOYSTICK_HIDAPI: cstring <comptime> = "SDL_JOYSTICK_HIDAPI"
+global SDL_HINT_JOYSTICK_HIDAPI_PS4: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS4"
+global SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS4_RUMBLE"
+global SDL_HINT_JOYSTICK_HIDAPI_STEAM: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_STEAM"
+global SDL_HINT_JOYSTICK_HIDAPI_SWITCH: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_SWITCH"
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX"
+global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_GAMECUBE"
+global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring <comptime> = "SDL_ENABLE_STEAM_CONTROLLERS"
+global SDL_HINT_ALLOW_TOPMOST: cstring <comptime> = "SDL_ALLOW_TOPMOST"
+global SDL_HINT_TIMER_RESOLUTION: cstring <comptime> = "SDL_TIMER_RESOLUTION"
+global SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION: cstring <comptime> = "SDL_QTWAYLAND_CONTENT_ORIENTATION"
+global SDL_HINT_QTWAYLAND_WINDOW_FLAGS: cstring <comptime> = "SDL_QTWAYLAND_WINDOW_FLAGS"
+global SDL_HINT_THREAD_STACK_SIZE: cstring <comptime> = "SDL_THREAD_STACK_SIZE"
+global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring <comptime> = "SDL_VIDEO_HIGHDPI_DISABLED"
+global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring <comptime> = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
+global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring <comptime> = "SDL_VIDEO_WIN_D3DCOMPILER"
+global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring <comptime> = "SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
+global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_URL"
+global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_LABEL"
+global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring <comptime> = "SDL_WINRT_HANDLE_BACK_BUTTON"
+global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring <comptime> = "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
+global SDL_HINT_MAC_BACKGROUND_APP: cstring <comptime> = "SDL_MAC_BACKGROUND_APP"
+global SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: cstring <comptime> = "SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION"
+global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring <comptime> = "SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION"
+global SDL_HINT_IME_INTERNAL_EDITING: cstring <comptime> = "SDL_IME_INTERNAL_EDITING"
+global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring <comptime> = "SDL_ANDROID_TRAP_BACK_BUTTON"
+global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring <comptime> = "SDL_ANDROID_BLOCK_ON_PAUSE"
+global SDL_HINT_RETURN_KEY_HIDES_IME: cstring <comptime> = "SDL_RETURN_KEY_HIDES_IME"
+global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring <comptime> = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
+global SDL_HINT_NO_SIGNAL_HANDLERS: cstring <comptime> = "SDL_NO_SIGNAL_HANDLERS"
+global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring <comptime> = "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4"
+global SDL_HINT_BMP_SAVE_LEGACY_FORMAT: cstring <comptime> = "SDL_BMP_SAVE_LEGACY_FORMAT"
+global SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: cstring <comptime> = "SDL_WINDOWS_DISABLE_THREAD_NAMING"
+global SDL_HINT_RPI_VIDEO_LAYER: cstring <comptime> = "SDL_RPI_VIDEO_LAYER"
+global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring <comptime> = "SDL_VIDEO_DOUBLE_BUFFER"
+global SDL_HINT_OPENGL_ES_DRIVER: cstring <comptime> = "SDL_OPENGL_ES_DRIVER"
+global SDL_HINT_AUDIO_RESAMPLING_MODE: cstring <comptime> = "SDL_AUDIO_RESAMPLING_MODE"
+global SDL_HINT_AUDIO_CATEGORY: cstring <comptime> = "SDL_AUDIO_CATEGORY"
+global SDL_HINT_RENDER_BATCHING: cstring <comptime> = "SDL_RENDER_BATCHING"
+global SDL_HINT_EVENT_LOGGING: cstring <comptime> = "SDL_EVENT_LOGGING"
+global SDL_HINT_WAVE_RIFF_CHUNK_SIZE: cstring <comptime> = "SDL_WAVE_RIFF_CHUNK_SIZE"
+global SDL_HINT_WAVE_TRUNCATION: cstring <comptime> = "SDL_WAVE_TRUNCATION"
+global SDL_HINT_WAVE_FACT_CHUNK: cstring <comptime> = "SDL_WAVE_FACT_CHUNK"
+global SDL_HINT_DISPLAY_USABLE_BOUNDS: cstring <comptime> = "SDL_DISPLAY_USABLE_BOUNDS"
+global SDL_MAX_LOG_MESSAGE: cint <comptime> = 4096
+global SDL_STANDARD_GRAVITY: float32 <comptime> = 9.80665
+global SDL_NONSHAPEABLE_WINDOW: cint <comptime> = -1
+global SDL_INVALID_SHAPE_ARGUMENT: cint <comptime> = -2
+global SDL_WINDOW_LACKS_SHAPE: cint <comptime> = -3
+global SDL_MAJOR_VERSION: cint <cimport, nodecl, const>
+global SDL_MINOR_VERSION: cint <cimport, nodecl, const>
+global SDL_PATCHLEVEL: cint <cimport, nodecl, const>
+global SDL_COMPILEDVERSION: cint <cimport, nodecl, const>
+global SDL_INIT_TIMER: uint32 <comptime> = 0x00000001
+global SDL_INIT_AUDIO: uint32 <comptime> = 0x00000010
+global SDL_INIT_VIDEO: uint32 <comptime> = 0x00000020
+global SDL_INIT_JOYSTICK: uint32 <comptime> = 0x00000200
+global SDL_INIT_HAPTIC: uint32 <comptime> = 0x00001000
+global SDL_INIT_GAMECONTROLLER: uint32 <comptime> = 0x00002000
+global SDL_INIT_EVENTS: uint32 <comptime> = 0x00004000
+global SDL_INIT_SENSOR: uint32 <comptime> = 0x00008000
+global SDL_INIT_NOPARACHUTE: uint32 <comptime> = 0x00100000
+global SDL_INIT_EVERYTHING: uint32 <cimport, nodecl, const>
+-- Defined in C macros
+global function SDL_BlitSurface(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_BlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_TriggerBreakpoint() <cimport, nodecl> end
+global function SDL_CompilerBarrier() <cimport, nodecl> end
+global function SDL_MemoryBarrierRelease() <cimport, nodecl> end
+global function SDL_MemoryBarrierAcquire() <cimport, nodecl> end
+global function SDL_AtomicIncRef(a: *SDL_atomic_t): cint <cimport, nodecl> end
+global function SDL_AtomicDecRef(a: *SDL_atomic_t): cint <cimport, nodecl> end
+global function SDL_OutOfMemory(): cint <cimport, nodecl> end
+global function SDL_Unsupported(): cint <cimport, nodecl> end
+global function SDL_InvalidParamError(param: cstring): cint <cimport, nodecl> end
+global function SDL_SwapLE16(x: int16): int16 <cimport, nodecl> end
+global function SDL_SwapLE32(x: int32): int32 <cimport, nodecl> end
+global function SDL_SwapLE64(x: int64): int64 <cimport, nodecl> end
+global function SDL_SwapFloatLE(x: float32): float32 <cimport, nodecl> end
+global function SDL_SwapBE16(x: int16): int16 <cimport, nodecl> end
+global function SDL_SwapBE32(x: int32): int32 <cimport, nodecl> end
+global function SDL_SwapBE64(x: int64): int64 <cimport, nodecl> end
+global function SDL_SwapFloatBE(x: float32): float32 <cimport, nodecl> end
+global function SDL_LoadWAV(file: cstring, spec: *SDL_AudioSpec, audio_buf: **uint8, audio_len: *uint32): *SDL_AudioSpec <cimport, nodecl> end
+global function SDL_LoadBMPW(file: cstring): *SDL_Surface <cimport, nodecl> end
+global function SDL_SaveBMP(surface: *SDL_Surface, file: cstring): cint <cimport, nodecl> end
+global function SDL_GameControllerAddMappingsFromFile(file: cstring): cint <cimport, nodecl> end
+global function SDL_QuitRequested(): cint <cimport, nodecl> end
+global function SDL_GetEventState(type: uint32): uint8 <cimport, nodecl> end
+global function SDL_AUDIO_BITSIZE(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_AUDIO_ISFLOAT(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_AUDIO_ISBIGENDIAN(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_AUDIO_ISSIGNED(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_AUDIO_ISINT(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_AUDIO_ISLITTLEENDIAN(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_AUDIO_ISUNSIGNED(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_PIXELFLAG(x: cint): cint <cimport, nodecl> end
+global function SDL_PIXELTYPE(x: cint): cint <cimport, nodecl> end
+global function SDL_PIXELORDER(x: cint): cint <cimport, nodecl> end
+global function SDL_PIXELLAYOUT(x: cint): cint <cimport, nodecl> end
+global function SDL_BITSPERPIXEL(x: cint): cint <cimport, nodecl> end
+global function SDL_BYTESPERPIXEL(x: cint): cint <cimport, nodecl> end
+global function SDL_ISPIXELFORMAT_INDEXED(format: SDL_PixelFormatEnum): SDL_bool <cimport, nodecl> end
+global function SDL_ISPIXELFORMAT_PACKED(format: SDL_PixelFormatEnum): SDL_bool <cimport, nodecl> end
+global function SDL_ISPIXELFORMAT_ARRAY(format: SDL_PixelFormatEnum): SDL_bool <cimport, nodecl> end
+global function SDL_ISPIXELFORMAT_ALPHA(format: SDL_PixelFormatEnum): SDL_bool <cimport, nodecl> end
+global function SDL_ISPIXELFORMAT_FOURCC(format: SDL_PixelFormatEnum): SDL_bool <cimport, nodecl> end
+global function SDL_WINDOWPOS_ISUNDEFINED(x: uint32): SDL_bool <cimport, nodecl> end
+global function SDL_WINDOWPOS_ISCENTERED(x: uint32): SDL_bool <cimport, nodecl> end
+global function SDL_MUSTLOCK(s: *SDL_Surface): SDL_bool <cimport, nodecl> end
+global function SDL_SCANCODE_TO_KEYCODE(x: SDL_Scancode): SDL_KeyCode <cimport, nodecl> end
+global function SDL_SHAPEMODEALPHA(mode: WindowShapeMode): SDL_bool <cimport, nodecl> end
+global function SDL_VERSION(x: *SDL_version) <cimport, nodecl> end
+global function SDL_VERSION_ATLEAST(x: cint, y: cint, z: cint): SDL_bool <cimport, nodecl> end

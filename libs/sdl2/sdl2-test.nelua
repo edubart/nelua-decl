@@ -1,8 +1,5 @@
 require 'sdl2'
 
-local SDL_INIT_VIDEO <comptime> = 0x20
-local SDL_WINDOWPOS_UNDEFINED <comptime> = 0x1fff0000
-
 if SDL_Init(SDL_INIT_VIDEO) ~= 0 then
   error 'Could not initialize SDL'
 end
