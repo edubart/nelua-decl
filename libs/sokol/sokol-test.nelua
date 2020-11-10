@@ -3,15 +3,25 @@
 require 'sokol_app'
 require 'sokol_gfx'
 require 'sokol_glue'
+require 'sokol_audio'
+require 'sokol_time'
 
-local pass_action: sg_pass_action
+local NUM_SAMPLES <comptime> = 32
+local state: record{
+  pass_action: sg_pass_action,
+  even_odd: uint32,
+  sample_pos: cint,
+  samples: [NUM_SAMPLES]float32,
+}
+local start_time: uint64
 
 local function init()
-  local desc: sg_desc = {
+  -- setup graphics
+  local sgdesc: sg_desc = {
     context = sapp_sgcontext()
   }
-  sg_setup(&desc)
-  pass_action = {
+  sg_setup(&sgdesc)
+  state.pass_action = {
     colors = {
       {action=sg_action.SG_ACTION_CLEAR, val={1.0, 0.0, 0.0, 1.0}},
       {},
@@ -19,19 +29,55 @@ local function init()
       {}
     }
   }
+
+  -- setup audio
+  local saudiodesc: saudio_desc = {}
+  saudio_setup(&saudiodesc)
+
+  -- setup time
+  stm_setup()
+  start_time = stm_now()
 end
 
 local function frame()
-  local g: float32 = pass_action.colors[0].val[1] + 0.01_f32
+  -- draw background
+  local g: float32 = state.pass_action.colors[0].val[1] + 0.01_f32
   if g > 1.0_f32 then g = 0.0_f32 end
-  pass_action.colors[0].val[1] = g
-  sg_begin_default_pass(&pass_action, sapp_width(), sapp_height())
+  state.pass_action.colors[0].val[1] = g
+  sg_begin_default_pass(&state.pass_action, sapp_width(), sapp_height())
   sg_end_pass()
   sg_commit()
+
+  -- audio wave
+  local num_frames = saudio_expect()
+  local s: float32
+  for i=0,<num_frames do
+    if (state.even_odd & (1<<6)) ~= 0 then
+      s = 0.05
+    else
+      s = -0.05
+    end
+    state.even_odd = state.even_odd + 1
+    state.samples[state.sample_pos] = s
+    state.sample_pos = state.sample_pos + 1
+    if state.sample_pos == NUM_SAMPLES then
+      state.sample_pos = 0
+      saudio_push(&state.samples[0], NUM_SAMPLES)
+    end
+  end
+
+  -- quit after a while
+  if stm_ms(stm_since(start_time)) > 2000 then
+    sapp_quit()
+  end
 end
 
 local function cleanup()
+  -- shutdown graphics
   sg_shutdown()
+
+  -- shutdown audio
+  saudio_shutdown()
 end
 
 local desc: sapp_desc = {

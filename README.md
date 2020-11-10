@@ -1,4 +1,4 @@
-C binding generator for Nelua using [GCC Lua plugin](https://peter.colberg.org/gcc-lua).
+C binding generator for [Nelua](https://nelua.io/) using [GCC Lua plugin](https://peter.colberg.org/gcc-lua).
 
 This tool assists creating C bindings for any C library
 for Nelua in a quick steps, possibility customizing
@@ -38,8 +38,8 @@ The following libraries bindings are generated as example:
 * [Lua 5.4](https://www.lua.org/) - [lua.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/lua/lua.nelua)
 * [SDL2](https://www.libsdl.org/) - [sdl2.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sdl2/sdl2.nelua)
 * [GLFW](https://www.glfw.org/) - [glfw.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/glfw/glfw.nelua)
-* [Sokol](https://floooh.github.io/sokol-html5/index.html) - [sokol_gfx.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_gfx.nelua) - [sokol_app.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_app.nelua) - [sokol_glue.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_glue.nelua)
-* [miniaudio](https://github.com/mackron/miniaudio) - [miniaudio.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniaudio/miniaudio.nelua)
+* [miniaudio](https://miniaud.io/) - [miniaudio.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniaudio/miniaudio.nelua)
+* [Sokol](https://floooh.github.io/sokol-html5/index.html) - [sokol_gfx.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_gfx.nelua) - [sokol_app.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_app.nelua) - [sokol_glue.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_glue.nelua) - [sokol_audio.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_audio.nelua) - [sokol_time.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_time.nelua)
 
 ## How to generate bindings
 
