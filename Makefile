@@ -1,6 +1,7 @@
 GCCPLUGIN=-fplugin=./gcc-lua/gcc/gcclua.so
 
 all: c lua sdl2 miniaudio sokol stb
+all-extra: all blend2d
 
 c:
 	gcc $(GCCPLUGIN) -S libs/c/c.c -fplugin-arg-gcclua-script=libs/c/c.lua > libs/c/c.nelua
@@ -20,6 +21,8 @@ miniaudio:
 stb:
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image.c -fplugin-arg-gcclua-script=libs/stb/stb_image.lua > libs/stb/stb_image.nelua
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image_write.c -fplugin-arg-gcclua-script=libs/stb/stb_image_write.lua > libs/stb/stb_image_write.nelua
+blend2d:
+	gcc $(GCCPLUGIN) -S libs/blend2d/blend2d.c -fplugin-arg-gcclua-script=libs/blend2d/blend2d.lua > libs/blend2d/blend2d.nelua
 
 download: download-miniaudio download-sokol download-stb
 download-miniaudio:
@@ -34,6 +37,7 @@ download-stb:
 	wget -O libs/stb/stb_image_write.h https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h
 
 test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-stb
+test-all-extra: test-all test-blend2d
 test-lua: lua
 	cd libs/lua && nelua lua-test.nelua
 test-glfw: glfw
@@ -44,8 +48,10 @@ test-sokol: sokol
 	cd libs/sokol && nelua sokol-test.nelua
 test-miniaudio: miniaudio
 	cd libs/miniaudio && nelua miniaudio-test.nelua pluck.wav
-test-stb:
+test-stb: stb
 	cd libs/stb && nelua stb-test.nelua
+test-blend2d: blend2d
+	cd libs/blend2d && nelua blend2d-test.nelua
 
 dev-test:
 	gcc $(GCCPLUGIN) -S test/test.c -fplugin-arg-gcclua-script=test/test.lua > test/test.nelua

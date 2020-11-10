@@ -1,0 +1,36 @@
+require 'blend2d'
+
+local function remove(pathname: cstring): cint <cimport,cinclude'<stdio.h>',nodecl> end
+
+local r: BLResult
+local ctx: BLContextCore
+local gradient: BLGradientCore
+local img: BLImageCore
+r = blImageInitAs(&img, 256, 256, BLFormat.BL_FORMAT_PRGB32)
+assert(r == BLResultCode.BL_SUCCESS, 'failed to init image')
+r = blContextInitAs(&ctx, &img, nilptr)
+assert(r == BLResultCode.BL_SUCCESS, 'failed to init context')
+
+local values: BLLinearGradientValues = { 0, 0, 256, 256 }
+blGradientInitAs(&gradient,
+  BLGradientType.BL_GRADIENT_TYPE_LINEAR, &values,
+  BLExtendMode.BL_EXTEND_MODE_PAD, nilptr, 0, nilptr)
+
+blGradientAddStopRgba32(&gradient, 0.0, 0x00000000)
+blGradientAddStopRgba32(&gradient, 1.0, 0xFFFFFFFF)
+
+blContextSetCompOp(&ctx, BLCompOp.BL_COMP_OP_SRC_COPY)
+blContextSetFillStyleObject(&ctx, &gradient)
+
+blContextFillAll(&ctx)
+blContextEnd(&ctx)
+blGradientDestroy(&gradient)
+
+local codec: BLImageCodecCore
+r = blImageCodecInit(&codec)
+assert(r == BLResultCode.BL_SUCCESS, 'failed to init codec')
+r = blImageCodecFindByName(&codec, 'BMP', #[primtypes.csize.max]#, nilptr)
+assert(r == BLResultCode.BL_SUCCESS, 'failed to find codec')
+r = blImageWriteToFile(&img, 'test.bmp', &codec)
+assert(r == BLResultCode.BL_SUCCESS, 'failed to write image')
+remove('test.bmp')

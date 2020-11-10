@@ -3,3 +3,5 @@ nelua_cache
 /test
 *.h
 *.s
+*.png
+*.bmp
