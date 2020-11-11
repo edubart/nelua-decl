@@ -60,8 +60,9 @@ the libraries, you can run the as long you
 have the library headers on your system. Look
 for example the `libs/sdl2/sdl2-test.nelua` file.
 
-## Todo
+## TODO
 
-* Support unions
-* Support bitfields
-* Support unnamed fields
+* Support C unions
+* Support C bit fields
+* Support C unnamed fields
+* Support C complex type

@@ -171,7 +171,8 @@ function nldecl.union_type(node, decl)
     emitter:add(typename)
     return
   elseif not node:fields() then
-    emitter:add('union{}')
+    -- emitter:add('union{}')
+    emitter:add('record{}')
     return
   end
   emitter:add_ln('record{')

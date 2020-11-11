@@ -1,7 +1,7 @@
 GCCPLUGIN=-fplugin=./gcc-lua/gcc/gcclua.so
 
-all: c lua sdl2 miniaudio sokol stb
-all-extra: all blend2d
+all: lua sdl2 miniaudio sokol stb
+all-extra: all c blend2d
 
 c:
 	gcc $(GCCPLUGIN) -S libs/c/c.c -fplugin-arg-gcclua-script=libs/c/c.lua > libs/c/c.nelua
@@ -37,7 +37,9 @@ download-stb:
 	wget -O libs/stb/stb_image_write.h https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h
 
 test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-stb
-test-all-extra: test-all test-blend2d
+test-all-extra: test-all test-c test-blend2d
+test-c: c
+	cd libs/c && nelua c.nelua
 test-lua: lua
 	cd libs/lua && nelua lua-test.nelua
 test-glfw: glfw
