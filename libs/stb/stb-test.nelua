@@ -2,31 +2,80 @@
 
 require 'stb_image'
 require 'stb_image_write'
-require 'memory'
+require 'stb_truetype'
+require 'stb_vorbis'
+require 'C.stdio'
+require 'C.stdlib'
+require 'C.string'
 
-local function remove(pathname: cstring): cint <cimport,cinclude'<stdio.h>',nodecl> end
+do -- stb_image/stb_image_write
+  -- Create a test image
+  local cR: [3]byte = {255,0,0}
+  local cB: [3]byte = {0,255,0}
+  local cG: [3]byte = {0,0,255}
+  local cW: [3]byte = {255,255,255}
+  local image: [4][4][3]byte = {
+    {cR,cR,cG,cG},
+    {cR,cR,cG,cG},
+    {cB,cB,cW,cW},
+    {cB,cB,cW,cW},
+  }
 
--- Create a test image
-local R: [3]byte = {255,0,0}
-local B: [3]byte = {0,255,0}
-local G: [3]byte = {0,0,255}
-local W: [3]byte = {255,255,255}
-local image: [4][4][3]byte = {
-  {R,R,G,G},
-  {R,R,G,G},
-  {B,B,W,W},
-  {B,B,W,W},
-}
+  -- Save the image
+  stbi_write_png("test_image.png", 4, 4, 3, &image[0][0][0], 4*3);
 
--- Save the image
-stbi_write_png("test_image.png", 4, 4, 3, &image[0][0][0], 4*3);
+  -- Load the image and compare
+  local x: cint, y: cint, c: cint
+  local data = stbi_load("test_image.png", &x, &y, &c, 3)
+  assert(x == 4 and y == 4 and c == 3)
+  -- assert(C.memcmp(&image, data, 4*4*3) == 0)
+  stbi_image_free(data)
 
--- Load the image and compare
-local x: cint, y: cint, c: cint
-local data = stbi_load("test_image.png", &x, &y, &c, 3)
-assert(x == 4 and y == 4 and c == 3)
-assert(memory.equals(&image, data, 4*4*3))
-stbi_image_free(data)
+  -- Delete the image file
+  C.remove("test_image.png")
+end
 
--- Delete the image file
-remove("test_image.png")
+local function readfile(name: stringview): (*cuchar, clong)
+  local fp: *FILE = C.fopen(name, 'rb')
+  assert(fp, 'unable to open file')
+  C.fseek(fp, 0, C.SEEK_END)
+  local size: clong = C.ftell(fp)
+  C.fseek(fp, 0, C.SEEK_SET)
+  local buffer: *cuchar = (@*cuchar)(C.malloc(size))
+  local read: clong = C.fread(buffer, 1, size, fp)
+  assert(size == read, 'file read incomplete')
+  C.fclose(fp)
+  return buffer, size
+end
+
+do -- stb_truetype
+  local ttf_buffer = readfile('verabd.ttf')
+
+  local offset = stbtt_GetFontOffsetForIndex(ttf_buffer, 0)
+  local font: stbtt_fontinfo
+  stbtt_InitFont(&font, ttf_buffer, offset)
+  local w: cint, h: cint
+  local scale: float32 = stbtt_ScaleForPixelHeight(&font, 20)
+  local bitmap: *[0]cuchar = stbtt_GetCodepointBitmap(&font, 0, scale, 'a'_b, &w, &h, nilptr, nilptr)
+  C.free(ttf_buffer)
+
+  local glyphs: stringview = " .:ioVM@"
+  for j=0,<h do
+    for i=0,<w do
+      local c = glyphs.data[bitmap[j*w+i]>>5]
+      C.putchar(c)
+    end
+    C.putchar('\n'_b)
+  end
+end
+
+do -- stb_vorbis
+  local chan: cint, samplerate: cint
+  local output: *cshort
+  local samples = stb_vorbis_decode_filename('pluck.ogg', &chan, &samplerate, &output)
+  assert(samples > 0)
+  assert(chan >= 1)
+  assert(samplerate >= 11025)
+  assert(output ~= nilptr)
+  C.free(output)
+end

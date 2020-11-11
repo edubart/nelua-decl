@@ -21,6 +21,8 @@ miniaudio:
 stb:
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image.c -fplugin-arg-gcclua-script=libs/stb/stb_image.lua > libs/stb/stb_image.nelua
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image_write.c -fplugin-arg-gcclua-script=libs/stb/stb_image_write.lua > libs/stb/stb_image_write.nelua
+	gcc $(GCCPLUGIN) -S libs/stb/stb_vorbis.c -fplugin-arg-gcclua-script=libs/stb/stb_vorbis.lua > libs/stb/stb_vorbis.nelua
+	gcc $(GCCPLUGIN) -S libs/stb/stb_truetype.c -fplugin-arg-gcclua-script=libs/stb/stb_truetype.lua > libs/stb/stb_truetype.nelua
 blend2d:
 	gcc $(GCCPLUGIN) -S libs/blend2d/blend2d.c -fplugin-arg-gcclua-script=libs/blend2d/blend2d.lua > libs/blend2d/blend2d.nelua
 
@@ -35,11 +37,13 @@ download-sokol:
 download-stb:
 	wget -O libs/stb/stb_image.h https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
 	wget -O libs/stb/stb_image_write.h https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h
+	wget -O libs/stb/stb_vorbis.h https://raw.githubusercontent.com/nothings/stb/master/stb_vorbis.c
+	wget -O libs/stb/stb_truetype.h https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h
 
 test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-stb
 test-all-extra: test-all test-c test-blend2d
 test-c: c
-	cd libs/c && nelua c.nelua
+	cd libs/c && nelua c-test.nelua
 test-lua: lua
 	cd libs/lua && nelua lua-test.nelua
 test-glfw: glfw
