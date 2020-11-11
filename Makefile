@@ -59,5 +59,5 @@ test-stb: stb
 test-blend2d: blend2d
 	cd libs/blend2d && nelua blend2d-test.nelua
 
-dev-test:
+test-dev:
 	gcc $(GCCPLUGIN) -S test/test.c -fplugin-arg-gcclua-script=test/test.lua > test/test.nelua

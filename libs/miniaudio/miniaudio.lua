@@ -33,9 +33,11 @@ nldecl.include_macros = {
   }
 }
 
-nldecl.prepend_code = [[
-## cdefine 'MINIAUDIO_IMPLEMENTATION'
-## cinclude '"miniaudio.h"'
-## linklib 'dl'
-## linklib 'pthread'
+nldecl.prepend_code = [=[
+##[[
+cdefine 'MINIAUDIO_IMPLEMENTATION'
+cinclude '"miniaudio.h"'
+linklib 'dl'
+linklib 'pthread'
 ]]
+]=]

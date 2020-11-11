@@ -1,7 +1,9 @@
-## cdefine 'MINIAUDIO_IMPLEMENTATION'
-## cinclude '"miniaudio.h"'
-## linklib 'dl'
-## linklib 'pthread'
+##[[
+cdefine 'MINIAUDIO_IMPLEMENTATION'
+cinclude '"miniaudio.h"'
+linklib 'dl'
+linklib 'pthread'
+]]
 global __pthread_internal_list: type <cimport, forwarddecl> = @record{}
 global __pthread_internal_list: type <cimport, nodecl> = @record{
   __prev: *__pthread_internal_list,

@@ -35,14 +35,14 @@ do -- stb_image/stb_image_write
   C.remove("test_image.png")
 end
 
-local function readfile(name: stringview): (*cuchar, clong)
+local function readfile(name: stringview): (*[0]byte, isize)
   local fp: *FILE = C.fopen(name, 'rb')
   assert(fp, 'unable to open file')
   C.fseek(fp, 0, C.SEEK_END)
-  local size: clong = C.ftell(fp)
+  local size: isize = C.ftell(fp)
   C.fseek(fp, 0, C.SEEK_SET)
-  local buffer: *cuchar = (@*cuchar)(C.malloc(size))
-  local read: clong = C.fread(buffer, 1, size, fp)
+  local buffer: *byte = (@*[0]byte)(C.malloc(size))
+  local read: isize = C.fread(buffer, 1, size, fp)
   assert(size == read, 'file read incomplete')
   C.fclose(fp)
   return buffer, size
@@ -51,12 +51,12 @@ end
 do -- stb_truetype
   local ttf_buffer = readfile('verabd.ttf')
 
-  local offset = stbtt_GetFontOffsetForIndex(ttf_buffer, 0)
+  local offset = stbtt_GetFontOffsetForIndex(&ttf_buffer[0], 0)
   local font: stbtt_fontinfo
-  stbtt_InitFont(&font, ttf_buffer, offset)
+  stbtt_InitFont(&font, &ttf_buffer[0], offset)
   local w: cint, h: cint
   local scale: float32 = stbtt_ScaleForPixelHeight(&font, 20)
-  local bitmap: *[0]cuchar = stbtt_GetCodepointBitmap(&font, 0, scale, 'a'_b, &w, &h, nilptr, nilptr)
+  local bitmap: *[0]byte = stbtt_GetCodepointBitmap(&font, 0, scale, 'a'_b, &w, &h, nilptr, nilptr)
   C.free(ttf_buffer)
 
   local glyphs: stringview = " .:ioVM@"
@@ -71,7 +71,7 @@ end
 
 do -- stb_vorbis
   local chan: cint, samplerate: cint
-  local output: *cshort
+  local output: *int16
   local samples = stb_vorbis_decode_filename('pluck.ogg', &chan, &samplerate, &output)
   assert(samples > 0)
   assert(chan >= 1)
