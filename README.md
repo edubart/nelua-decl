@@ -65,4 +65,3 @@ for example the `libs/sdl2/sdl2-test.nelua` file.
 * Support unions
 * Support bitfields
 * Support unnamed fields
-* Support C va_list

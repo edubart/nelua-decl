@@ -1,58 +1,19 @@
 local nldecl = require 'nldecl'
 
-nldecl.prepend_code = [=[
-##[[
-linklib 'SDL2'
-cdefine 'SDL_MAIN_HANDLED'
-cinclude '<SDL2/SDL.h>'
-]]
-]=]
-nldecl.include_filters = {
-  '^SDL',
-}
 nldecl.include_names = {
+  '^SDL',
   WindowShapeMode = true,
+  _SDL_iconv_t = true,
 }
+
 nldecl.exclude_names = {
-  -- C va_list is not supported yet
-  SDL_vsscanf = true,
-  SDL_vsnprintf = true,
-  SDL_LogMessageV = true,
   SDL_DUMMY_ENUM = true,
   SDL_HAPTIC_LINUX = true,
 }
-nldecl.generalize_pointers = {
-  _SDL_iconv_t = true,
-  FILE = true,
-}
-nldecl.macro_filters = {
-  uint32 = {
-    '^SDL_RWOPS_',
-    '^SDL_WINDOWPOS_',
-    '^SDL_INIT_',
-    '^SDL_HAPTIC_',
-  },
-  uint16 = {
-    '^SDL_AUDIO_ALLOW_',
-    '^SDL_AUDIO_MASK_',
-  },
-  uint8 = {
-    '^SDL_ALPHA_',
-    '^SDL_BUTTON_',
-    '^SDL_HAT_',
-  },
-  cint = {
-    '^SDL_JOYSTICK_AXIS_',
-  },
-  cstring = {
-    '^SDL_HINT_'
-  },
-  csize = {
-    '^SDL_ICONV_'
-  }
-}
+
 nldecl.include_macros = {
   cint = {
+    '^SDL_JOYSTICK_AXIS_',
     SDL_MUTEX_TIMEDOUT = true,
 
     SDL_LIL_ENDIAN = true,
@@ -81,8 +42,11 @@ nldecl.include_macros = {
     SDL_PATCHLEVEL = false,
     SDL_COMPILEDVERSION = false,
   },
-
   uint32 = {
+    '^SDL_RWOPS_',
+    '^SDL_WINDOWPOS_',
+    '^SDL_INIT_',
+    '^SDL_HAPTIC_',
     SDL_SWSURFACE = true,
     SDL_PREALLOC = true,
     SDL_RLEACCEL = true,
@@ -92,20 +56,43 @@ nldecl.include_macros = {
     SDL_MUTEX_MAXWAIT = true,
     SDL_TOUCH_MOUSEID = true,
   },
-
+  uint16 = {
+    '^SDL_AUDIO_ALLOW_',
+    '^SDL_AUDIO_MASK_',
+  },
   int64 = {
     SDL_MOUSE_TOUCHID = true,
   },
-
+  uint8 = {
+    '^SDL_ALPHA_',
+    '^SDL_BUTTON_',
+    '^SDL_HAT_',
+  },
   int8 = {
     SDL_RELEASED = true,
     SDL_PRESSED = true,
   },
-
   float32= {
     SDL_STANDARD_GRAVITY = true,
-  }
+  },
+  csize = {
+    '^SDL_ICONV_'
+  },
+  cstring = {
+    '^SDL_HINT_'
+  },
 }
+
+nldecl.prepend_code = [=[
+##[[
+linklib 'SDL2'
+cdefine 'SDL_MAIN_HANDLED'
+cinclude '<SDL2/SDL.h>'
+]]
+local FILE <cimport, nodecl, forwarddecl> = @record{}
+local va_list <cimport, nodecl> = @record{}
+]=]
+
 nldecl.append_code = [[
 -- Defined in C macros
 global function SDL_BlitSurface(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end

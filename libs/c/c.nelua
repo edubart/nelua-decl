@@ -581,19 +581,19 @@ global function setlinebuf(__stream: *FILE) <cimport, nodecl> end
 global function fprintf(__stream: *FILE, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function printf(__format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function sprintf(__s: cstring, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function vfprintf(__s: *FILE, __format: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
-global function vprintf(__format: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
-global function vsprintf(__s: cstring, __format: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
+global function vfprintf(__s: *FILE, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vprintf(__format: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vsprintf(__s: cstring, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
 global function snprintf(__s: cstring, __maxlen: csize, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function vsnprintf(__s: cstring, __maxlen: csize, __format: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
-global function vdprintf(__fd: cint, __fmt: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
+global function vsnprintf(__s: cstring, __maxlen: csize, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vdprintf(__fd: cint, __fmt: cstring, __arg: va_list): cint <cimport, nodecl> end
 global function dprintf(__fd: cint, __fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function fscanf(__stream: *FILE, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function scanf(__format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function sscanf(__s: cstring, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function vfscanf(__s: *FILE, __format: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
-global function vscanf(__format: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
-global function vsscanf(__s: cstring, __format: cstring, __arg: *__va_list_tag): cint <cimport, nodecl> end
+global function vfscanf(__s: *FILE, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vscanf(__format: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vsscanf(__s: cstring, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
 global function fgetc(__stream: *FILE): cint <cimport, nodecl> end
 global function getc(__stream: *FILE): cint <cimport, nodecl> end
 global function getchar(): cint <cimport, nodecl> end

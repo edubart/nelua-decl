@@ -1,22 +1,14 @@
 local nldecl = require 'nldecl'
 
-nldecl.prepend_code = [=[
-##[[
-linklib 'glfw'
-linklib 'GL'
-cinclude '<GLFW/glfw3.h>'
-]]
-]=]
-nldecl.include_filters = {
+nldecl.include_names = {
   '^gl',
   '^GL',
   '^glfw',
   '^GLFW',
 }
-nldecl.exclude_filters = {
-  '^GL_VERSION_',
-}
+
 nldecl.exclude_names = {
+  '^GL_VERSION_',
   GLFWvkproc = true,
   GLsync = true,
   GLDEBUGPROC = true,
@@ -25,7 +17,6 @@ nldecl.exclude_names = {
   GLeglImageOES = true,
   GLeglClientBufferEXT = true,
   GLVULKANPROCNV = true,
-
   -- TODO: handle better these constants
   GL_TIMEOUT_IGNORED = true,
   GL_INVALID_INDEX = true,
@@ -38,16 +29,21 @@ nldecl.exclude_names = {
   GL_ALL_BARRIER_BITS = true,
   GL_ALL_PIXELS_AMD = true,
 }
-nldecl.macro_filters = {
-  cint = {
-    '^GLFW_',
-    '^GL_[A-Z_]+$'
-  },
-}
+
 nldecl.include_macros = {
   cint = {
+    '^GLFW_',
+    '^GL_[A-Z_]+$',
     GLFW_VERSION_MAJOR = false,
     GLFW_VERSION_MINOR = false,
     GLFW_VERSION_REVISION = false,
   },
 }
+
+nldecl.prepend_code = [=[
+##[[
+linklib 'glfw'
+linklib 'GL'
+cinclude '<GLFW/glfw3.h>'
+]]
+]=]

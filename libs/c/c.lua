@@ -1,5 +1,5 @@
 local nldecl = require 'nldecl'
 
-nldecl.exclude_filters = {
+nldecl.exclude_names = {
   '^_'
 }

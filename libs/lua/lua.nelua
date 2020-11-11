@@ -4,6 +4,8 @@ cinclude '<lua.h>'
 cinclude '<lauxlib.h>'
 cinclude '<lualib.h>'
 ]]
+local FILE <cimport, nodecl, forwarddecl> = @record{}
+local va_list <cimport, nodecl> = @record{}
 global lua_State: type <cimport, forwarddecl> = @record{}
 global lua_Number: type <cimport, nodecl> = @float64
 global lua_Integer: type <cimport, nodecl> = @clonglong
@@ -54,6 +56,7 @@ global function lua_pushnumber(L: *lua_State, n: lua_Number) <cimport, nodecl> e
 global function lua_pushinteger(L: *lua_State, n: lua_Integer) <cimport, nodecl> end
 global function lua_pushlstring(L: *lua_State, s: cstring, len: csize): cstring <cimport, nodecl> end
 global function lua_pushstring(L: *lua_State, s: cstring): cstring <cimport, nodecl> end
+global function lua_pushvfstring(L: *lua_State, fmt: cstring, argp: va_list): cstring <cimport, nodecl> end
 global function lua_pushfstring(L: *lua_State, fmt: cstring, ...: cvarargs): cstring <cimport, nodecl> end
 global function lua_pushcclosure(L: *lua_State, fn: lua_CFunction, n: cint) <cimport, nodecl> end
 global function lua_pushboolean(L: *lua_State, b: cint) <cimport, nodecl> end
@@ -113,6 +116,7 @@ global function lua_gethook(L: *lua_State): lua_Hook <cimport, nodecl> end
 global function lua_gethookmask(L: *lua_State): cint <cimport, nodecl> end
 global function lua_gethookcount(L: *lua_State): cint <cimport, nodecl> end
 global function lua_setcstacklimit(L: *lua_State, limit: cuint): cint <cimport, nodecl> end
+global CallInfo: type <cimport, forwarddecl> = @record{}
 global lua_Debug: type <cimport, nodecl> = @record{
   event: cint,
   name: cstring,
@@ -130,7 +134,7 @@ global lua_Debug: type <cimport, nodecl> = @record{
   ftransfer: cushort,
   ntransfer: cushort,
   short_src: [60]cchar,
-  i_ci: pointer
+  i_ci: *CallInfo
 }
 global function luaopen_base(L: *lua_State): cint <cimport, nodecl> end
 global function luaopen_coroutine(L: *lua_State): cint <cimport, nodecl> end
@@ -208,7 +212,7 @@ global function luaL_pushresult(B: *luaL_Buffer) <cimport, nodecl> end
 global function luaL_pushresultsize(B: *luaL_Buffer, sz: csize) <cimport, nodecl> end
 global function luaL_buffinitsize(L: *lua_State, B: *luaL_Buffer, sz: csize): cstring <cimport, nodecl> end
 global luaL_Stream: type <cimport, nodecl> = @record{
-  f: pointer,
+  f: *FILE,
   closef: lua_CFunction
 }
 global LUA_VERSION_MAJOR: cstring <cimport, nodecl, const>

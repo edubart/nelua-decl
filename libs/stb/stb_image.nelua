@@ -3,6 +3,8 @@ cdefine 'STB_IMAGE_STATIC'
 cdefine 'STB_IMAGE_IMPLEMENTATION'
 cinclude '"stb_image.h"'
 ]]
+local FILE <cimport, nodecl, forwarddecl> = @record{}
+local va_list <cimport, nodecl> = @record{}
 global STBI_default: cint <comptime> = 0
 global STBI_grey: cint <comptime> = 1
 global STBI_grey_alpha: cint <comptime> = 2
@@ -16,16 +18,16 @@ global stbi_io_callbacks: type <cimport, nodecl> = @record{
 global function stbi_load_from_memory(buffer: *cuchar, len: cint, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cuchar <cimport, nodecl> end
 global function stbi_load_from_callbacks(clbk: *stbi_io_callbacks, user: pointer, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cuchar <cimport, nodecl> end
 global function stbi_load(filename: cstring, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cuchar <cimport, nodecl> end
-global function stbi_load_from_file(f: pointer, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cuchar <cimport, nodecl> end
+global function stbi_load_from_file(f: *FILE, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cuchar <cimport, nodecl> end
 global function stbi_load_gif_from_memory(buffer: *cuchar, len: cint, delays: **cint, x: *cint, y: *cint, z: *cint, comp: *cint, req_comp: cint): *cuchar <cimport, nodecl> end
 global function stbi_load_16_from_memory(buffer: *cuchar, len: cint, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cushort <cimport, nodecl> end
 global function stbi_load_16_from_callbacks(clbk: *stbi_io_callbacks, user: pointer, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cushort <cimport, nodecl> end
 global function stbi_load_16(filename: cstring, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cushort <cimport, nodecl> end
-global function stbi_load_from_file_16(f: pointer, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cushort <cimport, nodecl> end
+global function stbi_load_from_file_16(f: *FILE, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *cushort <cimport, nodecl> end
 global function stbi_loadf_from_memory(buffer: *cuchar, len: cint, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *float32 <cimport, nodecl> end
 global function stbi_loadf_from_callbacks(clbk: *stbi_io_callbacks, user: pointer, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *float32 <cimport, nodecl> end
 global function stbi_loadf(filename: cstring, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *float32 <cimport, nodecl> end
-global function stbi_loadf_from_file(f: pointer, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *float32 <cimport, nodecl> end
+global function stbi_loadf_from_file(f: *FILE, x: *cint, y: *cint, channels_in_file: *cint, desired_channels: cint): *float32 <cimport, nodecl> end
 global function stbi_hdr_to_ldr_gamma(gamma: float32) <cimport, nodecl> end
 global function stbi_hdr_to_ldr_scale(scale: float32) <cimport, nodecl> end
 global function stbi_ldr_to_hdr_gamma(gamma: float32) <cimport, nodecl> end
@@ -33,7 +35,7 @@ global function stbi_ldr_to_hdr_scale(scale: float32) <cimport, nodecl> end
 global function stbi_is_hdr_from_callbacks(clbk: *stbi_io_callbacks, user: pointer): cint <cimport, nodecl> end
 global function stbi_is_hdr_from_memory(buffer: *cuchar, len: cint): cint <cimport, nodecl> end
 global function stbi_is_hdr(filename: cstring): cint <cimport, nodecl> end
-global function stbi_is_hdr_from_file(f: pointer): cint <cimport, nodecl> end
+global function stbi_is_hdr_from_file(f: *FILE): cint <cimport, nodecl> end
 global function stbi_failure_reason(): cstring <cimport, nodecl> end
 global function stbi_image_free(retval_from_stbi_load: pointer) <cimport, nodecl> end
 global function stbi_info_from_memory(buffer: *cuchar, len: cint, x: *cint, y: *cint, comp: *cint): cint <cimport, nodecl> end
@@ -41,9 +43,9 @@ global function stbi_info_from_callbacks(clbk: *stbi_io_callbacks, user: pointer
 global function stbi_is_16_bit_from_memory(buffer: *cuchar, len: cint): cint <cimport, nodecl> end
 global function stbi_is_16_bit_from_callbacks(clbk: *stbi_io_callbacks, user: pointer): cint <cimport, nodecl> end
 global function stbi_info(filename: cstring, x: *cint, y: *cint, comp: *cint): cint <cimport, nodecl> end
-global function stbi_info_from_file(f: pointer, x: *cint, y: *cint, comp: *cint): cint <cimport, nodecl> end
+global function stbi_info_from_file(f: *FILE, x: *cint, y: *cint, comp: *cint): cint <cimport, nodecl> end
 global function stbi_is_16_bit(filename: cstring): cint <cimport, nodecl> end
-global function stbi_is_16_bit_from_file(f: pointer): cint <cimport, nodecl> end
+global function stbi_is_16_bit_from_file(f: *FILE): cint <cimport, nodecl> end
 global function stbi_set_unpremultiply_on_load(flag_true_if_should_unpremultiply: cint) <cimport, nodecl> end
 global function stbi_convert_iphone_png_to_rgb(flag_true_if_should_convert: cint) <cimport, nodecl> end
 global function stbi_set_flip_vertically_on_load(flag_true_if_should_flip: cint) <cimport, nodecl> end

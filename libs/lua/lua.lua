@@ -1,32 +1,22 @@
 local nldecl = require 'nldecl'
 
-nldecl.exclude_filters = {
-  'lua_pushvfstring'
-}
-nldecl.include_filters = {
+nldecl.include_names = {
   '^lua',
   '^LUA',
-}
-nldecl.include_names = {
   lua_Integer = true,
   lua_Number = true,
   lua_Unsigned = true,
   lua_KContext = true,
-}
-nldecl.generalize_pointers = {
-  FILE = true,
   CallInfo = true,
 }
-nldecl.macro_filters = {
+
+nldecl.include_macros = {
   cint = {
     '^LUA_OP',
     '^LUA_HOOK',
     '^LUA_MASK',
     '^LUA_RIDX_',
-  },
-}
-nldecl.include_macros = {
-  cint = {
+
     LUA_MULTRET = true,
     LUA_NOREF = true,
     LUA_REFNIL = true,
@@ -65,6 +55,7 @@ nldecl.include_macros = {
     LUA_AUTHORS = false,
   }
 }
+
 nldecl.prepend_code = [=[
 ##[[
 linklib 'lua'
@@ -72,7 +63,10 @@ cinclude '<lua.h>'
 cinclude '<lauxlib.h>'
 cinclude '<lualib.h>'
 ]]
+local FILE <cimport, nodecl, forwarddecl> = @record{}
+local va_list <cimport, nodecl> = @record{}
 ]=]
+
 nldecl.append_code = [[
 -- Defined in C macros
 global function lua_call(L: *lua_State, nargs: cint, nresults: cint) <cimport, nodecl> end

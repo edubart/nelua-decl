@@ -12,13 +12,10 @@ local emitter = Emitter()
 nldecl.emitter = emitter
 nldecl.include_names = {}
 nldecl.exclude_names = {}
-nldecl.generalize_pointers = {}
-nldecl.include_filters = {}
-nldecl.exclude_filters = {}
+nldecl.include_macros = {}
+
 nldecl.predeclared_names = {}
 nldecl.declared_names = {}
-nldecl.macro_filters = {}
-nldecl.include_macros = {}
 
 function nldecl.can_decl(declname, forwarddecl)
   if not declname or #declname == 0 then
@@ -41,15 +38,15 @@ function nldecl.can_decl(declname, forwarddecl)
     -- accept declaration
     return true
   end
-  if #nldecl.exclude_filters > 0 then
-    for _,patt in ipairs(nldecl.exclude_filters) do
+  if #nldecl.exclude_names > 0 then
+    for _,patt in ipairs(nldecl.exclude_names) do
       if declname:match(patt) then
         return false
       end
     end
   end
-  if #nldecl.include_filters > 0 then
-    for _,patt in ipairs(nldecl.include_filters) do
+  if #nldecl.include_names > 0 then
+    for _,patt in ipairs(nldecl.include_names) do
       if declname:match(patt) then
         return true
       end
@@ -95,11 +92,10 @@ function nldecl.pointer_type(node, decl)
   if not decl and typename then
     emitter:add(typename)
   else
-    if nldecl.generalize_pointers[gccutils.get_id(subnode)] then
-      emitter:add('pointer')
-      return
-    end
-    if subnode:code() == 'integer_type' and gccutils.get_id(subnode:canonical()) == 'char' then
+    local subnodeid = gccutils.get_id(subnode)
+    if subnodeid == '__va_list_tag' then
+      emitter:add('va_list')
+    elseif subnode:code() == 'integer_type' and gccutils.get_id(subnode:canonical()) == 'char' then
       emitter:add('cstring')
     elseif subnode:code() == 'void_type' then
       emitter:add('pointer')
@@ -427,7 +423,7 @@ local function process_macros()
         end
       end
       -- find in macro patterns
-      for nltype,patts in pairs(nldecl.macro_filters) do
+      for nltype,patts in pairs(nldecl.include_macros) do
         for _,patt in ipairs(patts) do
           if name:match(patt) and nldecl.can_decl(name) then
             foundnltype = nltype

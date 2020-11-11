@@ -1,6 +1,6 @@
 local nldecl = require 'nldecl'
 
-nldecl.include_filters = {
+nldecl.include_names = {
   '^stbi_',
   '^STBI_'
 }
