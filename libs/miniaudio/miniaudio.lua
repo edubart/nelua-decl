@@ -3,7 +3,17 @@ local nldecl = require 'nldecl'
 nldecl.include_names = {
   '^ma_',
   '^MA_',
+  ma_bool32 = true,
+  ma_bool8 = true,
+  ma_handle = true,
   ma_result = true,
+
+  -- threading variables
+  ma_spinlock = true,
+  ma_thread = true,
+  ma_mutex = true,
+  ma_event = true,
+  ma_semaphore = true,
   pthread_mutex_t = true,
   pthread_cond_t = true,
   pthread_list_t = true,

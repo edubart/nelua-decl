@@ -23,10 +23,7 @@ local function init()
   sg_setup(&sgdesc)
   state.pass_action = {
     colors = {
-      {action=sg_action.SG_ACTION_CLEAR, val={1.0, 0.0, 0.0, 1.0}},
-      {},
-      {},
-      {}
+      {action=sg_action.SG_ACTION_CLEAR, val={1.0, 0.0, 0.0, 1.0}}
     }
   }
 

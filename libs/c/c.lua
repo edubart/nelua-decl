@@ -1,8 +1,13 @@
 local nldecl = require 'nldecl'
 
-nldecl.exclude_names = {
-  -- '^_'
-}
+-- nldecl.include_names = {
+--   '^__sig',
+--   '^_libc_',
+-- }
+
+-- nldecl.exclude_names = {
+--   '^_'
+-- }
 
 nldecl.prepend_code = [=[
 ##[[

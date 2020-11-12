@@ -51,6 +51,8 @@ global pthread_cond_t: type <cimport, nodecl> = @record{
   __size: [48]cchar,
   __align: clonglong
 }
+global ma_bool8: type <cimport, nodecl> = @cuchar
+global ma_bool32: type <cimport, nodecl> = @cuint
 global ma_handle: type <cimport, nodecl> = @pointer
 global ma_ptr: type <cimport, nodecl> = @pointer
 global ma_proc: type <cimport, nodecl> = @function()
@@ -119,11 +121,9 @@ global ma_thread_priority: type <cimport, nodecl> = @enum(cint){
   ma_thread_priority_realtime = 1,
   ma_thread_priority_default = 0
 }
-global ma_mutex: type <cimport, nodecl> = @record{
-  __data: __pthread_mutex_s,
-  __size: [40]cchar,
-  __align: clong
-}
+global ma_spinlock: type <cimport, nodecl> = @cuchar
+global ma_thread: type <cimport, nodecl> = @culong
+global ma_mutex: type = @pthread_mutex_t
 global ma_event: type <cimport, nodecl> = @record{
   value: uint32,
   lock: pthread_mutex_t,
@@ -173,13 +173,7 @@ global ma_lpf1_config: type <cimport, nodecl> = @record{
   cutoffFrequency: float64,
   q: float64
 }
-global ma_lpf2_config: type <cimport, nodecl> = @record{
-  format: ma_format,
-  channels: uint32,
-  sampleRate: uint32,
-  cutoffFrequency: float64,
-  q: float64
-}
+global ma_lpf2_config: type = @ma_lpf1_config
 global function ma_lpf1_config_init(format: ma_format, channels: uint32, sampleRate: uint32, cutoffFrequency: float64): ma_lpf1_config <cimport, nodecl> end
 global function ma_lpf2_config_init(format: ma_format, channels: uint32, sampleRate: uint32, cutoffFrequency: float64, q: float64): ma_lpf2_config <cimport, nodecl> end
 global ma_lpf1: type <cimport, nodecl> = @record{
@@ -227,13 +221,7 @@ global ma_hpf1_config: type <cimport, nodecl> = @record{
   cutoffFrequency: float64,
   q: float64
 }
-global ma_hpf2_config: type <cimport, nodecl> = @record{
-  format: ma_format,
-  channels: uint32,
-  sampleRate: uint32,
-  cutoffFrequency: float64,
-  q: float64
-}
+global ma_hpf2_config: type = @ma_hpf1_config
 global function ma_hpf1_config_init(format: ma_format, channels: uint32, sampleRate: uint32, cutoffFrequency: float64): ma_hpf1_config <cimport, nodecl> end
 global function ma_hpf2_config_init(format: ma_format, channels: uint32, sampleRate: uint32, cutoffFrequency: float64, q: float64): ma_hpf2_config <cimport, nodecl> end
 global ma_hpf1: type <cimport, nodecl> = @record{
@@ -462,10 +450,10 @@ global ma_channel_converter: type <cimport, nodecl> = @record{
     f32: [32][32]float32,
     s16: [32][32]int32
   },
-  isPassthrough: cuint,
-  isSimpleShuffle: cuint,
-  isSimpleMonoExpansion: cuint,
-  isStereoToMono: cuint,
+  isPassthrough: ma_bool32,
+  isSimpleShuffle: ma_bool32,
+  isSimpleMonoExpansion: ma_bool32,
+  isStereoToMono: ma_bool32,
   shuffleTable: [32]uint8
 }
 global function ma_channel_converter_init(pConfig: *ma_channel_converter_config, pConverter: *ma_channel_converter): ma_result <cimport, nodecl> end
@@ -485,7 +473,7 @@ global ma_data_converter_config: type <cimport, nodecl> = @record{
   channelWeights: [32][32]float32,
   resampling: record{
     algorithm: ma_resample_algorithm,
-    allowDynamicSampleRate: cuint,
+    allowDynamicSampleRate: ma_bool32,
     linear: record{
       lpfOrder: uint32,
       lpfNyquistFactor: float64
@@ -501,11 +489,11 @@ global ma_data_converter: type <cimport, nodecl> = @record{
   config: ma_data_converter_config,
   channelConverter: ma_channel_converter,
   resampler: ma_resampler,
-  hasPreFormatConversion: cuint,
-  hasPostFormatConversion: cuint,
-  hasChannelConverter: cuint,
-  hasResampler: cuint,
-  isPassthrough: cuint
+  hasPreFormatConversion: ma_bool32,
+  hasPostFormatConversion: ma_bool32,
+  hasChannelConverter: ma_bool32,
+  hasResampler: ma_bool32,
+  isPassthrough: ma_bool32
 }
 global function ma_data_converter_init(pConfig: *ma_data_converter_config, pConverter: *ma_data_converter): ma_result <cimport, nodecl> end
 global function ma_data_converter_uninit(pConverter: *ma_data_converter) <cimport, nodecl> end
@@ -543,10 +531,10 @@ global function ma_interleave_pcm_frames(format: ma_format, channels: uint32, fr
 global function ma_get_standard_channel_map(standardChannelMap: ma_standard_channel_map, channels: uint32, pChannelMap: *cuchar) <cimport, nodecl> end
 global function ma_channel_map_copy(pOut: *cuchar, pIn: *cuchar, channels: uint32) <cimport, nodecl> end
 global function ma_channel_map_copy_or_default(pOut: *cuchar, pIn: *cuchar, channels: uint32) <cimport, nodecl> end
-global function ma_channel_map_valid(channels: uint32, pChannelMap: *cuchar): cuint <cimport, nodecl> end
-global function ma_channel_map_equal(channels: uint32, pChannelMapA: *cuchar, pChannelMapB: *cuchar): cuint <cimport, nodecl> end
-global function ma_channel_map_blank(channels: uint32, pChannelMap: *cuchar): cuint <cimport, nodecl> end
-global function ma_channel_map_contains_channel_position(channels: uint32, pChannelMap: *cuchar, channelPosition: cuchar): cuint <cimport, nodecl> end
+global function ma_channel_map_valid(channels: uint32, pChannelMap: *cuchar): ma_bool32 <cimport, nodecl> end
+global function ma_channel_map_equal(channels: uint32, pChannelMapA: *cuchar, pChannelMapB: *cuchar): ma_bool32 <cimport, nodecl> end
+global function ma_channel_map_blank(channels: uint32, pChannelMap: *cuchar): ma_bool32 <cimport, nodecl> end
+global function ma_channel_map_contains_channel_position(channels: uint32, pChannelMap: *cuchar, channelPosition: cuchar): ma_bool32 <cimport, nodecl> end
 global function ma_convert_frames(pOut: pointer, frameCountOut: uint64, formatOut: ma_format, channelsOut: uint32, sampleRateOut: uint32, pIn: pointer, frameCountIn: uint64, formatIn: ma_format, channelsIn: uint32, sampleRateIn: uint32): uint64 <cimport, nodecl> end
 global function ma_convert_frames_ex(pOut: pointer, frameCountOut: uint64, pIn: pointer, frameCountIn: uint64, pConfig: *ma_data_converter_config): uint64 <cimport, nodecl> end
 global ma_rb: type <cimport, nodecl> = @record{
@@ -556,8 +544,8 @@ global ma_rb: type <cimport, nodecl> = @record{
   subbufferStrideInBytes: uint32,
   encodedReadOffset: uint32,
   encodedWriteOffset: uint32,
-  ownsBuffer: cuint,
-  clearOnWriteAcquire: cuint,
+  ownsBuffer: ma_bool32,
+  clearOnWriteAcquire: ma_bool32,
   allocationCallbacks: ma_allocation_callbacks
 }
 global function ma_rb_init_ex(subbufferSizeInBytes: csize, subbufferCount: csize, subbufferStrideInBytes: csize, pOptionalPreallocatedBuffer: pointer, pAllocationCallbacks: *ma_allocation_callbacks, pRB: *ma_rb): ma_result <cimport, nodecl> end
@@ -746,7 +734,7 @@ global ma_backend_callbacks: type <cimport, forwarddecl> = @record{}
 global ma_device_info: type <cimport, nodecl> = @record{
   id: ma_device_id,
   name: [256]cchar,
-  isDefault: cuint,
+  isDefault: ma_bool32,
   formatCount: uint32,
   formats: [6]ma_format,
   minChannels: uint32,
@@ -768,8 +756,8 @@ global ma_device_config: type <cimport, nodecl> = @record{
   periodSizeInMilliseconds: uint32,
   periods: uint32,
   performanceProfile: ma_performance_profile,
-  noPreZeroedOutputBuffer: cuint,
-  noClip: cuint,
+  noPreZeroedOutputBuffer: ma_bool32,
+  noClip: ma_bool32,
   dataCallback: ma_device_callback_proc,
   stopCallback: ma_stop_proc,
   pUserData: pointer,
@@ -797,23 +785,23 @@ global ma_device_config: type <cimport, nodecl> = @record{
     shareMode: ma_share_mode
   },
   wasapi: record{
-    noAutoConvertSRC: cuint,
-    noDefaultQualitySRC: cuint,
-    noAutoStreamRouting: cuint,
-    noHardwareOffloading: cuint
+    noAutoConvertSRC: ma_bool32,
+    noDefaultQualitySRC: ma_bool32,
+    noAutoStreamRouting: ma_bool32,
+    noHardwareOffloading: ma_bool32
   },
   alsa: record{
-    noMMap: cuint,
-    noAutoFormat: cuint,
-    noAutoChannels: cuint,
-    noAutoResample: cuint
+    noMMap: ma_bool32,
+    noAutoFormat: ma_bool32,
+    noAutoChannels: ma_bool32,
+    noAutoResample: ma_bool32
   },
   pulse: record{
     pStreamNamePlayback: cstring,
     pStreamNameCapture: cstring
   },
   coreaudio: record{
-    allowNominalSampleRateChange: cuint
+    allowNominalSampleRateChange: ma_bool32
   },
   opensl: record{
     streamType: ma_opensl_stream_type,
@@ -825,7 +813,7 @@ global ma_device_config: type <cimport, nodecl> = @record{
     inputPreset: ma_aaudio_input_preset
   }
 }
-global ma_enum_devices_callback_proc: type <cimport, nodecl> = @function(*ma_context, ma_device_type, *ma_device_info, pointer): cuint
+global ma_enum_devices_callback_proc: type <cimport, nodecl> = @function(*ma_context, ma_device_type, *ma_device_info, pointer): ma_bool32
 global ma_device_descriptor: type <cimport, nodecl> = @record{
   pDeviceID: *ma_device_id,
   shareMode: ma_share_mode,
@@ -857,22 +845,22 @@ global ma_context_config: type <cimport, nodecl> = @record{
   pUserData: pointer,
   allocationCallbacks: ma_allocation_callbacks,
   alsa: record{
-    useVerboseDeviceEnumeration: cuint
+    useVerboseDeviceEnumeration: ma_bool32
   },
   pulse: record{
     pApplicationName: cstring,
     pServerName: cstring,
-    tryAutoSpawn: cuint
+    tryAutoSpawn: ma_bool32
   },
   coreaudio: record{
     sessionCategory: ma_ios_session_category,
     sessionCategoryOptions: uint32,
-    noAudioSessionActivate: cuint,
-    noAudioSessionDeactivate: cuint
+    noAudioSessionActivate: ma_bool32,
+    noAudioSessionDeactivate: ma_bool32
   },
   jack: record{
     pClientName: cstring,
-    tryStartServer: cuint
+    tryStartServer: ma_bool32
   },
   custom: ma_backend_callbacks
 }
@@ -889,7 +877,7 @@ global ma_context: type <cimport, nodecl> = @record{
   playbackDeviceInfoCount: uint32,
   captureDeviceInfoCount: uint32,
   pDeviceInfos: *ma_device_info,
-  isBackendAsynchronous: cuint,
+  isBackendAsynchronous: ma_bool32,
   onUninit: function(*ma_context): ma_result,
   onEnumDevices: function(*ma_context, ma_enum_devices_callback_proc, pointer): ma_result,
   onGetDeviceInfo: function(*ma_context, ma_device_type, *ma_device_id, ma_share_mode, *ma_device_info): ma_result,
@@ -957,7 +945,7 @@ global ma_context: type <cimport, nodecl> = @record{
       snd_pcm_info_get_name: ma_proc,
       snd_config_update_free_global: ma_proc,
       internalDeviceEnumLock: ma_mutex,
-      useVerboseDeviceEnumeration: cuint
+      useVerboseDeviceEnumeration: ma_bool32
     },
     pulse: record{
       pulseSO: ma_handle,
@@ -1041,7 +1029,7 @@ global ma_context: type <cimport, nodecl> = @record{
       jack_port_get_buffer: ma_proc,
       jack_free: ma_proc,
       pClientName: cstring,
-      tryStartServer: cuint
+      tryStartServer: ma_bool32
     },
     custom: ma_backend_callbacks,
     null_backend: record{
@@ -1082,14 +1070,14 @@ global ma_device: type <cimport, nodecl> = @record{
   wakeupEvent: ma_event,
   startEvent: ma_event,
   stopEvent: ma_event,
-  thread: culong,
+  thread: ma_thread,
   workResult: ma_result,
-  usingDefaultSampleRate: cuint,
-  usingDefaultBufferSize: cuint,
-  usingDefaultPeriods: cuint,
-  isOwnerOfContext: cuint,
-  noPreZeroedOutputBuffer: cuint,
-  noClip: cuint,
+  usingDefaultSampleRate: ma_bool32,
+  usingDefaultBufferSize: ma_bool32,
+  usingDefaultPeriods: ma_bool32,
+  isOwnerOfContext: ma_bool32,
+  noPreZeroedOutputBuffer: ma_bool32,
+  noClip: ma_bool32,
   masterVolumeFactor: float32,
   duplexRB: ma_duplex_rb,
   resampling: record{
@@ -1105,9 +1093,9 @@ global ma_device: type <cimport, nodecl> = @record{
     id: ma_device_id,
     name: [256]cchar,
     shareMode: ma_share_mode,
-    usingDefaultFormat: cuint,
-    usingDefaultChannels: cuint,
-    usingDefaultChannelMap: cuint,
+    usingDefaultFormat: ma_bool32,
+    usingDefaultChannels: ma_bool32,
+    usingDefaultChannelMap: ma_bool32,
     format: ma_format,
     channels: uint32,
     channelMap: [32]cuchar,
@@ -1123,9 +1111,9 @@ global ma_device: type <cimport, nodecl> = @record{
     id: ma_device_id,
     name: [256]cchar,
     shareMode: ma_share_mode,
-    usingDefaultFormat: cuint,
-    usingDefaultChannels: cuint,
-    usingDefaultChannelMap: cuint,
+    usingDefaultFormat: ma_bool32,
+    usingDefaultChannels: ma_bool32,
+    usingDefaultChannelMap: ma_bool32,
     format: ma_format,
     channels: uint32,
     channelMap: [32]cuchar,
@@ -1141,8 +1129,8 @@ global ma_device: type <cimport, nodecl> = @record{
     alsa: record{
       pPCMPlayback: ma_ptr,
       pPCMCapture: ma_ptr,
-      isUsingMMapPlayback: cuint,
-      isUsingMMapCapture: cuint
+      isUsingMMapPlayback: ma_bool32,
+      isUsingMMapCapture: ma_bool32
     },
     pulse: record{
       pStreamPlayback: ma_ptr,
@@ -1158,7 +1146,7 @@ global ma_device: type <cimport, nodecl> = @record{
       duplexRB: ma_pcm_rb
     },
     null_device: record{
-      deviceThread: culong,
+      deviceThread: ma_thread,
       operationEvent: ma_event,
       operationCompletionEvent: ma_event,
       operation: uint32,
@@ -1169,7 +1157,7 @@ global ma_device: type <cimport, nodecl> = @record{
       currentPeriodFramesRemainingCapture: uint32,
       lastProcessedFramePlayback: uint64,
       lastProcessedFrameCapture: uint64,
-      isStarted: cuint
+      isStarted: ma_bool32
     }
   }
 }
@@ -1180,14 +1168,14 @@ global function ma_context_sizeof(): csize <cimport, nodecl> end
 global function ma_context_enumerate_devices(pContext: *ma_context, callback: ma_enum_devices_callback_proc, pUserData: pointer): ma_result <cimport, nodecl> end
 global function ma_context_get_devices(pContext: *ma_context, ppPlaybackDeviceInfos: **ma_device_info, pPlaybackDeviceCount: *uint32, ppCaptureDeviceInfos: **ma_device_info, pCaptureDeviceCount: *uint32): ma_result <cimport, nodecl> end
 global function ma_context_get_device_info(pContext: *ma_context, deviceType: ma_device_type, pDeviceID: *ma_device_id, shareMode: ma_share_mode, pDeviceInfo: *ma_device_info): ma_result <cimport, nodecl> end
-global function ma_context_is_loopback_supported(pContext: *ma_context): cuint <cimport, nodecl> end
+global function ma_context_is_loopback_supported(pContext: *ma_context): ma_bool32 <cimport, nodecl> end
 global function ma_device_config_init(deviceType: ma_device_type): ma_device_config <cimport, nodecl> end
 global function ma_device_init(pContext: *ma_context, pConfig: *ma_device_config, pDevice: *ma_device): ma_result <cimport, nodecl> end
 global function ma_device_init_ex(backends: *ma_backend, backendCount: uint32, pContextConfig: *ma_context_config, pConfig: *ma_device_config, pDevice: *ma_device): ma_result <cimport, nodecl> end
 global function ma_device_uninit(pDevice: *ma_device) <cimport, nodecl> end
 global function ma_device_start(pDevice: *ma_device): ma_result <cimport, nodecl> end
 global function ma_device_stop(pDevice: *ma_device): ma_result <cimport, nodecl> end
-global function ma_device_is_started(pDevice: *ma_device): cuint <cimport, nodecl> end
+global function ma_device_is_started(pDevice: *ma_device): ma_bool32 <cimport, nodecl> end
 global function ma_device_get_state(pDevice: *ma_device): uint32 <cimport, nodecl> end
 global function ma_device_set_master_volume(pDevice: *ma_device, volume: float32): ma_result <cimport, nodecl> end
 global function ma_device_get_master_volume(pDevice: *ma_device, pVolume: *float32): ma_result <cimport, nodecl> end
@@ -1195,12 +1183,12 @@ global function ma_device_set_master_gain_db(pDevice: *ma_device, gainDB: float3
 global function ma_device_get_master_gain_db(pDevice: *ma_device, pGainDB: *float32): ma_result <cimport, nodecl> end
 global function ma_device_handle_backend_data_callback(pDevice: *ma_device, pOutput: pointer, pInput: pointer, frameCount: uint32): ma_result <cimport, nodecl> end
 global function ma_get_backend_name(backend: ma_backend): cstring <cimport, nodecl> end
-global function ma_is_backend_enabled(backend: ma_backend): cuint <cimport, nodecl> end
+global function ma_is_backend_enabled(backend: ma_backend): ma_bool32 <cimport, nodecl> end
 global function ma_get_enabled_backends(pBackends: *ma_backend, backendCap: csize, pBackendCount: *csize): ma_result <cimport, nodecl> end
-global function ma_is_loopback_supported(backend: ma_backend): cuint <cimport, nodecl> end
-global function ma_spinlock_lock(pSpinlock: *cuchar): ma_result <cimport, nodecl> end
-global function ma_spinlock_lock_noyield(pSpinlock: *cuchar): ma_result <cimport, nodecl> end
-global function ma_spinlock_unlock(pSpinlock: *cuchar): ma_result <cimport, nodecl> end
+global function ma_is_loopback_supported(backend: ma_backend): ma_bool32 <cimport, nodecl> end
+global function ma_spinlock_lock(pSpinlock: *ma_spinlock): ma_result <cimport, nodecl> end
+global function ma_spinlock_lock_noyield(pSpinlock: *ma_spinlock): ma_result <cimport, nodecl> end
+global function ma_spinlock_unlock(pSpinlock: *ma_spinlock): ma_result <cimport, nodecl> end
 global function ma_mutex_init(pMutex: *ma_mutex): ma_result <cimport, nodecl> end
 global function ma_mutex_uninit(pMutex: *ma_mutex) <cimport, nodecl> end
 global function ma_mutex_lock(pMutex: *ma_mutex) <cimport, nodecl> end
@@ -1250,8 +1238,8 @@ global ma_data_source_callbacks: type <cimport, nodecl> = @record{
   onGetCursor: function(pointer, *uint64): ma_result,
   onGetLength: function(pointer, *uint64): ma_result
 }
-global function ma_data_source_read_pcm_frames(pDataSource: pointer, pFramesOut: pointer, frameCount: uint64, pFramesRead: *uint64, loop: cuint): ma_result <cimport, nodecl> end
-global function ma_data_source_seek_pcm_frames(pDataSource: pointer, frameCount: uint64, pFramesSeeked: *uint64, loop: cuint): ma_result <cimport, nodecl> end
+global function ma_data_source_read_pcm_frames(pDataSource: pointer, pFramesOut: pointer, frameCount: uint64, pFramesRead: *uint64, loop: ma_bool32): ma_result <cimport, nodecl> end
+global function ma_data_source_seek_pcm_frames(pDataSource: pointer, frameCount: uint64, pFramesSeeked: *uint64, loop: ma_bool32): ma_result <cimport, nodecl> end
 global function ma_data_source_seek_to_pcm_frame(pDataSource: pointer, frameIndex: uint64): ma_result <cimport, nodecl> end
 global function ma_data_source_map(pDataSource: pointer, ppFramesOut: *pointer, pFrameCount: *uint64): ma_result <cimport, nodecl> end
 global function ma_data_source_unmap(pDataSource: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
@@ -1274,7 +1262,7 @@ global ma_audio_buffer: type <cimport, nodecl> = @record{
   sizeInFrames: uint64,
   pData: pointer,
   allocationCallbacks: ma_allocation_callbacks,
-  ownsData: cuint,
+  ownsData: ma_bool32,
   _pExtraData: [1]uint8
 }
 global function ma_audio_buffer_init(pConfig: *ma_audio_buffer_config, pAudioBuffer: *ma_audio_buffer): ma_result <cimport, nodecl> end
@@ -1282,7 +1270,7 @@ global function ma_audio_buffer_init_copy(pConfig: *ma_audio_buffer_config, pAud
 global function ma_audio_buffer_alloc_and_init(pConfig: *ma_audio_buffer_config, ppAudioBuffer: **ma_audio_buffer): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_uninit(pAudioBuffer: *ma_audio_buffer) <cimport, nodecl> end
 global function ma_audio_buffer_uninit_and_free(pAudioBuffer: *ma_audio_buffer) <cimport, nodecl> end
-global function ma_audio_buffer_read_pcm_frames(pAudioBuffer: *ma_audio_buffer, pFramesOut: pointer, frameCount: uint64, loop: cuint): uint64 <cimport, nodecl> end
+global function ma_audio_buffer_read_pcm_frames(pAudioBuffer: *ma_audio_buffer, pFramesOut: pointer, frameCount: uint64, loop: ma_bool32): uint64 <cimport, nodecl> end
 global function ma_audio_buffer_seek_to_pcm_frame(pAudioBuffer: *ma_audio_buffer, frameIndex: uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_map(pAudioBuffer: *ma_audio_buffer, ppFramesOut: *pointer, pFrameCount: *uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_unmap(pAudioBuffer: *ma_audio_buffer, frameCount: uint64): ma_result <cimport, nodecl> end
@@ -1326,7 +1314,7 @@ global ma_resource_format: type <cimport, nodecl> = @enum(cint){
 }
 global ma_decoder: type <cimport, forwarddecl> = @record{}
 global ma_decoder_read_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, csize): csize
-global ma_decoder_seek_proc: type <cimport, nodecl> = @function(*ma_decoder, cint, ma_seek_origin): cuint
+global ma_decoder_seek_proc: type <cimport, nodecl> = @function(*ma_decoder, cint, ma_seek_origin): ma_bool32
 global ma_decoder_read_pcm_frames_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, uint64): uint64
 global ma_decoder_seek_to_pcm_frame_proc: type <cimport, nodecl> = @function(*ma_decoder, uint64): ma_result
 global ma_decoder_uninit_proc: type <cimport, nodecl> = @function(*ma_decoder): ma_result
@@ -1427,7 +1415,7 @@ global function ma_decode_file(pFilePath: cstring, pConfig: *ma_decoder_config, 
 global function ma_decode_memory(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
 global ma_encoder: type <cimport, forwarddecl> = @record{}
 global ma_encoder_write_proc: type <cimport, nodecl> = @function(*ma_encoder, pointer, csize): csize
-global ma_encoder_seek_proc: type <cimport, nodecl> = @function(*ma_encoder, cint, ma_seek_origin): cuint
+global ma_encoder_seek_proc: type <cimport, nodecl> = @function(*ma_encoder, cint, ma_seek_origin): ma_bool32
 global ma_encoder_init_proc: type <cimport, nodecl> = @function(*ma_encoder): ma_result
 global ma_encoder_uninit_proc: type <cimport, nodecl> = @function(*ma_encoder)
 global ma_encoder_write_pcm_frames_proc: type <cimport, nodecl> = @function(*ma_encoder, pointer, uint64): uint64
@@ -1493,7 +1481,7 @@ global ma_noise_config: type <cimport, nodecl> = @record{
   type: ma_noise_type,
   seed: int32,
   amplitude: float64,
-  duplicateChannels: cuint
+  duplicateChannels: ma_bool32
 }
 global function ma_noise_config_init(format: ma_format, channels: uint32, type: ma_noise_type, seed: int32, amplitude: float64): ma_noise_config <cimport, nodecl> end
 global ma_noise: type <cimport, nodecl> = @record{

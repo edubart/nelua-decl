@@ -268,10 +268,7 @@ global BLRegionView: type <cimport, nodecl> = @record{
   data: *BLBoxI,
   size: csize
 }
-global BLDataView: type <cimport, nodecl> = @record{
-  data: pointer,
-  size: csize
-}
+global BLDataView: type = @BLArrayView
 global function blArrayInit(self: *BLArrayCore, arrayTypeId: uint32): BLResult <cimport, nodecl> end
 global function blArrayDestroy(self: *BLArrayCore): BLResult <cimport, nodecl> end
 global function blArrayReset(self: *BLArrayCore): BLResult <cimport, nodecl> end

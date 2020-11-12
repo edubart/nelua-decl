@@ -179,7 +179,7 @@ global function SDL_TryLockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
 global function SDL_UnlockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
 global function SDL_DestroyMutex(mutex: *SDL_mutex) <cimport, nodecl> end
 global SDL_semaphore: type <cimport, forwarddecl> = @record{}
-global SDL_sem: type <cimport, forwarddecl> = @record{}
+global SDL_sem: type = @SDL_semaphore
 global function SDL_CreateSemaphore(initial_value: uint32): *SDL_sem <cimport, nodecl> end
 global function SDL_DestroySemaphore(sem: *SDL_sem) <cimport, nodecl> end
 global function SDL_SemWait(sem: *SDL_sem): cint <cimport, nodecl> end

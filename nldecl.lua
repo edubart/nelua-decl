@@ -16,6 +16,7 @@ nldecl.include_macros = {}
 
 nldecl.predeclared_names = {}
 nldecl.declared_names = {}
+nldecl.type_names = {}
 
 function nldecl.can_decl(declname, forwarddecl)
   if not declname or #declname == 0 then
@@ -302,9 +303,9 @@ function nldecl.var_decl(node)
   emitter:add_ln(' <cimport, nodecl>')
 end
 
-local function visit_type_decl(typename, type)
-  local forwarddecl = (type:code() == 'record_type' or type:code() == 'union_type') and
-                      not type:fields()
+local function visit_type_def(typename, type)
+  local is_composed = type:code() == 'record_type' or type:code() == 'union_type'
+  local forwarddecl = is_composed and not type:fields()
   if not nldecl.can_decl(typename, forwarddecl) then return end
   emitter:add('global ')
   emitter:add(typename)
@@ -314,6 +315,9 @@ local function visit_type_decl(typename, type)
   else
     emitter:add(': type <cimport, nodecl> = @')
     nldecl.declared_names[typename] = true
+  end
+  if is_composed then
+    nldecl.type_names[type:main_variant()] = typename
   end
   visit(type, true)
   emitter:add_ln()
@@ -335,7 +339,7 @@ function nldecl.type_decl(node)
   local typename = node:name():value()
   if not nldecl.can_decl(typename) then return end
   local type = node:type():main_variant()
-  local name = gccutils.get_id(type)
+  local name = gccutils.get_id(type) or nldecl.type_names[type]
   if typename == name then
     -- ignore
     return
@@ -349,14 +353,14 @@ function nldecl.type_decl(node)
     -- ignore aliases for these types
     return
   end
-  if name and nldecl.declared_names[name] then
+  if name and (nldecl.declared_names[name] or nldecl.predeclared_names[name]) then
     -- alias type name
     assert(typename and #typename > 0)
     emitter:add_indent('global '..typename..': type = @'..name)
     emitter:add_ln()
   else
     -- define the type
-    visit_type_decl(typename, type)
+    visit_type_def(typename, type)
   end
 end
 
@@ -375,7 +379,7 @@ local function finish_pending_type(node)
   if node and node:code() == 'type_decl' and pending_type:main_variant() == node:type():main_variant() then
     -- should be a typedef on an unnamed type
     local typename = gccutils.get_id(node)
-    visit_type_decl(typename, node:type())
+    visit_type_def(typename, node:type())
     ret = true
   elseif pending_type:code() == 'enumeral_type' then
     -- declare anonymous enum enum as comptime variables
@@ -456,7 +460,7 @@ function nldecl.install()
     finish_pending_type()
     local typename = gccutils.get_id(node)
     if typename then
-      visit_type_decl(typename, node)
+      visit_type_def(typename, node)
     else
       -- schedule to be declared on next PLUGIN_FINISH_DECL,
       -- because maybe the name is there

@@ -642,9 +642,7 @@ global function _setjmp(__env: *__jmp_buf_tag): cint <cimport, nodecl> end
 global function longjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
 global function _longjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
 global function siglongjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
-global sigset_t: type <cimport, nodecl> = @record{
-  __val: [16]culong
-}
+global sigset_t: type = @__sigset_t
 global timespec: type <cimport, nodecl> = @record{
   tv_sec: clong,
   tv_nsec: clong
@@ -1083,8 +1081,8 @@ global _G_fpos64_t: type <cimport, nodecl> = @record{
 }
 global __fpos64_t: type = @_G_fpos64_t
 global _IO_FILE: type <cimport, forwarddecl> = @record{}
-global __FILE: type <cimport, forwarddecl> = @record{}
-global FILE: type <cimport, forwarddecl> = @record{}
+global __FILE: type = @_IO_FILE
+global FILE: type = @_IO_FILE
 global _IO_marker: type <cimport, forwarddecl> = @record{}
 global _IO_codecvt: type <cimport, forwarddecl> = @record{}
 global _IO_wide_data: type <cimport, forwarddecl> = @record{}
@@ -1235,9 +1233,7 @@ global function strtoll(__nptr: cstring, __endptr: *cstring, __base: cint): clon
 global function strtoull(__nptr: cstring, __endptr: *cstring, __base: cint): culonglong <cimport, nodecl> end
 global function l64a(__n: clong): cstring <cimport, nodecl> end
 global function a64l(__s: cstring): clong <cimport, nodecl> end
-global fsid_t: type <cimport, nodecl> = @record{
-  __val: [2]cint
-}
+global fsid_t: type = @__fsid_t
 global caddr_t: type <cimport, nodecl> = @cstring
 global timer_t: type <cimport, nodecl> = @pointer
 global timeval: type <cimport, nodecl> = @record{
@@ -1462,9 +1458,7 @@ global thrd_timedout: cint <comptime> = 4
 global mtx_plain: cint <comptime> = 0
 global mtx_recursive: cint <comptime> = 1
 global mtx_timed: cint <comptime> = 2
-global once_flag: type <cimport, nodecl> = @record{
-  __data: cint
-}
+global once_flag: type = @__once_flag
 global mtx_t: type <cimport, nodecl> = @record{
   __size: [40]cchar,
   __align: clong
@@ -1498,13 +1492,7 @@ global function tss_create(__tss_id: *cuint, __destructor: tss_dtor_t): cint <ci
 global function tss_get(__tss_id: cuint): pointer <cimport, nodecl> end
 global function tss_set(__tss_id: cuint, __val: pointer): cint <cimport, nodecl> end
 global function tss_delete(__tss_id: cuint) <cimport, nodecl> end
-global mbstate_t: type <cimport, nodecl> = @record{
-  __count: cint,
-  __value: record{
-    __wch: cuint,
-    __wchb: [4]cchar
-  }
-}
+global mbstate_t: type = @__mbstate_t
 global function mbrtoc16(__pc16: *cushort, __s: cstring, __n: csize, __p: *mbstate_t): csize <cimport, nodecl> end
 global function c16rtomb(__s: cstring, __c16: cushort, __ps: *mbstate_t): csize <cimport, nodecl> end
 global function mbrtoc32(__pc32: *cuint, __s: cstring, __n: csize, __p: *mbstate_t): csize <cimport, nodecl> end

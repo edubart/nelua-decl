@@ -65,4 +65,4 @@ for example the `libs/sdl2/sdl2-test.nelua` file.
 * Support C unions
 * Support C bit fields
 * Support C unnamed fields
-* Support C complex type
+* Support C math complex type
