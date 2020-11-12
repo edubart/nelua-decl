@@ -32,6 +32,7 @@ global function SDL_islower(x: cint): cint <cimport, nodecl> end
 global function SDL_toupper(x: cint): cint <cimport, nodecl> end
 global function SDL_tolower(x: cint): cint <cimport, nodecl> end
 global function SDL_memset(dst: pointer, c: cint, len: csize): pointer <cimport, nodecl> end
+global function SDL_memset4(dst: pointer, val: uint32, dwords: csize) <cimport, nodecl> end
 global function SDL_memcpy(dst: pointer, src: pointer, len: csize): pointer <cimport, nodecl> end
 global function SDL_memmove(dst: pointer, src: pointer, len: csize): pointer <cimport, nodecl> end
 global function SDL_memcmp(s1: pointer, s2: pointer, len: csize): cint <cimport, nodecl> end
@@ -118,6 +119,7 @@ global function SDL_iconv_open(tocode: cstring, fromcode: cstring): SDL_iconv_t 
 global function SDL_iconv_close(cd: SDL_iconv_t): cint <cimport, nodecl> end
 global function SDL_iconv(cd: SDL_iconv_t, inbuf: *cstring, inbytesleft: *csize, outbuf: *cstring, outbytesleft: *csize): csize <cimport, nodecl> end
 global function SDL_iconv_string(tocode: cstring, fromcode: cstring, inbuf: cstring, inbytesleft: csize): cstring <cimport, nodecl> end
+global function SDL_memcpy4(dst: pointer, src: pointer, dwords: csize): pointer <cimport, nodecl> end
 global SDL_main_func: type <cimport, nodecl> = @function(cint, *cstring): cint
 global function SDL_main(argc: cint, argv: *cstring): cint <cimport, nodecl> end
 global function SDL_SetMainReady() <cimport, nodecl> end
@@ -172,6 +174,10 @@ global SDL_errorcode: type <cimport, nodecl, using> = @enum(cint){
   SDL_LASTERROR = 5
 }
 global function SDL_Error(code: SDL_errorcode): cint <cimport, nodecl> end
+global function SDL_Swap16(x: uint16): uint16 <cimport, nodecl> end
+global function SDL_Swap32(x: uint32): uint32 <cimport, nodecl> end
+global function SDL_Swap64(x: uint64): uint64 <cimport, nodecl> end
+global function SDL_SwapFloat(x: float32): float32 <cimport, nodecl> end
 global SDL_mutex: type <cimport, forwarddecl> = @record{}
 global function SDL_CreateMutex(): *SDL_mutex <cimport, nodecl> end
 global function SDL_LockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
@@ -521,6 +527,9 @@ global SDL_FRect: type <cimport, nodecl> = @record{
   w: float32,
   h: float32
 }
+global function SDL_PointInRect(p: *SDL_Point, r: *SDL_Rect): SDL_bool <cimport, nodecl> end
+global function SDL_RectEmpty(r: *SDL_Rect): SDL_bool <cimport, nodecl> end
+global function SDL_RectEquals(a: *SDL_Rect, b: *SDL_Rect): SDL_bool <cimport, nodecl> end
 global function SDL_HasIntersection(A: *SDL_Rect, B: *SDL_Rect): SDL_bool <cimport, nodecl> end
 global function SDL_IntersectRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect): SDL_bool <cimport, nodecl> end
 global function SDL_UnionRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect) <cimport, nodecl> end

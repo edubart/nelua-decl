@@ -254,7 +254,6 @@ function nldecl.function_type(node)
 end
 
 function nldecl.function_decl(node)
-  emitter.in_function_decl = true
   local funcname = node:name():value()
   if not nldecl.can_decl(funcname) then return end
   nldecl.declared_names[funcname] = true
@@ -288,10 +287,10 @@ function nldecl.function_decl(node)
     visit(retnode)
   end
   emitter:add_ln(' <cimport, nodecl> end')
-  emitter.in_function_decl = nil
 end
 
 function nldecl.var_decl(node)
+  if not node:external() then return end
   local varname = gccutils.get_id(node)
   if not nldecl.can_decl(varname) then return end
   nldecl.declared_names[varname] = true
@@ -474,6 +473,10 @@ function nldecl.install()
       -- because maybe the name is there
       pending_type = node
     end
+  end)
+  gcc.register_callback(gcc.PLUGIN_PRE_GENERICIZE, function(node)
+    if finish_pending_type(node) then return end
+    visit(node)
   end)
   gcc.register_callback(gcc.PLUGIN_START_UNIT, function()
     if nldecl.prepend_code then

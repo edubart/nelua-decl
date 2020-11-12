@@ -246,6 +246,7 @@ global BLTextEncoding: type <cimport, nodecl, using> = @enum(cint){
   BL_TEXT_ENCODING_WCHAR = 2,
   BL_TEXT_ENCODING_COUNT = 4
 }
+global function blTraceError(result: BLResult): BLResult <cimport, nodecl> end
 global BLRange: type <cimport, nodecl> = @record{
   start: csize,
   End: csize

@@ -1236,6 +1236,12 @@ global function a64l(__s: cstring): clong <cimport, nodecl> end
 global fsid_t: type = @__fsid_t
 global caddr_t: type <cimport, nodecl> = @cstring
 global timer_t: type <cimport, nodecl> = @pointer
+global function __bswap_16(__bsx: uint16): uint16 <cimport, nodecl> end
+global function __bswap_32(__bsx: uint32): uint32 <cimport, nodecl> end
+global function __bswap_64(__bsx: uint64): uint64 <cimport, nodecl> end
+global function __uint16_identity(__x: uint16): uint16 <cimport, nodecl> end
+global function __uint32_identity(__x: uint32): uint32 <cimport, nodecl> end
+global function __uint64_identity(__x: uint64): uint64 <cimport, nodecl> end
 global timeval: type <cimport, nodecl> = @record{
   tv_sec: clong,
   tv_usec: clong

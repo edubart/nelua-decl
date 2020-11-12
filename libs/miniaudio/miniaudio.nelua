@@ -601,6 +601,7 @@ global function ma_aligned_free(p: pointer, pAllocationCallbacks: *ma_allocation
 global function ma_get_format_name(format: ma_format): cstring <cimport, nodecl> end
 global function ma_blend_f32(pOut: *float32, pInA: *float32, pInB: *float32, factor: float32, channels: uint32) <cimport, nodecl> end
 global function ma_get_bytes_per_sample(format: ma_format): uint32 <cimport, nodecl> end
+global function ma_get_bytes_per_frame(format: ma_format, channels: uint32): uint32 <cimport, nodecl> end
 global function ma_log_level_to_string(logLevel: uint32): cstring <cimport, nodecl> end
 global ma_backend: type <cimport, nodecl, using> = @enum(cint){
   ma_backend_wasapi = 0,
@@ -1202,9 +1203,11 @@ global function ma_calculate_buffer_size_in_milliseconds_from_frames(bufferSizeI
 global function ma_calculate_buffer_size_in_frames_from_milliseconds(bufferSizeInMilliseconds: uint32, sampleRate: uint32): uint32 <cimport, nodecl> end
 global function ma_copy_pcm_frames(dst: pointer, src: pointer, frameCount: uint64, format: ma_format, channels: uint32) <cimport, nodecl> end
 global function ma_silence_pcm_frames(p: pointer, frameCount: uint64, format: ma_format, channels: uint32) <cimport, nodecl> end
+global function ma_zero_pcm_frames(p: pointer, frameCount: uint64, format: ma_format, channels: uint32) <cimport, nodecl> end
 global function ma_offset_pcm_frames_ptr(p: pointer, offsetInFrames: uint64, format: ma_format, channels: uint32): pointer <cimport, nodecl> end
 global function ma_offset_pcm_frames_const_ptr(p: pointer, offsetInFrames: uint64, format: ma_format, channels: uint32): pointer <cimport, nodecl> end
 global function ma_clip_samples_f32(p: *float32, sampleCount: uint64) <cimport, nodecl> end
+global function ma_clip_pcm_frames_f32(p: *float32, frameCount: uint64, channels: uint32) <cimport, nodecl> end
 global function ma_copy_and_apply_volume_factor_u8(pSamplesOut: *uint8, pSamplesIn: *uint8, sampleCount: uint64, factor: float32) <cimport, nodecl> end
 global function ma_copy_and_apply_volume_factor_s16(pSamplesOut: *int16, pSamplesIn: *int16, sampleCount: uint64, factor: float32) <cimport, nodecl> end
 global function ma_copy_and_apply_volume_factor_s24(pSamplesOut: pointer, pSamplesIn: pointer, sampleCount: uint64, factor: float32) <cimport, nodecl> end
