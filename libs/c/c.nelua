@@ -36,8 +36,8 @@ global function __assert(__assertion: cstring, __file: cstring, __line: cint) <c
 global __fsid_t: type <cimport, nodecl> = @record{
   __val: [2]cint
 }
-global __timer_t: type <cimport, nodecl> = @pointer
-global __caddr_t: type <cimport, nodecl> = @cstring
+global __timer_t: type = @pointer
+global __caddr_t: type = @cstring
 global _ISupper: cint <comptime> = 256
 global _ISlower: cint <comptime> = 512
 global _ISalpha: cint <comptime> = 1024
@@ -79,8 +79,8 @@ global __locale_struct: type <cimport, nodecl> = @record{
   __ctype_toupper: *cint,
   __names: [13]cstring
 }
-global __locale_t: type <cimport, nodecl> = @*__locale_struct
-global locale_t: type <cimport, nodecl> = @*__locale_struct
+global __locale_t: type = @*__locale_struct
+global locale_t: type = @*__locale_struct
 global function isalnum_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
 global function isalpha_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
 global function iscntrl_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
@@ -915,7 +915,7 @@ global _libc_fpstate: type <cimport, nodecl> = @record{
   _xmm: [16]_libc_xmmreg,
   __glibc_reserved1: [24]uint32
 }
-global fpregset_t: type <cimport, nodecl> = @*_libc_fpstate
+global fpregset_t: type = @*_libc_fpstate
 global mcontext_t: type <cimport, nodecl> = @record{
   gregs: [23]clonglong,
   fpregs: fpregset_t,
@@ -1234,8 +1234,8 @@ global function strtoull(__nptr: cstring, __endptr: *cstring, __base: cint): cul
 global function l64a(__n: clong): cstring <cimport, nodecl> end
 global function a64l(__s: cstring): clong <cimport, nodecl> end
 global fsid_t: type = @__fsid_t
-global caddr_t: type <cimport, nodecl> = @cstring
-global timer_t: type <cimport, nodecl> = @pointer
+global caddr_t: type = @cstring
+global timer_t: type = @pointer
 global function __bswap_16(__bsx: uint16): uint16 <cimport, nodecl> end
 global function __bswap_32(__bsx: uint32): uint32 <cimport, nodecl> end
 global function __bswap_64(__bsx: uint64): uint64 <cimport, nodecl> end
@@ -1616,7 +1616,7 @@ global function wctype(__property: cstring): culong <cimport, nodecl> end
 global function iswctype(__wc: cuint, __desc: culong): cint <cimport, nodecl> end
 global function towlower(__wc: cuint): cuint <cimport, nodecl> end
 global function towupper(__wc: cuint): cuint <cimport, nodecl> end
-global wctrans_t: type <cimport, nodecl> = @*int32
+global wctrans_t: type = @*int32
 global function wctrans(__property: cstring): wctrans_t <cimport, nodecl> end
 global function towctrans(__wc: cuint, __desc: wctrans_t): cuint <cimport, nodecl> end
 global function iswalnum_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end

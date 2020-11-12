@@ -51,14 +51,14 @@ global pthread_cond_t: type <cimport, nodecl> = @record{
   __size: [48]cchar,
   __align: clonglong
 }
-global ma_bool8: type <cimport, nodecl> = @cuchar
-global ma_bool32: type <cimport, nodecl> = @cuint
-global ma_handle: type <cimport, nodecl> = @pointer
-global ma_ptr: type <cimport, nodecl> = @pointer
+global ma_bool8: type = @cuchar
+global ma_bool32: type = @cuint
+global ma_handle: type = @pointer
+global ma_ptr: type = @pointer
 global ma_proc: type <cimport, nodecl> = @function()
 global ma_context: type <cimport, forwarddecl> = @record{}
 global ma_device: type <cimport, forwarddecl> = @record{}
-global ma_result: type <cimport, nodecl> = @cint
+global ma_result: type = @cint
 global ma_stream_format: type <cimport, nodecl, using> = @enum(cint){
   ma_stream_format_pcm = 0
 }
@@ -121,8 +121,8 @@ global ma_thread_priority: type <cimport, nodecl, using> = @enum(cint){
   ma_thread_priority_realtime = 1,
   ma_thread_priority_default = 0
 }
-global ma_spinlock: type <cimport, nodecl> = @cuchar
-global ma_thread: type <cimport, nodecl> = @culong
+global ma_spinlock: type = @cuchar
+global ma_thread: type = @culong
 global ma_mutex: type = @pthread_mutex_t
 global ma_event: type <cimport, nodecl> = @record{
   value: uint32,
@@ -1279,7 +1279,7 @@ global function ma_audio_buffer_map(pAudioBuffer: *ma_audio_buffer, ppFramesOut:
 global function ma_audio_buffer_unmap(pAudioBuffer: *ma_audio_buffer, frameCount: uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_at_end(pAudioBuffer: *ma_audio_buffer): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_get_available_frames(pAudioBuffer: *ma_audio_buffer, pAvailableFrames: *uint64): ma_result <cimport, nodecl> end
-global ma_vfs_file: type <cimport, nodecl> = @pointer
+global ma_vfs_file: type = @pointer
 global ma_seek_origin: type <cimport, nodecl, using> = @enum(cint){
   ma_seek_origin_start = 0,
   ma_seek_origin_current = 1,

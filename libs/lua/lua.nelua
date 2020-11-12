@@ -7,10 +7,10 @@ cinclude '<lualib.h>'
 local FILE <cimport, nodecl, forwarddecl> = @record{}
 local va_list <cimport, nodecl> = @record{}
 global lua_State: type <cimport, forwarddecl> = @record{}
-global lua_Number: type <cimport, nodecl> = @float64
-global lua_Integer: type <cimport, nodecl> = @clonglong
-global lua_Unsigned: type <cimport, nodecl> = @culonglong
-global lua_KContext: type <cimport, nodecl> = @clong
+global lua_Number: type = @float64
+global lua_Integer: type = @clonglong
+global lua_Unsigned: type = @culonglong
+global lua_KContext: type = @clong
 global lua_CFunction: type <cimport, nodecl> = @function(*lua_State): cint
 global lua_KFunction: type <cimport, nodecl> = @function(*lua_State, cint, lua_KContext): cint
 global lua_Reader: type <cimport, nodecl> = @function(*lua_State, pointer, *csize): cstring

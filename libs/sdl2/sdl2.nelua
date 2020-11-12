@@ -114,7 +114,7 @@ global function SDL_sqrtf(x: float32): float32 <cimport, nodecl> end
 global function SDL_tan(x: float64): float64 <cimport, nodecl> end
 global function SDL_tanf(x: float32): float32 <cimport, nodecl> end
 global _SDL_iconv_t: type <cimport, forwarddecl> = @record{}
-global SDL_iconv_t: type <cimport, nodecl> = @*_SDL_iconv_t
+global SDL_iconv_t: type = @*_SDL_iconv_t
 global function SDL_iconv_open(tocode: cstring, fromcode: cstring): SDL_iconv_t <cimport, nodecl> end
 global function SDL_iconv_close(cd: SDL_iconv_t): cint <cimport, nodecl> end
 global function SDL_iconv(cd: SDL_iconv_t, inbuf: *cstring, inbytesleft: *csize, outbuf: *cstring, outbytesleft: *csize): csize <cimport, nodecl> end
@@ -682,7 +682,7 @@ global SDL_DisplayOrientation: type <cimport, nodecl, using> = @enum(cint){
   SDL_ORIENTATION_PORTRAIT = 3,
   SDL_ORIENTATION_PORTRAIT_FLIPPED = 4
 }
-global SDL_GLContext: type <cimport, nodecl> = @pointer
+global SDL_GLContext: type = @pointer
 global SDL_GLattr: type <cimport, nodecl, using> = @enum(cint){
   SDL_GL_RED_SIZE = 0,
   SDL_GL_GREEN_SIZE = 1,
@@ -2128,7 +2128,7 @@ global SDL_MessageBoxData: type <cimport, nodecl> = @record{
 }
 global function SDL_ShowMessageBox(messageboxdata: *SDL_MessageBoxData, buttonid: *cint): cint <cimport, nodecl> end
 global function SDL_ShowSimpleMessageBox(flags: uint32, title: cstring, message: cstring, window: *SDL_Window): cint <cimport, nodecl> end
-global SDL_MetalView: type <cimport, nodecl> = @pointer
+global SDL_MetalView: type = @pointer
 global function SDL_Metal_CreateView(window: *SDL_Window): SDL_MetalView <cimport, nodecl> end
 global function SDL_Metal_DestroyView(view: SDL_MetalView) <cimport, nodecl> end
 global SDL_PowerState: type <cimport, nodecl, using> = @enum(cint){
