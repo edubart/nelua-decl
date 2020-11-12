@@ -1,0 +1,289 @@
+require '.raylib'
+
+--[[ This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this
+     file, You can obtain one at https://mozilla.org/MPL/2.0/. ]]
+
+-- This code is based on the "2D camera platformer" example by raysan5,
+-- available at: https://github.com/raysan5/raylib/blob/master/examples/core/core_2d_camera_platformer.c
+
+require 'math'
+
+local G: integer <comptime> = 400
+local PLAYER_JUMP_SPD: number <comptime> = 350
+local PLAYER_HOR_SPD: number <comptime> = 200
+local CAMERA_UPDATERS_LEN: uinteger <comptime> = 5
+local ENV_ITEMS_LEN: uinteger <comptime> = 5
+
+local a: Vector2
+local b: Vector2
+local c = a / b
+
+local Player = @record{
+  position: Vector2,
+  speed: number,
+  can_jump: boolean,
+}
+
+local EnvItem = @record{
+  rect: Rectangle,
+  blocking: integer,
+  color: Color,
+}
+
+-- [[ functions [[
+local function update_player(player: *Player, env_items: [ENV_ITEMS_LEN]EnvItem, delta: number)
+  if IsKeyDown(KeyboardKey.KEY_LEFT) then
+    player.position.x = player.position.x - PLAYER_HOR_SPD * delta
+  end
+  if IsKeyDown(KeyboardKey.KEY_RIGHT) then
+    player.position.x = player.position.x + PLAYER_HOR_SPD * delta
+  end
+  if IsKeyDown(KeyboardKey.KEY_SPACE) and player.can_jump then
+    player.speed = -PLAYER_JUMP_SPD
+    player.can_jump = false
+  end
+
+  local hit_obstacle: boolean = false
+
+  for i: integer = 0, < ENV_ITEMS_LEN do
+    local ei: *EnvItem = env_items[i]
+    local p: *Vector2 = player.position
+
+    if ei.blocking and
+      ei.rect.x <= p.x and
+      ei.rect.x + ei.rect.width >= p.x and
+      ei.rect.y >= p.y and
+      ei.rect.y < p.y + player.speed * delta
+    then
+      hit_obstacle = true
+      player.speed = 0
+      p.y = ei.rect.y
+    end
+  end
+
+  if not hit_obstacle then
+    player.position.y = player.position.y + player.speed * delta
+    player.speed = player.speed + G * delta
+    player.can_jump = false
+  else
+    player.can_jump = true
+  end
+end
+
+local function update_camera_center(camera: *Camera2D, player: *Player, env_items: [ENV_ITEMS_LEN]EnvItem, delta: number, width: integer, height: integer)
+  camera.offset = { width / 2, height / 2 }
+  camera.target = player.position
+end
+
+local function update_camera_center_inside_map(camera: *Camera2D, player: *Player, env_items: [ENV_ITEMS_LEN]EnvItem, delta: number, width: integer, height: integer)
+  camera.target = player.position
+  camera.offset = { width / 2, height / 2 }
+  local min_x: number, min_y: number, max_x: number, max_y: number = 1000, 1000, -1000, -1000
+
+  for i: integer = 0, < ENV_ITEMS_LEN do
+    local ei: *EnvItem = env_items[i]
+
+    min_x = math.min(ei.rect.x, min_x)
+    max_x = math.max(ei.rect.x + ei.rect.width, max_x)
+    min_y = math.min(ei.rect.y, min_y)
+    max_y = math.max(ei.rect.y + ei.rect.height, max_y)
+  end
+
+  local max: Vector2 = GetWorldToScreen2D({ max_x, max_y }, camera)
+  local min: Vector2 = GetWorldToScreen2D({ min_x, min_y }, camera)
+
+  if max.x < width then
+    camera.offset.x = width - (max.x - width / 2)
+  end
+  if max.y < height then
+    camera.offset.y = height - (max.y - height / 2)
+  end
+  if min.x > 0 then
+    camera.offset.x = width / 2 - min.x
+  end
+  if min.y > 0 then
+    camera.offset.y = height / 2 - min.y
+  end
+end
+
+local function update_camera_center_smooth_follow(camera: *Camera2D, player: *Player, env_items: [ENV_ITEMS_LEN]EnvItem, delta: number, width: integer, height: integer)
+  local min_speed: number <static> = 30
+  local min_effect_length: number <static> = 10
+  local fraction_speed: number <static> = 0.8
+
+  camera.offset = { width / 2, height / 2 }
+
+  local diff: Vector2 = player.position - camera.target
+  local length: number = #diff
+
+  if length > min_effect_length then
+    local speed: number = math.max(fraction_speed * length, min_speed)
+    camera.target = camera.target + diff * (speed * delta / length)
+  end
+end
+
+local function update_camera_even_out_on_landing(camera: *Camera2D, player: *Player, env_items: [ENV_ITEMS_LEN]EnvItem, delta: number, width: integer, height: integer)
+  local even_out_speed: number <static> = 700
+  local evening_out: boolean <static> = false
+  local even_out_target: number <static>;
+
+  camera.offset = { width / 2, height / 2 }
+  camera.target.x = player.position.x
+
+  if evening_out then
+    if even_out_target > camera.target.y then
+      camera.target.y = camera.target.y + even_out_speed * delta
+
+      if camera.target.y > even_out_target then
+        camera.target.y = even_out_target
+        evening_out = false
+      end
+    else
+       camera.target.y = camera.target.y - even_out_speed * delta
+
+      if camera.target.y < even_out_target then
+        camera.target.y = even_out_target
+        evening_out = false
+      end
+    end
+  else
+    if player.can_jump and player.speed == 0 and player.position.y ~= camera.target.y then
+      evening_out = true
+      even_out_target = player.position.y
+    end
+  end
+end
+
+local function update_camera_player_bounds_push(camera: *Camera2D, player: *Player, env_items: [ENV_ITEMS_LEN]EnvItem, delta: number, width: integer, height: integer)
+  local bbox: Vector2 <const> = { 0.2, 0.2 }
+
+  local bboxWorldMin: Vector2 = GetScreenToWorld2D({ (1 - bbox.x) * 0.5 * width, (1 - bbox.y) * 0.5 * height }, camera)
+  local bboxWorldMax: Vector2 = GetScreenToWorld2D({ (1 + bbox.x) * 0.5 * width, (1 + bbox.y) * 0.5 * height }, camera)
+
+  camera.offset = { (1 - bbox.x) * 0.5 * width, (1 - bbox.y) * 0.5 * height }
+
+  if player.position.x < bboxWorldMin.x then
+    camera.target.x = player.position.x
+  end
+  if player.position.y < bboxWorldMin.y then
+    camera.target.y = player.position.y
+  end
+  if player.position.x > bboxWorldMax.x then
+    camera.target.x = bboxWorldMin.x + (player.position.x - bboxWorldMax.x)
+  end
+  if player.position.y > bboxWorldMax.y then
+    camera.target.y = bboxWorldMin.y + (player.position.y - bboxWorldMax.y)
+  end
+end
+-- ]] functions ]]
+
+-- [[ Initialization [[
+local screen_width: integer <comptime> = 800
+local screen_height: integer <comptime> = 450
+
+InitWindow(screen_width, screen_height, "raylib-nelua [core] example - 2d camera")
+
+local player: Player = {
+  position = {400, 280},
+  speed = 0,
+  can_jump = false
+}
+
+local env_items: [ENV_ITEMS_LEN]EnvItem = {
+  { {   0,   0, 1000, 400 }, 0, LIGHTGRAY },
+  { {   0, 400, 1000, 200 }, 1, GRAY },
+  { { 300, 200,  400,  10 }, 1, GRAY },
+  { { 250, 300,  100,  10 }, 1, GRAY },
+  { { 650, 300,  100,  10 }, 1, GRAY }
+}
+
+local camera: Camera2D = {
+  target = player.position,
+  offset = { screen_width / 2, screen_height / 2 },
+  rotation = 0,
+  zoom = 1
+}
+
+-- Store pointers to the multiple update camera functions
+local camera_updaters: [CAMERA_UPDATERS_LEN]function(*Camera2D, *Player, [ENV_ITEMS_LEN]EnvItem, number, integer, integer) = {
+  update_camera_center,
+  update_camera_center_inside_map,
+  update_camera_center_smooth_follow,
+  update_camera_even_out_on_landing,
+  update_camera_player_bounds_push
+}
+
+local camera_option: integer = 0
+
+local camera_descriptions: [CAMERA_UPDATERS_LEN]cstring = {
+  "Follow player center",
+  "Follow player center, but clamp to map edges",
+  "Follow player center; smoothed",
+  "Follow player center horizontally; updateplayer center vertically after landing",
+  "Player push camera on getting too close to screen edge"
+}
+
+SetTargetFPS(60);
+-- ]] Initialization ]]
+
+-- [[ Main game loop [[
+while not WindowShouldClose() do
+  -- [[ Update [[
+  local delta_time: number = GetFrameTime()
+
+  update_player(player, env_items, delta_time)
+
+  camera.zoom = camera.zoom + (@number)(GetMouseWheelMove() * 0.05)
+
+  if camera.zoom > 3.0 then
+    camera.zoom = 3
+  elseif camera.zoom < 0.25 then
+    camera.zoom = 0.25
+  end
+
+  if IsKeyPressed(KeyboardKey.KEY_R) then
+    camera.zoom = 1
+    player.position = { 400, 280 }
+  end
+
+  if IsKeyPressed(KeyboardKey.KEY_C) then
+    camera_option = (camera_option + 1) % CAMERA_UPDATERS_LEN
+  end
+
+  -- Call update camera function by its pointer
+  camera_updaters[camera_option](camera, player, env_items, delta_time, screen_width, screen_height)
+  -- ]] Update ]]
+
+  -- [[ Draw [[
+  BeginDrawing();
+
+    ClearBackground(LIGHTGRAY);
+
+    BeginMode2D(camera);
+
+      for i: integer = 0, < ENV_ITEMS_LEN do
+        DrawRectangleRec(env_items[i].rect, env_items[i].color)
+      end
+
+      local player_rect: Rectangle = { player.position.x - 20, player.position.y - 40, 40, 40 }
+      DrawRectangleRec(player_rect, RED)
+
+    EndMode2D()
+
+    DrawText("Controls:", 20, 20, 10, BLACK)
+    DrawText("- Right/Left to move", 40, 40, 10, DARKGRAY)
+    DrawText("- Space to jump", 40, 60, 10, DARKGRAY)
+    DrawText("- Mouse Wheel to Zoom in-out, R to reset zoom", 40, 80, 10, DARKGRAY)
+    DrawText("- C to change camera mode", 40, 100, 10, DARKGRAY)
+    DrawText("Current camera mode:", 20, 120, 10, BLACK)
+    DrawText(camera_descriptions[camera_option], 40, 140, 10, DARKGRAY)
+
+  EndDrawing()
+  -- ]] Draw ]]
+end
+-- ]] Main game loop ]]
+
+-- [ De-Initialization [
+CloseWindow() -- Close window and OpenGL context
+-- ] De-Initialization ]

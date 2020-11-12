@@ -406,7 +406,7 @@ local function eval_macro_value(value)
     return intvalue
   elseif intvalue:match('^-?0x%x+$') then
     return intvalue
-  elseif floatvalue:match('-?%d+%.%d+') then
+  elseif floatvalue:match('^-?%d+%.%d+$') then
     return floatvalue
   elseif value:match('^"[^"\\]+"$') then
     return value

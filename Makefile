@@ -1,7 +1,7 @@
 GCCPLUGIN=-fplugin=./gcc-lua/gcc/gcclua.so
 
 all: lua sdl2 miniaudio sokol stb
-all-extra: all c blend2d
+all-extra: all c blend2d raylib
 
 c:
 	gcc $(GCCPLUGIN) -S libs/c/c.c -fplugin-arg-gcclua-script=libs/c/c.lua > libs/c/c.nelua
@@ -25,6 +25,8 @@ stb:
 	gcc $(GCCPLUGIN) -S libs/stb/stb_truetype.c -fplugin-arg-gcclua-script=libs/stb/stb_truetype.lua > libs/stb/stb_truetype.nelua
 blend2d:
 	gcc $(GCCPLUGIN) -S libs/blend2d/blend2d.c -fplugin-arg-gcclua-script=libs/blend2d/blend2d.lua > libs/blend2d/blend2d.nelua
+raylib:
+	gcc $(GCCPLUGIN) -S libs/raylib/raylib.c -fplugin-arg-gcclua-script=libs/raylib/raylib.lua > libs/raylib/raylib.nelua
 
 download: download-miniaudio download-sokol download-stb
 download-miniaudio:
@@ -41,7 +43,7 @@ download-stb:
 	wget -O libs/stb/stb_truetype.h https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h
 
 test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-stb
-test-all-extra: test-all test-c test-blend2d
+test-all-extra: test-all test-c test-blend2d test-raylib
 test-c: c
 	cd libs/c && nelua c-test.nelua
 test-lua: lua
@@ -58,6 +60,8 @@ test-stb: stb
 	cd libs/stb && nelua stb-test.nelua
 test-blend2d: blend2d
 	cd libs/blend2d && nelua blend2d-test.nelua
+test-raylib: raylib
+	cd libs/raylib && nelua raylib-test.nelua
 
 test-dev:
 	gcc $(GCCPLUGIN) -S test/test.c -fplugin-arg-gcclua-script=test/test.lua > test/test.nelua
