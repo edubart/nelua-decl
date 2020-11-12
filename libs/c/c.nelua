@@ -1041,7 +1041,7 @@ global function pthread_sigmask(__how: cint, __newmask: *__sigset_t, __oldmask: 
 global function pthread_kill(__threadid: culong, __signo: cint): cint <cimport, nodecl> end
 global function __libc_current_sigrtmin(): cint <cimport, nodecl> end
 global function __libc_current_sigrtmax(): cint <cimport, nodecl> end
-global memory_order: type <cimport, nodecl> = @enum(cint){
+global memory_order: type <cimport, nodecl, using> = @enum(cint){
   memory_order_relaxed = 0,
   memory_order_consume = 1,
   memory_order_acquire = 2,

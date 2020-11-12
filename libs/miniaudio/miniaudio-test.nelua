@@ -35,7 +35,7 @@ if result ~= 0 then
   error "Failed to load file"
 end
 
-deviceConfig = ma_device_config_init(ma_device_type.ma_device_type_playback)
+deviceConfig = ma_device_config_init(ma_device_type_playback)
 deviceConfig.playback.format   = decoder.outputFormat
 deviceConfig.playback.channels = decoder.outputChannels
 deviceConfig.sampleRate        = decoder.outputSampleRate

@@ -13,7 +13,7 @@ linklib 'GL'
 global SAPP_MAX_TOUCHPOINTS: cint <comptime> = 8
 global SAPP_MAX_MOUSEBUTTONS: cint <comptime> = 3
 global SAPP_MAX_KEYCODES: cint <comptime> = 512
-global sapp_event_type: type <cimport, nodecl> = @enum(cint){
+global sapp_event_type: type <cimport, nodecl, using> = @enum(cint){
   SAPP_EVENTTYPE_INVALID = 0,
   SAPP_EVENTTYPE_KEY_DOWN = 1,
   SAPP_EVENTTYPE_KEY_UP = 2,
@@ -40,7 +40,7 @@ global sapp_event_type: type <cimport, nodecl> = @enum(cint){
   _SAPP_EVENTTYPE_NUM = 23,
   _SAPP_EVENTTYPE_FORCE_U32 = 2147483647
 }
-global sapp_keycode: type <cimport, nodecl> = @enum(cint){
+global sapp_keycode: type <cimport, nodecl, using> = @enum(cint){
   SAPP_KEYCODE_INVALID = 0,
   SAPP_KEYCODE_SPACE = 32,
   SAPP_KEYCODE_APOSTROPHE = 39,
@@ -169,7 +169,7 @@ global sapp_touchpoint: type <cimport, nodecl> = @record{
   pos_y: float32,
   changed: boolean
 }
-global sapp_mousebutton: type <cimport, nodecl> = @enum(cint){
+global sapp_mousebutton: type <cimport, nodecl, using> = @enum(cint){
   SAPP_MOUSEBUTTON_INVALID = -1,
   SAPP_MOUSEBUTTON_LEFT = 0,
   SAPP_MOUSEBUTTON_RIGHT = 1,
@@ -234,7 +234,7 @@ global sapp_desc: type <cimport, nodecl> = @record{
   ios_keyboard_resizes_canvas: boolean,
   gl_force_gles2: boolean
 }
-global sapp_html5_fetch_error: type <cimport, nodecl> = @enum(cint){
+global sapp_html5_fetch_error: type <cimport, nodecl, using> = @enum(cint){
   SAPP_HTML5_FETCH_ERROR_NO_ERROR = 0,
   SAPP_HTML5_FETCH_ERROR_BUFFER_TOO_SMALL = 1,
   SAPP_HTML5_FETCH_ERROR_OTHER = 2

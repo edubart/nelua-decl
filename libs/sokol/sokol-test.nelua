@@ -23,7 +23,7 @@ local function init()
   sg_setup(&sgdesc)
   state.pass_action = {
     colors = {
-      {action=sg_action.SG_ACTION_CLEAR, val={1.0, 0.0, 0.0, 1.0}}
+      {action=SG_ACTION_CLEAR, val={1.0, 0.0, 0.0, 1.0}}
     }
   }
 
@@ -50,9 +50,9 @@ local function frame()
   local s: float32
   for i=0,<num_frames do
     if (state.even_odd & (1<<6)) ~= 0 then
-      s = 0.05
+      s = 0.05_f32
     else
-      s = -0.05
+      s = -0.05_f32
     end
     state.even_odd = state.even_odd + 1
     state.samples[state.sample_pos] = s

@@ -21,7 +21,7 @@ global sg_pass: type <cimport, nodecl> = @record{
 global sg_context: type <cimport, nodecl> = @record{
   id: uint32
 }
-global sg_backend: type <cimport, nodecl> = @enum(cint){
+global sg_backend: type <cimport, nodecl, using> = @enum(cint){
   SG_BACKEND_GLCORE33 = 0,
   SG_BACKEND_GLES2 = 1,
   SG_BACKEND_GLES3 = 2,
@@ -32,7 +32,7 @@ global sg_backend: type <cimport, nodecl> = @enum(cint){
   SG_BACKEND_WGPU = 7,
   SG_BACKEND_DUMMY = 8
 }
-global sg_pixel_format: type <cimport, nodecl> = @enum(cint){
+global sg_pixel_format: type <cimport, nodecl, using> = @enum(cint){
   _SG_PIXELFORMAT_DEFAULT = 0,
   SG_PIXELFORMAT_NONE = 1,
   SG_PIXELFORMAT_R8 = 2,
@@ -123,7 +123,7 @@ global sg_limits: type <cimport, nodecl> = @record{
   max_image_array_layers: uint32,
   max_vertex_attrs: uint32
 }
-global sg_resource_state: type <cimport, nodecl> = @enum(cint){
+global sg_resource_state: type <cimport, nodecl, using> = @enum(cint){
   SG_RESOURCESTATE_INITIAL = 0,
   SG_RESOURCESTATE_ALLOC = 1,
   SG_RESOURCESTATE_VALID = 2,
@@ -131,7 +131,7 @@ global sg_resource_state: type <cimport, nodecl> = @enum(cint){
   SG_RESOURCESTATE_INVALID = 4,
   _SG_RESOURCESTATE_FORCE_U32 = 2147483647
 }
-global sg_usage: type <cimport, nodecl> = @enum(cint){
+global sg_usage: type <cimport, nodecl, using> = @enum(cint){
   _SG_USAGE_DEFAULT = 0,
   SG_USAGE_IMMUTABLE = 1,
   SG_USAGE_DYNAMIC = 2,
@@ -139,14 +139,14 @@ global sg_usage: type <cimport, nodecl> = @enum(cint){
   _SG_USAGE_NUM = 4,
   _SG_USAGE_FORCE_U32 = 2147483647
 }
-global sg_buffer_type: type <cimport, nodecl> = @enum(cint){
+global sg_buffer_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_BUFFERTYPE_DEFAULT = 0,
   SG_BUFFERTYPE_VERTEXBUFFER = 1,
   SG_BUFFERTYPE_INDEXBUFFER = 2,
   _SG_BUFFERTYPE_NUM = 3,
   _SG_BUFFERTYPE_FORCE_U32 = 2147483647
 }
-global sg_index_type: type <cimport, nodecl> = @enum(cint){
+global sg_index_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_INDEXTYPE_DEFAULT = 0,
   SG_INDEXTYPE_NONE = 1,
   SG_INDEXTYPE_UINT16 = 2,
@@ -154,7 +154,7 @@ global sg_index_type: type <cimport, nodecl> = @enum(cint){
   _SG_INDEXTYPE_NUM = 4,
   _SG_INDEXTYPE_FORCE_U32 = 2147483647
 }
-global sg_image_type: type <cimport, nodecl> = @enum(cint){
+global sg_image_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_IMAGETYPE_DEFAULT = 0,
   SG_IMAGETYPE_2D = 1,
   SG_IMAGETYPE_CUBE = 2,
@@ -163,13 +163,13 @@ global sg_image_type: type <cimport, nodecl> = @enum(cint){
   _SG_IMAGETYPE_NUM = 5,
   _SG_IMAGETYPE_FORCE_U32 = 2147483647
 }
-global sg_sampler_type: type <cimport, nodecl> = @enum(cint){
+global sg_sampler_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_SAMPLERTYPE_DEFAULT = 0,
   SG_SAMPLERTYPE_FLOAT = 1,
   SG_SAMPLERTYPE_SINT = 2,
   SG_SAMPLERTYPE_UINT = 3
 }
-global sg_cube_face: type <cimport, nodecl> = @enum(cint){
+global sg_cube_face: type <cimport, nodecl, using> = @enum(cint){
   SG_CUBEFACE_POS_X = 0,
   SG_CUBEFACE_NEG_X = 1,
   SG_CUBEFACE_POS_Y = 2,
@@ -179,12 +179,12 @@ global sg_cube_face: type <cimport, nodecl> = @enum(cint){
   SG_CUBEFACE_NUM = 6,
   _SG_CUBEFACE_FORCE_U32 = 2147483647
 }
-global sg_shader_stage: type <cimport, nodecl> = @enum(cint){
+global sg_shader_stage: type <cimport, nodecl, using> = @enum(cint){
   SG_SHADERSTAGE_VS = 0,
   SG_SHADERSTAGE_FS = 1,
   _SG_SHADERSTAGE_FORCE_U32 = 2147483647
 }
-global sg_primitive_type: type <cimport, nodecl> = @enum(cint){
+global sg_primitive_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_PRIMITIVETYPE_DEFAULT = 0,
   SG_PRIMITIVETYPE_POINTS = 1,
   SG_PRIMITIVETYPE_LINES = 2,
@@ -194,7 +194,7 @@ global sg_primitive_type: type <cimport, nodecl> = @enum(cint){
   _SG_PRIMITIVETYPE_NUM = 6,
   _SG_PRIMITIVETYPE_FORCE_U32 = 2147483647
 }
-global sg_filter: type <cimport, nodecl> = @enum(cint){
+global sg_filter: type <cimport, nodecl, using> = @enum(cint){
   _SG_FILTER_DEFAULT = 0,
   SG_FILTER_NEAREST = 1,
   SG_FILTER_LINEAR = 2,
@@ -205,7 +205,7 @@ global sg_filter: type <cimport, nodecl> = @enum(cint){
   _SG_FILTER_NUM = 7,
   _SG_FILTER_FORCE_U32 = 2147483647
 }
-global sg_wrap: type <cimport, nodecl> = @enum(cint){
+global sg_wrap: type <cimport, nodecl, using> = @enum(cint){
   _SG_WRAP_DEFAULT = 0,
   SG_WRAP_REPEAT = 1,
   SG_WRAP_CLAMP_TO_EDGE = 2,
@@ -214,7 +214,7 @@ global sg_wrap: type <cimport, nodecl> = @enum(cint){
   _SG_WRAP_NUM = 5,
   _SG_WRAP_FORCE_U32 = 2147483647
 }
-global sg_border_color: type <cimport, nodecl> = @enum(cint){
+global sg_border_color: type <cimport, nodecl, using> = @enum(cint){
   _SG_BORDERCOLOR_DEFAULT = 0,
   SG_BORDERCOLOR_TRANSPARENT_BLACK = 1,
   SG_BORDERCOLOR_OPAQUE_BLACK = 2,
@@ -222,7 +222,7 @@ global sg_border_color: type <cimport, nodecl> = @enum(cint){
   _SG_BORDERCOLOR_NUM = 4,
   _SG_BORDERCOLOR_FORCE_U32 = 2147483647
 }
-global sg_vertex_format: type <cimport, nodecl> = @enum(cint){
+global sg_vertex_format: type <cimport, nodecl, using> = @enum(cint){
   SG_VERTEXFORMAT_INVALID = 0,
   SG_VERTEXFORMAT_FLOAT = 1,
   SG_VERTEXFORMAT_FLOAT2 = 2,
@@ -242,14 +242,14 @@ global sg_vertex_format: type <cimport, nodecl> = @enum(cint){
   _SG_VERTEXFORMAT_NUM = 16,
   _SG_VERTEXFORMAT_FORCE_U32 = 2147483647
 }
-global sg_vertex_step: type <cimport, nodecl> = @enum(cint){
+global sg_vertex_step: type <cimport, nodecl, using> = @enum(cint){
   _SG_VERTEXSTEP_DEFAULT = 0,
   SG_VERTEXSTEP_PER_VERTEX = 1,
   SG_VERTEXSTEP_PER_INSTANCE = 2,
   _SG_VERTEXSTEP_NUM = 3,
   _SG_VERTEXSTEP_FORCE_U32 = 2147483647
 }
-global sg_uniform_type: type <cimport, nodecl> = @enum(cint){
+global sg_uniform_type: type <cimport, nodecl, using> = @enum(cint){
   SG_UNIFORMTYPE_INVALID = 0,
   SG_UNIFORMTYPE_FLOAT = 1,
   SG_UNIFORMTYPE_FLOAT2 = 2,
@@ -259,7 +259,7 @@ global sg_uniform_type: type <cimport, nodecl> = @enum(cint){
   _SG_UNIFORMTYPE_NUM = 6,
   _SG_UNIFORMTYPE_FORCE_U32 = 2147483647
 }
-global sg_cull_mode: type <cimport, nodecl> = @enum(cint){
+global sg_cull_mode: type <cimport, nodecl, using> = @enum(cint){
   _SG_CULLMODE_DEFAULT = 0,
   SG_CULLMODE_NONE = 1,
   SG_CULLMODE_FRONT = 2,
@@ -267,14 +267,14 @@ global sg_cull_mode: type <cimport, nodecl> = @enum(cint){
   _SG_CULLMODE_NUM = 4,
   _SG_CULLMODE_FORCE_U32 = 2147483647
 }
-global sg_face_winding: type <cimport, nodecl> = @enum(cint){
+global sg_face_winding: type <cimport, nodecl, using> = @enum(cint){
   _SG_FACEWINDING_DEFAULT = 0,
   SG_FACEWINDING_CCW = 1,
   SG_FACEWINDING_CW = 2,
   _SG_FACEWINDING_NUM = 3,
   _SG_FACEWINDING_FORCE_U32 = 2147483647
 }
-global sg_compare_func: type <cimport, nodecl> = @enum(cint){
+global sg_compare_func: type <cimport, nodecl, using> = @enum(cint){
   _SG_COMPAREFUNC_DEFAULT = 0,
   SG_COMPAREFUNC_NEVER = 1,
   SG_COMPAREFUNC_LESS = 2,
@@ -287,7 +287,7 @@ global sg_compare_func: type <cimport, nodecl> = @enum(cint){
   _SG_COMPAREFUNC_NUM = 9,
   _SG_COMPAREFUNC_FORCE_U32 = 2147483647
 }
-global sg_stencil_op: type <cimport, nodecl> = @enum(cint){
+global sg_stencil_op: type <cimport, nodecl, using> = @enum(cint){
   _SG_STENCILOP_DEFAULT = 0,
   SG_STENCILOP_KEEP = 1,
   SG_STENCILOP_ZERO = 2,
@@ -300,7 +300,7 @@ global sg_stencil_op: type <cimport, nodecl> = @enum(cint){
   _SG_STENCILOP_NUM = 9,
   _SG_STENCILOP_FORCE_U32 = 2147483647
 }
-global sg_blend_factor: type <cimport, nodecl> = @enum(cint){
+global sg_blend_factor: type <cimport, nodecl, using> = @enum(cint){
   _SG_BLENDFACTOR_DEFAULT = 0,
   SG_BLENDFACTOR_ZERO = 1,
   SG_BLENDFACTOR_ONE = 2,
@@ -320,7 +320,7 @@ global sg_blend_factor: type <cimport, nodecl> = @enum(cint){
   _SG_BLENDFACTOR_NUM = 16,
   _SG_BLENDFACTOR_FORCE_U32 = 2147483647
 }
-global sg_blend_op: type <cimport, nodecl> = @enum(cint){
+global sg_blend_op: type <cimport, nodecl, using> = @enum(cint){
   _SG_BLENDOP_DEFAULT = 0,
   SG_BLENDOP_ADD = 1,
   SG_BLENDOP_SUBTRACT = 2,
@@ -328,7 +328,7 @@ global sg_blend_op: type <cimport, nodecl> = @enum(cint){
   _SG_BLENDOP_NUM = 4,
   _SG_BLENDOP_FORCE_U32 = 2147483647
 }
-global sg_color_mask: type <cimport, nodecl> = @enum(cint){
+global sg_color_mask: type <cimport, nodecl, using> = @enum(cint){
   _SG_COLORMASK_DEFAULT = 0,
   SG_COLORMASK_NONE = 16,
   SG_COLORMASK_R = 1,
@@ -339,7 +339,7 @@ global sg_color_mask: type <cimport, nodecl> = @enum(cint){
   SG_COLORMASK_RGBA = 15,
   _SG_COLORMASK_FORCE_U32 = 2147483647
 }
-global sg_action: type <cimport, nodecl> = @enum(cint){
+global sg_action: type <cimport, nodecl, using> = @enum(cint){
   _SG_ACTION_DEFAULT = 0,
   SG_ACTION_CLEAR = 1,
   SG_ACTION_LOAD = 2,

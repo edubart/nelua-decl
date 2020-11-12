@@ -304,21 +304,29 @@ function nldecl.var_decl(node)
 end
 
 local function visit_type_def(typename, type)
-  local is_composed = type:code() == 'record_type' or type:code() == 'union_type'
-  local forwarddecl = is_composed and not type:fields()
+  local is_record = type:code() == 'record_type'
+  local is_union = type:code() == 'union_type'
+  local is_enum = type:code() == 'enumeral_type'
+  local forwarddecl = (is_record or is_union) and not type:fields()
   if not nldecl.can_decl(typename, forwarddecl) then return end
   emitter:add('global ')
   emitter:add(typename)
+  emitter:add(': type ')
+  local annotations = {'cimport'}
   if forwarddecl then -- declaration without definition
-    emitter:add(': type <cimport, forwarddecl> = @')
+    table.insert(annotations, 'forwarddecl')
     nldecl.predeclared_names[typename] = true
   else
-    emitter:add(': type <cimport, nodecl> = @')
+    table.insert(annotations, 'nodecl')
     nldecl.declared_names[typename] = true
   end
-  if is_composed then
+  if is_record or is_union or is_enum then
     nldecl.type_names[type:main_variant()] = typename
   end
+  if is_enum then
+    table.insert(annotations, 'using')
+  end
+  emitter:add('<'..table.concat(annotations,', ')..'> = @')
   visit(type, true)
   emitter:add_ln()
 end

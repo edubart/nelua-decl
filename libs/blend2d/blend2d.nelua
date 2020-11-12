@@ -107,7 +107,7 @@ global BLFontManagerVirt: type <cimport, forwarddecl> = @record{}
 global BLResult: type <cimport, nodecl> = @cuint
 global BLDestroyImplFunc: type <cimport, nodecl> = @function(pointer, pointer)
 global BLPathSinkFunc: type <cimport, nodecl> = @function(*BLPathCore, pointer, pointer): BLResult
-global BLResultCode: type <cimport, nodecl> = @enum(cint){
+global BLResultCode: type <cimport, nodecl, using> = @enum(cint){
   BL_SUCCESS = 0,
   BL_ERROR_START_INDEX = 65536,
   BL_ERROR_OUT_OF_MEMORY = 65536,
@@ -189,32 +189,32 @@ global BLResultCode: type <cimport, nodecl> = @enum(cint){
   BL_ERROR_FONT_PROGRAM_TERMINATED = 65612,
   BL_ERROR_INVALID_GLYPH = 65613
 }
-global BLByteOrder: type <cimport, nodecl> = @enum(cint){
+global BLByteOrder: type <cimport, nodecl, using> = @enum(cint){
   BL_BYTE_ORDER_LE = 0,
   BL_BYTE_ORDER_BE = 1,
   BL_BYTE_ORDER_NATIVE = 0,
   BL_BYTE_ORDER_SWAPPED = 1
 }
-global BLDataAccessFlags: type <cimport, nodecl> = @enum(cint){
+global BLDataAccessFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_DATA_ACCESS_READ = 1,
   BL_DATA_ACCESS_WRITE = 2,
   BL_DATA_ACCESS_RW = 3
 }
-global BLDataSourceType: type <cimport, nodecl> = @enum(cint){
+global BLDataSourceType: type <cimport, nodecl, using> = @enum(cint){
   BL_DATA_SOURCE_TYPE_NONE = 0,
   BL_DATA_SOURCE_TYPE_MEMORY = 1,
   BL_DATA_SOURCE_TYPE_FILE = 2,
   BL_DATA_SOURCE_TYPE_CUSTOM = 3,
   BL_DATA_SOURCE_TYPE_COUNT = 4
 }
-global BLModifyOp: type <cimport, nodecl> = @enum(cint){
+global BLModifyOp: type <cimport, nodecl, using> = @enum(cint){
   BL_MODIFY_OP_ASSIGN_FIT = 0,
   BL_MODIFY_OP_ASSIGN_GROW = 1,
   BL_MODIFY_OP_APPEND_FIT = 2,
   BL_MODIFY_OP_APPEND_GROW = 3,
   BL_MODIFY_OP_COUNT = 4
 }
-global BLBooleanOp: type <cimport, nodecl> = @enum(cint){
+global BLBooleanOp: type <cimport, nodecl, using> = @enum(cint){
   BL_BOOLEAN_OP_COPY = 0,
   BL_BOOLEAN_OP_AND = 1,
   BL_BOOLEAN_OP_OR = 2,
@@ -222,7 +222,7 @@ global BLBooleanOp: type <cimport, nodecl> = @enum(cint){
   BL_BOOLEAN_OP_SUB = 4,
   BL_BOOLEAN_OP_COUNT = 5
 }
-global BLExtendMode: type <cimport, nodecl> = @enum(cint){
+global BLExtendMode: type <cimport, nodecl, using> = @enum(cint){
   BL_EXTEND_MODE_PAD = 0,
   BL_EXTEND_MODE_REPEAT = 1,
   BL_EXTEND_MODE_REFLECT = 2,
@@ -238,7 +238,7 @@ global BLExtendMode: type <cimport, nodecl> = @enum(cint){
   BL_EXTEND_MODE_SIMPLE_COUNT = 3,
   BL_EXTEND_MODE_COMPLEX_COUNT = 9
 }
-global BLTextEncoding: type <cimport, nodecl> = @enum(cint){
+global BLTextEncoding: type <cimport, nodecl, using> = @enum(cint){
   BL_TEXT_ENCODING_UTF8 = 0,
   BL_TEXT_ENCODING_UTF16 = 1,
   BL_TEXT_ENCODING_UTF32 = 2,
@@ -741,7 +741,7 @@ global function blVariantGetImplType(self: pointer): uint32 <cimport, nodecl> en
 global function blVariantAssignMove(self: pointer, other: pointer): BLResult <cimport, nodecl> end
 global function blVariantAssignWeak(self: pointer, other: pointer): BLResult <cimport, nodecl> end
 global function blVariantEquals(a: pointer, b: pointer): boolean <cimport, nodecl> end
-global BLImplType: type <cimport, nodecl> = @enum(cint){
+global BLImplType: type <cimport, nodecl, using> = @enum(cint){
   BL_IMPL_TYPE_NULL = 0,
   BL_IMPL_TYPE_ARRAY_VAR = 1,
   BL_IMPL_TYPE_ARRAY_I8 = 2,
@@ -786,7 +786,7 @@ global BLImplType: type <cimport, nodecl> = @enum(cint){
   BL_IMPL_TYPE_FONT_VARIATION_OPTIONS = 61,
   BL_IMPL_TYPE_COUNT = 64
 }
-global BLImplTraits: type <cimport, nodecl> = @enum(cint){
+global BLImplTraits: type <cimport, nodecl, using> = @enum(cint){
   BL_IMPL_TRAIT_MUTABLE = 1,
   BL_IMPL_TRAIT_IMMUTABLE = 2,
   BL_IMPL_TRAIT_EXTERNAL = 4,
@@ -829,12 +829,12 @@ global BLArrayImpl: type <cimport, nodecl> = @record{
 global BLArrayCore: type <cimport, nodecl> = @record{
   impl: *BLArrayImpl
 }
-global BLGeometryDirection: type <cimport, nodecl> = @enum(cint){
+global BLGeometryDirection: type <cimport, nodecl, using> = @enum(cint){
   BL_GEOMETRY_DIRECTION_NONE = 0,
   BL_GEOMETRY_DIRECTION_CW = 1,
   BL_GEOMETRY_DIRECTION_CCW = 2
 }
-global BLGeometryType: type <cimport, nodecl> = @enum(cint){
+global BLGeometryType: type <cimport, nodecl, using> = @enum(cint){
   BL_GEOMETRY_TYPE_NONE = 0,
   BL_GEOMETRY_TYPE_BOXI = 1,
   BL_GEOMETRY_TYPE_BOXD = 2,
@@ -861,12 +861,12 @@ global BLGeometryType: type <cimport, nodecl> = @enum(cint){
   BL_GEOMETRY_TYPE_COUNT = 23,
   BL_GEOMETRY_TYPE_SIMPLE_LAST = 12
 }
-global BLFillRule: type <cimport, nodecl> = @enum(cint){
+global BLFillRule: type <cimport, nodecl, using> = @enum(cint){
   BL_FILL_RULE_NON_ZERO = 0,
   BL_FILL_RULE_EVEN_ODD = 1,
   BL_FILL_RULE_COUNT = 2
 }
-global BLHitTest: type <cimport, nodecl> = @enum(cuint){
+global BLHitTest: type <cimport, nodecl, using> = @enum(cuint){
   BL_HIT_TEST_IN = 0,
   BL_HIT_TEST_PART = 1,
   BL_HIT_TEST_OUT = 2,
@@ -953,28 +953,28 @@ global BLArc: type <cimport, nodecl> = @record{
   start: float64,
   sweep: float64
 }
-global BLGlyphPlacementType: type <cimport, nodecl> = @enum(cint){
+global BLGlyphPlacementType: type <cimport, nodecl, using> = @enum(cint){
   BL_GLYPH_PLACEMENT_TYPE_NONE = 0,
   BL_GLYPH_PLACEMENT_TYPE_ADVANCE_OFFSET = 1,
   BL_GLYPH_PLACEMENT_TYPE_DESIGN_UNITS = 2,
   BL_GLYPH_PLACEMENT_TYPE_USER_UNITS = 3,
   BL_GLYPH_PLACEMENT_TYPE_ABSOLUTE_UNITS = 4
 }
-global BLGlyphRunFlags: type <cimport, nodecl> = @enum(cuint){
+global BLGlyphRunFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_GLYPH_RUN_FLAG_UCS4_CONTENT = 268435456,
   BL_GLYPH_RUN_FLAG_INVALID_TEXT = 536870912,
   BL_GLYPH_RUN_FLAG_UNDEFINED_GLYPHS = 1073741824,
   BL_GLYPH_RUN_FLAG_INVALID_FONT_DATA = 2147483648
 }
-global BLFontDataFlags: type <cimport, nodecl> = @enum(cint){
+global BLFontDataFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_DATA_FLAG_COLLECTION = 1
 }
-global BLFontFaceType: type <cimport, nodecl> = @enum(cint){
+global BLFontFaceType: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_FACE_TYPE_NONE = 0,
   BL_FONT_FACE_TYPE_OPENTYPE = 1,
   BL_FONT_FACE_TYPE_COUNT = 2
 }
-global BLFontFaceFlags: type <cimport, nodecl> = @enum(cuint){
+global BLFontFaceFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_FONT_FACE_FLAG_TYPOGRAPHIC_NAMES = 1,
   BL_FONT_FACE_FLAG_TYPOGRAPHIC_METRICS = 2,
   BL_FONT_FACE_FLAG_CHAR_TO_GLYPH_MAPPING = 4,
@@ -992,7 +992,7 @@ global BLFontFaceFlags: type <cimport, nodecl> = @enum(cuint){
   BL_FONT_FACE_FLAG_SYMBOL_FONT = 1073741824,
   BL_FONT_FACE_FLAG_LAST_RESORT_FONT = 2147483648
 }
-global BLFontFaceDiagFlags: type <cimport, nodecl> = @enum(cint){
+global BLFontFaceDiagFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_FACE_DIAG_WRONG_NAME_DATA = 1,
   BL_FONT_FACE_DIAG_FIXED_NAME_DATA = 2,
   BL_FONT_FACE_DIAG_WRONG_KERN_DATA = 4,
@@ -1003,13 +1003,13 @@ global BLFontFaceDiagFlags: type <cimport, nodecl> = @enum(cint){
   BL_FONT_FACE_DIAG_WRONG_GPOS_DATA = 1024,
   BL_FONT_FACE_DIAG_WRONG_GSUB_DATA = 4096
 }
-global BLFontOutlineType: type <cimport, nodecl> = @enum(cint){
+global BLFontOutlineType: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_OUTLINE_TYPE_NONE = 0,
   BL_FONT_OUTLINE_TYPE_TRUETYPE = 1,
   BL_FONT_OUTLINE_TYPE_CFF = 2,
   BL_FONT_OUTLINE_TYPE_CFF2 = 3
 }
-global BLFontStretch: type <cimport, nodecl> = @enum(cint){
+global BLFontStretch: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_STRETCH_ULTRA_CONDENSED = 1,
   BL_FONT_STRETCH_EXTRA_CONDENSED = 2,
   BL_FONT_STRETCH_CONDENSED = 3,
@@ -1020,13 +1020,13 @@ global BLFontStretch: type <cimport, nodecl> = @enum(cint){
   BL_FONT_STRETCH_EXTRA_EXPANDED = 8,
   BL_FONT_STRETCH_ULTRA_EXPANDED = 9
 }
-global BLFontStyle: type <cimport, nodecl> = @enum(cint){
+global BLFontStyle: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_STYLE_NORMAL = 0,
   BL_FONT_STYLE_OBLIQUE = 1,
   BL_FONT_STYLE_ITALIC = 2,
   BL_FONT_STYLE_COUNT = 3
 }
-global BLFontWeight: type <cimport, nodecl> = @enum(cint){
+global BLFontWeight: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_WEIGHT_THIN = 100,
   BL_FONT_WEIGHT_EXTRA_LIGHT = 200,
   BL_FONT_WEIGHT_LIGHT = 300,
@@ -1039,7 +1039,7 @@ global BLFontWeight: type <cimport, nodecl> = @enum(cint){
   BL_FONT_WEIGHT_BLACK = 900,
   BL_FONT_WEIGHT_EXTRA_BLACK = 950
 }
-global BLFontStringId: type <cimport, nodecl> = @enum(cint){
+global BLFontStringId: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_STRING_COPYRIGHT_NOTICE = 0,
   BL_FONT_STRING_FAMILY_NAME = 1,
   BL_FONT_STRING_SUBFAMILY_NAME = 2,
@@ -1069,7 +1069,7 @@ global BLFontStringId: type <cimport, nodecl> = @enum(cint){
   BL_FONT_STRING_COMMON_COUNT = 26,
   BL_FONT_STRING_CUSTOM_START_INDEX = 255
 }
-global BLFontUnicodeCoverageIndex: type <cimport, nodecl> = @enum(cint){
+global BLFontUnicodeCoverageIndex: type <cimport, nodecl, using> = @enum(cint){
   BL_FONT_UC_INDEX_BASIC_LATIN = 0,
   BL_FONT_UC_INDEX_LATIN1_SUPPLEMENT = 1,
   BL_FONT_UC_INDEX_LATIN_EXTENDED_A = 2,
@@ -1199,12 +1199,12 @@ global BLFontUnicodeCoverageIndex: type <cimport, nodecl> = @enum(cint){
   BL_FONT_UC_INDEX_INTERNAL_USAGE_126 = 126,
   BL_FONT_UC_INDEX_INTERNAL_USAGE_127 = 127
 }
-global BLTextDirection: type <cimport, nodecl> = @enum(cint){
+global BLTextDirection: type <cimport, nodecl, using> = @enum(cint){
   BL_TEXT_DIRECTION_LTR = 0,
   BL_TEXT_DIRECTION_RTL = 1,
   BL_TEXT_DIRECTION_COUNT = 2
 }
-global BLTextOrientation: type <cimport, nodecl> = @enum(cint){
+global BLTextOrientation: type <cimport, nodecl, using> = @enum(cint){
   BL_TEXT_ORIENTATION_HORIZONTAL = 0,
   BL_TEXT_ORIENTATION_VERTICAL = 1,
   BL_TEXT_ORIENTATION_COUNT = 2
@@ -1420,7 +1420,7 @@ global BLGlyphBufferImpl: type <cimport, nodecl> = @record{
 global BLGlyphBufferCore: type <cimport, nodecl> = @record{
   impl: *BLGlyphBufferImpl
 }
-global BLPathCmd: type <cimport, nodecl> = @enum(cint){
+global BLPathCmd: type <cimport, nodecl, using> = @enum(cint){
   BL_PATH_CMD_MOVE = 0,
   BL_PATH_CMD_ON = 1,
   BL_PATH_CMD_QUAD = 2,
@@ -1428,10 +1428,10 @@ global BLPathCmd: type <cimport, nodecl> = @enum(cint){
   BL_PATH_CMD_CLOSE = 4,
   BL_PATH_CMD_COUNT = 5
 }
-global BLPathCmdExtra: type <cimport, nodecl> = @enum(cuint){
+global BLPathCmdExtra: type <cimport, nodecl, using> = @enum(cuint){
   BL_PATH_CMD_PRESERVE = 4294967295
 }
-global BLPathFlags: type <cimport, nodecl> = @enum(cuint){
+global BLPathFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_PATH_FLAG_EMPTY = 1,
   BL_PATH_FLAG_MULTIPLE = 2,
   BL_PATH_FLAG_QUADS = 4,
@@ -1439,12 +1439,12 @@ global BLPathFlags: type <cimport, nodecl> = @enum(cuint){
   BL_PATH_FLAG_INVALID = 1073741824,
   BL_PATH_FLAG_DIRTY = 2147483648
 }
-global BLPathReverseMode: type <cimport, nodecl> = @enum(cint){
+global BLPathReverseMode: type <cimport, nodecl, using> = @enum(cint){
   BL_PATH_REVERSE_MODE_COMPLETE = 0,
   BL_PATH_REVERSE_MODE_SEPARATE = 1,
   BL_PATH_REVERSE_MODE_COUNT = 2
 }
-global BLStrokeJoin: type <cimport, nodecl> = @enum(cint){
+global BLStrokeJoin: type <cimport, nodecl, using> = @enum(cint){
   BL_STROKE_JOIN_MITER_CLIP = 0,
   BL_STROKE_JOIN_MITER_BEVEL = 1,
   BL_STROKE_JOIN_MITER_ROUND = 2,
@@ -1452,12 +1452,12 @@ global BLStrokeJoin: type <cimport, nodecl> = @enum(cint){
   BL_STROKE_JOIN_ROUND = 4,
   BL_STROKE_JOIN_COUNT = 5
 }
-global BLStrokeCapPosition: type <cimport, nodecl> = @enum(cint){
+global BLStrokeCapPosition: type <cimport, nodecl, using> = @enum(cint){
   BL_STROKE_CAP_POSITION_START = 0,
   BL_STROKE_CAP_POSITION_END = 1,
   BL_STROKE_CAP_POSITION_COUNT = 2
 }
-global BLStrokeCap: type <cimport, nodecl> = @enum(cint){
+global BLStrokeCap: type <cimport, nodecl, using> = @enum(cint){
   BL_STROKE_CAP_BUTT = 0,
   BL_STROKE_CAP_SQUARE = 1,
   BL_STROKE_CAP_ROUND = 2,
@@ -1466,17 +1466,17 @@ global BLStrokeCap: type <cimport, nodecl> = @enum(cint){
   BL_STROKE_CAP_TRIANGLE_REV = 5,
   BL_STROKE_CAP_COUNT = 6
 }
-global BLStrokeTransformOrder: type <cimport, nodecl> = @enum(cint){
+global BLStrokeTransformOrder: type <cimport, nodecl, using> = @enum(cint){
   BL_STROKE_TRANSFORM_ORDER_AFTER = 0,
   BL_STROKE_TRANSFORM_ORDER_BEFORE = 1,
   BL_STROKE_TRANSFORM_ORDER_COUNT = 2
 }
-global BLFlattenMode: type <cimport, nodecl> = @enum(cint){
+global BLFlattenMode: type <cimport, nodecl, using> = @enum(cint){
   BL_FLATTEN_MODE_DEFAULT = 0,
   BL_FLATTEN_MODE_RECURSIVE = 1,
   BL_FLATTEN_MODE_COUNT = 2
 }
-global BLOffsetMode: type <cimport, nodecl> = @enum(cint){
+global BLOffsetMode: type <cimport, nodecl, using> = @enum(cint){
   BL_OFFSET_MODE_DEFAULT = 0,
   BL_OFFSET_MODE_ITERATIVE = 1,
   BL_OFFSET_MODE_COUNT = 2
@@ -1611,7 +1611,7 @@ global BLFontImpl: type <cimport, nodecl> = @record{
 global BLFontCore: type <cimport, nodecl> = @record{
   impl: *BLFontImpl
 }
-global BLFormat: type <cimport, nodecl> = @enum(cint){
+global BLFormat: type <cimport, nodecl, using> = @enum(cint){
   BL_FORMAT_NONE = 0,
   BL_FORMAT_PRGB32 = 1,
   BL_FORMAT_XRGB32 = 2,
@@ -1619,7 +1619,7 @@ global BLFormat: type <cimport, nodecl> = @enum(cint){
   BL_FORMAT_COUNT = 4,
   BL_FORMAT_RESERVED_COUNT = 16
 }
-global BLFormatFlags: type <cimport, nodecl> = @enum(cint){
+global BLFormatFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_FORMAT_FLAG_RGB = 1,
   BL_FORMAT_FLAG_ALPHA = 2,
   BL_FORMAT_FLAG_RGBA = 3,
@@ -1655,10 +1655,10 @@ global BLFormatInfo: type <cimport, nodecl> = @record{
   }
 }
 global blFormatInfo: [16]BLFormatInfo <cimport, nodecl>
-global BLImageInfoFlags: type <cimport, nodecl> = @enum(cint){
+global BLImageInfoFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_IMAGE_INFO_FLAG_PROGRESSIVE = 1
 }
-global BLImageScaleFilter: type <cimport, nodecl> = @enum(cint){
+global BLImageScaleFilter: type <cimport, nodecl, using> = @enum(cint){
   BL_IMAGE_SCALE_FILTER_NONE = 0,
   BL_IMAGE_SCALE_FILTER_NEAREST = 1,
   BL_IMAGE_SCALE_FILTER_BILINEAR = 2,
@@ -1722,7 +1722,7 @@ global BLImageCore: type <cimport, nodecl> = @record{
   impl: *BLImageImpl
 }
 global BLMapPointDArrayFunc: type <cimport, nodecl> = @function(pointer, *BLPoint, *BLPoint, csize): BLResult
-global BLMatrix2DType: type <cimport, nodecl> = @enum(cint){
+global BLMatrix2DType: type <cimport, nodecl, using> = @enum(cint){
   BL_MATRIX2D_TYPE_IDENTITY = 0,
   BL_MATRIX2D_TYPE_TRANSLATE = 1,
   BL_MATRIX2D_TYPE_SCALE = 2,
@@ -1731,7 +1731,7 @@ global BLMatrix2DType: type <cimport, nodecl> = @enum(cint){
   BL_MATRIX2D_TYPE_INVALID = 5,
   BL_MATRIX2D_TYPE_COUNT = 6
 }
-global BLMatrix2DValue: type <cimport, nodecl> = @enum(cint){
+global BLMatrix2DValue: type <cimport, nodecl, using> = @enum(cint){
   BL_MATRIX2D_VALUE_00 = 0,
   BL_MATRIX2D_VALUE_01 = 1,
   BL_MATRIX2D_VALUE_10 = 2,
@@ -1740,7 +1740,7 @@ global BLMatrix2DValue: type <cimport, nodecl> = @enum(cint){
   BL_MATRIX2D_VALUE_21 = 5,
   BL_MATRIX2D_VALUE_COUNT = 6
 }
-global BLMatrix2DOp: type <cimport, nodecl> = @enum(cint){
+global BLMatrix2DOp: type <cimport, nodecl, using> = @enum(cint){
   BL_MATRIX2D_OP_RESET = 0,
   BL_MATRIX2D_OP_ASSIGN = 1,
   BL_MATRIX2D_OP_TRANSLATE = 2,
@@ -1799,7 +1799,7 @@ global BLRgba: type <cimport, nodecl> = @record{
   b: float32,
   a: float32
 }
-global BLRegionType: type <cimport, nodecl> = @enum(cint){
+global BLRegionType: type <cimport, nodecl, using> = @enum(cint){
   BL_REGION_TYPE_EMPTY = 0,
   BL_REGION_TYPE_RECT = 1,
   BL_REGION_TYPE_COMPLEX = 2,
@@ -1824,13 +1824,13 @@ global BLRegionImpl: type <cimport, nodecl> = @record{
 global BLRegionCore: type <cimport, nodecl> = @record{
   impl: *BLRegionImpl
 }
-global BLGradientType: type <cimport, nodecl> = @enum(cint){
+global BLGradientType: type <cimport, nodecl, using> = @enum(cint){
   BL_GRADIENT_TYPE_LINEAR = 0,
   BL_GRADIENT_TYPE_RADIAL = 1,
   BL_GRADIENT_TYPE_CONICAL = 2,
   BL_GRADIENT_TYPE_COUNT = 3
 }
-global BLGradientValue: type <cimport, nodecl> = @enum(cint){
+global BLGradientValue: type <cimport, nodecl, using> = @enum(cint){
   BL_GRADIENT_VALUE_COMMON_X0 = 0,
   BL_GRADIENT_VALUE_COMMON_Y0 = 1,
   BL_GRADIENT_VALUE_COMMON_X1 = 2,
@@ -1904,7 +1904,7 @@ global BLPatternImpl: type <cimport, nodecl> = @record{
 global BLPatternCore: type <cimport, nodecl> = @record{
   impl: *BLPatternImpl
 }
-global BLStyleType: type <cimport, nodecl> = @enum(cint){
+global BLStyleType: type <cimport, nodecl, using> = @enum(cint){
   BL_STYLE_TYPE_NONE = 0,
   BL_STYLE_TYPE_SOLID = 1,
   BL_STYLE_TYPE_PATTERN = 2,
@@ -1925,38 +1925,38 @@ global BLStyleCore: type <cimport, nodecl> = @record{
     u64Data: [2]uint64
   }
 }
-global BLContextType: type <cimport, nodecl> = @enum(cint){
+global BLContextType: type <cimport, nodecl, using> = @enum(cint){
   BL_CONTEXT_TYPE_NONE = 0,
   BL_CONTEXT_TYPE_DUMMY = 1,
   BL_CONTEXT_TYPE_RASTER = 3,
   BL_CONTEXT_TYPE_COUNT = 4
 }
-global BLContextHint: type <cimport, nodecl> = @enum(cint){
+global BLContextHint: type <cimport, nodecl, using> = @enum(cint){
   BL_CONTEXT_HINT_RENDERING_QUALITY = 0,
   BL_CONTEXT_HINT_GRADIENT_QUALITY = 1,
   BL_CONTEXT_HINT_PATTERN_QUALITY = 2,
   BL_CONTEXT_HINT_COUNT = 8
 }
-global BLContextOpType: type <cimport, nodecl> = @enum(cint){
+global BLContextOpType: type <cimport, nodecl, using> = @enum(cint){
   BL_CONTEXT_OP_TYPE_FILL = 0,
   BL_CONTEXT_OP_TYPE_STROKE = 1,
   BL_CONTEXT_OP_TYPE_COUNT = 2
 }
-global BLContextFlushFlags: type <cimport, nodecl> = @enum(cuint){
+global BLContextFlushFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_CONTEXT_FLUSH_SYNC = 2147483648
 }
-global BLContextCreateFlags: type <cimport, nodecl> = @enum(cint){
+global BLContextCreateFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_CONTEXT_CREATE_FLAG_FALLBACK_TO_SYNC = 8,
   BL_CONTEXT_CREATE_FLAG_ISOLATED_THREAD_POOL = 16777216,
   BL_CONTEXT_CREATE_FLAG_ISOLATED_JIT_RUNTIME = 33554432,
   BL_CONTEXT_CREATE_FLAG_ISOLATED_JIT_LOGGING = 67108864,
   BL_CONTEXT_CREATE_FLAG_OVERRIDE_CPU_FEATURES = 134217728
 }
-global BLContextProperty: type <cimport, nodecl> = @enum(cint){
+global BLContextProperty: type <cimport, nodecl, using> = @enum(cint){
   BL_CONTEXT_PROPERTY_THREAD_COUNT = 0,
   BL_CONTEXT_PROPERTY_ACCUMULATED_ERROR_FLAGS = 10
 }
-global BLContextErrorFlags: type <cimport, nodecl> = @enum(cuint){
+global BLContextErrorFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_CONTEXT_ERROR_FLAG_INVALID_VALUE = 1,
   BL_CONTEXT_ERROR_FLAG_INVALID_STATE = 2,
   BL_CONTEXT_ERROR_FLAG_INVALID_GEOMETRY = 4,
@@ -1966,13 +1966,13 @@ global BLContextErrorFlags: type <cimport, nodecl> = @enum(cuint){
   BL_CONTEXT_ERROR_FLAG_OUT_OF_MEMORY = 1073741824,
   BL_CONTEXT_ERROR_FLAG_UNKNOWN_ERROR = 2147483648
 }
-global BLClipMode: type <cimport, nodecl> = @enum(cint){
+global BLClipMode: type <cimport, nodecl, using> = @enum(cint){
   BL_CLIP_MODE_ALIGNED_RECT = 0,
   BL_CLIP_MODE_UNALIGNED_RECT = 1,
   BL_CLIP_MODE_MASK = 2,
   BL_CLIP_MODE_COUNT = 3
 }
-global BLCompOp: type <cimport, nodecl> = @enum(cint){
+global BLCompOp: type <cimport, nodecl, using> = @enum(cint){
   BL_COMP_OP_SRC_OVER = 0,
   BL_COMP_OP_SRC_COPY = 1,
   BL_COMP_OP_SRC_IN = 2,
@@ -2004,16 +2004,16 @@ global BLCompOp: type <cimport, nodecl> = @enum(cint){
   BL_COMP_OP_EXCLUSION = 28,
   BL_COMP_OP_COUNT = 29
 }
-global BLGradientQuality: type <cimport, nodecl> = @enum(cint){
+global BLGradientQuality: type <cimport, nodecl, using> = @enum(cint){
   BL_GRADIENT_QUALITY_NEAREST = 0,
   BL_GRADIENT_QUALITY_COUNT = 1
 }
-global BLPatternQuality: type <cimport, nodecl> = @enum(cint){
+global BLPatternQuality: type <cimport, nodecl, using> = @enum(cint){
   BL_PATTERN_QUALITY_NEAREST = 0,
   BL_PATTERN_QUALITY_BILINEAR = 1,
   BL_PATTERN_QUALITY_COUNT = 2
 }
-global BLRenderingQuality: type <cimport, nodecl> = @enum(cint){
+global BLRenderingQuality: type <cimport, nodecl, using> = @enum(cint){
   BL_RENDERING_QUALITY_ANTIALIAS = 0,
   BL_RENDERING_QUALITY_COUNT = 1
 }
@@ -2125,7 +2125,7 @@ global BLContextImpl: type <cimport, nodecl> = @record{
 global BLContextCore: type <cimport, nodecl> = @record{
   impl: *BLContextImpl
 }
-global BLFileOpenFlags: type <cimport, nodecl> = @enum(cuint){
+global BLFileOpenFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_FILE_OPEN_READ = 1,
   BL_FILE_OPEN_WRITE = 2,
   BL_FILE_OPEN_RW = 3,
@@ -2138,13 +2138,13 @@ global BLFileOpenFlags: type <cimport, nodecl> = @enum(cuint){
   BL_FILE_OPEN_CREATE_EXCLUSIVE = 1073741824,
   BL_FILE_OPEN_DELETE_EXCLUSIVE = 2147483648
 }
-global BLFileSeekType: type <cimport, nodecl> = @enum(cint){
+global BLFileSeekType: type <cimport, nodecl, using> = @enum(cint){
   BL_FILE_SEEK_SET = 0,
   BL_FILE_SEEK_CUR = 1,
   BL_FILE_SEEK_END = 2,
   BL_FILE_SEEK_COUNT = 3
 }
-global BLFileReadFlags: type <cimport, nodecl> = @enum(cint){
+global BLFileReadFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_FILE_READ_MMAP_ENABLED = 1,
   BL_FILE_READ_MMAP_AVOID_SMALL = 2,
   BL_FILE_READ_MMAP_NO_FALLBACK = 8
@@ -2166,7 +2166,7 @@ global BLFontManagerImpl: type <cimport, nodecl> = @record{
 global BLFontManagerCore: type <cimport, nodecl> = @record{
   impl: *BLFontManagerImpl
 }
-global BLImageCodecFeatures: type <cimport, nodecl> = @enum(cint){
+global BLImageCodecFeatures: type <cimport, nodecl, using> = @enum(cint){
   BL_IMAGE_CODEC_FEATURE_READ = 1,
   BL_IMAGE_CODEC_FEATURE_WRITE = 2,
   BL_IMAGE_CODEC_FEATURE_LOSSLESS = 4,
@@ -2239,7 +2239,7 @@ global BLImageEncoderCore: type <cimport, nodecl> = @record{
   impl: *BLImageEncoderImpl
 }
 global BLPixelConverterFunc: type <cimport, nodecl> = @function(*BLPixelConverterCore, *uint8, isize, *uint8, isize, uint32, uint32, *BLPixelConverterOptions): BLResult
-global BLPixelConverterCreateFlags: type <cimport, nodecl> = @enum(cint){
+global BLPixelConverterCreateFlags: type <cimport, nodecl, using> = @enum(cint){
   BL_PIXEL_CONVERTER_CREATE_FLAG_DONT_COPY_PALETTE = 1,
   BL_PIXEL_CONVERTER_CREATE_FLAG_ALTERABLE_PALETTE = 2,
   BL_PIXEL_CONVERTER_CREATE_FLAG_NO_MULTI_STEP = 4
@@ -2260,27 +2260,27 @@ global BLPixelConverterCore: type <cimport, nodecl> = @record{
 global BLRandom: type <cimport, nodecl> = @record{
   data: [2]uint64
 }
-global BLRuntimeLimits: type <cimport, nodecl> = @enum(cint){
+global BLRuntimeLimits: type <cimport, nodecl, using> = @enum(cint){
   BL_RUNTIME_MAX_IMAGE_SIZE = 65535,
   BL_RUNTIME_MAX_THREAD_COUNT = 32
 }
-global BLRuntimeInfoType: type <cimport, nodecl> = @enum(cint){
+global BLRuntimeInfoType: type <cimport, nodecl, using> = @enum(cint){
   BL_RUNTIME_INFO_TYPE_BUILD = 0,
   BL_RUNTIME_INFO_TYPE_SYSTEM = 1,
   BL_RUNTIME_INFO_TYPE_RESOURCE = 2,
   BL_RUNTIME_INFO_TYPE_COUNT = 3
 }
-global BLRuntimeBuildType: type <cimport, nodecl> = @enum(cint){
+global BLRuntimeBuildType: type <cimport, nodecl, using> = @enum(cint){
   BL_RUNTIME_BUILD_TYPE_DEBUG = 0,
   BL_RUNTIME_BUILD_TYPE_RELEASE = 1
 }
-global BLRuntimeCpuArch: type <cimport, nodecl> = @enum(cint){
+global BLRuntimeCpuArch: type <cimport, nodecl, using> = @enum(cint){
   BL_RUNTIME_CPU_ARCH_UNKNOWN = 0,
   BL_RUNTIME_CPU_ARCH_X86 = 1,
   BL_RUNTIME_CPU_ARCH_ARM = 2,
   BL_RUNTIME_CPU_ARCH_MIPS = 3
 }
-global BLRuntimeCpuFeatures: type <cimport, nodecl> = @enum(cint){
+global BLRuntimeCpuFeatures: type <cimport, nodecl, using> = @enum(cint){
   BL_RUNTIME_CPU_FEATURE_X86_SSE2 = 1,
   BL_RUNTIME_CPU_FEATURE_X86_SSE3 = 2,
   BL_RUNTIME_CPU_FEATURE_X86_SSSE3 = 4,
@@ -2289,7 +2289,7 @@ global BLRuntimeCpuFeatures: type <cimport, nodecl> = @enum(cint){
   BL_RUNTIME_CPU_FEATURE_X86_AVX = 32,
   BL_RUNTIME_CPU_FEATURE_X86_AVX2 = 64
 }
-global BLRuntimeCleanupFlags: type <cimport, nodecl> = @enum(cuint){
+global BLRuntimeCleanupFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_RUNTIME_CLEANUP_OBJECT_POOL = 1,
   BL_RUNTIME_CLEANUP_ZEROED_POOL = 2,
   BL_RUNTIME_CLEANUP_THREAD_POOL = 16,

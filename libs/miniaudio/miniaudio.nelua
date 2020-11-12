@@ -59,19 +59,19 @@ global ma_proc: type <cimport, nodecl> = @function()
 global ma_context: type <cimport, forwarddecl> = @record{}
 global ma_device: type <cimport, forwarddecl> = @record{}
 global ma_result: type <cimport, nodecl> = @cint
-global ma_stream_format: type <cimport, nodecl> = @enum(cint){
+global ma_stream_format: type <cimport, nodecl, using> = @enum(cint){
   ma_stream_format_pcm = 0
 }
-global ma_stream_layout: type <cimport, nodecl> = @enum(cint){
+global ma_stream_layout: type <cimport, nodecl, using> = @enum(cint){
   ma_stream_layout_interleaved = 0,
   ma_stream_layout_deinterleaved = 1
 }
-global ma_dither_mode: type <cimport, nodecl> = @enum(cint){
+global ma_dither_mode: type <cimport, nodecl, using> = @enum(cint){
   ma_dither_mode_none = 0,
   ma_dither_mode_rectangle = 1,
   ma_dither_mode_triangle = 2
 }
-global ma_format: type <cimport, nodecl> = @enum(cint){
+global ma_format: type <cimport, nodecl, using> = @enum(cint){
   ma_format_unknown = 0,
   ma_format_u8 = 1,
   ma_format_s16 = 2,
@@ -80,14 +80,14 @@ global ma_format: type <cimport, nodecl> = @enum(cint){
   ma_format_f32 = 5,
   ma_format_count = 6
 }
-global ma_channel_mix_mode: type <cimport, nodecl> = @enum(cint){
+global ma_channel_mix_mode: type <cimport, nodecl, using> = @enum(cint){
   ma_channel_mix_mode_rectangular = 0,
   ma_channel_mix_mode_simple = 1,
   ma_channel_mix_mode_custom_weights = 2,
   ma_channel_mix_mode_planar_blend = 0,
   ma_channel_mix_mode_default = 0
 }
-global ma_standard_channel_map: type <cimport, nodecl> = @enum(cint){
+global ma_standard_channel_map: type <cimport, nodecl, using> = @enum(cint){
   ma_standard_channel_map_microsoft = 0,
   ma_standard_channel_map_alsa = 1,
   ma_standard_channel_map_rfc3551 = 2,
@@ -98,7 +98,7 @@ global ma_standard_channel_map: type <cimport, nodecl> = @enum(cint){
   ma_standard_channel_map_webaudio = 3,
   ma_standard_channel_map_default = 0
 }
-global ma_performance_profile: type <cimport, nodecl> = @enum(cint){
+global ma_performance_profile: type <cimport, nodecl, using> = @enum(cint){
   ma_performance_profile_low_latency = 0,
   ma_performance_profile_conservative = 1
 }
@@ -111,7 +111,7 @@ global ma_allocation_callbacks: type <cimport, nodecl> = @record{
 global ma_lcg: type <cimport, nodecl> = @record{
   state: int32
 }
-global ma_thread_priority: type <cimport, nodecl> = @enum(cint){
+global ma_thread_priority: type <cimport, nodecl, using> = @enum(cint){
   ma_thread_priority_idle = -5,
   ma_thread_priority_lowest = -4,
   ma_thread_priority_low = -3,
@@ -392,7 +392,7 @@ global function ma_linear_resampler_get_required_input_frame_count(pResampler: *
 global function ma_linear_resampler_get_expected_output_frame_count(pResampler: *ma_linear_resampler, inputFrameCount: uint64): uint64 <cimport, nodecl> end
 global function ma_linear_resampler_get_input_latency(pResampler: *ma_linear_resampler): uint64 <cimport, nodecl> end
 global function ma_linear_resampler_get_output_latency(pResampler: *ma_linear_resampler): uint64 <cimport, nodecl> end
-global ma_resample_algorithm: type <cimport, nodecl> = @enum(cint){
+global ma_resample_algorithm: type <cimport, nodecl, using> = @enum(cint){
   ma_resample_algorithm_linear = 0,
   ma_resample_algorithm_speex = 1
 }
@@ -602,7 +602,7 @@ global function ma_get_format_name(format: ma_format): cstring <cimport, nodecl>
 global function ma_blend_f32(pOut: *float32, pInA: *float32, pInB: *float32, factor: float32, channels: uint32) <cimport, nodecl> end
 global function ma_get_bytes_per_sample(format: ma_format): uint32 <cimport, nodecl> end
 global function ma_log_level_to_string(logLevel: uint32): cstring <cimport, nodecl> end
-global ma_backend: type <cimport, nodecl> = @enum(cint){
+global ma_backend: type <cimport, nodecl, using> = @enum(cint){
   ma_backend_wasapi = 0,
   ma_backend_dsound = 1,
   ma_backend_winmm = 2,
@@ -622,17 +622,17 @@ global ma_backend: type <cimport, nodecl> = @enum(cint){
 global ma_device_callback_proc: type <cimport, nodecl> = @function(*ma_device, pointer, pointer, uint32)
 global ma_stop_proc: type <cimport, nodecl> = @function(*ma_device)
 global ma_log_proc: type <cimport, nodecl> = @function(*ma_context, *ma_device, uint32, cstring)
-global ma_device_type: type <cimport, nodecl> = @enum(cint){
+global ma_device_type: type <cimport, nodecl, using> = @enum(cint){
   ma_device_type_playback = 1,
   ma_device_type_capture = 2,
   ma_device_type_duplex = 3,
   ma_device_type_loopback = 4
 }
-global ma_share_mode: type <cimport, nodecl> = @enum(cint){
+global ma_share_mode: type <cimport, nodecl, using> = @enum(cint){
   ma_share_mode_shared = 0,
   ma_share_mode_exclusive = 1
 }
-global ma_ios_session_category: type <cimport, nodecl> = @enum(cint){
+global ma_ios_session_category: type <cimport, nodecl, using> = @enum(cint){
   ma_ios_session_category_default = 0,
   ma_ios_session_category_none = 1,
   ma_ios_session_category_ambient = 2,
@@ -642,7 +642,7 @@ global ma_ios_session_category: type <cimport, nodecl> = @enum(cint){
   ma_ios_session_category_play_and_record = 6,
   ma_ios_session_category_multi_route = 7
 }
-global ma_ios_session_category_option: type <cimport, nodecl> = @enum(cint){
+global ma_ios_session_category_option: type <cimport, nodecl, using> = @enum(cint){
   ma_ios_session_category_option_mix_with_others = 1,
   ma_ios_session_category_option_duck_others = 2,
   ma_ios_session_category_option_allow_bluetooth = 4,
@@ -651,7 +651,7 @@ global ma_ios_session_category_option: type <cimport, nodecl> = @enum(cint){
   ma_ios_session_category_option_allow_bluetooth_a2dp = 32,
   ma_ios_session_category_option_allow_air_play = 64
 }
-global ma_opensl_stream_type: type <cimport, nodecl> = @enum(cint){
+global ma_opensl_stream_type: type <cimport, nodecl, using> = @enum(cint){
   ma_opensl_stream_type_default = 0,
   ma_opensl_stream_type_voice = 1,
   ma_opensl_stream_type_system = 2,
@@ -660,7 +660,7 @@ global ma_opensl_stream_type: type <cimport, nodecl> = @enum(cint){
   ma_opensl_stream_type_alarm = 5,
   ma_opensl_stream_type_notification = 6
 }
-global ma_opensl_recording_preset: type <cimport, nodecl> = @enum(cint){
+global ma_opensl_recording_preset: type <cimport, nodecl, using> = @enum(cint){
   ma_opensl_recording_preset_default = 0,
   ma_opensl_recording_preset_generic = 1,
   ma_opensl_recording_preset_camcorder = 2,
@@ -668,7 +668,7 @@ global ma_opensl_recording_preset: type <cimport, nodecl> = @enum(cint){
   ma_opensl_recording_preset_voice_communication = 4,
   ma_opensl_recording_preset_voice_unprocessed = 5
 }
-global ma_aaudio_usage: type <cimport, nodecl> = @enum(cint){
+global ma_aaudio_usage: type <cimport, nodecl, using> = @enum(cint){
   ma_aaudio_usage_default = 0,
   ma_aaudio_usage_announcement = 1,
   ma_aaudio_usage_emergency = 2,
@@ -687,14 +687,14 @@ global ma_aaudio_usage: type <cimport, nodecl> = @enum(cint){
   ma_aaudio_usage_voice_communication = 15,
   ma_aaudio_usage_voice_communication_signalling = 16
 }
-global ma_aaudio_content_type: type <cimport, nodecl> = @enum(cint){
+global ma_aaudio_content_type: type <cimport, nodecl, using> = @enum(cint){
   ma_aaudio_content_type_default = 0,
   ma_aaudio_content_type_movie = 1,
   ma_aaudio_content_type_music = 2,
   ma_aaudio_content_type_sonification = 3,
   ma_aaudio_content_type_speech = 4
 }
-global ma_aaudio_input_preset: type <cimport, nodecl> = @enum(cint){
+global ma_aaudio_input_preset: type <cimport, nodecl, using> = @enum(cint){
   ma_aaudio_input_preset_default = 0,
   ma_aaudio_input_preset_generic = 1,
   ma_aaudio_input_preset_camcorder = 2,
@@ -1277,7 +1277,7 @@ global function ma_audio_buffer_unmap(pAudioBuffer: *ma_audio_buffer, frameCount
 global function ma_audio_buffer_at_end(pAudioBuffer: *ma_audio_buffer): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_get_available_frames(pAudioBuffer: *ma_audio_buffer, pAvailableFrames: *uint64): ma_result <cimport, nodecl> end
 global ma_vfs_file: type <cimport, nodecl> = @pointer
-global ma_seek_origin: type <cimport, nodecl> = @enum(cint){
+global ma_seek_origin: type <cimport, nodecl, using> = @enum(cint){
   ma_seek_origin_start = 0,
   ma_seek_origin_current = 1,
   ma_seek_origin_end = 2
@@ -1309,7 +1309,7 @@ global ma_default_vfs: type <cimport, nodecl> = @record{
   allocationCallbacks: ma_allocation_callbacks
 }
 global function ma_default_vfs_init(pVFS: *ma_default_vfs, pAllocationCallbacks: *ma_allocation_callbacks): ma_result <cimport, nodecl> end
-global ma_resource_format: type <cimport, nodecl> = @enum(cint){
+global ma_resource_format: type <cimport, nodecl, using> = @enum(cint){
   ma_resource_format_wav = 0
 }
 global ma_decoder: type <cimport, forwarddecl> = @record{}
@@ -1443,7 +1443,7 @@ global function ma_encoder_init_file(pFilePath: cstring, pConfig: *ma_encoder_co
 global function ma_encoder_init_file_w(pFilePath: *cint, pConfig: *ma_encoder_config, pEncoder: *ma_encoder): ma_result <cimport, nodecl> end
 global function ma_encoder_uninit(pEncoder: *ma_encoder) <cimport, nodecl> end
 global function ma_encoder_write_pcm_frames(pEncoder: *ma_encoder, pFramesIn: pointer, frameCount: uint64): uint64 <cimport, nodecl> end
-global ma_waveform_type: type <cimport, nodecl> = @enum(cint){
+global ma_waveform_type: type <cimport, nodecl, using> = @enum(cint){
   ma_waveform_type_sine = 0,
   ma_waveform_type_square = 1,
   ma_waveform_type_triangle = 2,
@@ -1470,7 +1470,7 @@ global function ma_waveform_seek_to_pcm_frame(pWaveform: *ma_waveform, frameInde
 global function ma_waveform_set_amplitude(pWaveform: *ma_waveform, amplitude: float64): ma_result <cimport, nodecl> end
 global function ma_waveform_set_frequency(pWaveform: *ma_waveform, frequency: float64): ma_result <cimport, nodecl> end
 global function ma_waveform_set_sample_rate(pWaveform: *ma_waveform, sampleRate: uint32): ma_result <cimport, nodecl> end
-global ma_noise_type: type <cimport, nodecl> = @enum(cint){
+global ma_noise_type: type <cimport, nodecl, using> = @enum(cint){
   ma_noise_type_white = 0,
   ma_noise_type_pink = 1,
   ma_noise_type_brownian = 2
