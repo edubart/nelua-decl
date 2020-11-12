@@ -1,7 +1,3 @@
-require 'dumper'.import()
-
--- TODO: better handle reserved names everywhere
-
 local gcc = require 'gcc'
 local Emitter = require 'emitter'
 local gccutils = require 'gccutils'

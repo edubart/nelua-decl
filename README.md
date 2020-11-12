@@ -66,3 +66,4 @@ for example the `libs/sdl2/sdl2-test.nelua` file.
 * Support C bit fields
 * Support C unnamed fields
 * Support C math complex type
+* Better handle nelua reserved keyword names
