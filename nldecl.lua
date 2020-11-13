@@ -168,13 +168,10 @@ function nldecl.union_type(node, decl)
     emitter:add(typename)
     return
   elseif not node:fields() then
-    -- emitter:add('union{}')
-    emitter:add('record{}')
+    emitter:add('union{}')
     return
   end
-  emitter:add_ln('record{')
-  -- TODO: proper union
-  -- emitter:add_ln('union{')
+  emitter:add_ln('union{')
   emitter:inc_indent()
   visit_fields(node)
   emitter:dec_indent()

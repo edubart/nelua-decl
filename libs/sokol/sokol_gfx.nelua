@@ -402,7 +402,7 @@ global sg_image_desc: type <cimport, nodecl> = @record{
   render_target: boolean,
   width: cint,
   height: cint,
-  __unnamed1: record{
+  __unnamed1: union{
     depth: cint,
     layers: cint
   },
@@ -533,7 +533,7 @@ global sg_pipeline_desc: type <cimport, nodecl> = @record{
 global sg_attachment_desc: type <cimport, nodecl> = @record{
   image: sg_image,
   mip_level: cint,
-  __unnamed1: record{
+  __unnamed1: union{
     face: cint,
     layer: cint,
     slice: cint

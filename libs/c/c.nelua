@@ -647,7 +647,7 @@ global timespec: type <cimport, nodecl> = @record{
   tv_sec: clong,
   tv_nsec: clong
 }
-global sigval: type <cimport, nodecl> = @record{
+global sigval: type <cimport, nodecl> = @union{
   sival_int: cint,
   sival_ptr: pointer
 }
@@ -657,7 +657,7 @@ global siginfo_t: type <cimport, nodecl> = @record{
   si_errno: cint,
   si_code: cint,
   __pad0: cint,
-  _sifields: record{
+  _sifields: union{
     _pad: [28]cint,
     _kill: record{
       si_pid: cint,
@@ -683,7 +683,7 @@ global siginfo_t: type <cimport, nodecl> = @record{
     _sigfault: record{
       si_addr: pointer,
       si_addr_lsb: cshort,
-      _bounds: record{
+      _bounds: union{
         _addr_bnd: record{
           _lower: pointer,
           _upper: pointer
@@ -756,12 +756,12 @@ global POLL_ERR: cint <comptime> = 4
 global POLL_PRI: cint <comptime> = 5
 global POLL_HUP: cint <comptime> = 6
 global sigval_t: type = @sigval
-global pthread_attr_t: type <cimport, forwarddecl> = @record{}
+global pthread_attr_t: type <cimport, forwarddecl> = @union{}
 global sigevent: type <cimport, nodecl> = @record{
   sigev_value: __sigval_t,
   sigev_signo: cint,
   sigev_notify: cint,
-  _sigev_un: record{
+  _sigev_un: union{
     _pad: [12]cint,
     _tid: cint,
     _sigev_thread: record{
@@ -795,7 +795,7 @@ global function sigaddset(__set: *sigset_t, __signo: cint): cint <cimport, nodec
 global function sigdelset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
 global function sigismember(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
 global sigaction: type <cimport, nodecl> = @record{
-  __sigaction_handler: record{
+  __sigaction_handler: union{
     sa_handler: __sighandler_t,
     sa_sigaction: function(cint, *siginfo_t, pointer)
   },
@@ -869,7 +869,7 @@ global sigcontext: type <cimport, nodecl> = @record{
   trapno: uint64,
   oldmask: uint64,
   cr2: uint64,
-  __unnamed1: record{
+  __unnamed1: union{
     fpstate: *_fpstate,
     __fpstate_word: uint64
   },
@@ -975,14 +975,14 @@ global __pthread_rwlock_arch_t: type <cimport, nodecl> = @record{
   __flags: cuint
 }
 global __pthread_cond_s: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     __wseq: culonglong,
     __wseq32: record{
       __low: cuint,
       __high: cuint
     }
   },
-  __unnamed2: record{
+  __unnamed2: union{
     __g1_start: culonglong,
     __g1_start32: record{
       __low: cuint,
@@ -998,42 +998,42 @@ global __pthread_cond_s: type <cimport, nodecl> = @record{
 global __once_flag: type <cimport, nodecl> = @record{
   __data: cint
 }
-global pthread_mutexattr_t: type <cimport, nodecl> = @record{
+global pthread_mutexattr_t: type <cimport, nodecl> = @union{
   __size: [4]cchar,
   __align: cint
 }
-global pthread_condattr_t: type <cimport, nodecl> = @record{
+global pthread_condattr_t: type <cimport, nodecl> = @union{
   __size: [4]cchar,
   __align: cint
 }
-global pthread_attr_t: type <cimport, nodecl> = @record{
+global pthread_attr_t: type <cimport, nodecl> = @union{
   __size: [56]cchar,
   __align: clong
 }
-global pthread_mutex_t: type <cimport, nodecl> = @record{
+global pthread_mutex_t: type <cimport, nodecl> = @union{
   __data: __pthread_mutex_s,
   __size: [40]cchar,
   __align: clong
 }
-global pthread_cond_t: type <cimport, nodecl> = @record{
+global pthread_cond_t: type <cimport, nodecl> = @union{
   __data: __pthread_cond_s,
   __size: [48]cchar,
   __align: clonglong
 }
-global pthread_rwlock_t: type <cimport, nodecl> = @record{
+global pthread_rwlock_t: type <cimport, nodecl> = @union{
   __data: __pthread_rwlock_arch_t,
   __size: [56]cchar,
   __align: clong
 }
-global pthread_rwlockattr_t: type <cimport, nodecl> = @record{
+global pthread_rwlockattr_t: type <cimport, nodecl> = @union{
   __size: [8]cchar,
   __align: clong
 }
-global pthread_barrier_t: type <cimport, nodecl> = @record{
+global pthread_barrier_t: type <cimport, nodecl> = @union{
   __size: [32]cchar,
   __align: clong
 }
-global pthread_barrierattr_t: type <cimport, nodecl> = @record{
+global pthread_barrierattr_t: type <cimport, nodecl> = @union{
   __size: [4]cchar,
   __align: cint
 }
@@ -1065,7 +1065,7 @@ global max_align_t: type <cimport, nodecl> = @record{
 }
 global __mbstate_t: type <cimport, nodecl> = @record{
   __count: cint,
-  __value: record{
+  __value: union{
     __wch: cuint,
     __wchb: [4]cchar
   }
@@ -1465,11 +1465,11 @@ global mtx_plain: cint <comptime> = 0
 global mtx_recursive: cint <comptime> = 1
 global mtx_timed: cint <comptime> = 2
 global once_flag: type = @__once_flag
-global mtx_t: type <cimport, nodecl> = @record{
+global mtx_t: type <cimport, nodecl> = @union{
   __size: [40]cchar,
   __align: clong
 }
-global cnd_t: type <cimport, nodecl> = @record{
+global cnd_t: type <cimport, nodecl> = @union{
   __size: [48]cchar,
   __align: clonglong
 }

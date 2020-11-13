@@ -796,7 +796,7 @@ global BLImplTraits: type <cimport, nodecl, using> = @enum(cint){
   BL_IMPL_TRAIT_NULL = 128
 }
 global BLVariantImpl: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     virt: pointer,
     unknownHeaderData: usize
   },
@@ -819,7 +819,7 @@ global BLArrayImpl: type <cimport, nodecl> = @record{
   itemSize: uint8,
   dispatchType: uint8,
   reserved: [2]uint8,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       data: pointer,
       size: csize
@@ -1268,7 +1268,7 @@ global BLFontUnicodeCoverage: type <cimport, nodecl> = @record{
   data: [4]uint32
 }
 global BLFontPanose: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     data: [10]uint8,
     familyKind: uint8,
     text: record{
@@ -1322,7 +1322,7 @@ global BLFontPanose: type <cimport, nodecl> = @record{
   }
 }
 global BLFontMatrix: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     m: [4]float64,
     __unnamed1: record{
       m00: float64,
@@ -1334,7 +1334,7 @@ global BLFontMatrix: type <cimport, nodecl> = @record{
 }
 global BLFontMetrics: type <cimport, nodecl> = @record{
   size: float32,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       ascent: float32,
       vAscent: float32,
@@ -1364,7 +1364,7 @@ global BLFontDesignMetrics: type <cimport, nodecl> = @record{
   lineGap: cint,
   xHeight: cint,
   capHeight: cint,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       ascent: cint,
       vAscent: cint,
@@ -1385,7 +1385,7 @@ global BLFontDesignMetrics: type <cimport, nodecl> = @record{
       maxAdvanceByOrientation: [2]cint
     }
   },
-  __unnamed2: record{
+  __unnamed2: union{
     glyphBoundingBox: BLBoxI,
     __unnamed1: record{
       xMin: cint,
@@ -1406,7 +1406,7 @@ global BLTextMetrics: type <cimport, nodecl> = @record{
   boundingBox: BLBox
 }
 global BLGlyphBufferImpl: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       content: *uint32,
       placementData: *BLGlyphPlacement,
@@ -1492,7 +1492,7 @@ global BLApproximationOptions: type <cimport, nodecl> = @record{
 }
 global blDefaultApproximationOptions: BLApproximationOptions <cimport, nodecl>
 global BLStrokeOptionsCore: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       startCap: uint8,
       endCap: uint8,
@@ -1520,7 +1520,7 @@ global BLPathImpl: type <cimport, nodecl> = @record{
   implTraits: uint8,
   memPoolData: uint16,
   flags: uint32,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       commandData: *uint8,
       vertexData: *BLPoint,
@@ -1539,7 +1539,7 @@ global BLStringImpl: type <cimport, nodecl> = @record{
   implTraits: uint8,
   memPoolData: uint16,
   reserved: uint32,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       data: cstring,
       size: csize
@@ -1637,7 +1637,7 @@ global BLFormatFlags: type <cimport, nodecl, using> = @enum(cint){
 global BLFormatInfo: type <cimport, nodecl> = @record{
   depth: uint32,
   flags: uint32,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       sizes: [4]uint8,
       shifts: [4]uint8
@@ -1699,7 +1699,7 @@ global BLImageScaleOptions: type <cimport, nodecl> = @record{
   userFunc: BLImageScaleUserFunc,
   userData: pointer,
   radius: float64,
-  __unnamed1: record{
+  __unnamed1: union{
     data: [3]float64,
     mitchell: record{
       b: float64,
@@ -1759,7 +1759,7 @@ global BLMatrix2DOp: type <cimport, nodecl, using> = @enum(cint){
   BL_MATRIX2D_OP_COUNT = 14
 }
 global BLMatrix2D: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     m: [6]float64,
     __unnamed1: record{
       m00: float64,
@@ -1773,7 +1773,7 @@ global BLMatrix2D: type <cimport, nodecl> = @record{
 }
 global blMatrix2DMapPointDArrayFuncs: [6]BLMapPointDArrayFunc <cimport, nodecl>
 global BLRgba32: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     value: uint32,
     __unnamed1: record{
       b: cuchar,
@@ -1784,7 +1784,7 @@ global BLRgba32: type <cimport, nodecl> = @record{
   }
 }
 global BLRgba64: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     value: uint64,
     __unnamed1: record{
       b: cushort,
@@ -1813,7 +1813,7 @@ global BLRegionImpl: type <cimport, nodecl> = @record{
   implTraits: uint8,
   memPoolData: uint16,
   reserved: [4]uint8,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       data: *BLBoxI,
       size: csize
@@ -1872,14 +1872,14 @@ global BLGradientImpl: type <cimport, nodecl> = @record{
   extendMode: uint8,
   matrixType: uint8,
   reserved: [1]uint8,
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       stops: *BLGradientStop,
       size: csize
     }
   },
   matrix: BLMatrix2D,
-  __unnamed2: record{
+  __unnamed2: union{
     values: [6]float64,
     linear: BLLinearGradientValues,
     radial: BLRadialGradientValues,
@@ -1913,7 +1913,7 @@ global BLStyleType: type <cimport, nodecl, using> = @enum(cint){
   BL_STYLE_TYPE_COUNT = 4
 }
 global BLStyleCore: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     rgba: BLRgba,
     variant: BLVariantCore,
     pattern: BLPatternCore,
@@ -2029,7 +2029,7 @@ global BLContextCookie: type <cimport, nodecl> = @record{
   data: [2]uint64
 }
 global BLContextHints: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       renderingQuality: uint8,
       gradientQuality: uint8,
@@ -2250,7 +2250,7 @@ global BLPixelConverterOptions: type <cimport, nodecl> = @record{
   gap: csize
 }
 global BLPixelConverterCore: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     __unnamed1: record{
       convertFunc: BLPixelConverterFunc,
       internalFlags: uint8
@@ -2297,7 +2297,7 @@ global BLRuntimeCleanupFlags: type <cimport, nodecl, using> = @enum(cuint){
   BL_RUNTIME_CLEANUP_EVERYTHING = 4294967295
 }
 global BLRuntimeBuildInfo: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     version: uint32,
     __unnamed1: record{
       patchVersion: uint8,

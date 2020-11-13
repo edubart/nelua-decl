@@ -194,7 +194,7 @@ global luaL_Buffer: type <cimport, nodecl> = @record{
   size: csize,
   n: csize,
   L: *lua_State,
-  init: record{
+  init: union{
     n: lua_Number,
     u: float64,
     s: pointer,

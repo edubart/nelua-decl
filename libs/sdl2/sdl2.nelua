@@ -227,7 +227,7 @@ global SDL_RWops: type <cimport, nodecl> = @record{
   write: function(*SDL_RWops, pointer, csize, csize): csize,
   close: function(*SDL_RWops): cint,
   type: uint32,
-  hidden: record{
+  hidden: union{
     stdio: record{
       autoclose: SDL_bool,
       fp: *FILE
@@ -1471,7 +1471,7 @@ global SDL_GameControllerBindType: type <cimport, nodecl, using> = @enum(cint){
 }
 global SDL_GameControllerButtonBind: type <cimport, nodecl> = @record{
   bindType: SDL_GameControllerBindType,
-  value: record{
+  value: union{
     button: cint,
     axis: cint,
     hat: record{
@@ -1844,7 +1844,7 @@ global SDL_SysWMEvent: type <cimport, nodecl> = @record{
   timestamp: uint32,
   msg: *SDL_SysWMmsg
 }
-global SDL_Event: type <cimport, nodecl> = @record{
+global SDL_Event: type <cimport, nodecl> = @union{
   type: uint32,
   common: SDL_CommonEvent,
   display: SDL_DisplayEvent,
@@ -1983,7 +1983,7 @@ global SDL_HapticCustom: type <cimport, nodecl> = @record{
   fade_length: uint16,
   fade_level: uint16
 }
-global SDL_HapticEffect: type <cimport, nodecl> = @record{
+global SDL_HapticEffect: type <cimport, nodecl> = @union{
   type: uint16,
   constant: SDL_HapticConstant,
   periodic: SDL_HapticPeriodic,
@@ -2276,7 +2276,7 @@ global WindowShapeMode: type <cimport, nodecl, using> = @enum(cint){
   ShapeModeReverseBinarizeAlpha = 2,
   ShapeModeColorKey = 3
 }
-global SDL_WindowShapeParams: type <cimport, nodecl> = @record{
+global SDL_WindowShapeParams: type <cimport, nodecl> = @union{
   binarizationCutoff: uint8,
   colorKey: SDL_Color
 }

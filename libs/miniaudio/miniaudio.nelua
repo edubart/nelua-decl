@@ -21,14 +21,14 @@ global __pthread_mutex_s: type <cimport, nodecl> = @record{
   __list: __pthread_list_t
 }
 global __pthread_cond_s: type <cimport, nodecl> = @record{
-  __unnamed1: record{
+  __unnamed1: union{
     __wseq: culonglong,
     __wseq32: record{
       __low: cuint,
       __high: cuint
     }
   },
-  __unnamed2: record{
+  __unnamed2: union{
     __g1_start: culonglong,
     __g1_start32: record{
       __low: cuint,
@@ -41,12 +41,12 @@ global __pthread_cond_s: type <cimport, nodecl> = @record{
   __wrefs: cuint,
   __g_signals: [2]cuint
 }
-global pthread_mutex_t: type <cimport, nodecl> = @record{
+global pthread_mutex_t: type <cimport, nodecl> = @union{
   __data: __pthread_mutex_s,
   __size: [40]cchar,
   __align: clong
 }
-global pthread_cond_t: type <cimport, nodecl> = @record{
+global pthread_cond_t: type <cimport, nodecl> = @union{
   __data: __pthread_cond_s,
   __size: [48]cchar,
   __align: clonglong
@@ -136,7 +136,7 @@ global ma_semaphore: type <cimport, nodecl> = @record{
 }
 global function ma_version(pMajor: *uint32, pMinor: *uint32, pRevision: *uint32) <cimport, nodecl> end
 global function ma_version_string(): cstring <cimport, nodecl> end
-global ma_biquad_coefficient: type <cimport, nodecl> = @record{
+global ma_biquad_coefficient: type <cimport, nodecl> = @union{
   f32: float32,
   s32: int32
 }
@@ -373,11 +373,11 @@ global ma_linear_resampler: type <cimport, nodecl> = @record{
   inAdvanceFrac: uint32,
   inTimeInt: uint32,
   inTimeFrac: uint32,
-  x0: record{
+  x0: union{
     f32: [32]float32,
     s16: [32]int16
   },
-  x1: record{
+  x1: union{
     f32: [32]float32,
     s16: [32]int16
   },
@@ -413,7 +413,7 @@ global ma_resampler_config: type <cimport, nodecl> = @record{
 global function ma_resampler_config_init(format: ma_format, channels: uint32, sampleRateIn: uint32, sampleRateOut: uint32, algorithm: ma_resample_algorithm): ma_resampler_config <cimport, nodecl> end
 global ma_resampler: type <cimport, nodecl> = @record{
   config: ma_resampler_config,
-  state: record{
+  state: union{
     linear: ma_linear_resampler,
     speex: record{
       pSpeexResamplerState: pointer
@@ -446,7 +446,7 @@ global ma_channel_converter: type <cimport, nodecl> = @record{
   channelMapIn: [32]cuchar,
   channelMapOut: [32]cuchar,
   mixingMode: ma_channel_mix_mode,
-  weights: record{
+  weights: union{
     f32: [32][32]float32,
     s16: [32][32]int32
   },
@@ -704,11 +704,11 @@ global ma_aaudio_input_preset: type <cimport, nodecl, using> = @enum(cint){
   ma_aaudio_input_preset_voice_communication = 5,
   ma_aaudio_input_preset_voice_performance = 6
 }
-global ma_timer: type <cimport, nodecl> = @record{
+global ma_timer: type <cimport, nodecl> = @union{
   counter: int64,
   counterD: float64
 }
-global ma_device_id: type <cimport, nodecl> = @record{
+global ma_device_id: type <cimport, nodecl> = @union{
   wasapi: [64]cint,
   dsound: [16]uint8,
   winmm: uint32,
@@ -722,7 +722,7 @@ global ma_device_id: type <cimport, nodecl> = @record{
   aaudio: int32,
   opensl: uint32,
   webaudio: [32]cchar,
-  custom: record{
+  custom: union{
     i: cint,
     s: [256]cchar,
     p: pointer
@@ -887,7 +887,7 @@ global ma_context: type <cimport, nodecl> = @record{
   onDeviceStart: function(*ma_device): ma_result,
   onDeviceStop: function(*ma_device): ma_result,
   onDeviceMainLoop: function(*ma_device): ma_result,
-  __unnamed1: record{
+  __unnamed1: union{
     alsa: record{
       asoundSO: ma_handle,
       snd_pcm_open: ma_proc,
@@ -1037,7 +1037,7 @@ global ma_context: type <cimport, nodecl> = @record{
       _unused: cint
     }
   },
-  __unnamed2: record{
+  __unnamed2: union{
     posix: record{
       pthreadSO: ma_handle,
       pthread_create: ma_proc,
@@ -1126,7 +1126,7 @@ global ma_device: type <cimport, nodecl> = @record{
     internalPeriods: uint32,
     converter: ma_data_converter
   },
-  __unnamed1: record{
+  __unnamed1: union{
     alsa: record{
       pPCMPlayback: ma_ptr,
       pPCMCapture: ma_ptr,
@@ -1362,7 +1362,7 @@ global ma_decoder: type <cimport, nodecl> = @record{
   onUninit: ma_decoder_uninit_proc,
   onGetLengthInPCMFrames: ma_decoder_get_length_in_pcm_frames_proc,
   pInternalDecoder: pointer,
-  backend: record{
+  backend: union{
     vfs: record{
       pVFS: pointer,
       file: ma_vfs_file
@@ -1491,7 +1491,7 @@ global ma_noise: type <cimport, nodecl> = @record{
   ds: ma_data_source_callbacks,
   config: ma_noise_config,
   lcg: ma_lcg,
-  state: record{
+  state: union{
     pink: record{
       bin: [32][16]float64,
       accumulation: [32]float64,
