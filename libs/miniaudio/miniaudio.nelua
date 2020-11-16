@@ -827,11 +827,11 @@ global ma_device_descriptor: type <cimport, nodecl> = @record{
   periodCount: uint32
 }
 global ma_backend_callbacks: type <cimport, nodecl> = @record{
-  onContextInit: function(*ma_context, *ma_backend_callbacks): ma_result,
+  onContextInit: function(*ma_context, *ma_context_config, *ma_backend_callbacks): ma_result,
   onContextUninit: function(*ma_context): ma_result,
   onContextEnumerateDevices: function(*ma_context, ma_enum_devices_callback_proc, pointer): ma_result,
   onContextGetDeviceInfo: function(*ma_context, ma_device_type, *ma_device_id, *ma_device_info): ma_result,
-  onDeviceInit: function(*ma_device, ma_device_type, *ma_device_descriptor, *ma_device_descriptor): ma_result,
+  onDeviceInit: function(*ma_device, *ma_device_config, *ma_device_descriptor, *ma_device_descriptor): ma_result,
   onDeviceUninit: function(*ma_device): ma_result,
   onDeviceStart: function(*ma_device): ma_result,
   onDeviceStop: function(*ma_device): ma_result,
@@ -866,6 +866,7 @@ global ma_context_config: type <cimport, nodecl> = @record{
   custom: ma_backend_callbacks
 }
 global ma_context: type <cimport, nodecl> = @record{
+  callbacks: ma_backend_callbacks,
   backend: ma_backend,
   logCallback: ma_log_proc,
   threadPriority: ma_thread_priority,
@@ -1032,7 +1033,6 @@ global ma_context: type <cimport, nodecl> = @record{
       pClientName: cstring,
       tryStartServer: ma_bool32
     },
-    custom: ma_backend_callbacks,
     null_backend: record{
       _unused: cint
     }

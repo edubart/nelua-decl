@@ -1,5 +1,7 @@
 ## cflags '-I.'
 
+require 'C.arg'
+require 'sokol_args'
 require 'sokol_app'
 require 'sokol_gfx'
 require 'sokol_glue'
@@ -77,7 +79,12 @@ local function cleanup()
   saudio_shutdown()
 end
 
-local desc: sapp_desc = {
+local args_desc: sargs_desc = {
+  argc = C.argc,
+  argv = C.argv,
+}
+sargs_setup(&args_desc)
+local app_desc: sapp_desc = {
   init_cb = init,
   frame_cb = frame,
   cleanup_cb = cleanup,
@@ -85,4 +92,4 @@ local desc: sapp_desc = {
   height = 512,
   window_title = "Sokol Clear",
 }
-sapp_run(&desc)
+sapp_run(&app_desc)

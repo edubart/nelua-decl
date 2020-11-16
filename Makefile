@@ -16,6 +16,7 @@ sokol:
 	gcc $(GCCPLUGIN) -S libs/sokol/sokol_app.c -fplugin-arg-gcclua-script=libs/sokol/sokol_app.lua > libs/sokol/sokol_app.nelua
 	gcc $(GCCPLUGIN) -S libs/sokol/sokol_audio.c -fplugin-arg-gcclua-script=libs/sokol/sokol_audio.lua > libs/sokol/sokol_audio.nelua
 	gcc $(GCCPLUGIN) -S libs/sokol/sokol_time.c -fplugin-arg-gcclua-script=libs/sokol/sokol_time.lua > libs/sokol/sokol_time.nelua
+	gcc $(GCCPLUGIN) -S libs/sokol/sokol_args.c -fplugin-arg-gcclua-script=libs/sokol/sokol_args.lua > libs/sokol/sokol_args.nelua
 miniaudio:
 	gcc $(GCCPLUGIN) -S libs/miniaudio/miniaudio.c -fplugin-arg-gcclua-script=libs/miniaudio/miniaudio.lua > libs/miniaudio/miniaudio.nelua
 stb:
@@ -36,6 +37,7 @@ download-sokol:
 	wget -O libs/sokol/sokol_app.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_app.h
 	wget -O libs/sokol/sokol_audio.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_audio.h
 	wget -O libs/sokol/sokol_time.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_time.h
+	wget -O libs/sokol/sokol_args.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_args.h
 download-stb:
 	wget -O libs/stb/stb_image.h https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
 	wget -O libs/stb/stb_image_write.h https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h
