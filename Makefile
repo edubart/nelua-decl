@@ -19,6 +19,7 @@ sokol:
 	gcc $(GCCPLUGIN) -S libs/sokol/sokol_args.c -fplugin-arg-gcclua-script=libs/sokol/sokol_args.lua > libs/sokol/sokol_args.nelua
 miniaudio:
 	gcc $(GCCPLUGIN) -S libs/miniaudio/miniaudio.c -fplugin-arg-gcclua-script=libs/miniaudio/miniaudio.lua > libs/miniaudio/miniaudio.nelua
+	gcc $(GCCPLUGIN) -S libs/miniaudio/miniaudio_engine.c -fplugin-arg-gcclua-script=libs/miniaudio/miniaudio_engine.lua > libs/miniaudio/miniaudio_engine.nelua
 stb:
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image.c -fplugin-arg-gcclua-script=libs/stb/stb_image.lua > libs/stb/stb_image.nelua
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image_write.c -fplugin-arg-gcclua-script=libs/stb/stb_image_write.lua > libs/stb/stb_image_write.nelua
@@ -32,6 +33,7 @@ raylib:
 download: download-miniaudio download-sokol download-stb
 download-miniaudio:
 	wget -O libs/miniaudio/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
+	wget -O libs/miniaudio/miniaudio_engine.h https://raw.githubusercontent.com/mackron/miniaudio/master/research/miniaudio_engine.h
 download-sokol:
 	wget -O libs/sokol/sokol_gfx.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_gfx.h
 	wget -O libs/sokol/sokol_app.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_app.h
@@ -58,6 +60,7 @@ test-sokol: sokol
 	cd libs/sokol && nelua sokol-test.nelua
 test-miniaudio: miniaudio
 	cd libs/miniaudio && nelua miniaudio-test.nelua pluck.wav
+# 	cd libs/miniaudio && nelua miniaudio-engine-test.nelua pluck.wav
 test-stb: stb
 	cd libs/stb && nelua stb-test.nelua
 test-blend2d: blend2d
