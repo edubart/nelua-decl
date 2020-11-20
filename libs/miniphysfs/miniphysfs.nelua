@@ -1,0 +1,215 @@
+##[[
+cdefine 'PHYSFS_IMPL'
+cdefine 'PHYSFS_PLATFORM_IMPL'
+cinclude '"miniphysfs.h"'
+]]
+global PHYSFS_File: type <cimport, nodecl> = @record{
+  opaque: pointer
+}
+global PHYSFS_ArchiveInfo: type <cimport, nodecl> = @record{
+  extension: cstring,
+  description: cstring,
+  author: cstring,
+  url: cstring,
+  supportsSymlinks: cint
+}
+global PHYSFS_Version: type <cimport, nodecl> = @record{
+  major: uint8,
+  minor: uint8,
+  patch: uint8
+}
+global function PHYSFS_getLinkedVersion(ver: *PHYSFS_Version) <cimport, nodecl> end
+global function PHYSFS_init(argv0: cstring): cint <cimport, nodecl> end
+global function PHYSFS_deinit(): cint <cimport, nodecl> end
+global function PHYSFS_supportedArchiveTypes(): **PHYSFS_ArchiveInfo <cimport, nodecl> end
+global function PHYSFS_freeList(listVar: pointer) <cimport, nodecl> end
+global function PHYSFS_getLastError(): cstring <cimport, nodecl> end
+global function PHYSFS_getDirSeparator(): cstring <cimport, nodecl> end
+global function PHYSFS_permitSymbolicLinks(allow: cint) <cimport, nodecl> end
+global function PHYSFS_getCdRomDirs(): *cstring <cimport, nodecl> end
+global function PHYSFS_getBaseDir(): cstring <cimport, nodecl> end
+global function PHYSFS_getUserDir(): cstring <cimport, nodecl> end
+global function PHYSFS_getWriteDir(): cstring <cimport, nodecl> end
+global function PHYSFS_setWriteDir(newDir: cstring): cint <cimport, nodecl> end
+global function PHYSFS_addToSearchPath(newDir: cstring, appendToPath: cint): cint <cimport, nodecl> end
+global function PHYSFS_removeFromSearchPath(oldDir: cstring): cint <cimport, nodecl> end
+global function PHYSFS_getSearchPath(): *cstring <cimport, nodecl> end
+global function PHYSFS_setSaneConfig(organization: cstring, appName: cstring, archiveExt: cstring, includeCdRoms: cint, archivesFirst: cint): cint <cimport, nodecl> end
+global function PHYSFS_mkdir(dirName: cstring): cint <cimport, nodecl> end
+global function PHYSFS_delete(filename: cstring): cint <cimport, nodecl> end
+global function PHYSFS_getRealDir(filename: cstring): cstring <cimport, nodecl> end
+global function PHYSFS_enumerateFiles(dir: cstring): *cstring <cimport, nodecl> end
+global function PHYSFS_exists(fname: cstring): cint <cimport, nodecl> end
+global function PHYSFS_isDirectory(fname: cstring): cint <cimport, nodecl> end
+global function PHYSFS_isSymbolicLink(fname: cstring): cint <cimport, nodecl> end
+global function PHYSFS_getLastModTime(filename: cstring): int64 <cimport, nodecl> end
+global function PHYSFS_openWrite(filename: cstring): *PHYSFS_File <cimport, nodecl> end
+global function PHYSFS_openAppend(filename: cstring): *PHYSFS_File <cimport, nodecl> end
+global function PHYSFS_openRead(filename: cstring): *PHYSFS_File <cimport, nodecl> end
+global function PHYSFS_close(handle: *PHYSFS_File): cint <cimport, nodecl> end
+global function PHYSFS_read(handle: *PHYSFS_File, buffer: pointer, objSize: uint32, objCount: uint32): int64 <cimport, nodecl> end
+global function PHYSFS_write(handle: *PHYSFS_File, buffer: pointer, objSize: uint32, objCount: uint32): int64 <cimport, nodecl> end
+global function PHYSFS_eof(handle: *PHYSFS_File): cint <cimport, nodecl> end
+global function PHYSFS_tell(handle: *PHYSFS_File): int64 <cimport, nodecl> end
+global function PHYSFS_seek(handle: *PHYSFS_File, pos: uint64): cint <cimport, nodecl> end
+global function PHYSFS_fileLength(handle: *PHYSFS_File): int64 <cimport, nodecl> end
+global function PHYSFS_setBuffer(handle: *PHYSFS_File, bufsize: uint64): cint <cimport, nodecl> end
+global function PHYSFS_flush(handle: *PHYSFS_File): cint <cimport, nodecl> end
+global function PHYSFS_swapSLE16(val: int16): int16 <cimport, nodecl> end
+global function PHYSFS_swapULE16(val: uint16): uint16 <cimport, nodecl> end
+global function PHYSFS_swapSLE32(val: int32): int32 <cimport, nodecl> end
+global function PHYSFS_swapULE32(val: uint32): uint32 <cimport, nodecl> end
+global function PHYSFS_swapSLE64(val: int64): int64 <cimport, nodecl> end
+global function PHYSFS_swapULE64(val: uint64): uint64 <cimport, nodecl> end
+global function PHYSFS_swapSBE16(val: int16): int16 <cimport, nodecl> end
+global function PHYSFS_swapUBE16(val: uint16): uint16 <cimport, nodecl> end
+global function PHYSFS_swapSBE32(val: int32): int32 <cimport, nodecl> end
+global function PHYSFS_swapUBE32(val: uint32): uint32 <cimport, nodecl> end
+global function PHYSFS_swapSBE64(val: int64): int64 <cimport, nodecl> end
+global function PHYSFS_swapUBE64(val: uint64): uint64 <cimport, nodecl> end
+global function PHYSFS_readSLE16(file: *PHYSFS_File, val: *int16): cint <cimport, nodecl> end
+global function PHYSFS_readULE16(file: *PHYSFS_File, val: *uint16): cint <cimport, nodecl> end
+global function PHYSFS_readSBE16(file: *PHYSFS_File, val: *int16): cint <cimport, nodecl> end
+global function PHYSFS_readUBE16(file: *PHYSFS_File, val: *uint16): cint <cimport, nodecl> end
+global function PHYSFS_readSLE32(file: *PHYSFS_File, val: *int32): cint <cimport, nodecl> end
+global function PHYSFS_readULE32(file: *PHYSFS_File, val: *uint32): cint <cimport, nodecl> end
+global function PHYSFS_readSBE32(file: *PHYSFS_File, val: *int32): cint <cimport, nodecl> end
+global function PHYSFS_readUBE32(file: *PHYSFS_File, val: *uint32): cint <cimport, nodecl> end
+global function PHYSFS_readSLE64(file: *PHYSFS_File, val: *int64): cint <cimport, nodecl> end
+global function PHYSFS_readULE64(file: *PHYSFS_File, val: *uint64): cint <cimport, nodecl> end
+global function PHYSFS_readSBE64(file: *PHYSFS_File, val: *int64): cint <cimport, nodecl> end
+global function PHYSFS_readUBE64(file: *PHYSFS_File, val: *uint64): cint <cimport, nodecl> end
+global function PHYSFS_writeSLE16(file: *PHYSFS_File, val: int16): cint <cimport, nodecl> end
+global function PHYSFS_writeULE16(file: *PHYSFS_File, val: uint16): cint <cimport, nodecl> end
+global function PHYSFS_writeSBE16(file: *PHYSFS_File, val: int16): cint <cimport, nodecl> end
+global function PHYSFS_writeUBE16(file: *PHYSFS_File, val: uint16): cint <cimport, nodecl> end
+global function PHYSFS_writeSLE32(file: *PHYSFS_File, val: int32): cint <cimport, nodecl> end
+global function PHYSFS_writeULE32(file: *PHYSFS_File, val: uint32): cint <cimport, nodecl> end
+global function PHYSFS_writeSBE32(file: *PHYSFS_File, val: int32): cint <cimport, nodecl> end
+global function PHYSFS_writeUBE32(file: *PHYSFS_File, val: uint32): cint <cimport, nodecl> end
+global function PHYSFS_writeSLE64(file: *PHYSFS_File, val: int64): cint <cimport, nodecl> end
+global function PHYSFS_writeULE64(file: *PHYSFS_File, val: uint64): cint <cimport, nodecl> end
+global function PHYSFS_writeSBE64(file: *PHYSFS_File, val: int64): cint <cimport, nodecl> end
+global function PHYSFS_writeUBE64(file: *PHYSFS_File, val: uint64): cint <cimport, nodecl> end
+global function PHYSFS_isInit(): cint <cimport, nodecl> end
+global function PHYSFS_symbolicLinksPermitted(): cint <cimport, nodecl> end
+global PHYSFS_Allocator: type <cimport, nodecl> = @record{
+  Init: function(): cint,
+  Deinit: function(),
+  Malloc: function(uint64): pointer,
+  Realloc: function(pointer, uint64): pointer,
+  Free: function(pointer)
+}
+global function PHYSFS_setAllocator(allocator: *PHYSFS_Allocator): cint <cimport, nodecl> end
+global function PHYSFS_mount(newDir: cstring, mountPoint: cstring, appendToPath: cint): cint <cimport, nodecl> end
+global function PHYSFS_getMountPoint(dir: cstring): cstring <cimport, nodecl> end
+global PHYSFS_StringCallback: type <cimport, nodecl> = @function(pointer, cstring)
+global PHYSFS_EnumFilesCallback: type <cimport, nodecl> = @function(pointer, cstring, cstring)
+global function PHYSFS_getCdRomDirsCallback(c: PHYSFS_StringCallback, d: pointer) <cimport, nodecl> end
+global function PHYSFS_getSearchPathCallback(c: PHYSFS_StringCallback, d: pointer) <cimport, nodecl> end
+global function PHYSFS_enumerateFilesCallback(dir: cstring, c: PHYSFS_EnumFilesCallback, d: pointer) <cimport, nodecl> end
+global function PHYSFS_utf8FromUcs4(src: *uint32, dst: cstring, len: uint64) <cimport, nodecl> end
+global function PHYSFS_utf8ToUcs4(src: cstring, dst: *uint32, len: uint64) <cimport, nodecl> end
+global function PHYSFS_utf8FromUcs2(src: *uint16, dst: cstring, len: uint64) <cimport, nodecl> end
+global function PHYSFS_utf8ToUcs2(src: cstring, dst: *uint16, len: uint64) <cimport, nodecl> end
+global function PHYSFS_utf8FromLatin1(src: cstring, dst: cstring, len: uint64) <cimport, nodecl> end
+global function PHYSFS_caseFold(from: uint32, to: *uint32): cint <cimport, nodecl> end
+global function PHYSFS_utf8stricmp(str1: cstring, str2: cstring): cint <cimport, nodecl> end
+global function PHYSFS_utf16stricmp(str1: *uint16, str2: *uint16): cint <cimport, nodecl> end
+global function PHYSFS_ucs4stricmp(str1: *uint32, str2: *uint32): cint <cimport, nodecl> end
+global PHYSFS_EnumerateCallbackResult: type <cimport, nodecl, using> = @enum(cint){
+  PHYSFS_ENUM_ERROR = -1,
+  PHYSFS_ENUM_STOP = 0,
+  PHYSFS_ENUM_OK = 1
+}
+global PHYSFS_EnumerateCallback: type <cimport, nodecl> = @function(pointer, cstring, cstring): PHYSFS_EnumerateCallbackResult
+global function PHYSFS_enumerate(dir: cstring, c: PHYSFS_EnumerateCallback, d: pointer): cint <cimport, nodecl> end
+global function PHYSFS_unmount(oldDir: cstring): cint <cimport, nodecl> end
+global function PHYSFS_getAllocator(): *PHYSFS_Allocator <cimport, nodecl> end
+global PHYSFS_FileType: type <cimport, nodecl, using> = @enum(cint){
+  PHYSFS_FILETYPE_REGULAR = 0,
+  PHYSFS_FILETYPE_DIRECTORY = 1,
+  PHYSFS_FILETYPE_SYMLINK = 2,
+  PHYSFS_FILETYPE_OTHER = 3
+}
+global PHYSFS_Stat: type <cimport, nodecl> = @record{
+  filesize: int64,
+  modtime: int64,
+  createtime: int64,
+  accesstime: int64,
+  filetype: PHYSFS_FileType,
+  readonly: cint
+}
+global function PHYSFS_stat(fname: cstring, stat: *PHYSFS_Stat): cint <cimport, nodecl> end
+global function PHYSFS_utf8FromUtf16(src: *uint16, dst: cstring, len: uint64) <cimport, nodecl> end
+global function PHYSFS_utf8ToUtf16(src: cstring, dst: *uint16, len: uint64) <cimport, nodecl> end
+global function PHYSFS_readBytes(handle: *PHYSFS_File, buffer: pointer, len: uint64): int64 <cimport, nodecl> end
+global function PHYSFS_writeBytes(handle: *PHYSFS_File, buffer: pointer, len: uint64): int64 <cimport, nodecl> end
+global PHYSFS_Io: type <cimport, forwarddecl> = @record{}
+global PHYSFS_Io: type <cimport, nodecl> = @record{
+  version: uint32,
+  opaque: pointer,
+  read: function(*PHYSFS_Io, pointer, uint64): int64,
+  write: function(*PHYSFS_Io, pointer, uint64): int64,
+  seek: function(*PHYSFS_Io, uint64): cint,
+  tell: function(*PHYSFS_Io): int64,
+  length: function(*PHYSFS_Io): int64,
+  duplicate: function(*PHYSFS_Io): *PHYSFS_Io,
+  flush: function(*PHYSFS_Io): cint,
+  destroy: function(*PHYSFS_Io)
+}
+global function PHYSFS_mountIo(io: *PHYSFS_Io, newDir: cstring, mountPoint: cstring, appendToPath: cint): cint <cimport, nodecl> end
+global function PHYSFS_mountMemory(buf: pointer, len: uint64, del: function(pointer), newDir: cstring, mountPoint: cstring, appendToPath: cint): cint <cimport, nodecl> end
+global function PHYSFS_mountHandle(file: *PHYSFS_File, newDir: cstring, mountPoint: cstring, appendToPath: cint): cint <cimport, nodecl> end
+global PHYSFS_ErrorCode: type <cimport, nodecl, using> = @enum(cint){
+  PHYSFS_ERR_OK = 0,
+  PHYSFS_ERR_OTHER_ERROR = 1,
+  PHYSFS_ERR_OUT_OF_MEMORY = 2,
+  PHYSFS_ERR_NOT_INITIALIZED = 3,
+  PHYSFS_ERR_IS_INITIALIZED = 4,
+  PHYSFS_ERR_ARGV0_IS_NULL = 5,
+  PHYSFS_ERR_UNSUPPORTED = 6,
+  PHYSFS_ERR_PAST_EOF = 7,
+  PHYSFS_ERR_FILES_STILL_OPEN = 8,
+  PHYSFS_ERR_INVALID_ARGUMENT = 9,
+  PHYSFS_ERR_NOT_MOUNTED = 10,
+  PHYSFS_ERR_NOT_FOUND = 11,
+  PHYSFS_ERR_SYMLINK_FORBIDDEN = 12,
+  PHYSFS_ERR_NO_WRITE_DIR = 13,
+  PHYSFS_ERR_OPEN_FOR_READING = 14,
+  PHYSFS_ERR_OPEN_FOR_WRITING = 15,
+  PHYSFS_ERR_NOT_A_FILE = 16,
+  PHYSFS_ERR_READ_ONLY = 17,
+  PHYSFS_ERR_CORRUPT = 18,
+  PHYSFS_ERR_SYMLINK_LOOP = 19,
+  PHYSFS_ERR_IO = 20,
+  PHYSFS_ERR_PERMISSION = 21,
+  PHYSFS_ERR_NO_SPACE = 22,
+  PHYSFS_ERR_BAD_FILENAME = 23,
+  PHYSFS_ERR_BUSY = 24,
+  PHYSFS_ERR_DIR_NOT_EMPTY = 25,
+  PHYSFS_ERR_OS_ERROR = 26,
+  PHYSFS_ERR_DUPLICATE = 27,
+  PHYSFS_ERR_BAD_PASSWORD = 28,
+  PHYSFS_ERR_APP_CALLBACK = 29
+}
+global function PHYSFS_getLastErrorCode(): PHYSFS_ErrorCode <cimport, nodecl> end
+global function PHYSFS_getErrorByCode(code: PHYSFS_ErrorCode): cstring <cimport, nodecl> end
+global function PHYSFS_setErrorCode(code: PHYSFS_ErrorCode) <cimport, nodecl> end
+global function PHYSFS_getPrefDir(org: cstring, app: cstring): cstring <cimport, nodecl> end
+global PHYSFS_Archiver: type <cimport, nodecl> = @record{
+  version: uint32,
+  info: PHYSFS_ArchiveInfo,
+  openArchive: function(*PHYSFS_Io, cstring, cint, *cint): pointer,
+  enumerate: function(pointer, cstring, PHYSFS_EnumerateCallback, cstring, pointer): PHYSFS_EnumerateCallbackResult,
+  openRead: function(pointer, cstring): *PHYSFS_Io,
+  openWrite: function(pointer, cstring): *PHYSFS_Io,
+  openAppend: function(pointer, cstring): *PHYSFS_Io,
+  remove: function(pointer, cstring): cint,
+  mkdir: function(pointer, cstring): cint,
+  stat: function(pointer, cstring, *PHYSFS_Stat): cint,
+  closeArchive: function(pointer)
+}
+global function PHYSFS_registerArchiver(archiver: *PHYSFS_Archiver): cint <cimport, nodecl> end
+global function PHYSFS_deregisterArchiver(ext: cstring): cint <cimport, nodecl> end
+global function PHYSFS_setRoot(archive: cstring, subdir: cstring): cint <cimport, nodecl> end

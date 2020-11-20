@@ -1,6 +1,6 @@
 GCCPLUGIN=-fplugin=./gcc-lua/gcc/gcclua.so
 
-all: lua sdl2 miniaudio sokol stb
+all: lua sdl2 miniaudio sokol stb miniphysfs
 all-extra: all c blend2d raylib
 
 c:
@@ -20,6 +20,8 @@ sokol:
 miniaudio:
 	gcc $(GCCPLUGIN) -S libs/miniaudio/miniaudio.c -fplugin-arg-gcclua-script=libs/miniaudio/miniaudio.lua > libs/miniaudio/miniaudio.nelua
 	gcc $(GCCPLUGIN) -S libs/miniaudio/miniaudio_engine.c -fplugin-arg-gcclua-script=libs/miniaudio/miniaudio_engine.lua > libs/miniaudio/miniaudio_engine.nelua
+miniphysfs:
+	gcc $(GCCPLUGIN) -S libs/miniphysfs/miniphysfs.c -fplugin-arg-gcclua-script=libs/miniphysfs/miniphysfs.lua > libs/miniphysfs/miniphysfs.nelua
 stb:
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image.c -fplugin-arg-gcclua-script=libs/stb/stb_image.lua > libs/stb/stb_image.nelua
 	gcc $(GCCPLUGIN) -S libs/stb/stb_image_write.c -fplugin-arg-gcclua-script=libs/stb/stb_image_write.lua > libs/stb/stb_image_write.nelua
@@ -30,10 +32,12 @@ blend2d:
 raylib:
 	gcc $(GCCPLUGIN) -S libs/raylib/raylib.c -fplugin-arg-gcclua-script=libs/raylib/raylib.lua > libs/raylib/raylib.nelua
 
-download: download-miniaudio download-sokol download-stb
+download: download-sokol download-stb download-miniaudio download-miniphysfs
 download-miniaudio:
 	wget -O libs/miniaudio/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
 	wget -O libs/miniaudio/miniaudio_engine.h https://raw.githubusercontent.com/mackron/miniaudio/master/research/miniaudio_engine.h
+download-miniphysfs:
+	wget -O libs/miniphysfs/miniphysfs.h https://raw.githubusercontent.com/edubart/miniphysfs/main/miniphysfs.h
 download-sokol:
 	wget -O libs/sokol/sokol_gfx.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_gfx.h
 	wget -O libs/sokol/sokol_app.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_app.h
@@ -46,7 +50,7 @@ download-stb:
 	wget -O libs/stb/stb_vorbis.h https://raw.githubusercontent.com/nothings/stb/master/stb_vorbis.c
 	wget -O libs/stb/stb_truetype.h https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h
 
-test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-stb
+test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-miniphysfs test-stb
 test-all-extra: test-all test-c test-blend2d test-raylib
 test-c: c
 	cd libs/c && nelua c-test.nelua
@@ -61,6 +65,8 @@ test-sokol: sokol
 test-miniaudio: miniaudio
 	cd libs/miniaudio && nelua miniaudio-test.nelua pluck.wav
 # 	cd libs/miniaudio && nelua miniaudio-engine-test.nelua pluck.wav
+test-miniphysfs: miniphysfs
+	cd libs/miniphysfs && nelua miniphysfs-test.nelua
 test-stb: stb
 	cd libs/stb && nelua stb-test.nelua
 test-blend2d: blend2d
