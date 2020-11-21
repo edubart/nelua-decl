@@ -11,11 +11,17 @@ cdefine 'SOKOL_NO_ENTRY'
 cdefine 'SOKOL_GLCORE33'
 cdefine 'SOKOL_IMPL'
 cinclude '"sokol_app.h"'
-linklib 'X11'
-linklib 'Xi'
-linklib 'Xcursor'
-linklib 'dl'
-linklib 'pthread'
-linklib 'GL'
+if ccinfo.is_linux then
+  linklib 'X11'
+  linklib 'Xi'
+  linklib 'Xcursor'
+  linklib 'dl'
+  linklib 'pthread'
+  linklib 'GL'
+elseif ccinfo.is_windows then
+  linklib 'kernel32'
+  linklib 'user32'
+  linklib 'shell32'
+end
 ]]
 ]=]

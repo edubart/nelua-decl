@@ -1,7 +1,15 @@
 ##[[
-linklib 'glfw'
-linklib 'GL'
 cinclude '<GLFW/glfw3.h>'
+if ccinfo.is_windows then
+  linklib 'glfw3'
+  linklib 'opengl32'
+  linklib 'gdi32'
+  linklib 'user32'
+  linklib 'kernel32'
+else
+  linklib 'glfw'
+  linklib 'GL'
+end
 ]]
 global function glClearIndex(c: float32) <cimport, nodecl> end
 global function glClearColor(red: float32, green: float32, blue: float32, alpha: float32) <cimport, nodecl> end

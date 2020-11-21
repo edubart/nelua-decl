@@ -47,7 +47,11 @@ nldecl.prepend_code = [=[
 ##[[
 cdefine 'MINIAUDIO_IMPLEMENTATION'
 cinclude '"miniaudio.h"'
-linklib 'dl'
-linklib 'pthread'
+if ccinfo.is_linux then
+  linklib 'dl'
+  linklib 'pthread'
+elseif ccinfo.is_windows then
+  linklib 'ole32'
+end
 ]]
 ]=]

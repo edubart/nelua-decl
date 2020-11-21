@@ -9,6 +9,10 @@ nldecl.prepend_code = [=[
 ##[[
 cdefine 'SOKOL_IMPL'
 cinclude '"sokol_audio.h"'
-linklib 'asound'
+if ccinfo.is_windows then
+  linklib 'ole32'
+elseif ccinfo.is_linux then
+  linklib 'asound'
+end
 ]]
 ]=]

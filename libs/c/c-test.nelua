@@ -1,5 +1,5 @@
 require 'c'
 
 local data: [1024]cchar
-snprintf(&data[0], #data, 'hello %s', 'world')
+snprintf(&data[0], #data, 'hello %s', 'world'_cstring)
 assert(&data[0] == 'hello world')

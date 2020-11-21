@@ -42,8 +42,16 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-linklib 'glfw'
-linklib 'GL'
 cinclude '<GLFW/glfw3.h>'
+if ccinfo.is_windows then
+  linklib 'glfw3'
+  linklib 'opengl32'
+  linklib 'gdi32'
+  linklib 'user32'
+  linklib 'kernel32'
+else
+  linklib 'glfw'
+  linklib 'GL'
+end
 ]]
 ]=]
