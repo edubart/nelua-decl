@@ -90,7 +90,7 @@ cdefine 'SDL_MAIN_HANDLED'
 cinclude '<SDL2/SDL.h>'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{}
+local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]
 
 nldecl.append_code = [[

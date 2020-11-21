@@ -11,5 +11,5 @@ nldecl.prepend_code = [=[
 cinclude '<blend2d.h>'
 linklib 'blend2d'
 ]]
-local va_list <cimport, nodecl> = @record{}
+local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]

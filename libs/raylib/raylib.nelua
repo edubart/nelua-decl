@@ -3,7 +3,7 @@ cinclude '<raylib.h>'
 cinclude '<raymath.h>'
 linklib 'raylib'
 ]]
-local va_list <cimport, nodecl> = @record{}
+local va_list <cimport, nodecl> = @record{dummy: cint}
 global Vector2: type <cimport, nodecl> = @record{
   x: float32,
   y: float32

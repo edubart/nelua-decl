@@ -4,7 +4,7 @@ cdefine 'SDL_MAIN_HANDLED'
 cinclude '<SDL2/SDL.h>'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{}
+local va_list <cimport, nodecl> = @record{dummy: cint}
 global function SDL_GetPlatform(): cstring <cimport, nodecl> end
 global SDL_bool: type <cimport, nodecl, using> = @enum(cint){
   SDL_FALSE = 0,

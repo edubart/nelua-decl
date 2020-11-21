@@ -12,5 +12,5 @@ cdefine 'STB_IMAGE_IMPLEMENTATION'
 cinclude '"stb_image.h"'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{}
+local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]

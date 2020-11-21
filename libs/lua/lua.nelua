@@ -5,7 +5,7 @@ cinclude '<lauxlib.h>'
 cinclude '<lualib.h>'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{}
+local va_list <cimport, nodecl> = @record{dummy: cint}
 global lua_State: type <cimport, forwarddecl> = @record{}
 global lua_Number: type = @float64
 global lua_Integer: type = @clonglong

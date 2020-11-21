@@ -29,7 +29,7 @@ cinclude '<uchar.h>'
 cinclude '<wchar.h>'
 cinclude '<wctype.h>'
 ]]
-local va_list <cimport, nodecl> = @record{}
+local va_list <cimport, nodecl> = @record{dummy: cint}
 global function __assert_fail(__assertion: cstring, __file: cstring, __line: cuint, __function: cstring) <cimport, nodecl> end
 global function __assert_perror_fail(__errnum: cint, __file: cstring, __line: cuint, __function: cstring) <cimport, nodecl> end
 global function __assert(__assertion: cstring, __file: cstring, __line: cint) <cimport, nodecl> end
