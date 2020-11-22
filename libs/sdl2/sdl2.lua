@@ -85,9 +85,12 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-linklib 'SDL2'
 cdefine 'SDL_MAIN_HANDLED'
+if ccinfo.is_tcc then
+  cdefine 'SDL_DISABLE_IMMINTRIN_H'
+end
 cinclude '<SDL2/SDL.h>'
+linklib 'SDL2'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
 local va_list <cimport, nodecl> = @record{dummy: cint}

@@ -8,6 +8,12 @@ elseif ccinfo.is_windows then
   linklib 'ole32'
 end
 ]]
+## if ccinfo.is_windows then
+global ma_thread: type = @pointer
+global ma_mutex: type = @pointer
+global ma_event: type = @pointer
+global ma_semaphore: type = @pointer
+## else
 global __pthread_internal_list: type <cimport, forwarddecl> = @record{}
 global __pthread_internal_list: type <cimport, nodecl> = @record{
   __prev: *__pthread_internal_list,
@@ -55,6 +61,19 @@ global pthread_cond_t: type <cimport, nodecl> = @union{
   __size: [48]cchar,
   __align: clonglong
 }
+global ma_thread: type = @culong
+global ma_mutex: type = @pthread_mutex_t
+global ma_event: type <cimport, nodecl> = @record{
+  value: uint32,
+  lock: pthread_mutex_t,
+  cond: pthread_cond_t
+}
+global ma_semaphore: type <cimport, nodecl> = @record{
+  value: cint,
+  lock: pthread_mutex_t,
+  cond: pthread_cond_t
+}
+## end
 global ma_bool8: type = @cuchar
 global ma_bool32: type = @cuint
 global ma_handle: type = @pointer
@@ -126,18 +145,6 @@ global ma_thread_priority: type <cimport, nodecl, using> = @enum(cint){
   ma_thread_priority_default = 0
 }
 global ma_spinlock: type = @cuchar
-global ma_thread: type = @culong
-global ma_mutex: type = @pthread_mutex_t
-global ma_event: type <cimport, nodecl> = @record{
-  value: uint32,
-  lock: pthread_mutex_t,
-  cond: pthread_cond_t
-}
-global ma_semaphore: type <cimport, nodecl> = @record{
-  value: cint,
-  lock: pthread_mutex_t,
-  cond: pthread_cond_t
-}
 global function ma_version(pMajor: *uint32, pMinor: *uint32, pRevision: *uint32) <cimport, nodecl> end
 global function ma_version_string(): cstring <cimport, nodecl> end
 global ma_biquad_coefficient: type <cimport, nodecl> = @union{
@@ -454,10 +461,10 @@ global ma_channel_converter: type <cimport, nodecl> = @record{
     f32: [32][32]float32,
     s16: [32][32]int32
   },
-  isPassthrough: ma_bool32,
-  isSimpleShuffle: ma_bool32,
-  isSimpleMonoExpansion: ma_bool32,
-  isStereoToMono: ma_bool32,
+  isPassthrough: ma_bool8,
+  isSimpleShuffle: ma_bool8,
+  isSimpleMonoExpansion: ma_bool8,
+  isStereoToMono: ma_bool8,
   shuffleTable: [32]uint8
 }
 global function ma_channel_converter_init(pConfig: *ma_channel_converter_config, pConverter: *ma_channel_converter): ma_result <cimport, nodecl> end
@@ -493,11 +500,11 @@ global ma_data_converter: type <cimport, nodecl> = @record{
   config: ma_data_converter_config,
   channelConverter: ma_channel_converter,
   resampler: ma_resampler,
-  hasPreFormatConversion: ma_bool32,
-  hasPostFormatConversion: ma_bool32,
-  hasChannelConverter: ma_bool32,
-  hasResampler: ma_bool32,
-  isPassthrough: ma_bool32
+  hasPreFormatConversion: ma_bool8,
+  hasPostFormatConversion: ma_bool8,
+  hasChannelConverter: ma_bool8,
+  hasResampler: ma_bool8,
+  isPassthrough: ma_bool8
 }
 global function ma_data_converter_init(pConfig: *ma_data_converter_config, pConverter: *ma_data_converter): ma_result <cimport, nodecl> end
 global function ma_data_converter_uninit(pConverter: *ma_data_converter) <cimport, nodecl> end
@@ -548,8 +555,8 @@ global ma_rb: type <cimport, nodecl> = @record{
   subbufferStrideInBytes: uint32,
   encodedReadOffset: uint32,
   encodedWriteOffset: uint32,
-  ownsBuffer: ma_bool32,
-  clearOnWriteAcquire: ma_bool32,
+  ownsBuffer: ma_bool8,
+  clearOnWriteAcquire: ma_bool8,
   allocationCallbacks: ma_allocation_callbacks
 }
 global function ma_rb_init_ex(subbufferSizeInBytes: csize, subbufferCount: csize, subbufferStrideInBytes: csize, pOptionalPreallocatedBuffer: pointer, pAllocationCallbacks: *ma_allocation_callbacks, pRB: *ma_rb): ma_result <cimport, nodecl> end
@@ -761,8 +768,8 @@ global ma_device_config: type <cimport, nodecl> = @record{
   periodSizeInMilliseconds: uint32,
   periods: uint32,
   performanceProfile: ma_performance_profile,
-  noPreZeroedOutputBuffer: ma_bool32,
-  noClip: ma_bool32,
+  noPreZeroedOutputBuffer: ma_bool8,
+  noClip: ma_bool8,
   dataCallback: ma_device_callback_proc,
   stopCallback: ma_stop_proc,
   pUserData: pointer,
@@ -790,10 +797,10 @@ global ma_device_config: type <cimport, nodecl> = @record{
     shareMode: ma_share_mode
   },
   wasapi: record{
-    noAutoConvertSRC: ma_bool32,
-    noDefaultQualitySRC: ma_bool32,
-    noAutoStreamRouting: ma_bool32,
-    noHardwareOffloading: ma_bool32
+    noAutoConvertSRC: ma_bool8,
+    noDefaultQualitySRC: ma_bool8,
+    noAutoStreamRouting: ma_bool8,
+    noHardwareOffloading: ma_bool8
   },
   alsa: record{
     noMMap: ma_bool32,
@@ -883,7 +890,7 @@ global ma_context: type <cimport, nodecl> = @record{
   playbackDeviceInfoCount: uint32,
   captureDeviceInfoCount: uint32,
   pDeviceInfos: *ma_device_info,
-  isBackendAsynchronous: ma_bool32,
+  isBackendAsynchronous: ma_bool8,
   onUninit: function(*ma_context): ma_result,
   onEnumDevices: function(*ma_context, ma_enum_devices_callback_proc, pointer): ma_result,
   onGetDeviceInfo: function(*ma_context, ma_device_type, *ma_device_id, ma_share_mode, *ma_device_info): ma_result,
@@ -1075,14 +1082,14 @@ global ma_device: type <cimport, nodecl> = @record{
   wakeupEvent: ma_event,
   startEvent: ma_event,
   stopEvent: ma_event,
-  thread: ma_thread,
+  thread: culong,
   workResult: ma_result,
-  usingDefaultSampleRate: ma_bool32,
-  usingDefaultBufferSize: ma_bool32,
-  usingDefaultPeriods: ma_bool32,
-  isOwnerOfContext: ma_bool32,
-  noPreZeroedOutputBuffer: ma_bool32,
-  noClip: ma_bool32,
+  usingDefaultSampleRate: ma_bool8,
+  usingDefaultBufferSize: ma_bool8,
+  usingDefaultPeriods: ma_bool8,
+  isOwnerOfContext: ma_bool8,
+  noPreZeroedOutputBuffer: ma_bool8,
+  noClip: ma_bool8,
   masterVolumeFactor: float32,
   duplexRB: ma_duplex_rb,
   resampling: record{
@@ -1098,9 +1105,6 @@ global ma_device: type <cimport, nodecl> = @record{
     id: ma_device_id,
     name: [256]cchar,
     shareMode: ma_share_mode,
-    usingDefaultFormat: ma_bool32,
-    usingDefaultChannels: ma_bool32,
-    usingDefaultChannelMap: ma_bool32,
     format: ma_format,
     channels: uint32,
     channelMap: [32]cuchar,
@@ -1110,15 +1114,15 @@ global ma_device: type <cimport, nodecl> = @record{
     internalChannelMap: [32]cuchar,
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
-    converter: ma_data_converter
+    converter: ma_data_converter,
+    usingDefaultFormat: ma_bool8,
+    usingDefaultChannels: ma_bool8,
+    usingDefaultChannelMap: ma_bool8
   },
   capture: record{
     id: ma_device_id,
     name: [256]cchar,
     shareMode: ma_share_mode,
-    usingDefaultFormat: ma_bool32,
-    usingDefaultChannels: ma_bool32,
-    usingDefaultChannelMap: ma_bool32,
     format: ma_format,
     channels: uint32,
     channelMap: [32]cuchar,
@@ -1128,14 +1132,17 @@ global ma_device: type <cimport, nodecl> = @record{
     internalChannelMap: [32]cuchar,
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
-    converter: ma_data_converter
+    converter: ma_data_converter,
+    usingDefaultFormat: ma_bool8,
+    usingDefaultChannels: ma_bool8,
+    usingDefaultChannelMap: ma_bool8
   },
   __unnamed1: union{
     alsa: record{
       pPCMPlayback: ma_ptr,
       pPCMCapture: ma_ptr,
-      isUsingMMapPlayback: ma_bool32,
-      isUsingMMapCapture: ma_bool32
+      isUsingMMapPlayback: ma_bool8,
+      isUsingMMapCapture: ma_bool8
     },
     pulse: record{
       pStreamPlayback: ma_ptr,
@@ -1147,11 +1154,10 @@ global ma_device: type <cimport, nodecl> = @record{
       pPortsPlayback: [32]ma_ptr,
       pPortsCapture: [32]ma_ptr,
       pIntermediaryBufferPlayback: *float32,
-      pIntermediaryBufferCapture: *float32,
-      duplexRB: ma_pcm_rb
+      pIntermediaryBufferCapture: *float32
     },
     null_device: record{
-      deviceThread: ma_thread,
+      deviceThread: culong,
       operationEvent: ma_event,
       operationCompletionEvent: ma_event,
       operation: uint32,
@@ -1476,6 +1482,7 @@ global function ma_waveform_read_pcm_frames(pWaveform: *ma_waveform, pFramesOut:
 global function ma_waveform_seek_to_pcm_frame(pWaveform: *ma_waveform, frameIndex: uint64): ma_result <cimport, nodecl> end
 global function ma_waveform_set_amplitude(pWaveform: *ma_waveform, amplitude: float64): ma_result <cimport, nodecl> end
 global function ma_waveform_set_frequency(pWaveform: *ma_waveform, frequency: float64): ma_result <cimport, nodecl> end
+global function ma_waveform_set_type(pWaveform: *ma_waveform, type: ma_waveform_type): ma_result <cimport, nodecl> end
 global function ma_waveform_set_sample_rate(pWaveform: *ma_waveform, sampleRate: uint32): ma_result <cimport, nodecl> end
 global ma_noise_type: type <cimport, nodecl, using> = @enum(cint){
   ma_noise_type_white = 0,
