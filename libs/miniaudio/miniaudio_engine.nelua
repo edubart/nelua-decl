@@ -540,6 +540,7 @@ global function ma_pcm_convert(pOut: pointer, formatOut: ma_format, pIn: pointer
 global function ma_convert_pcm_frames_format(pOut: pointer, formatOut: ma_format, pIn: pointer, formatIn: ma_format, frameCount: uint64, channels: uint32, ditherMode: ma_dither_mode) <cimport, nodecl> end
 global function ma_deinterleave_pcm_frames(format: ma_format, channels: uint32, frameCount: uint64, pInterleavedPCMFrames: pointer, ppDeinterleavedPCMFrames: *pointer) <cimport, nodecl> end
 global function ma_interleave_pcm_frames(format: ma_format, channels: uint32, frameCount: uint64, ppDeinterleavedPCMFrames: *pointer, pInterleavedPCMFrames: pointer) <cimport, nodecl> end
+global function ma_channel_map_init_blank(channels: uint32, pChannelMap: *cuchar) <cimport, nodecl> end
 global function ma_get_standard_channel_map(standardChannelMap: ma_standard_channel_map, channels: uint32, pChannelMap: *cuchar) <cimport, nodecl> end
 global function ma_channel_map_copy(pOut: *cuchar, pIn: *cuchar, channels: uint32) <cimport, nodecl> end
 global function ma_channel_map_copy_or_default(pOut: *cuchar, pIn: *cuchar, channels: uint32) <cimport, nodecl> end
@@ -788,6 +789,7 @@ global ma_device_config: type <cimport, nodecl> = @record{
     format: ma_format,
     channels: uint32,
     channelMap: [32]cuchar,
+    channelMixMode: ma_channel_mix_mode,
     shareMode: ma_share_mode
   },
   capture: record{
@@ -795,6 +797,7 @@ global ma_device_config: type <cimport, nodecl> = @record{
     format: ma_format,
     channels: uint32,
     channelMap: [32]cuchar,
+    channelMixMode: ma_channel_mix_mode,
     shareMode: ma_share_mode
   },
   wasapi: record{
@@ -1115,6 +1118,7 @@ global ma_device: type <cimport, nodecl> = @record{
     internalChannelMap: [32]cuchar,
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
+    channelMixMode: ma_channel_mix_mode,
     converter: ma_data_converter,
     usingDefaultFormat: ma_bool8,
     usingDefaultChannels: ma_bool8,
@@ -1133,6 +1137,7 @@ global ma_device: type <cimport, nodecl> = @record{
     internalChannelMap: [32]cuchar,
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
+    channelMixMode: ma_channel_mix_mode,
     converter: ma_data_converter,
     usingDefaultFormat: ma_bool8,
     usingDefaultChannels: ma_bool8,
@@ -1161,6 +1166,7 @@ global ma_device: type <cimport, nodecl> = @record{
       deviceThread: culong,
       operationEvent: ma_event,
       operationCompletionEvent: ma_event,
+      operationSemaphore: ma_semaphore,
       operation: uint32,
       operationResult: ma_result,
       timer: ma_timer,
@@ -1516,6 +1522,9 @@ global ma_noise: type <cimport, nodecl> = @record{
 }
 global function ma_noise_init(pConfig: *ma_noise_config, pNoise: *ma_noise): ma_result <cimport, nodecl> end
 global function ma_noise_read_pcm_frames(pNoise: *ma_noise, pFramesOut: pointer, frameCount: uint64): uint64 <cimport, nodecl> end
+global function ma_noise_set_amplitude(pNoise: *ma_noise, amplitude: float64): ma_result <cimport, nodecl> end
+global function ma_noise_set_seed(pNoise: *ma_noise, seed: int32): ma_result <cimport, nodecl> end
+global function ma_noise_set_type(pNoise: *ma_noise, type: ma_noise_type): ma_result <cimport, nodecl> end
 global ma_effect: type <cimport, nodecl> = @void
 global ma_effect_base: type <cimport, forwarddecl> = @record{}
 global ma_effect_base: type <cimport, nodecl> = @record{
@@ -1978,8 +1987,8 @@ global ma_engine: type <cimport, nodecl> = @record{
   periodSizeInFrames: uint32,
   periodSizeInMilliseconds: uint32,
   allocationCallbacks: ma_allocation_callbacks,
-  ownsResourceManager: ma_bool32,
-  ownsDevice: ma_bool32
+  ownsResourceManager: ma_bool8,
+  ownsDevice: ma_bool8
 }
 global function ma_engine_init(pConfig: *ma_engine_config, pEngine: *ma_engine): ma_result <cimport, nodecl> end
 global function ma_engine_uninit(pEngine: *ma_engine) <cimport, nodecl> end
@@ -2001,6 +2010,7 @@ global function ma_sound_set_volume(pSound: *ma_sound, volume: float32): ma_resu
 global function ma_sound_set_gain_db(pSound: *ma_sound, gainDB: float32): ma_result <cimport, nodecl> end
 global function ma_sound_set_effect(pSound: *ma_sound, pEffect: pointer): ma_result <cimport, nodecl> end
 global function ma_sound_set_pan(pSound: *ma_sound, pan: float32): ma_result <cimport, nodecl> end
+global function ma_sound_set_pan_mode(pSound: *ma_sound, pan_mode: ma_pan_mode): ma_result <cimport, nodecl> end
 global function ma_sound_set_pitch(pSound: *ma_sound, pitch: float32): ma_result <cimport, nodecl> end
 global function ma_sound_set_position(pSound: *ma_sound, position: ma_vec3): ma_result <cimport, nodecl> end
 global function ma_sound_set_rotation(pSound: *ma_sound, rotation: ma_quat): ma_result <cimport, nodecl> end
