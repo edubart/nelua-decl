@@ -187,7 +187,7 @@ global Wave: type <cimport, nodecl> = @record{
   channels: cuint,
   data: pointer
 }
-global rAudioBuffer: type <cimport, forwarddecl> = @record{}
+global rAudioBuffer: type <cimport, nodecl, forwarddecl> = @record{}
 global AudioStream: type <cimport, nodecl> = @record{
   sampleRate: cuint,
   sampleSize: cuint,

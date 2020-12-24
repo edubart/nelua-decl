@@ -71,7 +71,7 @@ global function isascii(__c: cint): cint <cimport, nodecl> end
 global function toascii(__c: cint): cint <cimport, nodecl> end
 global function _toupper(a1: cint): cint <cimport, nodecl> end
 global function _tolower(a1: cint): cint <cimport, nodecl> end
-global __locale_data: type <cimport, forwarddecl> = @record{}
+global __locale_data: type <cimport, nodecl, forwarddecl> = @record{}
 global __locale_struct: type <cimport, nodecl> = @record{
   __locales: [13]*__locale_data,
   __ctype_b: *cushort,
@@ -756,7 +756,7 @@ global POLL_ERR: cint <comptime> = 4
 global POLL_PRI: cint <comptime> = 5
 global POLL_HUP: cint <comptime> = 6
 global sigval_t: type = @sigval
-global pthread_attr_t: type <cimport, forwarddecl> = @union{}
+global pthread_attr_t: type <cimport, nodecl, forwarddecl> = @union{}
 global sigevent: type <cimport, nodecl> = @record{
   sigev_value: __sigval_t,
   sigev_signo: cint,
@@ -921,7 +921,7 @@ global mcontext_t: type <cimport, nodecl> = @record{
   fpregs: fpregset_t,
   __reserved1: [8]culonglong
 }
-global ucontext_t: type <cimport, forwarddecl> = @record{}
+global ucontext_t: type <cimport, nodecl, forwarddecl> = @record{}
 global ucontext_t: type <cimport, nodecl> = @record{
   uc_flags: culong,
   uc_link: *ucontext_t,
@@ -939,13 +939,13 @@ global sigstack: type <cimport, nodecl> = @record{
   ss_sp: pointer,
   ss_onstack: cint
 }
-global __pthread_internal_list: type <cimport, forwarddecl> = @record{}
+global __pthread_internal_list: type <cimport, nodecl, forwarddecl> = @record{}
 global __pthread_internal_list: type <cimport, nodecl> = @record{
   __prev: *__pthread_internal_list,
   __next: *__pthread_internal_list
 }
 global __pthread_list_t: type = @__pthread_internal_list
-global __pthread_internal_slist: type <cimport, forwarddecl> = @record{}
+global __pthread_internal_slist: type <cimport, nodecl, forwarddecl> = @record{}
 global __pthread_internal_slist: type <cimport, nodecl> = @record{
   __next: *__pthread_internal_slist
 }
@@ -1080,12 +1080,12 @@ global _G_fpos64_t: type <cimport, nodecl> = @record{
   __state: __mbstate_t
 }
 global __fpos64_t: type = @_G_fpos64_t
-global _IO_FILE: type <cimport, forwarddecl> = @record{}
+global _IO_FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global __FILE: type = @_IO_FILE
 global FILE: type = @_IO_FILE
-global _IO_marker: type <cimport, forwarddecl> = @record{}
-global _IO_codecvt: type <cimport, forwarddecl> = @record{}
-global _IO_wide_data: type <cimport, forwarddecl> = @record{}
+global _IO_marker: type <cimport, nodecl, forwarddecl> = @record{}
+global _IO_codecvt: type <cimport, nodecl, forwarddecl> = @record{}
+global _IO_wide_data: type <cimport, nodecl, forwarddecl> = @record{}
 global _IO_FILE: type <cimport, nodecl> = @record{
   _flags: cint,
   _IO_read_ptr: cstring,

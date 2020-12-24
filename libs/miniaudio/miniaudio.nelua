@@ -79,8 +79,8 @@ global ma_bool32: type = @cuint
 global ma_handle: type = @pointer
 global ma_ptr: type = @pointer
 global ma_proc: type <cimport, nodecl> = @function()
-global ma_context: type <cimport, forwarddecl> = @record{}
-global ma_device: type <cimport, forwarddecl> = @record{}
+global ma_context: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_device: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_result: type = @cint
 global ma_stream_format: type <cimport, nodecl, using> = @enum(cint){
   ma_stream_format_pcm = 0
@@ -741,9 +741,9 @@ global ma_device_id: type <cimport, nodecl> = @union{
   },
   nullbackend: cint
 }
-global ma_context_config: type <cimport, forwarddecl> = @record{}
-global ma_device_config: type <cimport, forwarddecl> = @record{}
-global ma_backend_callbacks: type <cimport, forwarddecl> = @record{}
+global ma_context_config: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_device_config: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_backend_callbacks: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_device_info: type <cimport, nodecl> = @record{
   id: ma_device_id,
   name: [256]cchar,
@@ -1331,7 +1331,7 @@ global function ma_default_vfs_init(pVFS: *ma_default_vfs, pAllocationCallbacks:
 global ma_resource_format: type <cimport, nodecl, using> = @enum(cint){
   ma_resource_format_wav = 0
 }
-global ma_decoder: type <cimport, forwarddecl> = @record{}
+global ma_decoder: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_decoder_read_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, csize): csize
 global ma_decoder_seek_proc: type <cimport, nodecl> = @function(*ma_decoder, cint, ma_seek_origin): ma_bool32
 global ma_decoder_read_pcm_frames_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, uint64): uint64
@@ -1432,7 +1432,7 @@ global function ma_decoder_get_available_frames(pDecoder: *ma_decoder, pAvailabl
 global function ma_decode_from_vfs(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
 global function ma_decode_file(pFilePath: cstring, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
 global function ma_decode_memory(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
-global ma_encoder: type <cimport, forwarddecl> = @record{}
+global ma_encoder: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_encoder_write_proc: type <cimport, nodecl> = @function(*ma_encoder, pointer, csize): csize
 global ma_encoder_seek_proc: type <cimport, nodecl> = @function(*ma_encoder, cint, ma_seek_origin): ma_bool32
 global ma_encoder_init_proc: type <cimport, nodecl> = @function(*ma_encoder): ma_result

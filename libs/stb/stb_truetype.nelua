@@ -41,9 +41,9 @@ global stbtt_packedchar: type <cimport, nodecl> = @record{
   xoff2: float32,
   yoff2: float32
 }
-global stbtt_pack_context: type <cimport, forwarddecl> = @record{}
-global stbtt_fontinfo: type <cimport, forwarddecl> = @record{}
-global stbrp_rect: type <cimport, forwarddecl> = @record{}
+global stbtt_pack_context: type <cimport, nodecl, forwarddecl> = @record{}
+global stbtt_fontinfo: type <cimport, nodecl, forwarddecl> = @record{}
+global stbrp_rect: type <cimport, nodecl, forwarddecl> = @record{}
 global function stbtt_PackBegin(spc: *stbtt_pack_context, pixels: *cuchar, width: cint, height: cint, stride_in_bytes: cint, padding: cint, alloc_context: pointer): cint <cimport, nodecl> end
 global function stbtt_PackEnd(spc: *stbtt_pack_context) <cimport, nodecl> end
 global function stbtt_PackFontRange(spc: *stbtt_pack_context, fontdata: *cuchar, font_index: cint, font_size: float32, first_unicode_char_in_range: cint, num_chars_in_range: cint, chardata_for_range: *stbtt_packedchar): cint <cimport, nodecl> end

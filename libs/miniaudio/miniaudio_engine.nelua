@@ -80,8 +80,8 @@ global ma_bool32: type = @cuint
 global ma_handle: type = @pointer
 global ma_ptr: type = @pointer
 global ma_proc: type <cimport, nodecl> = @function()
-global ma_context: type <cimport, forwarddecl> = @record{}
-global ma_device: type <cimport, forwarddecl> = @record{}
+global ma_context: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_device: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_result: type = @cint
 global ma_stream_format: type <cimport, nodecl, using> = @enum(cint){
   ma_stream_format_pcm = 0
@@ -742,9 +742,9 @@ global ma_device_id: type <cimport, nodecl> = @union{
   },
   nullbackend: cint
 }
-global ma_context_config: type <cimport, forwarddecl> = @record{}
-global ma_device_config: type <cimport, forwarddecl> = @record{}
-global ma_backend_callbacks: type <cimport, forwarddecl> = @record{}
+global ma_context_config: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_device_config: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_backend_callbacks: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_device_info: type <cimport, nodecl> = @record{
   id: ma_device_id,
   name: [256]cchar,
@@ -1332,7 +1332,7 @@ global function ma_default_vfs_init(pVFS: *ma_default_vfs, pAllocationCallbacks:
 global ma_resource_format: type <cimport, nodecl, using> = @enum(cint){
   ma_resource_format_wav = 0
 }
-global ma_decoder: type <cimport, forwarddecl> = @record{}
+global ma_decoder: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_decoder_read_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, csize): csize
 global ma_decoder_seek_proc: type <cimport, nodecl> = @function(*ma_decoder, cint, ma_seek_origin): ma_bool32
 global ma_decoder_read_pcm_frames_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, uint64): uint64
@@ -1433,7 +1433,7 @@ global function ma_decoder_get_available_frames(pDecoder: *ma_decoder, pAvailabl
 global function ma_decode_from_vfs(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
 global function ma_decode_file(pFilePath: cstring, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
 global function ma_decode_memory(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
-global ma_encoder: type <cimport, forwarddecl> = @record{}
+global ma_encoder: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_encoder_write_proc: type <cimport, nodecl> = @function(*ma_encoder, pointer, csize): csize
 global ma_encoder_seek_proc: type <cimport, nodecl> = @function(*ma_encoder, cint, ma_seek_origin): ma_bool32
 global ma_encoder_init_proc: type <cimport, nodecl> = @function(*ma_encoder): ma_result
@@ -1526,7 +1526,7 @@ global function ma_noise_set_amplitude(pNoise: *ma_noise, amplitude: float64): m
 global function ma_noise_set_seed(pNoise: *ma_noise, seed: int32): ma_result <cimport, nodecl> end
 global function ma_noise_set_type(pNoise: *ma_noise, type: ma_noise_type): ma_result <cimport, nodecl> end
 global ma_effect: type <cimport, nodecl> = @void
-global ma_effect_base: type <cimport, forwarddecl> = @record{}
+global ma_effect_base: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_effect_base: type <cimport, nodecl> = @record{
   onProcessPCMFrames: function(pointer, uint32, *pointer, *uint64, pointer, *uint64): ma_result,
   onGetRequiredInputFrameCount: function(pointer, uint64): uint64,
@@ -1592,11 +1592,11 @@ global ma_resource_manager_data_buffer_connector: type <cimport, nodecl, using> 
   ma_resource_manager_data_buffer_connector_decoder = 1,
   ma_resource_manager_data_buffer_connector_buffer = 2
 }
-global ma_resource_manager: type <cimport, forwarddecl> = @record{}
-global ma_resource_manager_data_buffer_node: type <cimport, forwarddecl> = @record{}
-global ma_resource_manager_data_buffer: type <cimport, forwarddecl> = @record{}
-global ma_resource_manager_data_stream: type <cimport, forwarddecl> = @record{}
-global ma_resource_manager_data_source: type <cimport, forwarddecl> = @record{}
+global ma_resource_manager: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_resource_manager_data_buffer_node: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_resource_manager_data_buffer: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_resource_manager_data_stream: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_resource_manager_data_source: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_slot_allocator: type <cimport, nodecl> = @record{
   groups: [32]record{
     bitfield: uint32
@@ -1828,10 +1828,10 @@ global function ma_resource_manager_post_job_quit(pResourceManager: *ma_resource
 global function ma_resource_manager_next_job(pResourceManager: *ma_resource_manager, pJob: *ma_job): ma_result <cimport, nodecl> end
 global function ma_resource_manager_process_job(pResourceManager: *ma_resource_manager, pJob: *ma_job): ma_result <cimport, nodecl> end
 global function ma_resource_manager_process_next_job(pResourceManager: *ma_resource_manager): ma_result <cimport, nodecl> end
-global ma_engine: type <cimport, forwarddecl> = @record{}
-global ma_sound: type <cimport, forwarddecl> = @record{}
-global ma_sound_group: type <cimport, forwarddecl> = @record{}
-global ma_listener: type <cimport, forwarddecl> = @record{}
+global ma_engine: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_sound: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_sound_group: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_listener: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_vec3: type <cimport, nodecl> = @record{
   x: float32,
   y: float32,

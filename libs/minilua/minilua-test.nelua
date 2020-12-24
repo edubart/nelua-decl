@@ -1,4 +1,6 @@
-require 'lua'
+## cflags '-I.'
+
+require 'minilua'
 
 local L = luaL_newstate()
 if not L then

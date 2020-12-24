@@ -2,13 +2,11 @@ GCCPLUGIN=-fplugin=./gcc-lua/gcc/gcclua.so
 CC=gcc
 NELUA=nelua
 
-all: lua sdl2 miniaudio sokol stb miniphysfs
+all: sdl2 miniaudio miniphysfs minilua sokol stb
 all-extra: all c blend2d raylib
 
 c:
 	$(CC) $(GCCPLUGIN) -S libs/c/c.c -fplugin-arg-gcclua-script=libs/c/c.lua > libs/c/c.nelua
-lua:
-	$(CC) $(GCCPLUGIN) -S libs/lua/lua.c -fplugin-arg-gcclua-script=libs/lua/lua.lua > libs/lua/lua.nelua
 glfw:
 	$(CC) $(GCCPLUGIN) -S libs/glfw/glfw.c -fplugin-arg-gcclua-script=libs/glfw/glfw.lua > libs/glfw/glfw.nelua
 sdl2:
@@ -24,6 +22,8 @@ miniaudio:
 	$(CC) $(GCCPLUGIN) -S libs/miniaudio/miniaudio_engine.c -fplugin-arg-gcclua-script=libs/miniaudio/miniaudio_engine.lua > libs/miniaudio/miniaudio_engine.nelua
 miniphysfs:
 	$(CC) $(GCCPLUGIN) -S libs/miniphysfs/miniphysfs.c -fplugin-arg-gcclua-script=libs/miniphysfs/miniphysfs.lua > libs/miniphysfs/miniphysfs.nelua
+minilua:
+	$(CC) $(GCCPLUGIN) -S libs/minilua/minilua.c -fplugin-arg-gcclua-script=libs/minilua/minilua.lua > libs/minilua/minilua.nelua
 stb:
 	$(CC) $(GCCPLUGIN) -S libs/stb/stb_image.c -fplugin-arg-gcclua-script=libs/stb/stb_image.lua > libs/stb/stb_image.nelua
 	$(CC) $(GCCPLUGIN) -S libs/stb/stb_image_write.c -fplugin-arg-gcclua-script=libs/stb/stb_image_write.lua > libs/stb/stb_image_write.nelua
@@ -40,6 +40,8 @@ download-miniaudio:
 	wget -O libs/miniaudio/miniaudio_engine.h https://raw.githubusercontent.com/mackron/miniaudio/master/research/miniaudio_engine.h
 download-miniphysfs:
 	wget -O libs/miniphysfs/miniphysfs.h https://raw.githubusercontent.com/edubart/miniphysfs/main/miniphysfs.h
+download-minilua:
+	wget -O libs/minilua/minilua.h https://raw.githubusercontent.com/edubart/minilua/main/minilua.h
 download-sokol:
 	wget -O libs/sokol/sokol_gfx.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_gfx.h
 	wget -O libs/sokol/sokol_app.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_app.h
@@ -52,12 +54,10 @@ download-stb:
 	wget -O libs/stb/stb_vorbis.h https://raw.githubusercontent.com/nothings/stb/master/stb_vorbis.c
 	wget -O libs/stb/stb_truetype.h https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h
 
-test-all: test-lua test-glfw test-sdl2 test-sokol test-miniaudio test-miniphysfs test-stb
+test-all: test-minilua test-glfw test-sdl2 test-sokol test-miniaudio test-miniphysfs test-stb
 test-all-extra: test-all test-c test-blend2d test-raylib
 test-c: c
 	cd libs/c && $(NELUA) c-test.nelua
-test-lua: lua
-	cd libs/lua && $(NELUA) lua-test.nelua
 test-glfw: glfw
 	cd libs/glfw && $(NELUA) glfw-test.nelua
 test-sdl2: sdl2
@@ -69,6 +69,8 @@ test-miniaudio: miniaudio
 # 	cd libs/miniaudio && $(NELUA) miniaudio-engine-test.nelua pluck.wav
 test-miniphysfs: miniphysfs
 	cd libs/miniphysfs && $(NELUA) miniphysfs-test.nelua
+test-minilua: minilua
+	cd libs/minilua && $(NELUA) minilua-test.nelua
 test-stb: stb
 	cd libs/stb && $(NELUA) stb-test.nelua
 test-blend2d: blend2d

@@ -310,11 +310,11 @@ local function visit_type_def(typename, type)
   if (not is_pointer or is_function) and not is_scalar then
     -- not a pointer to a function
     local annotations = {'cimport'}
+    table.insert(annotations, 'nodecl')
     if forwarddecl then -- declaration without definition
       table.insert(annotations, 'forwarddecl')
       nldecl.predeclared_names[typename] = true
     else
-      table.insert(annotations, 'nodecl')
       nldecl.declared_names[typename] = true
     end
     if is_record or is_union or is_enum then

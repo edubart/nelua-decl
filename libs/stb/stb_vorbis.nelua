@@ -6,7 +6,7 @@ global stb_vorbis_alloc: type <cimport, nodecl> = @record{
   alloc_buffer: cstring,
   alloc_buffer_length_in_bytes: cint
 }
-global stb_vorbis: type <cimport, forwarddecl> = @record{}
+global stb_vorbis: type <cimport, nodecl, forwarddecl> = @record{}
 global stb_vorbis_info: type <cimport, nodecl> = @record{
   sample_rate: cuint,
   channels: cint,

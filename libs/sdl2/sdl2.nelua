@@ -121,7 +121,7 @@ global function SDL_sqrt(x: float64): float64 <cimport, nodecl> end
 global function SDL_sqrtf(x: float32): float32 <cimport, nodecl> end
 global function SDL_tan(x: float64): float64 <cimport, nodecl> end
 global function SDL_tanf(x: float32): float32 <cimport, nodecl> end
-global _SDL_iconv_t: type <cimport, forwarddecl> = @record{}
+global _SDL_iconv_t: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_iconv_t: type = @*_SDL_iconv_t
 global function SDL_iconv_open(tocode: cstring, fromcode: cstring): SDL_iconv_t <cimport, nodecl> end
 global function SDL_iconv_close(cd: SDL_iconv_t): cint <cimport, nodecl> end
@@ -138,7 +138,7 @@ global SDL_AssertState: type <cimport, nodecl, using> = @enum(cint){
   SDL_ASSERTION_IGNORE = 3,
   SDL_ASSERTION_ALWAYS_IGNORE = 4
 }
-global SDL_AssertData: type <cimport, forwarddecl> = @record{}
+global SDL_AssertData: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_AssertData: type <cimport, nodecl> = @record{
   always_ignore: cint,
   trigger_count: cuint,
@@ -187,13 +187,13 @@ global function SDL_Swap16(x: uint16): uint16 <cimport, nodecl> end
 global function SDL_Swap32(x: uint32): uint32 <cimport, nodecl> end
 global function SDL_Swap64(x: uint64): uint64 <cimport, nodecl> end
 global function SDL_SwapFloat(x: float32): float32 <cimport, nodecl> end
-global SDL_mutex: type <cimport, forwarddecl> = @record{}
+global SDL_mutex: type <cimport, nodecl, forwarddecl> = @record{}
 global function SDL_CreateMutex(): *SDL_mutex <cimport, nodecl> end
 global function SDL_LockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
 global function SDL_TryLockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
 global function SDL_UnlockMutex(mutex: *SDL_mutex): cint <cimport, nodecl> end
 global function SDL_DestroyMutex(mutex: *SDL_mutex) <cimport, nodecl> end
-global SDL_semaphore: type <cimport, forwarddecl> = @record{}
+global SDL_semaphore: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_sem: type = @SDL_semaphore
 global function SDL_CreateSemaphore(initial_value: uint32): *SDL_sem <cimport, nodecl> end
 global function SDL_DestroySemaphore(sem: *SDL_sem) <cimport, nodecl> end
@@ -202,14 +202,14 @@ global function SDL_SemTryWait(sem: *SDL_sem): cint <cimport, nodecl> end
 global function SDL_SemWaitTimeout(sem: *SDL_sem, ms: uint32): cint <cimport, nodecl> end
 global function SDL_SemPost(sem: *SDL_sem): cint <cimport, nodecl> end
 global function SDL_SemValue(sem: *SDL_sem): uint32 <cimport, nodecl> end
-global SDL_cond: type <cimport, forwarddecl> = @record{}
+global SDL_cond: type <cimport, nodecl, forwarddecl> = @record{}
 global function SDL_CreateCond(): *SDL_cond <cimport, nodecl> end
 global function SDL_DestroyCond(cond: *SDL_cond) <cimport, nodecl> end
 global function SDL_CondSignal(cond: *SDL_cond): cint <cimport, nodecl> end
 global function SDL_CondBroadcast(cond: *SDL_cond): cint <cimport, nodecl> end
 global function SDL_CondWait(cond: *SDL_cond, mutex: *SDL_mutex): cint <cimport, nodecl> end
 global function SDL_CondWaitTimeout(cond: *SDL_cond, mutex: *SDL_mutex, ms: uint32): cint <cimport, nodecl> end
-global SDL_Thread: type <cimport, forwarddecl> = @record{}
+global SDL_Thread: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_ThreadPriority: type <cimport, nodecl, using> = @enum(cint){
   SDL_THREAD_PRIORITY_LOW = 0,
   SDL_THREAD_PRIORITY_NORMAL = 1,
@@ -228,7 +228,7 @@ global function SDL_DetachThread(thread: *SDL_Thread) <cimport, nodecl> end
 global function SDL_TLSCreate(): cuint <cimport, nodecl> end
 global function SDL_TLSGet(id: cuint): pointer <cimport, nodecl> end
 global function SDL_TLSSet(id: cuint, value: pointer, destructor: function(pointer)): cint <cimport, nodecl> end
-global SDL_RWops: type <cimport, forwarddecl> = @record{}
+global SDL_RWops: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_RWops: type <cimport, nodecl> = @record{
   size: function(*SDL_RWops): int64,
   seek: function(*SDL_RWops, int64, cint): int64,
@@ -292,7 +292,7 @@ global SDL_AudioSpec: type <cimport, nodecl> = @record{
   callback: SDL_AudioCallback,
   userdata: pointer
 }
-global SDL_AudioCVT: type <cimport, forwarddecl> = @record{}
+global SDL_AudioCVT: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_AudioFilter: type <cimport, nodecl> = @function(*SDL_AudioCVT, cushort)
 global SDL_AudioCVT: type <cimport, nodecl> = @record{
   needed: cint,
@@ -329,7 +329,7 @@ global function SDL_LoadWAV_RW(src: *SDL_RWops, freesrc: cint, spec: *SDL_AudioS
 global function SDL_FreeWAV(audio_buf: *uint8) <cimport, nodecl> end
 global function SDL_BuildAudioCVT(cvt: *SDL_AudioCVT, src_format: cushort, src_channels: uint8, src_rate: cint, dst_format: cushort, dst_channels: uint8, dst_rate: cint): cint <cimport, nodecl> end
 global function SDL_ConvertAudio(cvt: *SDL_AudioCVT): cint <cimport, nodecl> end
-global SDL_AudioStream: type <cimport, forwarddecl> = @record{}
+global SDL_AudioStream: type <cimport, nodecl, forwarddecl> = @record{}
 global function SDL_NewAudioStream(src_format: cushort, src_channels: uint8, src_rate: cint, dst_format: cushort, dst_channels: uint8, dst_rate: cint): *SDL_AudioStream <cimport, nodecl> end
 global function SDL_AudioStreamPut(stream: *SDL_AudioStream, buf: pointer, len: cint): cint <cimport, nodecl> end
 global function SDL_AudioStreamGet(stream: *SDL_AudioStream, buf: pointer, len: cint): cint <cimport, nodecl> end
@@ -487,7 +487,7 @@ global SDL_Palette: type <cimport, nodecl> = @record{
   version: uint32,
   refcount: cint
 }
-global SDL_PixelFormat: type <cimport, forwarddecl> = @record{}
+global SDL_PixelFormat: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_PixelFormat: type <cimport, nodecl> = @record{
   format: uint32,
   palette: *SDL_Palette,
@@ -579,7 +579,7 @@ global SDL_BlendFactor: type <cimport, nodecl, using> = @enum(cint){
   SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA = 10
 }
 global function SDL_ComposeCustomBlendMode(srcColorFactor: SDL_BlendFactor, dstColorFactor: SDL_BlendFactor, colorOperation: SDL_BlendOperation, srcAlphaFactor: SDL_BlendFactor, dstAlphaFactor: SDL_BlendFactor, alphaOperation: SDL_BlendOperation): SDL_BlendMode <cimport, nodecl> end
-global SDL_BlitMap: type <cimport, forwarddecl> = @record{}
+global SDL_BlitMap: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_Surface: type <cimport, nodecl> = @record{
   flags: uint32,
   format: *SDL_PixelFormat,
@@ -645,7 +645,7 @@ global SDL_DisplayMode: type <cimport, nodecl> = @record{
   refresh_rate: cint,
   driverdata: pointer
 }
-global SDL_Window: type <cimport, forwarddecl> = @record{}
+global SDL_Window: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_WindowFlags: type <cimport, nodecl, using> = @enum(cint){
   SDL_WINDOW_FULLSCREEN = 1,
   SDL_WINDOW_OPENGL = 2,
@@ -1376,7 +1376,7 @@ global function SDL_StopTextInput() <cimport, nodecl> end
 global function SDL_SetTextInputRect(rect: *SDL_Rect) <cimport, nodecl> end
 global function SDL_HasScreenKeyboardSupport(): SDL_bool <cimport, nodecl> end
 global function SDL_IsScreenKeyboardShown(window: *SDL_Window): SDL_bool <cimport, nodecl> end
-global SDL_Cursor: type <cimport, forwarddecl> = @record{}
+global SDL_Cursor: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_SystemCursor: type <cimport, nodecl, using> = @enum(cint){
   SDL_SYSTEM_CURSOR_ARROW = 0,
   SDL_SYSTEM_CURSOR_IBEAM = 1,
@@ -1413,7 +1413,7 @@ global function SDL_GetCursor(): *SDL_Cursor <cimport, nodecl> end
 global function SDL_GetDefaultCursor(): *SDL_Cursor <cimport, nodecl> end
 global function SDL_FreeCursor(cursor: *SDL_Cursor) <cimport, nodecl> end
 global function SDL_ShowCursor(toggle: cint): cint <cimport, nodecl> end
-global SDL_Joystick: type <cimport, forwarddecl> = @record{}
+global SDL_Joystick: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_JoystickGUID: type <cimport, nodecl> = @record{
   data: [16]uint8
 }
@@ -1488,7 +1488,7 @@ global function SDL_JoystickHasLED(joystick: *SDL_Joystick): SDL_bool <cimport, 
 global function SDL_JoystickSetLED(joystick: *SDL_Joystick, red: uint8, green: uint8, blue: uint8): cint <cimport, nodecl> end
 global function SDL_JoystickClose(joystick: *SDL_Joystick) <cimport, nodecl> end
 global function SDL_JoystickCurrentPowerLevel(joystick: *SDL_Joystick): SDL_JoystickPowerLevel <cimport, nodecl> end
-global SDL_Sensor: type <cimport, forwarddecl> = @record{}
+global SDL_Sensor: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_SensorType: type <cimport, nodecl, using> = @enum(cint){
   SDL_SENSOR_INVALID = -1,
   SDL_SENSOR_UNKNOWN = 0,
@@ -1511,7 +1511,7 @@ global function SDL_SensorGetInstanceID(sensor: *SDL_Sensor): cint <cimport, nod
 global function SDL_SensorGetData(sensor: *SDL_Sensor, data: *float32, num_values: cint): cint <cimport, nodecl> end
 global function SDL_SensorClose(sensor: *SDL_Sensor) <cimport, nodecl> end
 global function SDL_SensorUpdate() <cimport, nodecl> end
-global SDL_GameController: type <cimport, forwarddecl> = @record{}
+global SDL_GameController: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_GameControllerType: type <cimport, nodecl, using> = @enum(cint){
   SDL_CONTROLLER_TYPE_UNKNOWN = 0,
   SDL_CONTROLLER_TYPE_XBOX360 = 1,
@@ -1938,7 +1938,7 @@ global SDL_UserEvent: type <cimport, nodecl> = @record{
   data1: pointer,
   data2: pointer
 }
-global SDL_SysWMmsg: type <cimport, forwarddecl> = @record{}
+global SDL_SysWMmsg: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_SysWMEvent: type <cimport, nodecl> = @record{
   type: uint32,
   timestamp: uint32,
@@ -2001,7 +2001,7 @@ global function SDL_EventState(type: uint32, state: cint): uint8 <cimport, nodec
 global function SDL_RegisterEvents(numevents: cint): uint32 <cimport, nodecl> end
 global function SDL_GetBasePath(): cstring <cimport, nodecl> end
 global function SDL_GetPrefPath(org: cstring, app: cstring): cstring <cimport, nodecl> end
-global SDL_Haptic: type <cimport, forwarddecl> = @record{}
+global SDL_Haptic: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_HapticDirection: type <cimport, nodecl> = @record{
   type: uint8,
   dir: [3]int32
@@ -2277,8 +2277,8 @@ global SDL_RendererFlip: type <cimport, nodecl, using> = @enum(cint){
   SDL_FLIP_HORIZONTAL = 1,
   SDL_FLIP_VERTICAL = 2
 }
-global SDL_Renderer: type <cimport, forwarddecl> = @record{}
-global SDL_Texture: type <cimport, forwarddecl> = @record{}
+global SDL_Renderer: type <cimport, nodecl, forwarddecl> = @record{}
+global SDL_Texture: type <cimport, nodecl, forwarddecl> = @record{}
 global function SDL_GetNumRenderDrivers(): cint <cimport, nodecl> end
 global function SDL_GetRenderDriverInfo(index: cint, info: *SDL_RendererInfo): cint <cimport, nodecl> end
 global function SDL_CreateWindowAndRenderer(width: cint, height: cint, window_flags: uint32, window: **SDL_Window, renderer: **SDL_Renderer): cint <cimport, nodecl> end

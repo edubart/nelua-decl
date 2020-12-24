@@ -1,12 +1,13 @@
 ##[[
-linklib 'lua'
-cinclude '<lua.h>'
-cinclude '<lauxlib.h>'
-cinclude '<lualib.h>'
+cdefine 'LUA_IMPL'
+cinclude '"minilua.h"'
+if ccinfo.is_linux then
+  linklib 'dl'
+end
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
 local va_list <cimport, nodecl> = @record{dummy: cint}
-global lua_State: type <cimport, forwarddecl> = @record{}
+global lua_State: type <cimport, nodecl, forwarddecl> = @record{}
 global lua_Number: type = @float64
 global lua_Integer: type = @clonglong
 global lua_Unsigned: type = @culonglong
@@ -101,7 +102,7 @@ global function lua_stringtonumber(L: *lua_State, s: cstring): csize <cimport, n
 global function lua_getallocf(L: *lua_State, ud: *pointer): lua_Alloc <cimport, nodecl> end
 global function lua_setallocf(L: *lua_State, f: lua_Alloc, ud: pointer) <cimport, nodecl> end
 global function lua_toclose(L: *lua_State, idx: cint) <cimport, nodecl> end
-global lua_Debug: type <cimport, forwarddecl> = @record{}
+global lua_Debug: type <cimport, nodecl, forwarddecl> = @record{}
 global lua_Hook: type <cimport, nodecl> = @function(*lua_State, *lua_Debug)
 global function lua_getstack(L: *lua_State, level: cint, ar: *lua_Debug): cint <cimport, nodecl> end
 global function lua_getinfo(L: *lua_State, what: cstring, ar: *lua_Debug): cint <cimport, nodecl> end
@@ -116,7 +117,7 @@ global function lua_gethook(L: *lua_State): lua_Hook <cimport, nodecl> end
 global function lua_gethookmask(L: *lua_State): cint <cimport, nodecl> end
 global function lua_gethookcount(L: *lua_State): cint <cimport, nodecl> end
 global function lua_setcstacklimit(L: *lua_State, limit: cuint): cint <cimport, nodecl> end
-global CallInfo: type <cimport, forwarddecl> = @record{}
+global CallInfo: type <cimport, nodecl, forwarddecl> = @record{}
 global lua_Debug: type <cimport, nodecl> = @record{
   event: cint,
   name: cstring,
@@ -136,18 +137,7 @@ global lua_Debug: type <cimport, nodecl> = @record{
   short_src: [60]cchar,
   i_ci: *CallInfo
 }
-global function luaopen_base(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_coroutine(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_table(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_io(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_os(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_string(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_utf8(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_math(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_debug(L: *lua_State): cint <cimport, nodecl> end
-global function luaopen_package(L: *lua_State): cint <cimport, nodecl> end
-global function luaL_openlibs(L: *lua_State) <cimport, nodecl> end
-global luaL_Buffer: type <cimport, forwarddecl> = @record{}
+global luaL_Buffer: type <cimport, nodecl, forwarddecl> = @record{}
 global luaL_Reg: type <cimport, nodecl> = @record{
   name: cstring,
   func: lua_CFunction
@@ -215,6 +205,17 @@ global luaL_Stream: type <cimport, nodecl> = @record{
   f: *FILE,
   closef: lua_CFunction
 }
+global function luaopen_base(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_coroutine(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_table(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_io(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_os(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_string(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_utf8(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_math(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_debug(L: *lua_State): cint <cimport, nodecl> end
+global function luaopen_package(L: *lua_State): cint <cimport, nodecl> end
+global function luaL_openlibs(L: *lua_State) <cimport, nodecl> end
 global LUA_VERSION_MAJOR: cstring <cimport, nodecl, const>
 global LUA_VERSION_MINOR: cstring <cimport, nodecl, const>
 global LUA_VERSION_RELEASE: cstring <cimport, nodecl, const>

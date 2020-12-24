@@ -58,14 +58,16 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-linklib 'lua'
-cinclude '<lua.h>'
-cinclude '<lauxlib.h>'
-cinclude '<lualib.h>'
+cdefine 'LUA_IMPL'
+cinclude '"minilua.h"'
+if ccinfo.is_linux then
+  linklib 'dl'
+end
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
 local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]
+
 
 nldecl.append_code = [[
 -- Defined in C macros

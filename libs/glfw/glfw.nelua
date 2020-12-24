@@ -467,9 +467,9 @@ global function glMultiTexCoord4sARB(target: cuint, s: cshort, t: cshort, r: csh
 global function glMultiTexCoord4svARB(target: cuint, v: *cshort) <cimport, nodecl> end
 global function glBlendEquationSeparateATI(modeRGB: cuint, modeA: cuint) <cimport, nodecl> end
 global GLFWglproc: type <cimport, nodecl> = @function()
-global GLFWmonitor: type <cimport, forwarddecl> = @record{}
-global GLFWwindow: type <cimport, forwarddecl> = @record{}
-global GLFWcursor: type <cimport, forwarddecl> = @record{}
+global GLFWmonitor: type <cimport, nodecl, forwarddecl> = @record{}
+global GLFWwindow: type <cimport, nodecl, forwarddecl> = @record{}
+global GLFWcursor: type <cimport, nodecl, forwarddecl> = @record{}
 global GLFWerrorfun: type <cimport, nodecl> = @function(cint, cstring)
 global GLFWwindowposfun: type <cimport, nodecl> = @function(*GLFWwindow, cint, cint)
 global GLFWwindowsizefun: type <cimport, nodecl> = @function(*GLFWwindow, cint, cint)
