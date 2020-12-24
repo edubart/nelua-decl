@@ -408,10 +408,7 @@ global sg_image_desc: type <cimport, nodecl> = @record{
   render_target: boolean,
   width: cint,
   height: cint,
-  __unnamed1: union{
-    depth: cint,
-    layers: cint
-  },
+  num_slices: cint,
   num_mipmaps: cint,
   usage: sg_usage,
   pixel_format: sg_pixel_format,
@@ -539,11 +536,7 @@ global sg_pipeline_desc: type <cimport, nodecl> = @record{
 global sg_attachment_desc: type <cimport, nodecl> = @record{
   image: sg_image,
   mip_level: cint,
-  __unnamed1: union{
-    face: cint,
-    layer: cint,
-    slice: cint
-  }
+  slice: cint
 }
 global sg_pass_desc: type <cimport, nodecl> = @record{
   _start_canary: uint32,
@@ -649,7 +642,7 @@ global sg_pass_info: type <cimport, nodecl> = @record{
 global sg_gl_context_desc: type <cimport, nodecl> = @record{
   force_gles2: boolean
 }
-global sg_mtl_context_desc: type <cimport, nodecl> = @record{
+global sg_metal_context_desc: type <cimport, nodecl> = @record{
   device: pointer,
   renderpass_descriptor_cb: function(): pointer,
   renderpass_descriptor_userdata_cb: function(pointer): pointer,
@@ -657,7 +650,6 @@ global sg_mtl_context_desc: type <cimport, nodecl> = @record{
   drawable_userdata_cb: function(pointer): pointer,
   user_data: pointer
 }
-global sg_metal_context_desc: type = @sg_mtl_context_desc
 global sg_d3d11_context_desc: type <cimport, nodecl> = @record{
   device: pointer,
   device_context: pointer,

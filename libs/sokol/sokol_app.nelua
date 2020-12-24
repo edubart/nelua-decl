@@ -8,8 +8,6 @@ if ccinfo.is_linux then
   linklib 'Xi'
   linklib 'Xcursor'
   linklib 'dl'
-  linklib 'pthread'
-  linklib 'GL'
 elseif ccinfo.is_windows then
   linklib 'kernel32'
   linklib 'user32'
@@ -176,10 +174,10 @@ global sapp_touchpoint: type <cimport, nodecl> = @record{
   changed: boolean
 }
 global sapp_mousebutton: type <cimport, nodecl, using> = @enum(cint){
-  SAPP_MOUSEBUTTON_INVALID = -1,
   SAPP_MOUSEBUTTON_LEFT = 0,
   SAPP_MOUSEBUTTON_RIGHT = 1,
-  SAPP_MOUSEBUTTON_MIDDLE = 2
+  SAPP_MOUSEBUTTON_MIDDLE = 2,
+  SAPP_MOUSEBUTTON_INVALID = 256
 }
 global SAPP_MODIFIER_SHIFT: cint <comptime> = 1
 global SAPP_MODIFIER_CTRL: cint <comptime> = 2
@@ -254,10 +252,9 @@ global sapp_html5_fetch_response: type <cimport, nodecl> = @record{
   buffer_size: uint32,
   user_data: pointer
 }
-global sapp_html5_fetch_callback: type <cimport, nodecl> = @function(*sapp_html5_fetch_response)
 global sapp_html5_fetch_request: type <cimport, nodecl> = @record{
   dropped_file_index: cint,
-  callback: sapp_html5_fetch_callback,
+  callback: function(*sapp_html5_fetch_response),
   buffer_ptr: pointer,
   buffer_size: uint32,
   user_data: pointer
@@ -290,7 +287,7 @@ global function sapp_get_clipboard_string(): cstring <cimport, nodecl> end
 global function sapp_set_window_title(str: cstring) <cimport, nodecl> end
 global function sapp_get_num_dropped_files(): cint <cimport, nodecl> end
 global function sapp_get_dropped_file_path(index: cint): cstring <cimport, nodecl> end
-global function sapp_run(desc: *sapp_desc): cint <cimport, nodecl> end
+global function sapp_run(desc: *sapp_desc) <cimport, nodecl> end
 global function sapp_gles2(): boolean <cimport, nodecl> end
 global function sapp_html5_ask_leave_site(ask: boolean) <cimport, nodecl> end
 global function sapp_html5_get_dropped_file_size(index: cint): uint32 <cimport, nodecl> end
