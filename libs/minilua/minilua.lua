@@ -65,7 +65,6 @@ if ccinfo.is_linux then
 end
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]
 
 

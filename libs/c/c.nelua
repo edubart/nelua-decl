@@ -29,7 +29,6 @@ cinclude '<uchar.h>'
 cinclude '<wchar.h>'
 cinclude '<wctype.h>'
 ]]
-local va_list <cimport, nodecl> = @record{dummy: cint}
 global function __assert_fail(__assertion: cstring, __file: cstring, __line: cuint, __function: cstring) <cimport, nodecl> end
 global function __assert_perror_fail(__errnum: cint, __file: cstring, __line: cuint, __function: cstring) <cimport, nodecl> end
 global function __assert(__assertion: cstring, __file: cstring, __line: cint) <cimport, nodecl> end
@@ -1143,19 +1142,19 @@ global function setlinebuf(__stream: *FILE) <cimport, nodecl> end
 global function fprintf(__stream: *FILE, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function printf(__format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function sprintf(__s: cstring, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function vfprintf(__s: *FILE, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
-global function vprintf(__format: cstring, __arg: va_list): cint <cimport, nodecl> end
-global function vsprintf(__s: cstring, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vfprintf(__s: *FILE, __format: cstring, __arg: cvalist): cint <cimport, nodecl> end
+global function vprintf(__format: cstring, __arg: cvalist): cint <cimport, nodecl> end
+global function vsprintf(__s: cstring, __format: cstring, __arg: cvalist): cint <cimport, nodecl> end
 global function snprintf(__s: cstring, __maxlen: csize, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function vsnprintf(__s: cstring, __maxlen: csize, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
-global function vdprintf(__fd: cint, __fmt: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vsnprintf(__s: cstring, __maxlen: csize, __format: cstring, __arg: cvalist): cint <cimport, nodecl> end
+global function vdprintf(__fd: cint, __fmt: cstring, __arg: cvalist): cint <cimport, nodecl> end
 global function dprintf(__fd: cint, __fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function fscanf(__stream: *FILE, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function scanf(__format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function sscanf(__s: cstring, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function vfscanf(__s: *FILE, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
-global function vscanf(__format: cstring, __arg: va_list): cint <cimport, nodecl> end
-global function vsscanf(__s: cstring, __format: cstring, __arg: va_list): cint <cimport, nodecl> end
+global function vfscanf(__s: *FILE, __format: cstring, __arg: cvalist): cint <cimport, nodecl> end
+global function vscanf(__format: cstring, __arg: cvalist): cint <cimport, nodecl> end
+global function vsscanf(__s: cstring, __format: cstring, __arg: cvalist): cint <cimport, nodecl> end
 global function fgetc(__stream: *FILE): cint <cimport, nodecl> end
 global function getc(__stream: *FILE): cint <cimport, nodecl> end
 global function getchar(): cint <cimport, nodecl> end
@@ -1557,15 +1556,15 @@ global function fwide(__fp: *__FILE, __mode: cint): cint <cimport, nodecl> end
 global function fwprintf(__stream: *__FILE, __format: *cint, ...: cvarargs): cint <cimport, nodecl> end
 global function wprintf(__format: *cint, ...: cvarargs): cint <cimport, nodecl> end
 global function swprintf(__s: *cint, __n: csize, __format: *cint, ...: cvarargs): cint <cimport, nodecl> end
-global function vfwprintf(__s: *__FILE, __format: *cint, __arg: va_list): cint <cimport, nodecl> end
-global function vwprintf(__format: *cint, __arg: va_list): cint <cimport, nodecl> end
-global function vswprintf(__s: *cint, __n: csize, __format: *cint, __arg: va_list): cint <cimport, nodecl> end
+global function vfwprintf(__s: *__FILE, __format: *cint, __arg: cvalist): cint <cimport, nodecl> end
+global function vwprintf(__format: *cint, __arg: cvalist): cint <cimport, nodecl> end
+global function vswprintf(__s: *cint, __n: csize, __format: *cint, __arg: cvalist): cint <cimport, nodecl> end
 global function fwscanf(__stream: *__FILE, __format: *cint, ...: cvarargs): cint <cimport, nodecl> end
 global function wscanf(__format: *cint, ...: cvarargs): cint <cimport, nodecl> end
 global function swscanf(__s: *cint, __format: *cint, ...: cvarargs): cint <cimport, nodecl> end
-global function vfwscanf(__s: *__FILE, __format: *cint, __arg: va_list): cint <cimport, nodecl> end
-global function vwscanf(__format: *cint, __arg: va_list): cint <cimport, nodecl> end
-global function vswscanf(__s: *cint, __format: *cint, __arg: va_list): cint <cimport, nodecl> end
+global function vfwscanf(__s: *__FILE, __format: *cint, __arg: cvalist): cint <cimport, nodecl> end
+global function vwscanf(__format: *cint, __arg: cvalist): cint <cimport, nodecl> end
+global function vswscanf(__s: *cint, __format: *cint, __arg: cvalist): cint <cimport, nodecl> end
 global function fgetwc(__stream: *__FILE): cuint <cimport, nodecl> end
 global function getwc(__stream: *__FILE): cuint <cimport, nodecl> end
 global function getwchar(): cuint <cimport, nodecl> end

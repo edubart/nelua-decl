@@ -6,7 +6,6 @@ if ccinfo.is_linux then
 end
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{dummy: cint}
 global lua_State: type <cimport, nodecl, forwarddecl> = @record{}
 global lua_Number: type = @float64
 global lua_Integer: type = @clonglong
@@ -57,7 +56,7 @@ global function lua_pushnumber(L: *lua_State, n: lua_Number) <cimport, nodecl> e
 global function lua_pushinteger(L: *lua_State, n: lua_Integer) <cimport, nodecl> end
 global function lua_pushlstring(L: *lua_State, s: cstring, len: csize): cstring <cimport, nodecl> end
 global function lua_pushstring(L: *lua_State, s: cstring): cstring <cimport, nodecl> end
-global function lua_pushvfstring(L: *lua_State, fmt: cstring, argp: va_list): cstring <cimport, nodecl> end
+global function lua_pushvfstring(L: *lua_State, fmt: cstring, argp: cvalist): cstring <cimport, nodecl> end
 global function lua_pushfstring(L: *lua_State, fmt: cstring, ...: cvarargs): cstring <cimport, nodecl> end
 global function lua_pushcclosure(L: *lua_State, fn: lua_CFunction, n: cint) <cimport, nodecl> end
 global function lua_pushboolean(L: *lua_State, b: cint) <cimport, nodecl> end

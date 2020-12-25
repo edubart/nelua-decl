@@ -41,5 +41,4 @@ cinclude '<uchar.h>'
 cinclude '<wchar.h>'
 cinclude '<wctype.h>'
 ]]
-local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]

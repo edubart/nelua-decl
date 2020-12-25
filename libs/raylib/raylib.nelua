@@ -3,7 +3,6 @@ cinclude '<raylib.h>'
 cinclude '<raymath.h>'
 linklib 'raylib'
 ]]
-local va_list <cimport, nodecl> = @record{dummy: cint}
 global Vector2: type <cimport, nodecl> = @record{
   x: float32,
   y: float32
@@ -526,7 +525,7 @@ global NPatchType: type <cimport, nodecl, using> = @enum(cint){
   NPT_3PATCH_VERTICAL = 1,
   NPT_3PATCH_HORIZONTAL = 2
 }
-global TraceLogCallback: type <cimport, nodecl> = @function(cint, cstring, va_list)
+global TraceLogCallback: type <cimport, nodecl> = @function(cint, cstring, cvalist)
 global function InitWindow(width: cint, height: cint, title: cstring) <cimport, nodecl> end
 global function WindowShouldClose(): boolean <cimport, nodecl> end
 global function CloseWindow() <cimport, nodecl> end

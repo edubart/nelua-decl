@@ -7,7 +7,6 @@ cinclude '<SDL2/SDL.h>'
 linklib 'SDL2'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{dummy: cint}
 global function SDL_GetPlatform(): cstring <cimport, nodecl> end
 global SDL_bool: type <cimport, nodecl, using> = @enum(cint){
   SDL_FALSE = 0,
@@ -80,9 +79,9 @@ global function SDL_strncmp(str1: cstring, str2: cstring, maxlen: csize): cint <
 global function SDL_strcasecmp(str1: cstring, str2: cstring): cint <cimport, nodecl> end
 global function SDL_strncasecmp(str1: cstring, str2: cstring, len: csize): cint <cimport, nodecl> end
 global function SDL_sscanf(text: cstring, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function SDL_vsscanf(text: cstring, fmt: cstring, ap: va_list): cint <cimport, nodecl> end
+global function SDL_vsscanf(text: cstring, fmt: cstring, ap: cvalist): cint <cimport, nodecl> end
 global function SDL_snprintf(text: cstring, maxlen: csize, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function SDL_vsnprintf(text: cstring, maxlen: csize, fmt: cstring, ap: va_list): cint <cimport, nodecl> end
+global function SDL_vsnprintf(text: cstring, maxlen: csize, fmt: cstring, ap: cvalist): cint <cimport, nodecl> end
 global function SDL_acos(x: float64): float64 <cimport, nodecl> end
 global function SDL_acosf(x: float32): float32 <cimport, nodecl> end
 global function SDL_asin(x: float64): float64 <cimport, nodecl> end
@@ -2183,7 +2182,7 @@ global function SDL_LogWarn(category: cint, fmt: cstring, ...: cvarargs) <cimpor
 global function SDL_LogError(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
 global function SDL_LogCritical(category: cint, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
 global function SDL_LogMessage(category: cint, priority: SDL_LogPriority, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
-global function SDL_LogMessageV(category: cint, priority: SDL_LogPriority, fmt: cstring, ap: va_list) <cimport, nodecl> end
+global function SDL_LogMessageV(category: cint, priority: SDL_LogPriority, fmt: cstring, ap: cvalist) <cimport, nodecl> end
 global SDL_LogOutputFunction: type <cimport, nodecl> = @function(pointer, cint, SDL_LogPriority, cstring)
 global function SDL_LogGetOutputFunction(callback: *SDL_LogOutputFunction, userdata: *pointer) <cimport, nodecl> end
 global function SDL_LogSetOutputFunction(callback: SDL_LogOutputFunction, userdata: pointer) <cimport, nodecl> end

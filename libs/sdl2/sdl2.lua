@@ -93,7 +93,6 @@ cinclude '<SDL2/SDL.h>'
 linklib 'SDL2'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]
 
 nldecl.append_code = [[

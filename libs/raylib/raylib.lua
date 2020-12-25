@@ -56,7 +56,6 @@ cinclude '<raylib.h>'
 cinclude '<raymath.h>'
 linklib 'raylib'
 ]]
-local va_list <cimport, nodecl> = @record{dummy: cint}
 ]=]
 
 -- Allow math operations for vector, matrix and quaternion

@@ -4,7 +4,6 @@ cdefine 'STB_IMAGE_IMPLEMENTATION'
 cinclude '"stb_image.h"'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
-local va_list <cimport, nodecl> = @record{dummy: cint}
 global STBI_default: cint <comptime> = 0
 global STBI_grey: cint <comptime> = 1
 global STBI_grey_alpha: cint <comptime> = 2

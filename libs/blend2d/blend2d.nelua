@@ -2,7 +2,6 @@
 cinclude '<blend2d.h>'
 linklib 'blend2d'
 ]]
-local va_list <cimport, nodecl> = @record{dummy: cint}
 global BLRange: type <cimport, nodecl, forwarddecl> = @record{}
 global BLRandom: type <cimport, nodecl, forwarddecl> = @record{}
 global BLCreateForeignInfo: type <cimport, nodecl, forwarddecl> = @record{}
@@ -671,7 +670,7 @@ global function blRuntimeCleanup(cleanupFlags: uint32): BLResult <cimport, nodec
 global function blRuntimeQueryInfo(infoType: uint32, infoOut: pointer): BLResult <cimport, nodecl> end
 global function blRuntimeMessageOut(msg: cstring): BLResult <cimport, nodecl> end
 global function blRuntimeMessageFmt(fmt: cstring, ...: cvarargs): BLResult <cimport, nodecl> end
-global function blRuntimeMessageVFmt(fmt: cstring, ap: va_list): BLResult <cimport, nodecl> end
+global function blRuntimeMessageVFmt(fmt: cstring, ap: cvalist): BLResult <cimport, nodecl> end
 global function blRuntimeAssertionFailure(file: cstring, line: cint, msg: cstring) <cimport, nodecl> end
 global function blResultFromPosixError(e: cint): BLResult <cimport, nodecl> end
 global function blStringInit(self: *BLStringCore): BLResult <cimport, nodecl> end
@@ -696,7 +695,7 @@ global function blStringApplyOpChar(self: *BLStringCore, op: uint32, c: cchar, n
 global function blStringApplyOpData(self: *BLStringCore, op: uint32, str: cstring, n: csize): BLResult <cimport, nodecl> end
 global function blStringApplyOpString(self: *BLStringCore, op: uint32, other: *BLStringCore): BLResult <cimport, nodecl> end
 global function blStringApplyOpFormat(self: *BLStringCore, op: uint32, fmt: cstring, ...: cvarargs): BLResult <cimport, nodecl> end
-global function blStringApplyOpFormatV(self: *BLStringCore, op: uint32, fmt: cstring, ap: va_list): BLResult <cimport, nodecl> end
+global function blStringApplyOpFormatV(self: *BLStringCore, op: uint32, fmt: cstring, ap: cvalist): BLResult <cimport, nodecl> end
 global function blStringInsertChar(self: *BLStringCore, index: csize, c: cchar, n: csize): BLResult <cimport, nodecl> end
 global function blStringInsertData(self: *BLStringCore, index: csize, str: cstring, n: csize): BLResult <cimport, nodecl> end
 global function blStringInsertString(self: *BLStringCore, index: csize, other: *BLStringCore): BLResult <cimport, nodecl> end
