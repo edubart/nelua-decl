@@ -1,0 +1,16 @@
+require 'pthread'
+
+local function thread_main(data: pointer): pointer
+  print 'Hello from thread!'
+  return nilptr
+end
+
+local thread: pthread_t
+print 'Starting thread...'
+local res = pthread_create(&thread, nilptr, thread_main, nilptr)
+if res ~= 0 then
+  error 'failed to create thread'
+end
+local ret: pointer
+pthread_join(thread, &ret)
+print 'Success!'

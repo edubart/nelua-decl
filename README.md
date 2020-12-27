@@ -44,6 +44,8 @@ The following libraries bindings are generated as example:
 * [Sokol](https://floooh.github.io/sokol-html5/index.html) - [sokol_gfx.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_gfx.nelua) - [sokol_app.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_app.nelua) - [sokol_glue.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_glue.nelua) - [sokol_audio.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_audio.nelua) - [sokol_time.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_time.nelua)
 * [Blend2D](https://blend2d.com/) - [blend2d.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/blend2d/blend2d.nelua)
 * [Raylib](https://www.raylib.com/) - [raylib.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/raylib/raylib.nelua)
+* [pthread](https://computing.llnl.gov/tutorials/pthreads/) - [pthread.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/pthread/pthread.nelua)
+* [libuv](https://libuv.org/) - [uv.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/uv/uv.nelua)
 
 ## How to generate bindings
 
