@@ -1,0 +1,81 @@
+require 'uv'
+require 'allocators.general'
+
+local loop: uv_loop_t
+local server: uv_tcp_t
+
+local function alloc_buffer(handle: *uv_handle_t, suggested_size: csize, buf: *uv_buf_t)
+  buf.base = (@*cchar)(general_allocator:xalloc(suggested_size))
+  buf.len = suggested_size
+end
+
+local function echo_write(req: *uv_write_t, status: cint)
+  if status ~= 0 then
+    error 'write error'
+  end
+  print('sent message back')
+  general_allocator:delete(req)
+end
+
+local function echo_read(client: *uv_stream_t, nread: clong, buf: *uv_buf_t)
+  if nread < 0 then
+    if nread ~= UV_EOF then
+      print 'read error'
+      uv_close((@*uv_handle_t)(client), nilptr)
+    end
+  elseif nread > 0 then
+    local req = general_allocator:new(@uv_write_t)
+    local wrbuf = uv_buf_init(buf.base, nread)
+    print('received message of size ', nread)
+    uv_write(req, client, &wrbuf, 1, echo_write)
+  end
+  if buf.base then
+    general_allocator:dealloc(buf.base)
+  end
+end
+
+local function on_new_connection(server: *uv_stream_t, status: cint)
+  if status < 0 then
+    error 'new connection error'
+    return
+  end
+  local client: *uv_tcp_t = general_allocator:new(@uv_tcp_t)
+  uv_tcp_init(&loop, client)
+  if uv_accept(server, (@*uv_stream_t)(client)) == 0 then
+    print 'new connection accepted'
+    uv_read_start((@*uv_stream_t)(client), alloc_buffer, echo_read)
+  else
+    print 'new connection rejected'
+    uv_close((@*uv_handle_t)(client), nilptr)
+  end
+end
+
+local function init_tcp_server(address: cstring, port: cint)
+  if uv_tcp_init(&loop, &server) ~= 0 then
+    error 'failed to init tcp server'
+  end
+
+  local addr: sockaddr_in
+  if uv_ip4_addr(address, port, &addr) ~= 0 then
+    error 'failed to create ip4 addr'
+  end
+
+  if uv_tcp_bind(&server, (@*sockaddr)(&addr), 0) ~= 0 then
+    error 'failed to bind'
+  end
+
+  if uv_listen((@*uv_stream_t)(&server), 128, on_new_connection) ~= 0 then
+    error 'failed to listen'
+  end
+end
+
+if uv_loop_init(&loop) ~= 0 then
+  error 'failed to init loop'
+end
+init_tcp_server('127.0.0.1', 7000)
+if uv_run(&loop, UV_RUN_DEFAULT) ~= 0 then
+  error 'failed to run loop'
+end
+if uv_loop_close(&loop) ~= 0 then
+  error 'failed to close loop'
+end

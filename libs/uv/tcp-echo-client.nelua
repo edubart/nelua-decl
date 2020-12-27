@@ -1,0 +1,62 @@
+require 'uv'
+
+local loop: uv_loop_t
+local client: uv_tcp_t
+local connect: uv_connect_t
+local message = 'hello'
+local buf = uv_buf_init(message.data, message.size)
+local write_req: uv_write_t
+local readbuf: [1024]cchar
+
+local function alloc_buffer(handle: *uv_handle_t, suggested_size: csize, buf: *uv_buf_t)
+  buf.base = &readbuf
+  buf.len = #readbuf
+end
+
+local function echo_read(client: *uv_stream_t, nread: clong, buf: *uv_buf_t)
+  if nread < 0 then
+    error 'read error'
+  end
+  local received_message: stringview = {data=buf.base, size=buf.len}
+  print('received:')
+  print(received_message)
+  uv_stop(&loop)
+end
+
+local function on_write(req: *uv_write_t, status: cint)
+  if status == -1 then
+    error 'write failed'
+  end
+  print('sent:')
+  print(message)
+  uv_read_start(req.handle, alloc_buffer, echo_read)
+end
+
+local function on_connect(req: *uv_connect_t, status: cint)
+  if status ~= 0 then
+    error 'connection failed'
+  end
+
+  print('connected')
+  uv_write(&write_req, req.handle, &buf, 1, on_write)
+end
+
+local function init_tcp_client(address: cstring, port: cint)
+  if uv_tcp_init(&loop, &client) ~= 0 then
+    error 'failed to init tcp client'
+  end
+
+  local addr: sockaddr_in
+  if uv_ip4_addr(address, port, &addr) ~= 0 then
+    error 'failed to create ip4 addr'
+  end
+
+  uv_tcp_connect(&connect, &client, (@*sockaddr)(&addr), on_connect)
+end
+
+if uv_loop_init(&loop) ~= 0 then
+  error 'failed to init loop'
+end
+init_tcp_client('127.0.0.1', 7000)
+uv_run(&loop, UV_RUN_DEFAULT)
+uv_loop_close(&loop)

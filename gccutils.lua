@@ -83,6 +83,10 @@ local ctype2nltype = {
   ['void'] = 'void',
 }
 
+function gccutils.is_primitive_name(name)
+  return ctype2nltype[name] ~= nil
+end
+
 function gccutils.node_ctype2nltype(node)
   if not node then return end
   local ctype = gccutils.get_id(node)

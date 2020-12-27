@@ -1,9 +1,11 @@
 ##[[
 cinclude '<uv.h>'
 linklib 'uv'
+cflags '-fno-strict-aliasing'
 ]]
 global FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global sockaddr: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+  sa_data: [14]cchar
 }
 global in_addr: type <cimport, nodecl, cincomplete, ctypedef> = @record{
 }
@@ -16,17 +18,27 @@ global in6_addr: type <cimport, nodecl, cincomplete, ctypedef> = @record{
 }
 global sockaddr_in: type <cimport, nodecl, cincomplete, ctypedef> = @record{
   sin_addr: in_addr,
+  sin_zero: [8]cuchar
 }
 global sockaddr_in6: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+  sin6_flowinfo: uint32,
   sin6_addr: in6_addr,
+  sin6_scope_id: uint32
 }
 global addrinfo: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
 addrinfo = @record{
+  ai_flags: cint,
+  ai_family: cint,
+  ai_socktype: cint,
+  ai_protocol: cint,
   ai_addr: *sockaddr,
+  ai_canonname: cstring,
   ai_next: *addrinfo
 }
 global uv_loop_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
 global uv_buf_t: type <cimport, nodecl, cincomplete> = @record{
+  base: cstring,
+  len: csize
 }
 global uv_mutex_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_rwlock_t: type <cimport, nodecl, cincomplete> = @record{}
@@ -312,23 +324,30 @@ global function uv_strerror_r(err: cint, buf: cstring, buflen: csize): cstring <
 global function uv_err_name(err: cint): cstring <cimport, nodecl> end
 global function uv_err_name_r(err: cint, buf: cstring, buflen: csize): cstring <cimport, nodecl> end
 uv_req_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer
 }
 global function uv_shutdown(req: *uv_shutdown_t, handle: *uv_stream_t, cb: uv_shutdown_cb): cint <cimport, nodecl> end
 uv_shutdown_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   handle: *uv_stream_t,
   cb: uv_shutdown_cb
 }
 uv_handle_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint
 }
 global function uv_handle_size(type: uv_handle_type): csize <cimport, nodecl> end
 global function uv_handle_get_type(handle: *uv_handle_t): uv_handle_type <cimport, nodecl> end
@@ -351,19 +370,28 @@ global function uv_recv_buffer_size(handle: *uv_handle_t, value: *cint): cint <c
 global function uv_fileno(handle: *uv_handle_t, fd: *cint): cint <cimport, nodecl> end
 global function uv_buf_init(base: cstring, len: cuint): uv_buf_t <cimport, nodecl> end
 uv_stream_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
+  write_queue_size: csize,
   alloc_cb: uv_alloc_cb,
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  write_queue: [2]pointer,
+  write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
+  delayed_error: cint,
+  accepted_fd: cint,
+  queued_fds: pointer
 }
 global function uv_stream_get_write_queue_size(stream: *uv_stream_t): csize <cimport, nodecl> end
 global function uv_listen(stream: *uv_stream_t, backlog: cint, cb: uv_connection_cb): cint <cimport, nodecl> end
@@ -374,11 +402,17 @@ global function uv_write(req: *uv_write_t, handle: *uv_stream_t, bufs: *uv_buf_t
 global function uv_write2(req: *uv_write_t, handle: *uv_stream_t, bufs: *uv_buf_t, nbufs: cuint, send_handle: *uv_stream_t, cb: uv_write_cb): cint <cimport, nodecl> end
 global function uv_try_write(handle: *uv_stream_t, bufs: *uv_buf_t, nbufs: cuint): cint <cimport, nodecl> end
 uv_write_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   cb: uv_write_cb,
   send_handle: *uv_stream_t,
   handle: *uv_stream_t,
+  queue: [2]pointer,
+  write_index: cuint,
   bufs: *uv_buf_t,
+  nbufs: cuint,
+  error: cint,
   bufsml: [4]uv_buf_t
 }
 global function uv_is_readable(handle: *uv_stream_t): cint <cimport, nodecl> end
@@ -386,19 +420,28 @@ global function uv_is_writable(handle: *uv_stream_t): cint <cimport, nodecl> end
 global function uv_stream_set_blocking(handle: *uv_stream_t, blocking: cint): cint <cimport, nodecl> end
 global function uv_is_closing(handle: *uv_handle_t): cint <cimport, nodecl> end
 uv_tcp_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
+  write_queue_size: csize,
   alloc_cb: uv_alloc_cb,
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  write_queue: [2]pointer,
+  write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
+  delayed_error: cint,
+  accepted_fd: cint,
+  queued_fds: pointer
 }
 global function uv_tcp_init(a1: *uv_loop_t, handle: *uv_tcp_t): cint <cimport, nodecl> end
 global function uv_tcp_init_ex(a1: *uv_loop_t, handle: *uv_tcp_t, flags: cuint): cint <cimport, nodecl> end
@@ -415,9 +458,12 @@ global function uv_tcp_getpeername(handle: *uv_tcp_t, name: *sockaddr, namelen: 
 global function uv_tcp_close_reset(handle: *uv_tcp_t, close_cb: uv_close_cb): cint <cimport, nodecl> end
 global function uv_tcp_connect(req: *uv_connect_t, handle: *uv_tcp_t, addr: *sockaddr, cb: uv_connect_cb): cint <cimport, nodecl> end
 uv_connect_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   cb: uv_connect_cb,
   handle: *uv_stream_t,
+  queue: [2]pointer
 }
 global uv_udp_flags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   UV_UDP_IPV6ONLY = 1,
@@ -430,21 +476,32 @@ global uv_udp_flags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
 global uv_udp_send_cb: type <cimport, nodecl> = @function(*uv_udp_send_t, cint)
 global uv_udp_recv_cb: type <cimport, nodecl> = @function(*uv_udp_t, clong, *uv_buf_t, *sockaddr, cuint)
 uv_udp_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
+  send_queue_size: csize,
+  send_queue_count: csize,
   alloc_cb: uv_alloc_cb,
   recv_cb: uv_udp_recv_cb,
+  write_queue: [2]pointer,
+  write_completed_queue: [2]pointer
 }
 uv_udp_send_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   handle: *uv_udp_t,
   cb: uv_udp_send_cb,
+  queue: [2]pointer,
+  nbufs: cuint,
   bufs: *uv_buf_t,
   send_cb: uv_udp_send_cb,
   bufsml: [4]uv_buf_t
@@ -471,19 +528,29 @@ global function uv_udp_recv_stop(handle: *uv_udp_t): cint <cimport, nodecl> end
 global function uv_udp_get_send_queue_size(handle: *uv_udp_t): csize <cimport, nodecl> end
 global function uv_udp_get_send_queue_count(handle: *uv_udp_t): csize <cimport, nodecl> end
 uv_tty_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
+  write_queue_size: csize,
   alloc_cb: uv_alloc_cb,
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  write_queue: [2]pointer,
+  write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
+  delayed_error: cint,
+  accepted_fd: cint,
+  queued_fds: pointer,
+  mode: cint
 }
 global uv_tty_mode_t: type <cimport, nodecl, using> = @enum(cint){
   UV_TTY_MODE_NORMAL = 0,
@@ -502,19 +569,30 @@ global function uv_tty_set_vterm_state(state: uv_tty_vtermstate_t) <cimport, nod
 global function uv_tty_get_vterm_state(state: *uv_tty_vtermstate_t): cint <cimport, nodecl> end
 global function uv_guess_handle(file: cint): uv_handle_type <cimport, nodecl> end
 uv_pipe_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
+  write_queue_size: csize,
   alloc_cb: uv_alloc_cb,
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  write_queue: [2]pointer,
+  write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
+  delayed_error: cint,
+  accepted_fd: cint,
+  queued_fds: pointer,
+  ipc: cint,
+  pipe_fname: cstring
 }
 global function uv_pipe_init(a1: *uv_loop_t, handle: *uv_pipe_t, ipc: cint): cint <cimport, nodecl> end
 global function uv_pipe_open(a1: *uv_pipe_t, file: cint): cint <cimport, nodecl> end
@@ -527,14 +605,17 @@ global function uv_pipe_pending_count(handle: *uv_pipe_t): cint <cimport, nodecl
 global function uv_pipe_pending_type(handle: *uv_pipe_t): uv_handle_type <cimport, nodecl> end
 global function uv_pipe_chmod(handle: *uv_pipe_t, flags: cint): cint <cimport, nodecl> end
 uv_poll_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   poll_cb: uv_poll_cb,
 }
 global uv_poll_event: type <cimport, nodecl, using, ctypedef> = @enum(cint){
@@ -548,70 +629,94 @@ global function uv_poll_init_socket(loop: *uv_loop_t, handle: *uv_poll_t, socket
 global function uv_poll_start(handle: *uv_poll_t, events: cint, cb: uv_poll_cb): cint <cimport, nodecl> end
 global function uv_poll_stop(handle: *uv_poll_t): cint <cimport, nodecl> end
 uv_prepare_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   prepare_cb: uv_prepare_cb,
+  queue: [2]pointer
 }
 global function uv_prepare_init(a1: *uv_loop_t, prepare: *uv_prepare_t): cint <cimport, nodecl> end
 global function uv_prepare_start(prepare: *uv_prepare_t, cb: uv_prepare_cb): cint <cimport, nodecl> end
 global function uv_prepare_stop(prepare: *uv_prepare_t): cint <cimport, nodecl> end
 uv_check_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   check_cb: uv_check_cb,
+  queue: [2]pointer
 }
 global function uv_check_init(a1: *uv_loop_t, check: *uv_check_t): cint <cimport, nodecl> end
 global function uv_check_start(check: *uv_check_t, cb: uv_check_cb): cint <cimport, nodecl> end
 global function uv_check_stop(check: *uv_check_t): cint <cimport, nodecl> end
 uv_idle_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   idle_cb: uv_idle_cb,
+  queue: [2]pointer
 }
 global function uv_idle_init(a1: *uv_loop_t, idle: *uv_idle_t): cint <cimport, nodecl> end
 global function uv_idle_start(idle: *uv_idle_t, cb: uv_idle_cb): cint <cimport, nodecl> end
 global function uv_idle_stop(idle: *uv_idle_t): cint <cimport, nodecl> end
 uv_async_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   async_cb: uv_async_cb,
+  queue: [2]pointer,
+  pending: cint
 }
 global function uv_async_init(a1: *uv_loop_t, async: *uv_async_t, async_cb: uv_async_cb): cint <cimport, nodecl> end
 global function uv_async_send(async: *uv_async_t): cint <cimport, nodecl> end
 uv_timer_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   timer_cb: uv_timer_cb,
+  heap_node: [3]pointer,
+  timeout: uint64,
+  Repeat: uint64,
+  start_id: uint64
 }
 global function uv_timer_init(a1: *uv_loop_t, handle: *uv_timer_t): cint <cimport, nodecl> end
 global function uv_timer_start(handle: *uv_timer_t, cb: uv_timer_cb, timeout: uint64, Repeat: uint64): cint <cimport, nodecl> end
@@ -621,18 +726,29 @@ global function uv_timer_set_repeat(handle: *uv_timer_t, Repeat: uint64) <cimpor
 global function uv_timer_get_repeat(handle: *uv_timer_t): uint64 <cimport, nodecl> end
 global function uv_timer_get_due_in(handle: *uv_timer_t): uint64 <cimport, nodecl> end
 uv_getaddrinfo_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   loop: *uv_loop_t,
   cb: uv_getaddrinfo_cb,
   hints: *addrinfo,
+  hostname: cstring,
+  service: cstring,
   addrinfo: *addrinfo,
+  retcode: cint
 }
 global function uv_getaddrinfo(loop: *uv_loop_t, req: *uv_getaddrinfo_t, getaddrinfo_cb: uv_getaddrinfo_cb, node: cstring, service: cstring, hints: *addrinfo): cint <cimport, nodecl> end
 global function uv_freeaddrinfo(ai: *addrinfo) <cimport, nodecl> end
 uv_getnameinfo_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   loop: *uv_loop_t,
   getnameinfo_cb: uv_getnameinfo_cb,
+  flags: cint,
+  host: [1025]cchar,
+  service: [32]cchar,
+  retcode: cint
 }
 global function uv_getnameinfo(loop: *uv_loop_t, req: *uv_getnameinfo_t, getnameinfo_cb: uv_getnameinfo_cb, addr: *sockaddr, flags: cint): cint <cimport, nodecl> end
 global uv_stdio_flags: type <cimport, nodecl, using> = @enum(cint){
@@ -675,22 +791,30 @@ global uv_process_flags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   UV_PROCESS_WINDOWS_HIDE_GUI = 64
 }
 uv_process_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   exit_cb: uv_exit_cb,
+  pid: cint,
+  queue: [2]pointer,
+  status: cint
 }
 global function uv_spawn(loop: *uv_loop_t, handle: *uv_process_t, options: *uv_process_options_t): cint <cimport, nodecl> end
 global function uv_process_kill(a1: *uv_process_t, signum: cint): cint <cimport, nodecl> end
 global function uv_kill(pid: cint, signum: cint): cint <cimport, nodecl> end
 global function uv_process_get_pid(a1: *uv_process_t): cint <cimport, nodecl> end
 uv_work_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   loop: *uv_loop_t,
   work_cb: uv_work_cb,
   after_work_cb: uv_after_work_cb,
@@ -859,17 +983,28 @@ global uv_fs_type: type <cimport, nodecl, using> = @enum(cint){
 }
 uv_dir_s = @record{
   dirents: *uv_dirent_t,
+  nentries: csize,
+  reserved: [4]pointer,
 }
 uv_fs_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   fs_type: uv_fs_type,
   loop: *uv_loop_t,
   cb: uv_fs_cb,
+  ptr: pointer,
+  path: cstring,
   statbuf: uv_stat_t,
+  new_path: cstring,
   file: cint,
+  flags: cint,
+  nbufs: cuint,
   bufs: *uv_buf_t,
   uid: cuint,
   gid: cuint,
+  atime: float64,
+  mtime: float64,
   bufsml: [4]uv_buf_t
 }
 global function uv_fs_get_type(a1: *uv_fs_t): uv_fs_type <cimport, nodecl> end
@@ -921,15 +1056,21 @@ global uv_fs_event: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   UV_CHANGE = 2
 }
 uv_fs_event_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
+  path: cstring,
   cb: uv_fs_event_cb,
+  watchers: [2]pointer,
+  wd: cint
 }
 uv_fs_poll_s = @record{
   data: pointer,
@@ -950,21 +1091,27 @@ global function uv_fs_poll_start(handle: *uv_fs_poll_t, poll_cb: uv_fs_poll_cb, 
 global function uv_fs_poll_stop(handle: *uv_fs_poll_t): cint <cimport, nodecl> end
 global function uv_fs_poll_getpath(handle: *uv_fs_poll_t, buffer: cstring, size: *csize): cint <cimport, nodecl> end
 uv_signal_s = @record{
+  data: pointer,
   loop: *uv_loop_t,
   type: uv_handle_type,
   close_cb: uv_close_cb,
+  handle_queue: [2]pointer,
   u: union{
     fd: cint,
     reserved: [4]pointer
   },
   next_closing: *uv_handle_t,
+  flags: cuint,
   signal_cb: uv_signal_cb,
+  signum: cint,
   tree_entry: record{
     rbe_left: *uv_signal_s,
     rbe_right: *uv_signal_s,
     rbe_parent: *uv_signal_s,
     rbe_color: cint
   },
+  caught_signals: cuint,
+  dispatched_signals: cuint
 }
 global function uv_signal_init(loop: *uv_loop_t, handle: *uv_signal_t): cint <cimport, nodecl> end
 global function uv_signal_start(handle: *uv_signal_t, signal_cb: uv_signal_cb, signum: cint): cint <cimport, nodecl> end
@@ -987,8 +1134,13 @@ global function uv_ip6_name(src: *sockaddr_in6, dst: cstring, size: csize): cint
 global function uv_inet_ntop(af: cint, src: pointer, dst: cstring, size: csize): cint <cimport, nodecl> end
 global function uv_inet_pton(af: cint, src: cstring, dst: pointer): cint <cimport, nodecl> end
 uv_random_s = @record{
+  data: pointer,
   type: uv_req_type,
+  reserved: [6]pointer,
   loop: *uv_loop_t,
+  status: cint,
+  buf: pointer,
+  buflen: csize,
   cb: uv_random_cb,
 }
 global function uv_random(loop: *uv_loop_t, req: *uv_random_t, buf: pointer, buflen: csize, flags: cuint, cb: uv_random_cb): cint <cimport, nodecl> end
@@ -1087,19 +1239,44 @@ global uv_any_req: type <cimport, nodecl, ctypedef> = @union{
   random: uv_random_t
 }
 uv_loop_s = @record{
+  data: pointer,
+  active_handles: cuint,
+  handle_queue: [2]pointer,
   active_reqs: union{
     unused: pointer,
     count: cuint
   },
+  internal_fields: pointer,
+  stop_flag: cuint,
+  flags: culong,
+  backend_fd: cint,
+  pending_queue: [2]pointer,
+  watcher_queue: [2]pointer,
+  nwatchers: cuint,
+  nfds: cuint,
+  wq: [2]pointer,
   wq_mutex: uv_mutex_t,
   wq_async: uv_async_t,
   cloexec_lock: uv_rwlock_t,
   closing_handles: *uv_handle_t,
+  process_handles: [2]pointer,
+  prepare_handles: [2]pointer,
+  check_handles: [2]pointer,
+  idle_handles: [2]pointer,
+  async_handles: [2]pointer,
+  async_unused: function(),
+  async_wfd: cint,
   timer_heap: record{
     min: pointer,
     nelts: cuint
   },
+  timer_counter: uint64,
+  time: uint64,
+  signal_pipefd: [2]cint,
   child_watcher: uv_signal_t,
+  emfile_fd: cint,
+  inotify_watchers: pointer,
+  inotify_fd: cint
 }
 global function uv_loop_get_data(a1: *uv_loop_t): pointer <cimport, nodecl> end
 global function uv_loop_set_data(a1: *uv_loop_t, data: pointer) <cimport, nodecl> end

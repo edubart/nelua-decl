@@ -1,10 +1,9 @@
 require 'uv'
-require 'io'
 
 local loop: uv_loop_t
 uv_loop_init(&loop)
 
-print("Now quitting.\n")
+print("Now quitting")
 uv_run(&loop, UV_RUN_DEFAULT)
 
 uv_loop_close(&loop)

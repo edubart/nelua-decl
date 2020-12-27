@@ -128,7 +128,9 @@ local function visit_fields(node, canskipfields)
     local fieldname = fieldnode:name() and fieldnode:name():value()
     local fieldtype = fieldnode:type()
     local fieldtypename = gccutils.get_inner_id(fieldtype)
-    if canskipfields and fieldtypename and not nldecl.is_name_included(fieldtypename) then
+    if canskipfields and fieldtypename and
+      not gccutils.is_primitive_name(fieldtypename) and
+      not nldecl.is_name_included(fieldtypename) then
       -- ignore
     else
       local annotations = {}
