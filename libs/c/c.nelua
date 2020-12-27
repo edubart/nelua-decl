@@ -1,12 +1,10 @@
 ##[[
 cinclude '<assert.h>'
-cinclude '<complex.h>'
 cinclude '<ctype.h>'
 cinclude '<errno.h>'
 cinclude '<fenv.h>'
 cinclude '<float.h>'
 cinclude '<inttypes.h>'
-cinclude '<iso646.h>'
 cinclude '<limits.h>'
 cinclude '<locale.h>'
 cinclude '<math.h>'
@@ -14,7 +12,6 @@ cinclude '<setjmp.h>'
 cinclude '<signal.h>'
 cinclude '<stdalign.h>'
 cinclude '<stdarg.h>'
-cinclude '<stdatomic.h>'
 cinclude '<stdbool.h>'
 cinclude '<stddef.h>'
 cinclude '<stdint.h>'
@@ -22,12 +19,16 @@ cinclude '<stdio.h>'
 cinclude '<stdlib.h>'
 cinclude '<stdnoreturn.h>'
 cinclude '<string.h>'
-cinclude '<tgmath.h>'
--- cinclude '<threads.h>'
 cinclude '<time.h>'
 cinclude '<uchar.h>'
 cinclude '<wchar.h>'
 cinclude '<wctype.h>'
+
+-- cinclude '<complex.h>'
+-- cinclude '<iso646.h>'
+-- cinclude '<stdatomic.h>'
+-- cinclude '<tgmath.h>'
+-- cinclude '<threads.h>'
 ]]
 global function __assert_fail(__assertion: cstring, __file: cstring, __line: cuint, __function: cstring) <cimport, nodecl> end
 global function __assert_perror_fail(__errnum: cint, __file: cstring, __line: cuint, __function: cstring) <cimport, nodecl> end
@@ -70,8 +71,8 @@ global function isascii(__c: cint): cint <cimport, nodecl> end
 global function toascii(__c: cint): cint <cimport, nodecl> end
 global function _toupper(a1: cint): cint <cimport, nodecl> end
 global function _tolower(a1: cint): cint <cimport, nodecl> end
-global __locale_data: type <cimport, nodecl, forwarddecl> = @record{}
-global __locale_struct: type <cimport, nodecl> = @record{
+global __locale_data: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global __locale_struct: type <cimport, nodecl, ctypedef> = @record{
   __locales: [13]*__locale_data,
   __ctype_b: *cushort,
   __ctype_tolower: *cint,
@@ -144,7 +145,7 @@ global function strtoimax(__nptr: cstring, __endptr: *cstring, __base: cint): cl
 global function strtoumax(__nptr: cstring, __endptr: *cstring, __base: cint): culong <cimport, nodecl> end
 global function wcstoimax(__nptr: *cint, __endptr: **cint, __base: cint): clong <cimport, nodecl> end
 global function wcstoumax(__nptr: *cint, __endptr: **cint, __base: cint): culong <cimport, nodecl> end
-global lconv: type <cimport, nodecl> = @record{
+global lconv: type <cimport, nodecl, ctypedef> = @record{
   decimal_point: cstring,
   thousands_sep: cstring,
   grouping: cstring,
@@ -630,7 +631,7 @@ global FP_NORMAL: cint <comptime> = 4
 global __sigset_t: type <cimport, nodecl> = @record{
   __val: [16]culong
 }
-global __jmp_buf_tag: type <cimport, nodecl> = @record{
+global __jmp_buf_tag: type <cimport, nodecl, ctypedef> = @record{
   __jmpbuf: [8]clong,
   __mask_was_saved: cint,
   __saved_mask: __sigset_t
@@ -642,11 +643,11 @@ global function longjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> en
 global function _longjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
 global function siglongjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
 global sigset_t: type = @__sigset_t
-global timespec: type <cimport, nodecl> = @record{
+global timespec: type <cimport, nodecl, ctypedef> = @record{
   tv_sec: clong,
   tv_nsec: clong
 }
-global sigval: type <cimport, nodecl> = @union{
+global sigval: type <cimport, nodecl, ctypedef> = @union{
   sival_int: cint,
   sival_ptr: pointer
 }
@@ -756,7 +757,7 @@ global POLL_PRI: cint <comptime> = 5
 global POLL_HUP: cint <comptime> = 6
 global sigval_t: type = @sigval
 global pthread_attr_t: type <cimport, nodecl, forwarddecl> = @union{}
-global sigevent: type <cimport, nodecl> = @record{
+global sigevent: type <cimport, nodecl, ctypedef> = @record{
   sigev_value: __sigval_t,
   sigev_signo: cint,
   sigev_notify: cint,
@@ -793,7 +794,7 @@ global function sigfillset(__set: *sigset_t): cint <cimport, nodecl> end
 global function sigaddset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
 global function sigdelset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
 global function sigismember(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
-global sigaction: type <cimport, nodecl> = @record{
+global sigaction: type <cimport, nodecl, ctypedef> = @record{
   __sigaction_handler: union{
     sa_handler: __sighandler_t,
     sa_sigaction: function(cint, *siginfo_t, pointer)
@@ -809,26 +810,26 @@ global function sigwait(__set: *sigset_t, __sig: *cint): cint <cimport, nodecl> 
 global function sigwaitinfo(__set: *sigset_t, __info: *siginfo_t): cint <cimport, nodecl> end
 global function sigtimedwait(__set: *sigset_t, __info: *siginfo_t, __timeout: *timespec): cint <cimport, nodecl> end
 global function sigqueue(__pid: cint, __sig: cint, __val: sigval): cint <cimport, nodecl> end
-global _fpx_sw_bytes: type <cimport, nodecl> = @record{
+global _fpx_sw_bytes: type <cimport, nodecl, ctypedef> = @record{
   magic1: uint32,
   extended_size: uint32,
   xstate_bv: uint64,
   xstate_size: uint32,
   __glibc_reserved1: [7]uint32
 }
-global _fpreg: type <cimport, nodecl> = @record{
+global _fpreg: type <cimport, nodecl, ctypedef> = @record{
   significand: [4]cushort,
   exponent: cushort
 }
-global _fpxreg: type <cimport, nodecl> = @record{
+global _fpxreg: type <cimport, nodecl, ctypedef> = @record{
   significand: [4]cushort,
   exponent: cushort,
   __glibc_reserved1: [3]cushort
 }
-global _xmmreg: type <cimport, nodecl> = @record{
+global _xmmreg: type <cimport, nodecl, ctypedef> = @record{
   element: [4]uint32
 }
-global _fpstate: type <cimport, nodecl> = @record{
+global _fpstate: type <cimport, nodecl, ctypedef> = @record{
   cwd: uint16,
   swd: uint16,
   ftw: uint16,
@@ -841,7 +842,7 @@ global _fpstate: type <cimport, nodecl> = @record{
   _xmm: [16]_xmmreg,
   __glibc_reserved1: [24]uint32
 }
-global sigcontext: type <cimport, nodecl> = @record{
+global sigcontext: type <cimport, nodecl, ctypedef> = @record{
   r8: uint64,
   r9: uint64,
   r10: uint64,
@@ -874,15 +875,15 @@ global sigcontext: type <cimport, nodecl> = @record{
   },
   __reserved1: [8]uint64
 }
-global _xsave_hdr: type <cimport, nodecl> = @record{
+global _xsave_hdr: type <cimport, nodecl, ctypedef> = @record{
   xstate_bv: uint64,
   __glibc_reserved1: [2]uint64,
   __glibc_reserved2: [5]uint64
 }
-global _ymmh_state: type <cimport, nodecl> = @record{
+global _ymmh_state: type <cimport, nodecl, ctypedef> = @record{
   ymmh_space: [64]uint32
 }
-global _xstate: type <cimport, nodecl> = @record{
+global _xstate: type <cimport, nodecl, ctypedef> = @record{
   fpstate: _fpstate,
   xstate_hdr: _xsave_hdr,
   ymmh: _ymmh_state
@@ -893,15 +894,15 @@ global stack_t: type <cimport, nodecl> = @record{
   ss_flags: cint,
   ss_size: csize
 }
-global _libc_fpxreg: type <cimport, nodecl> = @record{
+global _libc_fpxreg: type <cimport, nodecl, ctypedef> = @record{
   significand: [4]cushort,
   exponent: cushort,
   __glibc_reserved1: [3]cushort
 }
-global _libc_xmmreg: type <cimport, nodecl> = @record{
+global _libc_xmmreg: type <cimport, nodecl, ctypedef> = @record{
   element: [4]uint32
 }
-global _libc_fpstate: type <cimport, nodecl> = @record{
+global _libc_fpstate: type <cimport, nodecl, ctypedef> = @record{
   cwd: uint16,
   swd: uint16,
   ftw: uint16,
@@ -921,7 +922,7 @@ global mcontext_t: type <cimport, nodecl> = @record{
   __reserved1: [8]culonglong
 }
 global ucontext_t: type <cimport, nodecl, forwarddecl> = @record{}
-global ucontext_t: type <cimport, nodecl> = @record{
+ucontext_t = @record{
   uc_flags: culong,
   uc_link: *ucontext_t,
   uc_stack: stack_t,
@@ -934,22 +935,22 @@ global function siginterrupt(__sig: cint, __interrupt: cint): cint <cimport, nod
 global SS_ONSTACK: cint <comptime> = 1
 global SS_DISABLE: cint <comptime> = 2
 global function sigaltstack(__ss: *stack_t, __oss: *stack_t): cint <cimport, nodecl> end
-global sigstack: type <cimport, nodecl> = @record{
+global sigstack: type <cimport, nodecl, ctypedef> = @record{
   ss_sp: pointer,
   ss_onstack: cint
 }
-global __pthread_internal_list: type <cimport, nodecl, forwarddecl> = @record{}
-global __pthread_internal_list: type <cimport, nodecl> = @record{
+global __pthread_internal_list: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+__pthread_internal_list = @record{
   __prev: *__pthread_internal_list,
   __next: *__pthread_internal_list
 }
 global __pthread_list_t: type = @__pthread_internal_list
-global __pthread_internal_slist: type <cimport, nodecl, forwarddecl> = @record{}
-global __pthread_internal_slist: type <cimport, nodecl> = @record{
+global __pthread_internal_slist: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+__pthread_internal_slist = @record{
   __next: *__pthread_internal_slist
 }
 global __pthread_slist_t: type = @__pthread_internal_slist
-global __pthread_mutex_s: type <cimport, nodecl> = @record{
+global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
   __lock: cint,
   __count: cuint,
   __owner: cint,
@@ -959,7 +960,7 @@ global __pthread_mutex_s: type <cimport, nodecl> = @record{
   __elision: cshort,
   __list: __pthread_list_t
 }
-global __pthread_rwlock_arch_t: type <cimport, nodecl> = @record{
+global __pthread_rwlock_arch_t: type <cimport, nodecl, ctypedef> = @record{
   __readers: cuint,
   __writers: cuint,
   __wrphase_futex: cuint,
@@ -973,7 +974,7 @@ global __pthread_rwlock_arch_t: type <cimport, nodecl> = @record{
   __pad2: culong,
   __flags: cuint
 }
-global __pthread_cond_s: type <cimport, nodecl> = @record{
+global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
   __unnamed1: union{
     __wseq: culonglong,
     __wseq32: record{
@@ -1005,7 +1006,7 @@ global pthread_condattr_t: type <cimport, nodecl> = @union{
   __size: [4]cchar,
   __align: cint
 }
-global pthread_attr_t: type <cimport, nodecl> = @union{
+pthread_attr_t = @union{
   __size: [56]cchar,
   __align: clong
 }
@@ -1069,23 +1070,23 @@ global __mbstate_t: type <cimport, nodecl> = @record{
     __wchb: [4]cchar
   }
 }
-global _G_fpos_t: type <cimport, nodecl> = @record{
+global _G_fpos_t: type <cimport, nodecl, ctypedef> = @record{
   __pos: clong,
   __state: __mbstate_t
 }
 global __fpos_t: type = @_G_fpos_t
-global _G_fpos64_t: type <cimport, nodecl> = @record{
+global _G_fpos64_t: type <cimport, nodecl, ctypedef> = @record{
   __pos: clong,
   __state: __mbstate_t
 }
 global __fpos64_t: type = @_G_fpos64_t
-global _IO_FILE: type <cimport, nodecl, forwarddecl> = @record{}
+global _IO_FILE: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global __FILE: type = @_IO_FILE
 global FILE: type = @_IO_FILE
-global _IO_marker: type <cimport, nodecl, forwarddecl> = @record{}
-global _IO_codecvt: type <cimport, nodecl, forwarddecl> = @record{}
-global _IO_wide_data: type <cimport, nodecl, forwarddecl> = @record{}
-global _IO_FILE: type <cimport, nodecl> = @record{
+global _IO_marker: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global _IO_codecvt: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global _IO_wide_data: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+_IO_FILE = @record{
   _flags: cint,
   _IO_read_ptr: cstring,
   _IO_read_end: cstring,
@@ -1241,7 +1242,7 @@ global function __bswap_64(__bsx: uint64): uint64 <cimport, nodecl> end
 global function __uint16_identity(__x: uint16): uint16 <cimport, nodecl> end
 global function __uint32_identity(__x: uint32): uint32 <cimport, nodecl> end
 global function __uint64_identity(__x: uint64): uint64 <cimport, nodecl> end
-global timeval: type <cimport, nodecl> = @record{
+global timeval: type <cimport, nodecl, ctypedef> = @record{
   tv_sec: clong,
   tv_usec: clong
 }
@@ -1254,7 +1255,7 @@ global function random(): clong <cimport, nodecl> end
 global function srandom(__seed: cuint) <cimport, nodecl> end
 global function initstate(__seed: cuint, __statebuf: cstring, __statelen: csize): cstring <cimport, nodecl> end
 global function setstate(__statebuf: cstring): cstring <cimport, nodecl> end
-global random_data: type <cimport, nodecl> = @record{
+global random_data: type <cimport, nodecl, ctypedef> = @record{
   fptr: *int32,
   rptr: *int32,
   state: *int32,
@@ -1279,7 +1280,7 @@ global function jrand48(__xsubi: *cushort): clong <cimport, nodecl> end
 global function srand48(__seedval: clong) <cimport, nodecl> end
 global function seed48(__seed16v: *cushort): *cushort <cimport, nodecl> end
 global function lcong48(__param: *cushort) <cimport, nodecl> end
-global drand48_data: type <cimport, nodecl> = @record{
+global drand48_data: type <cimport, nodecl, ctypedef> = @record{
   __x: [3]cushort,
   __old_x: [3]cushort,
   __c: cushort,
@@ -1400,7 +1401,7 @@ global function __stpcpy(__dest: cstring, __src: cstring): cstring <cimport, nod
 global function stpcpy(__dest: cstring, __src: cstring): cstring <cimport, nodecl> end
 global function __stpncpy(__dest: cstring, __src: cstring, __n: csize): cstring <cimport, nodecl> end
 global function stpncpy(__dest: cstring, __src: cstring, __n: csize): cstring <cimport, nodecl> end
-global tm: type <cimport, nodecl> = @record{
+global tm: type <cimport, nodecl, ctypedef> = @record{
   tm_sec: cint,
   tm_min: cint,
   tm_hour: cint,
@@ -1413,7 +1414,7 @@ global tm: type <cimport, nodecl> = @record{
   tm_gmtoff: clong,
   tm_zone: cstring
 }
-global itimerspec: type <cimport, nodecl> = @record{
+global itimerspec: type <cimport, nodecl, ctypedef> = @record{
   it_interval: timespec,
   it_value: timespec
 }

@@ -146,7 +146,7 @@ global function PHYSFS_utf8ToUtf16(src: cstring, dst: *uint16, len: uint64) <cim
 global function PHYSFS_readBytes(handle: *PHYSFS_File, buffer: pointer, len: uint64): int64 <cimport, nodecl> end
 global function PHYSFS_writeBytes(handle: *PHYSFS_File, buffer: pointer, len: uint64): int64 <cimport, nodecl> end
 global PHYSFS_Io: type <cimport, nodecl, forwarddecl> = @record{}
-global PHYSFS_Io: type <cimport, nodecl> = @record{
+PHYSFS_Io = @record{
   version: uint32,
   opaque: pointer,
   read: function(*PHYSFS_Io, pointer, uint64): int64,

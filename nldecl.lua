@@ -13,6 +13,7 @@ nldecl.include_macros = {}
 nldecl.predeclared_names = {}
 nldecl.declared_names = {}
 nldecl.type_names = {}
+nldecl.typedefs_names = {}
 
 function nldecl.can_decl(declname, forwarddecl)
   if not declname or #declname == 0 then
@@ -250,9 +251,7 @@ function nldecl.function_decl(node)
   local funcname = node:name():value()
   if not nldecl.can_decl(funcname) then return end
   nldecl.declared_names[funcname] = true
-  emitter:add('global function ')
-  emitter:add(funcname)
-  emitter:add('(')
+  emitter:add('global function '..funcname..'(')
   local i = 1
   for argnode in chain(node:args()) do
     local argtype = argnode:type()
@@ -265,8 +264,7 @@ function nldecl.function_decl(node)
       argname = 'a'..i
     end
     argname = gccutils.normalize_name(argname)
-    emitter:add(argname)
-    emitter:add(': ')
+    emitter:add(argname..': ')
     visit(argtype)
     i = i + 1
   end
@@ -288,42 +286,50 @@ function nldecl.var_decl(node)
   if not nldecl.can_decl(varname) then return end
   nldecl.declared_names[varname] = true
   local vartype = node:type()
-  emitter:add('global ')
-  emitter:add(varname)
-  emitter:add(': ')
+  emitter:add('global '..varname..': ')
   visit(vartype)
   emitter:add_ln(' <cimport, nodecl>')
 end
 
-local function visit_type_def(typename, type)
+local function visit_type_def(typename, type, is_typedef)
   local is_record = type:code() == 'record_type'
   local is_union = type:code() == 'union_type'
   local is_enum = type:code() == 'enumeral_type'
   local is_pointer = type:code() == 'pointer_type'
   local is_function = is_pointer and type:type():code() == 'function_type'
   local is_scalar = type:code() == 'integer_type' or type:code() == 'real_type'
+  local is_prefixed = (is_enum or is_record or is_union)
   local forwarddecl = (is_record or is_union) and not type:fields()
   if not nldecl.can_decl(typename, forwarddecl) then return end
-  emitter:add('global ')
-  emitter:add(typename)
-  emitter:add(': type ')
-  if (not is_pointer or is_function) and not is_scalar then
-    -- not a pointer to a function
-    local annotations = {'cimport'}
-    table.insert(annotations, 'nodecl')
-    if forwarddecl then -- declaration without definition
-      table.insert(annotations, 'forwarddecl')
-      nldecl.predeclared_names[typename] = true
-    else
-      nldecl.declared_names[typename] = true
+  if nldecl.predeclared_names[typename] then
+    emitter:add(typename..' ')
+    nldecl.declared_names[typename] = true
+  else
+    emitter:add('global '..typename..': type ')
+
+    if (not is_pointer or is_function) and not is_scalar then
+      -- not a pointer to a function
+      local annotations = {'cimport'}
+      table.insert(annotations, 'nodecl')
+      if forwarddecl then -- declaration without definition
+        table.insert(annotations, 'forwarddecl')
+        nldecl.predeclared_names[typename] = true
+      else
+        nldecl.declared_names[typename] = true
+      end
+      if is_record or is_union or is_enum then
+        nldecl.type_names[type:main_variant()] = typename
+      end
+      if is_enum then
+        table.insert(annotations, 'using')
+      end
+      emitter:add(function()
+        if is_prefixed and not is_typedef and not nldecl.typedefs_names[typename] then
+          table.insert(annotations, 'ctypedef')
+        end
+        return '<'..table.concat(annotations,', ')..'> '
+      end)
     end
-    if is_record or is_union or is_enum then
-      nldecl.type_names[type:main_variant()] = typename
-    end
-    if is_enum then
-      table.insert(annotations, 'using')
-    end
-    emitter:add('<'..table.concat(annotations,', ')..'> ')
   end
   emitter:add('= @')
   visit(type, true)
@@ -342,8 +348,10 @@ local function visit_unnamed_enum_decl(node)
   end
 end
 
+-- typedefs
 function nldecl.type_decl(node)
   local typename = node:name():value()
+  nldecl.typedefs_names[typename] = true
   if not nldecl.can_decl(typename) then return end
   local type = node:type():main_variant()
   local name = gccutils.get_id(type) or nldecl.type_names[type]
@@ -360,14 +368,14 @@ function nldecl.type_decl(node)
     -- ignore aliases for these types
     return
   end
+
   if name and (nldecl.declared_names[name] or nldecl.predeclared_names[name]) then
     -- alias type name
     assert(typename and #typename > 0)
-    emitter:add_indent('global '..typename..': type = @'..name)
-    emitter:add_ln()
+    emitter:add_indent_ln('global '..typename..': type = @'..name)
   else
     -- define the type
-    visit_type_def(typename, type)
+    visit_type_def(typename, type, true)
   end
 end
 
@@ -386,7 +394,7 @@ local function finish_pending_type(node)
   if node and node:code() == 'type_decl' and pending_type:main_variant() == node:type():main_variant() then
     -- should be a typedef on an unnamed type
     local typename = gccutils.get_id(node)
-    visit_type_def(typename, node:type())
+    visit_type_def(typename, node:type(), true)
     ret = true
   elseif pending_type:code() == 'enumeral_type' then
     -- declare anonymous enum enum as comptime variables
@@ -467,6 +475,7 @@ function nldecl.install()
     finish_pending_type()
     local typename = gccutils.get_id(node)
     if typename then
+
       visit_type_def(typename, node)
     else
       -- schedule to be declared on next PLUGIN_FINISH_DECL,

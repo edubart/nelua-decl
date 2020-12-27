@@ -116,8 +116,8 @@ global function lua_gethook(L: *lua_State): lua_Hook <cimport, nodecl> end
 global function lua_gethookmask(L: *lua_State): cint <cimport, nodecl> end
 global function lua_gethookcount(L: *lua_State): cint <cimport, nodecl> end
 global function lua_setcstacklimit(L: *lua_State, limit: cuint): cint <cimport, nodecl> end
-global CallInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global lua_Debug: type <cimport, nodecl> = @record{
+global CallInfo: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+lua_Debug = @record{
   event: cint,
   name: cstring,
   namewhat: cstring,
@@ -178,7 +178,7 @@ global function luaL_setfuncs(L: *lua_State, l: *luaL_Reg, nup: cint) <cimport, 
 global function luaL_getsubtable(L: *lua_State, idx: cint, fname: cstring): cint <cimport, nodecl> end
 global function luaL_traceback(L: *lua_State, L1: *lua_State, msg: cstring, level: cint) <cimport, nodecl> end
 global function luaL_requiref(L: *lua_State, modname: cstring, openf: lua_CFunction, glb: cint) <cimport, nodecl> end
-global luaL_Buffer: type <cimport, nodecl> = @record{
+luaL_Buffer = @record{
   b: cstring,
   size: csize,
   n: csize,

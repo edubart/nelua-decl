@@ -17,6 +17,11 @@ function Emitter:add_ln(s)
 end
 
 function Emitter:generate()
+  for i,chunk in ipairs(self) do
+    if type(chunk) == 'function' then
+      self[i] = chunk()
+    end
+  end
   return table.concat(self)
 end
 
@@ -25,6 +30,11 @@ function Emitter:add_indent(s)
   if s then
     table.insert(self, s)
   end
+end
+
+function Emitter:add_indent_ln(s)
+  self:add_indent(s)
+  self:add_ln()
 end
 
 function Emitter:inc_indent()

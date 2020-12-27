@@ -51,13 +51,12 @@ global ma_mutex: type = @pointer
 global ma_event: type = @pointer
 global ma_semaphore: type = @pointer
 ## else
-global __pthread_internal_list: type <cimport, forwarddecl> = @record{}
-global __pthread_internal_list: type <cimport, nodecl> = @record{
+global __pthread_internal_list: type <cimport, nodecl, ctypedef> = @record{
   __prev: *__pthread_internal_list,
   __next: *__pthread_internal_list
 }
 global __pthread_list_t: type = @__pthread_internal_list
-global __pthread_mutex_s: type <cimport, nodecl> = @record{
+global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
   __lock: cint,
   __count: cuint,
   __owner: cint,
@@ -67,7 +66,7 @@ global __pthread_mutex_s: type <cimport, nodecl> = @record{
   __elision: cshort,
   __list: __pthread_list_t
 }
-global __pthread_cond_s: type <cimport, nodecl> = @record{
+global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
   __unnamed1: union{
     __wseq: culonglong,
     __wseq32: record{

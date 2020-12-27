@@ -63,7 +63,7 @@ global function stbtt_GetPackedQuad(chardata: *stbtt_packedchar, pw: cint, ph: c
 global function stbtt_PackFontRangesGatherRects(spc: *stbtt_pack_context, info: *stbtt_fontinfo, ranges: *stbtt_pack_range, num_ranges: cint, rects: *stbrp_rect): cint <cimport, nodecl> end
 global function stbtt_PackFontRangesPackRects(spc: *stbtt_pack_context, rects: *stbrp_rect, num_rects: cint) <cimport, nodecl> end
 global function stbtt_PackFontRangesRenderIntoRects(spc: *stbtt_pack_context, info: *stbtt_fontinfo, ranges: *stbtt_pack_range, num_ranges: cint, rects: *stbrp_rect): cint <cimport, nodecl> end
-global stbtt_pack_context: type <cimport, nodecl> = @record{
+stbtt_pack_context = @record{
   user_allocator_context: pointer,
   pack_info: pointer,
   width: cint,
@@ -78,7 +78,7 @@ global stbtt_pack_context: type <cimport, nodecl> = @record{
 }
 global function stbtt_GetNumberOfFonts(data: *cuchar): cint <cimport, nodecl> end
 global function stbtt_GetFontOffsetForIndex(data: *cuchar, index: cint): cint <cimport, nodecl> end
-global stbtt_fontinfo: type <cimport, nodecl> = @record{
+stbtt_fontinfo = @record{
   userdata: pointer,
   data: *cuchar,
   fontstart: cint,

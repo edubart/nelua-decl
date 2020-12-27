@@ -763,7 +763,7 @@ global ma_device_info: type <cimport, nodecl> = @record{
     flags: uint32
   }
 }
-global ma_device_config: type <cimport, nodecl> = @record{
+ma_device_config = @record{
   deviceType: ma_device_type,
   sampleRate: uint32,
   periodSizeInFrames: uint32,
@@ -841,7 +841,7 @@ global ma_device_descriptor: type <cimport, nodecl> = @record{
   periodSizeInMilliseconds: uint32,
   periodCount: uint32
 }
-global ma_backend_callbacks: type <cimport, nodecl> = @record{
+ma_backend_callbacks = @record{
   onContextInit: function(*ma_context, *ma_context_config, *ma_backend_callbacks): ma_result,
   onContextUninit: function(*ma_context): ma_result,
   onContextEnumerateDevices: function(*ma_context, ma_enum_devices_callback_proc, pointer): ma_result,
@@ -854,7 +854,7 @@ global ma_backend_callbacks: type <cimport, nodecl> = @record{
   onDeviceWrite: function(*ma_device, pointer, uint32, *uint32): ma_result,
   onDeviceAudioThread: function(*ma_device): ma_result
 }
-global ma_context_config: type <cimport, nodecl> = @record{
+ma_context_config = @record{
   logCallback: ma_log_proc,
   threadPriority: ma_thread_priority,
   threadStackSize: csize,
@@ -880,7 +880,7 @@ global ma_context_config: type <cimport, nodecl> = @record{
   },
   custom: ma_backend_callbacks
 }
-global ma_context: type <cimport, nodecl> = @record{
+ma_context = @record{
   callbacks: ma_backend_callbacks,
   backend: ma_backend,
   logCallback: ma_log_proc,
@@ -1074,7 +1074,7 @@ global ma_context: type <cimport, nodecl> = @record{
     _unused: cint
   }
 }
-global ma_device: type <cimport, nodecl> = @record{
+ma_device = @record{
   pContext: *ma_context,
   type: ma_device_type,
   sampleRate: uint32,
@@ -1357,7 +1357,7 @@ global ma_decoder_config: type <cimport, nodecl> = @record{
   },
   allocationCallbacks: ma_allocation_callbacks
 }
-global ma_decoder: type <cimport, nodecl> = @record{
+ma_decoder = @record{
   ds: ma_data_source_callbacks,
   onRead: ma_decoder_read_proc,
   onSeek: ma_decoder_seek_proc,
@@ -1447,7 +1447,7 @@ global ma_encoder_config: type <cimport, nodecl> = @record{
   allocationCallbacks: ma_allocation_callbacks
 }
 global function ma_encoder_config_init(resourceFormat: ma_resource_format, format: ma_format, channels: uint32, sampleRate: uint32): ma_encoder_config <cimport, nodecl> end
-global ma_encoder: type <cimport, nodecl> = @record{
+ma_encoder = @record{
   config: ma_encoder_config,
   onWrite: ma_encoder_write_proc,
   onSeek: ma_encoder_seek_proc,
@@ -1527,7 +1527,7 @@ global function ma_noise_set_seed(pNoise: *ma_noise, seed: int32): ma_result <ci
 global function ma_noise_set_type(pNoise: *ma_noise, type: ma_noise_type): ma_result <cimport, nodecl> end
 global ma_effect: type <cimport, nodecl> = @void
 global ma_effect_base: type <cimport, nodecl, forwarddecl> = @record{}
-global ma_effect_base: type <cimport, nodecl> = @record{
+ma_effect_base = @record{
   onProcessPCMFrames: function(pointer, uint32, *pointer, *uint64, pointer, *uint64): ma_result,
   onGetRequiredInputFrameCount: function(pointer, uint64): uint64,
   onGetExpectedOutputFrameCount: function(pointer, uint64): uint64,
@@ -1705,7 +1705,7 @@ global ma_resource_manager_memory_buffer: type <cimport, nodecl> = @record{
     encoded: ma_encoded_data
   }
 }
-global ma_resource_manager_data_buffer_node: type <cimport, nodecl> = @record{
+ma_resource_manager_data_buffer_node = @record{
   hashedName32: uint32,
   refCount: uint32,
   result: ma_result,
@@ -1717,7 +1717,7 @@ global ma_resource_manager_data_buffer_node: type <cimport, nodecl> = @record{
   pChildLo: *ma_resource_manager_data_buffer_node,
   pChildHi: *ma_resource_manager_data_buffer_node
 }
-global ma_resource_manager_data_buffer: type <cimport, nodecl> = @record{
+ma_resource_manager_data_buffer = @record{
   ds: ma_data_source_callbacks,
   pResourceManager: *ma_resource_manager,
   flags: uint32,
@@ -1732,7 +1732,7 @@ global ma_resource_manager_data_buffer: type <cimport, nodecl> = @record{
     buffer: ma_audio_buffer
   }
 }
-global ma_resource_manager_data_stream: type <cimport, nodecl> = @record{
+ma_resource_manager_data_stream = @record{
   ds: ma_data_source_callbacks,
   pResourceManager: *ma_resource_manager,
   flags: uint32,
@@ -1752,7 +1752,7 @@ global ma_resource_manager_data_stream: type <cimport, nodecl> = @record{
   isPageValid: [2]ma_bool32,
   seekCounter: ma_bool32
 }
-global ma_resource_manager_data_source: type <cimport, nodecl> = @record{
+ma_resource_manager_data_source = @record{
   __unnamed1: union{
     buffer: ma_resource_manager_data_buffer,
     stream: ma_resource_manager_data_stream
@@ -1771,7 +1771,7 @@ global ma_resource_manager_config: type <cimport, nodecl> = @record{
   pVFS: pointer
 }
 global function ma_resource_manager_config_init(): ma_resource_manager_config <cimport, nodecl> end
-global ma_resource_manager: type <cimport, nodecl> = @record{
+ma_resource_manager = @record{
   config: ma_resource_manager_config,
   pRootDataBufferNode: *ma_resource_manager_data_buffer_node,
   dataBufferLock: ma_mutex,
@@ -1919,7 +1919,7 @@ global ma_engine_effect: type <cimport, nodecl> = @record{
   timeInFrames: uint64,
   isSpatial: ma_bool32
 }
-global ma_sound: type <cimport, nodecl> = @record{
+ma_sound = @record{
   pEngine: *ma_engine,
   pDataSource: pointer,
   pGroup: *ma_sound_group,
@@ -1940,7 +1940,7 @@ global ma_sound: type <cimport, nodecl> = @record{
   _isInternal: ma_bool32,
   resourceManagerDataSource: ma_resource_manager_data_source
 }
-global ma_sound_group: type <cimport, nodecl> = @record{
+ma_sound_group = @record{
   pEngine: *ma_engine,
   pParent: *ma_sound_group,
   pFirstChild: *ma_sound_group,
@@ -1956,7 +1956,7 @@ global ma_sound_group: type <cimport, nodecl> = @record{
   stopDelayInEngineFramesRemaining: uint64,
   isPlaying: ma_bool32
 }
-global ma_listener: type <cimport, nodecl> = @record{
+ma_listener = @record{
   position: ma_vec3,
   rotation: ma_quat
 }
@@ -1975,7 +1975,7 @@ global ma_engine_config: type <cimport, nodecl> = @record{
   pResourceManagerVFS: pointer
 }
 global function ma_engine_config_init_default(): ma_engine_config <cimport, nodecl> end
-global ma_engine: type <cimport, nodecl> = @record{
+ma_engine = @record{
   pResourceManager: *ma_resource_manager,
   pDevice: *ma_device,
   fixedRB: ma_pcm_rb,

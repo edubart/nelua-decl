@@ -14,13 +14,12 @@ global ma_mutex: type = @pointer
 global ma_event: type = @pointer
 global ma_semaphore: type = @pointer
 ## else
-global __pthread_internal_list: type <cimport, forwarddecl> = @record{}
-global __pthread_internal_list: type <cimport, nodecl> = @record{
+global __pthread_internal_list: type <cimport, nodecl, ctypedef> = @record{
   __prev: *__pthread_internal_list,
   __next: *__pthread_internal_list
 }
 global __pthread_list_t: type = @__pthread_internal_list
-global __pthread_mutex_s: type <cimport, nodecl> = @record{
+global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
   __lock: cint,
   __count: cuint,
   __owner: cint,
@@ -30,7 +29,7 @@ global __pthread_mutex_s: type <cimport, nodecl> = @record{
   __elision: cshort,
   __list: __pthread_list_t
 }
-global __pthread_cond_s: type <cimport, nodecl> = @record{
+global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
   __unnamed1: union{
     __wseq: culonglong,
     __wseq32: record{
@@ -762,7 +761,7 @@ global ma_device_info: type <cimport, nodecl> = @record{
     flags: uint32
   }
 }
-global ma_device_config: type <cimport, nodecl> = @record{
+ma_device_config = @record{
   deviceType: ma_device_type,
   sampleRate: uint32,
   periodSizeInFrames: uint32,
@@ -840,7 +839,7 @@ global ma_device_descriptor: type <cimport, nodecl> = @record{
   periodSizeInMilliseconds: uint32,
   periodCount: uint32
 }
-global ma_backend_callbacks: type <cimport, nodecl> = @record{
+ma_backend_callbacks = @record{
   onContextInit: function(*ma_context, *ma_context_config, *ma_backend_callbacks): ma_result,
   onContextUninit: function(*ma_context): ma_result,
   onContextEnumerateDevices: function(*ma_context, ma_enum_devices_callback_proc, pointer): ma_result,
@@ -853,7 +852,7 @@ global ma_backend_callbacks: type <cimport, nodecl> = @record{
   onDeviceWrite: function(*ma_device, pointer, uint32, *uint32): ma_result,
   onDeviceAudioThread: function(*ma_device): ma_result
 }
-global ma_context_config: type <cimport, nodecl> = @record{
+ma_context_config = @record{
   logCallback: ma_log_proc,
   threadPriority: ma_thread_priority,
   threadStackSize: csize,
@@ -879,7 +878,7 @@ global ma_context_config: type <cimport, nodecl> = @record{
   },
   custom: ma_backend_callbacks
 }
-global ma_context: type <cimport, nodecl> = @record{
+ma_context = @record{
   callbacks: ma_backend_callbacks,
   backend: ma_backend,
   logCallback: ma_log_proc,
@@ -1073,7 +1072,7 @@ global ma_context: type <cimport, nodecl> = @record{
     _unused: cint
   }
 }
-global ma_device: type <cimport, nodecl> = @record{
+ma_device = @record{
   pContext: *ma_context,
   type: ma_device_type,
   sampleRate: uint32,
@@ -1356,7 +1355,7 @@ global ma_decoder_config: type <cimport, nodecl> = @record{
   },
   allocationCallbacks: ma_allocation_callbacks
 }
-global ma_decoder: type <cimport, nodecl> = @record{
+ma_decoder = @record{
   ds: ma_data_source_callbacks,
   onRead: ma_decoder_read_proc,
   onSeek: ma_decoder_seek_proc,
@@ -1446,7 +1445,7 @@ global ma_encoder_config: type <cimport, nodecl> = @record{
   allocationCallbacks: ma_allocation_callbacks
 }
 global function ma_encoder_config_init(resourceFormat: ma_resource_format, format: ma_format, channels: uint32, sampleRate: uint32): ma_encoder_config <cimport, nodecl> end
-global ma_encoder: type <cimport, nodecl> = @record{
+ma_encoder = @record{
   config: ma_encoder_config,
   onWrite: ma_encoder_write_proc,
   onSeek: ma_encoder_seek_proc,
