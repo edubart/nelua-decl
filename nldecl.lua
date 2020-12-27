@@ -8,12 +8,44 @@ local emitter = Emitter()
 nldecl.emitter = emitter
 nldecl.include_names = {}
 nldecl.exclude_names = {}
+nldecl.platform_names = {}
 nldecl.include_macros = {}
 
 nldecl.predeclared_names = {}
 nldecl.declared_names = {}
 nldecl.type_names = {}
 nldecl.typedefs_names = {}
+
+nldecl.USE_KNOWN_FIELDS = 1
+nldecl.OMIT_ALL_FIELDS = 2
+
+function nldecl.is_name_included(name)
+  if nldecl.exclude_names[name] then
+    -- ignored
+    return false
+  end
+  if nldecl.include_names[name] then
+    -- accept declaration
+    return true
+  end
+  if #nldecl.exclude_names > 0 then
+    for _,patt in ipairs(nldecl.exclude_names) do
+      if name:match(patt) then
+        return false
+      end
+    end
+  end
+  if #nldecl.include_names > 0 then
+    for _,patt in ipairs(nldecl.include_names) do
+      if name:match(patt) then
+        return true
+      end
+    end
+    return false
+  else
+    return true
+  end
+end
 
 function nldecl.can_decl(declname, forwarddecl)
   if not declname or #declname == 0 then
@@ -28,31 +60,7 @@ function nldecl.can_decl(declname, forwarddecl)
     -- already declared
     return false
   end
-  if nldecl.exclude_names[declname] then
-    -- ignored
-    return false
-  end
-  if nldecl.include_names[declname] then
-    -- accept declaration
-    return true
-  end
-  if #nldecl.exclude_names > 0 then
-    for _,patt in ipairs(nldecl.exclude_names) do
-      if declname:match(patt) then
-        return false
-      end
-    end
-  end
-  if #nldecl.include_names > 0 then
-    for _,patt in ipairs(nldecl.include_names) do
-      if declname:match(patt) then
-        return true
-      end
-    end
-    return false
-  else
-    return true
-  end
+  return nldecl.is_name_included(declname)
 end
 
 local function visit(node, ...)
@@ -114,38 +122,43 @@ function nldecl.void_type()
   emitter:add('void')
 end
 
-local function visit_fields(node)
+local function visit_fields(node, canskipfields)
   local unnamedcount = 1
   for fieldnode in chain(node:fields()) do
     local fieldname = fieldnode:name() and fieldnode:name():value()
     local fieldtype = fieldnode:type()
-    local annotations = {}
-    if fieldnode:bit_field() then
-      fieldtype = fieldnode:bit_field_type()
-      --local bitfieldsize = fieldnode:size():value()
-      --table.insert(annotations, string.format('bitsize(%d)', bitfieldsize))
-    end
-    if fieldname then
-      fieldname = gccutils.normalize_name(fieldname)
-      emitter:add_indent(fieldname .. ': ')
+    local fieldtypename = gccutils.get_inner_id(fieldtype)
+    if canskipfields and fieldtypename and not nldecl.is_name_included(fieldtypename) then
+      -- ignore
     else
-      emitter:add_indent('__unnamed' .. unnamedcount .. ': ')
-      unnamedcount = unnamedcount + 1
-      --table.insert(annotations, 'cunnamed')
-    end
-    visit(fieldtype)
-    if #annotations > 0 then
-      emitter:add(' <'..table.concat(annotations, ', ')..'>')
-    end
-    if not fieldnode:chain() then -- last field
-      emitter:add_ln()
-    else
-      emitter:add_ln(',')
+      local annotations = {}
+      if fieldnode:bit_field() then
+        fieldtype = fieldnode:bit_field_type()
+        --local bitfieldsize = fieldnode:size():value()
+        --table.insert(annotations, string.format('bitsize(%d)', bitfieldsize))
+      end
+      if fieldname then
+        fieldname = gccutils.normalize_name(fieldname)
+        emitter:add_indent(fieldname .. ': ')
+      else
+        emitter:add_indent('__unnamed' .. unnamedcount .. ': ')
+        unnamedcount = unnamedcount + 1
+        --table.insert(annotations, 'cunnamed')
+      end
+      visit(fieldtype)
+      if #annotations > 0 then
+        emitter:add(' <'..table.concat(annotations, ', ')..'>')
+      end
+      if not fieldnode:chain() then -- last field
+        emitter:add_ln()
+      else
+        emitter:add_ln(',')
+      end
     end
   end
 end
 
-function nldecl.record_type(node, decl)
+function nldecl.record_type(node, decl, canskipfields)
   local typename = gccutils.get_id(node)
   if not decl and typename then
     assert(not node:anonymous())
@@ -157,12 +170,12 @@ function nldecl.record_type(node, decl)
   end
   emitter:add_ln('record{')
   emitter:inc_indent()
-  visit_fields(node)
+  visit_fields(node, canskipfields)
   emitter:dec_indent()
   emitter:add_indent('}')
 end
 
-function nldecl.union_type(node, decl)
+function nldecl.union_type(node, decl, canskipfields)
   local typename = gccutils.get_id(node)
   if not decl and typename then
     assert(not node:anonymous())
@@ -174,7 +187,7 @@ function nldecl.union_type(node, decl)
   end
   emitter:add_ln('union{')
   emitter:inc_indent()
-  visit_fields(node)
+  visit_fields(node, canskipfields)
   emitter:dec_indent()
   emitter:add_indent('}')
 end
@@ -320,6 +333,9 @@ local function visit_type_def(typename, type, is_typedef)
       if is_record or is_union or is_enum then
         nldecl.type_names[type:main_variant()] = typename
       end
+      if nldecl.platform_names[typename] then
+        table.insert(annotations, 'cincomplete')
+      end
       if is_enum then
         table.insert(annotations, 'using')
       end
@@ -332,7 +348,15 @@ local function visit_type_def(typename, type, is_typedef)
     end
   end
   emitter:add('= @')
-  visit(type, true)
+  local decl = true
+  if nldecl.platform_names[typename] == nldecl.OMIT_ALL_FIELDS then
+    emitter:add('record{}')
+  elseif nldecl.platform_names[typename] == nldecl.USE_KNOWN_FIELDS then
+    local canskipfields = true
+    visit(type, decl, canskipfields)
+  else
+    visit(type, decl)
+  end
   emitter:add_ln()
 end
 

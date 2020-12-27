@@ -20,6 +20,19 @@ function gccutils.get_id(node)
   end
 end
 
+function gccutils.get_inner_id(node)
+  if not node then return nil end
+  if node:code() == 'identifier_node' then
+    return node:value()
+  else
+    local subnode = node:name()
+    if not subnode and node.type then
+      subnode = node:type()
+    end
+    return gccutils.get_inner_id(subnode)
+  end
+end
+
 function gccutils.has_cvarargs(functype)
   local arg = functype:args()
   if not arg then

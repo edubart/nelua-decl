@@ -1,6 +1,5 @@
 GCCPLUGIN=-fplugin=./gcc-lua/gcc/gcclua.so
 CC=gcc
-#NELUA=nelua --cc=x86_64-w64-mingw32-gcc
 NELUA=nelua
 
 all: sdl2 miniaudio miniphysfs minilua sokol stb
