@@ -38,7 +38,7 @@ blend2d:
 raylib:
 	$(CC) $(GCCPLUGIN) -S libs/raylib/raylib.c -fplugin-arg-gcclua-script=libs/raylib/raylib.lua > libs/raylib/raylib.nelua
 
-download: download-sokol download-stb download-miniaudio download-miniphysfs
+download: download-sokol download-stb download-miniaudio download-miniphysfs download-minilua
 download-miniaudio:
 	wget -O libs/miniaudio/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
 	wget -O libs/miniaudio/miniaudio_engine.h https://raw.githubusercontent.com/mackron/miniaudio/master/research/miniaudio_engine.h

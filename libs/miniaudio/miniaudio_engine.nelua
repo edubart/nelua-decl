@@ -2015,6 +2015,7 @@ global function ma_sound_set_pitch(pSound: *ma_sound, pitch: float32): ma_result
 global function ma_sound_set_position(pSound: *ma_sound, position: ma_vec3): ma_result <cimport, nodecl> end
 global function ma_sound_set_rotation(pSound: *ma_sound, rotation: ma_quat): ma_result <cimport, nodecl> end
 global function ma_sound_set_looping(pSound: *ma_sound, isLooping: ma_bool32): ma_result <cimport, nodecl> end
+global function ma_sound_is_looping(pSound: *ma_sound): ma_bool32 <cimport, nodecl> end
 global function ma_sound_set_fade_in_frames(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_set_fade_in_milliseconds(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInMilliseconds: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_get_current_fade_volume(pSound: *ma_sound, pVolume: *float32): ma_result <cimport, nodecl> end
