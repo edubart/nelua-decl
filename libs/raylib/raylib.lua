@@ -66,14 +66,14 @@ function Vector2.__len(v: Vector2): float32 <cimport'Vector2Length', nodecl> end
 function Vector2.__unm(v: Vector2): Vector2 <cimport'Vector2Negate', nodecl> end
 function Vector2.__div(v: Vector2, divisor: overload(Vector2, number)): Vector2
   ## if divisor.type.nickname == 'Vector2' then
-    return Vector2DivideV(v, divisor)
-  ## else
     return Vector2Divide(v, divisor)
+  ## else
+    return Vector2Divide(v, 1.0/divisor)
   ## end
 end
 function Vector2.__mul(v: Vector2, multiplier: overload(Vector2, number)): Vector2
   ## if multiplier.type.nickname == 'Vector2' then
-    return Vector2MultiplyV(v, multiplier)
+    return Vector2Multiply(v, multiplier)
   ## else
     return Vector2Scale(v, multiplier)
   ## end
@@ -84,16 +84,16 @@ function Vector3.__len(v: Vector3): float32 <cimport'Vector3Length', nodecl> end
 function Vector3.__unm(v: Vector3): Vector3 <cimport'Vector3Negate', nodecl> end
 function Vector3.__mul(v: Vector3, multiplier: overload(Vector3, number)): Vector3
   ## if multiplier.type.nickname == 'Vector3' then
-    return Vector3MultiplyV(v, multiplier)
+    return Vector3Multiply(v, multiplier)
   ## else
     return Vector3Scale(v, multiplier)
   ## end
 end
 function Vector3.__div(v: Vector3, divisor: overload(Vector3, number)): Vector3
    ## if divisor.type.nickname == 'Vector3' then
-    return Vector3DivideV(v, divisor)
-  ## else
     return Vector3Divide(v, divisor)
+  ## else
+    return Vector3Scale(v, 1.0/divisor)
   ## end
 end
 function Matrix.__add(left: Matrix, right: Matrix): Matrix <cimport'MatrixAdd', nodecl> end
