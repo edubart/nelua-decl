@@ -37,7 +37,8 @@ The following libraries bindings are generated as example:
 
 * [SDL2](https://www.libsdl.org/) - [sdl2.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sdl2/sdl2.nelua)
 * [GLFW](https://www.glfw.org/) - [glfw.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/glfw/glfw.nelua)
-* [minilua](https://github.com/edubart/minilua) (Lua 5.4) - [lua.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/lua/lua.nelua)
+* [minilua](https://github.com/edubart/minilua) (Lua 5.4) - [lua.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/minilua/minilua.nelua)
+* [minicoro](https://github.com/edubart/minicoro) - [minicoro.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/minicoro/minicoro.nelua)
 * [miniaudio](https://miniaud.io/) - [miniaudio.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniaudio/miniaudio.nelua)
 * [miniphysfs](https://github.com/edubart/miniphysfs) (PhysFS 3) - [miniphysfs.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniphysfs/miniphysfs.nelua)
 * [STB](https://github.com/nothings/stb) - [stb_image.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_image.nelua) - [stb_image_write.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_image_write.nelua) - [stb_truetype.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_truetype.nelua) - [stb_vorbis.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_vorbis.nelua)

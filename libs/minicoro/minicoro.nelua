@@ -1,0 +1,58 @@
+##[[
+cdefine 'MINICORO_IMPL'
+cinclude '"minicoro.h"'
+]]
+global mco_state: type <cimport, nodecl, using> = @enum(cint){
+  MCO_DEAD = 0,
+  MCO_NORMAL = 1,
+  MCO_RUNNING = 2,
+  MCO_SUSPENDED = 3
+}
+global mco_result: type <cimport, nodecl, using> = @enum(cint){
+  MCO_SUCCESS = 0,
+  MCO_INVALID_POINTER = 1,
+  MCO_NOT_SUSPENDED = 2,
+  MCO_NOT_RUNNING = 3,
+  MCO_MAKE_CONTEXT_ERROR = 4,
+  MCO_SWITCH_CONTEXT_ERROR = 5,
+  MCO_NO_USER_DATA = 6,
+  MCO_NOT_ENOUGH_SPACE = 7,
+  MCO_OUT_OF_MEMORY = 8,
+  MCO_INVALID_ARGUMENTS = 9,
+  MCO_INVALID_OPERATION = 10
+}
+global mco_coro: type <cimport, nodecl, forwarddecl> = @record{}
+global mco_func: type <cimport, nodecl> = @function(*mco_coro)
+mco_coro = @record{
+  context: pointer,
+  state: mco_state,
+  func: mco_func,
+  prev_co: *mco_coro,
+  free_cb: function(pointer, pointer),
+  alloc_user_data: pointer,
+  user_data_size: csize,
+  user_data: [1024]uint8
+}
+global mco_desc: type <cimport, nodecl> = @record{
+  func: mco_func,
+  coro_size: usize,
+  stack_size: usize,
+  malloc_cb: function(csize, pointer): pointer,
+  free_cb: function(pointer, pointer),
+  alloc_user_data: pointer
+}
+global function mco_desc_init(func: mco_func, stack_size: usize): mco_desc <cimport, nodecl> end
+global function mco_init(co: *mco_coro, desc: *mco_desc): mco_result <cimport, nodecl> end
+global function mco_uninit(co: *mco_coro): mco_result <cimport, nodecl> end
+global function mco_create(out_co: **mco_coro, desc: *mco_desc): mco_result <cimport, nodecl> end
+global function mco_destroy(co: *mco_coro): mco_result <cimport, nodecl> end
+global function mco_status(co: *mco_coro): mco_state <cimport, nodecl> end
+global function mco_running(): *mco_coro <cimport, nodecl> end
+global function mco_resume(co: *mco_coro): mco_result <cimport, nodecl> end
+global function mco_yield(co: *mco_coro): mco_result <cimport, nodecl> end
+global function mco_set_user_data(co: *mco_coro, src: pointer, len: csize): mco_result <cimport, nodecl> end
+global function mco_get_user_data(co: *mco_coro, dest: pointer, maxlen: csize): mco_result <cimport, nodecl> end
+global function mco_get_user_data_size(): csize <cimport, nodecl> end
+global function mco_reset_user_data(co: *mco_coro) <cimport, nodecl> end
+global function mco_get_and_reset_user_data(co: *mco_coro, dest: pointer, maxlen: csize): mco_result <cimport, nodecl> end
+global function mco_result_description(res: mco_result): cstring <cimport, nodecl> end
