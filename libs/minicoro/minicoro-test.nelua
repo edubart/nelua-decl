@@ -15,15 +15,14 @@ local function fibonacci_coro(co: *mco_coro)
 
   -- Retrieve max value.
   local max: integer = 0
-  local res = mco_get_user_data(co, &max, #@integer)
-  if res ~= MCO_SUCCESS then
-    fail("Failed to retrieve coroutine user data", res)
+  if mco_get_storage(co, &max, #@integer) ~= #@integer then
+    fail("Failed to retrieve coroutine user data", MCO_GENERIC_ERROR)
   end
 
   while true do
     -- Yield the next fibonacci number.
-    mco_set_user_data(co, &m, #@integer)
-    res = mco_yield(co)
+    mco_set_storage(co, &m, #@integer)
+    local res = mco_yield(co)
     if res ~= MCO_SUCCESS then
       fail("Failed to yield coroutine", res)
     end
@@ -48,7 +47,7 @@ local function main()
 
   -- Set user data.
   local max: integer = 1000000000
-  mco_set_user_data(co, &max, #@integer)
+  mco_set_storage(co, &max, #@integer)
 
   local counter = 1
   while(mco_status(co) == MCO_SUSPENDED) do
@@ -60,8 +59,8 @@ local function main()
 
     -- Retrieve user data set in last coroutine yield.
     local ret: integer = 0
-    if mco_get_user_data(co, &ret, #@integer) ~= MCO_SUCCESS then
-      fail("Failed to retrieve coroutine user data", res)
+    if mco_get_storage(co, &ret, #@integer) ~= #@integer then
+      fail("Failed to retrieve coroutine user data", MCO_GENERIC_ERROR)
     end
     C.printf("fib %d = %lu\n", counter, ret)
     counter = counter + 1

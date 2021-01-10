@@ -1221,6 +1221,8 @@ global function ma_silence_pcm_frames(p: pointer, frameCount: uint64, format: ma
 global function ma_zero_pcm_frames(p: pointer, frameCount: uint64, format: ma_format, channels: uint32) <cimport, nodecl> end
 global function ma_offset_pcm_frames_ptr(p: pointer, offsetInFrames: uint64, format: ma_format, channels: uint32): pointer <cimport, nodecl> end
 global function ma_offset_pcm_frames_const_ptr(p: pointer, offsetInFrames: uint64, format: ma_format, channels: uint32): pointer <cimport, nodecl> end
+global function ma_offset_pcm_frames_ptr_f32(p: *float32, offsetInFrames: uint64, channels: uint32): *float32 <cimport, nodecl> end
+global function ma_offset_pcm_frames_const_ptr_f32(p: *float32, offsetInFrames: uint64, channels: uint32): *float32 <cimport, nodecl> end
 global function ma_clip_samples_f32(p: *float32, sampleCount: uint64) <cimport, nodecl> end
 global function ma_clip_pcm_frames_f32(p: *float32, frameCount: uint64, channels: uint32) <cimport, nodecl> end
 global function ma_copy_and_apply_volume_factor_u8(pSamplesOut: *uint8, pSamplesIn: *uint8, sampleCount: uint64, factor: float32) <cimport, nodecl> end
@@ -1650,6 +1652,7 @@ global MA_NO_BACKEND: cint <comptime> = -103
 global MA_NO_DEVICE: cint <comptime> = -104
 global MA_API_NOT_FOUND: cint <comptime> = -105
 global MA_INVALID_DEVICE_CONFIG: cint <comptime> = -106
+global MA_LOOP: cint <comptime> = -107
 global MA_DEVICE_NOT_INITIALIZED: cint <comptime> = -200
 global MA_DEVICE_ALREADY_INITIALIZED: cint <comptime> = -201
 global MA_DEVICE_NOT_STARTED: cint <comptime> = -202
