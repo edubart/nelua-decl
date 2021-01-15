@@ -1,0 +1,118 @@
+## pragmas.nogc = true
+require 'uv'
+require 'coroutine'
+
+local loop: uv_loop_t
+
+-- Asynchronous write.
+local function uv_write_async(stream: *uv_stream_t, message: stringview)
+  local buf = uv_buf_init(message.data, message.size)
+  local write_req: uv_write_t
+  -- Request write.
+  uv_write(&write_req, stream, &buf, 1, function(req: *uv_write_t, status: cint)
+    -- Resume the coroutine with the write result.
+    local co = (@coroutine)(uv_handle_get_data((@*uv_handle_t)(req.handle)))
+    coroutine.push(co, status)
+    coroutine.resume(co)
+  end)
+  -- Wait write request to complete.
+  coroutine.yield()
+  return coroutine.pop(coroutine.running(), @cint)
+end
+
+-- Asynchronous TCP connect.
+local function uv_tcp_connect_async(tcp: *uv_tcp_t, addr: *sockaddr): (cint, *uv_stream_t)
+  local connect: uv_connect_t
+  -- Request connect.
+  uv_tcp_connect(&connect, tcp, addr, function(req: *uv_connect_t, status: cint)
+    -- Resume the coroutine with the connect result.
+    local co = (@coroutine)(uv_handle_get_data((@*uv_handle_t)(req.handle)))
+    coroutine.push(co, status)
+    coroutine.resume(co)
+  end)
+  -- Wait connect request to complete.
+  coroutine.yield()
+  return coroutine.pop(coroutine.running(), @cint), connect.handle
+end
+
+-- Asynchronous read.
+local function uv_tcp_read_async(stream: *uv_stream_t): (cint, stringview)
+  -- Request read.
+  uv_read_start(stream,
+  function(handle: *uv_handle_t, suggested_size: csize, buf: *uv_buf_t)
+    local readbuf: [1024]cchar <static>
+    buf.base = &readbuf
+    buf.len = #readbuf
+  end,
+  function(client: *uv_stream_t, nread: clong, buf: *uv_buf_t)
+    -- Resume the coroutine with the read result.
+    local co = (@coroutine)(uv_handle_get_data((@*uv_handle_t)(client)))
+    coroutine.push(co, nread) coroutine.push(co, buf)
+    coroutine.resume(co)
+  end)
+  -- Wait the read request to complete.
+  coroutine.yield()
+  local buf, nread = coroutine.pop(coroutine.running(), @*uv_buf_t), coroutine.pop(coroutine.running(), @clong)
+  if nread < 0 then
+    return nread, (@stringview){}
+  end
+  return 0, (@stringview){data=buf.base, size=buf.len}
+end
+
+local function client_request()
+  -- Initialize TCP.
+  local client: uv_tcp_t
+  if uv_tcp_init(&loop, &client) ~= 0 then
+    error 'failed to init tcp client'
+  end
+  uv_handle_set_data((@*uv_handle_t)(&client), coroutine.running())
+
+  -- Initialize destination IPv4 address to connect to.
+  local addr: sockaddr_in
+  if uv_ip4_addr('127.0.0.1'_cstring, 7000, &addr) ~= 0 then
+    error 'failed to create ip4 addr'
+  end
+
+  -- Connect.
+  local status, stream = uv_tcp_connect_async(&client, (@*sockaddr)(&addr))
+  if status ~= 0 then
+    error 'connection failed'
+  end
+  print('connected')
+
+  -- Write a message.
+  local message = 'hello'
+  status = uv_write_async(stream, message)
+  if status ~= 0 then
+    error 'write failed'
+  end
+  print('sent:')
+  print(message)
+
+  -- Read a message.
+  local status, received_message = uv_tcp_read_async(stream)
+  if status ~= 0 then
+    error 'read error'
+  end
+  print('received:')
+  print(received_message)
+
+  -- Everything completed, lets end the UV loop.
+  uv_stop(&loop)
+end
+
+-- Initialize UV
+if uv_loop_init(&loop) ~= 0 then
+  error 'failed to init loop'
+end
+
+-- Create the client request coroutine and begin it.
+local co = coroutine.create(client_request)
+coroutine.resume(co)
+
+-- Main loop
+uv_run(&loop, UV_RUN_DEFAULT)
+
+-- Cleanups.
+coroutine.destroy(&co)
+uv_loop_close(&loop)

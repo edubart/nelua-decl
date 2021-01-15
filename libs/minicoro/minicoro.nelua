@@ -33,8 +33,12 @@ mco_coro = @record{
   free_cb: function(pointer, pointer),
   stack_base: pointer,
   stack_size: csize,
+  storage: *cuchar,
+  bytes_stored: csize,
   storage_size: csize,
-  storage: [1024]cuchar
+  asan_prev_stack: pointer,
+  tsan_prev_fiber: pointer,
+  tsan_fiber: pointer
 }
 global mco_desc: type <cimport, nodecl> = @record{
   func: function(*mco_coro),
@@ -42,6 +46,7 @@ global mco_desc: type <cimport, nodecl> = @record{
   malloc_cb: function(csize, pointer): pointer,
   free_cb: function(pointer, pointer),
   allocator_data: pointer,
+  storage_size: csize,
   coro_size: csize,
   stack_size: csize
 }
@@ -54,9 +59,10 @@ global function mco_resume(co: *mco_coro): mco_result <cimport, nodecl> end
 global function mco_yield(co: *mco_coro): mco_result <cimport, nodecl> end
 global function mco_status(co: *mco_coro): mco_state <cimport, nodecl> end
 global function mco_get_user_data(co: *mco_coro): pointer <cimport, nodecl> end
-global function mco_set_storage(co: *mco_coro, src: pointer, len: csize): mco_result <cimport, nodecl> end
-global function mco_reset_storage(co: *mco_coro): mco_result <cimport, nodecl> end
-global function mco_get_storage(co: *mco_coro, dest: pointer, len: csize): csize <cimport, nodecl> end
+global function mco_push(co: *mco_coro, src: pointer, len: csize): mco_result <cimport, nodecl> end
+global function mco_pop(co: *mco_coro, dest: pointer, len: csize): mco_result <cimport, nodecl> end
+global function mco_peek(co: *mco_coro, dest: pointer, len: csize): mco_result <cimport, nodecl> end
+global function mco_get_bytes_stored(co: *mco_coro): csize <cimport, nodecl> end
 global function mco_get_storage_size(co: *mco_coro): csize <cimport, nodecl> end
 global function mco_running(): *mco_coro <cimport, nodecl> end
 global function mco_result_description(res: mco_result): cstring <cimport, nodecl> end
