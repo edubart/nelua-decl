@@ -8,7 +8,8 @@ each library via Lua scripts. Requires GCC to run.
 
 ## Usage
 
-Make sure you are using Lua 5.3+ and GCC 9+.
+Make sure you are using Lua 5.3+, GCC 9+ and have GCC plugin installed.
+
 First clone and compile the `gcc-lua` plugin and compile it:
 
 ```bash
@@ -44,6 +45,7 @@ The following libraries bindings are generated as example:
 * [STB](https://github.com/nothings/stb) - [stb_image.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_image.nelua) - [stb_image_write.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_image_write.nelua) - [stb_truetype.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_truetype.nelua) - [stb_vorbis.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_vorbis.nelua)
 * [Sokol](https://floooh.github.io/sokol-html5/index.html) - [sokol_gfx.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_gfx.nelua) - [sokol_app.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_app.nelua) - [sokol_glue.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_glue.nelua) - [sokol_audio.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_audio.nelua) - [sokol_time.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_time.nelua)
 * [Blend2D](https://blend2d.com/) - [blend2d.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/blend2d/blend2d.nelua)
+* [Chipmunk](https://chipmunk-physics.net/) - [chipmunk.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/chipmunk/chipmunk.nelua)
 * [Raylib](https://www.raylib.com/) - [raylib.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/raylib/raylib.nelua)
 * [pthread](https://computing.llnl.gov/tutorials/pthreads/) - [pthread.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/pthread/pthread.nelua)
 * [libuv](https://libuv.org/) - [uv.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/uv/uv.nelua)
@@ -64,6 +66,11 @@ Some tests are present as examples on how to use
 the libraries, you can run the as long you
 have the library headers on your system. Look
 for example the `libs/sdl2/sdl2-test.nelua` file.
+
+## Caveats
+
+Currently GCC plugin does not work on Windows, thus you have to generate
+bindings from a Linux machine.
 
 ## TODO
 

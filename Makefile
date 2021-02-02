@@ -3,7 +3,7 @@ CC=gcc
 NELUA=nelua
 
 all: sdl2 miniaudio miniphysfs minilua sokol stb
-all-extra: all c pthread blend2d raylib
+all-extra: all c pthread blend2d chipmunk raylib
 
 c:
 	$(CC) $(GCCPLUGIN) -S libs/c/c.c -fplugin-arg-gcclua-script=libs/c/c.lua > libs/c/c.nelua
@@ -37,6 +37,8 @@ stb:
 	$(CC) $(GCCPLUGIN) -S libs/stb/stb_truetype.c -fplugin-arg-gcclua-script=libs/stb/stb_truetype.lua > libs/stb/stb_truetype.nelua
 blend2d:
 	$(CC) $(GCCPLUGIN) -S libs/blend2d/blend2d.c -fplugin-arg-gcclua-script=libs/blend2d/blend2d.lua > libs/blend2d/blend2d.nelua
+chipmunk:
+	$(CC) $(GCCPLUGIN) -S libs/chipmunk/chipmunk.c -fplugin-arg-gcclua-script=libs/chipmunk/chipmunk.lua > libs/chipmunk/chipmunk.nelua
 raylib:
 	$(CC) $(GCCPLUGIN) -S libs/raylib/raylib.c -fplugin-arg-gcclua-script=libs/raylib/raylib.lua > libs/raylib/raylib.nelua
 
@@ -63,7 +65,7 @@ download-stb:
 	wget -O libs/stb/stb_truetype.h https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h
 
 test-all: test-minilua test-minicoro test-glfw test-sdl2 test-uv test-sokol test-miniaudio test-miniphysfs test-stb
-test-all-extra: test-all test-c test-pthread test-blend2d test-raylib
+test-all-extra: test-all test-c test-pthread test-blend2d test-chipmunk test-raylib
 test-c: c
 	cd libs/c && $(NELUA) c-test.nelua
 test-pthread: c
@@ -91,6 +93,8 @@ test-blend2d: blend2d
 	cd libs/blend2d && $(NELUA) blend2d-test.nelua
 test-raylib: raylib
 	cd libs/raylib && $(NELUA) raylib-test.nelua
+test-chipmunk:
+	cd libs/chipmunk && $(NELUA) chipmunk-test.nelua
 
 test-dev:
 	gcc $(GCCPLUGIN) -S test/test.c -fplugin-arg-gcclua-script=test/test.lua > test/test.nelua
