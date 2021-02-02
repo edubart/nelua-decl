@@ -1173,7 +1173,7 @@ ma_device = @record{
       currentPeriodFramesRemainingCapture: uint32,
       lastProcessedFramePlayback: uint64,
       lastProcessedFrameCapture: uint64,
-      isStarted: ma_bool32
+      isStarted: ma_bool8
     }
   }
 }
@@ -1266,6 +1266,22 @@ global function ma_data_source_unmap(pDataSource: pointer, frameCount: uint64): 
 global function ma_data_source_get_data_format(pDataSource: pointer, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32): ma_result <cimport, nodecl> end
 global function ma_data_source_get_cursor_in_pcm_frames(pDataSource: pointer, pCursor: *uint64): ma_result <cimport, nodecl> end
 global function ma_data_source_get_length_in_pcm_frames(pDataSource: pointer, pLength: *uint64): ma_result <cimport, nodecl> end
+global ma_audio_buffer_ref: type <cimport, nodecl> = @record{
+  ds: ma_data_source_callbacks,
+  format: ma_format,
+  channels: uint32,
+  cursor: uint64,
+  sizeInFrames: uint64,
+  pData: pointer
+}
+global function ma_audio_buffer_ref_init(format: ma_format, channels: uint32, pData: pointer, sizeInFrames: uint64, pAudioBufferRef: *ma_audio_buffer_ref): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_set_data(pAudioBufferRef: *ma_audio_buffer_ref, pData: pointer, sizeInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_read_pcm_frames(pAudioBufferRef: *ma_audio_buffer_ref, pFramesOut: pointer, frameCount: uint64, loop: ma_bool32): uint64 <cimport, nodecl> end
+global function ma_audio_buffer_ref_seek_to_pcm_frame(pAudioBufferRef: *ma_audio_buffer_ref, frameIndex: uint64): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_map(pAudioBufferRef: *ma_audio_buffer_ref, ppFramesOut: *pointer, pFrameCount: *uint64): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_unmap(pAudioBufferRef: *ma_audio_buffer_ref, frameCount: uint64): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_at_end(pAudioBufferRef: *ma_audio_buffer_ref): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_get_available_frames(pAudioBufferRef: *ma_audio_buffer_ref, pAvailableFrames: *uint64): ma_result <cimport, nodecl> end
 global ma_audio_buffer_config: type <cimport, nodecl> = @record{
   format: ma_format,
   channels: uint32,
@@ -1275,12 +1291,7 @@ global ma_audio_buffer_config: type <cimport, nodecl> = @record{
 }
 global function ma_audio_buffer_config_init(format: ma_format, channels: uint32, sizeInFrames: uint64, pData: pointer, pAllocationCallbacks: *ma_allocation_callbacks): ma_audio_buffer_config <cimport, nodecl> end
 global ma_audio_buffer: type <cimport, nodecl> = @record{
-  ds: ma_data_source_callbacks,
-  format: ma_format,
-  channels: uint32,
-  cursor: uint64,
-  sizeInFrames: uint64,
-  pData: pointer,
+  ref: ma_audio_buffer_ref,
   allocationCallbacks: ma_allocation_callbacks,
   ownsData: ma_bool32,
   _pExtraData: [1]uint8
