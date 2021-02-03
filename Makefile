@@ -15,6 +15,7 @@ sdl2:
 	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2.lua > libs/sdl2/sdl2.nelua
 sdl2-extras:
 	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2_image.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2_image.lua > libs/sdl2/sdl2_image.nelua
+	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2_ttf.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2_ttf.lua > libs/sdl2/sdl2_ttf.nelua
 uv:
 	$(CC) $(GCCPLUGIN) -S libs/uv/uv.c -fplugin-arg-gcclua-script=libs/uv/uv.lua > libs/uv/uv.nelua
 sokol:
