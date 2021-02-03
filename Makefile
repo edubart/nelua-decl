@@ -3,7 +3,7 @@ CC=gcc
 NELUA=nelua
 
 all: sdl2 miniaudio miniphysfs minilua sokol stb
-all-extra: all c pthread blend2d chipmunk raylib
+all-extra: all sdl2-extras c pthread blend2d chipmunk raylib
 
 c:
 	$(CC) $(GCCPLUGIN) -S libs/c/c.c -fplugin-arg-gcclua-script=libs/c/c.lua > libs/c/c.nelua
@@ -13,6 +13,8 @@ glfw:
 	$(CC) $(GCCPLUGIN) -S libs/glfw/glfw.c -fplugin-arg-gcclua-script=libs/glfw/glfw.lua > libs/glfw/glfw.nelua
 sdl2:
 	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2.lua > libs/sdl2/sdl2.nelua
+sdl2-extras:
+	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2_image.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2_image.lua > libs/sdl2/sdl2_image.nelua
 uv:
 	$(CC) $(GCCPLUGIN) -S libs/uv/uv.c -fplugin-arg-gcclua-script=libs/uv/uv.lua > libs/uv/uv.nelua
 sokol:
