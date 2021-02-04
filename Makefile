@@ -13,7 +13,7 @@ glfw:
 	$(CC) $(GCCPLUGIN) -S libs/glfw/glfw.c -fplugin-arg-gcclua-script=libs/glfw/glfw.lua > libs/glfw/glfw.nelua
 sdl2:
 	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2.lua > libs/sdl2/sdl2.nelua
-sdl2-extras:
+sdl2-extras: sdl2
 	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2_image.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2_image.lua > libs/sdl2/sdl2_image.nelua
 	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2_ttf.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2_ttf.lua > libs/sdl2/sdl2_ttf.nelua
 	$(CC) $(GCCPLUGIN) -S libs/sdl2/sdl2_mixer.c -fplugin-arg-gcclua-script=libs/sdl2/sdl2_mixer.lua > libs/sdl2/sdl2_mixer.nelua
@@ -78,6 +78,8 @@ test-glfw: glfw
 	cd libs/glfw && $(NELUA) glfw-test.nelua
 test-sdl2: sdl2
 	cd libs/sdl2 && $(NELUA) sdl2-test.nelua
+test-sdl2-extras: sdl2-extras
+	cd libs/sdl2 && $(NELUA) sdl2-extras-test.nelua
 test-uv: uv
 	cd libs/uv && $(NELUA) uv-test.nelua
 test-sokol: sokol
