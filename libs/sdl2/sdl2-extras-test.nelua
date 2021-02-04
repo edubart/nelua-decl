@@ -1,0 +1,104 @@
+require 'sdl2'
+require 'sdl2_image'
+require 'sdl2_ttf'
+require 'sdl2_mixer'
+
+if SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) ~= 0 then
+  error 'Could not initialize SDL'
+end
+local window = SDL_CreateWindow(
+  "An SDL2 Window",
+  SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+  512, 512,
+  0)
+if not window then
+  error 'Could not create SDL Window'
+end
+
+local renderer = SDL_CreateRenderer(window, -1, 0)
+if not renderer then
+  error 'Could not create SDL Renderer'
+end
+
+if IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG ~= IMG_INIT_PNG then
+  error 'Could not initialize SDL image'
+end
+
+local on_off_surface = IMG_Load('on-off.png')
+if not on_off_surface then
+  error 'Could not load image'
+end
+local on_off_rect: SDL_Rect = {0, 0, on_off_surface.w, on_off_surface.h}
+
+local on_off_texture = SDL_CreateTextureFromSurface(renderer, on_off_surface)
+if not on_off_texture then
+  error 'Could not create texture from image surface'
+end
+SDL_FreeSurface(on_off_surface)
+
+if Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 2048) ~= 0 then
+  error 'Could not initialize SDL mixer'
+end
+
+local sound = Mix_LoadWAV('pluck.ogg')
+if not sound then
+  error 'Could not load sound file'
+end
+
+if TTF_Init() ~= 0 then
+  error 'Could not initialize SDL ttf'
+end
+
+local font = TTF_OpenFont('verabd.ttf', 20)
+if not font then
+  error 'Could not open font'
+end
+
+local text_surface = TTF_RenderText_Solid(font, "Press [Enter] to play sound!", {0xff, 0xff, 0xff, 0xff})
+if not text_surface then
+  error 'Could not render text'
+end
+local text_rect: SDL_Rect = {20, 20, text_surface.w, text_surface.h}
+
+local text_texture = SDL_CreateTextureFromSurface(renderer, text_surface)
+if not text_texture then
+  error 'Could not create texture from text surface'
+end
+SDL_FreeSurface(text_surface)
+
+while true do
+  local e: SDL_Event;
+  if SDL_PollEvent(&e) ~= 0 then
+    if e.type == SDL_QUIT then
+      break
+    elseif e.type == SDL_KEYDOWN and e.key.keysym.sym == SDLK_RETURN then
+      Mix_PlayChannel(-1, sound, 0)
+    end
+  end
+
+  local sound_is_playing = Mix_Playing(-1) > 0
+  local on_off_src_rect: SDL_Rect = {sound_is_playing and on_off_rect.w // 2 or 0, 0, on_off_rect.w // 2, on_off_rect.h}
+  local on_off_dest_rect: SDL_Rect = {20, 80, on_off_src_rect.w * 2, on_off_src_rect.h * 2}
+
+  SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
+  SDL_RenderClear(renderer)
+  SDL_RenderCopy(renderer, text_texture, nilptr, text_rect)
+  SDL_RenderCopy(renderer, on_off_texture, on_off_src_rect, on_off_dest_rect)
+
+  SDL_RenderPresent(renderer)
+end
+
+Mix_HaltChannel(-1)
+
+SDL_DestroyTexture(text_texture)
+SDL_DestroyTexture(on_off_texture)
+TTF_CloseFont(font)
+Mix_FreeChunk(sound)
+
+TTF_Quit()
+Mix_Quit()
+IMG_Quit()
+
+SDL_DestroyRenderer(renderer)
+SDL_DestroyWindow(window)
+SDL_Quit()
