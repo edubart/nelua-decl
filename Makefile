@@ -69,7 +69,7 @@ download-stb:
 	wget -O libs/stb/stb_truetype.h https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h
 
 test-all: test-minilua test-minicoro test-glfw test-sdl2 test-uv test-sokol test-miniaudio test-miniphysfs test-stb
-test-all-extra: test-all test-c test-pthread test-blend2d test-chipmunk test-raylib
+test-all-extra: test-all test-c test-pthread test-blend2d test-chipmunk test-sdl2-extras test-raylib
 test-c: c
 	cd libs/c && $(NELUA) c-test.nelua
 test-pthread: c

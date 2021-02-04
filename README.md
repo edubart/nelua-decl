@@ -36,7 +36,7 @@ Command explanation:
 
 The following libraries bindings are generated as example:
 
-* [SDL2](https://www.libsdl.org/) - [sdl2.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sdl2/sdl2.nelua)
+* [SDL2](https://www.libsdl.org/) - [sdl2.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sdl2/sdl2.nelua) - [sdl2_image.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sdl2/sdl2_image.nelua) - [sdl2_ttf.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sdl2/sdl2_ttf.nelua) - [sdl2_mixer.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sdl2/sdl2_mixer.nelua)
 * [GLFW](https://www.glfw.org/) - [glfw.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/glfw/glfw.nelua)
 * [minilua](https://github.com/edubart/minilua) (Lua 5.4) - [lua.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/minilua/minilua.nelua)
 * [minicoro](https://github.com/edubart/minicoro) - [minicoro.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/minicoro/minicoro.nelua)
