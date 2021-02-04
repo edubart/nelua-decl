@@ -2638,7 +2638,7 @@ global function SDL_SwapBE32(x: int32): int32 <cimport, nodecl> end
 global function SDL_SwapBE64(x: int64): int64 <cimport, nodecl> end
 global function SDL_SwapFloatBE(x: float32): float32 <cimport, nodecl> end
 global function SDL_LoadWAV(file: cstring, spec: *SDL_AudioSpec, audio_buf: **uint8, audio_len: *uint32): *SDL_AudioSpec <cimport, nodecl> end
-global function SDL_LoadBMPW(file: cstring): *SDL_Surface <cimport, nodecl> end
+global function SDL_LoadBMP(file: cstring): *SDL_Surface <cimport, nodecl> end
 global function SDL_SaveBMP(surface: *SDL_Surface, file: cstring): cint <cimport, nodecl> end
 global function SDL_GameControllerAddMappingsFromFile(file: cstring): cint <cimport, nodecl> end
 global function SDL_QuitRequested(): cint <cimport, nodecl> end
