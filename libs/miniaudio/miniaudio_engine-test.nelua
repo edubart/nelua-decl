@@ -7,6 +7,7 @@ require 'C.stdio'
 
 local result: ma_result
 local engine: ma_engine
+local sound: ma_sound
 
 if C.argc < 2 then
   error("No input file.")
@@ -17,9 +18,18 @@ if result ~= MA_SUCCESS then
   error("Failed to initialize audio engine.")
 end
 
-ma_engine_play_sound(&engine, C.argv[1], nilptr)
+result = ma_sound_init_from_file(&engine, C.argv[1], 0, nilptr, &sound)
+if result ~= MA_SUCCESS then
+  error("Failed to load sound.")
+end
 
-print("Press Enter to quit...")
-C.getchar()
+if ma_sound_start(&sound) ~= MA_SUCCESS then
+  error("Failed to play sound.")
+end
 
+while ma_sound_at_end(&sound) == MA_FALSE do
+  -- just wait
+end
+
+ma_sound_uninit(&sound)
 ma_engine_uninit(&engine)

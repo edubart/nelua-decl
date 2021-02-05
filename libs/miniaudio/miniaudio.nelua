@@ -102,6 +102,25 @@ global ma_format: type <cimport, nodecl, using> = @enum(cint){
   ma_format_f32 = 5,
   ma_format_count = 6
 }
+global ma_standard_sample_rate: type <cimport, nodecl, using> = @enum(cint){
+  ma_standard_sample_rate_48000 = 48000,
+  ma_standard_sample_rate_44100 = 44100,
+  ma_standard_sample_rate_32000 = 32000,
+  ma_standard_sample_rate_24000 = 24000,
+  ma_standard_sample_rate_22050 = 22050,
+  ma_standard_sample_rate_88200 = 88200,
+  ma_standard_sample_rate_96000 = 96000,
+  ma_standard_sample_rate_176400 = 176400,
+  ma_standard_sample_rate_192000 = 192000,
+  ma_standard_sample_rate_16000 = 16000,
+  ma_standard_sample_rate_11025 = 11250,
+  ma_standard_sample_rate_8000 = 8000,
+  ma_standard_sample_rate_352800 = 352800,
+  ma_standard_sample_rate_384000 = 384000,
+  ma_standard_sample_rate_min = 8000,
+  ma_standard_sample_rate_max = 384000,
+  ma_standard_sample_rate_count = 14
+}
 global ma_channel_mix_mode: type <cimport, nodecl, using> = @enum(cint){
   ma_channel_mix_mode_rectangular = 0,
   ma_channel_mix_mode_simple = 1,
@@ -601,7 +620,7 @@ global function ma_pcm_rb_get_subbuffer_ptr(pRB: *ma_pcm_rb, subbufferIndex: uin
 global ma_duplex_rb: type <cimport, nodecl> = @record{
   rb: ma_pcm_rb
 }
-global function ma_duplex_rb_init(inputSampleRate: uint32, captureFormat: ma_format, captureChannels: uint32, captureSampleRate: uint32, capturePeriodSizeInFrames: uint32, pAllocationCallbacks: *ma_allocation_callbacks, pRB: *ma_duplex_rb): ma_result <cimport, nodecl> end
+global function ma_duplex_rb_init(captureFormat: ma_format, captureChannels: uint32, sampleRate: uint32, captureInternalSampleRate: uint32, captureInternalPeriodSizeInFrames: uint32, pAllocationCallbacks: *ma_allocation_callbacks, pRB: *ma_duplex_rb): ma_result <cimport, nodecl> end
 global function ma_duplex_rb_uninit(pRB: *ma_duplex_rb): ma_result <cimport, nodecl> end
 global function ma_result_description(result: ma_result): cstring <cimport, nodecl> end
 global function ma_malloc(sz: csize, pAllocationCallbacks: *ma_allocation_callbacks): pointer <cimport, nodecl> end
@@ -850,7 +869,8 @@ ma_backend_callbacks = @record{
   onDeviceStop: function(*ma_device): ma_result,
   onDeviceRead: function(*ma_device, pointer, uint32, *uint32): ma_result,
   onDeviceWrite: function(*ma_device, pointer, uint32, *uint32): ma_result,
-  onDeviceAudioThread: function(*ma_device): ma_result
+  onDeviceDataLoop: function(*ma_device): ma_result,
+  onDeviceDataLoopWakeup: function(*ma_device): ma_result
 }
 ma_context_config = @record{
   logCallback: ma_log_proc,
@@ -892,15 +912,6 @@ ma_context = @record{
   playbackDeviceInfoCount: uint32,
   captureDeviceInfoCount: uint32,
   pDeviceInfos: *ma_device_info,
-  isBackendAsynchronous: ma_bool8,
-  onUninit: function(*ma_context): ma_result,
-  onEnumDevices: function(*ma_context, ma_enum_devices_callback_proc, pointer): ma_result,
-  onGetDeviceInfo: function(*ma_context, ma_device_type, *ma_device_id, ma_share_mode, *ma_device_info): ma_result,
-  onDeviceInit: function(*ma_context, *ma_device_config, *ma_device): ma_result,
-  onDeviceUninit: function(*ma_device),
-  onDeviceStart: function(*ma_device): ma_result,
-  onDeviceStop: function(*ma_device): ma_result,
-  onDeviceMainLoop: function(*ma_device): ma_result,
   __unnamed1: union{
     alsa: record{
       asoundSO: ma_handle,
@@ -911,8 +922,11 @@ ma_context = @record{
       snd_pcm_hw_params_set_format: ma_proc,
       snd_pcm_hw_params_set_format_first: ma_proc,
       snd_pcm_hw_params_get_format_mask: ma_proc,
+      snd_pcm_hw_params_set_channels: ma_proc,
       snd_pcm_hw_params_set_channels_near: ma_proc,
+      snd_pcm_hw_params_set_channels_minmax: ma_proc,
       snd_pcm_hw_params_set_rate_resample: ma_proc,
+      snd_pcm_hw_params_set_rate: ma_proc,
       snd_pcm_hw_params_set_rate_near: ma_proc,
       snd_pcm_hw_params_set_buffer_size_near: ma_proc,
       snd_pcm_hw_params_set_periods_near: ma_proc,
@@ -927,6 +941,9 @@ ma_context = @record{
       snd_pcm_hw_params_get_buffer_size: ma_proc,
       snd_pcm_hw_params_get_periods: ma_proc,
       snd_pcm_hw_params_get_access: ma_proc,
+      snd_pcm_hw_params_test_format: ma_proc,
+      snd_pcm_hw_params_test_channels: ma_proc,
+      snd_pcm_hw_params_test_rate: ma_proc,
       snd_pcm_hw_params: ma_proc,
       snd_pcm_sw_params_sizeof: ma_proc,
       snd_pcm_sw_params_current: ma_proc,
@@ -1080,15 +1097,12 @@ ma_device = @record{
   onData: ma_device_callback_proc,
   onStop: ma_stop_proc,
   pUserData: pointer,
-  lock: ma_mutex,
+  startStopLock: ma_mutex,
   wakeupEvent: ma_event,
   startEvent: ma_event,
   stopEvent: ma_event,
   thread: culong,
   workResult: ma_result,
-  usingDefaultSampleRate: ma_bool8,
-  usingDefaultBufferSize: ma_bool8,
-  usingDefaultPeriods: ma_bool8,
   isOwnerOfContext: ma_bool8,
   noPreZeroedOutputBuffer: ma_bool8,
   noClip: ma_bool8,
@@ -1117,10 +1131,7 @@ ma_device = @record{
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
-    converter: ma_data_converter,
-    usingDefaultFormat: ma_bool8,
-    usingDefaultChannels: ma_bool8,
-    usingDefaultChannelMap: ma_bool8
+    converter: ma_data_converter
   },
   capture: record{
     id: ma_device_id,
@@ -1136,10 +1147,7 @@ ma_device = @record{
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
-    converter: ma_data_converter,
-    usingDefaultFormat: ma_bool8,
-    usingDefaultChannels: ma_bool8,
-    usingDefaultChannelMap: ma_bool8
+    converter: ma_data_converter
   },
   __unnamed1: union{
     alsa: record{
@@ -1150,8 +1158,7 @@ ma_device = @record{
     },
     pulse: record{
       pStreamPlayback: ma_ptr,
-      pStreamCapture: ma_ptr,
-      duplexRB: ma_pcm_rb
+      pStreamCapture: ma_ptr
     },
     jack: record{
       pClient: ma_ptr,
@@ -1198,6 +1205,7 @@ global function ma_device_get_master_volume(pDevice: *ma_device, pVolume: *float
 global function ma_device_set_master_gain_db(pDevice: *ma_device, gainDB: float32): ma_result <cimport, nodecl> end
 global function ma_device_get_master_gain_db(pDevice: *ma_device, pGainDB: *float32): ma_result <cimport, nodecl> end
 global function ma_device_handle_backend_data_callback(pDevice: *ma_device, pOutput: pointer, pInput: pointer, frameCount: uint32): ma_result <cimport, nodecl> end
+global function ma_calculate_buffer_size_in_frames_from_descriptor(pDescriptor: *ma_device_descriptor, nativeSampleRate: uint32, performanceProfile: ma_performance_profile): uint32 <cimport, nodecl> end
 global function ma_get_backend_name(backend: ma_backend): cstring <cimport, nodecl> end
 global function ma_is_backend_enabled(backend: ma_backend): ma_bool32 <cimport, nodecl> end
 global function ma_get_enabled_backends(pBackends: *ma_backend, backendCap: csize, pBackendCount: *csize): ma_result <cimport, nodecl> end
@@ -1672,25 +1680,11 @@ global MA_FAILED_TO_INIT_BACKEND: cint <comptime> = -300
 global MA_FAILED_TO_OPEN_BACKEND_DEVICE: cint <comptime> = -301
 global MA_FAILED_TO_START_BACKEND_DEVICE: cint <comptime> = -302
 global MA_FAILED_TO_STOP_BACKEND_DEVICE: cint <comptime> = -303
-global MA_SAMPLE_RATE_8000: cint <comptime> = 8000
-global MA_SAMPLE_RATE_11025: cint <comptime> = 11025
-global MA_SAMPLE_RATE_16000: cint <comptime> = 16000
-global MA_SAMPLE_RATE_22050: cint <comptime> = 22050
-global MA_SAMPLE_RATE_24000: cint <comptime> = 24000
-global MA_SAMPLE_RATE_32000: cint <comptime> = 32000
-global MA_SAMPLE_RATE_44100: cint <comptime> = 44100
-global MA_SAMPLE_RATE_48000: cint <comptime> = 48000
-global MA_SAMPLE_RATE_88200: cint <comptime> = 88200
-global MA_SAMPLE_RATE_96000: cint <comptime> = 96000
-global MA_SAMPLE_RATE_176400: cint <comptime> = 176400
-global MA_SAMPLE_RATE_192000: cint <comptime> = 192000
-global MA_SAMPLE_RATE_352800: cint <comptime> = 352800
-global MA_SAMPLE_RATE_384000: cint <comptime> = 384000
 global MA_MIN_CHANNELS: cint <comptime> = 1
 global MA_MAX_CHANNELS: cint <comptime> = 32
+global MA_MAX_FILTER_ORDER: cint <comptime> = 8
 global MA_MIN_SAMPLE_RATE: cint <cimport, nodecl, const>
 global MA_MAX_SAMPLE_RATE: cint <cimport, nodecl, const>
-global MA_MAX_FILTER_ORDER: cint <comptime> = 8
 global MA_STATE_UNINITIALIZED: cint <comptime> = 0
 global MA_STATE_STOPPED: cint <comptime> = 1
 global MA_STATE_STARTED: cint <comptime> = 2

@@ -104,6 +104,25 @@ global ma_format: type <cimport, nodecl, using> = @enum(cint){
   ma_format_f32 = 5,
   ma_format_count = 6
 }
+global ma_standard_sample_rate: type <cimport, nodecl, using> = @enum(cint){
+  ma_standard_sample_rate_48000 = 48000,
+  ma_standard_sample_rate_44100 = 44100,
+  ma_standard_sample_rate_32000 = 32000,
+  ma_standard_sample_rate_24000 = 24000,
+  ma_standard_sample_rate_22050 = 22050,
+  ma_standard_sample_rate_88200 = 88200,
+  ma_standard_sample_rate_96000 = 96000,
+  ma_standard_sample_rate_176400 = 176400,
+  ma_standard_sample_rate_192000 = 192000,
+  ma_standard_sample_rate_16000 = 16000,
+  ma_standard_sample_rate_11025 = 11250,
+  ma_standard_sample_rate_8000 = 8000,
+  ma_standard_sample_rate_352800 = 352800,
+  ma_standard_sample_rate_384000 = 384000,
+  ma_standard_sample_rate_min = 8000,
+  ma_standard_sample_rate_max = 384000,
+  ma_standard_sample_rate_count = 14
+}
 global ma_channel_mix_mode: type <cimport, nodecl, using> = @enum(cint){
   ma_channel_mix_mode_rectangular = 0,
   ma_channel_mix_mode_simple = 1,
@@ -603,7 +622,7 @@ global function ma_pcm_rb_get_subbuffer_ptr(pRB: *ma_pcm_rb, subbufferIndex: uin
 global ma_duplex_rb: type <cimport, nodecl> = @record{
   rb: ma_pcm_rb
 }
-global function ma_duplex_rb_init(inputSampleRate: uint32, captureFormat: ma_format, captureChannels: uint32, captureSampleRate: uint32, capturePeriodSizeInFrames: uint32, pAllocationCallbacks: *ma_allocation_callbacks, pRB: *ma_duplex_rb): ma_result <cimport, nodecl> end
+global function ma_duplex_rb_init(captureFormat: ma_format, captureChannels: uint32, sampleRate: uint32, captureInternalSampleRate: uint32, captureInternalPeriodSizeInFrames: uint32, pAllocationCallbacks: *ma_allocation_callbacks, pRB: *ma_duplex_rb): ma_result <cimport, nodecl> end
 global function ma_duplex_rb_uninit(pRB: *ma_duplex_rb): ma_result <cimport, nodecl> end
 global function ma_result_description(result: ma_result): cstring <cimport, nodecl> end
 global function ma_malloc(sz: csize, pAllocationCallbacks: *ma_allocation_callbacks): pointer <cimport, nodecl> end
@@ -852,7 +871,8 @@ ma_backend_callbacks = @record{
   onDeviceStop: function(*ma_device): ma_result,
   onDeviceRead: function(*ma_device, pointer, uint32, *uint32): ma_result,
   onDeviceWrite: function(*ma_device, pointer, uint32, *uint32): ma_result,
-  onDeviceAudioThread: function(*ma_device): ma_result
+  onDeviceDataLoop: function(*ma_device): ma_result,
+  onDeviceDataLoopWakeup: function(*ma_device): ma_result
 }
 ma_context_config = @record{
   logCallback: ma_log_proc,
@@ -894,15 +914,6 @@ ma_context = @record{
   playbackDeviceInfoCount: uint32,
   captureDeviceInfoCount: uint32,
   pDeviceInfos: *ma_device_info,
-  isBackendAsynchronous: ma_bool8,
-  onUninit: function(*ma_context): ma_result,
-  onEnumDevices: function(*ma_context, ma_enum_devices_callback_proc, pointer): ma_result,
-  onGetDeviceInfo: function(*ma_context, ma_device_type, *ma_device_id, ma_share_mode, *ma_device_info): ma_result,
-  onDeviceInit: function(*ma_context, *ma_device_config, *ma_device): ma_result,
-  onDeviceUninit: function(*ma_device),
-  onDeviceStart: function(*ma_device): ma_result,
-  onDeviceStop: function(*ma_device): ma_result,
-  onDeviceMainLoop: function(*ma_device): ma_result,
   __unnamed1: union{
     alsa: record{
       asoundSO: ma_handle,
@@ -913,8 +924,11 @@ ma_context = @record{
       snd_pcm_hw_params_set_format: ma_proc,
       snd_pcm_hw_params_set_format_first: ma_proc,
       snd_pcm_hw_params_get_format_mask: ma_proc,
+      snd_pcm_hw_params_set_channels: ma_proc,
       snd_pcm_hw_params_set_channels_near: ma_proc,
+      snd_pcm_hw_params_set_channels_minmax: ma_proc,
       snd_pcm_hw_params_set_rate_resample: ma_proc,
+      snd_pcm_hw_params_set_rate: ma_proc,
       snd_pcm_hw_params_set_rate_near: ma_proc,
       snd_pcm_hw_params_set_buffer_size_near: ma_proc,
       snd_pcm_hw_params_set_periods_near: ma_proc,
@@ -929,6 +943,9 @@ ma_context = @record{
       snd_pcm_hw_params_get_buffer_size: ma_proc,
       snd_pcm_hw_params_get_periods: ma_proc,
       snd_pcm_hw_params_get_access: ma_proc,
+      snd_pcm_hw_params_test_format: ma_proc,
+      snd_pcm_hw_params_test_channels: ma_proc,
+      snd_pcm_hw_params_test_rate: ma_proc,
       snd_pcm_hw_params: ma_proc,
       snd_pcm_sw_params_sizeof: ma_proc,
       snd_pcm_sw_params_current: ma_proc,
@@ -1082,15 +1099,12 @@ ma_device = @record{
   onData: ma_device_callback_proc,
   onStop: ma_stop_proc,
   pUserData: pointer,
-  lock: ma_mutex,
+  startStopLock: ma_mutex,
   wakeupEvent: ma_event,
   startEvent: ma_event,
   stopEvent: ma_event,
   thread: culong,
   workResult: ma_result,
-  usingDefaultSampleRate: ma_bool8,
-  usingDefaultBufferSize: ma_bool8,
-  usingDefaultPeriods: ma_bool8,
   isOwnerOfContext: ma_bool8,
   noPreZeroedOutputBuffer: ma_bool8,
   noClip: ma_bool8,
@@ -1119,10 +1133,7 @@ ma_device = @record{
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
-    converter: ma_data_converter,
-    usingDefaultFormat: ma_bool8,
-    usingDefaultChannels: ma_bool8,
-    usingDefaultChannelMap: ma_bool8
+    converter: ma_data_converter
   },
   capture: record{
     id: ma_device_id,
@@ -1138,10 +1149,7 @@ ma_device = @record{
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
-    converter: ma_data_converter,
-    usingDefaultFormat: ma_bool8,
-    usingDefaultChannels: ma_bool8,
-    usingDefaultChannelMap: ma_bool8
+    converter: ma_data_converter
   },
   __unnamed1: union{
     alsa: record{
@@ -1152,8 +1160,7 @@ ma_device = @record{
     },
     pulse: record{
       pStreamPlayback: ma_ptr,
-      pStreamCapture: ma_ptr,
-      duplexRB: ma_pcm_rb
+      pStreamCapture: ma_ptr
     },
     jack: record{
       pClient: ma_ptr,
@@ -1200,6 +1207,7 @@ global function ma_device_get_master_volume(pDevice: *ma_device, pVolume: *float
 global function ma_device_set_master_gain_db(pDevice: *ma_device, gainDB: float32): ma_result <cimport, nodecl> end
 global function ma_device_get_master_gain_db(pDevice: *ma_device, pGainDB: *float32): ma_result <cimport, nodecl> end
 global function ma_device_handle_backend_data_callback(pDevice: *ma_device, pOutput: pointer, pInput: pointer, frameCount: uint32): ma_result <cimport, nodecl> end
+global function ma_calculate_buffer_size_in_frames_from_descriptor(pDescriptor: *ma_device_descriptor, nativeSampleRate: uint32, performanceProfile: ma_performance_profile): uint32 <cimport, nodecl> end
 global function ma_get_backend_name(backend: ma_backend): cstring <cimport, nodecl> end
 global function ma_is_backend_enabled(backend: ma_backend): ma_bool32 <cimport, nodecl> end
 global function ma_get_enabled_backends(pBackends: *ma_backend, backendCap: csize, pBackendCount: *csize): ma_result <cimport, nodecl> end
@@ -1612,6 +1620,7 @@ global function ma_node_set_state(pNode: pointer, state: ma_node_state): ma_resu
 global function ma_node_get_state(pNode: pointer): ma_node_state <cimport, nodecl> end
 global function ma_node_set_state_time(pNode: pointer, state: ma_node_state, globalTime: uint64): ma_result <cimport, nodecl> end
 global function ma_node_get_state_time(pNode: pointer, state: ma_node_state): uint64 <cimport, nodecl> end
+global function ma_node_get_state_by_time(pNode: pointer, globalTime: uint64): ma_node_state <cimport, nodecl> end
 global function ma_node_get_state_by_time_range(pNode: pointer, globalTimeBeg: uint64, globalTimeEnd: uint64): ma_node_state <cimport, nodecl> end
 global function ma_node_get_time(pNode: pointer): uint64 <cimport, nodecl> end
 global function ma_node_set_time(pNode: pointer, localTime: uint64): ma_result <cimport, nodecl> end
@@ -1699,7 +1708,7 @@ global function ma_async_notification_event_wait(pNotificationEvent: *ma_async_n
 global function ma_async_notification_event_signal(pNotificationEvent: *ma_async_notification_event): ma_result <cimport, nodecl> end
 global ma_job: type <cimport, nodecl> = @record{
   toc: union{
-    __unnamed1: record{
+    breakup: record{
       code: uint16,
       slot: uint16,
       refcount: uint32
@@ -1917,20 +1926,6 @@ global function ma_resource_manager_process_next_job(pResourceManager: *ma_resou
 global ma_engine: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_sound: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_sound_group: type <cimport, nodecl, forwarddecl> = @record{}
-global ma_listener: type <cimport, nodecl, forwarddecl> = @record{}
-global ma_vec3: type <cimport, nodecl> = @record{
-  x: float32,
-  y: float32,
-  z: float32
-}
-global function ma_vec3f(x: float32, y: float32, z: float32): ma_vec3 <cimport, nodecl> end
-global ma_quat: type <cimport, nodecl> = @record{
-  x: float32,
-  y: float32,
-  z: float32,
-  w: float32
-}
-global function ma_quatf(x: float32, y: float32, z: float32, w: float32): ma_quat <cimport, nodecl> end
 global ma_pan_mode: type <cimport, nodecl, using> = @enum(cint){
   ma_pan_mode_balance = 0,
   ma_pan_mode_pan = 1
@@ -1952,23 +1947,6 @@ global function ma_panner_init(pConfig: *ma_panner_config, pPanner: *ma_panner):
 global function ma_panner_process_pcm_frames(pPanner: *ma_panner, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
 global function ma_panner_set_mode(pPanner: *ma_panner, mode: ma_pan_mode): ma_result <cimport, nodecl> end
 global function ma_panner_set_pan(pPanner: *ma_panner, pan: float32): ma_result <cimport, nodecl> end
-global ma_spatializer_config: type <cimport, nodecl> = @record{
-  channelsIn: uint32,
-  channelsOut: uint32,
-  position: ma_vec3,
-  rotation: ma_quat
-}
-global function ma_spatializer_config_init(channelsIn: uint32, channelsOut: uint32): ma_spatializer_config <cimport, nodecl> end
-global ma_spatializer: type <cimport, nodecl> = @record{
-  channelsIn: uint32,
-  channelsOut: uint32,
-  position: ma_vec3,
-  rotation: ma_quat
-}
-global function ma_spatializer_init(pConfig: *ma_spatializer_config, pSpatializer: *ma_spatializer): ma_result <cimport, nodecl> end
-global function ma_spatializer_process_pcm_frames(pSpatializer: *ma_spatializer, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
-global function ma_spatializer_set_position(pSpatializer: *ma_spatializer, position: ma_vec3): ma_result <cimport, nodecl> end
-global function ma_spatializer_set_rotation(pSpatializer: *ma_spatializer, rotation: ma_quat): ma_result <cimport, nodecl> end
 global ma_fader_config: type <cimport, nodecl> = @record{
   format: ma_format,
   channels: uint32,
@@ -1987,6 +1965,108 @@ global function ma_fader_process_pcm_frames(pFader: *ma_fader, pFramesOut: point
 global function ma_fader_get_data_format(pFader: *ma_fader, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32): ma_result <cimport, nodecl> end
 global function ma_fader_set_fade(pFader: *ma_fader, volumeBeg: float32, volumeEnd: float32, lengthInFrames: uint64): ma_result <cimport, nodecl> end
 global function ma_fader_get_current_volume(pFader: *ma_fader, pVolume: *float32): ma_result <cimport, nodecl> end
+global ma_vec3f: type <cimport, nodecl> = @record{
+  x: float32,
+  y: float32,
+  z: float32
+}
+global ma_attenuation_model: type <cimport, nodecl, using> = @enum(cint){
+  ma_attenuation_model_none = 0,
+  ma_attenuation_model_inverse = 1,
+  ma_attenuation_model_linear = 2,
+  ma_attenuation_model_exponential = 3
+}
+global ma_positioning: type <cimport, nodecl, using> = @enum(cint){
+  ma_positioning_absolute = 0,
+  ma_positioning_relative = 1
+}
+global ma_handedness: type <cimport, nodecl, using> = @enum(cint){
+  ma_handedness_right = 0,
+  ma_handedness_left = 1
+}
+global ma_spatializer_listener_config: type <cimport, nodecl> = @record{
+  channelsOut: uint32,
+  channelMapOut: [32]cuchar,
+  handedness: ma_handedness,
+  coneInnerAngleInRadians: float32,
+  coneOuterAngleInRadians: float32,
+  coneOuterGain: float32,
+  speedOfSound: float32,
+  worldUp: ma_vec3f
+}
+global function ma_spatializer_listener_config_init(channelsOut: uint32): ma_spatializer_listener_config <cimport, nodecl> end
+global ma_spatializer_listener: type <cimport, nodecl> = @record{
+  config: ma_spatializer_listener_config,
+  position: ma_vec3f,
+  direction: ma_vec3f,
+  velocity: ma_vec3f
+}
+global function ma_spatializer_listener_init(pConfig: *ma_spatializer_listener_config, pListener: *ma_spatializer_listener): ma_result <cimport, nodecl> end
+global function ma_spatializer_listener_uninit(pListener: *ma_spatializer_listener) <cimport, nodecl> end
+global function ma_spatializer_listener_set_cone(pListener: *ma_spatializer_listener, innerAngleInRadians: float32, outerAngleInRadians: float32, outerGain: float32) <cimport, nodecl> end
+global function ma_spatializer_listener_get_cone(pListener: *ma_spatializer_listener, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
+global function ma_spatializer_listener_set_position(pListener: *ma_spatializer_listener, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_spatializer_listener_get_position(pListener: *ma_spatializer_listener): ma_vec3f <cimport, nodecl> end
+global function ma_spatializer_listener_set_direction(pListener: *ma_spatializer_listener, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_spatializer_listener_get_direction(pListener: *ma_spatializer_listener): ma_vec3f <cimport, nodecl> end
+global function ma_spatializer_listener_set_velocity(pListener: *ma_spatializer_listener, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_spatializer_listener_get_velocity(pListener: *ma_spatializer_listener): ma_vec3f <cimport, nodecl> end
+global function ma_spatializer_listener_set_speed_of_sound(pListener: *ma_spatializer_listener, speedOfSound: float32) <cimport, nodecl> end
+global function ma_spatializer_listener_get_speed_of_sound(pListener: *ma_spatializer_listener): float32 <cimport, nodecl> end
+global function ma_spatializer_listener_set_world_up(pListener: *ma_spatializer_listener, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_spatializer_listener_get_world_up(pListener: *ma_spatializer_listener): ma_vec3f <cimport, nodecl> end
+global ma_spatializer_config: type <cimport, nodecl> = @record{
+  channelsIn: uint32,
+  channelsOut: uint32,
+  channelMapIn: [32]cuchar,
+  attenuationModel: ma_attenuation_model,
+  positioning: ma_positioning,
+  handedness: ma_handedness,
+  minGain: float32,
+  maxGain: float32,
+  minDistance: float32,
+  maxDistance: float32,
+  rolloff: float32,
+  coneInnerAngleInRadians: float32,
+  coneOuterAngleInRadians: float32,
+  coneOuterGain: float32,
+  dopplerFactor: float32
+}
+global function ma_spatializer_config_init(channelsIn: uint32, channelsOut: uint32): ma_spatializer_config <cimport, nodecl> end
+global ma_spatializer: type <cimport, nodecl> = @record{
+  config: ma_spatializer_config,
+  position: ma_vec3f,
+  direction: ma_vec3f,
+  velocity: ma_vec3f,
+  dopplerPitch: float32
+}
+global function ma_spatializer_init(pConfig: *ma_spatializer_config, pSpatializer: *ma_spatializer): ma_result <cimport, nodecl> end
+global function ma_spatializer_uninit(pSpatializer: *ma_spatializer) <cimport, nodecl> end
+global function ma_spatializer_process_pcm_frames(pSpatializer: *ma_spatializer, pListener: *ma_spatializer_listener, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
+global function ma_spatializer_get_input_channels(pSpatializer: *ma_spatializer): uint32 <cimport, nodecl> end
+global function ma_spatializer_get_output_channels(pSpatializer: *ma_spatializer): uint32 <cimport, nodecl> end
+global function ma_spatializer_set_attenuation_model(pSpatializer: *ma_spatializer, attenuationModel: ma_attenuation_model) <cimport, nodecl> end
+global function ma_spatializer_get_attenuation_model(pSpatializer: *ma_spatializer): ma_attenuation_model <cimport, nodecl> end
+global function ma_spatializer_set_positioning(pSpatializer: *ma_spatializer, positioning: ma_positioning) <cimport, nodecl> end
+global function ma_spatializer_get_positioning(pSpatializer: *ma_spatializer): ma_positioning <cimport, nodecl> end
+global function ma_spatializer_set_min_gain(pSpatializer: *ma_spatializer, minGain: float32) <cimport, nodecl> end
+global function ma_spatializer_get_min_gain(pSpatializer: *ma_spatializer): float32 <cimport, nodecl> end
+global function ma_spatializer_set_max_gain(pSpatializer: *ma_spatializer, maxGain: float32) <cimport, nodecl> end
+global function ma_spatializer_get_max_gain(pSpatializer: *ma_spatializer): float32 <cimport, nodecl> end
+global function ma_spatializer_set_min_distance(pSpatializer: *ma_spatializer, minDistance: float32) <cimport, nodecl> end
+global function ma_spatializer_get_min_distance(pSpatializer: *ma_spatializer): float32 <cimport, nodecl> end
+global function ma_spatializer_set_max_distance(pSpatializer: *ma_spatializer, maxDistance: float32) <cimport, nodecl> end
+global function ma_spatializer_get_max_distance(pSpatializer: *ma_spatializer): float32 <cimport, nodecl> end
+global function ma_spatializer_set_cone(pSpatializer: *ma_spatializer, innerAngleInRadians: float32, outerAngleInRadians: float32, outerGain: float32) <cimport, nodecl> end
+global function ma_spatializer_get_cone(pSpatializer: *ma_spatializer, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
+global function ma_spatializer_set_doppler_factor(pSpatializer: *ma_spatializer, dopplerFactor: float32) <cimport, nodecl> end
+global function ma_spatializer_get_doppler_factor(pSpatializer: *ma_spatializer): float32 <cimport, nodecl> end
+global function ma_spatializer_set_position(pSpatializer: *ma_spatializer, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_spatializer_get_position(pSpatializer: *ma_spatializer): ma_vec3f <cimport, nodecl> end
+global function ma_spatializer_set_direction(pSpatializer: *ma_spatializer, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_spatializer_get_direction(pSpatializer: *ma_spatializer): ma_vec3f <cimport, nodecl> end
+global function ma_spatializer_set_velocity(pSpatializer: *ma_spatializer, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_spatializer_get_velocity(pSpatializer: *ma_spatializer): ma_vec3f <cimport, nodecl> end
 global ma_engine_node_type: type <cimport, nodecl, using> = @enum(cint){
   ma_engine_node_type_sound = 0,
   ma_engine_node_type_group = 1
@@ -1995,7 +2075,9 @@ global ma_engine_node_config: type <cimport, nodecl> = @record{
   pEngine: *ma_engine,
   type: ma_engine_node_type,
   channels: uint32,
-  isPitchDisabled: ma_bool8
+  isPitchDisabled: ma_bool8,
+  isSpatializationDisabled: ma_bool8,
+  pinnedListenerIndex: uint8
 }
 global function ma_engine_node_config_init(pEngine: *ma_engine, type: ma_engine_node_type, flags: uint32): ma_engine_node_config <cimport, nodecl> end
 global ma_engine_node: type <cimport, nodecl> = @record{
@@ -2007,12 +2089,13 @@ global ma_engine_node: type <cimport, nodecl> = @record{
   panner: ma_panner,
   pitch: float32,
   oldPitch: float32,
+  oldDopplerPitch: float32,
   isPitchDisabled: ma_bool8,
-  isSpatial: ma_bool8
+  isSpatializationDisabled: ma_bool8,
+  pinnedListenerIndex: uint8
 }
 global function ma_engine_node_init(pConfig: *ma_engine_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pEngineNode: *ma_engine_node): ma_result <cimport, nodecl> end
 global function ma_engine_node_uninit(pEngineNode: *ma_engine_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
-global function ma_engine_node_reset(pEngineNode: *ma_engine_node): ma_result <cimport, nodecl> end
 ma_sound = @record{
   engineNode: ma_engine_node,
   pDataSource: pointer,
@@ -2031,14 +2114,11 @@ ma_sound_inlined = @record{
 ma_sound_group = @record{
   engineNode: ma_engine_node
 }
-ma_listener = @record{
-  position: ma_vec3,
-  rotation: ma_quat
-}
 global ma_engine_config: type <cimport, nodecl> = @record{
   pResourceManager: *ma_resource_manager,
   pContext: *ma_context,
   pDevice: *ma_device,
+  listenerCount: uint32,
   channels: uint32,
   sampleRate: uint32,
   periodSizeInFrames: uint32,
@@ -2053,8 +2133,8 @@ ma_engine = @record{
   nodeGraph: ma_node_graph,
   pResourceManager: *ma_resource_manager,
   pDevice: *ma_device,
-  listener: ma_listener,
-  sampleRate: uint32,
+  listenerCount: uint32,
+  listeners: [4]ma_spatializer_listener,
   allocationCallbacks: ma_allocation_callbacks,
   ownsResourceManager: ma_bool8,
   ownsDevice: ma_bool8,
@@ -2064,7 +2144,6 @@ ma_engine = @record{
 }
 global function ma_engine_init(pConfig: *ma_engine_config, pEngine: *ma_engine): ma_result <cimport, nodecl> end
 global function ma_engine_uninit(pEngine: *ma_engine) <cimport, nodecl> end
-global function ma_engine_read_pcm_frames(pEngine: *ma_engine, pFramesOut: pointer, frameCount: uint32, pFramesRead: *uint32): ma_result <cimport, nodecl> end
 global function ma_engine_data_callback(pEngine: *ma_engine, pOutput: pointer, pInput: pointer, frameCount: uint32) <cimport, nodecl> end
 global function ma_engine_get_endpoint(pEngine: *ma_engine): pointer <cimport, nodecl> end
 global function ma_engine_get_time(pEngine: *ma_engine): uint64 <cimport, nodecl> end
@@ -2074,13 +2153,22 @@ global function ma_engine_start(pEngine: *ma_engine): ma_result <cimport, nodecl
 global function ma_engine_stop(pEngine: *ma_engine): ma_result <cimport, nodecl> end
 global function ma_engine_set_volume(pEngine: *ma_engine, volume: float32): ma_result <cimport, nodecl> end
 global function ma_engine_set_gain_db(pEngine: *ma_engine, gainDB: float32): ma_result <cimport, nodecl> end
-global function ma_engine_listener_set_position(pEngine: *ma_engine, position: ma_vec3): ma_result <cimport, nodecl> end
-global function ma_engine_listener_set_rotation(pEngine: *ma_engine, rotation: ma_quat): ma_result <cimport, nodecl> end
+global function ma_engine_get_listener_count(pEngine: *ma_engine): uint32 <cimport, nodecl> end
+global function ma_engine_find_closest_listener(pEngine: *ma_engine, absolutePosX: float32, absolutePosY: float32, absolutePosZ: float32): uint8 <cimport, nodecl> end
+global function ma_engine_listener_set_position(pEngine: *ma_engine, listenerIndex: uint32, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_engine_listener_get_position(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport, nodecl> end
+global function ma_engine_listener_set_direciton(pEngine: *ma_engine, listenerIndex: uint32, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_engine_listener_get_direction(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport, nodecl> end
+global function ma_engine_listener_set_velocity(pEngine: *ma_engine, listenerIndex: uint32, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_engine_listener_get_velocity(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport, nodecl> end
+global function ma_engine_listener_set_cone(pEngine: *ma_engine, listenerIndex: uint32, innerAngleInRadians: float32, outerAngleInRadians: float32, outerGain: float32) <cimport, nodecl> end
+global function ma_engine_listener_get_cone(pEngine: *ma_engine, listenerIndex: uint32, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
 global function ma_engine_play_sound(pEngine: *ma_engine, pFilePath: cstring, pGroup: *ma_sound_group): ma_result <cimport, nodecl> end
-global function ma_sound_init_from_file(pEngine: *ma_engine, pFilePath: cstring, flags: uint32, pNotification: pointer, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
-global function ma_sound_init_from_file_w(pEngine: *ma_engine, pFilePath: *cint, flags: uint32, pNotification: pointer, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
+global function ma_sound_init_from_file(pEngine: *ma_engine, pFilePath: cstring, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
+global function ma_sound_init_from_file_w(pEngine: *ma_engine, pFilePath: *cint, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_init_from_data_source(pEngine: *ma_engine, pDataSource: pointer, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_uninit(pSound: *ma_sound) <cimport, nodecl> end
+global function ma_sound_get_engine(pSound: *ma_sound): *ma_engine <cimport, nodecl> end
 global function ma_sound_start(pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_stop(pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_set_volume(pSound: *ma_sound, volume: float32): ma_result <cimport, nodecl> end
@@ -2088,37 +2176,90 @@ global function ma_sound_set_gain_db(pSound: *ma_sound, gainDB: float32): ma_res
 global function ma_sound_set_pan(pSound: *ma_sound, pan: float32): ma_result <cimport, nodecl> end
 global function ma_sound_set_pan_mode(pSound: *ma_sound, pan_mode: ma_pan_mode): ma_result <cimport, nodecl> end
 global function ma_sound_set_pitch(pSound: *ma_sound, pitch: float32): ma_result <cimport, nodecl> end
-global function ma_sound_set_position(pSound: *ma_sound, position: ma_vec3): ma_result <cimport, nodecl> end
-global function ma_sound_set_rotation(pSound: *ma_sound, rotation: ma_quat): ma_result <cimport, nodecl> end
+global function ma_sound_set_spatialization_enabled(pSound: *ma_sound, enabled: ma_bool32) <cimport, nodecl> end
+global function ma_sound_set_pinned_listener_index(pSound: *ma_sound, listenerIndex: uint8) <cimport, nodecl> end
+global function ma_sound_get_pinned_listener_index(pSound: *ma_sound): uint8 <cimport, nodecl> end
+global function ma_sound_set_position(pSound: *ma_sound, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_sound_get_position(pSound: *ma_sound): ma_vec3f <cimport, nodecl> end
+global function ma_sound_set_direction(pSound: *ma_sound, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_sound_get_direction(pSound: *ma_sound): ma_vec3f <cimport, nodecl> end
+global function ma_sound_set_velocity(pSound: *ma_sound, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_sound_get_velocity(pSound: *ma_sound): ma_vec3f <cimport, nodecl> end
+global function ma_sound_set_attenuation_model(pSound: *ma_sound, attenuationModel: ma_attenuation_model) <cimport, nodecl> end
+global function ma_sound_get_attenuation_model(pSound: *ma_sound): ma_attenuation_model <cimport, nodecl> end
+global function ma_sound_set_positioning(pSound: *ma_sound, positioning: ma_positioning) <cimport, nodecl> end
+global function ma_sound_get_positioning(pSound: *ma_sound): ma_positioning <cimport, nodecl> end
+global function ma_sound_set_min_gain(pSound: *ma_sound, minGain: float32) <cimport, nodecl> end
+global function ma_sound_get_min_gain(pSound: *ma_sound): float32 <cimport, nodecl> end
+global function ma_sound_set_max_gain(pSound: *ma_sound, maxGain: float32) <cimport, nodecl> end
+global function ma_sound_get_max_gain(pSound: *ma_sound): float32 <cimport, nodecl> end
+global function ma_sound_set_min_distance(pSound: *ma_sound, minDistance: float32) <cimport, nodecl> end
+global function ma_sound_get_min_distance(pSound: *ma_sound): float32 <cimport, nodecl> end
+global function ma_sound_set_max_distance(pSound: *ma_sound, maxDistance: float32) <cimport, nodecl> end
+global function ma_sound_get_max_distance(pSound: *ma_sound): float32 <cimport, nodecl> end
+global function ma_sound_set_cone(pSound: *ma_sound, innerAngleInRadians: float32, outerAngleInRadians: float32, outerGain: float32) <cimport, nodecl> end
+global function ma_sound_get_cone(pSound: *ma_sound, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
+global function ma_sound_set_doppler_factor(pSound: *ma_sound, dopplerFactor: float32) <cimport, nodecl> end
+global function ma_sound_get_doppler_factor(pSound: *ma_sound): float32 <cimport, nodecl> end
 global function ma_sound_set_looping(pSound: *ma_sound, isLooping: ma_bool8): ma_result <cimport, nodecl> end
 global function ma_sound_is_looping(pSound: *ma_sound): ma_bool32 <cimport, nodecl> end
-global function ma_sound_set_fade_in_frames(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_set_fade_in_pcm_frames(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_set_fade_in_milliseconds(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInMilliseconds: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_get_current_fade_volume(pSound: *ma_sound, pVolume: *float32): ma_result <cimport, nodecl> end
-global function ma_sound_set_start_time(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_set_stop_time(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_set_start_time_in_pcm_frames(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_set_start_time_in_milliseconds(pSound: *ma_sound, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_set_stop_time_in_pcm_frames(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_set_stop_time_in_milliseconds(pSound: *ma_sound, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_is_playing(pSound: *ma_sound): ma_bool32 <cimport, nodecl> end
 global function ma_sound_at_end(pSound: *ma_sound): ma_bool32 <cimport, nodecl> end
-global function ma_sound_get_time_in_frames(pSound: *ma_sound, pTimeInFrames: *uint64): ma_result <cimport, nodecl> end
+global function ma_sound_get_time_in_pcm_frames(pSound: *ma_sound, pTimeInFrames: *uint64): ma_result <cimport, nodecl> end
 global function ma_sound_seek_to_pcm_frame(pSound: *ma_sound, frameIndex: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_get_data_format(pSound: *ma_sound, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32): ma_result <cimport, nodecl> end
 global function ma_sound_get_cursor_in_pcm_frames(pSound: *ma_sound, pCursor: *uint64): ma_result <cimport, nodecl> end
 global function ma_sound_get_length_in_pcm_frames(pSound: *ma_sound, pLength: *uint64): ma_result <cimport, nodecl> end
 global function ma_sound_group_init(pEngine: *ma_engine, flags: uint32, pParentGroup: *ma_sound_group, pGroup: *ma_sound_group): ma_result <cimport, nodecl> end
 global function ma_sound_group_uninit(pGroup: *ma_sound_group) <cimport, nodecl> end
+global function ma_sound_group_get_engine(pGroup: *ma_sound_group): *ma_engine <cimport, nodecl> end
 global function ma_sound_group_start(pGroup: *ma_sound_group): ma_result <cimport, nodecl> end
 global function ma_sound_group_stop(pGroup: *ma_sound_group): ma_result <cimport, nodecl> end
 global function ma_sound_group_set_volume(pGroup: *ma_sound_group, volume: float32): ma_result <cimport, nodecl> end
 global function ma_sound_group_set_gain_db(pGroup: *ma_sound_group, gainDB: float32): ma_result <cimport, nodecl> end
 global function ma_sound_group_set_pan(pGroup: *ma_sound_group, pan: float32): ma_result <cimport, nodecl> end
 global function ma_sound_group_set_pitch(pGroup: *ma_sound_group, pitch: float32): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_fade_in_frames(pGroup: *ma_sound_group, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_set_spatialization_enabled(pGroup: *ma_sound_group, enabled: ma_bool32) <cimport, nodecl> end
+global function ma_sound_group_set_pinned_listener_index(pGroup: *ma_sound_group, listenerIndex: uint8) <cimport, nodecl> end
+global function ma_sound_group_get_pinned_listener_index(pGroup: *ma_sound_group): uint8 <cimport, nodecl> end
+global function ma_sound_group_set_position(pGroup: *ma_sound_group, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_sound_group_get_position(pGroup: *ma_sound_group): ma_vec3f <cimport, nodecl> end
+global function ma_sound_group_set_direction(pGroup: *ma_sound_group, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_sound_group_get_direction(pGroup: *ma_sound_group): ma_vec3f <cimport, nodecl> end
+global function ma_sound_group_set_velocity(pGroup: *ma_sound_group, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_sound_group_get_velocity(pGroup: *ma_sound_group): ma_vec3f <cimport, nodecl> end
+global function ma_sound_group_set_attenuation_model(pGroup: *ma_sound_group, attenuationModel: ma_attenuation_model) <cimport, nodecl> end
+global function ma_sound_group_get_attenuation_model(pGroup: *ma_sound_group): ma_attenuation_model <cimport, nodecl> end
+global function ma_sound_group_set_positioning(pGroup: *ma_sound_group, positioning: ma_positioning) <cimport, nodecl> end
+global function ma_sound_group_get_positioning(pGroup: *ma_sound_group): ma_positioning <cimport, nodecl> end
+global function ma_sound_group_set_min_gain(pGroup: *ma_sound_group, minGain: float32) <cimport, nodecl> end
+global function ma_sound_group_get_min_gain(pGroup: *ma_sound_group): float32 <cimport, nodecl> end
+global function ma_sound_group_set_max_gain(pGroup: *ma_sound_group, maxGain: float32) <cimport, nodecl> end
+global function ma_sound_group_get_max_gain(pGroup: *ma_sound_group): float32 <cimport, nodecl> end
+global function ma_sound_group_set_min_distance(pGroup: *ma_sound_group, minDistance: float32) <cimport, nodecl> end
+global function ma_sound_group_get_min_distance(pGroup: *ma_sound_group): float32 <cimport, nodecl> end
+global function ma_sound_group_set_max_distance(pGroup: *ma_sound_group, maxDistance: float32) <cimport, nodecl> end
+global function ma_sound_group_get_max_distance(pGroup: *ma_sound_group): float32 <cimport, nodecl> end
+global function ma_sound_group_set_cone(pGroup: *ma_sound_group, innerAngleInRadians: float32, outerAngleInRadians: float32, outerGain: float32) <cimport, nodecl> end
+global function ma_sound_group_get_cone(pGroup: *ma_sound_group, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
+global function ma_sound_group_set_doppler_factor(pGroup: *ma_sound_group, dopplerFactor: float32) <cimport, nodecl> end
+global function ma_sound_group_get_doppler_factor(pGroup: *ma_sound_group): float32 <cimport, nodecl> end
+global function ma_sound_group_set_fade_in_pcm_frames(pGroup: *ma_sound_group, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_group_set_fade_in_milliseconds(pGroup: *ma_sound_group, volumeBeg: float32, volumeEnd: float32, fadeLengthInMilliseconds: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_group_get_current_fade_volume(pGroup: *ma_sound_group, pVolume: *float32): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_start_time(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_stop_time(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_set_start_time_in_pcm_frames(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_set_start_time_in_milliseconds(pGroup: *ma_sound_group, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_set_stop_time_in_pcm_frames(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_set_stop_time_in_milliseconds(pGroup: *ma_sound_group, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
 global function ma_sound_group_is_playing(pGroup: *ma_sound_group): ma_bool32 <cimport, nodecl> end
-global function ma_sound_group_get_time_in_frames(pGroup: *ma_sound_group, pTimeInFrames: *uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_get_time_in_pcm_frames(pGroup: *ma_sound_group, pTimeInFrames: *uint64): ma_result <cimport, nodecl> end
 global MA_VERSION_MAJOR: cint <cimport, nodecl, const>
 global MA_VERSION_MINOR: cint <cimport, nodecl, const>
 global MA_VERSION_REVISION: cint <cimport, nodecl, const>
@@ -2255,25 +2396,11 @@ global MA_FAILED_TO_INIT_BACKEND: cint <comptime> = -300
 global MA_FAILED_TO_OPEN_BACKEND_DEVICE: cint <comptime> = -301
 global MA_FAILED_TO_START_BACKEND_DEVICE: cint <comptime> = -302
 global MA_FAILED_TO_STOP_BACKEND_DEVICE: cint <comptime> = -303
-global MA_SAMPLE_RATE_8000: cint <comptime> = 8000
-global MA_SAMPLE_RATE_11025: cint <comptime> = 11025
-global MA_SAMPLE_RATE_16000: cint <comptime> = 16000
-global MA_SAMPLE_RATE_22050: cint <comptime> = 22050
-global MA_SAMPLE_RATE_24000: cint <comptime> = 24000
-global MA_SAMPLE_RATE_32000: cint <comptime> = 32000
-global MA_SAMPLE_RATE_44100: cint <comptime> = 44100
-global MA_SAMPLE_RATE_48000: cint <comptime> = 48000
-global MA_SAMPLE_RATE_88200: cint <comptime> = 88200
-global MA_SAMPLE_RATE_96000: cint <comptime> = 96000
-global MA_SAMPLE_RATE_176400: cint <comptime> = 176400
-global MA_SAMPLE_RATE_192000: cint <comptime> = 192000
-global MA_SAMPLE_RATE_352800: cint <comptime> = 352800
-global MA_SAMPLE_RATE_384000: cint <comptime> = 384000
 global MA_MIN_CHANNELS: cint <comptime> = 1
 global MA_MAX_CHANNELS: cint <comptime> = 32
+global MA_MAX_FILTER_ORDER: cint <comptime> = 8
 global MA_MIN_SAMPLE_RATE: cint <cimport, nodecl, const>
 global MA_MAX_SAMPLE_RATE: cint <cimport, nodecl, const>
-global MA_MAX_FILTER_ORDER: cint <comptime> = 8
 global MA_STATE_UNINITIALIZED: cint <comptime> = 0
 global MA_STATE_STOPPED: cint <comptime> = 1
 global MA_STATE_STARTED: cint <comptime> = 2
@@ -2325,4 +2452,6 @@ global MA_SOUND_FLAG_DECODE: cint <cimport, nodecl, const>
 global MA_SOUND_FLAG_ASYNC: cint <cimport, nodecl, const>
 global MA_SOUND_FLAG_WAIT_INIT: cint <cimport, nodecl, const>
 global MA_SOUND_FLAG_NO_DEFAULT_ATTACHMENT: cint <comptime> = 0x00000010
-global MA_SOUND_FLAG_DISABLE_PITCH: cint <comptime> = 0x00000020
+global MA_SOUND_FLAG_NO_PITCH: cint <comptime> = 0x00000020
+global MA_SOUND_FLAG_NO_SPATIALIZATION: cint <comptime> = 0x00000040
+global MA_ENGINE_MAX_LISTENERS: cint <comptime> = 4

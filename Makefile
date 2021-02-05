@@ -48,8 +48,8 @@ raylib:
 
 download: download-sokol download-stb download-miniaudio download-miniphysfs download-minilua download-minicoro
 download-miniaudio:
-	wget -O libs/miniaudio/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
-	wget -O libs/miniaudio/miniaudio_engine.h https://raw.githubusercontent.com/mackron/miniaudio/master/research/miniaudio_engine.h
+	wget -O libs/miniaudio/miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/dev/miniaudio.h
+	wget -O libs/miniaudio/miniaudio_engine.h https://raw.githubusercontent.com/mackron/miniaudio/dev/research/miniaudio_engine.h
 download-miniphysfs:
 	wget -O libs/miniphysfs/miniphysfs.h https://raw.githubusercontent.com/edubart/miniphysfs/main/miniphysfs.h
 download-minilua:
@@ -86,7 +86,7 @@ test-sokol: sokol
 	cd libs/sokol && $(NELUA) sokol-test.nelua
 test-miniaudio: miniaudio
 	cd libs/miniaudio && $(NELUA) miniaudio-test.nelua pluck.wav
-# 	cd libs/miniaudio && $(NELUA) miniaudio-engine-test.nelua pluck.wav
+	cd libs/miniaudio && $(NELUA) miniaudio_engine-test.nelua pluck.wav
 test-miniphysfs: miniphysfs
 	cd libs/miniphysfs && $(NELUA) miniphysfs-test.nelua
 test-minilua: minilua
