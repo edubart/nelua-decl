@@ -25,7 +25,7 @@ local function init()
   sg_setup(&sgdesc)
   state.pass_action = {
     colors = {
-      {action=SG_ACTION_CLEAR, val={1.0, 0.0, 0.0, 1.0}}
+      {action=SG_ACTION_CLEAR, value={1.0, 0.0, 0.0, 1.0}}
     }
   }
 
@@ -40,9 +40,9 @@ end
 
 local function frame()
   -- draw background
-  local g: float32 = state.pass_action.colors[0].val[1] + 0.01_f32
+  local g: float32 = state.pass_action.colors[0].value.g + 0.01_f32
   if g > 1.0_f32 then g = 0.0_f32 end
-  state.pass_action.colors[0].val[1] = g
+  state.pass_action.colors[0].value.g = g
   sg_begin_default_pass(&state.pass_action, sapp_width(), sapp_height())
   sg_end_pass()
   sg_commit()

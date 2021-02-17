@@ -5,7 +5,7 @@ require 'coroutine'
 local loop: uv_loop_t
 
 -- Asynchronous write.
-local function uv_write_async(stream: *uv_stream_t, message: stringview)
+local function uv_write_async(stream: *uv_stream_t, message: string)
   local buf = uv_buf_init(message.data, message.size)
   local write_req: uv_write_t
   -- Request write.
@@ -36,7 +36,7 @@ local function uv_tcp_connect_async(tcp: *uv_tcp_t, addr: *sockaddr): (cint, *uv
 end
 
 -- Asynchronous read.
-local function uv_tcp_read_async(stream: *uv_stream_t): (cint, stringview)
+local function uv_tcp_read_async(stream: *uv_stream_t): (cint, string)
   -- Request read.
   uv_read_start(stream,
   function(handle: *uv_handle_t, suggested_size: csize, buf: *uv_buf_t)
@@ -54,9 +54,9 @@ local function uv_tcp_read_async(stream: *uv_stream_t): (cint, stringview)
   coroutine.yield()
   local buf, nread = coroutine.pop(coroutine.running(), @*uv_buf_t), coroutine.pop(coroutine.running(), @clong)
   if nread < 0 then
-    return nread, (@stringview){}
+    return nread, (@string){}
   end
-  return 0, (@stringview){data=buf.base, size=buf.len}
+  return 0, (@string){data=buf.base, size=buf.len}
 end
 
 local function client_request()

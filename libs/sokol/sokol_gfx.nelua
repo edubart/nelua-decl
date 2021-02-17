@@ -27,6 +27,16 @@ global sg_pass: type <cimport, nodecl> = @record{
 global sg_context: type <cimport, nodecl> = @record{
   id: uint32
 }
+global sg_range: type <cimport, nodecl> = @record{
+  ptr: pointer,
+  size: csize
+}
+global sg_color: type <cimport, nodecl> = @record{
+  r: float32,
+  g: float32,
+  b: float32,
+  a: float32
+}
 global sg_backend: type <cimport, nodecl, using> = @enum(cint){
   SG_BACKEND_GLCORE33 = 0,
   SG_BACKEND_GLES2 = 1,
@@ -119,15 +129,17 @@ global sg_features: type <cimport, nodecl> = @record{
   msaa_render_targets: boolean,
   imagetype_3d: boolean,
   imagetype_array: boolean,
-  image_clamp_to_border: boolean
+  image_clamp_to_border: boolean,
+  mrt_independent_blend_state: boolean,
+  mrt_independent_write_mask: boolean
 }
 global sg_limits: type <cimport, nodecl> = @record{
-  max_image_size_2d: uint32,
-  max_image_size_cube: uint32,
-  max_image_size_3d: uint32,
-  max_image_size_array: uint32,
-  max_image_array_layers: uint32,
-  max_vertex_attrs: uint32
+  max_image_size_2d: cint,
+  max_image_size_cube: cint,
+  max_image_size_3d: cint,
+  max_image_size_array: cint,
+  max_image_array_layers: cint,
+  max_vertex_attrs: cint
 }
 global sg_resource_state: type <cimport, nodecl, using> = @enum(cint){
   SG_RESOURCESTATE_INITIAL = 0,
@@ -339,9 +351,18 @@ global sg_color_mask: type <cimport, nodecl, using> = @enum(cint){
   SG_COLORMASK_NONE = 16,
   SG_COLORMASK_R = 1,
   SG_COLORMASK_G = 2,
+  SG_COLORMASK_RG = 3,
   SG_COLORMASK_B = 4,
-  SG_COLORMASK_A = 8,
+  SG_COLORMASK_RB = 5,
+  SG_COLORMASK_GB = 6,
   SG_COLORMASK_RGB = 7,
+  SG_COLORMASK_A = 8,
+  SG_COLORMASK_RA = 9,
+  SG_COLORMASK_GA = 10,
+  SG_COLORMASK_RGA = 11,
+  SG_COLORMASK_BA = 12,
+  SG_COLORMASK_RBA = 13,
+  SG_COLORMASK_GBA = 14,
   SG_COLORMASK_RGBA = 15,
   _SG_COLORMASK_FORCE_U32 = 2147483647
 }
@@ -355,15 +376,15 @@ global sg_action: type <cimport, nodecl, using> = @enum(cint){
 }
 global sg_color_attachment_action: type <cimport, nodecl> = @record{
   action: sg_action,
-  val: [4]float32
+  value: sg_color
 }
 global sg_depth_attachment_action: type <cimport, nodecl> = @record{
   action: sg_action,
-  val: float32
+  value: float32
 }
 global sg_stencil_attachment_action: type <cimport, nodecl> = @record{
   action: sg_action,
-  val: uint8
+  value: uint8
 }
 global sg_pass_action: type <cimport, nodecl> = @record{
   _start_canary: uint32,
@@ -384,10 +405,10 @@ global sg_bindings: type <cimport, nodecl> = @record{
 }
 global sg_buffer_desc: type <cimport, nodecl> = @record{
   _start_canary: uint32,
-  size: cint,
+  size: csize,
   type: sg_buffer_type,
   usage: sg_usage,
-  content: pointer,
+  data: sg_range,
   label: cstring,
   gl_buffers: [2]uint32,
   mtl_buffers: [2]pointer,
@@ -395,12 +416,8 @@ global sg_buffer_desc: type <cimport, nodecl> = @record{
   wgpu_buffer: pointer,
   _end_canary: uint32
 }
-global sg_subimage_content: type <cimport, nodecl> = @record{
-  ptr: pointer,
-  size: cint
-}
-global sg_image_content: type <cimport, nodecl> = @record{
-  subimage: [6][16]sg_subimage_content
+global sg_image_data: type <cimport, nodecl> = @record{
+  subimage: [6][16]sg_range
 }
 global sg_image_desc: type <cimport, nodecl> = @record{
   _start_canary: uint32,
@@ -422,7 +439,7 @@ global sg_image_desc: type <cimport, nodecl> = @record{
   max_anisotropy: uint32,
   min_lod: float32,
   max_lod: float32,
-  content: sg_image_content,
+  data: sg_image_data,
   label: cstring,
   gl_textures: [2]uint32,
   gl_texture_target: uint32,
@@ -443,18 +460,17 @@ global sg_shader_uniform_desc: type <cimport, nodecl> = @record{
   array_count: cint
 }
 global sg_shader_uniform_block_desc: type <cimport, nodecl> = @record{
-  size: cint,
+  size: csize,
   uniforms: [16]sg_shader_uniform_desc
 }
 global sg_shader_image_desc: type <cimport, nodecl> = @record{
   name: cstring,
-  type: sg_image_type,
+  image_type: sg_image_type,
   sampler_type: sg_sampler_type
 }
 global sg_shader_stage_desc: type <cimport, nodecl> = @record{
   source: cstring,
-  byte_code: *uint8,
-  byte_code_size: cint,
+  bytecode: sg_range,
   entry: cstring,
   d3d11_target: cstring,
   uniform_blocks: [4]sg_shader_uniform_block_desc,
@@ -482,21 +498,27 @@ global sg_layout_desc: type <cimport, nodecl> = @record{
   buffers: [8]sg_buffer_layout_desc,
   attrs: [16]sg_vertex_attr_desc
 }
-global sg_stencil_state: type <cimport, nodecl> = @record{
+global sg_stencil_face_state: type <cimport, nodecl> = @record{
+  compare: sg_compare_func,
   fail_op: sg_stencil_op,
   depth_fail_op: sg_stencil_op,
-  pass_op: sg_stencil_op,
-  compare_func: sg_compare_func
+  pass_op: sg_stencil_op
 }
-global sg_depth_stencil_state: type <cimport, nodecl> = @record{
-  stencil_front: sg_stencil_state,
-  stencil_back: sg_stencil_state,
-  depth_compare_func: sg_compare_func,
-  depth_write_enabled: boolean,
-  stencil_enabled: boolean,
-  stencil_read_mask: uint8,
-  stencil_write_mask: uint8,
-  stencil_ref: uint8
+global sg_stencil_state: type <cimport, nodecl> = @record{
+  enabled: boolean,
+  front: sg_stencil_face_state,
+  back: sg_stencil_face_state,
+  read_mask: uint8,
+  write_mask: uint8,
+  ref: uint8
+}
+global sg_depth_state: type <cimport, nodecl> = @record{
+  pixel_format: sg_pixel_format,
+  compare: sg_compare_func,
+  write_enabled: boolean,
+  bias: float32,
+  bias_slope_scale: float32,
+  bias_clamp: float32
 }
 global sg_blend_state: type <cimport, nodecl> = @record{
   enabled: boolean,
@@ -505,43 +527,40 @@ global sg_blend_state: type <cimport, nodecl> = @record{
   op_rgb: sg_blend_op,
   src_factor_alpha: sg_blend_factor,
   dst_factor_alpha: sg_blend_factor,
-  op_alpha: sg_blend_op,
-  color_write_mask: uint8,
-  color_attachment_count: cint,
-  color_format: sg_pixel_format,
-  depth_format: sg_pixel_format,
-  blend_color: [4]float32
+  op_alpha: sg_blend_op
 }
-global sg_rasterizer_state: type <cimport, nodecl> = @record{
-  alpha_to_coverage_enabled: boolean,
-  cull_mode: sg_cull_mode,
-  face_winding: sg_face_winding,
-  sample_count: cint,
-  depth_bias: float32,
-  depth_bias_slope_scale: float32,
-  depth_bias_clamp: float32
+global sg_color_state: type <cimport, nodecl> = @record{
+  pixel_format: sg_pixel_format,
+  write_mask: sg_color_mask,
+  blend: sg_blend_state
 }
 global sg_pipeline_desc: type <cimport, nodecl> = @record{
   _start_canary: uint32,
-  layout: sg_layout_desc,
   shader: sg_shader,
+  layout: sg_layout_desc,
+  depth: sg_depth_state,
+  stencil: sg_stencil_state,
+  color_count: cint,
+  colors: [4]sg_color_state,
   primitive_type: sg_primitive_type,
   index_type: sg_index_type,
-  depth_stencil: sg_depth_stencil_state,
-  blend: sg_blend_state,
-  rasterizer: sg_rasterizer_state,
+  cull_mode: sg_cull_mode,
+  face_winding: sg_face_winding,
+  sample_count: cint,
+  blend_color: sg_color,
+  alpha_to_coverage_enabled: boolean,
   label: cstring,
   _end_canary: uint32
 }
-global sg_attachment_desc: type <cimport, nodecl> = @record{
+global sg_pass_attachment_desc: type <cimport, nodecl> = @record{
   image: sg_image,
   mip_level: cint,
   slice: cint
 }
 global sg_pass_desc: type <cimport, nodecl> = @record{
   _start_canary: uint32,
-  color_attachments: [4]sg_attachment_desc,
-  depth_stencil_attachment: sg_attachment_desc,
+  color_attachments: [4]sg_pass_attachment_desc,
+  depth_stencil_attachment: sg_pass_attachment_desc,
   label: cstring,
   _end_canary: uint32
 }
@@ -558,16 +577,16 @@ global sg_trace_hooks: type <cimport, nodecl> = @record{
   destroy_shader: function(sg_shader, pointer),
   destroy_pipeline: function(sg_pipeline, pointer),
   destroy_pass: function(sg_pass, pointer),
-  update_buffer: function(sg_buffer, pointer, cint, pointer),
-  update_image: function(sg_image, *sg_image_content, pointer),
-  append_buffer: function(sg_buffer, pointer, cint, cint, pointer),
+  update_buffer: function(sg_buffer, *sg_range, pointer),
+  update_image: function(sg_image, *sg_image_data, pointer),
+  append_buffer: function(sg_buffer, *sg_range, cint, pointer),
   begin_default_pass: function(*sg_pass_action, cint, cint, pointer),
   begin_pass: function(sg_pass, *sg_pass_action, pointer),
   apply_viewport: function(cint, cint, cint, cint, boolean, pointer),
   apply_scissor_rect: function(cint, cint, cint, cint, boolean, pointer),
   apply_pipeline: function(sg_pipeline, pointer),
   apply_bindings: function(*sg_bindings, pointer),
-  apply_uniforms: function(sg_shader_stage, cint, pointer, cint, pointer),
+  apply_uniforms: function(sg_shader_stage, cint, *sg_range, pointer),
   draw: function(cint, cint, cint, pointer),
   end_pass: function(pointer),
   commit: function(pointer),
@@ -709,17 +728,20 @@ global function sg_destroy_image(img: sg_image) <cimport, nodecl> end
 global function sg_destroy_shader(shd: sg_shader) <cimport, nodecl> end
 global function sg_destroy_pipeline(pip: sg_pipeline) <cimport, nodecl> end
 global function sg_destroy_pass(pass: sg_pass) <cimport, nodecl> end
-global function sg_update_buffer(buf: sg_buffer, data_ptr: pointer, data_size: cint) <cimport, nodecl> end
-global function sg_update_image(img: sg_image, data: *sg_image_content) <cimport, nodecl> end
-global function sg_append_buffer(buf: sg_buffer, data_ptr: pointer, data_size: cint): cint <cimport, nodecl> end
+global function sg_update_buffer(buf: sg_buffer, data: *sg_range) <cimport, nodecl> end
+global function sg_update_image(img: sg_image, data: *sg_image_data) <cimport, nodecl> end
+global function sg_append_buffer(buf: sg_buffer, data: *sg_range): cint <cimport, nodecl> end
 global function sg_query_buffer_overflow(buf: sg_buffer): boolean <cimport, nodecl> end
 global function sg_begin_default_pass(pass_action: *sg_pass_action, width: cint, height: cint) <cimport, nodecl> end
+global function sg_begin_default_passf(pass_action: *sg_pass_action, width: float32, height: float32) <cimport, nodecl> end
 global function sg_begin_pass(pass: sg_pass, pass_action: *sg_pass_action) <cimport, nodecl> end
 global function sg_apply_viewport(x: cint, y: cint, width: cint, height: cint, origin_top_left: boolean) <cimport, nodecl> end
+global function sg_apply_viewportf(x: float32, y: float32, width: float32, height: float32, origin_top_left: boolean) <cimport, nodecl> end
 global function sg_apply_scissor_rect(x: cint, y: cint, width: cint, height: cint, origin_top_left: boolean) <cimport, nodecl> end
+global function sg_apply_scissor_rectf(x: float32, y: float32, width: float32, height: float32, origin_top_left: boolean) <cimport, nodecl> end
 global function sg_apply_pipeline(pip: sg_pipeline) <cimport, nodecl> end
 global function sg_apply_bindings(bindings: *sg_bindings) <cimport, nodecl> end
-global function sg_apply_uniforms(stage: sg_shader_stage, ub_index: cint, data: pointer, num_bytes: cint) <cimport, nodecl> end
+global function sg_apply_uniforms(stage: sg_shader_stage, ub_index: cint, data: *sg_range) <cimport, nodecl> end
 global function sg_draw(base_element: cint, num_elements: cint, num_instances: cint) <cimport, nodecl> end
 global function sg_end_pass() <cimport, nodecl> end
 global function sg_commit() <cimport, nodecl> end

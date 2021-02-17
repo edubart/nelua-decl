@@ -47,8 +47,8 @@ local function update_player(player: *Player, env_items: [ENV_ITEMS_LEN]EnvItem,
   local hit_obstacle: boolean = false
 
   for i: integer = 0, < ENV_ITEMS_LEN do
-    local ei: *EnvItem = env_items[i]
-    local p: *Vector2 = player.position
+    local ei: *EnvItem = &env_items[i]
+    local p: *Vector2 = &player.position
 
     if ei.blocking and
       ei.rect.x <= p.x and
@@ -82,7 +82,7 @@ local function update_camera_center_inside_map(camera: *Camera2D, player: *Playe
   local min_x: number, min_y: number, max_x: number, max_y: number = 1000, 1000, -1000, -1000
 
   for i: integer = 0, < ENV_ITEMS_LEN do
-    local ei: *EnvItem = env_items[i]
+    local ei: *EnvItem = &env_items[i]
 
     min_x = math.min(ei.rect.x, min_x)
     max_x = math.max(ei.rect.x + ei.rect.width, max_x)

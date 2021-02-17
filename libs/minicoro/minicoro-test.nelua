@@ -74,7 +74,7 @@ local function main()
     if res ~= MCO_SUCCESS then
       fail("Failed to pop coroutine data", res)
     end
-    C.printf("fib %d = %lu\n", counter, ret)
+    C.printf("fib %d = %lu\n", (@cint)(counter), (@culong)(ret))
     counter = counter + 1
   end
 
@@ -84,4 +84,3 @@ local function main()
 end
 
 return main()
-

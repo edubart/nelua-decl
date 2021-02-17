@@ -137,11 +137,12 @@ global function pthread_setcancelstate(__state: cint, __oldstate: *cint): cint <
 global function pthread_setcanceltype(__type: cint, __oldtype: *cint): cint <cimport, nodecl> end
 global function pthread_cancel(__th: pthread_t): cint <cimport, nodecl> end
 global function pthread_testcancel() <cimport, nodecl> end
+global __cancel_jmp_buf_tag: type <cimport, nodecl, ctypedef> = @record{
+  __cancel_jmp_buf: [8]clong,
+  __mask_was_saved: cint
+}
 global __pthread_unwind_buf_t: type <cimport, nodecl> = @record{
-  __cancel_jmp_buf: [1]record{
-    __cancel_jmp_buf: [8]clong,
-    __mask_was_saved: cint
-  },
+  __cancel_jmp_buf: [1]__cancel_jmp_buf_tag,
   __pad: [4]pointer
 }
 global __pthread_cleanup_frame: type <cimport, nodecl, ctypedef> = @record{

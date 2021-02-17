@@ -261,7 +261,9 @@ global sapp_html5_fetch_request: type <cimport, nodecl> = @record{
 }
 global function sapp_isvalid(): boolean <cimport, nodecl> end
 global function sapp_width(): cint <cimport, nodecl> end
+global function sapp_widthf(): float32 <cimport, nodecl> end
 global function sapp_height(): cint <cimport, nodecl> end
+global function sapp_heightf(): float32 <cimport, nodecl> end
 global function sapp_color_format(): cint <cimport, nodecl> end
 global function sapp_depth_format(): cint <cimport, nodecl> end
 global function sapp_sample_count(): cint <cimport, nodecl> end

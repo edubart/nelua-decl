@@ -35,7 +35,7 @@ do -- stb_image/stb_image_write
   C.remove("test_image.png")
 end
 
-local function readfile(name: stringview): (*[0]byte, isize)
+local function readfile(name: string): (*[0]byte, isize)
   local fp: *FILE = C.fopen(name, 'rb')
   assert(fp, 'unable to open file')
   C.fseek(fp, 0, C.SEEK_END)
@@ -59,7 +59,7 @@ do -- stb_truetype
   local bitmap: *[0]byte = stbtt_GetCodepointBitmap(&font, 0, scale, 'a'_b, &w, &h, nilptr, nilptr)
   C.free(ttf_buffer)
 
-  local glyphs: stringview = " .:ioVM@"
+  local glyphs: string = " .:ioVM@"
   for j=0,<h do
     for i=0,<w do
       local c = glyphs.data[bitmap[j*w+i]>>5]

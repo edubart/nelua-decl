@@ -17,7 +17,7 @@ local function echo_read(client: *uv_stream_t, nread: clong, buf: *uv_buf_t)
   if nread < 0 then
     error 'read error'
   end
-  local received_message: stringview = {data=buf.base, size=buf.len}
+  local received_message: string = {data=buf.base, size=buf.len}
   print('received:')
   print(received_message)
   uv_stop(&loop)

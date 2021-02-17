@@ -369,6 +369,8 @@ global function uv_send_buffer_size(handle: *uv_handle_t, value: *cint): cint <c
 global function uv_recv_buffer_size(handle: *uv_handle_t, value: *cint): cint <cimport, nodecl> end
 global function uv_fileno(handle: *uv_handle_t, fd: *cint): cint <cimport, nodecl> end
 global function uv_buf_init(base: cstring, len: cuint): uv_buf_t <cimport, nodecl> end
+global function uv_pipe(fds: *cint, read_flags: cint, write_flags: cint): cint <cimport, nodecl> end
+global function uv_socketpair(type: cint, protocol: cint, socket_vector: *cint, flags0: cint, flags1: cint): cint <cimport, nodecl> end
 uv_stream_s = @record{
   data: pointer,
   loop: *uv_loop_t,
@@ -758,6 +760,7 @@ global uv_stdio_flags: type <cimport, nodecl, using> = @enum(cint){
   UV_INHERIT_STREAM = 4,
   UV_READABLE_PIPE = 16,
   UV_WRITABLE_PIPE = 32,
+  UV_NONBLOCK_PIPE = 64,
   UV_OVERLAPPED_PIPE = 64
 }
 global uv_stdio_container_s: type <cimport, nodecl, ctypedef> = @record{
