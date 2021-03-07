@@ -162,7 +162,7 @@ global ma_thread_priority: type <cimport, nodecl, using> = @enum(cint){
   ma_thread_priority_realtime = 1,
   ma_thread_priority_default = 0
 }
-global ma_spinlock: type = @cuchar
+global ma_spinlock: type = @cuint
 global function ma_version(pMajor: *uint32, pMinor: *uint32, pRevision: *uint32) <cimport, nodecl> end
 global function ma_version_string(): cstring <cimport, nodecl> end
 global ma_biquad_coefficient: type <cimport, nodecl> = @union{
@@ -898,6 +898,25 @@ ma_context_config = @record{
   },
   custom: ma_backend_callbacks
 }
+global ma_context_command__wasapi: type <cimport, nodecl> = @record{
+  code: cint,
+  pEvent: *ma_event,
+  data: union{
+    quit: record{
+      _unused: cint
+    },
+    createAudioClient: record{
+      deviceType: ma_device_type,
+      pAudioClient: pointer,
+      ppAudioClientService: *pointer,
+      result: ma_result
+    },
+    releaseAudioClient: record{
+      pDevice: *ma_device,
+      deviceType: ma_device_type
+    }
+  }
+}
 ma_context = @record{
   callbacks: ma_backend_callbacks,
   backend: ma_backend,
@@ -1180,7 +1199,7 @@ ma_device = @record{
       currentPeriodFramesRemainingCapture: uint32,
       lastProcessedFramePlayback: uint64,
       lastProcessedFrameCapture: uint64,
-      isStarted: ma_bool8
+      isStarted: ma_bool32
     }
   }
 }

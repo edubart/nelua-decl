@@ -230,13 +230,16 @@ global sapp_desc: type <cimport, nodecl> = @record{
   enable_dragndrop: boolean,
   max_dropped_files: cint,
   max_dropped_file_path_length: cint,
+  gl_force_gles2: boolean,
+  win32_console_utf8: boolean,
+  win32_console_create: boolean,
+  win32_console_attach: boolean,
   html5_canvas_name: cstring,
   html5_canvas_resize: boolean,
   html5_preserve_drawing_buffer: boolean,
   html5_premultiplied_alpha: boolean,
   html5_ask_leave_site: boolean,
-  ios_keyboard_resizes_canvas: boolean,
-  gl_force_gles2: boolean
+  ios_keyboard_resizes_canvas: boolean
 }
 global sapp_html5_fetch_error: type <cimport, nodecl, using> = @enum(cint){
   SAPP_HTML5_FETCH_ERROR_NO_ERROR = 0,
