@@ -101,6 +101,7 @@ global function lua_stringtonumber(L: *lua_State, s: cstring): csize <cimport, n
 global function lua_getallocf(L: *lua_State, ud: *pointer): lua_Alloc <cimport, nodecl> end
 global function lua_setallocf(L: *lua_State, f: lua_Alloc, ud: pointer) <cimport, nodecl> end
 global function lua_toclose(L: *lua_State, idx: cint) <cimport, nodecl> end
+global function lua_closeslot(L: *lua_State, idx: cint) <cimport, nodecl> end
 global lua_Debug: type <cimport, nodecl, forwarddecl> = @record{}
 global lua_Hook: type <cimport, nodecl> = @function(*lua_State, *lua_Debug)
 global function lua_getstack(L: *lua_State, level: cint, ar: *lua_Debug): cint <cimport, nodecl> end

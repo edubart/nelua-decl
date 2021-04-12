@@ -2185,6 +2185,8 @@ global function ma_engine_listener_set_velocity(pEngine: *ma_engine, listenerInd
 global function ma_engine_listener_get_velocity(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport, nodecl> end
 global function ma_engine_listener_set_cone(pEngine: *ma_engine, listenerIndex: uint32, innerAngleInRadians: float32, outerAngleInRadians: float32, outerGain: float32) <cimport, nodecl> end
 global function ma_engine_listener_get_cone(pEngine: *ma_engine, listenerIndex: uint32, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
+global function ma_engine_listener_set_world_up(pEngine: *ma_engine, listenerIndex: uint32, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function ma_engine_listener_get_world_up(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport, nodecl> end
 global function ma_engine_play_sound(pEngine: *ma_engine, pFilePath: cstring, pGroup: *ma_sound_group): ma_result <cimport, nodecl> end
 global function ma_sound_init_from_file(pEngine: *ma_engine, pFilePath: cstring, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_init_from_file_w(pEngine: *ma_engine, pFilePath: *cint, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end

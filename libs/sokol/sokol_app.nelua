@@ -17,6 +17,7 @@ end
 global SAPP_MAX_TOUCHPOINTS: cint <comptime> = 8
 global SAPP_MAX_MOUSEBUTTONS: cint <comptime> = 3
 global SAPP_MAX_KEYCODES: cint <comptime> = 512
+global SAPP_MAX_ICONIMAGES: cint <comptime> = 8
 global sapp_event_type: type <cimport, nodecl, using> = @enum(cint){
   SAPP_EVENTTYPE_INVALID = 0,
   SAPP_EVENTTYPE_KEY_DOWN = 1,
@@ -183,6 +184,9 @@ global SAPP_MODIFIER_SHIFT: cint <comptime> = 1
 global SAPP_MODIFIER_CTRL: cint <comptime> = 2
 global SAPP_MODIFIER_ALT: cint <comptime> = 4
 global SAPP_MODIFIER_SUPER: cint <comptime> = 8
+global SAPP_MODIFIER_LMB: cint <comptime> = 256
+global SAPP_MODIFIER_RMB: cint <comptime> = 512
+global SAPP_MODIFIER_MMB: cint <comptime> = 1024
 global sapp_event: type <cimport, nodecl> = @record{
   frame_count: uint64,
   type: sapp_event_type,
@@ -203,6 +207,19 @@ global sapp_event: type <cimport, nodecl> = @record{
   window_height: cint,
   framebuffer_width: cint,
   framebuffer_height: cint
+}
+global sapp_range: type <cimport, nodecl> = @record{
+  ptr: pointer,
+  size: csize
+}
+global sapp_image_desc: type <cimport, nodecl> = @record{
+  width: cint,
+  height: cint,
+  pixels: sapp_range
+}
+global sapp_icon_desc: type <cimport, nodecl> = @record{
+  sokol_default: boolean,
+  images: [8]sapp_image_desc
 }
 global sapp_desc: type <cimport, nodecl> = @record{
   init_cb: function(),
@@ -230,6 +247,7 @@ global sapp_desc: type <cimport, nodecl> = @record{
   enable_dragndrop: boolean,
   max_dropped_files: cint,
   max_dropped_file_path_length: cint,
+  icon: sapp_icon_desc,
   gl_force_gles2: boolean,
   win32_console_utf8: boolean,
   win32_console_create: boolean,
@@ -290,6 +308,7 @@ global function sapp_frame_count(): uint64 <cimport, nodecl> end
 global function sapp_set_clipboard_string(str: cstring) <cimport, nodecl> end
 global function sapp_get_clipboard_string(): cstring <cimport, nodecl> end
 global function sapp_set_window_title(str: cstring) <cimport, nodecl> end
+global function sapp_set_icon(icon_desc: *sapp_icon_desc) <cimport, nodecl> end
 global function sapp_get_num_dropped_files(): cint <cimport, nodecl> end
 global function sapp_get_dropped_file_path(index: cint): cstring <cimport, nodecl> end
 global function sapp_run(desc: *sapp_desc) <cimport, nodecl> end

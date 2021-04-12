@@ -23,7 +23,8 @@ if result ~= MA_SUCCESS then
   error("Failed to load sound.")
 end
 
-if ma_sound_start(&sound) ~= MA_SUCCESS then
+result = ma_sound_start(&sound)
+if result ~= MA_SUCCESS then
   error("Failed to play sound.")
 end
 
