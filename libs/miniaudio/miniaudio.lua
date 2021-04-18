@@ -36,7 +36,14 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-cdefine 'MINIAUDIO_IMPLEMENTATION'
+if MINIAUDIO_LINKLIB then
+  if type(MINIAUDIO_LINKLIB) == 'string' then
+    linklib(MINIAUDIO_LINKLIB)
+  end
+else
+  cdefine 'MA_API static'
+  cdefine 'MINIAUDIO_IMPLEMENTATION'
+end
 cinclude '"miniaudio.h"'
 if ccinfo.is_linux then
   linklib 'dl'

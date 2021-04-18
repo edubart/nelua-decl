@@ -6,7 +6,14 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-cdefine 'SOKOL_IMPL'
+if SOKOL_ARGS_LINKLIB then
+  if type(SOKOL_ARGS_LINKLIB) == 'string' then
+    linklib(SOKOL_ARGS_LINKLIB)
+  end
+else
+  cdefine 'SOKOL_ARGS_API_DECL static'
+  cdefine 'SOKOL_ARGS_IMPL'
+end
 cinclude '"sokol_args.h"'
 ]]
 ]=]

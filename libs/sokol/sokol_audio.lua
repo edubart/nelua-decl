@@ -7,7 +7,14 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-cdefine 'SOKOL_IMPL'
+if SOKOL_AUDIO_LINKLIB then
+  if type(SOKOL_AUDIO_LINKLIB) == 'string' then
+    linklib(SOKOL_AUDIO_LINKLIB)
+  end
+else
+  cdefine 'SOKOL_AUDIO_API_DECL static'
+  cdefine 'SOKOL_AUDIO_IMPL'
+end
 cinclude '"sokol_audio.h"'
 if ccinfo.is_windows then
   linklib 'ole32'

@@ -1,6 +1,12 @@
 ##[[
-cdefine 'STB_IMAGE_STATIC'
-cdefine 'STB_IMAGE_IMPLEMENTATION'
+if STB_IMAGE_LINKLIB then
+  if type(STB_IMAGE_LINKLIB) == 'string' then
+    linklib(STB_IMAGE_LINKLIB)
+  end
+else
+  cdefine 'STB_IMAGE_STATIC'
+  cdefine 'STB_IMAGE_IMPLEMENTATION'
+end
 if ccinfo.is_tcc then
   cdefine 'STBI_NO_SIMD'
 end
