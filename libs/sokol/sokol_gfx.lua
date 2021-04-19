@@ -14,7 +14,11 @@ else
   cdefine 'SOKOL_GFX_API_DECL static'
   cdefine 'SOKOL_GFX_IMPL'
 end
-cdefine 'SOKOL_GLCORE33'
+if ccinfo.is_emscripten then
+  cdefine 'SOKOL_GLES2'
+else
+  cdefine 'SOKOL_GLCORE33'
+end
 cinclude '"sokol_gfx.h"'
 if ccinfo.is_windows then
   linklib 'gdi32'
