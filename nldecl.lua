@@ -122,6 +122,12 @@ function nldecl.void_type()
   emitter:add('void')
 end
 
+local function nodewarn(node, msg)
+  local f, n = node:location()
+  io.stderr:write(string.format("WARNING: %s:%d: %s\n", f, n, msg))
+  io.stderr:flush()
+end
+
 local function visit_fields(node, canskipfields)
   local unnamedcount = 1
   for fieldnode in chain(node:fields()) do
@@ -136,6 +142,7 @@ local function visit_fields(node, canskipfields)
       local annotations = {}
       if fieldnode:bit_field() then
         fieldtype = fieldnode:bit_field_type()
+        nodewarn(fieldnode, "bit field, record size will be incorrect")
         --local bitfieldsize = fieldnode:size():value()
         --table.insert(annotations, string.format('bitsize(%d)', bitfieldsize))
       end
@@ -145,6 +152,7 @@ local function visit_fields(node, canskipfields)
       else
         emitter:add_indent('__unnamed' .. unnamedcount .. ': ')
         unnamedcount = unnamedcount + 1
+        nodewarn(fieldnode, "unnamed field, it won't be accessible")
         --table.insert(annotations, 'cunnamed')
       end
       visit(fieldtype)
