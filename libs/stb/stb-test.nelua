@@ -79,3 +79,5 @@ do -- stb_vorbis
   assert(output ~= nilptr)
   C.free(output)
 end
+
+print("STB OK!")

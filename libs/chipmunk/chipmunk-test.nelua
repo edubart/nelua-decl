@@ -5,3 +5,4 @@ local body = cpBodyNew(1.0, 1.0)
 cpBodyFree(body)
 cpSpaceFree(space)
 
+print("Chipmunk OK!")

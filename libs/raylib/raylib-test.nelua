@@ -228,7 +228,7 @@ SetTargetFPS(60);
 -- ]] Initialization ]]
 
 -- [[ Main game loop [[
-while not WindowShouldClose() do
+while not WindowShouldClose() and GetTime() < 2 do
   -- [[ Update [[
   local delta_time: number = GetFrameTime()
 
@@ -287,3 +287,5 @@ end
 -- [ De-Initialization [
 CloseWindow() -- Close window and OpenGL context
 -- ] De-Initialization ]
+
+print("Raylib OK!")

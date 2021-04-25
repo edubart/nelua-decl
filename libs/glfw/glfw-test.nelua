@@ -26,3 +26,5 @@ while glfwWindowShouldClose(window) == 0 do
 end
 
 glfwTerminate()
+
+print("GLFW OK!")

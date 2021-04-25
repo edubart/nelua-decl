@@ -33,3 +33,5 @@ assert(r == BL_SUCCESS, 'failed to find codec')
 r = blImageWriteToFile(&img, 'test.bmp', &codec)
 assert(r == BL_SUCCESS, 'failed to write image')
 C.remove('test.bmp')
+
+print("Blend2D OK!")

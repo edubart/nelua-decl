@@ -12,3 +12,5 @@ print 'hello world'
 ]])
 lua_call(L, 0, 0)
 lua_close(L)
+
+print("Minilua OK!")

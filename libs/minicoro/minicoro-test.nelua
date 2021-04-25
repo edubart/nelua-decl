@@ -80,6 +80,9 @@ local function main()
 
   -- Destroy the coroutine.
   res = mco_destroy(co)
+
+  print("Minicoro OK!")
+
   return 0
 end
 

@@ -93,3 +93,5 @@ local app_desc: sapp_desc = {
   window_title = "Sokol Clear",
 }
 sapp_run(&app_desc)
+
+print("Sokol OK!")

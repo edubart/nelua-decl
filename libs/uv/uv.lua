@@ -68,9 +68,6 @@ nldecl.platform_names = {
   uv_random_s = nldecl.USE_KNOWN_FIELDS,
 }
 
-nldecl.include_macros = {
-}
-
 nldecl.prepend_code = [=[
 ##[[
 cinclude '<uv.h>'

@@ -34,3 +34,5 @@ end
 
 ma_sound_uninit(&sound)
 ma_engine_uninit(&engine)
+
+print("Miniaudio Engine OK!")

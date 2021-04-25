@@ -334,6 +334,7 @@ global function sapp_macos_get_window(): pointer <cimport, nodecl> end
 global function sapp_ios_get_window(): pointer <cimport, nodecl> end
 global function sapp_d3d11_get_device(): pointer <cimport, nodecl> end
 global function sapp_d3d11_get_device_context(): pointer <cimport, nodecl> end
+global function sapp_d3d11_get_swap_chain(): pointer <cimport, nodecl> end
 global function sapp_d3d11_get_render_target_view(): pointer <cimport, nodecl> end
 global function sapp_d3d11_get_depth_stencil_view(): pointer <cimport, nodecl> end
 global function sapp_win32_get_hwnd(): pointer <cimport, nodecl> end

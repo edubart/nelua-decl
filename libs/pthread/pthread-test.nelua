@@ -13,4 +13,5 @@ if res ~= 0 then
 end
 local ret: pointer
 pthread_join(thread, &ret)
-print 'Success!'
+
+print("Pthread OK!")

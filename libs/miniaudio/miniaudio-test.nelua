@@ -59,3 +59,5 @@ ma_event_wait(&stop_event)
 ma_device_uninit(&device)
 ma_decoder_uninit(&decoder)
 ma_event_uninit(&stop_event)
+
+print("Miniaudio OK!")
