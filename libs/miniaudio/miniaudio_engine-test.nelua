@@ -8,12 +8,13 @@ require 'C.stdio'
 local result: ma_result
 local engine: ma_engine
 local sound: ma_sound
-
 if C.argc < 2 then
   error("No input file.")
 end
 
-result = ma_engine_init(nilptr, &engine)
+local config: ma_engine_config = ma_engine_config_init_default()
+result = ma_engine_init(&config, &engine)
+
 if result ~= MA_SUCCESS then
   error("Failed to initialize audio engine.")
 end

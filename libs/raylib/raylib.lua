@@ -55,6 +55,11 @@ nldecl.prepend_code = [=[
 cinclude '<raylib.h>'
 cinclude '<raymath.h>'
 linklib 'raylib'
+if ccinfo.is_windows then
+  linklib 'glfw3'
+else
+  linklib 'glfw'
+end
 ]]
 ]=]
 

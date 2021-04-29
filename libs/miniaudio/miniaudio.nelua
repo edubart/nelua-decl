@@ -916,7 +916,7 @@ global ma_context_command__wasapi: type <cimport, nodecl> = @record{
       deviceType: ma_device_type,
       pAudioClient: pointer,
       ppAudioClientService: *pointer,
-      result: ma_result
+      pResult: *ma_result
     },
     releaseAudioClient: record{
       pDevice: *ma_device,
@@ -986,6 +986,7 @@ ma_context = @record{
       snd_pcm_start: ma_proc,
       snd_pcm_drop: ma_proc,
       snd_pcm_drain: ma_proc,
+      snd_pcm_reset: ma_proc,
       snd_device_name_hint: ma_proc,
       snd_device_name_get_hint: ma_proc,
       snd_card_get_index: ma_proc,
@@ -998,9 +999,13 @@ ma_context = @record{
       snd_pcm_avail: ma_proc,
       snd_pcm_avail_update: ma_proc,
       snd_pcm_wait: ma_proc,
+      snd_pcm_nonblock: ma_proc,
       snd_pcm_info: ma_proc,
       snd_pcm_info_sizeof: ma_proc,
       snd_pcm_info_get_name: ma_proc,
+      snd_pcm_poll_descriptors: ma_proc,
+      snd_pcm_poll_descriptors_count: ma_proc,
+      snd_pcm_poll_descriptors_revents: ma_proc,
       snd_config_update_free_global: ma_proc,
       internalDeviceEnumLock: ma_mutex,
       useVerboseDeviceEnumeration: ma_bool32
@@ -1179,6 +1184,12 @@ ma_device = @record{
     alsa: record{
       pPCMPlayback: ma_ptr,
       pPCMCapture: ma_ptr,
+      pPollDescriptorsPlayback: pointer,
+      pPollDescriptorsCapture: pointer,
+      pollDescriptorCountPlayback: cint,
+      pollDescriptorCountCapture: cint,
+      wakeupfdPlayback: cint,
+      wakeupfdCapture: cint,
       isUsingMMapPlayback: ma_bool8,
       isUsingMMapCapture: ma_bool8
     },
