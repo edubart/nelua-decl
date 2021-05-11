@@ -241,7 +241,10 @@ function nldecl.array_type(node)
   local len = 0
   local domain = node:domain()
   if domain then
-    len = node:domain():max():value() + 1
+    local max = domain:max()
+    if max then
+      len = max:value() + 1
+    end
   end
   emitter:add(string.format('[%d]', len))
   visit(node:type())

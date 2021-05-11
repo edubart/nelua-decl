@@ -1,0 +1,57 @@
+##[[
+cdefine '_GNU_SOURCE'
+cinclude '<dlfcn.h>'
+if ccinfo.is_linux then
+  linklib 'dl'
+end
+]]
+global function dlopen(__file: cstring, __mode: cint): pointer <cimport, nodecl> end
+global function dlclose(__handle: pointer): cint <cimport, nodecl> end
+global function dlsym(__handle: pointer, __name: cstring): pointer <cimport, nodecl> end
+global function dlmopen(__nsid: clong, __file: cstring, __mode: cint): pointer <cimport, nodecl> end
+global function dlvsym(__handle: pointer, __name: cstring, __version: cstring): pointer <cimport, nodecl> end
+global function dlerror(): cstring <cimport, nodecl> end
+global Dl_info: type <cimport, nodecl> = @record{
+  dli_fname: cstring,
+  dli_fbase: pointer,
+  dli_sname: cstring,
+  dli_saddr: pointer
+}
+global function dladdr(__address: pointer, __info: *Dl_info): cint <cimport, nodecl> end
+global function dladdr1(__address: pointer, __info: *Dl_info, __extra_info: *pointer, __flags: cint): cint <cimport, nodecl> end
+global RTLD_DL_SYMENT: cint <comptime> = 1
+global RTLD_DL_LINKMAP: cint <comptime> = 2
+global function dlinfo(__handle: pointer, __request: cint, __arg: pointer): cint <cimport, nodecl> end
+global RTLD_DI_LMID: cint <comptime> = 1
+global RTLD_DI_LINKMAP: cint <comptime> = 2
+global RTLD_DI_CONFIGADDR: cint <comptime> = 3
+global RTLD_DI_SERINFO: cint <comptime> = 4
+global RTLD_DI_SERINFOSIZE: cint <comptime> = 5
+global RTLD_DI_ORIGIN: cint <comptime> = 6
+global RTLD_DI_PROFILENAME: cint <comptime> = 7
+global RTLD_DI_PROFILEOUT: cint <comptime> = 8
+global RTLD_DI_TLS_MODID: cint <comptime> = 9
+global RTLD_DI_TLS_DATA: cint <comptime> = 10
+global RTLD_DI_MAX: cint <comptime> = 10
+global Dl_serpath: type <cimport, nodecl> = @record{
+  dls_name: cstring,
+  dls_flags: cuint
+}
+global Dl_serinfo: type <cimport, nodecl> = @record{
+  dls_size: csize,
+  dls_cnt: cuint,
+  __unnamed1: union{
+    dls_serpath: [0]Dl_serpath,
+    __dls_serpath_pad: [1]Dl_serpath
+  }
+}
+global RTLD_LAZY: cint <comptime> = 0x00001
+global RTLD_NOW: cint <comptime> = 0x00002
+global RTLD_BINDING_MASK: cint <comptime> = 0x3
+global RTLD_NOLOAD: cint <comptime> = 0x00004
+global RTLD_DEEPBIND: cint <comptime> = 0x00008
+global RTLD_GLOBAL: cint <comptime> = 0x00100
+global RTLD_LOCAL: cint <comptime> = 0
+global RTLD_NODELETE: cint <comptime> = 0x01000
+global RTLD_NEXT: pointer <cimport, nodecl, const>
+global RTLD_DEFAULT: pointer <cimport, nodecl, const>

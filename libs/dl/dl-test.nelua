@@ -1,0 +1,6 @@
+require 'dl'
+
+local handle = dlsym(RTLD_NEXT, "puts")
+assert(handle)
+local puts = (@function(cstring): cint)(handle)
+assert(puts("dl OK!") == 7)

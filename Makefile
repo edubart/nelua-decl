@@ -15,6 +15,7 @@ generate:
 	$(MKC) libs/sokol generate
 	$(MKC) libs/stb generate
 	$(MKC) libs/uv generate
+	$(MKC) libs/dl generate
 
 download:
 	$(MKC) libs/blend2d download
@@ -31,6 +32,7 @@ download:
 	$(MKC) libs/sokol download
 	$(MKC) libs/stb download
 	$(MKC) libs/uv download
+	$(MKC) libs/dl download
 
 test:
 	$(MKC) libs/blend2d test
@@ -47,4 +49,5 @@ test:
 	$(MKC) libs/sokol test
 	$(MKC) libs/stb test
 	$(MKC) libs/uv test
+	$(MKC) libs/dl test
 	echo "All tests OK!"
