@@ -16,6 +16,8 @@ generate:
 	$(MKC) libs/stb generate
 	$(MKC) libs/uv generate
 	$(MKC) libs/dl generate
+	$(MKC) libs/posix generate
+	$(MKC) libs/linux generate
 
 download:
 	$(MKC) libs/blend2d download
@@ -50,4 +52,6 @@ test:
 	$(MKC) libs/stb test
 	$(MKC) libs/uv test
 	$(MKC) libs/dl test
+	$(MKC) libs/posix test
+	$(MKC) libs/linux test
 	echo "All tests OK!"

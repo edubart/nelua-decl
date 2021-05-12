@@ -1,0 +1,41 @@
+## cinclude '<sys/epoll.h>'
+global __sigset_t: type <cimport, nodecl> = @record{
+  __val: [16]culong
+}
+global EPOLL_CLOEXEC: cint <comptime> = 524288
+global EPOLL_EVENTS: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+  EPOLLIN = 1,
+  EPOLLPRI = 2,
+  EPOLLOUT = 4,
+  EPOLLRDNORM = 64,
+  EPOLLRDBAND = 128,
+  EPOLLWRNORM = 256,
+  EPOLLWRBAND = 512,
+  EPOLLMSG = 1024,
+  EPOLLERR = 8,
+  EPOLLHUP = 16,
+  EPOLLRDHUP = 8192,
+  EPOLLEXCLUSIVE = 268435456,
+  EPOLLWAKEUP = 536870912,
+  EPOLLONESHOT = 1073741824,
+  EPOLLET = 2147483648
+}
+global epoll_data: type <cimport, nodecl, ctypedef> = @union{
+  ptr: pointer,
+  fd: cint,
+  u32: uint32,
+  u64: uint64
+}
+global epoll_data_t: type = @epoll_data
+global epoll_event: type <cimport, nodecl, ctypedef> = @record{
+  events: uint32,
+  data: epoll_data_t
+}
+global function epoll_create(__size: cint): cint <cimport, nodecl> end
+global function epoll_create1(__flags: cint): cint <cimport, nodecl> end
+global function epoll_ctl(__epfd: cint, __op: cint, __fd: cint, __event: *epoll_event): cint <cimport, nodecl> end
+global function epoll_wait(__epfd: cint, __events: *epoll_event, __maxevents: cint, __timeout: cint): cint <cimport, nodecl> end
+global function epoll_pwait(__epfd: cint, __events: *epoll_event, __maxevents: cint, __timeout: cint, __ss: *__sigset_t): cint <cimport, nodecl> end
+global EPOLL_CTL_ADD: cint <comptime> = 1
+global EPOLL_CTL_DEL: cint <comptime> = 2
+global EPOLL_CTL_MOD: cint <comptime> = 3

@@ -1,0 +1,7 @@
+require 'inotify'
+require 'epoll'
+
+inotify_init()
+epoll_create(1)
+
+print 'linux OK!'

@@ -514,7 +514,8 @@ local function process_macros()
       -- find in customized macros
       for nltype,patts in pairs(nldecl.include_macros) do
         for patt,forcevalue in pairs(patts) do
-          if name == patt and nldecl.can_decl(name) then
+          local ispatt = type(patt) == 'string' and not not patt:match('^%^')
+          if (name == patt or (ispatt and name:match(patt))) and nldecl.can_decl(name) then
             foundnltype = nltype
             if forcevalue == false then
               value = nil

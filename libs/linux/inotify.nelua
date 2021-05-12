@@ -1,0 +1,41 @@
+## cinclude '<sys/inotify.h>'
+global inotify_event: type <cimport, nodecl, ctypedef> = @record{
+  wd: cint,
+  mask: uint32,
+  cookie: uint32,
+  len: uint32,
+  name: [0]cchar
+}
+global function inotify_init(): cint <cimport, nodecl> end
+global function inotify_init1(__flags: cint): cint <cimport, nodecl> end
+global function inotify_add_watch(__fd: cint, __name: cstring, __mask: uint32): cint <cimport, nodecl> end
+global function inotify_rm_watch(__fd: cint, __wd: cint): cint <cimport, nodecl> end
+global IN_ACCESS: cint <cimport, nodecl, const>
+global IN_MODIFY: cint <cimport, nodecl, const>
+global IN_ATTRIB: cint <cimport, nodecl, const>
+global IN_CLOSE_WRITE: cint <cimport, nodecl, const>
+global IN_CLOSE_NOWRITE: cint <cimport, nodecl, const>
+global IN_CLOSE: cint <cimport, nodecl, const>
+global IN_OPEN: cint <cimport, nodecl, const>
+global IN_MOVED_FROM: cint <cimport, nodecl, const>
+global IN_MOVED_TO: cint <cimport, nodecl, const>
+global IN_MOVE: cint <cimport, nodecl, const>
+global IN_CREATE: cint <cimport, nodecl, const>
+global IN_DELETE: cint <cimport, nodecl, const>
+global IN_DELETE_SELF: cint <cimport, nodecl, const>
+global IN_MOVE_SELF: cint <cimport, nodecl, const>
+global IN_UNMOUNT: cint <cimport, nodecl, const>
+global IN_Q_OVERFLOW: cint <cimport, nodecl, const>
+global IN_IGNORED: cint <cimport, nodecl, const>
+global IN_CLOSE: cint <cimport, nodecl, const>
+global IN_MOVE: cint <cimport, nodecl, const>
+global IN_ONLYDIR: cint <cimport, nodecl, const>
+global IN_DONT_FOLLOW: cint <cimport, nodecl, const>
+global IN_EXCL_UNLINK: cint <cimport, nodecl, const>
+global IN_MASK_CREATE: cint <cimport, nodecl, const>
+global IN_MASK_ADD: cint <cimport, nodecl, const>
+global IN_ISDIR: cint <cimport, nodecl, const>
+global IN_ONESHOT: cint <cimport, nodecl, const>
+global IN_ALL_EVENTS: cint <cimport, nodecl, const>
+global IN_CLOEXEC: cint <cimport, nodecl, const>
+global IN_NONBLOCK: cint <cimport, nodecl, const>
