@@ -447,9 +447,11 @@ local function eval_macro_value(value)
   value = value:gsub('^%(',''):gsub('%)$','') -- trim parenthesis
   local intvalue = value:lower():gsub('u?l?l?$', '')
   local floatvalue = value:lower():gsub('f$', '')
-  if intvalue:match('^-?%d+$') then
+  if intvalue:match('^-?0%d+$') then -- octal
+    return tonumber(intvalue, 8)
+  elseif intvalue:match('^-?0x%x+$') then -- hexadecimal
     return intvalue
-  elseif intvalue:match('^-?0x%x+$') then
+  elseif intvalue:match('^-?%d+$') then -- decimal
     return intvalue
   elseif floatvalue:match('^-?%d+%.%d+$') then
     return floatvalue
