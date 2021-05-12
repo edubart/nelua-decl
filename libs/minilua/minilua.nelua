@@ -252,7 +252,7 @@ global LUA_TTHREAD: cint <comptime> = 8
 global LUA_NUMTYPES: cint <comptime> = 9
 global LUA_RIDX_MAINTHREAD: cint <comptime> = 1
 global LUA_RIDX_GLOBALS: cint <comptime> = 2
-global LUA_RIDX_LAST: cint <cimport, nodecl, const>
+global LUA_RIDX_LAST: cint <comptime> = LUA_RIDX_GLOBALS
 global LUA_OPADD: cint <comptime> = 0
 global LUA_OPSUB: cint <comptime> = 1
 global LUA_OPMUL: cint <comptime> = 2

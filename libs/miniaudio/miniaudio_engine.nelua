@@ -2353,7 +2353,7 @@ global MA_LOG_LEVEL_VERBOSE: cint <comptime> = 4
 global MA_LOG_LEVEL_INFO: cint <comptime> = 3
 global MA_LOG_LEVEL_WARNING: cint <comptime> = 2
 global MA_LOG_LEVEL_ERROR: cint <comptime> = 1
-global MA_LOG_LEVEL: cint <cimport, nodecl, const>
+global MA_LOG_LEVEL: cint <comptime> = MA_LOG_LEVEL_ERROR
 global MA_CHANNEL_NONE: cint <comptime> = 0
 global MA_CHANNEL_MONO: cint <comptime> = 1
 global MA_CHANNEL_FRONT_LEFT: cint <comptime> = 2
@@ -2406,8 +2406,8 @@ global MA_CHANNEL_AUX_28: cint <comptime> = 48
 global MA_CHANNEL_AUX_29: cint <comptime> = 49
 global MA_CHANNEL_AUX_30: cint <comptime> = 50
 global MA_CHANNEL_AUX_31: cint <comptime> = 51
-global MA_CHANNEL_LEFT: cint <cimport, nodecl, const>
-global MA_CHANNEL_RIGHT: cint <cimport, nodecl, const>
+global MA_CHANNEL_LEFT: cint <comptime> = MA_CHANNEL_FRONT_LEFT
+global MA_CHANNEL_RIGHT: cint <comptime> = MA_CHANNEL_FRONT_RIGHT
 global MA_CHANNEL_POSITION_COUNT: cint <cimport, nodecl, const>
 global MA_SUCCESS: cint <comptime> = 0
 global MA_ERROR: cint <comptime> = -1
@@ -2530,10 +2530,10 @@ global MA_JOB_QUEUE_FLAG_NON_BLOCKING: cint <comptime> = 0x00000001
 global MA_RESOURCE_MANAGER_MAX_JOB_THREAD_COUNT: cint <comptime> = 64
 global MA_RESOURCE_MANAGER_FLAG_NON_BLOCKING: cint <comptime> = 0x00000001
 global MA_RESOURCE_MANAGER_FLAG_NO_THREADING: cint <comptime> = 0x00000002
-global MA_SOUND_FLAG_STREAM: cint <cimport, nodecl, const>
-global MA_SOUND_FLAG_DECODE: cint <cimport, nodecl, const>
-global MA_SOUND_FLAG_ASYNC: cint <cimport, nodecl, const>
-global MA_SOUND_FLAG_WAIT_INIT: cint <cimport, nodecl, const>
+global MA_SOUND_FLAG_STREAM: cint <comptime> = MA_DATA_SOURCE_FLAG_STREAM
+global MA_SOUND_FLAG_DECODE: cint <comptime> = MA_DATA_SOURCE_FLAG_DECODE
+global MA_SOUND_FLAG_ASYNC: cint <comptime> = MA_DATA_SOURCE_FLAG_ASYNC
+global MA_SOUND_FLAG_WAIT_INIT: cint <comptime> = MA_DATA_SOURCE_FLAG_WAIT_INIT
 global MA_SOUND_FLAG_NO_DEFAULT_ATTACHMENT: cint <comptime> = 0x00000010
 global MA_SOUND_FLAG_NO_PITCH: cint <comptime> = 0x00000020
 global MA_SOUND_FLAG_NO_SPATIALIZATION: cint <comptime> = 0x00000040

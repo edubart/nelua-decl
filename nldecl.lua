@@ -441,6 +441,7 @@ local function finish_pending_type(node)
   return ret
 end
 
+local comptime_macros = {}
 local function eval_macro_value(value)
   if not value then return end
   value = value:gsub('%s+$','') -- right trim
@@ -453,9 +454,11 @@ local function eval_macro_value(value)
     return intvalue
   elseif intvalue:match('^-?%d+$') then -- decimal
     return intvalue
-  elseif floatvalue:match('^-?%d+%.%d+$') then
+  elseif floatvalue:match('^-?%d+%.%d+$') then -- fractional
     return floatvalue
-  elseif value:match('^"[^"\\]+"$') then
+  elseif value:match('^"[^"\\]+"$') then -- string
+    return value
+  elseif comptime_macros[value] then -- alias
     return value
   end
 end
@@ -495,6 +498,7 @@ local function process_macros()
     if foundnltype then
       local parsedvalue = eval_macro_value(value)
       if parsedvalue then
+        comptime_macros[name] = parsedvalue
         emitter:add_ln('global '..name..': '..foundnltype..' <comptime> = '..parsedvalue)
       else
         emitter:add_ln('global '..name..': '..foundnltype..' <cimport, nodecl, const>')
