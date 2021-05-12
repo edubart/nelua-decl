@@ -67,36 +67,6 @@ global function isxdigit(a1: cint): cint <cimport, nodecl> end
 global function tolower(__c: cint): cint <cimport, nodecl> end
 global function toupper(__c: cint): cint <cimport, nodecl> end
 global function isblank(a1: cint): cint <cimport, nodecl> end
-global function isascii(__c: cint): cint <cimport, nodecl> end
-global function toascii(__c: cint): cint <cimport, nodecl> end
-global function _toupper(a1: cint): cint <cimport, nodecl> end
-global function _tolower(a1: cint): cint <cimport, nodecl> end
-global __locale_data: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global __locale_struct: type <cimport, nodecl, ctypedef> = @record{
-  __locales: [13]*__locale_data,
-  __ctype_b: *cushort,
-  __ctype_tolower: *cint,
-  __ctype_toupper: *cint,
-  __names: [13]cstring
-}
-global __locale_t: type = @*__locale_struct
-global locale_t: type = @*__locale_struct
-global function isalnum_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isalpha_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function iscntrl_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isdigit_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function islower_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isgraph_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isprint_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function ispunct_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isspace_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isupper_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isxdigit_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function isblank_l(a1: cint, a2: locale_t): cint <cimport, nodecl> end
-global function __tolower_l(__c: cint, __l: locale_t): cint <cimport, nodecl> end
-global function tolower_l(__c: cint, __l: locale_t): cint <cimport, nodecl> end
-global function __toupper_l(__c: cint, __l: locale_t): cint <cimport, nodecl> end
-global function toupper_l(__c: cint, __l: locale_t): cint <cimport, nodecl> end
 global function __errno_location(): *cint <cimport, nodecl> end
 global FE_INVALID: cint <comptime> = 1
 global __FE_DENORM: cint <comptime> = 2
@@ -173,10 +143,6 @@ global lconv: type <cimport, nodecl, ctypedef> = @record{
 }
 global function setlocale(__category: cint, __locale: cstring): cstring <cimport, nodecl> end
 global function localeconv(): *lconv <cimport, nodecl> end
-global function newlocale(__category_mask: cint, __locale: cstring, __base: locale_t): locale_t <cimport, nodecl> end
-global function duplocale(__dataset: locale_t): locale_t <cimport, nodecl> end
-global function freelocale(__dataset: locale_t) <cimport, nodecl> end
-global function uselocale(__dataset: locale_t): locale_t <cimport, nodecl> end
 global function __fpclassify(__value: float64): cint <cimport, nodecl> end
 global function __signbit(__value: float64): cint <cimport, nodecl> end
 global function __isinf(__value: float64): cint <cimport, nodecl> end
@@ -248,29 +214,10 @@ global function floor(__x: float64): float64 <cimport, nodecl> end
 global function __floor(__x: float64): float64 <cimport, nodecl> end
 global function fmod(__x: float64, __y: float64): float64 <cimport, nodecl> end
 global function __fmod(__x: float64, __y: float64): float64 <cimport, nodecl> end
-global function isinf(__value: float64): cint <cimport, nodecl> end
-global function finite(__value: float64): cint <cimport, nodecl> end
-global function drem(__x: float64, __y: float64): float64 <cimport, nodecl> end
-global function __drem(__x: float64, __y: float64): float64 <cimport, nodecl> end
-global function significand(__x: float64): float64 <cimport, nodecl> end
-global function __significand(__x: float64): float64 <cimport, nodecl> end
 global function copysign(__x: float64, __y: float64): float64 <cimport, nodecl> end
 global function __copysign(__x: float64, __y: float64): float64 <cimport, nodecl> end
 global function nan(__tagb: cstring): float64 <cimport, nodecl> end
 global function __nan(__tagb: cstring): float64 <cimport, nodecl> end
-global function isnan(__value: float64): cint <cimport, nodecl> end
-global function j0(a1: float64): float64 <cimport, nodecl> end
-global function __j0(a1: float64): float64 <cimport, nodecl> end
-global function j1(a1: float64): float64 <cimport, nodecl> end
-global function __j1(a1: float64): float64 <cimport, nodecl> end
-global function jn(a1: cint, a2: float64): float64 <cimport, nodecl> end
-global function __jn(a1: cint, a2: float64): float64 <cimport, nodecl> end
-global function y0(a1: float64): float64 <cimport, nodecl> end
-global function __y0(a1: float64): float64 <cimport, nodecl> end
-global function y1(a1: float64): float64 <cimport, nodecl> end
-global function __y1(a1: float64): float64 <cimport, nodecl> end
-global function yn(a1: cint, a2: float64): float64 <cimport, nodecl> end
-global function __yn(a1: cint, a2: float64): float64 <cimport, nodecl> end
 global function erf(a1: float64): float64 <cimport, nodecl> end
 global function __erf(a1: float64): float64 <cimport, nodecl> end
 global function erfc(a1: float64): float64 <cimport, nodecl> end
@@ -279,10 +226,6 @@ global function lgamma(a1: float64): float64 <cimport, nodecl> end
 global function __lgamma(a1: float64): float64 <cimport, nodecl> end
 global function tgamma(a1: float64): float64 <cimport, nodecl> end
 global function __tgamma(a1: float64): float64 <cimport, nodecl> end
-global function gamma(a1: float64): float64 <cimport, nodecl> end
-global function __gamma(a1: float64): float64 <cimport, nodecl> end
-global function lgamma_r(a1: float64, __signgamp: *cint): float64 <cimport, nodecl> end
-global function __lgamma_r(a1: float64, __signgamp: *cint): float64 <cimport, nodecl> end
 global function rint(__x: float64): float64 <cimport, nodecl> end
 global function __rint(__x: float64): float64 <cimport, nodecl> end
 global function nextafter(__x: float64, __y: float64): float64 <cimport, nodecl> end
@@ -321,8 +264,6 @@ global function fmin(__x: float64, __y: float64): float64 <cimport, nodecl> end
 global function __fmin(__x: float64, __y: float64): float64 <cimport, nodecl> end
 global function fma(__x: float64, __y: float64, __z: float64): float64 <cimport, nodecl> end
 global function __fma(__x: float64, __y: float64, __z: float64): float64 <cimport, nodecl> end
-global function scalb(__x: float64, __n: float64): float64 <cimport, nodecl> end
-global function __scalb(__x: float64, __n: float64): float64 <cimport, nodecl> end
 global function __fpclassifyf(__value: float32): cint <cimport, nodecl> end
 global function __signbitf(__value: float32): cint <cimport, nodecl> end
 global function __isinff(__value: float32): cint <cimport, nodecl> end
@@ -394,29 +335,10 @@ global function floorf(__x: float32): float32 <cimport, nodecl> end
 global function __floorf(__x: float32): float32 <cimport, nodecl> end
 global function fmodf(__x: float32, __y: float32): float32 <cimport, nodecl> end
 global function __fmodf(__x: float32, __y: float32): float32 <cimport, nodecl> end
-global function isinff(__value: float32): cint <cimport, nodecl> end
-global function finitef(__value: float32): cint <cimport, nodecl> end
-global function dremf(__x: float32, __y: float32): float32 <cimport, nodecl> end
-global function __dremf(__x: float32, __y: float32): float32 <cimport, nodecl> end
-global function significandf(__x: float32): float32 <cimport, nodecl> end
-global function __significandf(__x: float32): float32 <cimport, nodecl> end
 global function copysignf(__x: float32, __y: float32): float32 <cimport, nodecl> end
 global function __copysignf(__x: float32, __y: float32): float32 <cimport, nodecl> end
 global function nanf(__tagb: cstring): float32 <cimport, nodecl> end
 global function __nanf(__tagb: cstring): float32 <cimport, nodecl> end
-global function isnanf(__value: float32): cint <cimport, nodecl> end
-global function j0f(a1: float32): float32 <cimport, nodecl> end
-global function __j0f(a1: float32): float32 <cimport, nodecl> end
-global function j1f(a1: float32): float32 <cimport, nodecl> end
-global function __j1f(a1: float32): float32 <cimport, nodecl> end
-global function jnf(a1: cint, a2: float32): float32 <cimport, nodecl> end
-global function __jnf(a1: cint, a2: float32): float32 <cimport, nodecl> end
-global function y0f(a1: float32): float32 <cimport, nodecl> end
-global function __y0f(a1: float32): float32 <cimport, nodecl> end
-global function y1f(a1: float32): float32 <cimport, nodecl> end
-global function __y1f(a1: float32): float32 <cimport, nodecl> end
-global function ynf(a1: cint, a2: float32): float32 <cimport, nodecl> end
-global function __ynf(a1: cint, a2: float32): float32 <cimport, nodecl> end
 global function erff(a1: float32): float32 <cimport, nodecl> end
 global function __erff(a1: float32): float32 <cimport, nodecl> end
 global function erfcf(a1: float32): float32 <cimport, nodecl> end
@@ -425,10 +347,6 @@ global function lgammaf(a1: float32): float32 <cimport, nodecl> end
 global function __lgammaf(a1: float32): float32 <cimport, nodecl> end
 global function tgammaf(a1: float32): float32 <cimport, nodecl> end
 global function __tgammaf(a1: float32): float32 <cimport, nodecl> end
-global function gammaf(a1: float32): float32 <cimport, nodecl> end
-global function __gammaf(a1: float32): float32 <cimport, nodecl> end
-global function lgammaf_r(a1: float32, __signgamp: *cint): float32 <cimport, nodecl> end
-global function __lgammaf_r(a1: float32, __signgamp: *cint): float32 <cimport, nodecl> end
 global function rintf(__x: float32): float32 <cimport, nodecl> end
 global function __rintf(__x: float32): float32 <cimport, nodecl> end
 global function nextafterf(__x: float32, __y: float32): float32 <cimport, nodecl> end
@@ -467,8 +385,6 @@ global function fminf(__x: float32, __y: float32): float32 <cimport, nodecl> end
 global function __fminf(__x: float32, __y: float32): float32 <cimport, nodecl> end
 global function fmaf(__x: float32, __y: float32, __z: float32): float32 <cimport, nodecl> end
 global function __fmaf(__x: float32, __y: float32, __z: float32): float32 <cimport, nodecl> end
-global function scalbf(__x: float32, __n: float32): float32 <cimport, nodecl> end
-global function __scalbf(__x: float32, __n: float32): float32 <cimport, nodecl> end
 global function __fpclassifyl(__value: clongdouble): cint <cimport, nodecl> end
 global function __signbitl(__value: clongdouble): cint <cimport, nodecl> end
 global function __isinfl(__value: clongdouble): cint <cimport, nodecl> end
@@ -540,29 +456,10 @@ global function floorl(__x: clongdouble): clongdouble <cimport, nodecl> end
 global function __floorl(__x: clongdouble): clongdouble <cimport, nodecl> end
 global function fmodl(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
 global function __fmodl(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
-global function isinfl(__value: clongdouble): cint <cimport, nodecl> end
-global function finitel(__value: clongdouble): cint <cimport, nodecl> end
-global function dreml(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
-global function __dreml(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
-global function significandl(__x: clongdouble): clongdouble <cimport, nodecl> end
-global function __significandl(__x: clongdouble): clongdouble <cimport, nodecl> end
 global function copysignl(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
 global function __copysignl(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
 global function nanl(__tagb: cstring): clongdouble <cimport, nodecl> end
 global function __nanl(__tagb: cstring): clongdouble <cimport, nodecl> end
-global function isnanl(__value: clongdouble): cint <cimport, nodecl> end
-global function j0l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function __j0l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function j1l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function __j1l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function jnl(a1: cint, a2: clongdouble): clongdouble <cimport, nodecl> end
-global function __jnl(a1: cint, a2: clongdouble): clongdouble <cimport, nodecl> end
-global function y0l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function __y0l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function y1l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function __y1l(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function ynl(a1: cint, a2: clongdouble): clongdouble <cimport, nodecl> end
-global function __ynl(a1: cint, a2: clongdouble): clongdouble <cimport, nodecl> end
 global function erfl(a1: clongdouble): clongdouble <cimport, nodecl> end
 global function __erfl(a1: clongdouble): clongdouble <cimport, nodecl> end
 global function erfcl(a1: clongdouble): clongdouble <cimport, nodecl> end
@@ -571,10 +468,6 @@ global function lgammal(a1: clongdouble): clongdouble <cimport, nodecl> end
 global function __lgammal(a1: clongdouble): clongdouble <cimport, nodecl> end
 global function tgammal(a1: clongdouble): clongdouble <cimport, nodecl> end
 global function __tgammal(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function gammal(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function __gammal(a1: clongdouble): clongdouble <cimport, nodecl> end
-global function lgammal_r(a1: clongdouble, __signgamp: *cint): clongdouble <cimport, nodecl> end
-global function __lgammal_r(a1: clongdouble, __signgamp: *cint): clongdouble <cimport, nodecl> end
 global function rintl(__x: clongdouble): clongdouble <cimport, nodecl> end
 global function __rintl(__x: clongdouble): clongdouble <cimport, nodecl> end
 global function nextafterl(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
@@ -613,8 +506,6 @@ global function fminl(__x: clongdouble, __y: clongdouble): clongdouble <cimport,
 global function __fminl(__x: clongdouble, __y: clongdouble): clongdouble <cimport, nodecl> end
 global function fmal(__x: clongdouble, __y: clongdouble, __z: clongdouble): clongdouble <cimport, nodecl> end
 global function __fmal(__x: clongdouble, __y: clongdouble, __z: clongdouble): clongdouble <cimport, nodecl> end
-global function scalbl(__x: clongdouble, __n: clongdouble): clongdouble <cimport, nodecl> end
-global function __scalbl(__x: clongdouble, __n: clongdouble): clongdouble <cimport, nodecl> end
 global function __fpclassifyf128(__value: float128): cint <cimport, nodecl> end
 global function __signbitf128(__value: float128): cint <cimport, nodecl> end
 global function __isinff128(__value: float128): cint <cimport, nodecl> end
@@ -622,7 +513,6 @@ global function __finitef128(__value: float128): cint <cimport, nodecl> end
 global function __isnanf128(__value: float128): cint <cimport, nodecl> end
 global function __iseqsigf128(__x: float128, __y: float128): cint <cimport, nodecl> end
 global function __issignalingf128(__value: float128): cint <cimport, nodecl> end
-global signgam: cint <cimport, nodecl>
 global FP_NAN: cint <comptime> = 0
 global FP_INFINITE: cint <comptime> = 1
 global FP_ZERO: cint <comptime> = 2
@@ -640,427 +530,12 @@ global function setjmp(__env: *__jmp_buf_tag): cint <cimport, nodecl> end
 global function __sigsetjmp(__env: *__jmp_buf_tag, __savemask: cint): cint <cimport, nodecl> end
 global function _setjmp(__env: *__jmp_buf_tag): cint <cimport, nodecl> end
 global function longjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
-global function _longjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
-global function siglongjmp(__env: *__jmp_buf_tag, __val: cint) <cimport, nodecl> end
-global sigset_t: type = @__sigset_t
-global timespec: type <cimport, nodecl, ctypedef> = @record{
-  tv_sec: clong,
-  tv_nsec: clong
-}
-global sigval: type <cimport, nodecl, ctypedef> = @union{
-  sival_int: cint,
-  sival_ptr: pointer
-}
-global __sigval_t: type = @sigval
-global siginfo_t: type <cimport, nodecl> = @record{
-  si_signo: cint,
-  si_errno: cint,
-  si_code: cint,
-  __pad0: cint,
-  _sifields: union{
-    _pad: [28]cint,
-    _kill: record{
-      si_pid: cint,
-      si_uid: cuint
-    },
-    _timer: record{
-      si_tid: cint,
-      si_overrun: cint,
-      si_sigval: __sigval_t
-    },
-    _rt: record{
-      si_pid: cint,
-      si_uid: cuint,
-      si_sigval: __sigval_t
-    },
-    _sigchld: record{
-      si_pid: cint,
-      si_uid: cuint,
-      si_status: cint,
-      si_utime: clong,
-      si_stime: clong
-    },
-    _sigfault: record{
-      si_addr: pointer,
-      si_addr_lsb: cshort,
-      _bounds: union{
-        _addr_bnd: record{
-          _lower: pointer,
-          _upper: pointer
-        },
-        _pkey: uint32
-      }
-    },
-    _sigpoll: record{
-      si_band: clong,
-      si_fd: cint
-    },
-    _sigsys: record{
-      _call_addr: pointer,
-      _syscall: cint,
-      _arch: cuint
-    }
-  }
-}
-global SI_ASYNCNL: cint <comptime> = -60
-global SI_DETHREAD: cint <comptime> = -7
-global SI_TKILL: cint <comptime> = -6
-global SI_SIGIO: cint <comptime> = -5
-global SI_ASYNCIO: cint <comptime> = -4
-global SI_MESGQ: cint <comptime> = -3
-global SI_TIMER: cint <comptime> = -2
-global SI_QUEUE: cint <comptime> = -1
-global SI_USER: cint <comptime> = 0
-global SI_KERNEL: cint <comptime> = 128
-global ILL_ILLOPC: cint <comptime> = 1
-global ILL_ILLOPN: cint <comptime> = 2
-global ILL_ILLADR: cint <comptime> = 3
-global ILL_ILLTRP: cint <comptime> = 4
-global ILL_PRVOPC: cint <comptime> = 5
-global ILL_PRVREG: cint <comptime> = 6
-global ILL_COPROC: cint <comptime> = 7
-global ILL_BADSTK: cint <comptime> = 8
-global ILL_BADIADDR: cint <comptime> = 9
-global FPE_INTDIV: cint <comptime> = 1
-global FPE_INTOVF: cint <comptime> = 2
-global FPE_FLTDIV: cint <comptime> = 3
-global FPE_FLTOVF: cint <comptime> = 4
-global FPE_FLTUND: cint <comptime> = 5
-global FPE_FLTRES: cint <comptime> = 6
-global FPE_FLTINV: cint <comptime> = 7
-global FPE_FLTSUB: cint <comptime> = 8
-global FPE_FLTUNK: cint <comptime> = 14
-global FPE_CONDTRAP: cint <comptime> = 15
-global SEGV_MAPERR: cint <comptime> = 1
-global SEGV_ACCERR: cint <comptime> = 2
-global SEGV_BNDERR: cint <comptime> = 3
-global SEGV_PKUERR: cint <comptime> = 4
-global SEGV_ACCADI: cint <comptime> = 5
-global SEGV_ADIDERR: cint <comptime> = 6
-global SEGV_ADIPERR: cint <comptime> = 7
-global SEGV_MTEAERR: cint <comptime> = 8
-global SEGV_MTESERR: cint <comptime> = 9
-global BUS_ADRALN: cint <comptime> = 1
-global BUS_ADRERR: cint <comptime> = 2
-global BUS_OBJERR: cint <comptime> = 3
-global BUS_MCEERR_AR: cint <comptime> = 4
-global BUS_MCEERR_AO: cint <comptime> = 5
-global CLD_EXITED: cint <comptime> = 1
-global CLD_KILLED: cint <comptime> = 2
-global CLD_DUMPED: cint <comptime> = 3
-global CLD_TRAPPED: cint <comptime> = 4
-global CLD_STOPPED: cint <comptime> = 5
-global CLD_CONTINUED: cint <comptime> = 6
-global POLL_IN: cint <comptime> = 1
-global POLL_OUT: cint <comptime> = 2
-global POLL_MSG: cint <comptime> = 3
-global POLL_ERR: cint <comptime> = 4
-global POLL_PRI: cint <comptime> = 5
-global POLL_HUP: cint <comptime> = 6
-global sigval_t: type = @sigval
-global pthread_attr_t: type <cimport, nodecl, forwarddecl> = @union{}
-global sigevent: type <cimport, nodecl, ctypedef> = @record{
-  sigev_value: __sigval_t,
-  sigev_signo: cint,
-  sigev_notify: cint,
-  _sigev_un: union{
-    _pad: [12]cint,
-    _tid: cint,
-    _sigev_thread: record{
-      _function: function(__sigval_t),
-      _attribute: *pthread_attr_t
-    }
-  }
-}
-global sigevent_t: type = @sigevent
-global SIGEV_SIGNAL: cint <comptime> = 0
-global SIGEV_NONE: cint <comptime> = 1
-global SIGEV_THREAD: cint <comptime> = 2
-global SIGEV_THREAD_ID: cint <comptime> = 4
 global __sighandler_t: type <cimport, nodecl> = @function(cint)
 global function __sysv_signal(__sig: cint, __handler: __sighandler_t): __sighandler_t <cimport, nodecl> end
 global function signal(__sig: cint, __handler: __sighandler_t): __sighandler_t <cimport, nodecl> end
-global function kill(__pid: cint, __sig: cint): cint <cimport, nodecl> end
-global function killpg(__pgrp: cint, __sig: cint): cint <cimport, nodecl> end
 global function raise(__sig: cint): cint <cimport, nodecl> end
-global function ssignal(__sig: cint, __handler: __sighandler_t): __sighandler_t <cimport, nodecl> end
-global function gsignal(__sig: cint): cint <cimport, nodecl> end
-global function psignal(__sig: cint, __s: cstring) <cimport, nodecl> end
-global function psiginfo(__pinfo: *siginfo_t, __s: cstring) <cimport, nodecl> end
-global function sigblock(__mask: cint): cint <cimport, nodecl> end
-global function sigsetmask(__mask: cint): cint <cimport, nodecl> end
-global function siggetmask(): cint <cimport, nodecl> end
-global sig_t: type <cimport, nodecl> = @function(cint)
-global function sigemptyset(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigfillset(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigaddset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
-global function sigdelset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
-global function sigismember(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
-global sigaction: type <cimport, nodecl, ctypedef> = @record{
-  __sigaction_handler: union{
-    sa_handler: __sighandler_t,
-    sa_sigaction: function(cint, *siginfo_t, pointer)
-  },
-  sa_mask: __sigset_t,
-  sa_flags: cint,
-  sa_restorer: function()
-}
-global function sigprocmask(__how: cint, __set: *sigset_t, __oset: *sigset_t): cint <cimport, nodecl> end
-global function sigsuspend(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigpending(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigwait(__set: *sigset_t, __sig: *cint): cint <cimport, nodecl> end
-global function sigwaitinfo(__set: *sigset_t, __info: *siginfo_t): cint <cimport, nodecl> end
-global function sigtimedwait(__set: *sigset_t, __info: *siginfo_t, __timeout: *timespec): cint <cimport, nodecl> end
-global function sigqueue(__pid: cint, __sig: cint, __val: sigval): cint <cimport, nodecl> end
-global _fpx_sw_bytes: type <cimport, nodecl, ctypedef> = @record{
-  magic1: uint32,
-  extended_size: uint32,
-  xstate_bv: uint64,
-  xstate_size: uint32,
-  __glibc_reserved1: [7]uint32
-}
-global _fpreg: type <cimport, nodecl, ctypedef> = @record{
-  significand: [4]cushort,
-  exponent: cushort
-}
-global _fpxreg: type <cimport, nodecl, ctypedef> = @record{
-  significand: [4]cushort,
-  exponent: cushort,
-  __glibc_reserved1: [3]cushort
-}
-global _xmmreg: type <cimport, nodecl, ctypedef> = @record{
-  element: [4]uint32
-}
-global _fpstate: type <cimport, nodecl, ctypedef> = @record{
-  cwd: uint16,
-  swd: uint16,
-  ftw: uint16,
-  fop: uint16,
-  rip: uint64,
-  rdp: uint64,
-  mxcsr: uint32,
-  mxcr_mask: uint32,
-  _st: [8]_fpxreg,
-  _xmm: [16]_xmmreg,
-  __glibc_reserved1: [24]uint32
-}
-global sigcontext: type <cimport, nodecl, ctypedef> = @record{
-  r8: uint64,
-  r9: uint64,
-  r10: uint64,
-  r11: uint64,
-  r12: uint64,
-  r13: uint64,
-  r14: uint64,
-  r15: uint64,
-  rdi: uint64,
-  rsi: uint64,
-  rbp: uint64,
-  rbx: uint64,
-  rdx: uint64,
-  rax: uint64,
-  rcx: uint64,
-  rsp: uint64,
-  rip: uint64,
-  eflags: uint64,
-  cs: cushort,
-  gs: cushort,
-  fs: cushort,
-  __pad0: cushort,
-  err: uint64,
-  trapno: uint64,
-  oldmask: uint64,
-  cr2: uint64,
-  __unnamed1: union{
-    fpstate: *_fpstate,
-    __fpstate_word: uint64
-  },
-  __reserved1: [8]uint64
-}
-global _xsave_hdr: type <cimport, nodecl, ctypedef> = @record{
-  xstate_bv: uint64,
-  __glibc_reserved1: [2]uint64,
-  __glibc_reserved2: [5]uint64
-}
-global _ymmh_state: type <cimport, nodecl, ctypedef> = @record{
-  ymmh_space: [64]uint32
-}
-global _xstate: type <cimport, nodecl, ctypedef> = @record{
-  fpstate: _fpstate,
-  xstate_hdr: _xsave_hdr,
-  ymmh: _ymmh_state
-}
-global function sigreturn(__scp: *sigcontext): cint <cimport, nodecl> end
-global stack_t: type <cimport, nodecl> = @record{
-  ss_sp: pointer,
-  ss_flags: cint,
-  ss_size: csize
-}
-global _libc_fpxreg: type <cimport, nodecl, ctypedef> = @record{
-  significand: [4]cushort,
-  exponent: cushort,
-  __glibc_reserved1: [3]cushort
-}
-global _libc_xmmreg: type <cimport, nodecl, ctypedef> = @record{
-  element: [4]uint32
-}
-global _libc_fpstate: type <cimport, nodecl, ctypedef> = @record{
-  cwd: uint16,
-  swd: uint16,
-  ftw: uint16,
-  fop: uint16,
-  rip: uint64,
-  rdp: uint64,
-  mxcsr: uint32,
-  mxcr_mask: uint32,
-  _st: [8]_libc_fpxreg,
-  _xmm: [16]_libc_xmmreg,
-  __glibc_reserved1: [24]uint32
-}
-global fpregset_t: type = @*_libc_fpstate
-global mcontext_t: type <cimport, nodecl> = @record{
-  gregs: [23]clonglong,
-  fpregs: fpregset_t,
-  __reserved1: [8]culonglong
-}
-global ucontext_t: type <cimport, nodecl, forwarddecl> = @record{}
-ucontext_t = @record{
-  uc_flags: culong,
-  uc_link: *ucontext_t,
-  uc_stack: stack_t,
-  uc_mcontext: mcontext_t,
-  uc_sigmask: sigset_t,
-  __fpregs_mem: _libc_fpstate,
-  __ssp: [4]culonglong
-}
-global function siginterrupt(__sig: cint, __interrupt: cint): cint <cimport, nodecl> end
-global SS_ONSTACK: cint <comptime> = 1
-global SS_DISABLE: cint <comptime> = 2
-global function sigaltstack(__ss: *stack_t, __oss: *stack_t): cint <cimport, nodecl> end
-global sigstack: type <cimport, nodecl, ctypedef> = @record{
-  ss_sp: pointer,
-  ss_onstack: cint
-}
-global __pthread_internal_list: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-__pthread_internal_list = @record{
-  __prev: *__pthread_internal_list,
-  __next: *__pthread_internal_list
-}
-global __pthread_list_t: type = @__pthread_internal_list
-global __pthread_internal_slist: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-__pthread_internal_slist = @record{
-  __next: *__pthread_internal_slist
-}
-global __pthread_slist_t: type = @__pthread_internal_slist
-global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
-  __lock: cint,
-  __count: cuint,
-  __owner: cint,
-  __nusers: cuint,
-  __kind: cint,
-  __spins: cshort,
-  __elision: cshort,
-  __list: __pthread_list_t
-}
-global __pthread_rwlock_arch_t: type <cimport, nodecl, ctypedef> = @record{
-  __readers: cuint,
-  __writers: cuint,
-  __wrphase_futex: cuint,
-  __writers_futex: cuint,
-  __pad3: cuint,
-  __pad4: cuint,
-  __cur_writer: cint,
-  __shared: cint,
-  __rwelision: cschar,
-  __pad1: [7]cuchar,
-  __pad2: culong,
-  __flags: cuint
-}
-global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
-  __unnamed1: union{
-    __wseq: culonglong,
-    __wseq32: record{
-      __low: cuint,
-      __high: cuint
-    }
-  },
-  __unnamed2: union{
-    __g1_start: culonglong,
-    __g1_start32: record{
-      __low: cuint,
-      __high: cuint
-    }
-  },
-  __g_refs: [2]cuint,
-  __g_size: [2]cuint,
-  __g1_orig_size: cuint,
-  __wrefs: cuint,
-  __g_signals: [2]cuint
-}
-global __once_flag: type <cimport, nodecl> = @record{
-  __data: cint
-}
-global pthread_mutexattr_t: type <cimport, nodecl> = @union{
-  __size: [4]cchar,
-  __align: cint
-}
-global pthread_condattr_t: type <cimport, nodecl> = @union{
-  __size: [4]cchar,
-  __align: cint
-}
-pthread_attr_t = @union{
-  __size: [56]cchar,
-  __align: clong
-}
-global pthread_mutex_t: type <cimport, nodecl> = @union{
-  __data: __pthread_mutex_s,
-  __size: [40]cchar,
-  __align: clong
-}
-global pthread_cond_t: type <cimport, nodecl> = @union{
-  __data: __pthread_cond_s,
-  __size: [48]cchar,
-  __align: clonglong
-}
-global pthread_rwlock_t: type <cimport, nodecl> = @union{
-  __data: __pthread_rwlock_arch_t,
-  __size: [56]cchar,
-  __align: clong
-}
-global pthread_rwlockattr_t: type <cimport, nodecl> = @union{
-  __size: [8]cchar,
-  __align: clong
-}
-global pthread_barrier_t: type <cimport, nodecl> = @union{
-  __size: [32]cchar,
-  __align: clong
-}
-global pthread_barrierattr_t: type <cimport, nodecl> = @union{
-  __size: [4]cchar,
-  __align: cint
-}
-global function pthread_sigmask(__how: cint, __newmask: *__sigset_t, __oldmask: *__sigset_t): cint <cimport, nodecl> end
-global function pthread_kill(__threadid: culong, __signo: cint): cint <cimport, nodecl> end
 global function __libc_current_sigrtmin(): cint <cimport, nodecl> end
 global function __libc_current_sigrtmax(): cint <cimport, nodecl> end
-global memory_order: type <cimport, nodecl, using> = @enum(cint){
-  memory_order_relaxed = 0,
-  memory_order_consume = 1,
-  memory_order_acquire = 2,
-  memory_order_release = 3,
-  memory_order_acq_rel = 4,
-  memory_order_seq_cst = 5
-}
-global atomic_bool: type <cimport, nodecl> = @boolean
-global function atomic_thread_fence(a1: memory_order) <cimport, nodecl> end
-global function atomic_signal_fence(a1: memory_order) <cimport, nodecl> end
-global atomic_flag: type <cimport, nodecl> = @record{
-  __val: boolean
-}
-global function atomic_flag_test_and_set(a1: *atomic_flag): boolean <cimport, nodecl> end
-global function atomic_flag_test_and_set_explicit(a1: *atomic_flag, a2: memory_order): boolean <cimport, nodecl> end
-global function atomic_flag_clear(a1: *atomic_flag) <cimport, nodecl> end
-global function atomic_flag_clear_explicit(a1: *atomic_flag, a2: memory_order) <cimport, nodecl> end
 global max_align_t: type <cimport, nodecl> = @record{
   __max_align_ll: clonglong,
   __max_align_ld: clongdouble
@@ -1125,23 +600,14 @@ global stdout: *FILE <cimport, nodecl>
 global stderr: *FILE <cimport, nodecl>
 global function remove(__filename: cstring): cint <cimport, nodecl> end
 global function rename(__old: cstring, __new: cstring): cint <cimport, nodecl> end
-global function renameat(__oldfd: cint, __old: cstring, __newfd: cint, __new: cstring): cint <cimport, nodecl> end
 global function tmpfile(): *FILE <cimport, nodecl> end
 global function tmpnam(__s: cstring): cstring <cimport, nodecl> end
-global function tmpnam_r(__s: cstring): cstring <cimport, nodecl> end
-global function tempnam(__dir: cstring, __pfx: cstring): cstring <cimport, nodecl> end
 global function fclose(__stream: *FILE): cint <cimport, nodecl> end
 global function fflush(__stream: *FILE): cint <cimport, nodecl> end
-global function fflush_unlocked(__stream: *FILE): cint <cimport, nodecl> end
 global function fopen(__filename: cstring, __modes: cstring): *FILE <cimport, nodecl> end
 global function freopen(__filename: cstring, __modes: cstring, __stream: *FILE): *FILE <cimport, nodecl> end
-global function fdopen(__fd: cint, __modes: cstring): *FILE <cimport, nodecl> end
-global function fmemopen(__s: pointer, __len: csize, __modes: cstring): *FILE <cimport, nodecl> end
-global function open_memstream(__bufloc: *cstring, __sizeloc: *csize): *FILE <cimport, nodecl> end
 global function setbuf(__stream: *FILE, __buf: cstring) <cimport, nodecl> end
 global function setvbuf(__stream: *FILE, __buf: cstring, __modes: cint, __n: csize): cint <cimport, nodecl> end
-global function setbuffer(__stream: *FILE, __buf: cstring, __size: csize) <cimport, nodecl> end
-global function setlinebuf(__stream: *FILE) <cimport, nodecl> end
 global function fprintf(__stream: *FILE, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function printf(__format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function sprintf(__s: cstring, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
@@ -1150,8 +616,6 @@ global function vprintf(__format: cstring, __arg: cvalist): cint <cimport, nodec
 global function vsprintf(__s: cstring, __format: cstring, __arg: cvalist): cint <cimport, nodecl> end
 global function snprintf(__s: cstring, __maxlen: csize, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function vsnprintf(__s: cstring, __maxlen: csize, __format: cstring, __arg: cvalist): cint <cimport, nodecl> end
-global function vdprintf(__fd: cint, __fmt: cstring, __arg: cvalist): cint <cimport, nodecl> end
-global function dprintf(__fd: cint, __fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function fscanf(__stream: *FILE, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function scanf(__format: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function sscanf(__s: cstring, __format: cstring, ...: cvarargs): cint <cimport, nodecl> end
@@ -1161,50 +625,24 @@ global function vsscanf(__s: cstring, __format: cstring, __arg: cvalist): cint <
 global function fgetc(__stream: *FILE): cint <cimport, nodecl> end
 global function getc(__stream: *FILE): cint <cimport, nodecl> end
 global function getchar(): cint <cimport, nodecl> end
-global function getc_unlocked(__stream: *FILE): cint <cimport, nodecl> end
-global function getchar_unlocked(): cint <cimport, nodecl> end
-global function fgetc_unlocked(__stream: *FILE): cint <cimport, nodecl> end
 global function fputc(__c: cint, __stream: *FILE): cint <cimport, nodecl> end
 global function putc(__c: cint, __stream: *FILE): cint <cimport, nodecl> end
 global function putchar(__c: cint): cint <cimport, nodecl> end
-global function fputc_unlocked(__c: cint, __stream: *FILE): cint <cimport, nodecl> end
-global function putc_unlocked(__c: cint, __stream: *FILE): cint <cimport, nodecl> end
-global function putchar_unlocked(__c: cint): cint <cimport, nodecl> end
-global function getw(__stream: *FILE): cint <cimport, nodecl> end
-global function putw(__w: cint, __stream: *FILE): cint <cimport, nodecl> end
 global function fgets(__s: cstring, __n: cint, __stream: *FILE): cstring <cimport, nodecl> end
-global function __getdelim(__lineptr: *cstring, __n: *csize, __delimiter: cint, __stream: *FILE): clong <cimport, nodecl> end
-global function getdelim(__lineptr: *cstring, __n: *csize, __delimiter: cint, __stream: *FILE): clong <cimport, nodecl> end
-global function getline(__lineptr: *cstring, __n: *csize, __stream: *FILE): clong <cimport, nodecl> end
 global function fputs(__s: cstring, __stream: *FILE): cint <cimport, nodecl> end
 global function puts(__s: cstring): cint <cimport, nodecl> end
 global function ungetc(__c: cint, __stream: *FILE): cint <cimport, nodecl> end
 global function fread(__ptr: pointer, __size: csize, __n: csize, __stream: *FILE): csize <cimport, nodecl> end
 global function fwrite(__ptr: pointer, __size: csize, __n: csize, __s: *FILE): csize <cimport, nodecl> end
-global function fread_unlocked(__ptr: pointer, __size: csize, __n: csize, __stream: *FILE): csize <cimport, nodecl> end
-global function fwrite_unlocked(__ptr: pointer, __size: csize, __n: csize, __stream: *FILE): csize <cimport, nodecl> end
 global function fseek(__stream: *FILE, __off: clong, __whence: cint): cint <cimport, nodecl> end
 global function ftell(__stream: *FILE): clong <cimport, nodecl> end
 global function rewind(__stream: *FILE) <cimport, nodecl> end
-global function fseeko(__stream: *FILE, __off: clong, __whence: cint): cint <cimport, nodecl> end
-global function ftello(__stream: *FILE): clong <cimport, nodecl> end
 global function fgetpos(__stream: *FILE, __pos: *fpos_t): cint <cimport, nodecl> end
 global function fsetpos(__stream: *FILE, __pos: *fpos_t): cint <cimport, nodecl> end
 global function clearerr(__stream: *FILE) <cimport, nodecl> end
 global function feof(__stream: *FILE): cint <cimport, nodecl> end
 global function ferror(__stream: *FILE): cint <cimport, nodecl> end
-global function clearerr_unlocked(__stream: *FILE) <cimport, nodecl> end
-global function feof_unlocked(__stream: *FILE): cint <cimport, nodecl> end
-global function ferror_unlocked(__stream: *FILE): cint <cimport, nodecl> end
 global function perror(__s: cstring) <cimport, nodecl> end
-global function fileno(__stream: *FILE): cint <cimport, nodecl> end
-global function fileno_unlocked(__stream: *FILE): cint <cimport, nodecl> end
-global function popen(__command: cstring, __modes: cstring): *FILE <cimport, nodecl> end
-global function pclose(__stream: *FILE): cint <cimport, nodecl> end
-global function ctermid(__s: cstring): cstring <cimport, nodecl> end
-global function flockfile(__stream: *FILE) <cimport, nodecl> end
-global function ftrylockfile(__stream: *FILE): cint <cimport, nodecl> end
-global function funlockfile(__stream: *FILE) <cimport, nodecl> end
 global function __uflow(a1: *FILE): cint <cimport, nodecl> end
 global function __overflow(a1: *FILE, a2: cint): cint <cimport, nodecl> end
 global div_t: type <cimport, nodecl> = @record{
@@ -1229,102 +667,23 @@ global function strtof(__nptr: cstring, __endptr: *cstring): float32 <cimport, n
 global function strtold(__nptr: cstring, __endptr: *cstring): clongdouble <cimport, nodecl> end
 global function strtol(__nptr: cstring, __endptr: *cstring, __base: cint): clong <cimport, nodecl> end
 global function strtoul(__nptr: cstring, __endptr: *cstring, __base: cint): culong <cimport, nodecl> end
-global function strtoq(__nptr: cstring, __endptr: *cstring, __base: cint): clonglong <cimport, nodecl> end
-global function strtouq(__nptr: cstring, __endptr: *cstring, __base: cint): culonglong <cimport, nodecl> end
 global function strtoll(__nptr: cstring, __endptr: *cstring, __base: cint): clonglong <cimport, nodecl> end
 global function strtoull(__nptr: cstring, __endptr: *cstring, __base: cint): culonglong <cimport, nodecl> end
-global function l64a(__n: clong): cstring <cimport, nodecl> end
-global function a64l(__s: cstring): clong <cimport, nodecl> end
-global fsid_t: type = @__fsid_t
-global caddr_t: type = @cstring
-global timer_t: type = @pointer
-global function __bswap_16(__bsx: uint16): uint16 <cimport, nodecl> end
-global function __bswap_32(__bsx: uint32): uint32 <cimport, nodecl> end
-global function __bswap_64(__bsx: uint64): uint64 <cimport, nodecl> end
-global function __uint16_identity(__x: uint16): uint16 <cimport, nodecl> end
-global function __uint32_identity(__x: uint32): uint32 <cimport, nodecl> end
-global function __uint64_identity(__x: uint64): uint64 <cimport, nodecl> end
-global timeval: type <cimport, nodecl, ctypedef> = @record{
-  tv_sec: clong,
-  tv_usec: clong
-}
-global fd_set: type <cimport, nodecl> = @record{
-  __fds_bits: [16]clong
-}
-global function select(__nfds: cint, __readfds: *fd_set, __writefds: *fd_set, __exceptfds: *fd_set, __timeout: *timeval): cint <cimport, nodecl> end
-global function pselect(__nfds: cint, __readfds: *fd_set, __writefds: *fd_set, __exceptfds: *fd_set, __timeout: *timespec, __sigmask: *__sigset_t): cint <cimport, nodecl> end
-global function random(): clong <cimport, nodecl> end
-global function srandom(__seed: cuint) <cimport, nodecl> end
-global function initstate(__seed: cuint, __statebuf: cstring, __statelen: csize): cstring <cimport, nodecl> end
-global function setstate(__statebuf: cstring): cstring <cimport, nodecl> end
-global random_data: type <cimport, nodecl, ctypedef> = @record{
-  fptr: *int32,
-  rptr: *int32,
-  state: *int32,
-  rand_type: cint,
-  rand_deg: cint,
-  rand_sep: cint,
-  end_ptr: *int32
-}
-global function random_r(__buf: *random_data, __result: *int32): cint <cimport, nodecl> end
-global function srandom_r(__seed: cuint, __buf: *random_data): cint <cimport, nodecl> end
-global function initstate_r(__seed: cuint, __statebuf: cstring, __statelen: csize, __buf: *random_data): cint <cimport, nodecl> end
-global function setstate_r(__statebuf: cstring, __buf: *random_data): cint <cimport, nodecl> end
 global function rand(): cint <cimport, nodecl> end
 global function srand(__seed: cuint) <cimport, nodecl> end
-global function rand_r(__seed: *cuint): cint <cimport, nodecl> end
-global function drand48(): float64 <cimport, nodecl> end
-global function erand48(__xsubi: *cushort): float64 <cimport, nodecl> end
-global function lrand48(): clong <cimport, nodecl> end
-global function nrand48(__xsubi: *cushort): clong <cimport, nodecl> end
-global function mrand48(): clong <cimport, nodecl> end
-global function jrand48(__xsubi: *cushort): clong <cimport, nodecl> end
-global function srand48(__seedval: clong) <cimport, nodecl> end
-global function seed48(__seed16v: *cushort): *cushort <cimport, nodecl> end
-global function lcong48(__param: *cushort) <cimport, nodecl> end
-global drand48_data: type <cimport, nodecl, ctypedef> = @record{
-  __x: [3]cushort,
-  __old_x: [3]cushort,
-  __c: cushort,
-  __init: cushort,
-  __a: culonglong
-}
-global function drand48_r(__buffer: *drand48_data, __result: *float64): cint <cimport, nodecl> end
-global function erand48_r(__xsubi: *cushort, __buffer: *drand48_data, __result: *float64): cint <cimport, nodecl> end
-global function lrand48_r(__buffer: *drand48_data, __result: *clong): cint <cimport, nodecl> end
-global function nrand48_r(__xsubi: *cushort, __buffer: *drand48_data, __result: *clong): cint <cimport, nodecl> end
-global function mrand48_r(__buffer: *drand48_data, __result: *clong): cint <cimport, nodecl> end
-global function jrand48_r(__xsubi: *cushort, __buffer: *drand48_data, __result: *clong): cint <cimport, nodecl> end
-global function srand48_r(__seedval: clong, __buffer: *drand48_data): cint <cimport, nodecl> end
-global function seed48_r(__seed16v: *cushort, __buffer: *drand48_data): cint <cimport, nodecl> end
-global function lcong48_r(__param: *cushort, __buffer: *drand48_data): cint <cimport, nodecl> end
 global function malloc(__size: csize): pointer <cimport, nodecl> end
 global function calloc(__nmemb: csize, __size: csize): pointer <cimport, nodecl> end
 global function realloc(__ptr: pointer, __size: csize): pointer <cimport, nodecl> end
-global function reallocarray(__ptr: pointer, __nmemb: csize, __size: csize): pointer <cimport, nodecl> end
 global function free(__ptr: pointer) <cimport, nodecl> end
-global function alloca(__size: csize): pointer <cimport, nodecl> end
-global function valloc(__size: csize): pointer <cimport, nodecl> end
-global function posix_memalign(__memptr: *pointer, __alignment: csize, __size: csize): cint <cimport, nodecl> end
 global function aligned_alloc(__alignment: csize, __size: csize): pointer <cimport, nodecl> end
 global function abort() <cimport, nodecl> end
 global function atexit(__func: function()): cint <cimport, nodecl> end
 global function at_quick_exit(__func: function()): cint <cimport, nodecl> end
-global function on_exit(__func: function(cint, pointer), __arg: pointer): cint <cimport, nodecl> end
 global function exit(__status: cint) <cimport, nodecl> end
 global function quick_exit(__status: cint) <cimport, nodecl> end
 global function _Exit(__status: cint) <cimport, nodecl> end
 global function getenv(__name: cstring): cstring <cimport, nodecl> end
-global function putenv(__string: cstring): cint <cimport, nodecl> end
-global function setenv(__name: cstring, __value: cstring, __replace: cint): cint <cimport, nodecl> end
-global function unsetenv(__name: cstring): cint <cimport, nodecl> end
-global function clearenv(): cint <cimport, nodecl> end
-global function mktemp(__template: cstring): cstring <cimport, nodecl> end
-global function mkstemp(__template: cstring): cint <cimport, nodecl> end
-global function mkstemps(__template: cstring, __suffixlen: cint): cint <cimport, nodecl> end
-global function mkdtemp(__template: cstring): cstring <cimport, nodecl> end
 global function system(__command: cstring): cint <cimport, nodecl> end
-global function realpath(__name: cstring, __resolved: cstring): cstring <cimport, nodecl> end
 global __compar_fn_t: type <cimport, nodecl> = @function(pointer, pointer): cint
 global function bsearch(__key: pointer, __base: pointer, __nmemb: csize, __size: csize, __compar: __compar_fn_t): pointer <cimport, nodecl> end
 global function qsort(__base: pointer, __nmemb: csize, __size: csize, __compar: __compar_fn_t) <cimport, nodecl> end
@@ -1334,27 +693,13 @@ global function llabs(__x: clonglong): clonglong <cimport, nodecl> end
 global function div(__numer: cint, __denom: cint): div_t <cimport, nodecl> end
 global function ldiv(__numer: clong, __denom: clong): ldiv_t <cimport, nodecl> end
 global function lldiv(__numer: clonglong, __denom: clonglong): lldiv_t <cimport, nodecl> end
-global function ecvt(__value: float64, __ndigit: cint, __decpt: *cint, __sign: *cint): cstring <cimport, nodecl> end
-global function fcvt(__value: float64, __ndigit: cint, __decpt: *cint, __sign: *cint): cstring <cimport, nodecl> end
-global function gcvt(__value: float64, __ndigit: cint, __buf: cstring): cstring <cimport, nodecl> end
-global function qecvt(__value: clongdouble, __ndigit: cint, __decpt: *cint, __sign: *cint): cstring <cimport, nodecl> end
-global function qfcvt(__value: clongdouble, __ndigit: cint, __decpt: *cint, __sign: *cint): cstring <cimport, nodecl> end
-global function qgcvt(__value: clongdouble, __ndigit: cint, __buf: cstring): cstring <cimport, nodecl> end
-global function ecvt_r(__value: float64, __ndigit: cint, __decpt: *cint, __sign: *cint, __buf: cstring, __len: csize): cint <cimport, nodecl> end
-global function fcvt_r(__value: float64, __ndigit: cint, __decpt: *cint, __sign: *cint, __buf: cstring, __len: csize): cint <cimport, nodecl> end
-global function qecvt_r(__value: clongdouble, __ndigit: cint, __decpt: *cint, __sign: *cint, __buf: cstring, __len: csize): cint <cimport, nodecl> end
-global function qfcvt_r(__value: clongdouble, __ndigit: cint, __decpt: *cint, __sign: *cint, __buf: cstring, __len: csize): cint <cimport, nodecl> end
 global function mblen(__s: cstring, __n: csize): cint <cimport, nodecl> end
 global function mbtowc(__pwc: *cint, __s: cstring, __n: csize): cint <cimport, nodecl> end
 global function wctomb(__s: cstring, __wchar: cint): cint <cimport, nodecl> end
 global function mbstowcs(__pwcs: *cint, __s: cstring, __n: csize): csize <cimport, nodecl> end
 global function wcstombs(__s: cstring, __pwcs: *cint, __n: csize): csize <cimport, nodecl> end
-global function rpmatch(__response: cstring): cint <cimport, nodecl> end
-global function getsubopt(__optionp: *cstring, __tokens: *cstring, __valuep: *cstring): cint <cimport, nodecl> end
-global function getloadavg(__loadavg: *float64, __nelem: cint): cint <cimport, nodecl> end
 global function memcpy(__dest: pointer, __src: pointer, __n: csize): pointer <cimport, nodecl> end
 global function memmove(__dest: pointer, __src: pointer, __n: csize): pointer <cimport, nodecl> end
-global function memccpy(__dest: pointer, __src: pointer, __c: cint, __n: csize): pointer <cimport, nodecl> end
 global function memset(__s: pointer, __c: cint, __n: csize): pointer <cimport, nodecl> end
 global function memcmp(__s1: pointer, __s2: pointer, __n: csize): cint <cimport, nodecl> end
 global function memchr(__s: pointer, __c: cint, __n: csize): pointer <cimport, nodecl> end
@@ -1366,10 +711,6 @@ global function strcmp(__s1: cstring, __s2: cstring): cint <cimport, nodecl> end
 global function strncmp(__s1: cstring, __s2: cstring, __n: csize): cint <cimport, nodecl> end
 global function strcoll(__s1: cstring, __s2: cstring): cint <cimport, nodecl> end
 global function strxfrm(__dest: cstring, __src: cstring, __n: csize): csize <cimport, nodecl> end
-global function strcoll_l(__s1: cstring, __s2: cstring, __l: locale_t): cint <cimport, nodecl> end
-global function strxfrm_l(__dest: cstring, __src: cstring, __n: csize, __l: locale_t): csize <cimport, nodecl> end
-global function strdup(__s: cstring): cstring <cimport, nodecl> end
-global function strndup(__string: cstring, __n: csize): cstring <cimport, nodecl> end
 global function strchr(__s: cstring, __c: cint): cstring <cimport, nodecl> end
 global function strrchr(__s: cstring, __c: cint): cstring <cimport, nodecl> end
 global function strcspn(__s: cstring, __reject: cstring): csize <cimport, nodecl> end
@@ -1378,31 +719,8 @@ global function strpbrk(__s: cstring, __accept: cstring): cstring <cimport, node
 global function strstr(__haystack: cstring, __needle: cstring): cstring <cimport, nodecl> end
 global function strtok(__s: cstring, __delim: cstring): cstring <cimport, nodecl> end
 global function __strtok_r(__s: cstring, __delim: cstring, __save_ptr: *cstring): cstring <cimport, nodecl> end
-global function strtok_r(__s: cstring, __delim: cstring, __save_ptr: *cstring): cstring <cimport, nodecl> end
 global function strlen(__s: cstring): csize <cimport, nodecl> end
-global function strnlen(__string: cstring, __maxlen: csize): csize <cimport, nodecl> end
 global function strerror(__errnum: cint): cstring <cimport, nodecl> end
-global function strerror_r(__errnum: cint, __buf: cstring, __buflen: csize): cint <cimport, nodecl> end
-global function strerror_l(__errnum: cint, __l: locale_t): cstring <cimport, nodecl> end
-global function bcmp(__s1: pointer, __s2: pointer, __n: csize): cint <cimport, nodecl> end
-global function bcopy(__src: pointer, __dest: pointer, __n: csize) <cimport, nodecl> end
-global function bzero(__s: pointer, __n: csize) <cimport, nodecl> end
-global function index(__s: cstring, __c: cint): cstring <cimport, nodecl> end
-global function rindex(__s: cstring, __c: cint): cstring <cimport, nodecl> end
-global function ffs(__i: cint): cint <cimport, nodecl> end
-global function ffsl(__l: clong): cint <cimport, nodecl> end
-global function ffsll(__ll: clonglong): cint <cimport, nodecl> end
-global function strcasecmp(__s1: cstring, __s2: cstring): cint <cimport, nodecl> end
-global function strncasecmp(__s1: cstring, __s2: cstring, __n: csize): cint <cimport, nodecl> end
-global function strcasecmp_l(__s1: cstring, __s2: cstring, __loc: locale_t): cint <cimport, nodecl> end
-global function strncasecmp_l(__s1: cstring, __s2: cstring, __n: csize, __loc: locale_t): cint <cimport, nodecl> end
-global function explicit_bzero(__s: pointer, __n: csize) <cimport, nodecl> end
-global function strsep(__stringp: *cstring, __delim: cstring): cstring <cimport, nodecl> end
-global function strsignal(__sig: cint): cstring <cimport, nodecl> end
-global function __stpcpy(__dest: cstring, __src: cstring): cstring <cimport, nodecl> end
-global function stpcpy(__dest: cstring, __src: cstring): cstring <cimport, nodecl> end
-global function __stpncpy(__dest: cstring, __src: cstring, __n: csize): cstring <cimport, nodecl> end
-global function stpncpy(__dest: cstring, __src: cstring, __n: csize): cstring <cimport, nodecl> end
 global tm: type <cimport, nodecl, ctypedef> = @record{
   tm_sec: cint,
   tm_min: cint,
@@ -1413,93 +731,26 @@ global tm: type <cimport, nodecl, ctypedef> = @record{
   tm_wday: cint,
   tm_yday: cint,
   tm_isdst: cint,
-  tm_gmtoff: clong,
-  tm_zone: cstring
+  __tm_gmtoff: clong,
+  __tm_zone: cstring
 }
-global itimerspec: type <cimport, nodecl, ctypedef> = @record{
-  it_interval: timespec,
-  it_value: timespec
+global timespec: type <cimport, nodecl, ctypedef> = @record{
+  tv_sec: clong,
+  tv_nsec: clong
 }
 global function clock(): clong <cimport, nodecl> end
 global function time(__timer: *clong): clong <cimport, nodecl> end
 global function difftime(__time1: clong, __time0: clong): float64 <cimport, nodecl> end
 global function mktime(__tp: *tm): clong <cimport, nodecl> end
 global function strftime(__s: cstring, __maxsize: csize, __format: cstring, __tp: *tm): csize <cimport, nodecl> end
-global function strftime_l(__s: cstring, __maxsize: csize, __format: cstring, __tp: *tm, __loc: locale_t): csize <cimport, nodecl> end
 global function gmtime(__timer: *clong): *tm <cimport, nodecl> end
 global function localtime(__timer: *clong): *tm <cimport, nodecl> end
-global function gmtime_r(__timer: *clong, __tp: *tm): *tm <cimport, nodecl> end
-global function localtime_r(__timer: *clong, __tp: *tm): *tm <cimport, nodecl> end
 global function asctime(__tp: *tm): cstring <cimport, nodecl> end
 global function ctime(__timer: *clong): cstring <cimport, nodecl> end
-global function asctime_r(__tp: *tm, __buf: cstring): cstring <cimport, nodecl> end
-global function ctime_r(__timer: *clong, __buf: cstring): cstring <cimport, nodecl> end
 global __tzname: [2]cstring <cimport, nodecl>
 global __daylight: cint <cimport, nodecl>
 global __timezone: clong <cimport, nodecl>
-global tzname: [2]cstring <cimport, nodecl>
-global function tzset() <cimport, nodecl> end
-global daylight: cint <cimport, nodecl>
-global timezone: clong <cimport, nodecl>
-global function timegm(__tp: *tm): clong <cimport, nodecl> end
-global function timelocal(__tp: *tm): clong <cimport, nodecl> end
-global function dysize(__year: cint): cint <cimport, nodecl> end
-global function nanosleep(__requested_time: *timespec, __remaining: *timespec): cint <cimport, nodecl> end
-global function clock_getres(__clock_id: cint, __res: *timespec): cint <cimport, nodecl> end
-global function clock_gettime(__clock_id: cint, __tp: *timespec): cint <cimport, nodecl> end
-global function clock_settime(__clock_id: cint, __tp: *timespec): cint <cimport, nodecl> end
-global function clock_nanosleep(__clock_id: cint, __flags: cint, __req: *timespec, __rem: *timespec): cint <cimport, nodecl> end
-global function clock_getcpuclockid(__pid: cint, __clock_id: *cint): cint <cimport, nodecl> end
-global function timer_create(__clock_id: cint, __evp: *sigevent, __timerid: *timer_t): cint <cimport, nodecl> end
-global function timer_delete(__timerid: timer_t): cint <cimport, nodecl> end
-global function timer_settime(__timerid: timer_t, __flags: cint, __value: *itimerspec, __ovalue: *itimerspec): cint <cimport, nodecl> end
-global function timer_gettime(__timerid: timer_t, __value: *itimerspec): cint <cimport, nodecl> end
-global function timer_getoverrun(__timerid: timer_t): cint <cimport, nodecl> end
 global function timespec_get(__ts: *timespec, __base: cint): cint <cimport, nodecl> end
-global tss_dtor_t: type <cimport, nodecl> = @function(pointer)
-global thrd_start_t: type <cimport, nodecl> = @function(pointer): cint
-global thrd_success: cint <comptime> = 0
-global thrd_busy: cint <comptime> = 1
-global thrd_error: cint <comptime> = 2
-global thrd_nomem: cint <comptime> = 3
-global thrd_timedout: cint <comptime> = 4
-global mtx_plain: cint <comptime> = 0
-global mtx_recursive: cint <comptime> = 1
-global mtx_timed: cint <comptime> = 2
-global once_flag: type = @__once_flag
-global mtx_t: type <cimport, nodecl> = @union{
-  __size: [40]cchar,
-  __align: clong
-}
-global cnd_t: type <cimport, nodecl> = @union{
-  __size: [48]cchar,
-  __align: clonglong
-}
-global function thrd_create(__thr: *culong, __func: thrd_start_t, __arg: pointer): cint <cimport, nodecl> end
-global function thrd_equal(__lhs: culong, __rhs: culong): cint <cimport, nodecl> end
-global function thrd_current(): culong <cimport, nodecl> end
-global function thrd_sleep(__time_point: *timespec, __remaining: *timespec): cint <cimport, nodecl> end
-global function thrd_exit(__res: cint) <cimport, nodecl> end
-global function thrd_detach(__thr: culong): cint <cimport, nodecl> end
-global function thrd_join(__thr: culong, __res: *cint): cint <cimport, nodecl> end
-global function thrd_yield() <cimport, nodecl> end
-global function mtx_init(__mutex: *mtx_t, __type: cint): cint <cimport, nodecl> end
-global function mtx_lock(__mutex: *mtx_t): cint <cimport, nodecl> end
-global function mtx_timedlock(__mutex: *mtx_t, __time_point: *timespec): cint <cimport, nodecl> end
-global function mtx_trylock(__mutex: *mtx_t): cint <cimport, nodecl> end
-global function mtx_unlock(__mutex: *mtx_t): cint <cimport, nodecl> end
-global function mtx_destroy(__mutex: *mtx_t) <cimport, nodecl> end
-global function call_once(__flag: *once_flag, __func: function()) <cimport, nodecl> end
-global function cnd_init(__cond: *cnd_t): cint <cimport, nodecl> end
-global function cnd_signal(__cond: *cnd_t): cint <cimport, nodecl> end
-global function cnd_broadcast(__cond: *cnd_t): cint <cimport, nodecl> end
-global function cnd_wait(__cond: *cnd_t, __mutex: *mtx_t): cint <cimport, nodecl> end
-global function cnd_timedwait(__cond: *cnd_t, __mutex: *mtx_t, __time_point: *timespec): cint <cimport, nodecl> end
-global function cnd_destroy(__COND: *cnd_t) <cimport, nodecl> end
-global function tss_create(__tss_id: *cuint, __destructor: tss_dtor_t): cint <cimport, nodecl> end
-global function tss_get(__tss_id: cuint): pointer <cimport, nodecl> end
-global function tss_set(__tss_id: cuint, __val: pointer): cint <cimport, nodecl> end
-global function tss_delete(__tss_id: cuint) <cimport, nodecl> end
 global mbstate_t: type = @__mbstate_t
 global function mbrtoc16(__pc16: *cushort, __s: cstring, __n: csize, __p: *mbstate_t): csize <cimport, nodecl> end
 global function c16rtomb(__s: cstring, __c16: cushort, __ps: *mbstate_t): csize <cimport, nodecl> end
@@ -1511,15 +762,8 @@ global function wcscat(__dest: *cint, __src: *cint): *cint <cimport, nodecl> end
 global function wcsncat(__dest: *cint, __src: *cint, __n: csize): *cint <cimport, nodecl> end
 global function wcscmp(__s1: *cint, __s2: *cint): cint <cimport, nodecl> end
 global function wcsncmp(__s1: *cint, __s2: *cint, __n: csize): cint <cimport, nodecl> end
-global function wcscasecmp(__s1: *cint, __s2: *cint): cint <cimport, nodecl> end
-global function wcsncasecmp(__s1: *cint, __s2: *cint, __n: csize): cint <cimport, nodecl> end
-global function wcscasecmp_l(__s1: *cint, __s2: *cint, __loc: locale_t): cint <cimport, nodecl> end
-global function wcsncasecmp_l(__s1: *cint, __s2: *cint, __n: csize, __loc: locale_t): cint <cimport, nodecl> end
 global function wcscoll(__s1: *cint, __s2: *cint): cint <cimport, nodecl> end
 global function wcsxfrm(__s1: *cint, __s2: *cint, __n: csize): csize <cimport, nodecl> end
-global function wcscoll_l(__s1: *cint, __s2: *cint, __loc: locale_t): cint <cimport, nodecl> end
-global function wcsxfrm_l(__s1: *cint, __s2: *cint, __n: csize, __loc: locale_t): csize <cimport, nodecl> end
-global function wcsdup(__s: *cint): *cint <cimport, nodecl> end
 global function wcschr(__wcs: *cint, __wc: cint): *cint <cimport, nodecl> end
 global function wcsrchr(__wcs: *cint, __wc: cint): *cint <cimport, nodecl> end
 global function wcscspn(__wcs: *cint, __reject: *cint): csize <cimport, nodecl> end
@@ -1528,7 +772,6 @@ global function wcspbrk(__wcs: *cint, __accept: *cint): *cint <cimport, nodecl> 
 global function wcsstr(__haystack: *cint, __needle: *cint): *cint <cimport, nodecl> end
 global function wcstok(__s: *cint, __delim: *cint, __ptr: **cint): *cint <cimport, nodecl> end
 global function wcslen(__s: *cint): csize <cimport, nodecl> end
-global function wcsnlen(__s: *cint, __maxlen: csize): csize <cimport, nodecl> end
 global function wmemchr(__s: *cint, __c: cint, __n: csize): *cint <cimport, nodecl> end
 global function wmemcmp(__s1: *cint, __s2: *cint, __n: csize): cint <cimport, nodecl> end
 global function wmemcpy(__s1: *cint, __s2: *cint, __n: csize): *cint <cimport, nodecl> end
@@ -1543,8 +786,6 @@ global function __mbrlen(__s: cstring, __n: csize, __ps: *mbstate_t): csize <cim
 global function mbrlen(__s: cstring, __n: csize, __ps: *mbstate_t): csize <cimport, nodecl> end
 global function mbsrtowcs(__dst: *cint, __src: *cstring, __len: csize, __ps: *mbstate_t): csize <cimport, nodecl> end
 global function wcsrtombs(__dst: cstring, __src: **cint, __len: csize, __ps: *mbstate_t): csize <cimport, nodecl> end
-global function mbsnrtowcs(__dst: *cint, __src: *cstring, __nmc: csize, __len: csize, __ps: *mbstate_t): csize <cimport, nodecl> end
-global function wcsnrtombs(__dst: cstring, __src: **cint, __nwc: csize, __len: csize, __ps: *mbstate_t): csize <cimport, nodecl> end
 global function wcstod(__nptr: *cint, __endptr: **cint): float64 <cimport, nodecl> end
 global function wcstof(__nptr: *cint, __endptr: **cint): float32 <cimport, nodecl> end
 global function wcstold(__nptr: *cint, __endptr: **cint): clongdouble <cimport, nodecl> end
@@ -1552,9 +793,6 @@ global function wcstol(__nptr: *cint, __endptr: **cint, __base: cint): clong <ci
 global function wcstoul(__nptr: *cint, __endptr: **cint, __base: cint): culong <cimport, nodecl> end
 global function wcstoll(__nptr: *cint, __endptr: **cint, __base: cint): clonglong <cimport, nodecl> end
 global function wcstoull(__nptr: *cint, __endptr: **cint, __base: cint): culonglong <cimport, nodecl> end
-global function wcpcpy(__dest: *cint, __src: *cint): *cint <cimport, nodecl> end
-global function wcpncpy(__dest: *cint, __src: *cint, __n: csize): *cint <cimport, nodecl> end
-global function open_wmemstream(__bufloc: **cint, __sizeloc: *csize): *__FILE <cimport, nodecl> end
 global function fwide(__fp: *__FILE, __mode: cint): cint <cimport, nodecl> end
 global function fwprintf(__stream: *__FILE, __format: *cint, ...: cvarargs): cint <cimport, nodecl> end
 global function wprintf(__format: *cint, ...: cvarargs): cint <cimport, nodecl> end
@@ -1621,21 +859,3 @@ global function towupper(__wc: cuint): cuint <cimport, nodecl> end
 global wctrans_t: type = @*int32
 global function wctrans(__property: cstring): wctrans_t <cimport, nodecl> end
 global function towctrans(__wc: cuint, __desc: wctrans_t): cuint <cimport, nodecl> end
-global function iswalnum_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswalpha_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswcntrl_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswdigit_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswgraph_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswlower_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswprint_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswpunct_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswspace_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswupper_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswxdigit_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function iswblank_l(__wc: cuint, __locale: locale_t): cint <cimport, nodecl> end
-global function wctype_l(__property: cstring, __locale: locale_t): culong <cimport, nodecl> end
-global function iswctype_l(__wc: cuint, __desc: culong, __locale: locale_t): cint <cimport, nodecl> end
-global function towlower_l(__wc: cuint, __locale: locale_t): cuint <cimport, nodecl> end
-global function towupper_l(__wc: cuint, __locale: locale_t): cuint <cimport, nodecl> end
-global function wctrans_l(__property: cstring, __locale: locale_t): wctrans_t <cimport, nodecl> end
-global function towctrans_l(__wc: cuint, __desc: wctrans_t, __locale: locale_t): cuint <cimport, nodecl> end
