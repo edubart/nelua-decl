@@ -1,0 +1,130 @@
+## cinclude '<termios.h>'
+global termios: type <cimport, nodecl, ctypedef> = @record{
+  c_iflag: cuint,
+  c_oflag: cuint,
+  c_cflag: cuint,
+  c_lflag: cuint,
+  c_line: cuchar,
+  c_cc: [32]cuchar,
+  c_ispeed: cuint,
+  c_ospeed: cuint
+}
+global function cfgetospeed(__termios_p: *termios): cuint <cimport, nodecl> end
+global function cfgetispeed(__termios_p: *termios): cuint <cimport, nodecl> end
+global function cfsetospeed(__termios_p: *termios, __speed: cuint): cint <cimport, nodecl> end
+global function cfsetispeed(__termios_p: *termios, __speed: cuint): cint <cimport, nodecl> end
+global function tcgetattr(__fd: cint, __termios_p: *termios): cint <cimport, nodecl> end
+global function tcsetattr(__fd: cint, __optional_actions: cint, __termios_p: *termios): cint <cimport, nodecl> end
+global function tcsendbreak(__fd: cint, __duration: cint): cint <cimport, nodecl> end
+global function tcdrain(__fd: cint): cint <cimport, nodecl> end
+global function tcflush(__fd: cint, __queue_selector: cint): cint <cimport, nodecl> end
+global function tcflow(__fd: cint, __action: cint): cint <cimport, nodecl> end
+global function tcgetsid(__fd: cint): cint <cimport, nodecl> end
+global VINTR: cuint <comptime> = 0
+global VQUIT: cuint <comptime> = 1
+global VERASE: cuint <comptime> = 2
+global VKILL: cuint <comptime> = 3
+global VEOF: cuint <comptime> = 4
+global VTIME: cuint <comptime> = 5
+global VMIN: cuint <comptime> = 6
+global VSWTC: cuint <comptime> = 7
+global VSTART: cuint <comptime> = 8
+global VSTOP: cuint <comptime> = 9
+global VSUSP: cuint <comptime> = 10
+global VEOL: cuint <comptime> = 11
+global VREPRINT: cuint <comptime> = 12
+global VDISCARD: cuint <comptime> = 13
+global VWERASE: cuint <comptime> = 14
+global VLNEXT: cuint <comptime> = 15
+global IGNBRK: cuint <comptime> = 1
+global BRKINT: cuint <comptime> = 2
+global IGNPAR: cuint <comptime> = 4
+global PARMRK: cuint <comptime> = 8
+global INPCK: cuint <comptime> = 16
+global ISTRIP: cuint <comptime> = 32
+global INLCR: cuint <comptime> = 64
+global IGNCR: cuint <comptime> = 128
+global ICRNL: cuint <comptime> = 256
+global IUCLC: cuint <comptime> = 512
+global IXON: cuint <comptime> = 1024
+global IXANY: cuint <comptime> = 2048
+global IXOFF: cuint <comptime> = 4096
+global IMAXBEL: cuint <comptime> = 8192
+global OPOST: cuint <comptime> = 1
+global OLCUC: cuint <comptime> = 2
+global ONLCR: cuint <comptime> = 4
+global OCRNL: cuint <comptime> = 8
+global ONOCR: cuint <comptime> = 16
+global ONLRET: cuint <comptime> = 32
+global OFILL: cuint <comptime> = 64
+global OFDEL: cuint <comptime> = 128
+global NLDLY: cuint <comptime> = 256
+global CRDLY: cuint <comptime> = 1536
+global TABDLY: cuint <comptime> = 6144
+global BSDLY: cuint <comptime> = 8192
+global FFDLY: cuint <comptime> = 32768
+global VTDLY: cuint <comptime> = 16384
+global B0: cuint <comptime> = 0
+global B50: cuint <comptime> = 1
+global B75: cuint <comptime> = 2
+global B110: cuint <comptime> = 3
+global B134: cuint <comptime> = 4
+global B150: cuint <comptime> = 5
+global B200: cuint <comptime> = 6
+global B300: cuint <comptime> = 7
+global B600: cuint <comptime> = 8
+global B1200: cuint <comptime> = 9
+global B1800: cuint <comptime> = 10
+global B2400: cuint <comptime> = 11
+global B4800: cuint <comptime> = 12
+global B9600: cuint <comptime> = 13
+global B19200: cuint <comptime> = 14
+global B38400: cuint <comptime> = 15
+global CRTSCTS: cuint <comptime> = 2147483648
+global B57600: cuint <comptime> = 4097
+global B115200: cuint <comptime> = 4098
+global B230400: cuint <comptime> = 4099
+global B460800: cuint <comptime> = 4100
+global B500000: cuint <comptime> = 4101
+global B576000: cuint <comptime> = 4102
+global B921600: cuint <comptime> = 4103
+global B1000000: cuint <comptime> = 4104
+global B1152000: cuint <comptime> = 4105
+global B1500000: cuint <comptime> = 4106
+global B2000000: cuint <comptime> = 4107
+global B2500000: cuint <comptime> = 4108
+global B3000000: cuint <comptime> = 4109
+global B3500000: cuint <comptime> = 4110
+global B4000000: cuint <comptime> = 4111
+global CSIZE: cuint <comptime> = 48
+global CS5: cuint <comptime> = 0
+global CS6: cuint <comptime> = 16
+global CS7: cuint <comptime> = 32
+global CS8: cuint <comptime> = 48
+global CSTOPB: cuint <comptime> = 64
+global CREAD: cuint <comptime> = 128
+global PARENB: cuint <comptime> = 256
+global PARODD: cuint <comptime> = 512
+global HUPCL: cuint <comptime> = 1024
+global CLOCAL: cuint <comptime> = 2048
+global ISIG: cuint <comptime> = 1
+global ICANON: cuint <comptime> = 2
+global ECHOE: cuint <comptime> = 16
+global ECHOK: cuint <comptime> = 32
+global ECHONL: cuint <comptime> = 64
+global NOFLSH: cuint <comptime> = 128
+global TOSTOP: cuint <comptime> = 256
+global ECHOCTL: cuint <comptime> = 512
+global ECHOPRT: cuint <comptime> = 1024
+global ECHOKE: cuint <comptime> = 2048
+global IEXTEN: cuint <comptime> = 32768
+global TCOOFF: cuint <comptime> = 0
+global TCOON: cuint <comptime> = 1
+global TCIOFF: cuint <comptime> = 2
+global TCION: cuint <comptime> = 3
+global TCIFLUSH: cuint <comptime> = 0
+global TCOFLUSH: cuint <comptime> = 1
+global TCIOFLUSH: cuint <comptime> = 2
+global TCSANOW: cuint <comptime> = 0
+global TCSADRAIN: cuint <comptime> = 1
+global TCSAFLUSH: cuint <comptime> = 2

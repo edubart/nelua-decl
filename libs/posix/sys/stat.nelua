@@ -1,0 +1,73 @@
+## cinclude '<sys/stat.h>'
+global timespec: type <cimport, nodecl, ctypedef> = @record{
+  tv_sec: clong,
+  tv_nsec: clong
+}
+global stat_t: type <cimport, nodecl, ctypedef 'stat'> = @record{
+  st_dev: culong,
+  st_ino: culong,
+  st_nlink: culong,
+  st_mode: cuint,
+  st_uid: cuint,
+  st_gid: cuint,
+  __pad0: cint,
+  st_rdev: culong,
+  st_size: clong,
+  st_blksize: clong,
+  st_blocks: clong,
+  st_atim: timespec,
+  st_mtim: timespec,
+  st_ctim: timespec,
+  __glibc_reserved: [3]clong
+}
+global function stat(__file: cstring, __buf: *stat_t): cint <cimport, nodecl> end
+global function fstat(__fd: cint, __buf: *stat_t): cint <cimport, nodecl> end
+global function fstatat(__fd: cint, __file: cstring, __buf: *stat_t, __flag: cint): cint <cimport, nodecl> end
+global function lstat(__file: cstring, __buf: *stat_t): cint <cimport, nodecl> end
+global function chmod(__file: cstring, __mode: cuint): cint <cimport, nodecl> end
+global function fchmod(__fd: cint, __mode: cuint): cint <cimport, nodecl> end
+global function fchmodat(__fd: cint, __file: cstring, __mode: cuint, __flag: cint): cint <cimport, nodecl> end
+global function umask(__mask: cuint): cuint <cimport, nodecl> end
+global function mkdir(__path: cstring, __mode: cuint): cint <cimport, nodecl> end
+global function mkdirat(__fd: cint, __path: cstring, __mode: cuint): cint <cimport, nodecl> end
+global function mknod(__path: cstring, __mode: cuint, __dev: culong): cint <cimport, nodecl> end
+global function mknodat(__fd: cint, __path: cstring, __mode: cuint, __dev: culong): cint <cimport, nodecl> end
+global function mkfifo(__path: cstring, __mode: cuint): cint <cimport, nodecl> end
+global function mkfifoat(__fd: cint, __path: cstring, __mode: cuint): cint <cimport, nodecl> end
+global function utimensat(__fd: cint, __path: cstring, __times: *timespec, __flags: cint): cint <cimport, nodecl> end
+global function futimens(__fd: cint, __times: *timespec): cint <cimport, nodecl> end
+global S_IFMT: cuint <cimport, nodecl, const>
+global S_IFDIR: cuint <cimport, nodecl, const>
+global S_IFCHR: cuint <cimport, nodecl, const>
+global S_IFBLK: cuint <cimport, nodecl, const>
+global S_IFREG: cuint <cimport, nodecl, const>
+global S_IFIFO: cuint <cimport, nodecl, const>
+global S_IFLNK: cuint <cimport, nodecl, const>
+global S_IFSOCK: cuint <cimport, nodecl, const>
+global S_ISUID: cuint <cimport, nodecl, const>
+global S_ISGID: cuint <cimport, nodecl, const>
+global S_ISVTX: cuint <cimport, nodecl, const>
+global S_IRUSR: cuint <cimport, nodecl, const>
+global S_IWUSR: cuint <cimport, nodecl, const>
+global S_IXUSR: cuint <cimport, nodecl, const>
+global S_IRWXU: cuint <cimport, nodecl, const>
+global S_IREAD: cuint <cimport, nodecl, const>
+global S_IWRITE: cuint <cimport, nodecl, const>
+global S_IEXEC: cuint <cimport, nodecl, const>
+global S_IRGRP: cuint <cimport, nodecl, const>
+global S_IWGRP: cuint <cimport, nodecl, const>
+global S_IXGRP: cuint <cimport, nodecl, const>
+global S_IRWXG: cuint <cimport, nodecl, const>
+global S_IROTH: cuint <cimport, nodecl, const>
+global S_IWOTH: cuint <cimport, nodecl, const>
+global S_IXOTH: cuint <cimport, nodecl, const>
+global S_IRWXO: cuint <cimport, nodecl, const>
+global S_BLKSIZE: cuint <comptime> = 512
+global function S_ISFIFO(mode: cuint): boolean <cimport, nodecl> end
+global function S_ISCHR(mode: cuint): boolean <cimport, nodecl> end
+global function S_ISDIR(mode: cuint): boolean <cimport, nodecl> end
+global function S_ISLNK(mode: cuint): boolean <cimport, nodecl> end
+global function S_ISFIFO(mode: cuint): boolean <cimport, nodecl> end
+global function S_ISBLK(mode: cuint): boolean <cimport, nodecl> end
+global function S_ISREG(mode: cuint): boolean <cimport, nodecl> end
+global function S_ISSOCK(mode: cuint): boolean <cimport, nodecl> end

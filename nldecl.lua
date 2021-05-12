@@ -7,6 +7,8 @@ local nldecl = {}
 local emitter = Emitter()
 nldecl.emitter = emitter
 nldecl.include_names = {}
+nldecl.force_include_names = {}
+nldecl.typedefs_names = {}
 nldecl.exclude_names = {}
 nldecl.platform_names = {}
 nldecl.include_macros = {}
@@ -14,12 +16,36 @@ nldecl.include_macros = {}
 nldecl.predeclared_names = {}
 nldecl.declared_names = {}
 nldecl.type_names = {}
-nldecl.typedefs_names = {}
+nldecl.declared_typedefs_names = {}
 
 nldecl.USE_KNOWN_FIELDS = 1
 nldecl.OMIT_ALL_FIELDS = 2
 
+local function dump(...)
+  io.stderr:write(table.concat({...}, ' ') .. '\n')
+  io.stderr:flush()
+end
+
+local function nodewarn(node, msg)
+  local f, n = node:location()
+  io.stderr:write(string.format("WARNING: %s:%d: %s\n", f, n, msg))
+  io.stderr:flush()
+end
+
 function nldecl.is_name_included(name)
+  if nldecl.platform_names[name] then
+    return true
+  end
+  if nldecl.force_include_names[name] then
+    return true
+  end
+  if #nldecl.force_include_names > 0 then
+    for _,patt in ipairs(nldecl.force_include_names) do
+      if name:match(patt) then
+        return true
+      end
+    end
+  end
   if nldecl.exclude_names[name] then
     -- ignored
     return false
@@ -78,13 +104,25 @@ local function visit(node, ...)
   visitor(node, ...)
 end
 
+local function get_type_node_name(node)
+  local namenode = node:name()
+  if namenode then
+    if namenode:code() == 'type_decl' then
+      return gccutils.get_id(node)
+    elseif namenode:code() == 'identifier_node' then
+      return nldecl.type_names[node:main_variant()] or gccutils.get_id(node)
+    end
+  end
+  return gccutils.get_id(node)
+end
+
 local function scalar_type(node, decl)
-  local typename = gccutils.get_id(node)
+  local typename = get_type_node_name(node)
   if not decl and typename and nldecl.include_names[typename] then
     emitter:add(typename)
   else
     local nltype = gccutils.node_ctype2nltype(node)
-    if not nltype then error('unknown ctype ' .. tostring(gccutils.get_id(node))) end
+    if not nltype then error('unknown ctype ' .. typename) end
     emitter:add(nltype)
   end
 end
@@ -94,11 +132,11 @@ nldecl.real_type = scalar_type
 
 function nldecl.pointer_type(node, decl)
   local subnode = node:type()
-  local typename = gccutils.get_id(node)
+  local typename = get_type_node_name(node)
   if not decl and typename then
     emitter:add(typename)
   else
-    local subnodeid = gccutils.get_id(subnode)
+    local subnodeid = get_type_node_name(subnode)
     if subnodeid == '__va_list_tag' then
       emitter:add('cvalist')
     elseif subnode:code() == 'integer_type' and gccutils.get_id(subnode:canonical()) == 'char' then
@@ -120,12 +158,6 @@ end
 
 function nldecl.void_type()
   emitter:add('void')
-end
-
-local function nodewarn(node, msg)
-  local f, n = node:location()
-  io.stderr:write(string.format("WARNING: %s:%d: %s\n", f, n, msg))
-  io.stderr:flush()
 end
 
 local function visit_fields(node, canskipfields)
@@ -169,7 +201,7 @@ local function visit_fields(node, canskipfields)
 end
 
 function nldecl.record_type(node, decl, canskipfields)
-  local typename = gccutils.get_id(node)
+  local typename = get_type_node_name(node)
   if not decl and typename then
     assert(not node:anonymous())
     emitter:add(typename)
@@ -186,7 +218,7 @@ function nldecl.record_type(node, decl, canskipfields)
 end
 
 function nldecl.union_type(node, decl, canskipfields)
-  local typename = gccutils.get_id(node)
+  local typename = get_type_node_name(node)
   if not decl and typename then
     assert(not node:anonymous())
     emitter:add(typename)
@@ -203,7 +235,7 @@ function nldecl.union_type(node, decl, canskipfields)
 end
 
 function nldecl.enumeral_type(node, decl)
-  local typename = gccutils.get_id(node)
+  local typename = get_type_node_name(node)
   if not decl then
     if typename then
       emitter:add(typename)
@@ -325,6 +357,11 @@ local function visit_type_def(typename, type, is_typedef)
   local is_function = is_pointer and type:type():code() == 'function_type'
   local is_scalar = type:code() == 'integer_type' or type:code() == 'real_type'
   local is_prefixed = (is_enum or is_record or is_union)
+  local typealias
+  if is_prefixed and nldecl.typedefs_names[typename] then
+    typealias = typename
+    typename = nldecl.typedefs_names[typename]
+  end
   local forwarddecl = (is_record or is_union) and not type:fields()
   if not nldecl.can_decl(typename, forwarddecl) then return end
   if nldecl.predeclared_names[typename] then
@@ -343,7 +380,7 @@ local function visit_type_def(typename, type, is_typedef)
       else
         nldecl.declared_names[typename] = true
       end
-      if is_record or is_union or is_enum then
+      if is_prefixed then
         nldecl.type_names[type:main_variant()] = typename
       end
       if nldecl.platform_names[typename] then
@@ -353,8 +390,12 @@ local function visit_type_def(typename, type, is_typedef)
         table.insert(annotations, 'using')
       end
       emitter:add(function()
-        if is_prefixed and not is_typedef and not nldecl.typedefs_names[typename] then
-          table.insert(annotations, 'ctypedef')
+        if is_prefixed and not is_typedef and not nldecl.declared_typedefs_names[typename] then
+          if typealias then
+            table.insert(annotations, "ctypedef '"..typealias.."'")
+          else
+            table.insert(annotations, 'ctypedef')
+          end
         end
         return '<'..table.concat(annotations,', ')..'> '
       end)
@@ -388,7 +429,7 @@ end
 -- typedefs
 function nldecl.type_decl(node)
   local typename = node:name():value()
-  nldecl.typedefs_names[typename] = true
+  nldecl.declared_typedefs_names[typename] = true
   if not nldecl.can_decl(typename) then return end
   local type = node:type():main_variant()
   local name = gccutils.get_id(type) or nldecl.type_names[type]
@@ -518,7 +559,6 @@ function nldecl.install()
     finish_pending_type()
     local typename = gccutils.get_id(node)
     if typename then
-
       visit_type_def(typename, node)
     else
       -- schedule to be declared on next PLUGIN_FINISH_DECL,

@@ -1,0 +1,20 @@
+## cinclude '<dirent.h>'
+global dirent: type <cimport, nodecl, ctypedef> = @record{
+  d_ino: culong,
+  d_off: clong,
+  d_reclen: cushort,
+  d_type: cuchar,
+  d_name: [256]cchar
+}
+global DIR: type <cimport, nodecl, forwarddecl> = @record{}
+global function opendir(__name: cstring): *DIR <cimport, nodecl> end
+global function fdopendir(__fd: cint): *DIR <cimport, nodecl> end
+global function closedir(__dirp: *DIR): cint <cimport, nodecl> end
+global function readdir(__dirp: *DIR): *dirent <cimport, nodecl> end
+global function readdir_r(__dirp: *DIR, __entry: *dirent, __result: **dirent): cint <cimport, nodecl> end
+global function rewinddir(__dirp: *DIR) <cimport, nodecl> end
+global function seekdir(__dirp: *DIR, __pos: clong) <cimport, nodecl> end
+global function telldir(__dirp: *DIR): clong <cimport, nodecl> end
+global function dirfd(__dirp: *DIR): cint <cimport, nodecl> end
+global function scandir(__dir: cstring, __namelist: ***dirent, __selector: function(*dirent): cint, __cmp: function(**dirent, **dirent): cint): cint <cimport, nodecl> end
+global function alphasort(__e1: **dirent, __e2: **dirent): cint <cimport, nodecl> end

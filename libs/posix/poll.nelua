@@ -1,0 +1,17 @@
+## cinclude '<poll.h>'
+global pollfd: type <cimport, nodecl, ctypedef> = @record{
+  fd: cint,
+  events: cshort,
+  revents: cshort
+}
+global function poll(__fds: *pollfd, __nfds: culong, __timeout: cint): cint <cimport, nodecl> end
+global POLLIN: cint <comptime> = 0x001
+global POLLPRI: cint <comptime> = 0x002
+global POLLOUT: cint <comptime> = 0x004
+global POLLRDNORM: cint <comptime> = 0x040
+global POLLRDBAND: cint <comptime> = 0x080
+global POLLWRNORM: cint <comptime> = 0x100
+global POLLWRBAND: cint <comptime> = 0x200
+global POLLERR: cint <comptime> = 0x008
+global POLLHUP: cint <comptime> = 0x010
+global POLLNVAL: cint <comptime> = 0x020

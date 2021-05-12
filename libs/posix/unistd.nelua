@@ -1,0 +1,381 @@
+## cinclude '<unistd.h>'
+global function access(__name: cstring, __type: cint): cint <cimport, nodecl> end
+global function faccessat(__fd: cint, __file: cstring, __type: cint, __flag: cint): cint <cimport, nodecl> end
+global function lseek(__fd: cint, __offset: clong, __whence: cint): clong <cimport, nodecl> end
+global function close(__fd: cint): cint <cimport, nodecl> end
+global function read(__fd: cint, __buf: pointer, __nbytes: csize): clong <cimport, nodecl> end
+global function write(__fd: cint, __buf: pointer, __n: csize): clong <cimport, nodecl> end
+global function pread(__fd: cint, __buf: pointer, __nbytes: csize, __offset: clong): clong <cimport, nodecl> end
+global function pwrite(__fd: cint, __buf: pointer, __n: csize, __offset: clong): clong <cimport, nodecl> end
+global function pipe(__pipedes: *cint): cint <cimport, nodecl> end
+global function alarm(__seconds: cuint): cuint <cimport, nodecl> end
+global function sleep(__seconds: cuint): cuint <cimport, nodecl> end
+global function pause(): cint <cimport, nodecl> end
+global function chown(__file: cstring, __owner: cuint, __group: cuint): cint <cimport, nodecl> end
+global function fchown(__fd: cint, __owner: cuint, __group: cuint): cint <cimport, nodecl> end
+global function lchown(__file: cstring, __owner: cuint, __group: cuint): cint <cimport, nodecl> end
+global function fchownat(__fd: cint, __file: cstring, __owner: cuint, __group: cuint, __flag: cint): cint <cimport, nodecl> end
+global function chdir(__path: cstring): cint <cimport, nodecl> end
+global function fchdir(__fd: cint): cint <cimport, nodecl> end
+global function getcwd(__buf: cstring, __size: csize): cstring <cimport, nodecl> end
+global function dup(__fd: cint): cint <cimport, nodecl> end
+global function dup2(__fd: cint, __fd2: cint): cint <cimport, nodecl> end
+global function execve(__path: cstring, __argv: *cstring, __envp: *cstring): cint <cimport, nodecl> end
+global function fexecve(__fd: cint, __argv: *cstring, __envp: *cstring): cint <cimport, nodecl> end
+global function execv(__path: cstring, __argv: *cstring): cint <cimport, nodecl> end
+global function execle(__path: cstring, __arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function execl(__path: cstring, __arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function execvp(__file: cstring, __argv: *cstring): cint <cimport, nodecl> end
+global function execlp(__file: cstring, __arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function nice(__inc: cint): cint <cimport, nodecl> end
+global function _exit(__status: cint) <cimport, nodecl> end
+global _PC_LINK_MAX: cint <comptime> = 0
+global _PC_MAX_CANON: cint <comptime> = 1
+global _PC_MAX_INPUT: cint <comptime> = 2
+global _PC_NAME_MAX: cint <comptime> = 3
+global _PC_PATH_MAX: cint <comptime> = 4
+global _PC_PIPE_BUF: cint <comptime> = 5
+global _PC_CHOWN_RESTRICTED: cint <comptime> = 6
+global _PC_NO_TRUNC: cint <comptime> = 7
+global _PC_VDISABLE: cint <comptime> = 8
+global _PC_SYNC_IO: cint <comptime> = 9
+global _PC_ASYNC_IO: cint <comptime> = 10
+global _PC_PRIO_IO: cint <comptime> = 11
+global _PC_SOCK_MAXBUF: cint <comptime> = 12
+global _PC_FILESIZEBITS: cint <comptime> = 13
+global _PC_REC_INCR_XFER_SIZE: cint <comptime> = 14
+global _PC_REC_MAX_XFER_SIZE: cint <comptime> = 15
+global _PC_REC_MIN_XFER_SIZE: cint <comptime> = 16
+global _PC_REC_XFER_ALIGN: cint <comptime> = 17
+global _PC_ALLOC_SIZE_MIN: cint <comptime> = 18
+global _PC_SYMLINK_MAX: cint <comptime> = 19
+global _PC_2_SYMLINKS: cint <comptime> = 20
+global _SC_ARG_MAX: cint <comptime> = 0
+global _SC_CHILD_MAX: cint <comptime> = 1
+global _SC_CLK_TCK: cint <comptime> = 2
+global _SC_NGROUPS_MAX: cint <comptime> = 3
+global _SC_OPEN_MAX: cint <comptime> = 4
+global _SC_STREAM_MAX: cint <comptime> = 5
+global _SC_TZNAME_MAX: cint <comptime> = 6
+global _SC_JOB_CONTROL: cint <comptime> = 7
+global _SC_SAVED_IDS: cint <comptime> = 8
+global _SC_REALTIME_SIGNALS: cint <comptime> = 9
+global _SC_PRIORITY_SCHEDULING: cint <comptime> = 10
+global _SC_TIMERS: cint <comptime> = 11
+global _SC_ASYNCHRONOUS_IO: cint <comptime> = 12
+global _SC_PRIORITIZED_IO: cint <comptime> = 13
+global _SC_SYNCHRONIZED_IO: cint <comptime> = 14
+global _SC_FSYNC: cint <comptime> = 15
+global _SC_MAPPED_FILES: cint <comptime> = 16
+global _SC_MEMLOCK: cint <comptime> = 17
+global _SC_MEMLOCK_RANGE: cint <comptime> = 18
+global _SC_MEMORY_PROTECTION: cint <comptime> = 19
+global _SC_MESSAGE_PASSING: cint <comptime> = 20
+global _SC_SEMAPHORES: cint <comptime> = 21
+global _SC_SHARED_MEMORY_OBJECTS: cint <comptime> = 22
+global _SC_AIO_LISTIO_MAX: cint <comptime> = 23
+global _SC_AIO_MAX: cint <comptime> = 24
+global _SC_AIO_PRIO_DELTA_MAX: cint <comptime> = 25
+global _SC_DELAYTIMER_MAX: cint <comptime> = 26
+global _SC_MQ_OPEN_MAX: cint <comptime> = 27
+global _SC_MQ_PRIO_MAX: cint <comptime> = 28
+global _SC_VERSION: cint <comptime> = 29
+global _SC_PAGESIZE: cint <comptime> = 30
+global _SC_RTSIG_MAX: cint <comptime> = 31
+global _SC_SEM_NSEMS_MAX: cint <comptime> = 32
+global _SC_SEM_VALUE_MAX: cint <comptime> = 33
+global _SC_SIGQUEUE_MAX: cint <comptime> = 34
+global _SC_TIMER_MAX: cint <comptime> = 35
+global _SC_BC_BASE_MAX: cint <comptime> = 36
+global _SC_BC_DIM_MAX: cint <comptime> = 37
+global _SC_BC_SCALE_MAX: cint <comptime> = 38
+global _SC_BC_STRING_MAX: cint <comptime> = 39
+global _SC_COLL_WEIGHTS_MAX: cint <comptime> = 40
+global _SC_EQUIV_CLASS_MAX: cint <comptime> = 41
+global _SC_EXPR_NEST_MAX: cint <comptime> = 42
+global _SC_LINE_MAX: cint <comptime> = 43
+global _SC_RE_DUP_MAX: cint <comptime> = 44
+global _SC_CHARCLASS_NAME_MAX: cint <comptime> = 45
+global _SC_2_VERSION: cint <comptime> = 46
+global _SC_2_C_BIND: cint <comptime> = 47
+global _SC_2_C_DEV: cint <comptime> = 48
+global _SC_2_FORT_DEV: cint <comptime> = 49
+global _SC_2_FORT_RUN: cint <comptime> = 50
+global _SC_2_SW_DEV: cint <comptime> = 51
+global _SC_2_LOCALEDEF: cint <comptime> = 52
+global _SC_PII: cint <comptime> = 53
+global _SC_PII_XTI: cint <comptime> = 54
+global _SC_PII_SOCKET: cint <comptime> = 55
+global _SC_PII_INTERNET: cint <comptime> = 56
+global _SC_PII_OSI: cint <comptime> = 57
+global _SC_POLL: cint <comptime> = 58
+global _SC_SELECT: cint <comptime> = 59
+global _SC_UIO_MAXIOV: cint <comptime> = 60
+global _SC_IOV_MAX: cint <comptime> = 60
+global _SC_PII_INTERNET_STREAM: cint <comptime> = 61
+global _SC_PII_INTERNET_DGRAM: cint <comptime> = 62
+global _SC_PII_OSI_COTS: cint <comptime> = 63
+global _SC_PII_OSI_CLTS: cint <comptime> = 64
+global _SC_PII_OSI_M: cint <comptime> = 65
+global _SC_T_IOV_MAX: cint <comptime> = 66
+global _SC_THREADS: cint <comptime> = 67
+global _SC_THREAD_SAFE_FUNCTIONS: cint <comptime> = 68
+global _SC_GETGR_R_SIZE_MAX: cint <comptime> = 69
+global _SC_GETPW_R_SIZE_MAX: cint <comptime> = 70
+global _SC_LOGIN_NAME_MAX: cint <comptime> = 71
+global _SC_TTY_NAME_MAX: cint <comptime> = 72
+global _SC_THREAD_DESTRUCTOR_ITERATIONS: cint <comptime> = 73
+global _SC_THREAD_KEYS_MAX: cint <comptime> = 74
+global _SC_THREAD_STACK_MIN: cint <comptime> = 75
+global _SC_THREAD_THREADS_MAX: cint <comptime> = 76
+global _SC_THREAD_ATTR_STACKADDR: cint <comptime> = 77
+global _SC_THREAD_ATTR_STACKSIZE: cint <comptime> = 78
+global _SC_THREAD_PRIORITY_SCHEDULING: cint <comptime> = 79
+global _SC_THREAD_PRIO_INHERIT: cint <comptime> = 80
+global _SC_THREAD_PRIO_PROTECT: cint <comptime> = 81
+global _SC_THREAD_PROCESS_SHARED: cint <comptime> = 82
+global _SC_NPROCESSORS_CONF: cint <comptime> = 83
+global _SC_NPROCESSORS_ONLN: cint <comptime> = 84
+global _SC_PHYS_PAGES: cint <comptime> = 85
+global _SC_AVPHYS_PAGES: cint <comptime> = 86
+global _SC_ATEXIT_MAX: cint <comptime> = 87
+global _SC_PASS_MAX: cint <comptime> = 88
+global _SC_XOPEN_VERSION: cint <comptime> = 89
+global _SC_XOPEN_XCU_VERSION: cint <comptime> = 90
+global _SC_XOPEN_UNIX: cint <comptime> = 91
+global _SC_XOPEN_CRYPT: cint <comptime> = 92
+global _SC_XOPEN_ENH_I18N: cint <comptime> = 93
+global _SC_XOPEN_SHM: cint <comptime> = 94
+global _SC_2_CHAR_TERM: cint <comptime> = 95
+global _SC_2_C_VERSION: cint <comptime> = 96
+global _SC_2_UPE: cint <comptime> = 97
+global _SC_XOPEN_XPG2: cint <comptime> = 98
+global _SC_XOPEN_XPG3: cint <comptime> = 99
+global _SC_XOPEN_XPG4: cint <comptime> = 100
+global _SC_CHAR_BIT: cint <comptime> = 101
+global _SC_CHAR_MAX: cint <comptime> = 102
+global _SC_CHAR_MIN: cint <comptime> = 103
+global _SC_INT_MAX: cint <comptime> = 104
+global _SC_INT_MIN: cint <comptime> = 105
+global _SC_LONG_BIT: cint <comptime> = 106
+global _SC_WORD_BIT: cint <comptime> = 107
+global _SC_MB_LEN_MAX: cint <comptime> = 108
+global _SC_NZERO: cint <comptime> = 109
+global _SC_SSIZE_MAX: cint <comptime> = 110
+global _SC_SCHAR_MAX: cint <comptime> = 111
+global _SC_SCHAR_MIN: cint <comptime> = 112
+global _SC_SHRT_MAX: cint <comptime> = 113
+global _SC_SHRT_MIN: cint <comptime> = 114
+global _SC_UCHAR_MAX: cint <comptime> = 115
+global _SC_UINT_MAX: cint <comptime> = 116
+global _SC_ULONG_MAX: cint <comptime> = 117
+global _SC_USHRT_MAX: cint <comptime> = 118
+global _SC_NL_ARGMAX: cint <comptime> = 119
+global _SC_NL_LANGMAX: cint <comptime> = 120
+global _SC_NL_MSGMAX: cint <comptime> = 121
+global _SC_NL_NMAX: cint <comptime> = 122
+global _SC_NL_SETMAX: cint <comptime> = 123
+global _SC_NL_TEXTMAX: cint <comptime> = 124
+global _SC_XBS5_ILP32_OFF32: cint <comptime> = 125
+global _SC_XBS5_ILP32_OFFBIG: cint <comptime> = 126
+global _SC_XBS5_LP64_OFF64: cint <comptime> = 127
+global _SC_XBS5_LPBIG_OFFBIG: cint <comptime> = 128
+global _SC_XOPEN_LEGACY: cint <comptime> = 129
+global _SC_XOPEN_REALTIME: cint <comptime> = 130
+global _SC_XOPEN_REALTIME_THREADS: cint <comptime> = 131
+global _SC_ADVISORY_INFO: cint <comptime> = 132
+global _SC_BARRIERS: cint <comptime> = 133
+global _SC_BASE: cint <comptime> = 134
+global _SC_C_LANG_SUPPORT: cint <comptime> = 135
+global _SC_C_LANG_SUPPORT_R: cint <comptime> = 136
+global _SC_CLOCK_SELECTION: cint <comptime> = 137
+global _SC_CPUTIME: cint <comptime> = 138
+global _SC_THREAD_CPUTIME: cint <comptime> = 139
+global _SC_DEVICE_IO: cint <comptime> = 140
+global _SC_DEVICE_SPECIFIC: cint <comptime> = 141
+global _SC_DEVICE_SPECIFIC_R: cint <comptime> = 142
+global _SC_FD_MGMT: cint <comptime> = 143
+global _SC_FIFO: cint <comptime> = 144
+global _SC_PIPE: cint <comptime> = 145
+global _SC_FILE_ATTRIBUTES: cint <comptime> = 146
+global _SC_FILE_LOCKING: cint <comptime> = 147
+global _SC_FILE_SYSTEM: cint <comptime> = 148
+global _SC_MONOTONIC_CLOCK: cint <comptime> = 149
+global _SC_MULTI_PROCESS: cint <comptime> = 150
+global _SC_SINGLE_PROCESS: cint <comptime> = 151
+global _SC_NETWORKING: cint <comptime> = 152
+global _SC_READER_WRITER_LOCKS: cint <comptime> = 153
+global _SC_SPIN_LOCKS: cint <comptime> = 154
+global _SC_REGEXP: cint <comptime> = 155
+global _SC_REGEX_VERSION: cint <comptime> = 156
+global _SC_SHELL: cint <comptime> = 157
+global _SC_SIGNALS: cint <comptime> = 158
+global _SC_SPAWN: cint <comptime> = 159
+global _SC_SPORADIC_SERVER: cint <comptime> = 160
+global _SC_THREAD_SPORADIC_SERVER: cint <comptime> = 161
+global _SC_SYSTEM_DATABASE: cint <comptime> = 162
+global _SC_SYSTEM_DATABASE_R: cint <comptime> = 163
+global _SC_TIMEOUTS: cint <comptime> = 164
+global _SC_TYPED_MEMORY_OBJECTS: cint <comptime> = 165
+global _SC_USER_GROUPS: cint <comptime> = 166
+global _SC_USER_GROUPS_R: cint <comptime> = 167
+global _SC_2_PBS: cint <comptime> = 168
+global _SC_2_PBS_ACCOUNTING: cint <comptime> = 169
+global _SC_2_PBS_LOCATE: cint <comptime> = 170
+global _SC_2_PBS_MESSAGE: cint <comptime> = 171
+global _SC_2_PBS_TRACK: cint <comptime> = 172
+global _SC_SYMLOOP_MAX: cint <comptime> = 173
+global _SC_STREAMS: cint <comptime> = 174
+global _SC_2_PBS_CHECKPOINT: cint <comptime> = 175
+global _SC_V6_ILP32_OFF32: cint <comptime> = 176
+global _SC_V6_ILP32_OFFBIG: cint <comptime> = 177
+global _SC_V6_LP64_OFF64: cint <comptime> = 178
+global _SC_V6_LPBIG_OFFBIG: cint <comptime> = 179
+global _SC_HOST_NAME_MAX: cint <comptime> = 180
+global _SC_TRACE: cint <comptime> = 181
+global _SC_TRACE_EVENT_FILTER: cint <comptime> = 182
+global _SC_TRACE_INHERIT: cint <comptime> = 183
+global _SC_TRACE_LOG: cint <comptime> = 184
+global _SC_LEVEL1_ICACHE_SIZE: cint <comptime> = 185
+global _SC_LEVEL1_ICACHE_ASSOC: cint <comptime> = 186
+global _SC_LEVEL1_ICACHE_LINESIZE: cint <comptime> = 187
+global _SC_LEVEL1_DCACHE_SIZE: cint <comptime> = 188
+global _SC_LEVEL1_DCACHE_ASSOC: cint <comptime> = 189
+global _SC_LEVEL1_DCACHE_LINESIZE: cint <comptime> = 190
+global _SC_LEVEL2_CACHE_SIZE: cint <comptime> = 191
+global _SC_LEVEL2_CACHE_ASSOC: cint <comptime> = 192
+global _SC_LEVEL2_CACHE_LINESIZE: cint <comptime> = 193
+global _SC_LEVEL3_CACHE_SIZE: cint <comptime> = 194
+global _SC_LEVEL3_CACHE_ASSOC: cint <comptime> = 195
+global _SC_LEVEL3_CACHE_LINESIZE: cint <comptime> = 196
+global _SC_LEVEL4_CACHE_SIZE: cint <comptime> = 197
+global _SC_LEVEL4_CACHE_ASSOC: cint <comptime> = 198
+global _SC_LEVEL4_CACHE_LINESIZE: cint <comptime> = 199
+global _SC_IPV6: cint <comptime> = 235
+global _SC_RAW_SOCKETS: cint <comptime> = 236
+global _SC_V7_ILP32_OFF32: cint <comptime> = 237
+global _SC_V7_ILP32_OFFBIG: cint <comptime> = 238
+global _SC_V7_LP64_OFF64: cint <comptime> = 239
+global _SC_V7_LPBIG_OFFBIG: cint <comptime> = 240
+global _SC_SS_REPL_MAX: cint <comptime> = 241
+global _SC_TRACE_EVENT_NAME_MAX: cint <comptime> = 242
+global _SC_TRACE_NAME_MAX: cint <comptime> = 243
+global _SC_TRACE_SYS_MAX: cint <comptime> = 244
+global _SC_TRACE_USER_EVENT_MAX: cint <comptime> = 245
+global _SC_XOPEN_STREAMS: cint <comptime> = 246
+global _SC_THREAD_ROBUST_PRIO_INHERIT: cint <comptime> = 247
+global _SC_THREAD_ROBUST_PRIO_PROTECT: cint <comptime> = 248
+global _CS_PATH: cint <comptime> = 0
+global _CS_V6_WIDTH_RESTRICTED_ENVS: cint <comptime> = 1
+global _CS_GNU_LIBC_VERSION: cint <comptime> = 2
+global _CS_GNU_LIBPTHREAD_VERSION: cint <comptime> = 3
+global _CS_V5_WIDTH_RESTRICTED_ENVS: cint <comptime> = 4
+global _CS_V7_WIDTH_RESTRICTED_ENVS: cint <comptime> = 5
+global _CS_LFS_CFLAGS: cint <comptime> = 1000
+global _CS_LFS_LDFLAGS: cint <comptime> = 1001
+global _CS_LFS_LIBS: cint <comptime> = 1002
+global _CS_LFS_LINTFLAGS: cint <comptime> = 1003
+global _CS_LFS64_CFLAGS: cint <comptime> = 1004
+global _CS_LFS64_LDFLAGS: cint <comptime> = 1005
+global _CS_LFS64_LIBS: cint <comptime> = 1006
+global _CS_LFS64_LINTFLAGS: cint <comptime> = 1007
+global _CS_XBS5_ILP32_OFF32_CFLAGS: cint <comptime> = 1100
+global _CS_XBS5_ILP32_OFF32_LDFLAGS: cint <comptime> = 1101
+global _CS_XBS5_ILP32_OFF32_LIBS: cint <comptime> = 1102
+global _CS_XBS5_ILP32_OFF32_LINTFLAGS: cint <comptime> = 1103
+global _CS_XBS5_ILP32_OFFBIG_CFLAGS: cint <comptime> = 1104
+global _CS_XBS5_ILP32_OFFBIG_LDFLAGS: cint <comptime> = 1105
+global _CS_XBS5_ILP32_OFFBIG_LIBS: cint <comptime> = 1106
+global _CS_XBS5_ILP32_OFFBIG_LINTFLAGS: cint <comptime> = 1107
+global _CS_XBS5_LP64_OFF64_CFLAGS: cint <comptime> = 1108
+global _CS_XBS5_LP64_OFF64_LDFLAGS: cint <comptime> = 1109
+global _CS_XBS5_LP64_OFF64_LIBS: cint <comptime> = 1110
+global _CS_XBS5_LP64_OFF64_LINTFLAGS: cint <comptime> = 1111
+global _CS_XBS5_LPBIG_OFFBIG_CFLAGS: cint <comptime> = 1112
+global _CS_XBS5_LPBIG_OFFBIG_LDFLAGS: cint <comptime> = 1113
+global _CS_XBS5_LPBIG_OFFBIG_LIBS: cint <comptime> = 1114
+global _CS_XBS5_LPBIG_OFFBIG_LINTFLAGS: cint <comptime> = 1115
+global _CS_POSIX_V6_ILP32_OFF32_CFLAGS: cint <comptime> = 1116
+global _CS_POSIX_V6_ILP32_OFF32_LDFLAGS: cint <comptime> = 1117
+global _CS_POSIX_V6_ILP32_OFF32_LIBS: cint <comptime> = 1118
+global _CS_POSIX_V6_ILP32_OFF32_LINTFLAGS: cint <comptime> = 1119
+global _CS_POSIX_V6_ILP32_OFFBIG_CFLAGS: cint <comptime> = 1120
+global _CS_POSIX_V6_ILP32_OFFBIG_LDFLAGS: cint <comptime> = 1121
+global _CS_POSIX_V6_ILP32_OFFBIG_LIBS: cint <comptime> = 1122
+global _CS_POSIX_V6_ILP32_OFFBIG_LINTFLAGS: cint <comptime> = 1123
+global _CS_POSIX_V6_LP64_OFF64_CFLAGS: cint <comptime> = 1124
+global _CS_POSIX_V6_LP64_OFF64_LDFLAGS: cint <comptime> = 1125
+global _CS_POSIX_V6_LP64_OFF64_LIBS: cint <comptime> = 1126
+global _CS_POSIX_V6_LP64_OFF64_LINTFLAGS: cint <comptime> = 1127
+global _CS_POSIX_V6_LPBIG_OFFBIG_CFLAGS: cint <comptime> = 1128
+global _CS_POSIX_V6_LPBIG_OFFBIG_LDFLAGS: cint <comptime> = 1129
+global _CS_POSIX_V6_LPBIG_OFFBIG_LIBS: cint <comptime> = 1130
+global _CS_POSIX_V6_LPBIG_OFFBIG_LINTFLAGS: cint <comptime> = 1131
+global _CS_POSIX_V7_ILP32_OFF32_CFLAGS: cint <comptime> = 1132
+global _CS_POSIX_V7_ILP32_OFF32_LDFLAGS: cint <comptime> = 1133
+global _CS_POSIX_V7_ILP32_OFF32_LIBS: cint <comptime> = 1134
+global _CS_POSIX_V7_ILP32_OFF32_LINTFLAGS: cint <comptime> = 1135
+global _CS_POSIX_V7_ILP32_OFFBIG_CFLAGS: cint <comptime> = 1136
+global _CS_POSIX_V7_ILP32_OFFBIG_LDFLAGS: cint <comptime> = 1137
+global _CS_POSIX_V7_ILP32_OFFBIG_LIBS: cint <comptime> = 1138
+global _CS_POSIX_V7_ILP32_OFFBIG_LINTFLAGS: cint <comptime> = 1139
+global _CS_POSIX_V7_LP64_OFF64_CFLAGS: cint <comptime> = 1140
+global _CS_POSIX_V7_LP64_OFF64_LDFLAGS: cint <comptime> = 1141
+global _CS_POSIX_V7_LP64_OFF64_LIBS: cint <comptime> = 1142
+global _CS_POSIX_V7_LP64_OFF64_LINTFLAGS: cint <comptime> = 1143
+global _CS_POSIX_V7_LPBIG_OFFBIG_CFLAGS: cint <comptime> = 1144
+global _CS_POSIX_V7_LPBIG_OFFBIG_LDFLAGS: cint <comptime> = 1145
+global _CS_POSIX_V7_LPBIG_OFFBIG_LIBS: cint <comptime> = 1146
+global _CS_POSIX_V7_LPBIG_OFFBIG_LINTFLAGS: cint <comptime> = 1147
+global _CS_V6_ENV: cint <comptime> = 1148
+global _CS_V7_ENV: cint <comptime> = 1149
+global function pathconf(__path: cstring, __name: cint): clong <cimport, nodecl> end
+global function fpathconf(__fd: cint, __name: cint): clong <cimport, nodecl> end
+global function sysconf(__name: cint): clong <cimport, nodecl> end
+global function confstr(__name: cint, __buf: cstring, __len: csize): csize <cimport, nodecl> end
+global function getpid(): cint <cimport, nodecl> end
+global function getppid(): cint <cimport, nodecl> end
+global function getpgrp(): cint <cimport, nodecl> end
+global function getpgid(__pid: cint): cint <cimport, nodecl> end
+global function setpgid(__pid: cint, __pgid: cint): cint <cimport, nodecl> end
+global function setpgrp(): cint <cimport, nodecl> end
+global function setsid(): cint <cimport, nodecl> end
+global function getsid(__pid: cint): cint <cimport, nodecl> end
+global function getuid(): cuint <cimport, nodecl> end
+global function geteuid(): cuint <cimport, nodecl> end
+global function getgid(): cuint <cimport, nodecl> end
+global function getegid(): cuint <cimport, nodecl> end
+global function getgroups(__size: cint, __list: *cuint): cint <cimport, nodecl> end
+global function setuid(__uid: cuint): cint <cimport, nodecl> end
+global function setreuid(__ruid: cuint, __euid: cuint): cint <cimport, nodecl> end
+global function seteuid(__uid: cuint): cint <cimport, nodecl> end
+global function setgid(__gid: cuint): cint <cimport, nodecl> end
+global function setregid(__rgid: cuint, __egid: cuint): cint <cimport, nodecl> end
+global function setegid(__gid: cuint): cint <cimport, nodecl> end
+global function fork(): cint <cimport, nodecl> end
+global function ttyname(__fd: cint): cstring <cimport, nodecl> end
+global function ttyname_r(__fd: cint, __buf: cstring, __buflen: csize): cint <cimport, nodecl> end
+global function isatty(__fd: cint): cint <cimport, nodecl> end
+global function link(__from: cstring, __to: cstring): cint <cimport, nodecl> end
+global function linkat(__fromfd: cint, __from: cstring, __tofd: cint, __to: cstring, __flags: cint): cint <cimport, nodecl> end
+global function symlink(__from: cstring, __to: cstring): cint <cimport, nodecl> end
+global function readlink(__path: cstring, __buf: cstring, __len: csize): clong <cimport, nodecl> end
+global function symlinkat(__from: cstring, __tofd: cint, __to: cstring): cint <cimport, nodecl> end
+global function readlinkat(__fd: cint, __path: cstring, __buf: cstring, __len: csize): clong <cimport, nodecl> end
+global function unlink(__name: cstring): cint <cimport, nodecl> end
+global function unlinkat(__fd: cint, __name: cstring, __flag: cint): cint <cimport, nodecl> end
+global function rmdir(__path: cstring): cint <cimport, nodecl> end
+global function tcgetpgrp(__fd: cint): cint <cimport, nodecl> end
+global function tcsetpgrp(__fd: cint, __pgrp_id: cint): cint <cimport, nodecl> end
+global function getlogin(): cstring <cimport, nodecl> end
+global function getlogin_r(__name: cstring, __name_len: csize): cint <cimport, nodecl> end
+global function getopt(___argc: cint, ___argv: *cstring, __shortopts: cstring): cint <cimport, nodecl> end
+global function gethostname(__name: cstring, __len: csize): cint <cimport, nodecl> end
+global function fsync(__fd: cint): cint <cimport, nodecl> end
+global function gethostid(): clong <cimport, nodecl> end
+global function sync() <cimport, nodecl> end
+global function truncate(__file: cstring, __length: clong): cint <cimport, nodecl> end
+global function ftruncate(__fd: cint, __length: clong): cint <cimport, nodecl> end
+global function lockf(__fd: cint, __cmd: cint, __len: clong): cint <cimport, nodecl> end
+global function fdatasync(__fildes: cint): cint <cimport, nodecl> end
+global function swab(__from: pointer, __to: pointer, __n: clong) <cimport, nodecl> end

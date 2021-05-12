@@ -1,0 +1,38 @@
+require 'dirent'
+require 'errno'
+require 'fcntl'
+require 'poll'
+require 'signal'
+require 'termios'
+require 'time'
+require 'utime'
+require 'unistd'
+require 'sys.socket'
+require 'sys.stat'
+
+-- dirent
+opendir('invalid-directory')
+-- errno
+errno = 0
+-- fcntl
+fcntl(0, 0)
+-- poll
+poll(nilptr, 0, 0)
+-- signal
+local act: sigaction_t
+act.sa_handler = SIG_DFL
+sigaction(SIGTERM, nilptr, &act)
+-- termios
+tcgetsid(0)
+-- time
+clock()
+-- utime
+utime("invalid-file", nilptr)
+-- unistd
+getuid()
+
+-- sys.stat
+local s: stat_t
+stat("invalid-file", &s)
+
+print("posix OK!")

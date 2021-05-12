@@ -1,0 +1,242 @@
+## cinclude '<signal.h>'
+global __sigset_t: type <cimport, nodecl> = @record{
+  __val: [16]culong
+}
+global sigset_t: type = @__sigset_t
+global timespec: type <cimport, nodecl, ctypedef> = @record{
+  tv_sec: clong,
+  tv_nsec: clong
+}
+global sigval: type <cimport, nodecl, ctypedef> = @union{
+  sival_int: cint,
+  sival_ptr: pointer
+}
+global __sigval_t: type = @sigval
+global siginfo_t: type <cimport, nodecl> = @record{
+  si_signo: cint,
+  si_errno: cint,
+  si_code: cint,
+  __pad0: cint,
+  _sifields: union{
+    _pad: [28]cint,
+    _kill: record{
+      si_pid: cint,
+      si_uid: cuint
+    },
+    _timer: record{
+      si_tid: cint,
+      si_overrun: cint,
+      si_sigval: __sigval_t
+    },
+    _rt: record{
+      si_pid: cint,
+      si_uid: cuint,
+      si_sigval: __sigval_t
+    },
+    _sigchld: record{
+      si_pid: cint,
+      si_uid: cuint,
+      si_status: cint,
+      si_utime: clong,
+      si_stime: clong
+    },
+    _sigfault: record{
+      si_addr: pointer,
+      si_addr_lsb: cshort,
+      _bounds: union{
+        _addr_bnd: record{
+          _lower: pointer,
+          _upper: pointer
+        },
+        _pkey: uint32
+      }
+    },
+    _sigpoll: record{
+      si_band: clong,
+      si_fd: cint
+    },
+    _sigsys: record{
+      _call_addr: pointer,
+      _syscall: cint,
+      _arch: cuint
+    }
+  }
+}
+global SI_ASYNCNL: cint <comptime> = -60
+global SI_DETHREAD: cint <comptime> = -7
+global SI_TKILL: cint <comptime> = -6
+global SI_SIGIO: cint <comptime> = -5
+global SI_ASYNCIO: cint <comptime> = -4
+global SI_MESGQ: cint <comptime> = -3
+global SI_TIMER: cint <comptime> = -2
+global SI_QUEUE: cint <comptime> = -1
+global SI_USER: cint <comptime> = 0
+global SI_KERNEL: cint <comptime> = 128
+global ILL_ILLOPC: cint <comptime> = 1
+global ILL_ILLOPN: cint <comptime> = 2
+global ILL_ILLADR: cint <comptime> = 3
+global ILL_ILLTRP: cint <comptime> = 4
+global ILL_PRVOPC: cint <comptime> = 5
+global ILL_PRVREG: cint <comptime> = 6
+global ILL_COPROC: cint <comptime> = 7
+global ILL_BADSTK: cint <comptime> = 8
+global ILL_BADIADDR: cint <comptime> = 9
+global FPE_INTDIV: cint <comptime> = 1
+global FPE_INTOVF: cint <comptime> = 2
+global FPE_FLTDIV: cint <comptime> = 3
+global FPE_FLTOVF: cint <comptime> = 4
+global FPE_FLTUND: cint <comptime> = 5
+global FPE_FLTRES: cint <comptime> = 6
+global FPE_FLTINV: cint <comptime> = 7
+global FPE_FLTSUB: cint <comptime> = 8
+global FPE_FLTUNK: cint <comptime> = 14
+global FPE_CONDTRAP: cint <comptime> = 15
+global SEGV_MAPERR: cint <comptime> = 1
+global SEGV_ACCERR: cint <comptime> = 2
+global SEGV_BNDERR: cint <comptime> = 3
+global SEGV_PKUERR: cint <comptime> = 4
+global SEGV_ACCADI: cint <comptime> = 5
+global SEGV_ADIDERR: cint <comptime> = 6
+global SEGV_ADIPERR: cint <comptime> = 7
+global SEGV_MTEAERR: cint <comptime> = 8
+global SEGV_MTESERR: cint <comptime> = 9
+global BUS_ADRALN: cint <comptime> = 1
+global BUS_ADRERR: cint <comptime> = 2
+global BUS_OBJERR: cint <comptime> = 3
+global BUS_MCEERR_AR: cint <comptime> = 4
+global BUS_MCEERR_AO: cint <comptime> = 5
+global TRAP_BRKPT: cint <comptime> = 1
+global TRAP_TRACE: cint <comptime> = 2
+global TRAP_BRANCH: cint <comptime> = 3
+global TRAP_HWBKPT: cint <comptime> = 4
+global TRAP_UNK: cint <comptime> = 5
+global CLD_EXITED: cint <comptime> = 1
+global CLD_KILLED: cint <comptime> = 2
+global CLD_DUMPED: cint <comptime> = 3
+global CLD_TRAPPED: cint <comptime> = 4
+global CLD_STOPPED: cint <comptime> = 5
+global CLD_CONTINUED: cint <comptime> = 6
+global POLL_IN: cint <comptime> = 1
+global POLL_OUT: cint <comptime> = 2
+global POLL_MSG: cint <comptime> = 3
+global POLL_ERR: cint <comptime> = 4
+global POLL_PRI: cint <comptime> = 5
+global POLL_HUP: cint <comptime> = 6
+global pthread_attr_t: type <cimport, nodecl, forwarddecl> = @union{}
+global sigevent: type <cimport, nodecl, ctypedef> = @record{
+  sigev_value: __sigval_t,
+  sigev_signo: cint,
+  sigev_notify: cint,
+  _sigev_un: union{
+    _pad: [12]cint,
+    _tid: cint,
+    _sigev_thread: record{
+      _function: function(__sigval_t),
+      _attribute: *pthread_attr_t
+    }
+  }
+}
+global sigevent_t: type = @sigevent
+global SIGEV_SIGNAL: cint <comptime> = 0
+global SIGEV_NONE: cint <comptime> = 1
+global SIGEV_THREAD: cint <comptime> = 2
+global SIGEV_THREAD_ID: cint <comptime> = 4
+global __sighandler_t: type <cimport, nodecl> = @function(cint)
+global function signal(__sig: cint, __handler: __sighandler_t): __sighandler_t <cimport, nodecl> end
+global function kill(__pid: cint, __sig: cint): cint <cimport, nodecl> end
+global function killpg(__pgrp: cint, __sig: cint): cint <cimport, nodecl> end
+global function raise(__sig: cint): cint <cimport, nodecl> end
+global function psignal(__sig: cint, __s: cstring) <cimport, nodecl> end
+global function psiginfo(__pinfo: *siginfo_t, __s: cstring) <cimport, nodecl> end
+global function sigpause(__sig: cint): cint <cimport, nodecl> end
+global function sigemptyset(__set: *sigset_t): cint <cimport, nodecl> end
+global function sigfillset(__set: *sigset_t): cint <cimport, nodecl> end
+global function sigaddset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
+global function sigdelset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
+global function sigismember(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
+global function sigprocmask(__how: cint, __set: *sigset_t, __oset: *sigset_t): cint <cimport, nodecl> end
+global function sigsuspend(__set: *sigset_t): cint <cimport, nodecl> end
+global function sigpending(__set: *sigset_t): cint <cimport, nodecl> end
+global function sigwait(__set: *sigset_t, __sig: *cint): cint <cimport, nodecl> end
+global function sigwaitinfo(__set: *sigset_t, __info: *siginfo_t): cint <cimport, nodecl> end
+global function sigtimedwait(__set: *sigset_t, __info: *siginfo_t, __timeout: *timespec): cint <cimport, nodecl> end
+global function sigqueue(__pid: cint, __sig: cint, __val: sigval): cint <cimport, nodecl> end
+global stack_t: type <cimport, nodecl> = @record{
+  ss_sp: pointer,
+  ss_flags: cint,
+  ss_size: csize
+}
+global mcontext_t: type <cimport, nodecl, cincomplete> = @record{
+  __gregs: [23]clonglong,
+  __reserved1: [8]culonglong
+}
+global ucontext_t: type <cimport, nodecl, forwarddecl, cincomplete> = @record{}
+ucontext_t = @record{
+  __uc_flags: culong,
+  uc_link: *ucontext_t,
+  uc_stack: stack_t,
+  uc_mcontext: mcontext_t,
+  uc_sigmask: sigset_t,
+  __ssp: [4]culonglong
+}
+global function siginterrupt(__sig: cint, __interrupt: cint): cint <cimport, nodecl> end
+global SS_ONSTACK: cint <comptime> = 1
+global SS_DISABLE: cint <comptime> = 2
+global function sigaltstack(__ss: *stack_t, __oss: *stack_t): cint <cimport, nodecl> end
+global function sighold(__sig: cint): cint <cimport, nodecl> end
+global function sigrelse(__sig: cint): cint <cimport, nodecl> end
+global function sigignore(__sig: cint): cint <cimport, nodecl> end
+global function sigset(__sig: cint, __disp: __sighandler_t): __sighandler_t <cimport, nodecl> end
+pthread_attr_t = @union{
+  __size: [56]cchar,
+  __align: clong
+}
+global SIGINT: cint <comptime> = 2
+global SIGILL: cint <comptime> = 4
+global SIGABRT: cint <comptime> = 6
+global SIGFPE: cint <comptime> = 8
+global SIGSEGV: cint <comptime> = 11
+global SIGTERM: cint <comptime> = 15
+global SIGHUP: cint <comptime> = 1
+global SIGQUIT: cint <comptime> = 3
+global SIGTRAP: cint <comptime> = 5
+global SIGKILL: cint <comptime> = 9
+global SIGPIPE: cint <comptime> = 13
+global SIGALRM: cint <comptime> = 14
+global SIGIO: cint <cimport, nodecl, const>
+global SIGIOT: cint <comptime> = SIGABRT
+global SIGCLD: cint <cimport, nodecl, const>
+global SIGSTKFLT: cint <comptime> = 16
+global SIGPWR: cint <comptime> = 30
+global SIGBUS: cint <comptime> = 7
+global SIGSYS: cint <comptime> = 31
+global SIGURG: cint <comptime> = 23
+global SIGSTOP: cint <comptime> = 19
+global SIGTSTP: cint <comptime> = 20
+global SIGCONT: cint <comptime> = 18
+global SIGCHLD: cint <comptime> = 17
+global SIGTTIN: cint <comptime> = 21
+global SIGTTOU: cint <comptime> = 22
+global SIGPOLL: cint <comptime> = 29
+global SIGXFSZ: cint <comptime> = 25
+global SIGXCPU: cint <comptime> = 24
+global SIGVTALRM: cint <comptime> = 26
+global SIGPROF: cint <comptime> = 27
+global SIGWINCH: cint <comptime> = 28
+global SIGIO: cint <comptime> = SIGPOLL
+global SIGIOT: cint <comptime> = SIGABRT
+global SIGCLD: cint <comptime> = SIGCHLD
+global SIGSTKSZ: cint <comptime> = 8192
+global SIGRTMIN: cint <cimport, nodecl, const>
+global SIGRTMAX: cint <cimport, nodecl, const>
+global sigaction_t: type <nodecl, cimport, ctypedef 'sigaction', cincomplete> = @record{
+  sa_handler: function(cint),
+  sa_sigaction: function(cint, *siginfo_t, pointer),
+  sa_mask: sigset_t,
+  sa_flags: cint,
+  sa_restorer: function()
+}
+global function sigaction(sig: cint, act: *sigaction_t, oact: *sigaction_t): cint <cimport, nodecl> end
+global SIG_ERR: function(cint) <cimport, nodecl>
+global SIG_DFL: function(cint) <cimport, nodecl>
+global SIG_IGN: function(cint) <cimport, nodecl>

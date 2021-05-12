@@ -1,0 +1,620 @@
+##[[
+cinclude '<sys/socket.h>'
+cinclude '<netinet/in.h>'
+cinclude '<netinet/tcp.h>'
+cinclude '<net/if.h>'
+cinclude '<netdb.h>'
+]]
+global iovec: type <cimport, nodecl, ctypedef> = @record{
+  iov_base: pointer,
+  iov_len: csize
+}
+global __fsid_t: type <cimport, nodecl> = @record{
+  __val: [2]cint
+}
+global __timer_t: type = @pointer
+global __caddr_t: type = @cstring
+global timer_t: type = @pointer
+global __pthread_internal_list: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+__pthread_internal_list = @record{
+  __prev: *__pthread_internal_list,
+  __next: *__pthread_internal_list
+}
+global __pthread_list_t: type = @__pthread_internal_list
+global __pthread_internal_slist: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+__pthread_internal_slist = @record{
+  __next: *__pthread_internal_slist
+}
+global __pthread_slist_t: type = @__pthread_internal_slist
+global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
+  __lock: cint,
+  __count: cuint,
+  __owner: cint,
+  __nusers: cuint,
+  __kind: cint,
+  __spins: cshort,
+  __elision: cshort,
+  __list: __pthread_list_t
+}
+global __pthread_rwlock_arch_t: type <cimport, nodecl, ctypedef> = @record{
+  __readers: cuint,
+  __writers: cuint,
+  __wrphase_futex: cuint,
+  __writers_futex: cuint,
+  __pad3: cuint,
+  __pad4: cuint,
+  __cur_writer: cint,
+  __shared: cint,
+  __rwelision: cschar,
+  __pad1: [7]cuchar,
+  __pad2: culong,
+  __flags: cuint
+}
+global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
+  __unnamed1: union{
+    __wseq: culonglong,
+    __wseq32: record{
+      __low: cuint,
+      __high: cuint
+    }
+  },
+  __unnamed2: union{
+    __g1_start: culonglong,
+    __g1_start32: record{
+      __low: cuint,
+      __high: cuint
+    }
+  },
+  __g_refs: [2]cuint,
+  __g_size: [2]cuint,
+  __g1_orig_size: cuint,
+  __wrefs: cuint,
+  __g_signals: [2]cuint
+}
+global __once_flag: type <cimport, nodecl> = @record{
+  __data: cint
+}
+global __socket_type: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  SOCK_STREAM = 1,
+  SOCK_DGRAM = 2,
+  SOCK_RAW = 3,
+  SOCK_RDM = 4,
+  SOCK_SEQPACKET = 5,
+  SOCK_DCCP = 6,
+  SOCK_PACKET = 10,
+  SOCK_CLOEXEC = 524288,
+  SOCK_NONBLOCK = 2048
+}
+global sockaddr: type <cimport, nodecl, ctypedef> = @record{
+  sa_family: cushort,
+  sa_data: [14]cchar
+}
+global sockaddr_storage: type <cimport, nodecl, ctypedef> = @record{
+  ss_family: cushort,
+  __ss_padding: [118]cchar,
+  __ss_align: culong
+}
+global MSG_OOB: cint <comptime> = 1
+global MSG_PEEK: cint <comptime> = 2
+global MSG_DONTROUTE: cint <comptime> = 4
+global MSG_CTRUNC: cint <comptime> = 8
+global MSG_PROXY: cint <comptime> = 16
+global MSG_TRUNC: cint <comptime> = 32
+global MSG_DONTWAIT: cint <comptime> = 64
+global MSG_EOR: cint <comptime> = 128
+global MSG_WAITALL: cint <comptime> = 256
+global MSG_FIN: cint <comptime> = 512
+global MSG_SYN: cint <comptime> = 1024
+global MSG_CONFIRM: cint <comptime> = 2048
+global MSG_RST: cint <comptime> = 4096
+global MSG_ERRQUEUE: cint <comptime> = 8192
+global MSG_NOSIGNAL: cint <comptime> = 16384
+global MSG_MORE: cint <comptime> = 32768
+global MSG_WAITFORONE: cint <comptime> = 65536
+global MSG_BATCH: cint <comptime> = 262144
+global MSG_ZEROCOPY: cint <comptime> = 67108864
+global MSG_FASTOPEN: cint <comptime> = 536870912
+global MSG_CMSG_CLOEXEC: cint <comptime> = 1073741824
+global msghdr: type <cimport, nodecl, ctypedef> = @record{
+  msg_name: pointer,
+  msg_namelen: cuint,
+  msg_iov: *iovec,
+  msg_iovlen: csize,
+  msg_control: pointer,
+  msg_controllen: csize,
+  msg_flags: cint
+}
+global cmsghdr: type <cimport, nodecl, ctypedef> = @record{
+  cmsg_len: csize,
+  cmsg_level: cint,
+  cmsg_type: cint,
+  __cmsg_data: [0]cuchar
+}
+global function __cmsg_nxthdr(__mhdr: *msghdr, __cmsg: *cmsghdr): *cmsghdr <cimport, nodecl> end
+global SCM_RIGHTS: cint <comptime> = 1
+global linger: type <cimport, nodecl, ctypedef> = @record{
+  l_onoff: cint,
+  l_linger: cint
+}
+global SHUT_RD: cint <comptime> = 0
+global SHUT_WR: cint <comptime> = 1
+global SHUT_RDWR: cint <comptime> = 2
+global function socket(__domain: cint, __type: cint, __protocol: cint): cint <cimport, nodecl> end
+global function socketpair(__domain: cint, __type: cint, __protocol: cint, __fds: *cint): cint <cimport, nodecl> end
+global function bind(__fd: cint, __addr: *sockaddr, __len: cuint): cint <cimport, nodecl> end
+global function getsockname(__fd: cint, __addr: *sockaddr, __len: *cuint): cint <cimport, nodecl> end
+global function connect(__fd: cint, __addr: *sockaddr, __len: cuint): cint <cimport, nodecl> end
+global function getpeername(__fd: cint, __addr: *sockaddr, __len: *cuint): cint <cimport, nodecl> end
+global function send(__fd: cint, __buf: pointer, __n: csize, __flags: cint): clong <cimport, nodecl> end
+global function recv(__fd: cint, __buf: pointer, __n: csize, __flags: cint): clong <cimport, nodecl> end
+global function sendto(__fd: cint, __buf: pointer, __n: csize, __flags: cint, __addr: *sockaddr, __addr_len: cuint): clong <cimport, nodecl> end
+global function recvfrom(__fd: cint, __buf: pointer, __n: csize, __flags: cint, __addr: *sockaddr, __addr_len: *cuint): clong <cimport, nodecl> end
+global function sendmsg(__fd: cint, __message: *msghdr, __flags: cint): clong <cimport, nodecl> end
+global function recvmsg(__fd: cint, __message: *msghdr, __flags: cint): clong <cimport, nodecl> end
+global function getsockopt(__fd: cint, __level: cint, __optname: cint, __optval: pointer, __optlen: *cuint): cint <cimport, nodecl> end
+global function setsockopt(__fd: cint, __level: cint, __optname: cint, __optval: pointer, __optlen: cuint): cint <cimport, nodecl> end
+global function listen(__fd: cint, __n: cint): cint <cimport, nodecl> end
+global function accept(__fd: cint, __addr: *sockaddr, __addr_len: *cuint): cint <cimport, nodecl> end
+global function shutdown(__fd: cint, __how: cint): cint <cimport, nodecl> end
+global function sockatmark(__fd: cint): cint <cimport, nodecl> end
+global in_addr: type <cimport, nodecl, ctypedef> = @record{
+  s_addr: cuint
+}
+global IPPROTO_IP: cint <comptime> = 0
+global IPPROTO_ICMP: cint <comptime> = 1
+global IPPROTO_IGMP: cint <comptime> = 2
+global IPPROTO_IPIP: cint <comptime> = 4
+global IPPROTO_TCP: cint <comptime> = 6
+global IPPROTO_EGP: cint <comptime> = 8
+global IPPROTO_PUP: cint <comptime> = 12
+global IPPROTO_UDP: cint <comptime> = 17
+global IPPROTO_IDP: cint <comptime> = 22
+global IPPROTO_TP: cint <comptime> = 29
+global IPPROTO_DCCP: cint <comptime> = 33
+global IPPROTO_IPV6: cint <comptime> = 41
+global IPPROTO_RSVP: cint <comptime> = 46
+global IPPROTO_GRE: cint <comptime> = 47
+global IPPROTO_ESP: cint <comptime> = 50
+global IPPROTO_AH: cint <comptime> = 51
+global IPPROTO_MTP: cint <comptime> = 92
+global IPPROTO_BEETPH: cint <comptime> = 94
+global IPPROTO_ENCAP: cint <comptime> = 98
+global IPPROTO_PIM: cint <comptime> = 103
+global IPPROTO_COMP: cint <comptime> = 108
+global IPPROTO_SCTP: cint <comptime> = 132
+global IPPROTO_UDPLITE: cint <comptime> = 136
+global IPPROTO_MPLS: cint <comptime> = 137
+global IPPROTO_ETHERNET: cint <comptime> = 143
+global IPPROTO_RAW: cint <comptime> = 255
+global IPPROTO_MPTCP: cint <comptime> = 262
+global IPPROTO_MAX: cint <comptime> = 263
+global IPPROTO_HOPOPTS: cint <comptime> = 0
+global IPPROTO_ROUTING: cint <comptime> = 43
+global IPPROTO_FRAGMENT: cint <comptime> = 44
+global IPPROTO_ICMPV6: cint <comptime> = 58
+global IPPROTO_NONE: cint <comptime> = 59
+global IPPROTO_DSTOPTS: cint <comptime> = 60
+global IPPROTO_MH: cint <comptime> = 135
+global IPPORT_ECHO: cint <comptime> = 7
+global IPPORT_DISCARD: cint <comptime> = 9
+global IPPORT_SYSTAT: cint <comptime> = 11
+global IPPORT_DAYTIME: cint <comptime> = 13
+global IPPORT_NETSTAT: cint <comptime> = 15
+global IPPORT_FTP: cint <comptime> = 21
+global IPPORT_TELNET: cint <comptime> = 23
+global IPPORT_SMTP: cint <comptime> = 25
+global IPPORT_TIMESERVER: cint <comptime> = 37
+global IPPORT_NAMESERVER: cint <comptime> = 42
+global IPPORT_WHOIS: cint <comptime> = 43
+global IPPORT_MTP: cint <comptime> = 57
+global IPPORT_TFTP: cint <comptime> = 69
+global IPPORT_RJE: cint <comptime> = 77
+global IPPORT_FINGER: cint <comptime> = 79
+global IPPORT_TTYLINK: cint <comptime> = 87
+global IPPORT_SUPDUP: cint <comptime> = 95
+global IPPORT_EXECSERVER: cint <comptime> = 512
+global IPPORT_LOGINSERVER: cint <comptime> = 513
+global IPPORT_CMDSERVER: cint <comptime> = 514
+global IPPORT_EFSSERVER: cint <comptime> = 520
+global IPPORT_BIFFUDP: cint <comptime> = 512
+global IPPORT_WHOSERVER: cint <comptime> = 513
+global IPPORT_ROUTESERVER: cint <comptime> = 520
+global IPPORT_RESERVED: cint <comptime> = 1024
+global IPPORT_USERRESERVED: cint <comptime> = 5000
+global in6_addr: type <cimport, nodecl, ctypedef> = @record{
+  __in6_u: union{
+    __u6_addr8: [16]uint8,
+    __u6_addr16: [8]uint16,
+    __u6_addr32: [4]uint32
+  }
+}
+global in6addr_any: in6_addr <cimport, nodecl>
+global in6addr_loopback: in6_addr <cimport, nodecl>
+global sockaddr_in: type <cimport, nodecl, ctypedef> = @record{
+  sin_family: cushort,
+  sin_port: cushort,
+  sin_addr: in_addr,
+  sin_zero: [8]cuchar
+}
+global sockaddr_in6: type <cimport, nodecl, ctypedef> = @record{
+  sin6_family: cushort,
+  sin6_port: cushort,
+  sin6_flowinfo: uint32,
+  sin6_addr: in6_addr,
+  sin6_scope_id: uint32
+}
+global ipv6_mreq: type <cimport, nodecl, ctypedef> = @record{
+  ipv6mr_multiaddr: in6_addr,
+  ipv6mr_interface: cuint
+}
+global function ntohl(__netlong: uint32): uint32 <cimport, nodecl> end
+global function ntohs(__netshort: uint16): uint16 <cimport, nodecl> end
+global function htonl(__hostlong: uint32): uint32 <cimport, nodecl> end
+global function htons(__hostshort: uint16): uint16 <cimport, nodecl> end
+global function __bswap_16(__bsx: uint16): uint16 <cimport, nodecl> end
+global function __bswap_32(__bsx: uint32): uint32 <cimport, nodecl> end
+global function __bswap_64(__bsx: uint64): uint64 <cimport, nodecl> end
+global function __uint16_identity(__x: uint16): uint16 <cimport, nodecl> end
+global function __uint32_identity(__x: uint32): uint32 <cimport, nodecl> end
+global function __uint64_identity(__x: uint64): uint64 <cimport, nodecl> end
+global if_nameindex: type <cimport, nodecl, ctypedef> = @record{
+  if_index: cuint,
+  if_name: cstring
+}
+global function if_nametoindex(__ifname: cstring): cuint <cimport, nodecl> end
+global function if_indextoname(__ifindex: cuint, __ifname: cstring): cstring <cimport, nodecl> end
+global function if_freenameindex(__ptr: *if_nameindex) <cimport, nodecl> end
+global netent: type <cimport, nodecl, ctypedef> = @record{
+  n_name: cstring,
+  n_aliases: *cstring,
+  n_addrtype: cint,
+  n_net: uint32
+}
+global hostent: type <cimport, nodecl, ctypedef> = @record{
+  h_name: cstring,
+  h_aliases: *cstring,
+  h_addrtype: cint,
+  h_length: cint,
+  h_addr_list: *cstring
+}
+global function sethostent(__stay_open: cint) <cimport, nodecl> end
+global function endhostent() <cimport, nodecl> end
+global function gethostent(): *hostent <cimport, nodecl> end
+global function gethostbyaddr(__addr: pointer, __len: cuint, __type: cint): *hostent <cimport, nodecl> end
+global function gethostbyname(__name: cstring): *hostent <cimport, nodecl> end
+global function setnetent(__stay_open: cint) <cimport, nodecl> end
+global function endnetent() <cimport, nodecl> end
+global function getnetent(): *netent <cimport, nodecl> end
+global function getnetbyaddr(__net: uint32, __type: cint): *netent <cimport, nodecl> end
+global function getnetbyname(__name: cstring): *netent <cimport, nodecl> end
+global servent: type <cimport, nodecl, ctypedef> = @record{
+  s_name: cstring,
+  s_aliases: *cstring,
+  s_port: cint,
+  s_proto: cstring
+}
+global function setservent(__stay_open: cint) <cimport, nodecl> end
+global function endservent() <cimport, nodecl> end
+global function getservent(): *servent <cimport, nodecl> end
+global function getservbyname(__name: cstring, __proto: cstring): *servent <cimport, nodecl> end
+global function getservbyport(__port: cint, __proto: cstring): *servent <cimport, nodecl> end
+global protoent: type <cimport, nodecl, ctypedef> = @record{
+  p_name: cstring,
+  p_aliases: *cstring,
+  p_proto: cint
+}
+global function setprotoent(__stay_open: cint) <cimport, nodecl> end
+global function endprotoent() <cimport, nodecl> end
+global function getprotoent(): *protoent <cimport, nodecl> end
+global function getprotobyname(__name: cstring): *protoent <cimport, nodecl> end
+global function getprotobynumber(__proto: cint): *protoent <cimport, nodecl> end
+global addrinfo: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+addrinfo = @record{
+  ai_flags: cint,
+  ai_family: cint,
+  ai_socktype: cint,
+  ai_protocol: cint,
+  ai_addrlen: cuint,
+  ai_addr: *sockaddr,
+  ai_canonname: cstring,
+  ai_next: *addrinfo
+}
+global function getaddrinfo(__name: cstring, __service: cstring, __req: *addrinfo, __pai: **addrinfo): cint <cimport, nodecl> end
+global function freeaddrinfo(__ai: *addrinfo) <cimport, nodecl> end
+global function gai_strerror(__ecode: cint): cstring <cimport, nodecl> end
+global function getnameinfo(__sa: *sockaddr, __salen: cuint, __host: cstring, __hostlen: cuint, __serv: cstring, __servlen: cuint, __flags: cint): cint <cimport, nodecl> end
+global function inet_addr(__cp: cstring): cuint <cimport, nodecl> end
+global function inet_lnaof(__in: in_addr): cuint <cimport, nodecl> end
+global function inet_makeaddr(__net: cuint, __host: cuint): in_addr <cimport, nodecl> end
+global function inet_netof(__in: in_addr): cuint <cimport, nodecl> end
+global function inet_network(__cp: cstring): cuint <cimport, nodecl> end
+global function inet_ntoa(__in: in_addr): cstring <cimport, nodecl> end
+global function inet_pton(__af: cint, __cp: cstring, __buf: pointer): cint <cimport, nodecl> end
+global function inet_ntop(__af: cint, __cp: pointer, __buf: cstring, __len: cuint): cstring <cimport, nodecl> end
+global SOCK_STREAM: cint <cimport, nodecl, const>
+global SOCK_DGRAM: cint <cimport, nodecl, const>
+global SOCK_RAW: cint <cimport, nodecl, const>
+global SOCK_RDM: cint <cimport, nodecl, const>
+global SOCK_SEQPACKET: cint <cimport, nodecl, const>
+global SOCK_DCCP: cint <cimport, nodecl, const>
+global SOCK_PACKET: cint <cimport, nodecl, const>
+global SOCK_CLOEXEC: cint <cimport, nodecl, const>
+global SOCK_NONBLOCK: cint <cimport, nodecl, const>
+global AF_UNSPEC: cint <cimport, nodecl, const>
+global AF_LOCAL: cint <cimport, nodecl, const>
+global AF_UNIX: cint <cimport, nodecl, const>
+global AF_FILE: cint <cimport, nodecl, const>
+global AF_INET: cint <cimport, nodecl, const>
+global AF_AX25: cint <cimport, nodecl, const>
+global AF_IPX: cint <cimport, nodecl, const>
+global AF_APPLETALK: cint <cimport, nodecl, const>
+global AF_NETROM: cint <cimport, nodecl, const>
+global AF_BRIDGE: cint <cimport, nodecl, const>
+global AF_ATMPVC: cint <cimport, nodecl, const>
+global AF_X25: cint <cimport, nodecl, const>
+global AF_INET6: cint <cimport, nodecl, const>
+global AF_ROSE: cint <cimport, nodecl, const>
+global AF_DECnet: cint <cimport, nodecl, const>
+global AF_NETBEUI: cint <cimport, nodecl, const>
+global AF_SECURITY: cint <cimport, nodecl, const>
+global AF_KEY: cint <cimport, nodecl, const>
+global AF_NETLINK: cint <cimport, nodecl, const>
+global AF_ROUTE: cint <cimport, nodecl, const>
+global AF_PACKET: cint <cimport, nodecl, const>
+global AF_ASH: cint <cimport, nodecl, const>
+global AF_ECONET: cint <cimport, nodecl, const>
+global AF_ATMSVC: cint <cimport, nodecl, const>
+global AF_RDS: cint <cimport, nodecl, const>
+global AF_SNA: cint <cimport, nodecl, const>
+global AF_IRDA: cint <cimport, nodecl, const>
+global AF_PPPOX: cint <cimport, nodecl, const>
+global AF_WANPIPE: cint <cimport, nodecl, const>
+global AF_LLC: cint <cimport, nodecl, const>
+global AF_IB: cint <cimport, nodecl, const>
+global AF_MPLS: cint <cimport, nodecl, const>
+global AF_CAN: cint <cimport, nodecl, const>
+global AF_TIPC: cint <cimport, nodecl, const>
+global AF_BLUETOOTH: cint <cimport, nodecl, const>
+global AF_IUCV: cint <cimport, nodecl, const>
+global AF_RXRPC: cint <cimport, nodecl, const>
+global AF_ISDN: cint <cimport, nodecl, const>
+global AF_PHONET: cint <cimport, nodecl, const>
+global AF_IEEE802154: cint <cimport, nodecl, const>
+global AF_CAIF: cint <cimport, nodecl, const>
+global AF_ALG: cint <cimport, nodecl, const>
+global AF_NFC: cint <cimport, nodecl, const>
+global AF_VSOCK: cint <cimport, nodecl, const>
+global AF_KCM: cint <cimport, nodecl, const>
+global AF_QIPCRTR: cint <cimport, nodecl, const>
+global AF_SMC: cint <cimport, nodecl, const>
+global AF_XDP: cint <cimport, nodecl, const>
+global AF_MAX: cint <cimport, nodecl, const>
+global SO_DEBUG: cint <comptime> = 1
+global SO_REUSEADDR: cint <comptime> = 2
+global SO_TYPE: cint <comptime> = 3
+global SO_ERROR: cint <comptime> = 4
+global SO_DONTROUTE: cint <comptime> = 5
+global SO_BROADCAST: cint <comptime> = 6
+global SO_SNDBUF: cint <comptime> = 7
+global SO_RCVBUF: cint <comptime> = 8
+global SO_SNDBUFFORCE: cint <comptime> = 32
+global SO_RCVBUFFORCE: cint <comptime> = 33
+global SO_KEEPALIVE: cint <comptime> = 9
+global SO_OOBINLINE: cint <comptime> = 10
+global SO_NO_CHECK: cint <comptime> = 11
+global SO_PRIORITY: cint <comptime> = 12
+global SO_LINGER: cint <comptime> = 13
+global SO_BSDCOMPAT: cint <comptime> = 14
+global SO_REUSEPORT: cint <comptime> = 15
+global SO_PASSCRED: cint <comptime> = 16
+global SO_PEERCRED: cint <comptime> = 17
+global SO_RCVLOWAT: cint <comptime> = 18
+global SO_SNDLOWAT: cint <comptime> = 19
+global SO_RCVTIMEO_OLD: cint <comptime> = 20
+global SO_SNDTIMEO_OLD: cint <comptime> = 21
+global SO_SECURITY_AUTHENTICATION: cint <comptime> = 22
+global SO_SECURITY_ENCRYPTION_TRANSPORT: cint <comptime> = 23
+global SO_SECURITY_ENCRYPTION_NETWORK: cint <comptime> = 24
+global SO_BINDTODEVICE: cint <comptime> = 25
+global SO_ATTACH_FILTER: cint <comptime> = 26
+global SO_DETACH_FILTER: cint <comptime> = 27
+global SO_GET_FILTER: cint <comptime> = SO_ATTACH_FILTER
+global SO_PEERNAME: cint <comptime> = 28
+global SO_ACCEPTCONN: cint <comptime> = 30
+global SO_PEERSEC: cint <comptime> = 31
+global SO_PASSSEC: cint <comptime> = 34
+global SO_MARK: cint <comptime> = 36
+global SO_PROTOCOL: cint <comptime> = 38
+global SO_DOMAIN: cint <comptime> = 39
+global SO_RXQ_OVFL: cint <comptime> = 40
+global SO_WIFI_STATUS: cint <comptime> = 41
+global SO_PEEK_OFF: cint <comptime> = 42
+global SO_NOFCS: cint <comptime> = 43
+global SO_LOCK_FILTER: cint <comptime> = 44
+global SO_SELECT_ERR_QUEUE: cint <comptime> = 45
+global SO_BUSY_POLL: cint <comptime> = 46
+global SO_MAX_PACING_RATE: cint <comptime> = 47
+global SO_BPF_EXTENSIONS: cint <comptime> = 48
+global SO_INCOMING_CPU: cint <comptime> = 49
+global SO_ATTACH_BPF: cint <comptime> = 50
+global SO_DETACH_BPF: cint <comptime> = SO_DETACH_FILTER
+global SO_ATTACH_REUSEPORT_CBPF: cint <comptime> = 51
+global SO_ATTACH_REUSEPORT_EBPF: cint <comptime> = 52
+global SO_CNX_ADVICE: cint <comptime> = 53
+global SO_MEMINFO: cint <comptime> = 55
+global SO_INCOMING_NAPI_ID: cint <comptime> = 56
+global SO_COOKIE: cint <comptime> = 57
+global SO_PEERGROUPS: cint <comptime> = 59
+global SO_ZEROCOPY: cint <comptime> = 60
+global SO_TXTIME: cint <comptime> = 61
+global SO_BINDTOIFINDEX: cint <comptime> = 62
+global SO_TIMESTAMP_OLD: cint <comptime> = 29
+global SO_TIMESTAMPNS_OLD: cint <comptime> = 35
+global SO_TIMESTAMPING_OLD: cint <comptime> = 37
+global SO_TIMESTAMP_NEW: cint <comptime> = 63
+global SO_TIMESTAMPNS_NEW: cint <comptime> = 64
+global SO_TIMESTAMPING_NEW: cint <comptime> = 65
+global SO_RCVTIMEO_NEW: cint <comptime> = 66
+global SO_SNDTIMEO_NEW: cint <comptime> = 67
+global SO_DETACH_REUSEPORT_BPF: cint <comptime> = 68
+global SO_TIMESTAMP: cint <comptime> = SO_TIMESTAMP_OLD
+global SO_TIMESTAMPNS: cint <comptime> = SO_TIMESTAMPNS_OLD
+global SO_TIMESTAMPING: cint <comptime> = SO_TIMESTAMPING_OLD
+global SO_RCVTIMEO: cint <comptime> = SO_RCVTIMEO_OLD
+global SO_SNDTIMEO: cint <comptime> = SO_SNDTIMEO_OLD
+global IP_OPTIONS: cint <comptime> = 4
+global IP_HDRINCL: cint <comptime> = 3
+global IP_TOS: cint <comptime> = 1
+global IP_TTL: cint <comptime> = 2
+global IP_RECVOPTS: cint <comptime> = 6
+global IP_RECVRETOPTS: cint <cimport, nodecl, const>
+global IP_RETOPTS: cint <comptime> = 7
+global IP_MULTICAST_IF: cint <comptime> = 32
+global IP_MULTICAST_TTL: cint <comptime> = 33
+global IP_MULTICAST_LOOP: cint <comptime> = 34
+global IP_ADD_MEMBERSHIP: cint <comptime> = 35
+global IP_DROP_MEMBERSHIP: cint <comptime> = 36
+global IP_UNBLOCK_SOURCE: cint <comptime> = 37
+global IP_BLOCK_SOURCE: cint <comptime> = 38
+global IP_ADD_SOURCE_MEMBERSHIP: cint <comptime> = 39
+global IP_DROP_SOURCE_MEMBERSHIP: cint <comptime> = 40
+global IP_MSFILTER: cint <comptime> = 41
+global IP_MULTICAST_ALL: cint <comptime> = 49
+global IP_UNICAST_IF: cint <comptime> = 50
+global IP_ROUTER_ALERT: cint <comptime> = 5
+global IP_PKTINFO: cint <comptime> = 8
+global IP_PKTOPTIONS: cint <comptime> = 9
+global IP_PMTUDISC: cint <comptime> = 10
+global IP_MTU_DISCOVER: cint <comptime> = 10
+global IP_RECVERR: cint <comptime> = 11
+global IP_RECVTTL: cint <comptime> = 12
+global IP_RECVTOS: cint <comptime> = 13
+global IP_MTU: cint <comptime> = 14
+global IP_FREEBIND: cint <comptime> = 15
+global IP_IPSEC_POLICY: cint <comptime> = 16
+global IP_XFRM_POLICY: cint <comptime> = 17
+global IP_PASSSEC: cint <comptime> = 18
+global IP_TRANSPARENT: cint <comptime> = 19
+global IP_MULTICAST_ALL: cint <comptime> = 49
+global IP_ORIGDSTADDR: cint <comptime> = 20
+global IP_RECVORIGDSTADDR: cint <comptime> = IP_ORIGDSTADDR
+global IP_MINTTL: cint <comptime> = 21
+global IP_NODEFRAG: cint <comptime> = 22
+global IP_CHECKSUM: cint <comptime> = 23
+global IP_BIND_ADDRESS_NO_PORT: cint <comptime> = 24
+global IP_RECVFRAGSIZE: cint <comptime> = 25
+global IP_RECVERR_RFC4884: cint <comptime> = 26
+global IP_PMTUDISC_DONT: cint <comptime> = 0
+global IP_PMTUDISC_WANT: cint <comptime> = 1
+global IP_PMTUDISC_DO: cint <comptime> = 2
+global IP_PMTUDISC_PROBE: cint <comptime> = 3
+global IP_PMTUDISC_INTERFACE: cint <comptime> = 4
+global IP_PMTUDISC_OMIT: cint <comptime> = 5
+global IP_MULTICAST_IF: cint <comptime> = 32
+global IP_MULTICAST_TTL: cint <comptime> = 33
+global IP_MULTICAST_LOOP: cint <comptime> = 34
+global IP_ADD_MEMBERSHIP: cint <comptime> = 35
+global IP_DROP_MEMBERSHIP: cint <comptime> = 36
+global IP_UNBLOCK_SOURCE: cint <comptime> = 37
+global IP_BLOCK_SOURCE: cint <comptime> = 38
+global IP_ADD_SOURCE_MEMBERSHIP: cint <comptime> = 39
+global IP_DROP_SOURCE_MEMBERSHIP: cint <comptime> = 40
+global IP_MSFILTER: cint <comptime> = 41
+global IP_MULTICAST_ALL: cint <comptime> = 49
+global IP_UNICAST_IF: cint <comptime> = 50
+global IP_DEFAULT_MULTICAST_TTL: cint <comptime> = 1
+global IP_DEFAULT_MULTICAST_LOOP: cint <comptime> = 1
+global IP_MAX_MEMBERSHIPS: cint <comptime> = 20
+global IPV6_ADDRFORM: cint <comptime> = 1
+global IPV6_2292PKTINFO: cint <comptime> = 2
+global IPV6_2292HOPOPTS: cint <comptime> = 3
+global IPV6_2292DSTOPTS: cint <comptime> = 4
+global IPV6_2292RTHDR: cint <comptime> = 5
+global IPV6_2292PKTOPTIONS: cint <comptime> = 6
+global IPV6_CHECKSUM: cint <comptime> = 7
+global IPV6_2292HOPLIMIT: cint <comptime> = 8
+global IPV6_NEXTHOP: cint <comptime> = 9
+global IPV6_AUTHHDR: cint <comptime> = 10
+global IPV6_UNICAST_HOPS: cint <comptime> = 16
+global IPV6_MULTICAST_IF: cint <comptime> = 17
+global IPV6_MULTICAST_HOPS: cint <comptime> = 18
+global IPV6_MULTICAST_LOOP: cint <comptime> = 19
+global IPV6_JOIN_GROUP: cint <comptime> = 20
+global IPV6_LEAVE_GROUP: cint <comptime> = 21
+global IPV6_ROUTER_ALERT: cint <comptime> = 22
+global IPV6_MTU_DISCOVER: cint <comptime> = 23
+global IPV6_MTU: cint <comptime> = 24
+global IPV6_RECVERR: cint <comptime> = 25
+global IPV6_V6ONLY: cint <comptime> = 26
+global IPV6_JOIN_ANYCAST: cint <comptime> = 27
+global IPV6_LEAVE_ANYCAST: cint <comptime> = 28
+global IPV6_MULTICAST_ALL: cint <comptime> = 29
+global IPV6_ROUTER_ALERT_ISOLATE: cint <comptime> = 30
+global IPV6_RECVERR_RFC4884: cint <comptime> = 31
+global IPV6_IPSEC_POLICY: cint <comptime> = 34
+global IPV6_XFRM_POLICY: cint <comptime> = 35
+global IPV6_HDRINCL: cint <comptime> = 36
+global IPV6_RECVPKTINFO: cint <comptime> = 49
+global IPV6_PKTINFO: cint <comptime> = 50
+global IPV6_RECVHOPLIMIT: cint <comptime> = 51
+global IPV6_HOPLIMIT: cint <comptime> = 52
+global IPV6_RECVHOPOPTS: cint <comptime> = 53
+global IPV6_HOPOPTS: cint <comptime> = 54
+global IPV6_RTHDRDSTOPTS: cint <comptime> = 55
+global IPV6_RECVRTHDR: cint <comptime> = 56
+global IPV6_RTHDR: cint <comptime> = 57
+global IPV6_RECVDSTOPTS: cint <comptime> = 58
+global IPV6_DSTOPTS: cint <comptime> = 59
+global IPV6_RECVPATHMTU: cint <comptime> = 60
+global IPV6_PATHMTU: cint <comptime> = 61
+global IPV6_DONTFRAG: cint <comptime> = 62
+global IPV6_RECVTCLASS: cint <comptime> = 66
+global IPV6_TCLASS: cint <comptime> = 67
+global IPV6_AUTOFLOWLABEL: cint <comptime> = 70
+global IPV6_ADDR_PREFERENCES: cint <comptime> = 72
+global IPV6_MINHOPCOUNT: cint <comptime> = 73
+global IPV6_ORIGDSTADDR: cint <comptime> = 74
+global IPV6_RECVORIGDSTADDR: cint <comptime> = IPV6_ORIGDSTADDR
+global IPV6_TRANSPARENT: cint <comptime> = 75
+global IPV6_UNICAST_IF: cint <comptime> = 76
+global IPV6_RECVFRAGSIZE: cint <comptime> = 77
+global IPV6_FREEBIND: cint <comptime> = 78
+global IPV6_ADD_MEMBERSHIP: cint <comptime> = IPV6_JOIN_GROUP
+global IPV6_DROP_MEMBERSHIP: cint <comptime> = IPV6_LEAVE_GROUP
+global IPV6_RXHOPOPTS: cint <comptime> = IPV6_HOPOPTS
+global IPV6_RXDSTOPTS: cint <comptime> = IPV6_DSTOPTS
+global IPV6_PMTUDISC_DONT: cint <comptime> = 0
+global IPV6_PMTUDISC_WANT: cint <comptime> = 1
+global IPV6_PMTUDISC_DO: cint <comptime> = 2
+global IPV6_PMTUDISC_PROBE: cint <comptime> = 3
+global IPV6_PMTUDISC_INTERFACE: cint <comptime> = 4
+global IPV6_PMTUDISC_OMIT: cint <comptime> = 5
+global IPV6_RTHDR_LOOSE: cint <comptime> = 0
+global IPV6_RTHDR_STRICT: cint <comptime> = 1
+global IPV6_RTHDR_TYPE_0: cint <comptime> = 0
+global INET_ADDRSTRLEN: cint <comptime> = 16
+global INET6_ADDRSTRLEN: cint <comptime> = 46
+global AI_PASSIVE: cint <comptime> = 0x0001
+global AI_CANONNAME: cint <comptime> = 0x0002
+global AI_NUMERICHOST: cint <comptime> = 0x0004
+global AI_V4MAPPED: cint <comptime> = 0x0008
+global AI_ALL: cint <comptime> = 0x0010
+global AI_ADDRCONFIG: cint <comptime> = 0x0020
+global AI_NUMERICSERV: cint <comptime> = 0x0400
+global EAI_BADFLAGS: cint <comptime> = -1
+global EAI_NONAME: cint <comptime> = -2
+global EAI_AGAIN: cint <comptime> = -3
+global EAI_FAIL: cint <comptime> = -4
+global EAI_FAMILY: cint <comptime> = -6
+global EAI_SOCKTYPE: cint <comptime> = -7
+global EAI_SERVICE: cint <comptime> = -8
+global EAI_MEMORY: cint <comptime> = -10
+global EAI_SYSTEM: cint <comptime> = -11
+global EAI_OVERFLOW: cint <comptime> = -12
+global NI_MAXHOST: cint <comptime> = 1025
+global NI_MAXSERV: cint <comptime> = 32
+global NI_NUMERICHOST: cint <comptime> = 1
+global NI_NUMERICSERV: cint <comptime> = 2
+global NI_NOFQDN: cint <comptime> = 4
+global NI_NAMEREQD: cint <comptime> = 8
+global NI_DGRAM: cint <comptime> = 16

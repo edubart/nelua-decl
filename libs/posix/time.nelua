@@ -1,0 +1,78 @@
+## cinclude '<time.h>'
+global tm: type <cimport, nodecl, ctypedef> = @record{
+  tm_sec: cint,
+  tm_min: cint,
+  tm_hour: cint,
+  tm_mday: cint,
+  tm_mon: cint,
+  tm_year: cint,
+  tm_wday: cint,
+  tm_yday: cint,
+  tm_isdst: cint,
+  __tm_gmtoff: clong,
+  __tm_zone: cstring
+}
+global timespec: type <cimport, nodecl, ctypedef> = @record{
+  tv_sec: clong,
+  tv_nsec: clong
+}
+global timer_t: type = @pointer
+global itimerspec: type <cimport, nodecl, ctypedef> = @record{
+  it_interval: timespec,
+  it_value: timespec
+}
+global sigevent: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global __locale_data: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global __locale_struct: type <cimport, nodecl, ctypedef> = @record{
+  __locales: [13]*__locale_data,
+  __ctype_b: *cushort,
+  __ctype_tolower: *cint,
+  __ctype_toupper: *cint,
+  __names: [13]cstring
+}
+global locale_t: type = @*__locale_struct
+global function clock(): clong <cimport, nodecl> end
+global function time(__timer: *clong): clong <cimport, nodecl> end
+global function difftime(__time1: clong, __time0: clong): float64 <cimport, nodecl> end
+global function mktime(__tp: *tm): clong <cimport, nodecl> end
+global function strftime(__s: cstring, __maxsize: csize, __format: cstring, __tp: *tm): csize <cimport, nodecl> end
+global function strptime(__s: cstring, __fmt: cstring, __tp: *tm): cstring <cimport, nodecl> end
+global function strftime_l(__s: cstring, __maxsize: csize, __format: cstring, __tp: *tm, __loc: locale_t): csize <cimport, nodecl> end
+global function gmtime(__timer: *clong): *tm <cimport, nodecl> end
+global function localtime(__timer: *clong): *tm <cimport, nodecl> end
+global function gmtime_r(__timer: *clong, __tp: *tm): *tm <cimport, nodecl> end
+global function localtime_r(__timer: *clong, __tp: *tm): *tm <cimport, nodecl> end
+global function asctime(__tp: *tm): cstring <cimport, nodecl> end
+global function ctime(__timer: *clong): cstring <cimport, nodecl> end
+global function asctime_r(__tp: *tm, __buf: cstring): cstring <cimport, nodecl> end
+global function ctime_r(__timer: *clong, __buf: cstring): cstring <cimport, nodecl> end
+global tzname: [2]cstring <cimport, nodecl>
+global function tzset() <cimport, nodecl> end
+global daylight: cint <cimport, nodecl>
+global timezone: clong <cimport, nodecl>
+global function nanosleep(__requested_time: *timespec, __remaining: *timespec): cint <cimport, nodecl> end
+global function clock_getres(__clock_id: cint, __res: *timespec): cint <cimport, nodecl> end
+global function clock_gettime(__clock_id: cint, __tp: *timespec): cint <cimport, nodecl> end
+global function clock_settime(__clock_id: cint, __tp: *timespec): cint <cimport, nodecl> end
+global function clock_nanosleep(__clock_id: cint, __flags: cint, __req: *timespec, __rem: *timespec): cint <cimport, nodecl> end
+global function clock_getcpuclockid(__pid: cint, __clock_id: *cint): cint <cimport, nodecl> end
+global function timer_create(__clock_id: cint, __evp: *sigevent, __timerid: *timer_t): cint <cimport, nodecl> end
+global function timer_delete(__timerid: timer_t): cint <cimport, nodecl> end
+global function timer_settime(__timerid: timer_t, __flags: cint, __value: *itimerspec, __ovalue: *itimerspec): cint <cimport, nodecl> end
+global function timer_gettime(__timerid: timer_t, __value: *itimerspec): cint <cimport, nodecl> end
+global function timer_getoverrun(__timerid: timer_t): cint <cimport, nodecl> end
+global function timespec_get(__ts: *timespec, __base: cint): cint <cimport, nodecl> end
+global getdate_err: cint <cimport, nodecl>
+global function getdate(__string: cstring): *tm <cimport, nodecl> end
+global CLOCKS_PER_SEC: clong <cimport, nodecl, const>
+global CLOCK_REALTIME: cint <comptime> = 0
+global CLOCK_MONOTONIC: cint <comptime> = 1
+global CLOCK_PROCESS_CPUTIME_ID: cint <comptime> = 2
+global CLOCK_THREAD_CPUTIME_ID: cint <comptime> = 3
+global CLOCK_MONOTONIC_RAW: cint <comptime> = 4
+global CLOCK_REALTIME_COARSE: cint <comptime> = 5
+global CLOCK_MONOTONIC_COARSE: cint <comptime> = 6
+global CLOCK_BOOTTIME: cint <comptime> = 7
+global CLOCK_REALTIME_ALARM: cint <comptime> = 8
+global CLOCK_BOOTTIME_ALARM: cint <comptime> = 9
+global CLOCK_TAI: cint <comptime> = 11

@@ -1,0 +1,6 @@
+## cinclude '<utime.h>'
+global utimbuf: type <cimport, nodecl, ctypedef> = @record{
+  actime: clong,
+  modtime: clong
+}
+global function utime(__file: cstring, __file_times: *utimbuf): cint <cimport, nodecl> end
