@@ -1,0 +1,96 @@
+## cflags '-I.'
+
+require 'string'
+require 'enet'
+
+local Client = @record{
+  host: *ENetHost,
+  peer: *ENetPeer,
+}
+
+local nclients = 0
+
+local function host_server(server: *ENetHost)
+  local event: ENetEvent
+  while enet_host_service(server, &event, 2) > 0 do
+    switch event.type do
+    case ENET_EVENT_TYPE_CONNECT then
+      print(string.format("A new client connected from ::1:%d.", event.peer.address.port))
+      -- Store any relevant client information here.
+      nclients = nclients + 1
+      event.peer.data = (@pointer)(nclients)
+    case ENET_EVENT_TYPE_RECEIVE then
+      print(string.format("A packet of length %d containing %s was received from %s on channel %d.",
+              event.packet.dataLength,
+              event.packet.data,
+              (@cstring)(event.peer.data),
+              event.channelID))
+      -- Clean up the packet now that we're done using it.
+      enet_packet_destroy(event.packet)
+    case ENET_EVENT_TYPE_DISCONNECT then
+      print(string.format("Client %d disconnected.", (@isize)(event.peer.data)))
+      -- Reset the peer's client information.
+      event.peer.data = nilptr
+    case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT then
+      print(string.format("Client %s timeout.", (@isize)(event.peer.data)))
+      event.peer.data = nilptr
+    case ENET_EVENT_TYPE_NONE then
+    end
+  end
+end
+
+if enet_initialize() ~= 0 then
+  error "An error occurred while initializing ENet."
+end
+
+local MAX_CLIENTS <comptime> = 2
+
+local server: *ENetHost
+local clients: [MAX_CLIENTS]Client
+local address: ENetAddress
+
+address.host = ENET_HOST_ANY -- Bind the server to the default localhost.
+address.port = 7777 -- Bind the server to port 7777.
+
+-- create a server
+print "starting server..."
+server = enet_host_create(&address, MAX_CLIENTS, 2, 0, 0)
+if not server then
+  error "An error occurred while trying to create an ENet server host."
+end
+
+print "starting clients..."
+for i=0,<MAX_CLIENTS do
+  enet_address_set_host_new(&address, "127.0.0.1")
+  clients[i].host = enet_host_create(nilptr, 1, 2, 0, 0)
+  clients[i].peer = enet_host_connect(clients[i].host, &address, 2, 0)
+  if not clients[i].peer then
+    error "coundln't connect"
+  end
+end
+
+-- program will make N iterations, and then exit
+local counter = 1000
+
+repeat
+  host_server(server)
+
+  local event: ENetEvent
+  for i=0,<MAX_CLIENTS do
+    enet_host_service(clients[i].host, &event, 0)
+  end
+
+  counter = counter - 1
+until counter == 0 or nclients == MAX_CLIENTS
+
+for i=0,<MAX_CLIENTS do
+  enet_peer_disconnect_now(clients[i].peer, 0)
+  enet_host_destroy(clients[i].host)
+end
+
+host_server(server)
+
+enet_host_destroy(server)
+enet_deinitialize()
+
+print 'enet OK!'
