@@ -25,6 +25,8 @@ The following cross-platform libraries bindings are ready and generated as examp
 * [miniaudio](https://miniaud.io/)
     - [miniaudio.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniaudio/miniaudio.nelua) (Low level audio API)
     - [miniaudio_engine.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniaudio/miniaudio_engine.nelua) (High level audio API)
+* [minifs](https://github.com/mackron/minifs)
+    - [minifs.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/minifs/minifs.nelua) (File system library)
 * [miniphysfs](https://github.com/edubart/miniphysfs) (PhysFS)
     - [miniphysfs.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniphysfs/miniphysfs.nelua) (Archive filesystem)
 * [STB](https://github.com/nothings/stb)
