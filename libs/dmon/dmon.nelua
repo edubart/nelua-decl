@@ -1,0 +1,34 @@
+##[[
+if DMON_LINKLIB then
+  if type(DMON_LINKLIB) == 'string' then
+    linklib(DMON_LINKLIB)
+  end
+else
+  cdefine 'DMON_IMPL'
+end
+cinclude '"dmon.h"'
+if ccinfo.is_linux then
+  linklib 'pthread'
+end
+]]
+global dmon_watch_id: type <cimport, nodecl> = @record{
+  id: uint32
+}
+global dmon_watch_flags_t: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  DMON_WATCHFLAGS_RECURSIVE = 1,
+  DMON_WATCHFLAGS_FOLLOW_SYMLINKS = 2,
+  DMON_WATCHFLAGS_OUTOFSCOPE_LINKS = 4,
+  DMON_WATCHFLAGS_IGNORE_DIRECTORIES = 8
+}
+global dmon_watch_flags: type = @dmon_watch_flags_t
+global dmon_action_t: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  DMON_ACTION_CREATE = 1,
+  DMON_ACTION_DELETE = 2,
+  DMON_ACTION_MODIFY = 3,
+  DMON_ACTION_MOVE = 4
+}
+global dmon_action: type = @dmon_action_t
+global function dmon_init() <cimport, nodecl> end
+global function dmon_deinit() <cimport, nodecl> end
+global function dmon_watch(rootdir: cstring, watch_cb: function(dmon_watch_id, dmon_action, cstring, cstring, cstring, pointer), flags: uint32, user_data: pointer): dmon_watch_id <cimport, nodecl> end
+global function dmon_unwatch(id: dmon_watch_id) <cimport, nodecl> end

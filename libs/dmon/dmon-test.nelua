@@ -1,0 +1,47 @@
+## cflags '-I.'
+
+require 'dmon'
+require 'io'
+require 'os'
+
+local finished: boolean <volatile> = false
+
+local function watch_cb(watch_id: dmon_watch_id, action: dmon_action,
+                     rootdir: cstring, filepath: cstring,
+                     oldfilepath: cstring, userdata: pointer): void
+  -- NOTE: this is called from another thread, take care!
+  switch action do
+  case DMON_ACTION_CREATE then
+    print('file created', filepath)
+  case DMON_ACTION_DELETE then
+    print('file deleted', filepath)
+    finished = true
+  case DMON_ACTION_MODIFY then
+    print('file modified', filepath)
+  case DMON_ACTION_MOVE then
+    print('file moved', filepath)
+  end
+end
+
+local function writefile(filename: string, contents: string)
+  local f = io.open(filename, 'w')
+  if f:isopen() then
+    f:write(contents)
+    f:close()
+  end
+end
+
+dmon_init()
+local id = dmon_watch('.', watch_cb, 0, nilptr)
+writefile('tmpfile', 'somedata')
+os.remove('tmpfile')
+
+local targettime = os.time() + 1
+repeat
+  -- busy wait at most 1 second
+until finished or os.time() >= targettime
+
+dmon_unwatch(id)
+dmon_deinit()
+
+print 'dmon OK!'
