@@ -36,7 +36,7 @@ do -- stb_image/stb_image_write
 end
 
 local function readfile(name: string): (*[0]byte, isize)
-  local fp: *FILE = C.fopen(name, 'rb')
+  local fp: *C.FILE = C.fopen(name, 'rb')
   assert(fp, 'unable to open file')
   C.fseek(fp, 0, C.SEEK_END)
   local size: isize = C.ftell(fp)
