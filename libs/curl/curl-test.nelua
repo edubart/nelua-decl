@@ -1,0 +1,35 @@
+require 'io'
+require 'curl'
+
+local curl: *CURL = curl_easy_init()
+if not curl then
+  error 'failed to initialize curl'
+end
+
+local function write_data(buffer: pointer, size: csize, nmemb: csize, userp: pointer): csize
+  local totsize = size * nmemb
+  local chunk: string = {data = (@*[0]byte)(buffer), size = totsize}
+  io.write(chunk)
+  io.flush()
+  return totsize
+end
+
+local res: CURLcode
+
+-- setup request URL
+res = curl_easy_setopt(curl, CURLOPT_URL, "https://example.com")
+assert(res == CURLE_OK, 'failed to set curl options')
+
+-- setup data handler
+res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data)
+assert(res == CURLE_OK, 'failed to setup write function')
+
+-- perform the request
+res = curl_easy_perform(curl)
+if res ~= CURLE_OK then
+  print('failed to perform https request, are you offline?')
+end
+
+curl_easy_cleanup(curl)
+
+print 'curl OK!'

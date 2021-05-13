@@ -1,0 +1,1111 @@
+##[[
+linklib 'curl'
+cinclude '<curl/curl.h>'
+]]
+global CURL = @void
+global fd_set: type <cimport, nodecl> = @record{
+  __fds_bits: [16]clong
+}
+global sockaddr: type <cimport, nodecl, ctypedef> = @record{
+  sa_family: cushort,
+  sa_data: [14]cchar
+}
+global curl_sslbackend: type <cimport, nodecl, using> = @enum(cint){
+  CURLSSLBACKEND_NONE = 0,
+  CURLSSLBACKEND_OPENSSL = 1,
+  CURLSSLBACKEND_GNUTLS = 2,
+  CURLSSLBACKEND_NSS = 3,
+  CURLSSLBACKEND_OBSOLETE4 = 4,
+  CURLSSLBACKEND_GSKIT = 5,
+  CURLSSLBACKEND_POLARSSL = 6,
+  CURLSSLBACKEND_WOLFSSL = 7,
+  CURLSSLBACKEND_SCHANNEL = 8,
+  CURLSSLBACKEND_SECURETRANSPORT = 9,
+  CURLSSLBACKEND_AXTLS = 10,
+  CURLSSLBACKEND_MBEDTLS = 11,
+  CURLSSLBACKEND_MESALINK = 12,
+  CURLSSLBACKEND_BEARSSL = 13,
+  CURLSSLBACKEND_RUSTLS = 14
+}
+global curl_httppost: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global curl_slist: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+curl_httppost = @record{
+  next: *curl_httppost,
+  name: cstring,
+  namelength: clong,
+  contents: cstring,
+  contentslength: clong,
+  buffer: cstring,
+  bufferlength: clong,
+  contenttype: cstring,
+  contentheader: *curl_slist,
+  more: *curl_httppost,
+  flags: clong,
+  showfilename: cstring,
+  userp: pointer,
+  contentlen: clong
+}
+global curl_progress_callback: type <cimport, nodecl> = @function(pointer, float64, float64, float64, float64): cint
+global curl_xferinfo_callback: type <cimport, nodecl> = @function(pointer, clong, clong, clong, clong): cint
+global curl_write_callback: type <cimport, nodecl> = @function(cstring, csize, csize, pointer): csize
+global curl_resolver_start_callback: type <cimport, nodecl> = @function(pointer, pointer, pointer): cint
+global curlfiletype: type <cimport, nodecl, using> = @enum(cint){
+  CURLFILETYPE_FILE = 0,
+  CURLFILETYPE_DIRECTORY = 1,
+  CURLFILETYPE_SYMLINK = 2,
+  CURLFILETYPE_DEVICE_BLOCK = 3,
+  CURLFILETYPE_DEVICE_CHAR = 4,
+  CURLFILETYPE_NAMEDPIPE = 5,
+  CURLFILETYPE_SOCKET = 6,
+  CURLFILETYPE_DOOR = 7,
+  CURLFILETYPE_UNKNOWN = 8
+}
+global curl_fileinfo: type <cimport, nodecl, ctypedef> = @record{
+  filename: cstring,
+  filetype: curlfiletype,
+  time: clong,
+  perm: cuint,
+  uid: cint,
+  gid: cint,
+  size: clong,
+  hardlinks: clong,
+  strings: record{
+    time: cstring,
+    perm: cstring,
+    user: cstring,
+    group: cstring,
+    target: cstring
+  },
+  flags: cuint,
+  b_data: cstring,
+  b_size: csize,
+  b_used: csize
+}
+global curl_chunk_bgn_callback: type <cimport, nodecl> = @function(pointer, pointer, cint): clong
+global curl_chunk_end_callback: type <cimport, nodecl> = @function(pointer): clong
+global curl_fnmatch_callback: type <cimport, nodecl> = @function(pointer, cstring, cstring): cint
+global curl_seek_callback: type <cimport, nodecl> = @function(pointer, clong, cint): cint
+global curl_read_callback: type <cimport, nodecl> = @function(cstring, csize, csize, pointer): csize
+global curl_trailer_callback: type <cimport, nodecl> = @function(**curl_slist, pointer): cint
+global curlsocktype: type <cimport, nodecl, using> = @enum(cint){
+  CURLSOCKTYPE_IPCXN = 0,
+  CURLSOCKTYPE_ACCEPT = 1,
+  CURLSOCKTYPE_LAST = 2
+}
+global curl_sockopt_callback: type <cimport, nodecl> = @function(pointer, cint, curlsocktype): cint
+global curl_sockaddr: type <cimport, nodecl, ctypedef> = @record{
+  family: cint,
+  socktype: cint,
+  protocol: cint,
+  addrlen: cuint,
+  addr: sockaddr
+}
+global curl_opensocket_callback: type <cimport, nodecl> = @function(pointer, curlsocktype, *curl_sockaddr): cint
+global curl_closesocket_callback: type <cimport, nodecl> = @function(pointer, cint): cint
+global curlioerr: type <cimport, nodecl, using> = @enum(cint){
+  CURLIOE_OK = 0,
+  CURLIOE_UNKNOWNCMD = 1,
+  CURLIOE_FAILRESTART = 2,
+  CURLIOE_LAST = 3
+}
+global curliocmd: type <cimport, nodecl, using> = @enum(cint){
+  CURLIOCMD_NOP = 0,
+  CURLIOCMD_RESTARTREAD = 1,
+  CURLIOCMD_LAST = 2
+}
+global curl_ioctl_callback: type <cimport, nodecl> = @function(pointer, cint, pointer): curlioerr
+global curl_malloc_callback: type <cimport, nodecl> = @function(csize): pointer
+global curl_free_callback: type <cimport, nodecl> = @function(pointer)
+global curl_realloc_callback: type <cimport, nodecl> = @function(pointer, csize): pointer
+global curl_strdup_callback: type <cimport, nodecl> = @function(cstring): cstring
+global curl_calloc_callback: type <cimport, nodecl> = @function(csize, csize): pointer
+global curl_infotype: type <cimport, nodecl, using> = @enum(cint){
+  CURLINFO_TEXT = 0,
+  CURLINFO_HEADER_IN = 1,
+  CURLINFO_HEADER_OUT = 2,
+  CURLINFO_DATA_IN = 3,
+  CURLINFO_DATA_OUT = 4,
+  CURLINFO_SSL_DATA_IN = 5,
+  CURLINFO_SSL_DATA_OUT = 6,
+  CURLINFO_END = 7
+}
+global curl_debug_callback: type <cimport, nodecl> = @function(pointer, curl_infotype, cstring, csize, pointer): cint
+global CURLcode: type <cimport, nodecl, using> = @enum(cint){
+  CURLE_OK = 0,
+  CURLE_UNSUPPORTED_PROTOCOL = 1,
+  CURLE_FAILED_INIT = 2,
+  CURLE_URL_MALFORMAT = 3,
+  CURLE_NOT_BUILT_IN = 4,
+  CURLE_COULDNT_RESOLVE_PROXY = 5,
+  CURLE_COULDNT_RESOLVE_HOST = 6,
+  CURLE_COULDNT_CONNECT = 7,
+  CURLE_WEIRD_SERVER_REPLY = 8,
+  CURLE_REMOTE_ACCESS_DENIED = 9,
+  CURLE_FTP_ACCEPT_FAILED = 10,
+  CURLE_FTP_WEIRD_PASS_REPLY = 11,
+  CURLE_FTP_ACCEPT_TIMEOUT = 12,
+  CURLE_FTP_WEIRD_PASV_REPLY = 13,
+  CURLE_FTP_WEIRD_227_FORMAT = 14,
+  CURLE_FTP_CANT_GET_HOST = 15,
+  CURLE_HTTP2 = 16,
+  CURLE_FTP_COULDNT_SET_TYPE = 17,
+  CURLE_PARTIAL_FILE = 18,
+  CURLE_FTP_COULDNT_RETR_FILE = 19,
+  CURLE_OBSOLETE20 = 20,
+  CURLE_QUOTE_ERROR = 21,
+  CURLE_HTTP_RETURNED_ERROR = 22,
+  CURLE_WRITE_ERROR = 23,
+  CURLE_OBSOLETE24 = 24,
+  CURLE_UPLOAD_FAILED = 25,
+  CURLE_READ_ERROR = 26,
+  CURLE_OUT_OF_MEMORY = 27,
+  CURLE_OPERATION_TIMEDOUT = 28,
+  CURLE_OBSOLETE29 = 29,
+  CURLE_FTP_PORT_FAILED = 30,
+  CURLE_FTP_COULDNT_USE_REST = 31,
+  CURLE_OBSOLETE32 = 32,
+  CURLE_RANGE_ERROR = 33,
+  CURLE_HTTP_POST_ERROR = 34,
+  CURLE_SSL_CONNECT_ERROR = 35,
+  CURLE_BAD_DOWNLOAD_RESUME = 36,
+  CURLE_FILE_COULDNT_READ_FILE = 37,
+  CURLE_LDAP_CANNOT_BIND = 38,
+  CURLE_LDAP_SEARCH_FAILED = 39,
+  CURLE_OBSOLETE40 = 40,
+  CURLE_FUNCTION_NOT_FOUND = 41,
+  CURLE_ABORTED_BY_CALLBACK = 42,
+  CURLE_BAD_FUNCTION_ARGUMENT = 43,
+  CURLE_OBSOLETE44 = 44,
+  CURLE_INTERFACE_FAILED = 45,
+  CURLE_OBSOLETE46 = 46,
+  CURLE_TOO_MANY_REDIRECTS = 47,
+  CURLE_UNKNOWN_OPTION = 48,
+  CURLE_TELNET_OPTION_SYNTAX = 49,
+  CURLE_OBSOLETE50 = 50,
+  CURLE_OBSOLETE51 = 51,
+  CURLE_GOT_NOTHING = 52,
+  CURLE_SSL_ENGINE_NOTFOUND = 53,
+  CURLE_SSL_ENGINE_SETFAILED = 54,
+  CURLE_SEND_ERROR = 55,
+  CURLE_RECV_ERROR = 56,
+  CURLE_OBSOLETE57 = 57,
+  CURLE_SSL_CERTPROBLEM = 58,
+  CURLE_SSL_CIPHER = 59,
+  CURLE_PEER_FAILED_VERIFICATION = 60,
+  CURLE_BAD_CONTENT_ENCODING = 61,
+  CURLE_LDAP_INVALID_URL = 62,
+  CURLE_FILESIZE_EXCEEDED = 63,
+  CURLE_USE_SSL_FAILED = 64,
+  CURLE_SEND_FAIL_REWIND = 65,
+  CURLE_SSL_ENGINE_INITFAILED = 66,
+  CURLE_LOGIN_DENIED = 67,
+  CURLE_TFTP_NOTFOUND = 68,
+  CURLE_TFTP_PERM = 69,
+  CURLE_REMOTE_DISK_FULL = 70,
+  CURLE_TFTP_ILLEGAL = 71,
+  CURLE_TFTP_UNKNOWNID = 72,
+  CURLE_REMOTE_FILE_EXISTS = 73,
+  CURLE_TFTP_NOSUCHUSER = 74,
+  CURLE_CONV_FAILED = 75,
+  CURLE_CONV_REQD = 76,
+  CURLE_SSL_CACERT_BADFILE = 77,
+  CURLE_REMOTE_FILE_NOT_FOUND = 78,
+  CURLE_SSH = 79,
+  CURLE_SSL_SHUTDOWN_FAILED = 80,
+  CURLE_AGAIN = 81,
+  CURLE_SSL_CRL_BADFILE = 82,
+  CURLE_SSL_ISSUER_ERROR = 83,
+  CURLE_FTP_PRET_FAILED = 84,
+  CURLE_RTSP_CSEQ_ERROR = 85,
+  CURLE_RTSP_SESSION_ERROR = 86,
+  CURLE_FTP_BAD_FILE_LIST = 87,
+  CURLE_CHUNK_FAILED = 88,
+  CURLE_NO_CONNECTION_AVAILABLE = 89,
+  CURLE_SSL_PINNEDPUBKEYNOTMATCH = 90,
+  CURLE_SSL_INVALIDCERTSTATUS = 91,
+  CURLE_HTTP2_STREAM = 92,
+  CURLE_RECURSIVE_API_CALL = 93,
+  CURLE_AUTH_ERROR = 94,
+  CURLE_HTTP3 = 95,
+  CURLE_QUIC_CONNECT_ERROR = 96,
+  CURLE_PROXY = 97,
+  CURL_LAST = 98
+}
+global CURLproxycode: type <cimport, nodecl, using> = @enum(cint){
+  CURLPX_OK = 0,
+  CURLPX_BAD_ADDRESS_TYPE = 1,
+  CURLPX_BAD_VERSION = 2,
+  CURLPX_CLOSED = 3,
+  CURLPX_GSSAPI = 4,
+  CURLPX_GSSAPI_PERMSG = 5,
+  CURLPX_GSSAPI_PROTECTION = 6,
+  CURLPX_IDENTD = 7,
+  CURLPX_IDENTD_DIFFER = 8,
+  CURLPX_LONG_HOSTNAME = 9,
+  CURLPX_LONG_PASSWD = 10,
+  CURLPX_LONG_USER = 11,
+  CURLPX_NO_AUTH = 12,
+  CURLPX_RECV_ADDRESS = 13,
+  CURLPX_RECV_AUTH = 14,
+  CURLPX_RECV_CONNECT = 15,
+  CURLPX_RECV_REQACK = 16,
+  CURLPX_REPLY_ADDRESS_TYPE_NOT_SUPPORTED = 17,
+  CURLPX_REPLY_COMMAND_NOT_SUPPORTED = 18,
+  CURLPX_REPLY_CONNECTION_REFUSED = 19,
+  CURLPX_REPLY_GENERAL_SERVER_FAILURE = 20,
+  CURLPX_REPLY_HOST_UNREACHABLE = 21,
+  CURLPX_REPLY_NETWORK_UNREACHABLE = 22,
+  CURLPX_REPLY_NOT_ALLOWED = 23,
+  CURLPX_REPLY_TTL_EXPIRED = 24,
+  CURLPX_REPLY_UNASSIGNED = 25,
+  CURLPX_REQUEST_FAILED = 26,
+  CURLPX_RESOLVE_HOST = 27,
+  CURLPX_SEND_AUTH = 28,
+  CURLPX_SEND_CONNECT = 29,
+  CURLPX_SEND_REQUEST = 30,
+  CURLPX_UNKNOWN_FAIL = 31,
+  CURLPX_UNKNOWN_MODE = 32,
+  CURLPX_USER_REJECTED = 33,
+  CURLPX_LAST = 34
+}
+global curl_conv_callback: type <cimport, nodecl> = @function(cstring, csize): CURLcode
+global curl_ssl_ctx_callback: type <cimport, nodecl> = @function(pointer, pointer, pointer): CURLcode
+global curl_proxytype: type <cimport, nodecl, using> = @enum(cint){
+  CURLPROXY_HTTP = 0,
+  CURLPROXY_HTTP_1_0 = 1,
+  CURLPROXY_HTTPS = 2,
+  CURLPROXY_SOCKS4 = 4,
+  CURLPROXY_SOCKS5 = 5,
+  CURLPROXY_SOCKS4A = 6,
+  CURLPROXY_SOCKS5_HOSTNAME = 7
+}
+global curl_khtype: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  CURLKHTYPE_UNKNOWN = 0,
+  CURLKHTYPE_RSA1 = 1,
+  CURLKHTYPE_RSA = 2,
+  CURLKHTYPE_DSS = 3,
+  CURLKHTYPE_ECDSA = 4,
+  CURLKHTYPE_ED25519 = 5
+}
+global curl_khkey: type <cimport, nodecl, ctypedef> = @record{
+  key: cstring,
+  len: csize,
+  keytype: curl_khtype
+}
+global curl_khstat: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  CURLKHSTAT_FINE_ADD_TO_FILE = 0,
+  CURLKHSTAT_FINE = 1,
+  CURLKHSTAT_REJECT = 2,
+  CURLKHSTAT_DEFER = 3,
+  CURLKHSTAT_FINE_REPLACE = 4,
+  CURLKHSTAT_LAST = 5
+}
+global curl_khmatch: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  CURLKHMATCH_OK = 0,
+  CURLKHMATCH_MISMATCH = 1,
+  CURLKHMATCH_MISSING = 2,
+  CURLKHMATCH_LAST = 3
+}
+global curl_sshkeycallback: type <cimport, nodecl> = @function(pointer, *curl_khkey, *curl_khkey, curl_khmatch, pointer): cint
+global curl_usessl: type <cimport, nodecl, using> = @enum(cint){
+  CURLUSESSL_NONE = 0,
+  CURLUSESSL_TRY = 1,
+  CURLUSESSL_CONTROL = 2,
+  CURLUSESSL_ALL = 3,
+  CURLUSESSL_LAST = 4
+}
+global curl_ftpccc: type <cimport, nodecl, using> = @enum(cint){
+  CURLFTPSSL_CCC_NONE = 0,
+  CURLFTPSSL_CCC_PASSIVE = 1,
+  CURLFTPSSL_CCC_ACTIVE = 2,
+  CURLFTPSSL_CCC_LAST = 3
+}
+global curl_ftpauth: type <cimport, nodecl, using> = @enum(cint){
+  CURLFTPAUTH_DEFAULT = 0,
+  CURLFTPAUTH_SSL = 1,
+  CURLFTPAUTH_TLS = 2,
+  CURLFTPAUTH_LAST = 3
+}
+global curl_ftpcreatedir: type <cimport, nodecl, using> = @enum(cint){
+  CURLFTP_CREATE_DIR_NONE = 0,
+  CURLFTP_CREATE_DIR = 1,
+  CURLFTP_CREATE_DIR_RETRY = 2,
+  CURLFTP_CREATE_DIR_LAST = 3
+}
+global curl_ftpmethod: type <cimport, nodecl, using> = @enum(cint){
+  CURLFTPMETHOD_DEFAULT = 0,
+  CURLFTPMETHOD_MULTICWD = 1,
+  CURLFTPMETHOD_NOCWD = 2,
+  CURLFTPMETHOD_SINGLECWD = 3,
+  CURLFTPMETHOD_LAST = 4
+}
+global curl_hstsentry: type <cimport, nodecl, ctypedef> = @record{
+  name: cstring,
+  namelen: csize,
+  includeSubDomains: cuint,
+  expire: [18]cchar
+}
+global curl_index: type <cimport, nodecl, ctypedef> = @record{
+  index: csize,
+  total: csize
+}
+global CURLSTScode: type <cimport, nodecl, using> = @enum(cint){
+  CURLSTS_OK = 0,
+  CURLSTS_DONE = 1,
+  CURLSTS_FAIL = 2
+}
+global curl_hstsread_callback: type <cimport, nodecl> = @function(pointer, *curl_hstsentry, pointer): CURLSTScode
+global curl_hstswrite_callback: type <cimport, nodecl> = @function(pointer, *curl_hstsentry, *curl_index, pointer): CURLSTScode
+global CURLoption: type <cimport, nodecl, using> = @enum(cint){
+  CURLOPT_WRITEDATA = 10001,
+  CURLOPT_URL = 10002,
+  CURLOPT_PORT = 3,
+  CURLOPT_PROXY = 10004,
+  CURLOPT_USERPWD = 10005,
+  CURLOPT_PROXYUSERPWD = 10006,
+  CURLOPT_RANGE = 10007,
+  CURLOPT_READDATA = 10009,
+  CURLOPT_ERRORBUFFER = 10010,
+  CURLOPT_WRITEFUNCTION = 20011,
+  CURLOPT_READFUNCTION = 20012,
+  CURLOPT_TIMEOUT = 13,
+  CURLOPT_INFILESIZE = 14,
+  CURLOPT_POSTFIELDS = 10015,
+  CURLOPT_REFERER = 10016,
+  CURLOPT_FTPPORT = 10017,
+  CURLOPT_USERAGENT = 10018,
+  CURLOPT_LOW_SPEED_LIMIT = 19,
+  CURLOPT_LOW_SPEED_TIME = 20,
+  CURLOPT_RESUME_FROM = 21,
+  CURLOPT_COOKIE = 10022,
+  CURLOPT_HTTPHEADER = 10023,
+  CURLOPT_HTTPPOST = 10024,
+  CURLOPT_SSLCERT = 10025,
+  CURLOPT_KEYPASSWD = 10026,
+  CURLOPT_CRLF = 27,
+  CURLOPT_QUOTE = 10028,
+  CURLOPT_HEADERDATA = 10029,
+  CURLOPT_COOKIEFILE = 10031,
+  CURLOPT_SSLVERSION = 32,
+  CURLOPT_TIMECONDITION = 33,
+  CURLOPT_TIMEVALUE = 34,
+  CURLOPT_CUSTOMREQUEST = 10036,
+  CURLOPT_STDERR = 10037,
+  CURLOPT_POSTQUOTE = 10039,
+  CURLOPT_OBSOLETE40 = 10040,
+  CURLOPT_VERBOSE = 41,
+  CURLOPT_HEADER = 42,
+  CURLOPT_NOPROGRESS = 43,
+  CURLOPT_NOBODY = 44,
+  CURLOPT_FAILONERROR = 45,
+  CURLOPT_UPLOAD = 46,
+  CURLOPT_POST = 47,
+  CURLOPT_DIRLISTONLY = 48,
+  CURLOPT_APPEND = 50,
+  CURLOPT_NETRC = 51,
+  CURLOPT_FOLLOWLOCATION = 52,
+  CURLOPT_TRANSFERTEXT = 53,
+  CURLOPT_PUT = 54,
+  CURLOPT_PROGRESSFUNCTION = 20056,
+  CURLOPT_XFERINFODATA = 10057,
+  CURLOPT_AUTOREFERER = 58,
+  CURLOPT_PROXYPORT = 59,
+  CURLOPT_POSTFIELDSIZE = 60,
+  CURLOPT_HTTPPROXYTUNNEL = 61,
+  CURLOPT_INTERFACE = 10062,
+  CURLOPT_KRBLEVEL = 10063,
+  CURLOPT_SSL_VERIFYPEER = 64,
+  CURLOPT_CAINFO = 10065,
+  CURLOPT_MAXREDIRS = 68,
+  CURLOPT_FILETIME = 69,
+  CURLOPT_TELNETOPTIONS = 10070,
+  CURLOPT_MAXCONNECTS = 71,
+  CURLOPT_OBSOLETE72 = 72,
+  CURLOPT_FRESH_CONNECT = 74,
+  CURLOPT_FORBID_REUSE = 75,
+  CURLOPT_RANDOM_FILE = 10076,
+  CURLOPT_EGDSOCKET = 10077,
+  CURLOPT_CONNECTTIMEOUT = 78,
+  CURLOPT_HEADERFUNCTION = 20079,
+  CURLOPT_HTTPGET = 80,
+  CURLOPT_SSL_VERIFYHOST = 81,
+  CURLOPT_COOKIEJAR = 10082,
+  CURLOPT_SSL_CIPHER_LIST = 10083,
+  CURLOPT_HTTP_VERSION = 84,
+  CURLOPT_FTP_USE_EPSV = 85,
+  CURLOPT_SSLCERTTYPE = 10086,
+  CURLOPT_SSLKEY = 10087,
+  CURLOPT_SSLKEYTYPE = 10088,
+  CURLOPT_SSLENGINE = 10089,
+  CURLOPT_SSLENGINE_DEFAULT = 90,
+  CURLOPT_DNS_USE_GLOBAL_CACHE = 91,
+  CURLOPT_DNS_CACHE_TIMEOUT = 92,
+  CURLOPT_PREQUOTE = 10093,
+  CURLOPT_DEBUGFUNCTION = 20094,
+  CURLOPT_DEBUGDATA = 10095,
+  CURLOPT_COOKIESESSION = 96,
+  CURLOPT_CAPATH = 10097,
+  CURLOPT_BUFFERSIZE = 98,
+  CURLOPT_NOSIGNAL = 99,
+  CURLOPT_SHARE = 10100,
+  CURLOPT_PROXYTYPE = 101,
+  CURLOPT_ACCEPT_ENCODING = 10102,
+  CURLOPT_PRIVATE = 10103,
+  CURLOPT_HTTP200ALIASES = 10104,
+  CURLOPT_UNRESTRICTED_AUTH = 105,
+  CURLOPT_FTP_USE_EPRT = 106,
+  CURLOPT_HTTPAUTH = 107,
+  CURLOPT_SSL_CTX_FUNCTION = 20108,
+  CURLOPT_SSL_CTX_DATA = 10109,
+  CURLOPT_FTP_CREATE_MISSING_DIRS = 110,
+  CURLOPT_PROXYAUTH = 111,
+  CURLOPT_FTP_RESPONSE_TIMEOUT = 112,
+  CURLOPT_IPRESOLVE = 113,
+  CURLOPT_MAXFILESIZE = 114,
+  CURLOPT_INFILESIZE_LARGE = 30115,
+  CURLOPT_RESUME_FROM_LARGE = 30116,
+  CURLOPT_MAXFILESIZE_LARGE = 30117,
+  CURLOPT_NETRC_FILE = 10118,
+  CURLOPT_USE_SSL = 119,
+  CURLOPT_POSTFIELDSIZE_LARGE = 30120,
+  CURLOPT_TCP_NODELAY = 121,
+  CURLOPT_FTPSSLAUTH = 129,
+  CURLOPT_IOCTLFUNCTION = 20130,
+  CURLOPT_IOCTLDATA = 10131,
+  CURLOPT_FTP_ACCOUNT = 10134,
+  CURLOPT_COOKIELIST = 10135,
+  CURLOPT_IGNORE_CONTENT_LENGTH = 136,
+  CURLOPT_FTP_SKIP_PASV_IP = 137,
+  CURLOPT_FTP_FILEMETHOD = 138,
+  CURLOPT_LOCALPORT = 139,
+  CURLOPT_LOCALPORTRANGE = 140,
+  CURLOPT_CONNECT_ONLY = 141,
+  CURLOPT_CONV_FROM_NETWORK_FUNCTION = 20142,
+  CURLOPT_CONV_TO_NETWORK_FUNCTION = 20143,
+  CURLOPT_CONV_FROM_UTF8_FUNCTION = 20144,
+  CURLOPT_MAX_SEND_SPEED_LARGE = 30145,
+  CURLOPT_MAX_RECV_SPEED_LARGE = 30146,
+  CURLOPT_FTP_ALTERNATIVE_TO_USER = 10147,
+  CURLOPT_SOCKOPTFUNCTION = 20148,
+  CURLOPT_SOCKOPTDATA = 10149,
+  CURLOPT_SSL_SESSIONID_CACHE = 150,
+  CURLOPT_SSH_AUTH_TYPES = 151,
+  CURLOPT_SSH_PUBLIC_KEYFILE = 10152,
+  CURLOPT_SSH_PRIVATE_KEYFILE = 10153,
+  CURLOPT_FTP_SSL_CCC = 154,
+  CURLOPT_TIMEOUT_MS = 155,
+  CURLOPT_CONNECTTIMEOUT_MS = 156,
+  CURLOPT_HTTP_TRANSFER_DECODING = 157,
+  CURLOPT_HTTP_CONTENT_DECODING = 158,
+  CURLOPT_NEW_FILE_PERMS = 159,
+  CURLOPT_NEW_DIRECTORY_PERMS = 160,
+  CURLOPT_POSTREDIR = 161,
+  CURLOPT_SSH_HOST_PUBLIC_KEY_MD5 = 10162,
+  CURLOPT_OPENSOCKETFUNCTION = 20163,
+  CURLOPT_OPENSOCKETDATA = 10164,
+  CURLOPT_COPYPOSTFIELDS = 10165,
+  CURLOPT_PROXY_TRANSFER_MODE = 166,
+  CURLOPT_SEEKFUNCTION = 20167,
+  CURLOPT_SEEKDATA = 10168,
+  CURLOPT_CRLFILE = 10169,
+  CURLOPT_ISSUERCERT = 10170,
+  CURLOPT_ADDRESS_SCOPE = 171,
+  CURLOPT_CERTINFO = 172,
+  CURLOPT_USERNAME = 10173,
+  CURLOPT_PASSWORD = 10174,
+  CURLOPT_PROXYUSERNAME = 10175,
+  CURLOPT_PROXYPASSWORD = 10176,
+  CURLOPT_NOPROXY = 10177,
+  CURLOPT_TFTP_BLKSIZE = 178,
+  CURLOPT_SOCKS5_GSSAPI_SERVICE = 10179,
+  CURLOPT_SOCKS5_GSSAPI_NEC = 180,
+  CURLOPT_PROTOCOLS = 181,
+  CURLOPT_REDIR_PROTOCOLS = 182,
+  CURLOPT_SSH_KNOWNHOSTS = 10183,
+  CURLOPT_SSH_KEYFUNCTION = 20184,
+  CURLOPT_SSH_KEYDATA = 10185,
+  CURLOPT_MAIL_FROM = 10186,
+  CURLOPT_MAIL_RCPT = 10187,
+  CURLOPT_FTP_USE_PRET = 188,
+  CURLOPT_RTSP_REQUEST = 189,
+  CURLOPT_RTSP_SESSION_ID = 10190,
+  CURLOPT_RTSP_STREAM_URI = 10191,
+  CURLOPT_RTSP_TRANSPORT = 10192,
+  CURLOPT_RTSP_CLIENT_CSEQ = 193,
+  CURLOPT_RTSP_SERVER_CSEQ = 194,
+  CURLOPT_INTERLEAVEDATA = 10195,
+  CURLOPT_INTERLEAVEFUNCTION = 20196,
+  CURLOPT_WILDCARDMATCH = 197,
+  CURLOPT_CHUNK_BGN_FUNCTION = 20198,
+  CURLOPT_CHUNK_END_FUNCTION = 20199,
+  CURLOPT_FNMATCH_FUNCTION = 20200,
+  CURLOPT_CHUNK_DATA = 10201,
+  CURLOPT_FNMATCH_DATA = 10202,
+  CURLOPT_RESOLVE = 10203,
+  CURLOPT_TLSAUTH_USERNAME = 10204,
+  CURLOPT_TLSAUTH_PASSWORD = 10205,
+  CURLOPT_TLSAUTH_TYPE = 10206,
+  CURLOPT_TRANSFER_ENCODING = 207,
+  CURLOPT_CLOSESOCKETFUNCTION = 20208,
+  CURLOPT_CLOSESOCKETDATA = 10209,
+  CURLOPT_GSSAPI_DELEGATION = 210,
+  CURLOPT_DNS_SERVERS = 10211,
+  CURLOPT_ACCEPTTIMEOUT_MS = 212,
+  CURLOPT_TCP_KEEPALIVE = 213,
+  CURLOPT_TCP_KEEPIDLE = 214,
+  CURLOPT_TCP_KEEPINTVL = 215,
+  CURLOPT_SSL_OPTIONS = 216,
+  CURLOPT_MAIL_AUTH = 10217,
+  CURLOPT_SASL_IR = 218,
+  CURLOPT_XFERINFOFUNCTION = 20219,
+  CURLOPT_XOAUTH2_BEARER = 10220,
+  CURLOPT_DNS_INTERFACE = 10221,
+  CURLOPT_DNS_LOCAL_IP4 = 10222,
+  CURLOPT_DNS_LOCAL_IP6 = 10223,
+  CURLOPT_LOGIN_OPTIONS = 10224,
+  CURLOPT_SSL_ENABLE_NPN = 225,
+  CURLOPT_SSL_ENABLE_ALPN = 226,
+  CURLOPT_EXPECT_100_TIMEOUT_MS = 227,
+  CURLOPT_PROXYHEADER = 10228,
+  CURLOPT_HEADEROPT = 229,
+  CURLOPT_PINNEDPUBLICKEY = 10230,
+  CURLOPT_UNIX_SOCKET_PATH = 10231,
+  CURLOPT_SSL_VERIFYSTATUS = 232,
+  CURLOPT_SSL_FALSESTART = 233,
+  CURLOPT_PATH_AS_IS = 234,
+  CURLOPT_PROXY_SERVICE_NAME = 10235,
+  CURLOPT_SERVICE_NAME = 10236,
+  CURLOPT_PIPEWAIT = 237,
+  CURLOPT_DEFAULT_PROTOCOL = 10238,
+  CURLOPT_STREAM_WEIGHT = 239,
+  CURLOPT_STREAM_DEPENDS = 10240,
+  CURLOPT_STREAM_DEPENDS_E = 10241,
+  CURLOPT_TFTP_NO_OPTIONS = 242,
+  CURLOPT_CONNECT_TO = 10243,
+  CURLOPT_TCP_FASTOPEN = 244,
+  CURLOPT_KEEP_SENDING_ON_ERROR = 245,
+  CURLOPT_PROXY_CAINFO = 10246,
+  CURLOPT_PROXY_CAPATH = 10247,
+  CURLOPT_PROXY_SSL_VERIFYPEER = 248,
+  CURLOPT_PROXY_SSL_VERIFYHOST = 249,
+  CURLOPT_PROXY_SSLVERSION = 250,
+  CURLOPT_PROXY_TLSAUTH_USERNAME = 10251,
+  CURLOPT_PROXY_TLSAUTH_PASSWORD = 10252,
+  CURLOPT_PROXY_TLSAUTH_TYPE = 10253,
+  CURLOPT_PROXY_SSLCERT = 10254,
+  CURLOPT_PROXY_SSLCERTTYPE = 10255,
+  CURLOPT_PROXY_SSLKEY = 10256,
+  CURLOPT_PROXY_SSLKEYTYPE = 10257,
+  CURLOPT_PROXY_KEYPASSWD = 10258,
+  CURLOPT_PROXY_SSL_CIPHER_LIST = 10259,
+  CURLOPT_PROXY_CRLFILE = 10260,
+  CURLOPT_PROXY_SSL_OPTIONS = 261,
+  CURLOPT_PRE_PROXY = 10262,
+  CURLOPT_PROXY_PINNEDPUBLICKEY = 10263,
+  CURLOPT_ABSTRACT_UNIX_SOCKET = 10264,
+  CURLOPT_SUPPRESS_CONNECT_HEADERS = 265,
+  CURLOPT_REQUEST_TARGET = 10266,
+  CURLOPT_SOCKS5_AUTH = 267,
+  CURLOPT_SSH_COMPRESSION = 268,
+  CURLOPT_MIMEPOST = 10269,
+  CURLOPT_TIMEVALUE_LARGE = 30270,
+  CURLOPT_HAPPY_EYEBALLS_TIMEOUT_MS = 271,
+  CURLOPT_RESOLVER_START_FUNCTION = 20272,
+  CURLOPT_RESOLVER_START_DATA = 10273,
+  CURLOPT_HAPROXYPROTOCOL = 274,
+  CURLOPT_DNS_SHUFFLE_ADDRESSES = 275,
+  CURLOPT_TLS13_CIPHERS = 10276,
+  CURLOPT_PROXY_TLS13_CIPHERS = 10277,
+  CURLOPT_DISALLOW_USERNAME_IN_URL = 278,
+  CURLOPT_DOH_URL = 10279,
+  CURLOPT_UPLOAD_BUFFERSIZE = 280,
+  CURLOPT_UPKEEP_INTERVAL_MS = 281,
+  CURLOPT_CURLU = 10282,
+  CURLOPT_TRAILERFUNCTION = 20283,
+  CURLOPT_TRAILERDATA = 10284,
+  CURLOPT_HTTP09_ALLOWED = 285,
+  CURLOPT_ALTSVC_CTRL = 286,
+  CURLOPT_ALTSVC = 10287,
+  CURLOPT_MAXAGE_CONN = 288,
+  CURLOPT_SASL_AUTHZID = 10289,
+  CURLOPT_MAIL_RCPT_ALLLOWFAILS = 290,
+  CURLOPT_SSLCERT_BLOB = 40291,
+  CURLOPT_SSLKEY_BLOB = 40292,
+  CURLOPT_PROXY_SSLCERT_BLOB = 40293,
+  CURLOPT_PROXY_SSLKEY_BLOB = 40294,
+  CURLOPT_ISSUERCERT_BLOB = 40295,
+  CURLOPT_PROXY_ISSUERCERT = 10296,
+  CURLOPT_PROXY_ISSUERCERT_BLOB = 40297,
+  CURLOPT_SSL_EC_CURVES = 10298,
+  CURLOPT_HSTS_CTRL = 299,
+  CURLOPT_HSTS = 10300,
+  CURLOPT_HSTSREADFUNCTION = 20301,
+  CURLOPT_HSTSREADDATA = 10302,
+  CURLOPT_HSTSWRITEFUNCTION = 20303,
+  CURLOPT_HSTSWRITEDATA = 10304,
+  CURLOPT_AWS_SIGV4 = 10305,
+  CURLOPT_DOH_SSL_VERIFYPEER = 306,
+  CURLOPT_DOH_SSL_VERIFYHOST = 307,
+  CURLOPT_DOH_SSL_VERIFYSTATUS = 308,
+  CURLOPT_LASTENTRY = 309
+}
+global CURL_HTTP_VERSION_NONE: cint <comptime> = 0
+global CURL_HTTP_VERSION_1_0: cint <comptime> = 1
+global CURL_HTTP_VERSION_1_1: cint <comptime> = 2
+global CURL_HTTP_VERSION_2_0: cint <comptime> = 3
+global CURL_HTTP_VERSION_2TLS: cint <comptime> = 4
+global CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE: cint <comptime> = 5
+global CURL_HTTP_VERSION_3: cint <comptime> = 30
+global CURL_HTTP_VERSION_LAST: cint <comptime> = 31
+global CURL_RTSPREQ_NONE: cint <comptime> = 0
+global CURL_RTSPREQ_OPTIONS: cint <comptime> = 1
+global CURL_RTSPREQ_DESCRIBE: cint <comptime> = 2
+global CURL_RTSPREQ_ANNOUNCE: cint <comptime> = 3
+global CURL_RTSPREQ_SETUP: cint <comptime> = 4
+global CURL_RTSPREQ_PLAY: cint <comptime> = 5
+global CURL_RTSPREQ_PAUSE: cint <comptime> = 6
+global CURL_RTSPREQ_TEARDOWN: cint <comptime> = 7
+global CURL_RTSPREQ_GET_PARAMETER: cint <comptime> = 8
+global CURL_RTSPREQ_SET_PARAMETER: cint <comptime> = 9
+global CURL_RTSPREQ_RECORD: cint <comptime> = 10
+global CURL_RTSPREQ_RECEIVE: cint <comptime> = 11
+global CURL_RTSPREQ_LAST: cint <comptime> = 12
+global CURL_NETRC_OPTION: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  CURL_NETRC_IGNORED = 0,
+  CURL_NETRC_OPTIONAL = 1,
+  CURL_NETRC_REQUIRED = 2,
+  CURL_NETRC_LAST = 3
+}
+global CURL_SSLVERSION_DEFAULT: cint <comptime> = 0
+global CURL_SSLVERSION_TLSv1: cint <comptime> = 1
+global CURL_SSLVERSION_SSLv2: cint <comptime> = 2
+global CURL_SSLVERSION_SSLv3: cint <comptime> = 3
+global CURL_SSLVERSION_TLSv1_0: cint <comptime> = 4
+global CURL_SSLVERSION_TLSv1_1: cint <comptime> = 5
+global CURL_SSLVERSION_TLSv1_2: cint <comptime> = 6
+global CURL_SSLVERSION_TLSv1_3: cint <comptime> = 7
+global CURL_SSLVERSION_LAST: cint <comptime> = 8
+global CURL_SSLVERSION_MAX_NONE: cint <comptime> = 0
+global CURL_SSLVERSION_MAX_DEFAULT: cint <comptime> = 65536
+global CURL_SSLVERSION_MAX_TLSv1_0: cint <comptime> = 262144
+global CURL_SSLVERSION_MAX_TLSv1_1: cint <comptime> = 327680
+global CURL_SSLVERSION_MAX_TLSv1_2: cint <comptime> = 393216
+global CURL_SSLVERSION_MAX_TLSv1_3: cint <comptime> = 458752
+global CURL_SSLVERSION_MAX_LAST: cint <comptime> = 524288
+global CURL_TLSAUTH: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  CURL_TLSAUTH_NONE = 0,
+  CURL_TLSAUTH_SRP = 1,
+  CURL_TLSAUTH_LAST = 2
+}
+global curl_TimeCond: type <cimport, nodecl, using> = @enum(cint){
+  CURL_TIMECOND_NONE = 0,
+  CURL_TIMECOND_IFMODSINCE = 1,
+  CURL_TIMECOND_IFUNMODSINCE = 2,
+  CURL_TIMECOND_LASTMOD = 3,
+  CURL_TIMECOND_LAST = 4
+}
+global function curl_strequal(s1: cstring, s2: cstring): cint <cimport, nodecl> end
+global function curl_strnequal(s1: cstring, s2: cstring, n: csize): cint <cimport, nodecl> end
+global curl_mime: type <cimport, nodecl, forwarddecl> = @record{}
+global curl_mimepart: type <cimport, nodecl, forwarddecl> = @record{}
+global function curl_mime_init(easy: pointer): *curl_mime <cimport, nodecl> end
+global function curl_mime_free(mime: *curl_mime) <cimport, nodecl> end
+global function curl_mime_addpart(mime: *curl_mime): *curl_mimepart <cimport, nodecl> end
+global function curl_mime_name(part: *curl_mimepart, name: cstring): CURLcode <cimport, nodecl> end
+global function curl_mime_filename(part: *curl_mimepart, filename: cstring): CURLcode <cimport, nodecl> end
+global function curl_mime_type(part: *curl_mimepart, mimetype: cstring): CURLcode <cimport, nodecl> end
+global function curl_mime_encoder(part: *curl_mimepart, encoding: cstring): CURLcode <cimport, nodecl> end
+global function curl_mime_data(part: *curl_mimepart, data: cstring, datasize: csize): CURLcode <cimport, nodecl> end
+global function curl_mime_filedata(part: *curl_mimepart, filename: cstring): CURLcode <cimport, nodecl> end
+global function curl_mime_data_cb(part: *curl_mimepart, datasize: clong, readfunc: curl_read_callback, seekfunc: curl_seek_callback, freefunc: curl_free_callback, arg: pointer): CURLcode <cimport, nodecl> end
+global function curl_mime_subparts(part: *curl_mimepart, subparts: *curl_mime): CURLcode <cimport, nodecl> end
+global function curl_mime_headers(part: *curl_mimepart, headers: *curl_slist, take_ownership: cint): CURLcode <cimport, nodecl> end
+global CURLformoption: type <cimport, nodecl, using> = @enum(cint){
+  CURLFORM_NOTHING = 0,
+  CURLFORM_COPYNAME = 1,
+  CURLFORM_PTRNAME = 2,
+  CURLFORM_NAMELENGTH = 3,
+  CURLFORM_COPYCONTENTS = 4,
+  CURLFORM_PTRCONTENTS = 5,
+  CURLFORM_CONTENTSLENGTH = 6,
+  CURLFORM_FILECONTENT = 7,
+  CURLFORM_ARRAY = 8,
+  CURLFORM_OBSOLETE = 9,
+  CURLFORM_FILE = 10,
+  CURLFORM_BUFFER = 11,
+  CURLFORM_BUFFERPTR = 12,
+  CURLFORM_BUFFERLENGTH = 13,
+  CURLFORM_CONTENTTYPE = 14,
+  CURLFORM_CONTENTHEADER = 15,
+  CURLFORM_FILENAME = 16,
+  CURLFORM_END = 17,
+  CURLFORM_OBSOLETE2 = 18,
+  CURLFORM_STREAM = 19,
+  CURLFORM_CONTENTLEN = 20,
+  CURLFORM_LASTENTRY = 21
+}
+global curl_forms: type <cimport, nodecl, ctypedef> = @record{
+  option: CURLformoption,
+  value: cstring
+}
+global CURLFORMcode: type <cimport, nodecl, using> = @enum(cint){
+  CURL_FORMADD_OK = 0,
+  CURL_FORMADD_MEMORY = 1,
+  CURL_FORMADD_OPTION_TWICE = 2,
+  CURL_FORMADD_NULL = 3,
+  CURL_FORMADD_UNKNOWN_OPTION = 4,
+  CURL_FORMADD_INCOMPLETE = 5,
+  CURL_FORMADD_ILLEGAL_ARRAY = 6,
+  CURL_FORMADD_DISABLED = 7,
+  CURL_FORMADD_LAST = 8
+}
+global function curl_formadd(httppost: **curl_httppost, last_post: **curl_httppost, ...: cvarargs): CURLFORMcode <cimport, nodecl> end
+global curl_formget_callback: type <cimport, nodecl> = @function(pointer, cstring, csize): csize
+global function curl_formget(form: *curl_httppost, arg: pointer, append: curl_formget_callback): cint <cimport, nodecl> end
+global function curl_formfree(form: *curl_httppost) <cimport, nodecl> end
+global function curl_getenv(variable: cstring): cstring <cimport, nodecl> end
+global function curl_version(): cstring <cimport, nodecl> end
+global function curl_easy_escape(handle: pointer, string: cstring, length: cint): cstring <cimport, nodecl> end
+global function curl_escape(string: cstring, length: cint): cstring <cimport, nodecl> end
+global function curl_easy_unescape(handle: pointer, string: cstring, length: cint, outlength: *cint): cstring <cimport, nodecl> end
+global function curl_unescape(string: cstring, length: cint): cstring <cimport, nodecl> end
+global function curl_free(p: pointer) <cimport, nodecl> end
+global function curl_global_init(flags: clong): CURLcode <cimport, nodecl> end
+global function curl_global_init_mem(flags: clong, m: curl_malloc_callback, f: curl_free_callback, r: curl_realloc_callback, s: curl_strdup_callback, c: curl_calloc_callback): CURLcode <cimport, nodecl> end
+global function curl_global_cleanup() <cimport, nodecl> end
+curl_slist = @record{
+  data: cstring,
+  next: *curl_slist
+}
+global curl_ssl_backend: type <cimport, nodecl> = @record{
+  id: curl_sslbackend,
+  name: cstring
+}
+global CURLsslset: type <cimport, nodecl, using> = @enum(cint){
+  CURLSSLSET_OK = 0,
+  CURLSSLSET_UNKNOWN_BACKEND = 1,
+  CURLSSLSET_TOO_LATE = 2,
+  CURLSSLSET_NO_BACKENDS = 3
+}
+global function curl_global_sslset(id: curl_sslbackend, name: cstring, avail: ***curl_ssl_backend): CURLsslset <cimport, nodecl> end
+global function curl_slist_append(a1: *curl_slist, a2: cstring): *curl_slist <cimport, nodecl> end
+global function curl_slist_free_all(a1: *curl_slist) <cimport, nodecl> end
+global function curl_getdate(p: cstring, unused: *clong): clong <cimport, nodecl> end
+global curl_certinfo: type <cimport, nodecl, ctypedef> = @record{
+  num_of_certs: cint,
+  certinfo: **curl_slist
+}
+global curl_tlssessioninfo: type <cimport, nodecl, ctypedef> = @record{
+  backend: curl_sslbackend,
+  internals: pointer
+}
+global CURLINFO: type <cimport, nodecl, using> = @enum(cint){
+  CURLINFO_NONE = 0,
+  CURLINFO_EFFECTIVE_URL = 1048577,
+  CURLINFO_RESPONSE_CODE = 2097154,
+  CURLINFO_TOTAL_TIME = 3145731,
+  CURLINFO_NAMELOOKUP_TIME = 3145732,
+  CURLINFO_CONNECT_TIME = 3145733,
+  CURLINFO_PRETRANSFER_TIME = 3145734,
+  CURLINFO_SIZE_UPLOAD = 3145735,
+  CURLINFO_SIZE_UPLOAD_T = 6291463,
+  CURLINFO_SIZE_DOWNLOAD = 3145736,
+  CURLINFO_SIZE_DOWNLOAD_T = 6291464,
+  CURLINFO_SPEED_DOWNLOAD = 3145737,
+  CURLINFO_SPEED_DOWNLOAD_T = 6291465,
+  CURLINFO_SPEED_UPLOAD = 3145738,
+  CURLINFO_SPEED_UPLOAD_T = 6291466,
+  CURLINFO_HEADER_SIZE = 2097163,
+  CURLINFO_REQUEST_SIZE = 2097164,
+  CURLINFO_SSL_VERIFYRESULT = 2097165,
+  CURLINFO_FILETIME = 2097166,
+  CURLINFO_FILETIME_T = 6291470,
+  CURLINFO_CONTENT_LENGTH_DOWNLOAD = 3145743,
+  CURLINFO_CONTENT_LENGTH_DOWNLOAD_T = 6291471,
+  CURLINFO_CONTENT_LENGTH_UPLOAD = 3145744,
+  CURLINFO_CONTENT_LENGTH_UPLOAD_T = 6291472,
+  CURLINFO_STARTTRANSFER_TIME = 3145745,
+  CURLINFO_CONTENT_TYPE = 1048594,
+  CURLINFO_REDIRECT_TIME = 3145747,
+  CURLINFO_REDIRECT_COUNT = 2097172,
+  CURLINFO_PRIVATE = 1048597,
+  CURLINFO_HTTP_CONNECTCODE = 2097174,
+  CURLINFO_HTTPAUTH_AVAIL = 2097175,
+  CURLINFO_PROXYAUTH_AVAIL = 2097176,
+  CURLINFO_OS_ERRNO = 2097177,
+  CURLINFO_NUM_CONNECTS = 2097178,
+  CURLINFO_SSL_ENGINES = 4194331,
+  CURLINFO_COOKIELIST = 4194332,
+  CURLINFO_LASTSOCKET = 2097181,
+  CURLINFO_FTP_ENTRY_PATH = 1048606,
+  CURLINFO_REDIRECT_URL = 1048607,
+  CURLINFO_PRIMARY_IP = 1048608,
+  CURLINFO_APPCONNECT_TIME = 3145761,
+  CURLINFO_CERTINFO = 4194338,
+  CURLINFO_CONDITION_UNMET = 2097187,
+  CURLINFO_RTSP_SESSION_ID = 1048612,
+  CURLINFO_RTSP_CLIENT_CSEQ = 2097189,
+  CURLINFO_RTSP_SERVER_CSEQ = 2097190,
+  CURLINFO_RTSP_CSEQ_RECV = 2097191,
+  CURLINFO_PRIMARY_PORT = 2097192,
+  CURLINFO_LOCAL_IP = 1048617,
+  CURLINFO_LOCAL_PORT = 2097194,
+  CURLINFO_TLS_SESSION = 4194347,
+  CURLINFO_ACTIVESOCKET = 5242924,
+  CURLINFO_TLS_SSL_PTR = 4194349,
+  CURLINFO_HTTP_VERSION = 2097198,
+  CURLINFO_PROXY_SSL_VERIFYRESULT = 2097199,
+  CURLINFO_PROTOCOL = 2097200,
+  CURLINFO_SCHEME = 1048625,
+  CURLINFO_TOTAL_TIME_T = 6291506,
+  CURLINFO_NAMELOOKUP_TIME_T = 6291507,
+  CURLINFO_CONNECT_TIME_T = 6291508,
+  CURLINFO_PRETRANSFER_TIME_T = 6291509,
+  CURLINFO_STARTTRANSFER_TIME_T = 6291510,
+  CURLINFO_REDIRECT_TIME_T = 6291511,
+  CURLINFO_APPCONNECT_TIME_T = 6291512,
+  CURLINFO_RETRY_AFTER = 6291513,
+  CURLINFO_EFFECTIVE_METHOD = 1048634,
+  CURLINFO_PROXY_ERROR = 2097211,
+  CURLINFO_REFERER = 1048636,
+  CURLINFO_LASTONE = 60
+}
+global curl_closepolicy: type <cimport, nodecl, using> = @enum(cint){
+  CURLCLOSEPOLICY_NONE = 0,
+  CURLCLOSEPOLICY_OLDEST = 1,
+  CURLCLOSEPOLICY_LEAST_RECENTLY_USED = 2,
+  CURLCLOSEPOLICY_LEAST_TRAFFIC = 3,
+  CURLCLOSEPOLICY_SLOWEST = 4,
+  CURLCLOSEPOLICY_CALLBACK = 5,
+  CURLCLOSEPOLICY_LAST = 6
+}
+global curl_lock_data: type <cimport, nodecl, using> = @enum(cint){
+  CURL_LOCK_DATA_NONE = 0,
+  CURL_LOCK_DATA_SHARE = 1,
+  CURL_LOCK_DATA_COOKIE = 2,
+  CURL_LOCK_DATA_DNS = 3,
+  CURL_LOCK_DATA_SSL_SESSION = 4,
+  CURL_LOCK_DATA_CONNECT = 5,
+  CURL_LOCK_DATA_PSL = 6,
+  CURL_LOCK_DATA_LAST = 7
+}
+global curl_lock_access: type <cimport, nodecl, using> = @enum(cint){
+  CURL_LOCK_ACCESS_NONE = 0,
+  CURL_LOCK_ACCESS_SHARED = 1,
+  CURL_LOCK_ACCESS_SINGLE = 2,
+  CURL_LOCK_ACCESS_LAST = 3
+}
+global curl_lock_function: type <cimport, nodecl> = @function(pointer, curl_lock_data, curl_lock_access, pointer)
+global curl_unlock_function: type <cimport, nodecl> = @function(pointer, curl_lock_data, pointer)
+global CURLSHcode: type <cimport, nodecl, using> = @enum(cint){
+  CURLSHE_OK = 0,
+  CURLSHE_BAD_OPTION = 1,
+  CURLSHE_IN_USE = 2,
+  CURLSHE_INVALID = 3,
+  CURLSHE_NOMEM = 4,
+  CURLSHE_NOT_BUILT_IN = 5,
+  CURLSHE_LAST = 6
+}
+global CURLSHoption: type <cimport, nodecl, using> = @enum(cint){
+  CURLSHOPT_NONE = 0,
+  CURLSHOPT_SHARE = 1,
+  CURLSHOPT_UNSHARE = 2,
+  CURLSHOPT_LOCKFUNC = 3,
+  CURLSHOPT_UNLOCKFUNC = 4,
+  CURLSHOPT_USERDATA = 5,
+  CURLSHOPT_LAST = 6
+}
+global function curl_share_init(): pointer <cimport, nodecl> end
+global function curl_share_setopt(a1: pointer, option: CURLSHoption, ...: cvarargs): CURLSHcode <cimport, nodecl> end
+global function curl_share_cleanup(a1: pointer): CURLSHcode <cimport, nodecl> end
+global CURLversion: type <cimport, nodecl, using> = @enum(cint){
+  CURLVERSION_FIRST = 0,
+  CURLVERSION_SECOND = 1,
+  CURLVERSION_THIRD = 2,
+  CURLVERSION_FOURTH = 3,
+  CURLVERSION_FIFTH = 4,
+  CURLVERSION_SIXTH = 5,
+  CURLVERSION_SEVENTH = 6,
+  CURLVERSION_EIGHTH = 7,
+  CURLVERSION_NINTH = 8,
+  CURLVERSION_LAST = 9
+}
+global curl_version_info_data: type <cimport, nodecl> = @record{
+  age: CURLversion,
+  version: cstring,
+  version_num: cuint,
+  host: cstring,
+  features: cint,
+  ssl_version: cstring,
+  ssl_version_num: clong,
+  libz_version: cstring,
+  protocols: *cstring,
+  ares: cstring,
+  ares_num: cint,
+  libidn: cstring,
+  iconv_ver_num: cint,
+  libssh_version: cstring,
+  brotli_ver_num: cuint,
+  brotli_version: cstring,
+  nghttp2_ver_num: cuint,
+  nghttp2_version: cstring,
+  quic_version: cstring,
+  cainfo: cstring,
+  capath: cstring,
+  zstd_ver_num: cuint,
+  zstd_version: cstring,
+  hyper_version: cstring
+}
+global function curl_version_info(a1: CURLversion): *curl_version_info_data <cimport, nodecl> end
+global function curl_easy_strerror(a1: CURLcode): cstring <cimport, nodecl> end
+global function curl_share_strerror(a1: CURLSHcode): cstring <cimport, nodecl> end
+global function curl_easy_pause(handle: pointer, bitmask: cint): CURLcode <cimport, nodecl> end
+global curl_blob: type <cimport, nodecl, ctypedef> = @record{
+  data: pointer,
+  len: csize,
+  flags: cuint
+}
+global function curl_easy_init(): pointer <cimport, nodecl> end
+global function curl_easy_setopt(curl: pointer, option: CURLoption, ...: cvarargs): CURLcode <cimport, nodecl> end
+global function curl_easy_perform(curl: pointer): CURLcode <cimport, nodecl> end
+global function curl_easy_cleanup(curl: pointer) <cimport, nodecl> end
+global function curl_easy_getinfo(curl: pointer, info: CURLINFO, ...: cvarargs): CURLcode <cimport, nodecl> end
+global function curl_easy_duphandle(curl: pointer): pointer <cimport, nodecl> end
+global function curl_easy_reset(curl: pointer) <cimport, nodecl> end
+global function curl_easy_recv(curl: pointer, buffer: pointer, buflen: csize, n: *csize): CURLcode <cimport, nodecl> end
+global function curl_easy_send(curl: pointer, buffer: pointer, buflen: csize, n: *csize): CURLcode <cimport, nodecl> end
+global function curl_easy_upkeep(curl: pointer): CURLcode <cimport, nodecl> end
+global CURLMcode: type <cimport, nodecl, using> = @enum(cint){
+  CURLM_CALL_MULTI_PERFORM = -1,
+  CURLM_OK = 0,
+  CURLM_BAD_HANDLE = 1,
+  CURLM_BAD_EASY_HANDLE = 2,
+  CURLM_OUT_OF_MEMORY = 3,
+  CURLM_INTERNAL_ERROR = 4,
+  CURLM_BAD_SOCKET = 5,
+  CURLM_UNKNOWN_OPTION = 6,
+  CURLM_ADDED_ALREADY = 7,
+  CURLM_RECURSIVE_API_CALL = 8,
+  CURLM_WAKEUP_FAILURE = 9,
+  CURLM_BAD_FUNCTION_ARGUMENT = 10,
+  CURLM_LAST = 11
+}
+global CURLMSG: type <cimport, nodecl, using> = @enum(cint){
+  CURLMSG_NONE = 0,
+  CURLMSG_DONE = 1,
+  CURLMSG_LAST = 2
+}
+global CURLMsg: type <cimport, nodecl> = @record{
+  msg: CURLMSG,
+  easy_handle: pointer,
+  data: union{
+    whatever: pointer,
+    result: CURLcode
+  }
+}
+global curl_waitfd: type <cimport, nodecl, ctypedef> = @record{
+  fd: cint,
+  events: cshort,
+  revents: cshort
+}
+global function curl_multi_init(): pointer <cimport, nodecl> end
+global function curl_multi_add_handle(multi_handle: pointer, curl_handle: pointer): CURLMcode <cimport, nodecl> end
+global function curl_multi_remove_handle(multi_handle: pointer, curl_handle: pointer): CURLMcode <cimport, nodecl> end
+global function curl_multi_fdset(multi_handle: pointer, read_fd_set: *fd_set, write_fd_set: *fd_set, exc_fd_set: *fd_set, max_fd: *cint): CURLMcode <cimport, nodecl> end
+global function curl_multi_wait(multi_handle: pointer, extra_fds: *curl_waitfd, extra_nfds: cuint, timeout_ms: cint, ret: *cint): CURLMcode <cimport, nodecl> end
+global function curl_multi_poll(multi_handle: pointer, extra_fds: *curl_waitfd, extra_nfds: cuint, timeout_ms: cint, ret: *cint): CURLMcode <cimport, nodecl> end
+global function curl_multi_wakeup(multi_handle: pointer): CURLMcode <cimport, nodecl> end
+global function curl_multi_perform(multi_handle: pointer, running_handles: *cint): CURLMcode <cimport, nodecl> end
+global function curl_multi_cleanup(multi_handle: pointer): CURLMcode <cimport, nodecl> end
+global function curl_multi_info_read(multi_handle: pointer, msgs_in_queue: *cint): *CURLMsg <cimport, nodecl> end
+global function curl_multi_strerror(a1: CURLMcode): cstring <cimport, nodecl> end
+global curl_socket_callback: type <cimport, nodecl> = @function(pointer, cint, cint, pointer, pointer): cint
+global curl_multi_timer_callback: type <cimport, nodecl> = @function(pointer, clong, pointer): cint
+global function curl_multi_socket(multi_handle: pointer, s: cint, running_handles: *cint): CURLMcode <cimport, nodecl> end
+global function curl_multi_socket_action(multi_handle: pointer, s: cint, ev_bitmask: cint, running_handles: *cint): CURLMcode <cimport, nodecl> end
+global function curl_multi_socket_all(multi_handle: pointer, running_handles: *cint): CURLMcode <cimport, nodecl> end
+global function curl_multi_timeout(multi_handle: pointer, milliseconds: *clong): CURLMcode <cimport, nodecl> end
+global CURLMoption: type <cimport, nodecl, using> = @enum(cint){
+  CURLMOPT_SOCKETFUNCTION = 20001,
+  CURLMOPT_SOCKETDATA = 10002,
+  CURLMOPT_PIPELINING = 3,
+  CURLMOPT_TIMERFUNCTION = 20004,
+  CURLMOPT_TIMERDATA = 10005,
+  CURLMOPT_MAXCONNECTS = 6,
+  CURLMOPT_MAX_HOST_CONNECTIONS = 7,
+  CURLMOPT_MAX_PIPELINE_LENGTH = 8,
+  CURLMOPT_CONTENT_LENGTH_PENALTY_SIZE = 30009,
+  CURLMOPT_CHUNK_LENGTH_PENALTY_SIZE = 30010,
+  CURLMOPT_PIPELINING_SITE_BL = 10011,
+  CURLMOPT_PIPELINING_SERVER_BL = 10012,
+  CURLMOPT_MAX_TOTAL_CONNECTIONS = 13,
+  CURLMOPT_PUSHFUNCTION = 20014,
+  CURLMOPT_PUSHDATA = 10015,
+  CURLMOPT_MAX_CONCURRENT_STREAMS = 16,
+  CURLMOPT_LASTENTRY = 17
+}
+global function curl_multi_setopt(multi_handle: pointer, option: CURLMoption, ...: cvarargs): CURLMcode <cimport, nodecl> end
+global function curl_multi_assign(multi_handle: pointer, sockfd: cint, sockp: pointer): CURLMcode <cimport, nodecl> end
+global curl_pushheaders: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global function curl_pushheader_bynum(h: *curl_pushheaders, num: csize): cstring <cimport, nodecl> end
+global function curl_pushheader_byname(h: *curl_pushheaders, name: cstring): cstring <cimport, nodecl> end
+global curl_push_callback: type <cimport, nodecl> = @function(pointer, pointer, csize, *curl_pushheaders, pointer): cint
+global CURLUcode: type <cimport, nodecl, using> = @enum(cint){
+  CURLUE_OK = 0,
+  CURLUE_BAD_HANDLE = 1,
+  CURLUE_BAD_PARTPOINTER = 2,
+  CURLUE_MALFORMED_INPUT = 3,
+  CURLUE_BAD_PORT_NUMBER = 4,
+  CURLUE_UNSUPPORTED_SCHEME = 5,
+  CURLUE_URLDECODE = 6,
+  CURLUE_OUT_OF_MEMORY = 7,
+  CURLUE_USER_NOT_ALLOWED = 8,
+  CURLUE_UNKNOWN_PART = 9,
+  CURLUE_NO_SCHEME = 10,
+  CURLUE_NO_USER = 11,
+  CURLUE_NO_PASSWORD = 12,
+  CURLUE_NO_OPTIONS = 13,
+  CURLUE_NO_HOST = 14,
+  CURLUE_NO_PORT = 15,
+  CURLUE_NO_QUERY = 16,
+  CURLUE_NO_FRAGMENT = 17
+}
+global CURLUPart: type <cimport, nodecl, using> = @enum(cint){
+  CURLUPART_URL = 0,
+  CURLUPART_SCHEME = 1,
+  CURLUPART_USER = 2,
+  CURLUPART_PASSWORD = 3,
+  CURLUPART_OPTIONS = 4,
+  CURLUPART_HOST = 5,
+  CURLUPART_PORT = 6,
+  CURLUPART_PATH = 7,
+  CURLUPART_QUERY = 8,
+  CURLUPART_FRAGMENT = 9,
+  CURLUPART_ZONEID = 10
+}
+global CURLU: type <cimport, nodecl, forwarddecl> = @record{}
+global function curl_url(): *CURLU <cimport, nodecl> end
+global function curl_url_cleanup(handle: *CURLU) <cimport, nodecl> end
+global function curl_url_dup(In: *CURLU): *CURLU <cimport, nodecl> end
+global function curl_url_get(handle: *CURLU, what: CURLUPart, part: *cstring, flags: cuint): CURLUcode <cimport, nodecl> end
+global function curl_url_set(handle: *CURLU, what: CURLUPart, part: cstring, flags: cuint): CURLUcode <cimport, nodecl> end
+global curl_easytype: type <cimport, nodecl, using> = @enum(cint){
+  CURLOT_LONG = 0,
+  CURLOT_VALUES = 1,
+  CURLOT_OFF_T = 2,
+  CURLOT_OBJECT = 3,
+  CURLOT_STRING = 4,
+  CURLOT_SLIST = 5,
+  CURLOT_CBPTR = 6,
+  CURLOT_BLOB = 7,
+  CURLOT_FUNCTION = 8
+}
+global curl_easyoption: type <cimport, nodecl, ctypedef> = @record{
+  name: cstring,
+  id: CURLoption,
+  type: curl_easytype,
+  flags: cuint
+}
+global function curl_easy_option_by_name(name: cstring): *curl_easyoption <cimport, nodecl> end
+global function curl_easy_option_by_id(id: CURLoption): *curl_easyoption <cimport, nodecl> end
+global function curl_easy_option_next(prev: *curl_easyoption): *curl_easyoption <cimport, nodecl> end

@@ -53,11 +53,14 @@ The following cross-platform libraries bindings are ready and generated as examp
     - [enet.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/enet/enet.nelua) (Reliable UDP networking library)
 * [znet](https://github.com/starwing/znet)
     - [znet.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/znet/znet.nelua) (Simple TCP/UDP networking library)
+* [curl](https://curl.se/)
+    - [curl.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/curl/curl.nelua) (Utility for HTTP request and URL data transfer)
 * [dmon](https://github.com/septag/dmon)
     - [dmon.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/dmon/dmon.nelua) (Watch file changes in a directory)
 * [c89thread](https://github.com/mackron/c89thread) and [c89atomic](https://github.com/mackron/c89atomic)
     - [c89thread.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/c89thread/c89thread.nelua) (Cross platform threading library)
     - [c89atomic.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/c89atomic/c89atomic.nelua) (Cross platform atomics library)
+
 
 Plus the following platform specific libraries:
 * dl
