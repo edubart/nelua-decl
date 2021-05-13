@@ -1,7 +1,6 @@
 ## cflags '-I.'
 require 'miniaudio_engine'
 
-require 'c89atomic'
 require 'C.arg'
 require 'C.stdio'
 

@@ -1,0 +1,31 @@
+## cflags '-I.'
+
+require 'c89thread'
+
+local mutex: c89mtx_t
+local thread: c89thrd_t
+
+local function thread_main(data: pointer): cint
+  assert(c89mtx_lock(&mutex) == c89thrd_success)
+  print 'hello from thread!'
+  assert(c89mtx_unlock(&mutex) == c89thrd_success)
+  return 1
+end
+
+-- init mutex
+assert(c89mtx_init(&mutex, c89mtx_plain) == c89thrd_success)
+
+-- create a new thread
+assert(c89thrd_create(&thread, thread_main, nilptr) == c89thrd_success)
+print 'thread created'
+
+-- wait thread to finish
+local res: cint
+assert(c89thrd_join(&thread, &res) == c89thrd_success)
+assert(res == 1)
+print 'thread joined'
+
+-- destroy mutex
+c89mtx_destroy(&mutex)
+
+print 'c89thread OK!'

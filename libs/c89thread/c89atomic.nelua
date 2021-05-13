@@ -1,0 +1,331 @@
+## cinclude '"c89atomic.h"'
+
+-- Types
+global c89atomic_memory_order = @cint
+global c89atomic_bool = @cuchar
+global c89atomic_flag <cimport, nodecl, cincomplete> = @uint8
+global c89atomic_spinlock <cimport, nodecl, cincomplete> = @record{}
+
+-- Constants
+global c89atomic_memory_order_relaxed: c89atomic_memory_order <cimport, nodecl, const>
+global c89atomic_memory_order_consume: c89atomic_memory_order <cimport, nodecl, const>
+global c89atomic_memory_order_acquire: c89atomic_memory_order <cimport, nodecl, const>
+global c89atomic_memory_order_release: c89atomic_memory_order <cimport, nodecl, const>
+global c89atomic_memory_order_acq_rel: c89atomic_memory_order <cimport, nodecl, const>
+global c89atomic_memory_order_seq_cst: c89atomic_memory_order <cimport, nodecl, const>
+
+-- Fence
+global function c89atomic_compiler_fence() <cimport, nodecl> end
+global function c89atomic_thread_fence(order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_signal_fence(order: c89atomic_memory_order) <cimport, nodecl> end
+
+-- Lock free check
+global function c89atomic_is_lock_free_8(ptr: pointer): boolean <cimport, nodecl> end
+global function c89atomic_is_lock_free_16(ptr: pointer): boolean <cimport, nodecl> end
+global function c89atomic_is_lock_free_32(ptr: pointer): boolean <cimport, nodecl> end
+global function c89atomic_is_lock_free_64(ptr: pointer): boolean <cimport, nodecl> end
+global function c89atomic_is_lock_free_ptr(ptr: *pointer): c89atomic_bool <cimport, nodecl> end
+
+-- Flag
+global function c89atomic_flag_test_and_set_explicit(dst: pointer, order: c89atomic_memory_order): c89atomic_bool <cimport, nodecl> end
+global function c89atomic_flag_clear_explicit(dst: pointer, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atoimc_flag_load_explicit(ptr: pointer, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_flag_test_and_set(ptr: pointer): c89atomic_bool <cimport, nodecl> end
+global function c89atomic_flag_clear(ptr: pointer) <cimport, nodecl> end
+
+-- Spinlock
+global function c89atomic_spinlock_lock(pSpinlock: *c89atomic_spinlock) <cimport, nodecl> end
+global function c89atomic_spinlock_unlock(pSpinlock: *c89atomic_spinlock) <cimport, nodecl> end
+
+-- Pointer
+global function c89atomic_load_explicit_ptr(ptr: *pointer, order: c89atomic_memory_order): pointer <cimport, nodecl> end
+global function c89atomic_store_explicit_ptr(dst: *pointer, src: pointer, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_exchange_explicit_ptr(dst: *pointer, src: pointer, order: c89atomic_memory_order): pointer <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_explicit_ptr(dst: *pointer, expected: *pointer, desired: pointer, successOrder: cint, failureOrder: cint): c89atomic_bool <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_explicit_ptr(dst: *pointer, expected: *pointer, desired: pointer, successOrder: cint, failureOrder: cint): c89atomic_bool <cimport, nodecl> end
+global function c89atomic_compare_and_swap_ptr(dst: *pointer, expected: pointer, desired: pointer): pointer <cimport, nodecl> end
+global function c89atomic_store_ptr(dst: *pointer, src: pointer) <cimport, nodecl> end
+global function c89atomic_load_ptr(ptr: *pointer) <cimport, nodecl> end
+global function c89atomic_exchange_ptr(dst: *pointer, src: pointer): pointer <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_ptr(dst: *pointer, expected: pointer, desired: pointer) <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_ptr(dst: *pointer, expected: pointer, desired: pointer): boolean <cimport, nodecl> end
+
+-- Unsigned
+global function c89atomic_test_and_set_explicit_8( dst: *uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_test_and_set_explicit_16(dst: *uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_test_and_set_explicit_32(dst: *uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_test_and_set_explicit_64(dst: *uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_clear_explicit_8( dst: *uint8, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_clear_explicit_16(dst: *uint16, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_clear_explicit_32(dst: *uint32, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_clear_explicit_64(dst: *uint64, order: c89atomic_memory_order) <cimport, nodecl> end
+
+global function c89atomic_store_explicit_8( dst: *uint8, src: uint8, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_store_explicit_16(dst: *uint16, src: uint16, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_store_explicit_32(dst: *uint32, src: uint32, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_store_explicit_64(dst: *uint64, src: uint64, order: c89atomic_memory_order) <cimport, nodecl> end
+
+global function c89atomic_load_explicit_8( dst: *uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_load_explicit_16(dst: *uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_load_explicit_32(dst: *uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_load_explicit_64(dst: *uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_exchange_explicit_8( dst: *uint8, src: uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_exchange_explicit_16(dst: *uint16, src: uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_exchange_explicit_32(dst: *uint32, src: uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_exchange_explicit_64(dst: *uint64, src: uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_strong_explicit_8( dst: *uint8, expected: *uint8, desired: uint8, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_explicit_16(dst: *uint16, expected: *uint16, desired: uint16, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_explicit_32(dst: *uint32, expected: *uint32, desired: uint32, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_explicit_64(dst: *uint64, expected: *uint64, desired: uint64, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_weak_explicit_8( dst: *uint8, expected: *uint8, desired: uint8, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_explicit_16(dst: *uint16, expected: *uint16, desired: uint16, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_explicit_32(dst: *uint32, expected: *uint32, desired: uint32, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_explicit_64(dst: *uint64, expected: *uint64, desired: uint64, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+
+global function c89atomic_fetch_add_explicit_8( dst: *uint8, src: uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_fetch_add_explicit_16(dst: *uint16, src: uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_add_explicit_32(dst: *uint32, src: uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_add_explicit_64(dst: *uint64, src: uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_sub_explicit_8( dst: *uint8, src: uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_fetch_sub_explicit_16(dst: *uint16, src: uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_sub_explicit_32(dst: *uint32, src: uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_sub_explicit_64(dst: *uint64, src: uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_or_explicit_8( dst: *uint8, src: uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_fetch_or_explicit_16(dst: *uint16, src: uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_or_explicit_32(dst: *uint32, src: uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_or_explicit_64(dst: *uint64, src: uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_xor_explicit_8( dst: *uint8, src: uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_fetch_xor_explicit_16(dst: *uint16, src: uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_xor_explicit_32(dst: *uint32, src: uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_xor_explicit_64(dst: *uint64, src: uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_and_explicit_8( dst: *uint8, src: uint8, order: c89atomic_memory_order): uint8 <cimport, nodecl> end
+global function c89atomic_fetch_and_explicit_16(dst: *uint16, src: uint16, order: c89atomic_memory_order): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_and_explicit_32(dst: *uint32, src: uint32, order: c89atomic_memory_order): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_and_explicit_64(dst: *uint64, src: uint64, order: c89atomic_memory_order): uint64 <cimport, nodecl> end
+
+global function c89atomic_compare_and_swap_8( dst: *uint8, expected: uint8, desired: uint8): uint8 <cimport, nodecl> end
+global function c89atomic_compare_and_swap_16(dst: *uint16, expected: uint16, desired: uint16): uint16 <cimport, nodecl> end
+global function c89atomic_compare_and_swap_32(dst: *uint32, expected: uint32, desired: uint32): uint32 <cimport, nodecl> end
+global function c89atomic_compare_and_swap_64(dst: *uint64, expected: uint64, desired: uint64): uint64 <cimport, nodecl> end
+
+global function c89atomic_test_and_set_8( ptr: *uint8 ) <cimport, nodecl> end
+global function c89atomic_test_and_set_16(ptr: *uint16) <cimport, nodecl> end
+global function c89atomic_test_and_set_32(ptr: *uint32) <cimport, nodecl> end
+global function c89atomic_test_and_set_64(ptr: *uint64) <cimport, nodecl> end
+
+global function c89atomic_clear_8( ptr: *uint8 ) <cimport, nodecl> end
+global function c89atomic_clear_16(ptr: *uint16) <cimport, nodecl> end
+global function c89atomic_clear_32(ptr: *uint32) <cimport, nodecl> end
+global function c89atomic_clear_64(ptr: *uint64) <cimport, nodecl> end
+
+global function c89atomic_store_8(  dst: *uint8 , src: uint8 ) <cimport, nodecl> end
+global function c89atomic_store_16( dst: *uint16, src: uint16) <cimport, nodecl> end
+global function c89atomic_store_32( dst: *uint32, src: uint32) <cimport, nodecl> end
+global function c89atomic_store_64( dst: *uint64, src: uint64) <cimport, nodecl> end
+
+global function c89atomic_load_8(  ptr: *uint8 ): uint8  <cimport, nodecl> end
+global function c89atomic_load_16( ptr: *uint16): uint16 <cimport, nodecl> end
+global function c89atomic_load_32( ptr: *uint32): uint32 <cimport, nodecl> end
+global function c89atomic_load_64( ptr: *uint64): uint64 <cimport, nodecl> end
+
+global function c89atomic_exchange_8(  dst: *uint8 , src: uint8 ): uint8  <cimport, nodecl> end
+global function c89atomic_exchange_16( dst: *uint16, src: uint16): uint16 <cimport, nodecl> end
+global function c89atomic_exchange_32( dst: *uint32, src: uint32): uint32 <cimport, nodecl> end
+global function c89atomic_exchange_64( dst: *uint64, src: uint64): uint64 <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_strong_8(  dst: *uint8 , expected: *uint8 , desired: uint8 ): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_16( dst: *uint16, expected: *uint16, desired: uint16): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_32( dst: *uint32, expected: *uint32, desired: uint32): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_64( dst: *uint64, expected: *uint64, desired: uint64): boolean <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_weak_8(  dst: *uint8 , expected: *uint8 , desired: uint8 ): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_16( dst: *uint16, expected: *uint16, desired: uint16): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_32( dst: *uint32, expected: *uint32, desired: uint32): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_64( dst: *uint64, expected: *uint64, desired: uint64): boolean <cimport, nodecl> end
+
+global function c89atomic_fetch_add_8( dst: *uint8 , src: uint8 ): uint8  <cimport, nodecl> end
+global function c89atomic_fetch_add_16(dst: *uint16, src: uint16): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_add_32(dst: *uint32, src: uint32): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_add_64(dst: *uint64, src: uint64): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_sub_8( dst: *uint8 , src: uint8 ): uint8  <cimport, nodecl> end
+global function c89atomic_fetch_sub_16(dst: *uint16, src: uint16): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_sub_32(dst: *uint32, src: uint32): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_sub_64(dst: *uint64, src: uint64): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_or_8( dst: *uint8 , src: uint8 ): uint8  <cimport, nodecl> end
+global function c89atomic_fetch_or_16(dst: *uint16, src: uint16): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_or_32(dst: *uint32, src: uint32): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_or_64(dst: *uint64, src: uint64): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_xor_8( dst: *uint8 , src: uint8 ): uint8  <cimport, nodecl> end
+global function c89atomic_fetch_xor_16(dst: *uint16, src: uint16): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_xor_32(dst: *uint32, src: uint32): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_xor_64(dst: *uint64, src: uint64): uint64 <cimport, nodecl> end
+
+global function c89atomic_fetch_and_8( dst: *uint8 , src: uint8 ): uint8  <cimport, nodecl> end
+global function c89atomic_fetch_and_16(dst: *uint16, src: uint16): uint16 <cimport, nodecl> end
+global function c89atomic_fetch_and_32(dst: *uint32, src: uint32): uint32 <cimport, nodecl> end
+global function c89atomic_fetch_and_64(dst: *uint64, src: uint64): uint64 <cimport, nodecl> end
+
+-- Signed
+global function c89atomic_test_and_set_explicit_i8( dst: *int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_test_and_set_explicit_i16(dst: *int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_test_and_set_explicit_i32(dst: *int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_test_and_set_explicit_i64(dst: *int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_clear_explicit_i8( dst: *int8, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_clear_explicit_i16(dst: *int16, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_clear_explicit_i32(dst: *int32, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_clear_explicit_i64(dst: *int64, order: c89atomic_memory_order) <cimport, nodecl> end
+
+global function c89atomic_store_explicit_i8( dst: *int8, src: int8, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_store_explicit_i16(dst: *int16, src: int16, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_store_explicit_i32(dst: *int32, src: int32, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_store_explicit_i64(dst: *int64, src: int64, order: c89atomic_memory_order) <cimport, nodecl> end
+
+global function c89atomic_load_explicit_i8( dst: *int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_load_explicit_i16(dst: *int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_load_explicit_i32(dst: *int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_load_explicit_i64(dst: *int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_exchange_explicit_i8( dst: *int8, src: int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_exchange_explicit_i16(dst: *int16, src: int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_exchange_explicit_i32(dst: *int32, src: int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_exchange_explicit_i64(dst: *int64, src: int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_strong_explicit_i8( dst: *int8, expected: *int8, desired: int8, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_explicit_i16(dst: *int16, expected: *int16, desired: int16, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_explicit_i32(dst: *int32, expected: *int32, desired: int32, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_explicit_i64(dst: *int64, expected: *int64, desired: int64, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_weak_explicit_i8( dst: *int8, expected: *int8, desired: int8, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_explicit_i16(dst: *int16, expected: *int16, desired: int16, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_explicit_i32(dst: *int32, expected: *int32, desired: int32, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_explicit_i64(dst: *int64, expected: *int64, desired: int64, successOrder: cint, failureOrder: cint): boolean <cimport, nodecl> end
+
+global function c89atomic_fetch_add_explicit_i8( dst: *int8, src: int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_fetch_add_explicit_i16(dst: *int16, src: int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_fetch_add_explicit_i32(dst: *int32, src: int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_fetch_add_explicit_i64(dst: *int64, src: int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_sub_explicit_i8( dst: *int8, src: int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_fetch_sub_explicit_i16(dst: *int16, src: int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_fetch_sub_explicit_i32(dst: *int32, src: int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_fetch_sub_explicit_i64(dst: *int64, src: int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_or_explicit_i8( dst: *int8, src: int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_fetch_or_explicit_i16(dst: *int16, src: int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_fetch_or_explicit_i32(dst: *int32, src: int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_fetch_or_explicit_i64(dst: *int64, src: int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_xor_explicit_i8( dst: *int8, src: int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_fetch_xor_explicit_i16(dst: *int16, src: int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_fetch_xor_explicit_i32(dst: *int32, src: int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_fetch_xor_explicit_i64(dst: *int64, src: int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_and_explicit_i8( dst: *int8, src: int8, order: c89atomic_memory_order): int8 <cimport, nodecl> end
+global function c89atomic_fetch_and_explicit_i16(dst: *int16, src: int16, order: c89atomic_memory_order): int16 <cimport, nodecl> end
+global function c89atomic_fetch_and_explicit_i32(dst: *int32, src: int32, order: c89atomic_memory_order): int32 <cimport, nodecl> end
+global function c89atomic_fetch_and_explicit_i64(dst: *int64, src: int64, order: c89atomic_memory_order): int64 <cimport, nodecl> end
+
+global function c89atomic_test_and_set_i8( ptr: *int8 ) <cimport, nodecl> end
+global function c89atomic_test_and_set_i16(ptr: *int16) <cimport, nodecl> end
+global function c89atomic_test_and_set_i32(ptr: *int32) <cimport, nodecl> end
+global function c89atomic_test_and_set_i64(ptr: *int64) <cimport, nodecl> end
+
+global function c89atomic_clear_i8( ptr: *int8 ) <cimport, nodecl> end
+global function c89atomic_clear_i16(ptr: *int16) <cimport, nodecl> end
+global function c89atomic_clear_i32(ptr: *int32) <cimport, nodecl> end
+global function c89atomic_clear_i64(ptr: *int64) <cimport, nodecl> end
+
+global function c89atomic_store_8i(  dst: *int8 , src: int8 ) <cimport, nodecl> end
+global function c89atomic_store_1i6( dst: *int16, src: int16) <cimport, nodecl> end
+global function c89atomic_store_3i2( dst: *int32, src: int32) <cimport, nodecl> end
+global function c89atomic_store_6i4( dst: *int64, src: int64) <cimport, nodecl> end
+
+global function c89atomic_load_8i(  ptr: *int8 ): int8  <cimport, nodecl> end
+global function c89atomic_load_1i6( ptr: *int16): int16 <cimport, nodecl> end
+global function c89atomic_load_3i2( ptr: *int32): int32 <cimport, nodecl> end
+global function c89atomic_load_6i4( ptr: *int64): int64 <cimport, nodecl> end
+
+global function c89atomic_exchange_8i(  dst: *int8 , src: int8 ): int8  <cimport, nodecl> end
+global function c89atomic_exchange_1i6( dst: *int16, src: int16): int16 <cimport, nodecl> end
+global function c89atomic_exchange_3i2( dst: *int32, src: int32): int32 <cimport, nodecl> end
+global function c89atomic_exchange_6i4( dst: *int64, src: int64): int64 <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_strong_8i(  dst: *int8 , expected: *int8 , desired: int8 ): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_1i6( dst: *int16, expected: *int16, desired: int16): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_3i2( dst: *int32, expected: *int32, desired: int32): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_strong_6i4( dst: *int64, expected: *int64, desired: int64): boolean <cimport, nodecl> end
+
+global function c89atomic_compare_exchange_weak_8i(  dst: *int8 , expected: *int8 , desired: int8 ): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_1i6( dst: *int16, expected: *int16, desired: int16): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_3i2( dst: *int32, expected: *int32, desired: int32): boolean <cimport, nodecl> end
+global function c89atomic_compare_exchange_weak_6i4( dst: *int64, expected: *int64, desired: int64): boolean <cimport, nodecl> end
+
+global function c89atomic_fetch_add_i8( dst: *int8 , src: int8 ): int8  <cimport, nodecl> end
+global function c89atomic_fetch_add_i16(dst: *int16, src: int16): int16 <cimport, nodecl> end
+global function c89atomic_fetch_add_i32(dst: *int32, src: int32): int32 <cimport, nodecl> end
+global function c89atomic_fetch_add_i64(dst: *int64, src: int64): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_sub_i8( dst: *int8 , src: int8 ): int8  <cimport, nodecl> end
+global function c89atomic_fetch_sub_i16(dst: *int16, src: int16): int16 <cimport, nodecl> end
+global function c89atomic_fetch_sub_i32(dst: *int32, src: int32): int32 <cimport, nodecl> end
+global function c89atomic_fetch_sub_i64(dst: *int64, src: int64): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_or_i8( dst: *int8 , src: int8 ): int8  <cimport, nodecl> end
+global function c89atomic_fetch_or_i16(dst: *int16, src: int16): int16 <cimport, nodecl> end
+global function c89atomic_fetch_or_i32(dst: *int32, src: int32): int32 <cimport, nodecl> end
+global function c89atomic_fetch_or_i64(dst: *int64, src: int64): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_xor_i8( dst: *int8 , src: int8 ): int8  <cimport, nodecl> end
+global function c89atomic_fetch_xor_i16(dst: *int16, src: int16): int16 <cimport, nodecl> end
+global function c89atomic_fetch_xor_i32(dst: *int32, src: int32): int32 <cimport, nodecl> end
+global function c89atomic_fetch_xor_i64(dst: *int64, src: int64): int64 <cimport, nodecl> end
+
+global function c89atomic_fetch_and_i8( dst: *int8 , src: int8 ): int8  <cimport, nodecl> end
+global function c89atomic_fetch_and_i16(dst: *int16, src: int16): int16 <cimport, nodecl> end
+global function c89atomic_fetch_and_i32(dst: *int32, src: int32): int32 <cimport, nodecl> end
+global function c89atomic_fetch_and_i64(dst: *int64, src: int64): int64 <cimport, nodecl> end
+
+-- Float
+global c89atomic_if32: type <cimport, nodecl> = @union{
+  i: uint32,
+  f: float32
+}
+global c89atomic_if64: type <cimport, nodecl> = @union{
+  i: uint64,
+  f: float64
+}
+global function c89atomic_clear_explicit_f32(ptr: *float32, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_clear_explicit_f64(ptr: *float64, order: c89atomic_memory_order) <cimport, nodecl> end
+
+global function c89atomic_store_explicit_f32(dst: *float32, src: float32, order: c89atomic_memory_order) <cimport, nodecl> end
+global function c89atomic_store_explicit_f64(dst: *float64, src: float64, order: c89atomic_memory_order) <cimport, nodecl> end
+
+global function c89atomic_load_explicit_f32(ptr: *float32, order: c89atomic_memory_order): float32 <cimport, nodecl> end
+global function c89atomic_load_explicit_f64(ptr: *float64, order: c89atomic_memory_order): float64 <cimport, nodecl> end
+
+global function c89atomic_exchange_explicit_f32(dst: *float32, src: float32, order: c89atomic_memory_order): float32 <cimport, nodecl> end
+global function c89atomic_exchange_explicit_f64(dst: *float64, src: float64, order: c89atomic_memory_order): float64 <cimport, nodecl> end
+
+global function c89atomic_clear_f32(ptr: *float32) <cimport, nodecl> end
+global function c89atomic_clear_f64(ptr: *float64) <cimport, nodecl> end
+
+global function c89atomic_store_f32(dst: *float32, src) <cimport, nodecl> end
+global function c89atomic_store_f64(dst: *float64, src) <cimport, nodecl> end
+
+global function c89atomic_load_f32(ptr: *float32): float32 <cimport, nodecl> end
+global function c89atomic_load_f64(ptr: *float64): float64 <cimport, nodecl> end
+
+global function c89atomic_exchange_f32(dst: *float32, src: float32): float32 <cimport, nodecl> end
+global function c89atomic_exchange_f64(dst: *float64, src: float64): float64 <cimport, nodecl> end

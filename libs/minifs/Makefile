@@ -15,4 +15,4 @@ download:
 	wget -O minifs.h https://raw.githubusercontent.com/mackron/minifs/master/minifs.h
 
 test:
-	$(NELUA) --no-cache $(TFILE)
+	$(NELUA) $(TFILE)

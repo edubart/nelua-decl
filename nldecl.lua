@@ -357,6 +357,7 @@ local function visit_type_def(typename, type, is_typedef)
   local is_function = is_pointer and type:type():code() == 'function_type'
   local is_scalar = type:code() == 'integer_type' or type:code() == 'real_type'
   local is_prefixed = (is_enum or is_record or is_union)
+  local is_composite = (is_record or is_union)
   local typealias
   if is_prefixed and nldecl.typedefs_names[typename] then
     typealias = typename
@@ -401,15 +402,20 @@ local function visit_type_def(typename, type, is_typedef)
       end)
     end
   end
-  emitter:add('= @')
   local decl = true
   if nldecl.platform_names[typename] == nldecl.OMIT_ALL_FIELDS then
-    emitter:add('record{}')
-  elseif nldecl.platform_names[typename] == nldecl.USE_KNOWN_FIELDS then
-    local canskipfields = true
-    visit(type, decl, canskipfields)
+    if is_composite then
+      emitter:add('= @record{}')
+    else
+      emitter:add('<cimport, nodecl, cincomplete> = @record{}')
+    end
   else
-    visit(type, decl)
+    emitter:add('= @')
+    local canskipfields
+    if nldecl.platform_names[typename] == nldecl.USE_KNOWN_FIELDS then
+      canskipfields = true
+    end
+    visit(type, decl, canskipfields)
   end
   emitter:add_ln()
 end

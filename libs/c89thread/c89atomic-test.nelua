@@ -1,0 +1,25 @@
+## cflags '-I.'
+
+require 'c89atomic'
+
+do -- flat test and set
+  local a: c89atomic_flag = 0
+  local b: c89atomic_flag = 0
+  local r: c89atomic_bool = c89atomic_flag_test_and_set(&b)
+  assert(a == r and b == 1)
+end
+
+do -- load
+  local a: uint32 = 123456;
+  local b: uint32 = c89atomic_load_32(&a)
+  assert(b == a)
+end
+
+do -- store
+  local a: uint32 = 42
+  local b: uint32 = 123456
+  c89atomic_store_32(&a, b)
+  assert(b == a)
+end
+
+print 'c89atomic OK!'
