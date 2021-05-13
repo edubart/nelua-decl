@@ -18,6 +18,7 @@ generate:
 	$(MKC) libs/znet generate
 	$(MKC) libs/c89thread generate
 	$(MKC) libs/curl generate
+	$(MKC) libs/subprocess generate
 
 	$(MKC) libs/c generate
 	$(MKC) libs/dl generate
@@ -43,6 +44,7 @@ download:
 	$(MKC) libs/znet download
 	$(MKC) libs/c89thread download
 	$(MKC) libs/curl download
+	$(MKC) libs/subprocess download
 
 	$(MKC) libs/c download
 	$(MKC) libs/dl download
@@ -68,6 +70,7 @@ test:
 	$(MKC) libs/znet test
 	$(MKC) libs/c89thread test
 	$(MKC) libs/curl test
+	$(MKC) libs/subprocess test
 
 	$(MKC) libs/c test
 	$(MKC) libs/dl test

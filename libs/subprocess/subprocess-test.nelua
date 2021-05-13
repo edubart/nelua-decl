@@ -1,0 +1,34 @@
+## cflags '-I.'
+
+require 'subprocess'
+
+local command_line: []cstring = {
+  "/usr/bin/echo",
+  "hello",
+  nilptr
+}
+
+-- create process
+local process: subprocess_s
+local res: cint
+res = subprocess_create(&command_line[0], 0, &process)
+assert(res == 0, 'failed to create process')
+
+-- join process
+local ret: cint
+res = subprocess_join(&process, &ret)
+assert(res == 0, 'failed to join process')
+assert(ret == 0, 'program exit with error code')
+
+local tmp: [32]cchar
+local len = subprocess_read_stdout(process, &tmp[0], 32)
+assert(len > 0, 'process has no stdout')
+if len < 32 then
+  print(&tmp[0])
+end
+
+-- destroy process
+res = subprocess_destroy(&process)
+assert(res == 0, 'failed to destroy process')
+
+print 'subprocess OK!'
