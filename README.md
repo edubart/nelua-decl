@@ -49,6 +49,8 @@ The following cross-platform libraries bindings are ready and generated as examp
     - [uv.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/uv/uv.nelua) (Asynchronous I/O)
 * [enet](https://github.com/zpl-c/enet)
     - [enet.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/enet/enet.nelua) (Reliable UDP networking library)
+* [znet](https://github.com/starwing/znet)
+    - [znet.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/znet/znet.nelua) (Simple TCP/UDP networking library)
 * [dmon](https://github.com/septag/dmon)
     - [dmon.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/dmon/dmon.nelua) (Watch file changes in a a directory)
 

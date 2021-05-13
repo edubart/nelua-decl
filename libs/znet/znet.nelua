@@ -1,0 +1,82 @@
+##[[
+if ZNET_LINKLIB then
+  if type(ZNET_LINKLIB) == 'string' then
+    linklib(ZNET_LINKLIB)
+  end
+else
+  cdefine 'ZN_IMPLEMENTATION'
+end
+cinclude '"znet.h"'
+if ccinfo.is_windows then
+  linklib 'ws2_32'
+end
+]]
+global zn_Error: type <cimport, nodecl, using> = @enum(cint){
+  ZN_OK = 0,
+  ZN_ERROR = 1,
+  ZN_ECLOSE = 2,
+  ZN_ECLOSED = 3,
+  ZN_EHANGUP = 4,
+  ZN_ESOCKET = 5,
+  ZN_ECONNECT = 6,
+  ZN_EBIND = 7,
+  ZN_EPARAM = 8,
+  ZN_EPOLL = 9,
+  ZN_ESTATE = 10,
+  ZN_EBUSY = 11,
+  ZN_ERROR_COUNT = 12
+}
+global zn_State: type <cimport, nodecl, forwarddecl> = @record{}
+global zn_Accept: type <cimport, nodecl, forwarddecl> = @record{}
+global zn_Tcp: type <cimport, nodecl, forwarddecl> = @record{}
+global zn_Udp: type <cimport, nodecl, forwarddecl> = @record{}
+global zn_Timer: type <cimport, nodecl, forwarddecl> = @record{}
+global zn_PeerInfo: type <cimport, nodecl> = @record{
+  addr: [50]cchar,
+  port: cuint
+}
+global zn_TimerHandler: type <cimport, nodecl> = @function(pointer, *zn_Timer, cuint): cuint
+global zn_PostHandler: type <cimport, nodecl> = @function(pointer, *zn_State)
+global zn_AcceptHandler: type <cimport, nodecl> = @function(pointer, *zn_Accept, cuint, *zn_Tcp)
+global zn_ConnectHandler: type <cimport, nodecl> = @function(pointer, *zn_Tcp, cuint)
+global zn_SendHandler: type <cimport, nodecl> = @function(pointer, *zn_Tcp, cuint, cuint)
+global zn_RecvHandler: type <cimport, nodecl> = @function(pointer, *zn_Tcp, cuint, cuint)
+global zn_RecvFromHandler: type <cimport, nodecl> = @function(pointer, *zn_Udp, cuint, cuint, cstring, cuint)
+global function zn_initialize() <cimport, nodecl> end
+global function zn_deinitialize() <cimport, nodecl> end
+global function zn_strerror(err: cint): cstring <cimport, nodecl> end
+global function zn_engine(): cstring <cimport, nodecl> end
+global function zn_newstate(): *zn_State <cimport, nodecl> end
+global function zn_close(S: *zn_State) <cimport, nodecl> end
+global function zn_getuserdata(S: *zn_State): pointer <cimport, nodecl> end
+global function zn_setuserdata(S: *zn_State, ud: pointer) <cimport, nodecl> end
+global function zn_retain(S: *zn_State): cuint <cimport, nodecl> end
+global function zn_release(S: *zn_State): cuint <cimport, nodecl> end
+global function zn_run(S: *zn_State, mode: cint): cint <cimport, nodecl> end
+global function zn_post(S: *zn_State, cb: function(pointer, *zn_State), ud: pointer): cint <cimport, nodecl> end
+global function zn_time(): cuint <cimport, nodecl> end
+global function zn_newtimer(S: *zn_State, cb: function(pointer, *zn_Timer, cuint): cuint, ud: pointer): *zn_Timer <cimport, nodecl> end
+global function zn_deltimer(timer: *zn_Timer) <cimport, nodecl> end
+global function zn_starttimer(timer: *zn_Timer, delayms: cuint): cint <cimport, nodecl> end
+global function zn_canceltimer(timer: *zn_Timer) <cimport, nodecl> end
+global function zn_newaccept(S: *zn_State, packet: cint): *zn_Accept <cimport, nodecl> end
+global function zn_closeaccept(accept: *zn_Accept): cint <cimport, nodecl> end
+global function zn_delaccept(accept: *zn_Accept) <cimport, nodecl> end
+global function zn_listen(accept: *zn_Accept, addr: cstring, port: cuint): cint <cimport, nodecl> end
+global function zn_accept(accept: *zn_Accept, cb: function(pointer, *zn_Accept, cuint, *zn_Tcp), ud: pointer): cint <cimport, nodecl> end
+global function zn_newtcp(S: *zn_State): *zn_Tcp <cimport, nodecl> end
+global function zn_closetcp(tcp: *zn_Tcp): cint <cimport, nodecl> end
+global function zn_deltcp(tcp: *zn_Tcp) <cimport, nodecl> end
+global function zn_getpeerinfo(tcp: *zn_Tcp, info: *zn_PeerInfo) <cimport, nodecl> end
+global function zn_connect(tcp: *zn_Tcp, addr: cstring, port: cuint, packet: cint, cb: function(pointer, *zn_Tcp, cuint), ud: pointer): cint <cimport, nodecl> end
+global function zn_send(tcp: *zn_Tcp, buff: cstring, len: cuint, cb: function(pointer, *zn_Tcp, cuint, cuint), ud: pointer): cint <cimport, nodecl> end
+global function zn_recv(tcp: *zn_Tcp, buff: cstring, len: cuint, cb: function(pointer, *zn_Tcp, cuint, cuint), ud: pointer): cint <cimport, nodecl> end
+global function zn_newudp(S: *zn_State, addr: cstring, port: cuint): *zn_Udp <cimport, nodecl> end
+global function zn_closeudp(udp: *zn_Udp): cint <cimport, nodecl> end
+global function zn_deludp(udp: *zn_Udp) <cimport, nodecl> end
+global function zn_sendto(udp: *zn_Udp, buff: cstring, len: cuint, addr: cstring, port: cuint): cint <cimport, nodecl> end
+global function zn_recvfrom(udp: *zn_Udp, buff: cstring, len: cuint, cb: function(pointer, *zn_Udp, cuint, cuint, cstring, cuint), ud: pointer): cint <cimport, nodecl> end
+global ZN_RUN_ONCE: cint <comptime> = 0
+global ZN_RUN_CHECK: cint <comptime> = 1
+global ZN_RUN_LOOP: cint <comptime> = 2
+global zn_Time = @cuint

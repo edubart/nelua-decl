@@ -1,0 +1,91 @@
+## cflags '-I.'
+
+require 'znet'
+require 'memory'
+require 'allocators.general'
+
+## if TEST_IPV6 then
+local IP <comptime> = "::1"
+## else
+local IP <comptime> = "127.0.0.1"
+## end
+local PORT <comptime> = 12345
+
+local zn: *zn_State
+local znaccept: *zn_Accept
+
+local msg: string = 'hello world!'
+
+local function on_send(ud: pointer, tcp: *zn_Tcp, err: cuint, count: cuint)
+  print("sent", tcp, count, zn_strerror(err))
+  zn_deltcp(tcp)
+end
+
+local function on_recv(ud: pointer, tcp: *zn_Tcp, err: cuint, count: cuint)
+  local gotmsg: string = (@string){data=(@*[0]byte)(ud), size=count}
+  print("received", tcp, count, zn_strerror(err), gotmsg)
+  general_allocator:dealloc(ud)
+  if err == ZN_OK then
+    zn_send(tcp, msg.data, msg.size, on_send, nilptr)
+  end
+end
+
+local function on_accept(ud: pointer, znaccept: *zn_Accept, err: cuint, tcp: *zn_Tcp)
+  local buff = general_allocator:xalloc0(128)
+  print("accepted", tcp, zn_strerror(err));
+  local ret: cint = zn_recv(tcp, (@cstring)(buff), 128, on_recv, buff);
+  if ret ~= ZN_OK then
+    general_allocator:dealloc(buff)
+  end
+  print("receiving", tcp, zn_strerror(ret))
+  zn_accept(znaccept, on_accept, ud)
+end
+
+local function on_connect(ud: pointer, tcp: *zn_Tcp, err: cuint)
+  print("on_connect", tcp, zn_strerror(err))
+  if err ~= ZN_OK then
+    zn_deltcp(tcp)
+    return
+  end
+  zn_send(tcp, msg.data, msg.size, on_send, nilptr)
+end
+
+local timer_count = 0
+local function on_timer(ud: pointer, t: *zn_Timer, elapsed: zn_Time): zn_Time
+  if timer_count == 4 then
+    print("stop listening")
+    zn_delaccept(znaccept)
+    return 0
+  end
+  timer_count = timer_count + 1
+  local tcp: *zn_Tcp = zn_newtcp(zn)
+  local ret: cint = zn_connect(tcp, IP, PORT, 0, on_connect, nilptr)
+  print("connecting ", tcp, zn_strerror(ret))
+  return 32
+end
+
+print("engine", zn_engine())
+zn_initialize()
+zn = zn_newstate()
+if not zn then
+  error 'failed to create znet state'
+end
+
+-- server
+znaccept = zn_newaccept(zn, 0)
+zn_listen(znaccept, IP, PORT)
+zn_accept(znaccept, on_accept, nilptr)
+print "listening"
+
+-- client
+local t: *zn_Timer = zn_newtimer(zn, on_timer, nilptr)
+zn_starttimer(t, 32)
+
+zn_run(zn, ZN_RUN_LOOP)
+
+print "exiting"
+zn_close(zn)
+print "deinitialize"
+zn_deinitialize()
+
+print 'znet OK!'

@@ -15,6 +15,7 @@ generate:
 	$(MKC) libs/uv generate
 	$(MKC) libs/enet generate
 	$(MKC) libs/dmon generate
+	$(MKC) libs/znet generate
 
 	$(MKC) libs/c generate
 	$(MKC) libs/dl generate
@@ -37,6 +38,7 @@ download:
 	$(MKC) libs/uv download
 	$(MKC) libs/enet download
 	$(MKC) libs/dmon download
+	$(MKC) libs/znet download
 
 	$(MKC) libs/c download
 	$(MKC) libs/dl download
@@ -59,6 +61,7 @@ test:
 	$(MKC) libs/uv test
 	$(MKC) libs/enet test
 	$(MKC) libs/dmon test
+	$(MKC) libs/znet test
 
 	$(MKC) libs/c test
 	$(MKC) libs/dl test
