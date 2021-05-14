@@ -1,0 +1,31 @@
+## cflags '-I.'
+
+require 'cj5'
+require 'io'
+
+local token_types: []string = { "CJ5_TOKEN_OBJECT", "CJ5_TOKEN_ARRAY", "CJ5_TOKEN_NUMBER",
+                                "CJ5_TOKEN_STRING", "CJ5_TOKEN_BOOL",  "CJ5_TOKEN_NULL" }
+local test_json = [[{
+  test: 1, test2: null,
+  // a comment
+  child: { some_string: "hello world", array: [1, 2, 3.5], },
+  hex: 0xcecece,
+}]]
+
+local tokens: [32]cj5_token
+local res = cj5_parse(test_json, #test_json, &tokens[0], 32)
+if res.error ~= 0 then
+  error 'failed to parse json'
+end
+
+-- enumerate all tokens
+for i=0,<res.num_tokens do
+  local start = tokens[i].start
+  local len = tokens[i].ending - start
+  local content: string = {data=&test_json.data[start], len}
+  assert(tokens[i].type <= CJ5_TOKEN_NULL)
+  io.writef("%d: { type = %s, size = %d, parent = %d, content = '%s' }\n",
+    i, token_types[tokens[i].type], tokens[i].size, tokens[i].parent_id, content);
+end
+
+print 'cj5 OK!'

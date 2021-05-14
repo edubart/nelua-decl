@@ -62,6 +62,8 @@ The following cross-platform libraries bindings are ready and generated as examp
     - [c89atomic.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/c89thread/c89atomic.nelua) (Atomics library)
 * [subprocess](https://github.com/sheredom/subprocess.h)
     - [subprocess.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/subprocess/subprocess.nelua) (Process launching library)
+* [cj5](https://github.com/septag/cj5)
+    - [cj5.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/cj5/cj5.nelua) (JSON parsing)
 
 Plus the following platform specific libraries:
 * dl
