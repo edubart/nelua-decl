@@ -4,6 +4,7 @@ if ZNET_LINKLIB then
     linklib(ZNET_LINKLIB)
   end
 else
+  cdefine 'ZN_STATIC_API'
   cdefine 'ZN_IMPLEMENTATION'
 end
 cinclude '"znet.h"'

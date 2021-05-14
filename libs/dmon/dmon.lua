@@ -12,6 +12,7 @@ if DMON_LINKLIB then
     linklib(DMON_LINKLIB)
   end
 else
+  cdefine 'DMON_API_DECL static'
   cdefine 'DMON_IMPL'
 end
 cinclude '"dmon.h"'
