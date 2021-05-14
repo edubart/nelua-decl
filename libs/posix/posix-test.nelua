@@ -9,6 +9,7 @@ require 'utime'
 require 'unistd'
 require 'sys.socket'
 require 'sys.stat'
+require 'sys.wait'
 
 -- dirent
 opendir('invalid-directory')

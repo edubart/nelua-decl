@@ -1,0 +1,63 @@
+## cinclude '<sys/wait.h>'
+global __sigval_t: type <cimport, nodecl> = @union{
+  sival_int: cint,
+  sival_ptr: pointer
+}
+global siginfo_t: type <cimport, nodecl> = @record{
+  si_signo: cint,
+  si_errno: cint,
+  si_code: cint,
+  __pad0: cint,
+  _sifields: union{
+    _pad: [28]cint,
+    _kill: record{
+      si_pid: cint,
+      si_uid: cuint
+    },
+    _timer: record{
+      si_tid: cint,
+      si_overrun: cint,
+      si_sigval: __sigval_t
+    },
+    _rt: record{
+      si_pid: cint,
+      si_uid: cuint,
+      si_sigval: __sigval_t
+    },
+    _sigchld: record{
+      si_pid: cint,
+      si_uid: cuint,
+      si_status: cint,
+      si_utime: clong,
+      si_stime: clong
+    },
+    _sigfault: record{
+      si_addr: pointer,
+      si_addr_lsb: cshort,
+      _bounds: union{
+        _addr_bnd: record{
+          _lower: pointer,
+          _upper: pointer
+        },
+        _pkey: uint32
+      }
+    },
+    _sigpoll: record{
+      si_band: clong,
+      si_fd: cint
+    },
+    _sigsys: record{
+      _call_addr: pointer,
+      _syscall: cint,
+      _arch: cuint
+    }
+  }
+}
+global idtype_t: type <cimport, nodecl, using> = @enum(cint){
+  P_ALL = 0,
+  P_PID = 1,
+  P_PGID = 2
+}
+global function wait(__stat_loc: *cint): cint <cimport, nodecl> end
+global function waitpid(__pid: cint, __stat_loc: *cint, __options: cint): cint <cimport, nodecl> end
+global function waitid(__idtype: idtype_t, __id: cuint, __infop: *siginfo_t, __options: cint): cint <cimport, nodecl> end

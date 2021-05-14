@@ -21,7 +21,8 @@ nldecl.platform_names = {
 
 nldecl.include_macros = {
   cint = {
-    '^SIG[A-Z]+$',
+    '^SIG[A-Z0-9]+$',
+    '^SA',
   },
 }
 
