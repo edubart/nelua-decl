@@ -8,6 +8,7 @@ else
 end
 cinclude '"minifs.h"'
 ]]
+global mfs_stat_info: type <cimport, nodecl, forwarddecl> = @record{}
 global mfs_handle: type = @pointer
 global mfs_ptr: type = @pointer
 global mfs_proc: type <cimport, nodecl> = @function()
@@ -27,6 +28,7 @@ global function mfs_fread(pFile: *FILE, pData: pointer, sizeInBytes: csize, pByt
 global function mfs_fwrite(pFile: *FILE, pData: pointer, sizeInBytes: csize, pBytesWritten: *csize): cint <cimport, nodecl> end
 global function mfs_fseek(pFile: *FILE, offset: int64, origin: cint): cint <cimport, nodecl> end
 global function mfs_ftell(pFile: *FILE): int64 <cimport, nodecl> end
+global function mfs_fstat(pFile: *FILE, info: *mfs_stat_info): cint <cimport, nodecl> end
 global function mfs_open_and_read_file(pFilePath: cstring, pFileSizeOut: *csize, ppFileData: *pointer): cint <cimport, nodecl> end
 global function mfs_open_and_read_text_file(pFilePath: cstring, pFileSizeOut: *csize, ppFileData: *cstring): cint <cimport, nodecl> end
 global function mfs_open_and_write_file(pFilePath: cstring, fileSize: csize, pFileData: pointer): cint <cimport, nodecl> end

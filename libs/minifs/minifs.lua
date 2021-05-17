@@ -6,10 +6,6 @@ nldecl.include_names = {
   FILE = true,
 }
 
-nldecl.exclude_names = {
-  mfs_fstat = true
-}
-
 nldecl.include_macros = {
   cint = {
     '^MFS_'
