@@ -21,7 +21,7 @@ if ccinfo.is_emscripten then
 else
   cdefine 'SOKOL_GLCORE33'
 end
-cinclude '"sokol_app.h"'
+cinclude 'sokol_app.h'
 if ccinfo.is_linux then
   linklib 'X11'
   linklib 'Xi'

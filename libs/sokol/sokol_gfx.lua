@@ -19,7 +19,7 @@ if ccinfo.is_emscripten then
 else
   cdefine 'SOKOL_GLCORE33'
 end
-cinclude '"sokol_gfx.h"'
+cinclude 'sokol_gfx.h'
 if ccinfo.is_windows then
   linklib 'gdi32'
   linklib 'opengl32'

@@ -16,6 +16,6 @@ else
   cdefine 'STBTT_STATIC'
   cdefine 'STB_TRUETYPE_IMPLEMENTATION'
 end
-cinclude '"stb_truetype.h"'
+cinclude 'stb_truetype.h'
 ]]
 ]=]

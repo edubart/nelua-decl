@@ -14,6 +14,6 @@ else
   cdefine 'SOKOL_ARGS_API_DECL static'
   cdefine 'SOKOL_ARGS_IMPL'
 end
-cinclude '"sokol_args.h"'
+cinclude 'sokol_args.h'
 ]]
 ]=]

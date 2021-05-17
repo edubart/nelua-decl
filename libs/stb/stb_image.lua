@@ -18,7 +18,7 @@ end
 if ccinfo.is_tcc then
   cdefine 'STBI_NO_SIMD'
 end
-cinclude '"stb_image.h"'
+cinclude 'stb_image.h'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
 ]=]

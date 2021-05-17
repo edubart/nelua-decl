@@ -47,8 +47,8 @@ else
   cdefine 'MA_API static'
   cdefine 'MINIAUDIO_IMPLEMENTATION'
 end
-cinclude '"miniaudio.h"'
-cinclude '"miniaudio_engine.h"'
+cinclude 'miniaudio.h'
+cinclude 'miniaudio_engine.h'
 if ccinfo.is_linux then
   linklib 'dl'
   linklib 'pthread'

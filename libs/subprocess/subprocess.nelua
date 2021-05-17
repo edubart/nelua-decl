@@ -1,4 +1,4 @@
-## cinclude '"subprocess.h"'
+## cinclude 'subprocess.h'
 global FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global subprocess_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global subprocess_option_e: type <cimport, nodecl, using, ctypedef> = @enum(cint){

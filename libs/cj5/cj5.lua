@@ -14,6 +14,6 @@ else
   cdefine 'CJ5_API static'
   cdefine 'CJ5_IMPLEMENT'
 end
-cinclude '"cj5.h"'
+cinclude 'cj5.h'
 ]]
 ]=]

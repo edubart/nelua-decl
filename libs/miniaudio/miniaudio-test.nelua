@@ -1,5 +1,3 @@
-## cflags '-I.'
-
 require 'miniaudio'
 require 'C.arg'
 require 'C.stdio'

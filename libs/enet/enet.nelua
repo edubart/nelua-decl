@@ -6,7 +6,7 @@ if ENET_LINKLIB then
 else
   cdefine 'ENET_IMPLEMENTATION'
 end
-cinclude '"enet.h"'
+cinclude 'enet.h'
 if ccinfo.is_windows then
   linklib 'ws2_32'
   linklib 'winmm'

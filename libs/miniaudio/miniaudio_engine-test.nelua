@@ -1,4 +1,3 @@
-## cflags '-I.'
 require 'miniaudio_engine'
 
 require 'C.arg'

@@ -15,6 +15,6 @@ else
   cdefine 'STB_IMAGE_WRITE_STATIC'
   cdefine 'STB_IMAGE_WRITE_IMPLEMENTATION'
 end
-cinclude '"stb_image_write.h"'
+cinclude 'stb_image_write.h'
 ]]
 ]=]

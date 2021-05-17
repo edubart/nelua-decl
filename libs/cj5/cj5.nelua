@@ -7,7 +7,7 @@ else
   cdefine 'CJ5_API static'
   cdefine 'CJ5_IMPLEMENT'
 end
-cinclude '"cj5.h"'
+cinclude 'cj5.h'
 ]]
 global cj5_token_type: type <cimport, nodecl, using> = @enum(cint){
   CJ5_TOKEN_OBJECT = 0,

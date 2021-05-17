@@ -15,7 +15,7 @@ else
   cdefine 'MCO_API static'
   cdefine 'MINICORO_IMPL'
 end
-cinclude '"minicoro.h"'
+cinclude 'minicoro.h'
 ]]
 ]=]
 

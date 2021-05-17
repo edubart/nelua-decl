@@ -1,11 +1,9 @@
-## cflags '-I.'
-
 require 'minifs'
 
 local info: mfs_file_info
 if mfs_get_file_info('Makefile', &info) == MFS_SUCCESS then
   print(&info.pFileName[0])
-  print('last modification', info.lastModifiedTime)
+  print('last modification!', info.lastModifiedTime)
   print('size', info.sizeInBytes)
 end
 

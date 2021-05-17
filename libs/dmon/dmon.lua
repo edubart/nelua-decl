@@ -15,7 +15,7 @@ else
   cdefine 'DMON_API_DECL static'
   cdefine 'DMON_IMPL'
 end
-cinclude '"dmon.h"'
+cinclude 'dmon.h'
 if ccinfo.is_linux then
   linklib 'pthread'
 end

@@ -21,6 +21,6 @@ if MINIFS_LINKLIB then
 else
   cdefine 'MINIFS_IMPLEMENTATION'
 end
-cinclude '"minifs.h"'
+cinclude 'minifs.h'
 ]]
 ]=]

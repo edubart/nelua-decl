@@ -7,7 +7,7 @@ else
   cdefine 'ZN_STATIC_API'
   cdefine 'ZN_IMPLEMENTATION'
 end
-cinclude '"znet.h"'
+cinclude 'znet.h'
 if ccinfo.is_windows then
   linklib 'ws2_32'
 end

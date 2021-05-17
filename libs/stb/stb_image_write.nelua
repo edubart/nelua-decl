@@ -7,7 +7,7 @@ else
   cdefine 'STB_IMAGE_WRITE_STATIC'
   cdefine 'STB_IMAGE_WRITE_IMPLEMENTATION'
 end
-cinclude '"stb_image_write.h"'
+cinclude 'stb_image_write.h'
 ]]
 global stbi_write_tga_with_rle: cint <cimport, nodecl>
 global stbi_write_png_compression_level: cint <cimport, nodecl>

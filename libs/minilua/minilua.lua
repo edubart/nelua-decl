@@ -65,7 +65,7 @@ if MINILUA_LINKLIB then
 else
   cdefine 'LUA_IMPL'
 end
-cinclude '"minilua.h"'
+cinclude 'minilua.h'
 if ccinfo.is_linux then
   linklib 'dl'
 end

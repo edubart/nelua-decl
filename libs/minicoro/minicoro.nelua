@@ -7,7 +7,7 @@ else
   cdefine 'MCO_API static'
   cdefine 'MINICORO_IMPL'
 end
-cinclude '"minicoro.h"'
+cinclude 'minicoro.h'
 ]]
 global mco_state: type <cimport, nodecl, using> = @enum(cint){
   MCO_DEAD = 0,

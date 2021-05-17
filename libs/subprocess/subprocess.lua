@@ -6,5 +6,5 @@ nldecl.include_names = {
 }
 
 nldecl.prepend_code = [=[
-## cinclude '"subprocess.h"'
+## cinclude 'subprocess.h'
 ]=]

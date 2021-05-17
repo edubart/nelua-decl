@@ -24,7 +24,7 @@ if C89THREAD_LINKLIB then
 else
   cdefine 'C89THREAD_IMPLEMENTATION'
 end
-cinclude '"c89thread.h"'
+cinclude 'c89thread.h'
 if ccinfo.is_linux then
   linklib 'pthread'
 end

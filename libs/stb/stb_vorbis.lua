@@ -13,7 +13,7 @@ if STB_VORBIS_LINKLIB then
   end
   cdefine 'STB_VORBIS_HEADER_ONLY'
 end
-cinclude '"stb_vorbis.h"'
+cinclude 'stb_vorbis.h'
 ]]
 local FILE <cimport, nodecl, forwarddecl> = @record{}
 ]=]

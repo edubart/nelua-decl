@@ -15,6 +15,6 @@ else
   cdefine 'PHYSFS_IMPL'
   cdefine 'PHYSFS_PLATFORM_IMPL'
 end
-cinclude '"miniphysfs.h"'
+cinclude 'miniphysfs.h'
 ]]
 ]=]

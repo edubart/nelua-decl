@@ -1,4 +1,4 @@
-## cinclude '"c89atomic.h"'
+## cinclude 'c89atomic.h'
 
 -- Types
 global c89atomic_memory_order = @cint

@@ -14,7 +14,7 @@ else
   cdefine 'SOKOL_TIME_API_DECL static'
   cdefine 'SOKOL_TIME_IMPL'
 end
-cinclude '"sokol_time.h"'
+cinclude 'sokol_time.h'
 cemitdecl [==[
 #ifdef WIN32
 #include <windows.h>

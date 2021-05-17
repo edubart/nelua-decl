@@ -6,7 +6,7 @@ if MINIFS_LINKLIB then
 else
   cdefine 'MINIFS_IMPLEMENTATION'
 end
-cinclude '"minifs.h"'
+cinclude 'minifs.h'
 ]]
 global mfs_stat_info: type <cimport, nodecl, forwarddecl> = @record{}
 global mfs_handle: type = @pointer
