@@ -12,14 +12,13 @@ nldecl.typedefs_names = {}
 nldecl.exclude_names = {}
 nldecl.platform_names = {}
 nldecl.include_macros = {}
+nldecl.opaque_names = {}
 
 nldecl.predeclared_names = {}
 nldecl.declared_names = {}
 nldecl.type_names = {}
 nldecl.declared_typedefs_names = {}
-
-nldecl.USE_KNOWN_FIELDS = 1
-nldecl.OMIT_ALL_FIELDS = 2
+nldecl.incomplete_types = {}
 
 local function dump(...)
   io.stderr:write(table.concat({...}, ' ') .. '\n')
@@ -33,7 +32,7 @@ local function nodewarn(node, msg)
 end
 
 function nldecl.is_name_included(name)
-  if nldecl.platform_names[name] then
+  if nldecl.opaque_names[name] then
     return true
   end
   if nldecl.force_include_names[name] then
@@ -118,7 +117,7 @@ end
 
 local function scalar_type(node, decl)
   local typename = get_type_node_name(node)
-  if not decl and typename and nldecl.include_names[typename] then
+  if not decl and typename and (nldecl.include_names[typename] or nldecl.opaque_names[typename]) then
     emitter:add(typename)
   else
     local nltype = gccutils.node_ctype2nltype(node)
@@ -160,16 +159,18 @@ function nldecl.void_type()
   emitter:add('void')
 end
 
-local function visit_fields(node, canskipfields)
+local function visit_fields(node)
   local unnamedcount = 1
   for fieldnode in chain(node:fields()) do
     local fieldname = fieldnode:name() and fieldnode:name():value()
     local fieldtype = fieldnode:type()
-    local fieldtypename = gccutils.get_inner_id(fieldtype)
-    if canskipfields and fieldtypename and
+    local fieldtypename = get_type_node_name(fieldtype)
+    if fieldtypename and
+      (fieldtype:code() == 'record_type' or fieldtype:code() == 'union_type') and
       not gccutils.is_primitive_name(fieldtypename) and
       not nldecl.is_name_included(fieldtypename) then
       -- ignore
+      nldecl.incomplete_types[node] = true
     else
       local annotations = {}
       if fieldnode:bit_field() then
@@ -200,7 +201,7 @@ local function visit_fields(node, canskipfields)
   end
 end
 
-function nldecl.record_type(node, decl, canskipfields)
+function nldecl.record_type(node, decl)
   local typename = get_type_node_name(node)
   if not decl and typename then
     assert(not node:anonymous())
@@ -212,12 +213,12 @@ function nldecl.record_type(node, decl, canskipfields)
   end
   emitter:add_ln('record{')
   emitter:inc_indent()
-  visit_fields(node, canskipfields)
+  visit_fields(node)
   emitter:dec_indent()
   emitter:add_indent('}')
 end
 
-function nldecl.union_type(node, decl, canskipfields)
+function nldecl.union_type(node, decl)
   local typename = get_type_node_name(node)
   if not decl and typename then
     assert(not node:anonymous())
@@ -229,7 +230,7 @@ function nldecl.union_type(node, decl, canskipfields)
   end
   emitter:add_ln('union{')
   emitter:inc_indent()
-  visit_fields(node, canskipfields)
+  visit_fields(node)
   emitter:dec_indent()
   emitter:add_indent('}')
 end
@@ -357,7 +358,6 @@ local function visit_type_def(typename, type, is_typedef)
   local is_function = is_pointer and type:type():code() == 'function_type'
   local is_scalar = type:code() == 'integer_type' or type:code() == 'real_type'
   local is_prefixed = (is_enum or is_record or is_union)
-  local is_composite = (is_record or is_union)
   local typealias
   if is_prefixed and nldecl.typedefs_names[typename] then
     typealias = typename
@@ -367,6 +367,9 @@ local function visit_type_def(typename, type, is_typedef)
   if not nldecl.can_decl(typename, forwarddecl) then return end
   if nldecl.predeclared_names[typename] then
     emitter:add(typename..' ')
+    nldecl.declared_names[typename] = true
+  elseif nldecl.opaque_names[typename] then
+    emitter:add('global '..typename..': type ')
     nldecl.declared_names[typename] = true
   else
     emitter:add('global '..typename..': type ')
@@ -384,13 +387,13 @@ local function visit_type_def(typename, type, is_typedef)
       if is_prefixed then
         nldecl.type_names[type:main_variant()] = typename
       end
-      if nldecl.platform_names[typename] then
-        table.insert(annotations, 'cincomplete')
-      end
       if is_enum then
         table.insert(annotations, 'using')
       end
       emitter:add(function()
+        if nldecl.incomplete_types[type] then
+          table.insert(annotations, 'cincomplete')
+        end
         if is_prefixed and not is_typedef and not nldecl.declared_typedefs_names[typename] then
           if typealias then
             table.insert(annotations, "ctypedef '"..typealias.."'")
@@ -402,20 +405,13 @@ local function visit_type_def(typename, type, is_typedef)
       end)
     end
   end
+
   local decl = true
-  if nldecl.platform_names[typename] == nldecl.OMIT_ALL_FIELDS then
-    if is_composite then
-      emitter:add('= @record{}')
-    else
-      emitter:add('<cimport, nodecl, cincomplete> = @record{}')
-    end
+  if nldecl.opaque_names[typename] then
+    emitter:add('<cimport, nodecl, cincomplete> = @record{}')
   else
     emitter:add('= @')
-    local canskipfields
-    if nldecl.platform_names[typename] == nldecl.USE_KNOWN_FIELDS then
-      canskipfields = true
-    end
-    visit(type, decl, canskipfields)
+    visit(type, decl)
   end
   emitter:add_ln()
 end
@@ -448,7 +444,7 @@ function nldecl.type_decl(node)
       kind == 'integer_type' or
       kind == 'real_type' or
       kind == 'array_type') and
-     (not nldecl.include_names[typename]) then
+     not (nldecl.include_names[typename] or nldecl.opaque_names[typename]) then
     -- ignore aliases for these types
     return
   end

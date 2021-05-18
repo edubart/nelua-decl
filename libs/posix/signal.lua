@@ -13,10 +13,9 @@ nldecl.exclude_names = {
   fpregset_t = true,
 }
 
-nldecl.platform_names = {
-  sigcontext = nldecl.OMIT_ALL_FIELDS,
-  mcontext_t = nldecl.USE_KNOWN_FIELDS,
-  ucontext_t = nldecl.USE_KNOWN_FIELDS,
+nldecl.opaque_names = {
+  sigcontext = true,
+  mcontext_t = true,
 }
 
 nldecl.include_macros = {

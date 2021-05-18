@@ -166,10 +166,7 @@ global stack_t: type <cimport, nodecl> = @record{
   ss_flags: cint,
   ss_size: csize
 }
-global mcontext_t: type <cimport, nodecl, cincomplete> = @record{
-  __gregs: [23]clonglong,
-  __reserved1: [8]culonglong
-}
+global mcontext_t: type <cimport, nodecl, cincomplete> = @record{}
 global ucontext_t: type <cimport, nodecl, forwarddecl, cincomplete> = @record{}
 ucontext_t = @record{
   __uc_flags: culong,

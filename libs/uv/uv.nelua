@@ -4,47 +4,65 @@ linklib 'uv'
 cflags '-fno-strict-aliasing'
 ]]
 global FILE: type <cimport, nodecl, forwarddecl> = @record{}
-global sockaddr: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+global DIR: type <cimport, nodecl, forwarddecl> = @record{}
+global sockaddr: type <cimport, nodecl, ctypedef> = @record{
+  sa_family: cushort,
   sa_data: [14]cchar
 }
-global in_addr: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+global in_addr: type <cimport, nodecl, ctypedef> = @record{
+  s_addr: cuint
 }
-global in6_addr: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+global in6_addr: type <cimport, nodecl, ctypedef> = @record{
   __in6_u: union{
     __u6_addr8: [16]uint8,
     __u6_addr16: [8]uint16,
     __u6_addr32: [4]uint32
   }
 }
-global sockaddr_in: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+global sockaddr_in: type <cimport, nodecl, ctypedef> = @record{
+  sin_family: cushort,
+  sin_port: cushort,
   sin_addr: in_addr,
   sin_zero: [8]cuchar
 }
-global sockaddr_in6: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+global sockaddr_in6: type <cimport, nodecl, ctypedef> = @record{
+  sin6_family: cushort,
+  sin6_port: cushort,
   sin6_flowinfo: uint32,
   sin6_addr: in6_addr,
   sin6_scope_id: uint32
 }
-global addrinfo: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global addrinfo: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 addrinfo = @record{
   ai_flags: cint,
   ai_family: cint,
   ai_socktype: cint,
   ai_protocol: cint,
+  ai_addrlen: cuint,
   ai_addr: *sockaddr,
   ai_canonname: cstring,
   ai_next: *addrinfo
 }
-global uv_loop_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
-global uv_buf_t: type <cimport, nodecl, cincomplete> = @record{
+global uv_loop_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global uv__io_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_buf_t: type <cimport, nodecl> = @record{
   base: cstring,
   len: csize
 }
+global uv_file: type <cimport, nodecl, cincomplete> = @record{}
+global uv_os_sock_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_os_fd_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_pid_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_once_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_thread_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_mutex_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_rwlock_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_sem_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_cond_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_key_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_barrier_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_gid_t: type <cimport, nodecl, cincomplete> = @record{}
+global uv_uid_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_lib_t: type <cimport, nodecl, cincomplete> = @record{}
 global uv_errno_t: type <cimport, nodecl, using> = @enum(cint){
   UV_E2BIG = -7,
@@ -165,51 +183,51 @@ global uv_req_type: type <cimport, nodecl, using> = @enum(cint){
   UV_REQ_TYPE_MAX = 11
 }
 global uv_loop_t: type = @uv_loop_s
-global uv_handle_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_handle_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_handle_t: type = @uv_handle_s
-global uv_dir_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_dir_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_dir_t: type = @uv_dir_s
-global uv_stream_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_stream_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_stream_t: type = @uv_stream_s
-global uv_tcp_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_tcp_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_tcp_t: type = @uv_tcp_s
-global uv_udp_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_udp_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_udp_t: type = @uv_udp_s
-global uv_pipe_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_pipe_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_pipe_t: type = @uv_pipe_s
 global uv_tty_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
 global uv_tty_t: type = @uv_tty_s
-global uv_poll_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_poll_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_poll_t: type = @uv_poll_s
-global uv_timer_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_timer_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_timer_t: type = @uv_timer_s
-global uv_prepare_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_prepare_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_prepare_t: type = @uv_prepare_s
-global uv_check_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_check_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_check_t: type = @uv_check_s
-global uv_idle_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_idle_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_idle_t: type = @uv_idle_s
-global uv_async_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_async_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_async_t: type = @uv_async_s
-global uv_process_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_process_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_process_t: type = @uv_process_s
-global uv_fs_event_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_fs_event_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_fs_event_t: type = @uv_fs_event_s
 global uv_fs_poll_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_fs_poll_t: type = @uv_fs_poll_s
-global uv_signal_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_signal_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_signal_t: type = @uv_signal_s
-global uv_req_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_req_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_req_t: type = @uv_req_s
 global uv_getaddrinfo_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
 global uv_getaddrinfo_t: type = @uv_getaddrinfo_s
 global uv_getnameinfo_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
 global uv_getnameinfo_t: type = @uv_getnameinfo_s
-global uv_shutdown_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_shutdown_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_shutdown_t: type = @uv_shutdown_s
-global uv_write_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_write_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_write_t: type = @uv_write_s
-global uv_connect_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global uv_connect_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
 global uv_connect_t: type = @uv_connect_s
 global uv_udp_send_s: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
 global uv_udp_send_t: type = @uv_udp_send_s
@@ -367,10 +385,10 @@ global function uv_print_active_handles(loop: *uv_loop_t, stream: *FILE) <cimpor
 global function uv_close(handle: *uv_handle_t, close_cb: uv_close_cb) <cimport, nodecl> end
 global function uv_send_buffer_size(handle: *uv_handle_t, value: *cint): cint <cimport, nodecl> end
 global function uv_recv_buffer_size(handle: *uv_handle_t, value: *cint): cint <cimport, nodecl> end
-global function uv_fileno(handle: *uv_handle_t, fd: *cint): cint <cimport, nodecl> end
+global function uv_fileno(handle: *uv_handle_t, fd: *uv_os_fd_t): cint <cimport, nodecl> end
 global function uv_buf_init(base: cstring, len: cuint): uv_buf_t <cimport, nodecl> end
-global function uv_pipe(fds: *cint, read_flags: cint, write_flags: cint): cint <cimport, nodecl> end
-global function uv_socketpair(type: cint, protocol: cint, socket_vector: *cint, flags0: cint, flags1: cint): cint <cimport, nodecl> end
+global function uv_pipe(fds: *uv_file, read_flags: cint, write_flags: cint): cint <cimport, nodecl> end
+global function uv_socketpair(type: cint, protocol: cint, socket_vector: *uv_os_sock_t, flags0: cint, flags1: cint): cint <cimport, nodecl> end
 uv_stream_s = @record{
   data: pointer,
   loop: *uv_loop_t,
@@ -388,6 +406,7 @@ uv_stream_s = @record{
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  io_watcher: uv__io_t,
   write_queue: [2]pointer,
   write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
@@ -438,6 +457,7 @@ uv_tcp_s = @record{
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  io_watcher: uv__io_t,
   write_queue: [2]pointer,
   write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
@@ -447,7 +467,7 @@ uv_tcp_s = @record{
 }
 global function uv_tcp_init(a1: *uv_loop_t, handle: *uv_tcp_t): cint <cimport, nodecl> end
 global function uv_tcp_init_ex(a1: *uv_loop_t, handle: *uv_tcp_t, flags: cuint): cint <cimport, nodecl> end
-global function uv_tcp_open(handle: *uv_tcp_t, sock: cint): cint <cimport, nodecl> end
+global function uv_tcp_open(handle: *uv_tcp_t, sock: uv_os_sock_t): cint <cimport, nodecl> end
 global function uv_tcp_nodelay(handle: *uv_tcp_t, enable: cint): cint <cimport, nodecl> end
 global function uv_tcp_keepalive(handle: *uv_tcp_t, enable: cint, delay: cuint): cint <cimport, nodecl> end
 global function uv_tcp_simultaneous_accepts(handle: *uv_tcp_t, enable: cint): cint <cimport, nodecl> end
@@ -493,6 +513,7 @@ uv_udp_s = @record{
   send_queue_count: csize,
   alloc_cb: uv_alloc_cb,
   recv_cb: uv_udp_recv_cb,
+  io_watcher: uv__io_t,
   write_queue: [2]pointer,
   write_completed_queue: [2]pointer
 }
@@ -505,12 +526,13 @@ uv_udp_send_s = @record{
   queue: [2]pointer,
   nbufs: cuint,
   bufs: *uv_buf_t,
+  status: clong,
   send_cb: uv_udp_send_cb,
   bufsml: [4]uv_buf_t
 }
 global function uv_udp_init(a1: *uv_loop_t, handle: *uv_udp_t): cint <cimport, nodecl> end
 global function uv_udp_init_ex(a1: *uv_loop_t, handle: *uv_udp_t, flags: cuint): cint <cimport, nodecl> end
-global function uv_udp_open(handle: *uv_udp_t, sock: cint): cint <cimport, nodecl> end
+global function uv_udp_open(handle: *uv_udp_t, sock: uv_os_sock_t): cint <cimport, nodecl> end
 global function uv_udp_bind(handle: *uv_udp_t, addr: *sockaddr, flags: cuint): cint <cimport, nodecl> end
 global function uv_udp_connect(handle: *uv_udp_t, addr: *sockaddr): cint <cimport, nodecl> end
 global function uv_udp_getpeername(handle: *uv_udp_t, name: *sockaddr, namelen: *cint): cint <cimport, nodecl> end
@@ -546,6 +568,7 @@ uv_tty_s = @record{
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  io_watcher: uv__io_t,
   write_queue: [2]pointer,
   write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
@@ -563,13 +586,13 @@ global uv_tty_vtermstate_t: type <cimport, nodecl, using> = @enum(cint){
   UV_TTY_SUPPORTED = 0,
   UV_TTY_UNSUPPORTED = 1
 }
-global function uv_tty_init(a1: *uv_loop_t, a2: *uv_tty_t, fd: cint, readable: cint): cint <cimport, nodecl> end
+global function uv_tty_init(a1: *uv_loop_t, a2: *uv_tty_t, fd: uv_file, readable: cint): cint <cimport, nodecl> end
 global function uv_tty_set_mode(a1: *uv_tty_t, mode: uv_tty_mode_t): cint <cimport, nodecl> end
 global function uv_tty_reset_mode(): cint <cimport, nodecl> end
 global function uv_tty_get_winsize(a1: *uv_tty_t, width: *cint, height: *cint): cint <cimport, nodecl> end
 global function uv_tty_set_vterm_state(state: uv_tty_vtermstate_t) <cimport, nodecl> end
 global function uv_tty_get_vterm_state(state: *uv_tty_vtermstate_t): cint <cimport, nodecl> end
-global function uv_guess_handle(file: cint): uv_handle_type <cimport, nodecl> end
+global function uv_guess_handle(file: uv_file): uv_handle_type <cimport, nodecl> end
 uv_pipe_s = @record{
   data: pointer,
   loop: *uv_loop_t,
@@ -587,6 +610,7 @@ uv_pipe_s = @record{
   read_cb: uv_read_cb,
   connect_req: *uv_connect_t,
   shutdown_req: *uv_shutdown_t,
+  io_watcher: uv__io_t,
   write_queue: [2]pointer,
   write_completed_queue: [2]pointer,
   connection_cb: uv_connection_cb,
@@ -597,7 +621,7 @@ uv_pipe_s = @record{
   pipe_fname: cstring
 }
 global function uv_pipe_init(a1: *uv_loop_t, handle: *uv_pipe_t, ipc: cint): cint <cimport, nodecl> end
-global function uv_pipe_open(a1: *uv_pipe_t, file: cint): cint <cimport, nodecl> end
+global function uv_pipe_open(a1: *uv_pipe_t, file: uv_file): cint <cimport, nodecl> end
 global function uv_pipe_bind(handle: *uv_pipe_t, name: cstring): cint <cimport, nodecl> end
 global function uv_pipe_connect(req: *uv_connect_t, handle: *uv_pipe_t, name: cstring, cb: uv_connect_cb) <cimport, nodecl> end
 global function uv_pipe_getsockname(handle: *uv_pipe_t, buffer: cstring, size: *csize): cint <cimport, nodecl> end
@@ -619,6 +643,7 @@ uv_poll_s = @record{
   next_closing: *uv_handle_t,
   flags: cuint,
   poll_cb: uv_poll_cb,
+  io_watcher: uv__io_t
 }
 global uv_poll_event: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   UV_READABLE = 1,
@@ -627,7 +652,7 @@ global uv_poll_event: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   UV_PRIORITIZED = 8
 }
 global function uv_poll_init(loop: *uv_loop_t, handle: *uv_poll_t, fd: cint): cint <cimport, nodecl> end
-global function uv_poll_init_socket(loop: *uv_loop_t, handle: *uv_poll_t, socket: cint): cint <cimport, nodecl> end
+global function uv_poll_init_socket(loop: *uv_loop_t, handle: *uv_poll_t, socket: uv_os_sock_t): cint <cimport, nodecl> end
 global function uv_poll_start(handle: *uv_poll_t, events: cint, cb: uv_poll_cb): cint <cimport, nodecl> end
 global function uv_poll_stop(handle: *uv_poll_t): cint <cimport, nodecl> end
 uv_prepare_s = @record{
@@ -780,8 +805,8 @@ global uv_process_options_s: type <cimport, nodecl, ctypedef> = @record{
   flags: cuint,
   stdio_count: cint,
   stdio: *uv_stdio_container_t,
-  uid: cuint,
-  gid: cuint
+  uid: uv_uid_t,
+  gid: uv_gid_t
 }
 global uv_process_options_t: type = @uv_process_options_s
 global uv_process_flags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
@@ -813,7 +838,7 @@ uv_process_s = @record{
 global function uv_spawn(loop: *uv_loop_t, handle: *uv_process_t, options: *uv_process_options_t): cint <cimport, nodecl> end
 global function uv_process_kill(a1: *uv_process_t, signum: cint): cint <cimport, nodecl> end
 global function uv_kill(pid: cint, signum: cint): cint <cimport, nodecl> end
-global function uv_process_get_pid(a1: *uv_process_t): cint <cimport, nodecl> end
+global function uv_process_get_pid(a1: *uv_process_t): uv_pid_t <cimport, nodecl> end
 uv_work_s = @record{
   data: pointer,
   type: uv_req_type,
@@ -891,8 +916,8 @@ global function uv_get_process_title(buffer: cstring, size: csize): cint <cimpor
 global function uv_set_process_title(title: cstring): cint <cimport, nodecl> end
 global function uv_resident_set_memory(rss: *csize): cint <cimport, nodecl> end
 global function uv_uptime(uptime: *float64): cint <cimport, nodecl> end
-global function uv_get_osfhandle(fd: cint): cint <cimport, nodecl> end
-global function uv_open_osfhandle(os_fd: cint): cint <cimport, nodecl> end
+global function uv_get_osfhandle(fd: cint): uv_os_fd_t <cimport, nodecl> end
+global function uv_open_osfhandle(os_fd: uv_os_fd_t): cint <cimport, nodecl> end
 global uv_timeval_t: type <cimport, nodecl> = @record{
   tv_sec: clong,
   tv_usec: clong
@@ -924,10 +949,10 @@ global function uv_os_homedir(buffer: cstring, size: *csize): cint <cimport, nod
 global function uv_os_tmpdir(buffer: cstring, size: *csize): cint <cimport, nodecl> end
 global function uv_os_get_passwd(pwd: *uv_passwd_t): cint <cimport, nodecl> end
 global function uv_os_free_passwd(pwd: *uv_passwd_t) <cimport, nodecl> end
-global function uv_os_getpid(): cint <cimport, nodecl> end
-global function uv_os_getppid(): cint <cimport, nodecl> end
-global function uv_os_getpriority(pid: cint, priority: *cint): cint <cimport, nodecl> end
-global function uv_os_setpriority(pid: cint, priority: cint): cint <cimport, nodecl> end
+global function uv_os_getpid(): uv_pid_t <cimport, nodecl> end
+global function uv_os_getppid(): uv_pid_t <cimport, nodecl> end
+global function uv_os_getpriority(pid: uv_pid_t, priority: *cint): cint <cimport, nodecl> end
+global function uv_os_setpriority(pid: uv_pid_t, priority: cint): cint <cimport, nodecl> end
 global function uv_cpu_info(cpu_infos: **uv_cpu_info_t, count: *cint): cint <cimport, nodecl> end
 global function uv_free_cpu_info(cpu_infos: *uv_cpu_info_t, count: cint) <cimport, nodecl> end
 global function uv_interface_addresses(addresses: **uv_interface_address_t, count: *cint): cint <cimport, nodecl> end
@@ -988,6 +1013,7 @@ uv_dir_s = @record{
   dirents: *uv_dirent_t,
   nentries: csize,
   reserved: [4]pointer,
+  dir: *DIR
 }
 uv_fs_s = @record{
   data: pointer,
@@ -996,16 +1022,19 @@ uv_fs_s = @record{
   fs_type: uv_fs_type,
   loop: *uv_loop_t,
   cb: uv_fs_cb,
+  result: clong,
   ptr: pointer,
   path: cstring,
   statbuf: uv_stat_t,
   new_path: cstring,
-  file: cint,
+  file: uv_file,
   flags: cint,
+  mode: cuint,
   nbufs: cuint,
   bufs: *uv_buf_t,
-  uid: cuint,
-  gid: cuint,
+  off: clong,
+  uid: uv_uid_t,
+  gid: uv_gid_t,
   atime: float64,
   mtime: float64,
   bufsml: [4]uv_buf_t
@@ -1017,11 +1046,11 @@ global function uv_fs_get_ptr(a1: *uv_fs_t): pointer <cimport, nodecl> end
 global function uv_fs_get_path(a1: *uv_fs_t): cstring <cimport, nodecl> end
 global function uv_fs_get_statbuf(a1: *uv_fs_t): *uv_stat_t <cimport, nodecl> end
 global function uv_fs_req_cleanup(req: *uv_fs_t) <cimport, nodecl> end
-global function uv_fs_close(loop: *uv_loop_t, req: *uv_fs_t, file: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_close(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_open(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, flags: cint, mode: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_read(loop: *uv_loop_t, req: *uv_fs_t, file: cint, bufs: *uv_buf_t, nbufs: cuint, offset: int64, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_read(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, bufs: *uv_buf_t, nbufs: cuint, offset: int64, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_unlink(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_write(loop: *uv_loop_t, req: *uv_fs_t, file: cint, bufs: *uv_buf_t, nbufs: cuint, offset: int64, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_write(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, bufs: *uv_buf_t, nbufs: cuint, offset: int64, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_copyfile(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, new_path: cstring, flags: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_mkdir(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, mode: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_mkdtemp(loop: *uv_loop_t, req: *uv_fs_t, tpl: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
@@ -1033,26 +1062,26 @@ global function uv_fs_opendir(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, cb
 global function uv_fs_readdir(loop: *uv_loop_t, req: *uv_fs_t, dir: *uv_dir_t, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_closedir(loop: *uv_loop_t, req: *uv_fs_t, dir: *uv_dir_t, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_stat(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_fstat(loop: *uv_loop_t, req: *uv_fs_t, file: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_fstat(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_rename(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, new_path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_fsync(loop: *uv_loop_t, req: *uv_fs_t, file: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_fdatasync(loop: *uv_loop_t, req: *uv_fs_t, file: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_ftruncate(loop: *uv_loop_t, req: *uv_fs_t, file: cint, offset: int64, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_sendfile(loop: *uv_loop_t, req: *uv_fs_t, out_fd: cint, in_fd: cint, in_offset: int64, length: csize, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_fsync(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_fdatasync(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_ftruncate(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, offset: int64, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_sendfile(loop: *uv_loop_t, req: *uv_fs_t, out_fd: uv_file, in_fd: uv_file, in_offset: int64, length: csize, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_access(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, mode: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_chmod(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, mode: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_utime(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, atime: float64, mtime: float64, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_futime(loop: *uv_loop_t, req: *uv_fs_t, file: cint, atime: float64, mtime: float64, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_futime(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, atime: float64, mtime: float64, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_lutime(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, atime: float64, mtime: float64, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_lstat(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_link(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, new_path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_symlink(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, new_path: cstring, flags: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_readlink(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_realpath(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_fchmod(loop: *uv_loop_t, req: *uv_fs_t, file: cint, mode: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_chown(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, uid: cuint, gid: cuint, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_fchown(loop: *uv_loop_t, req: *uv_fs_t, file: cint, uid: cuint, gid: cuint, cb: uv_fs_cb): cint <cimport, nodecl> end
-global function uv_fs_lchown(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, uid: cuint, gid: cuint, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_fchmod(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, mode: cint, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_chown(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, uid: uv_uid_t, gid: uv_gid_t, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_fchown(loop: *uv_loop_t, req: *uv_fs_t, file: uv_file, uid: uv_uid_t, gid: uv_gid_t, cb: uv_fs_cb): cint <cimport, nodecl> end
+global function uv_fs_lchown(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, uid: uv_uid_t, gid: uv_gid_t, cb: uv_fs_cb): cint <cimport, nodecl> end
 global function uv_fs_statfs(loop: *uv_loop_t, req: *uv_fs_t, path: cstring, cb: uv_fs_cb): cint <cimport, nodecl> end
 global uv_fs_event: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   UV_RENAME = 1,
@@ -1190,14 +1219,14 @@ global function uv_barrier_destroy(barrier: *uv_barrier_t) <cimport, nodecl> end
 global function uv_barrier_wait(barrier: *uv_barrier_t): cint <cimport, nodecl> end
 global function uv_cond_wait(cond: *uv_cond_t, mutex: *uv_mutex_t) <cimport, nodecl> end
 global function uv_cond_timedwait(cond: *uv_cond_t, mutex: *uv_mutex_t, timeout: uint64): cint <cimport, nodecl> end
-global function uv_once(guard: *cint, callback: function()) <cimport, nodecl> end
-global function uv_key_create(key: *cuint): cint <cimport, nodecl> end
-global function uv_key_delete(key: *cuint) <cimport, nodecl> end
-global function uv_key_get(key: *cuint): pointer <cimport, nodecl> end
-global function uv_key_set(key: *cuint, value: pointer) <cimport, nodecl> end
+global function uv_once(guard: *uv_once_t, callback: function()) <cimport, nodecl> end
+global function uv_key_create(key: *uv_key_t): cint <cimport, nodecl> end
+global function uv_key_delete(key: *uv_key_t) <cimport, nodecl> end
+global function uv_key_get(key: *uv_key_t): pointer <cimport, nodecl> end
+global function uv_key_set(key: *uv_key_t, value: pointer) <cimport, nodecl> end
 global function uv_gettimeofday(tv: *uv_timeval64_t): cint <cimport, nodecl> end
 global uv_thread_cb: type <cimport, nodecl> = @function(pointer)
-global function uv_thread_create(tid: *culong, entry: uv_thread_cb, arg: pointer): cint <cimport, nodecl> end
+global function uv_thread_create(tid: *uv_thread_t, entry: uv_thread_cb, arg: pointer): cint <cimport, nodecl> end
 global uv_thread_create_flags: type <cimport, nodecl, using> = @enum(cint){
   UV_THREAD_NO_FLAGS = 0,
   UV_THREAD_HAS_STACK_SIZE = 1
@@ -1207,10 +1236,10 @@ global uv_thread_options_s: type <cimport, nodecl, ctypedef> = @record{
   stack_size: csize
 }
 global uv_thread_options_t: type = @uv_thread_options_s
-global function uv_thread_create_ex(tid: *culong, params: *uv_thread_options_t, entry: uv_thread_cb, arg: pointer): cint <cimport, nodecl> end
-global function uv_thread_self(): culong <cimport, nodecl> end
-global function uv_thread_join(tid: *culong): cint <cimport, nodecl> end
-global function uv_thread_equal(t1: *culong, t2: *culong): cint <cimport, nodecl> end
+global function uv_thread_create_ex(tid: *uv_thread_t, params: *uv_thread_options_t, entry: uv_thread_cb, arg: pointer): cint <cimport, nodecl> end
+global function uv_thread_self(): uv_thread_t <cimport, nodecl> end
+global function uv_thread_join(tid: *uv_thread_t): cint <cimport, nodecl> end
+global function uv_thread_equal(t1: *uv_thread_t, t2: *uv_thread_t): cint <cimport, nodecl> end
 global uv_any_handle: type <cimport, nodecl, ctypedef> = @union{
   async: uv_async_t,
   check: uv_check_t,
@@ -1255,6 +1284,7 @@ uv_loop_s = @record{
   backend_fd: cint,
   pending_queue: [2]pointer,
   watcher_queue: [2]pointer,
+  watchers: **uv__io_t,
   nwatchers: cuint,
   nfds: cuint,
   wq: [2]pointer,
@@ -1268,6 +1298,7 @@ uv_loop_s = @record{
   idle_handles: [2]pointer,
   async_handles: [2]pointer,
   async_unused: function(),
+  async_io_watcher: uv__io_t,
   async_wfd: cint,
   timer_heap: record{
     min: pointer,
@@ -1276,8 +1307,10 @@ uv_loop_s = @record{
   timer_counter: uint64,
   time: uint64,
   signal_pipefd: [2]cint,
+  signal_io_watcher: uv__io_t,
   child_watcher: uv_signal_t,
   emfile_fd: cint,
+  inotify_read_watcher: uv__io_t,
   inotify_watchers: pointer,
   inotify_fd: cint
 }

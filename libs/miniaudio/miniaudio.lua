@@ -7,14 +7,17 @@ nldecl.include_names = {
   ma_bool8 = true,
   ma_handle = true,
   ma_result = true,
-  ma_spinlock = true,
 }
 
-nldecl.exclude_names = {
+nldecl.opaque_names = {
+  ma_spinlock = true,
   ma_thread = true,
   ma_mutex = true,
   ma_event = true,
   ma_semaphore = true,
+}
+
+nldecl.exclude_names = {
   MA_SIZE_MAX = true,
   MA_INLINE = true,
   MA_API = true,

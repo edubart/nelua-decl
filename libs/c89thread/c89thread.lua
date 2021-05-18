@@ -4,15 +4,14 @@ nldecl.include_names = {
   '^c89',
   '^C89',
   timespec = true,
-  c89thrd_t = true,
 }
 
-nldecl.platform_names = {
-  c89mtx_t = nldecl.OMIT_ALL_FIELDS,
-  c89cnd_t = nldecl.OMIT_ALL_FIELDS,
-  c89sem_t = nldecl.OMIT_ALL_FIELDS,
-  c89evnt_t = nldecl.OMIT_ALL_FIELDS,
-  c89thrd_t = nldecl.OMIT_ALL_FIELDS,
+nldecl.opaque_names = {
+  c89mtx_t = true,
+  c89cnd_t = true,
+  c89sem_t = true,
+  c89evnt_t = true,
+  c89thrd_t = true,
 }
 
 nldecl.prepend_code = [=[

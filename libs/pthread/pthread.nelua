@@ -7,62 +7,6 @@ global timespec: type <cimport, nodecl, ctypedef> = @record{
 global sched_param: type <cimport, nodecl, ctypedef> = @record{
   sched_priority: cint
 }
-global __pthread_internal_list: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-__pthread_internal_list = @record{
-  __prev: *__pthread_internal_list,
-  __next: *__pthread_internal_list
-}
-global __pthread_list_t: type = @__pthread_internal_list
-global __pthread_internal_slist: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-__pthread_internal_slist = @record{
-  __next: *__pthread_internal_slist
-}
-global __pthread_slist_t: type = @__pthread_internal_slist
-global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
-  __lock: cint,
-  __count: cuint,
-  __owner: cint,
-  __nusers: cuint,
-  __kind: cint,
-  __spins: cshort,
-  __elision: cshort,
-  __list: __pthread_list_t
-}
-global __pthread_rwlock_arch_t: type <cimport, nodecl, ctypedef> = @record{
-  __readers: cuint,
-  __writers: cuint,
-  __wrphase_futex: cuint,
-  __writers_futex: cuint,
-  __pad3: cuint,
-  __pad4: cuint,
-  __cur_writer: cint,
-  __shared: cint,
-  __rwelision: cschar,
-  __pad1: [7]cuchar,
-  __pad2: culong,
-  __flags: cuint
-}
-global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
-  __unnamed1: union{
-    __wseq: culonglong,
-    __wseq32: record{
-      __low: cuint,
-      __high: cuint
-    }
-  },
-  __unnamed2: union{
-    __g1_start: culonglong,
-    __g1_start32: record{
-      __low: cuint,
-      __high: cuint
-    }
-  },
-  __g_refs: [2]cuint,
-  __g_size: [2]cuint,
-  __g1_orig_size: cuint,
-  __wrefs: cuint,
-  __g_signals: [2]cuint
-}
 global pthread_t: type = @culong
 global pthread_mutexattr_t: type <cimport, nodecl> = @union{
   __size: [4]cchar,
@@ -76,18 +20,15 @@ global pthread_attr_t: type <cimport, nodecl> = @union{
   __size: [56]cchar,
   __align: clong
 }
-global pthread_mutex_t: type <cimport, nodecl> = @union{
-  __data: __pthread_mutex_s,
+global pthread_mutex_t: type <cimport, nodecl, cincomplete> = @union{
   __size: [40]cchar,
   __align: clong
 }
-global pthread_cond_t: type <cimport, nodecl> = @union{
-  __data: __pthread_cond_s,
+global pthread_cond_t: type <cimport, nodecl, cincomplete> = @union{
   __size: [48]cchar,
   __align: clonglong
 }
-global pthread_rwlock_t: type <cimport, nodecl> = @union{
-  __data: __pthread_rwlock_arch_t,
+global pthread_rwlock_t: type <cimport, nodecl, cincomplete> = @union{
   __size: [56]cchar,
   __align: clong
 }
@@ -137,23 +78,6 @@ global function pthread_setcancelstate(__state: cint, __oldstate: *cint): cint <
 global function pthread_setcanceltype(__type: cint, __oldtype: *cint): cint <cimport, nodecl> end
 global function pthread_cancel(__th: pthread_t): cint <cimport, nodecl> end
 global function pthread_testcancel() <cimport, nodecl> end
-global __cancel_jmp_buf_tag: type <cimport, nodecl, ctypedef> = @record{
-  __cancel_jmp_buf: [8]clong,
-  __mask_was_saved: cint
-}
-global __pthread_unwind_buf_t: type <cimport, nodecl> = @record{
-  __cancel_jmp_buf: [1]__cancel_jmp_buf_tag,
-  __pad: [4]pointer
-}
-global __pthread_cleanup_frame: type <cimport, nodecl, ctypedef> = @record{
-  __cancel_routine: function(pointer),
-  __cancel_arg: pointer,
-  __do_it: cint,
-  __cancel_type: cint
-}
-global function __pthread_register_cancel(__buf: *__pthread_unwind_buf_t) <cimport, nodecl> end
-global function __pthread_unregister_cancel(__buf: *__pthread_unwind_buf_t) <cimport, nodecl> end
-global function __pthread_unwind_next(__buf: *__pthread_unwind_buf_t) <cimport, nodecl> end
 global function pthread_mutex_init(__mutex: *pthread_mutex_t, __mutexattr: *pthread_mutexattr_t): cint <cimport, nodecl> end
 global function pthread_mutex_destroy(__mutex: *pthread_mutex_t): cint <cimport, nodecl> end
 global function pthread_mutex_trylock(__mutex: *pthread_mutex_t): cint <cimport, nodecl> end

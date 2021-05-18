@@ -169,7 +169,11 @@ global ma_thread_priority: type <cimport, nodecl, using> = @enum(cint){
   ma_thread_priority_realtime = 1,
   ma_thread_priority_default = 0
 }
-global ma_spinlock: type = @cuint
+global ma_spinlock: type <cimport, nodecl, cincomplete> = @record{}
+global ma_thread: type <cimport, nodecl, cincomplete> = @record{}
+global ma_mutex: type <cimport, nodecl, cincomplete> = @record{}
+global ma_event: type <cimport, nodecl, cincomplete> = @record{}
+global ma_semaphore: type <cimport, nodecl, cincomplete> = @record{}
 global function ma_version(pMajor: *uint32, pMinor: *uint32, pRevision: *uint32) <cimport, nodecl> end
 global function ma_version_string(): cstring <cimport, nodecl> end
 global ma_biquad_coefficient: type <cimport, nodecl> = @union{
@@ -1132,7 +1136,7 @@ ma_device = @record{
   wakeupEvent: ma_event,
   startEvent: ma_event,
   stopEvent: ma_event,
-  thread: culong,
+  thread: ma_thread,
   workResult: ma_result,
   isOwnerOfContext: ma_bool8,
   noPreZeroedOutputBuffer: ma_bool8,
@@ -1205,7 +1209,7 @@ ma_device = @record{
       pIntermediaryBufferCapture: *float32
     },
     null_device: record{
-      deviceThread: culong,
+      deviceThread: ma_thread,
       operationEvent: ma_event,
       operationCompletionEvent: ma_event,
       operationSemaphore: ma_semaphore,
