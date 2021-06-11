@@ -83,6 +83,7 @@ Plus the following platform specific libraries:
 * linux
     - [inotify.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/inotify.nelua) (Linux filesystem watcher)
     - [epoll.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/epoll.nelua) (Linux I/O event notification facility)
+    - [iouring.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/iouring.nelua) (Linux newest IO interface)
 
 
 ## How to generate bindings

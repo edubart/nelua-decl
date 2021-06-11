@@ -1,7 +1,14 @@
 require 'inotify'
 require 'epoll'
+require 'iouring'
 
 inotify_init()
 epoll_create(1)
+
+local ring: io_uring
+local ret = io_uring_queue_init(8, &ring, 0)
+if ret ~= 0 then
+  error 'unable to setup io_uring'
+end
 
 print 'linux OK!'

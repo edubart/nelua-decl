@@ -16,3 +16,4 @@ generate:
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S errno.c -fplugin-arg-gcclua-script=errno.lua > errno.nelua
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S inotify.c -fplugin-arg-gcclua-script=inotify.lua > inotify.nelua
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S epoll.c -fplugin-arg-gcclua-script=epoll.lua > epoll.nelua
+	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S iouring.c -fplugin-arg-gcclua-script=iouring.lua > iouring.nelua
