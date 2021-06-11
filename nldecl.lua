@@ -296,7 +296,7 @@ function nldecl.function_type(node)
     i = i + 1
   end
   if gccutils.has_cvarargs(node) then
-    emitter:add(', ...: cvarargs')
+    emitter:add(', cvarargs')
   end
   emitter:add(')')
   local retnode = node:type()

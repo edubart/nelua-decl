@@ -66,6 +66,8 @@ The following cross-platform libraries bindings are ready and generated as examp
     - [subprocess.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/subprocess/subprocess.nelua) (Process launching library)
 * [cj5](https://github.com/septag/cj5)
     - [cj5.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/cj5/cj5.nelua) (JSON parsing)
+* [sqlite3](https://www.sqlite.org/)
+    - [cj5.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sqlite3/sqlite3.nelua) (SQLite3 database)
 
 Plus the following platform specific libraries:
 * dl

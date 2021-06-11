@@ -4,3 +4,4 @@ nelua_cache
 *.h
 *.s
 *.bmp
+*.db

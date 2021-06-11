@@ -1,0 +1,10 @@
+require 'sqlite3'
+
+local db: *sqlite3
+local status = sqlite3_open('test.db', &db)
+if status ~= SQLITE_OK then
+  error "can't open database"
+end
+sqlite3_close(db)
+
+print 'sqlite3 OK!'
