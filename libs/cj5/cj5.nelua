@@ -50,6 +50,7 @@ global cj5_result: type <cimport, nodecl> = @record{
 }
 global function cj5_parse(json5: cstring, len: cint, tokens: *cj5_token, max_tokens: cint): cj5_result <cimport, nodecl> end
 global function cj5_seek(r: *cj5_result, parent_id: cint, key: cstring): cint <cimport, nodecl> end
+global function cj5_seek_hash(r: *cj5_result, parent_id: cint, key_hash: uint32): cint <cimport, nodecl> end
 global function cj5_seek_recursive(r: *cj5_result, parent_id: cint, key: cstring): cint <cimport, nodecl> end
 global function cj5_get_string(r: *cj5_result, id: cint, str: cstring, max_str: cint): cstring <cimport, nodecl> end
 global function cj5_get_double(r: *cj5_result, id: cint): float64 <cimport, nodecl> end

@@ -229,7 +229,8 @@ global CURLcode: type <cimport, nodecl, using> = @enum(cint){
   CURLE_HTTP3 = 95,
   CURLE_QUIC_CONNECT_ERROR = 96,
   CURLE_PROXY = 97,
-  CURL_LAST = 98
+  CURLE_SSL_CLIENTCERT = 98,
+  CURL_LAST = 99
 }
 global CURLproxycode: type <cimport, nodecl, using> = @enum(cint){
   CURLPX_OK = 0,
@@ -647,7 +648,9 @@ global CURLoption: type <cimport, nodecl, using> = @enum(cint){
   CURLOPT_DOH_SSL_VERIFYPEER = 306,
   CURLOPT_DOH_SSL_VERIFYHOST = 307,
   CURLOPT_DOH_SSL_VERIFYSTATUS = 308,
-  CURLOPT_LASTENTRY = 309
+  CURLOPT_CAINFO_BLOB = 40309,
+  CURLOPT_PROXY_CAINFO_BLOB = 40310,
+  CURLOPT_LASTENTRY = 40311
 }
 global CURL_HTTP_VERSION_NONE: cint <comptime> = 0
 global CURL_HTTP_VERSION_1_0: cint <comptime> = 1
@@ -928,7 +931,8 @@ global CURLversion: type <cimport, nodecl, using> = @enum(cint){
   CURLVERSION_SEVENTH = 6,
   CURLVERSION_EIGHTH = 7,
   CURLVERSION_NINTH = 8,
-  CURLVERSION_LAST = 9
+  CURLVERSION_TENTH = 9,
+  CURLVERSION_LAST = 10
 }
 global curl_version_info_data: type <cimport, nodecl> = @record{
   age: CURLversion,
@@ -954,7 +958,8 @@ global curl_version_info_data: type <cimport, nodecl> = @record{
   capath: cstring,
   zstd_ver_num: cuint,
   zstd_version: cstring,
-  hyper_version: cstring
+  hyper_version: cstring,
+  gsasl_version: cstring
 }
 global function curl_version_info(a1: CURLversion): *curl_version_info_data <cimport, nodecl> end
 global function curl_easy_strerror(a1: CURLcode): cstring <cimport, nodecl> end
