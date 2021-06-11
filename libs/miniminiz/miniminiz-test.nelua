@@ -1,0 +1,32 @@
+require 'miniminiz'
+require 'allocators.default'
+require 'io'
+
+local str = [[
+Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
+Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
+Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
+Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
+Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
+Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
+Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
+]]
+
+local uncomplen = str.size
+local complen = mz_compressBound(uncomplen)
+local comp = (@*byte)(default_allocator:xalloc(complen))
+local uncomp = (@*byte)(default_allocator:xalloc(uncomplen))
+
+-- Compress
+local status = mz_compress(comp, &complen, (@*uint8)(str.data), uncomplen)
+if status ~= MZ_OK then error 'compress failed' end
+io.writef('Compressed from %d to %d bytes\n', uncomplen, complen)
+
+-- Uncompress
+status = mz_uncompress(uncomp, &uncomplen, comp, complen)
+if status ~= MZ_OK then error 'uncompress failed' end
+io.writef('Uncompressed from %d to %d bytes\n', complen, uncomplen)
+local uncompstr = (@string){data=uncomp, size=uncomplen}
+if uncompstr ~= str then error 'unexpected uncompress data' end
+
+print 'miniz OK!'

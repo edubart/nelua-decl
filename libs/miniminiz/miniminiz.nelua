@@ -1,0 +1,429 @@
+##[[
+if MINIZ_LINKLIB then
+  if type(MINIZ_LINKLIB) == 'string' then
+    linklib(MINIZ_LINKLIB)
+  end
+else
+  cdefine 'MINIZ_EXPORT static'
+  cdefine 'MINIZ_IMPL'
+end
+cdefine 'MINIZ_NO_ZLIB_COMPATIBLE_NAMES'
+cinclude 'miniminiz.h'
+]]
+local FILE <cimport, nodecl, forwarddecl> = @record{}
+global function mz_free(p: pointer) <cimport, nodecl> end
+global function mz_adler32(adler: culong, ptr: *cuchar, buf_len: csize): culong <cimport, nodecl> end
+global function mz_crc32(crc: culong, ptr: *cuchar, buf_len: csize): culong <cimport, nodecl> end
+global MZ_DEFAULT_STRATEGY: cint <comptime> = 0
+global MZ_FILTERED: cint <comptime> = 1
+global MZ_HUFFMAN_ONLY: cint <comptime> = 2
+global MZ_RLE: cint <comptime> = 3
+global MZ_FIXED: cint <comptime> = 4
+global mz_alloc_func: type <cimport, nodecl> = @function(pointer, csize, csize): pointer
+global mz_free_func: type <cimport, nodecl> = @function(pointer, pointer)
+global mz_realloc_func: type <cimport, nodecl> = @function(pointer, pointer, csize, csize): pointer
+global MZ_NO_COMPRESSION: cint <comptime> = 0
+global MZ_BEST_SPEED: cint <comptime> = 1
+global MZ_BEST_COMPRESSION: cint <comptime> = 9
+global MZ_UBER_COMPRESSION: cint <comptime> = 10
+global MZ_DEFAULT_LEVEL: cint <comptime> = 6
+global MZ_DEFAULT_COMPRESSION: cint <comptime> = -1
+global MZ_NO_FLUSH: cint <comptime> = 0
+global MZ_PARTIAL_FLUSH: cint <comptime> = 1
+global MZ_SYNC_FLUSH: cint <comptime> = 2
+global MZ_FULL_FLUSH: cint <comptime> = 3
+global MZ_FINISH: cint <comptime> = 4
+global MZ_BLOCK: cint <comptime> = 5
+global MZ_OK: cint <comptime> = 0
+global MZ_STREAM_END: cint <comptime> = 1
+global MZ_NEED_DICT: cint <comptime> = 2
+global MZ_ERRNO: cint <comptime> = -1
+global MZ_STREAM_ERROR: cint <comptime> = -2
+global MZ_DATA_ERROR: cint <comptime> = -3
+global MZ_MEM_ERROR: cint <comptime> = -4
+global MZ_BUF_ERROR: cint <comptime> = -5
+global MZ_VERSION_ERROR: cint <comptime> = -6
+global MZ_PARAM_ERROR: cint <comptime> = -10000
+global mz_internal_state: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global mz_stream_s: type <cimport, nodecl, ctypedef> = @record{
+  next_in: *cuchar,
+  avail_in: cuint,
+  total_in: culong,
+  next_out: *cuchar,
+  avail_out: cuint,
+  total_out: culong,
+  msg: cstring,
+  state: *mz_internal_state,
+  zalloc: mz_alloc_func,
+  zfree: mz_free_func,
+  opaque: pointer,
+  data_type: cint,
+  adler: culong,
+  reserved: culong
+}
+global mz_stream: type = @mz_stream_s
+global mz_streamp: type = @*mz_stream
+global function mz_version(): cstring <cimport, nodecl> end
+global function mz_deflateInit(pStream: mz_streamp, level: cint): cint <cimport, nodecl> end
+global function mz_deflateInit2(pStream: mz_streamp, level: cint, method: cint, window_bits: cint, mem_level: cint, strategy: cint): cint <cimport, nodecl> end
+global function mz_deflateReset(pStream: mz_streamp): cint <cimport, nodecl> end
+global function mz_deflate(pStream: mz_streamp, flush: cint): cint <cimport, nodecl> end
+global function mz_deflateEnd(pStream: mz_streamp): cint <cimport, nodecl> end
+global function mz_deflateBound(pStream: mz_streamp, source_len: culong): culong <cimport, nodecl> end
+global function mz_compress(pDest: *cuchar, pDest_len: *culong, pSource: *cuchar, source_len: culong): cint <cimport, nodecl> end
+global function mz_compress2(pDest: *cuchar, pDest_len: *culong, pSource: *cuchar, source_len: culong, level: cint): cint <cimport, nodecl> end
+global function mz_compressBound(source_len: culong): culong <cimport, nodecl> end
+global function mz_inflateInit(pStream: mz_streamp): cint <cimport, nodecl> end
+global function mz_inflateInit2(pStream: mz_streamp, window_bits: cint): cint <cimport, nodecl> end
+global function mz_inflateReset(pStream: mz_streamp): cint <cimport, nodecl> end
+global function mz_inflate(pStream: mz_streamp, flush: cint): cint <cimport, nodecl> end
+global function mz_inflateEnd(pStream: mz_streamp): cint <cimport, nodecl> end
+global function mz_uncompress(pDest: *cuchar, pDest_len: *culong, pSource: *cuchar, source_len: culong): cint <cimport, nodecl> end
+global function mz_uncompress2(pDest: *cuchar, pDest_len: *culong, pSource: *cuchar, pSource_len: *culong): cint <cimport, nodecl> end
+global function mz_error(err: cint): cstring <cimport, nodecl> end
+global TDEFL_HUFFMAN_ONLY: cint <comptime> = 0
+global TDEFL_DEFAULT_MAX_PROBES: cint <comptime> = 128
+global TDEFL_MAX_PROBES_MASK: cint <comptime> = 4095
+global TDEFL_WRITE_ZLIB_HEADER: cint <comptime> = 4096
+global TDEFL_COMPUTE_ADLER32: cint <comptime> = 8192
+global TDEFL_GREEDY_PARSING_FLAG: cint <comptime> = 16384
+global TDEFL_NONDETERMINISTIC_PARSING_FLAG: cint <comptime> = 32768
+global TDEFL_RLE_MATCHES: cint <comptime> = 65536
+global TDEFL_FILTER_MATCHES: cint <comptime> = 131072
+global TDEFL_FORCE_ALL_STATIC_BLOCKS: cint <comptime> = 262144
+global TDEFL_FORCE_ALL_RAW_BLOCKS: cint <comptime> = 524288
+global function tdefl_compress_mem_to_heap(pSrc_buf: pointer, src_buf_len: csize, pOut_len: *csize, flags: cint): pointer <cimport, nodecl> end
+global function tdefl_compress_mem_to_mem(pOut_buf: pointer, out_buf_len: csize, pSrc_buf: pointer, src_buf_len: csize, flags: cint): csize <cimport, nodecl> end
+global function tdefl_write_image_to_png_file_in_memory_ex(pImage: pointer, w: cint, h: cint, num_chans: cint, pLen_out: *csize, level: cuint, flip: cint): pointer <cimport, nodecl> end
+global function tdefl_write_image_to_png_file_in_memory(pImage: pointer, w: cint, h: cint, num_chans: cint, pLen_out: *csize): pointer <cimport, nodecl> end
+global tdefl_put_buf_func_ptr: type <cimport, nodecl> = @function(pointer, cint, pointer): cint
+global function tdefl_compress_mem_to_output(pBuf: pointer, buf_len: csize, pPut_buf_func: tdefl_put_buf_func_ptr, pPut_buf_user: pointer, flags: cint): cint <cimport, nodecl> end
+global TDEFL_MAX_HUFF_TABLES: cint <comptime> = 3
+global TDEFL_MAX_HUFF_SYMBOLS_0: cint <comptime> = 288
+global TDEFL_MAX_HUFF_SYMBOLS_1: cint <comptime> = 32
+global TDEFL_MAX_HUFF_SYMBOLS_2: cint <comptime> = 19
+global TDEFL_LZ_DICT_SIZE: cint <comptime> = 32768
+global TDEFL_LZ_DICT_SIZE_MASK: cint <comptime> = 32767
+global TDEFL_MIN_MATCH_LEN: cint <comptime> = 3
+global TDEFL_MAX_MATCH_LEN: cint <comptime> = 258
+global TDEFL_LZ_CODE_BUF_SIZE: cint <comptime> = 65536
+global TDEFL_OUT_BUF_SIZE: cint <comptime> = 85196
+global TDEFL_MAX_HUFF_SYMBOLS: cint <comptime> = 288
+global TDEFL_LZ_HASH_BITS: cint <comptime> = 15
+global TDEFL_LEVEL1_HASH_SIZE_MASK: cint <comptime> = 4095
+global TDEFL_LZ_HASH_SHIFT: cint <comptime> = 5
+global TDEFL_LZ_HASH_SIZE: cint <comptime> = 32768
+global tdefl_status: type <cimport, nodecl, using> = @enum(cint){
+  TDEFL_STATUS_BAD_PARAM = -2,
+  TDEFL_STATUS_PUT_BUF_FAILED = -1,
+  TDEFL_STATUS_OKAY = 0,
+  TDEFL_STATUS_DONE = 1
+}
+global tdefl_flush: type <cimport, nodecl, using> = @enum(cint){
+  TDEFL_NO_FLUSH = 0,
+  TDEFL_SYNC_FLUSH = 2,
+  TDEFL_FULL_FLUSH = 3,
+  TDEFL_FINISH = 4
+}
+global tdefl_compressor: type <cimport, nodecl> = @record{
+  m_pPut_buf_func: tdefl_put_buf_func_ptr,
+  m_pPut_buf_user: pointer,
+  m_flags: cuint,
+  m_max_probes: [2]cuint,
+  m_greedy_parsing: cint,
+  m_adler32: cuint,
+  m_lookahead_pos: cuint,
+  m_lookahead_size: cuint,
+  m_dict_size: cuint,
+  m_pLZ_code_buf: *uint8,
+  m_pLZ_flags: *uint8,
+  m_pOutput_buf: *uint8,
+  m_pOutput_buf_end: *uint8,
+  m_num_flags_left: cuint,
+  m_total_lz_bytes: cuint,
+  m_lz_code_buf_dict_pos: cuint,
+  m_bits_in: cuint,
+  m_bit_buffer: cuint,
+  m_saved_match_dist: cuint,
+  m_saved_match_len: cuint,
+  m_saved_lit: cuint,
+  m_output_flush_ofs: cuint,
+  m_output_flush_remaining: cuint,
+  m_finished: cuint,
+  m_block_index: cuint,
+  m_wants_to_finish: cuint,
+  m_prev_return_status: tdefl_status,
+  m_pIn_buf: pointer,
+  m_pOut_buf: pointer,
+  m_pIn_buf_size: *csize,
+  m_pOut_buf_size: *csize,
+  m_flush: tdefl_flush,
+  m_pSrc: *uint8,
+  m_src_buf_left: csize,
+  m_out_buf_ofs: csize,
+  m_dict: [33025]uint8,
+  m_huff_count: [3][288]uint16,
+  m_huff_codes: [3][288]uint16,
+  m_huff_code_sizes: [3][288]uint8,
+  m_lz_code_buf: [65536]uint8,
+  m_next: [32768]uint16,
+  m_hash: [32768]uint16,
+  m_output_buf: [85196]uint8
+}
+global function tdefl_init(d: *tdefl_compressor, pPut_buf_func: tdefl_put_buf_func_ptr, pPut_buf_user: pointer, flags: cint): tdefl_status <cimport, nodecl> end
+global function tdefl_compress(d: *tdefl_compressor, pIn_buf: pointer, pIn_buf_size: *csize, pOut_buf: pointer, pOut_buf_size: *csize, flush: tdefl_flush): tdefl_status <cimport, nodecl> end
+global function tdefl_compress_buffer(d: *tdefl_compressor, pIn_buf: pointer, in_buf_size: csize, flush: tdefl_flush): tdefl_status <cimport, nodecl> end
+global function tdefl_get_prev_return_status(d: *tdefl_compressor): tdefl_status <cimport, nodecl> end
+global function tdefl_get_adler32(d: *tdefl_compressor): uint32 <cimport, nodecl> end
+global function tdefl_create_comp_flags_from_zip_params(level: cint, window_bits: cint, strategy: cint): cuint <cimport, nodecl> end
+global function tdefl_compressor_alloc(): *tdefl_compressor <cimport, nodecl> end
+global function tdefl_compressor_free(pComp: *tdefl_compressor) <cimport, nodecl> end
+global TINFL_FLAG_PARSE_ZLIB_HEADER: cint <comptime> = 1
+global TINFL_FLAG_HAS_MORE_INPUT: cint <comptime> = 2
+global TINFL_FLAG_USING_NON_WRAPPING_OUTPUT_BUF: cint <comptime> = 4
+global TINFL_FLAG_COMPUTE_ADLER32: cint <comptime> = 8
+global function tinfl_decompress_mem_to_heap(pSrc_buf: pointer, src_buf_len: csize, pOut_len: *csize, flags: cint): pointer <cimport, nodecl> end
+global function tinfl_decompress_mem_to_mem(pOut_buf: pointer, out_buf_len: csize, pSrc_buf: pointer, src_buf_len: csize, flags: cint): csize <cimport, nodecl> end
+global tinfl_put_buf_func_ptr: type <cimport, nodecl> = @function(pointer, cint, pointer): cint
+global function tinfl_decompress_mem_to_callback(pIn_buf: pointer, pIn_buf_size: *csize, pPut_buf_func: tinfl_put_buf_func_ptr, pPut_buf_user: pointer, flags: cint): cint <cimport, nodecl> end
+global tinfl_decompressor_tag: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global tinfl_decompressor: type = @tinfl_decompressor_tag
+global function tinfl_decompressor_alloc(): *tinfl_decompressor <cimport, nodecl> end
+global function tinfl_decompressor_free(pDecomp: *tinfl_decompressor) <cimport, nodecl> end
+global tinfl_status: type <cimport, nodecl, using> = @enum(cint){
+  TINFL_STATUS_FAILED_CANNOT_MAKE_PROGRESS = -4,
+  TINFL_STATUS_BAD_PARAM = -3,
+  TINFL_STATUS_ADLER32_MISMATCH = -2,
+  TINFL_STATUS_FAILED = -1,
+  TINFL_STATUS_DONE = 0,
+  TINFL_STATUS_NEEDS_MORE_INPUT = 1,
+  TINFL_STATUS_HAS_MORE_OUTPUT = 2
+}
+global function tinfl_decompress(r: *tinfl_decompressor, pIn_buf_next: *uint8, pIn_buf_size: *csize, pOut_buf_start: *uint8, pOut_buf_next: *uint8, pOut_buf_size: *csize, decomp_flags: uint32): tinfl_status <cimport, nodecl> end
+global TINFL_MAX_HUFF_TABLES: cint <comptime> = 3
+global TINFL_MAX_HUFF_SYMBOLS_0: cint <comptime> = 288
+global TINFL_MAX_HUFF_SYMBOLS_1: cint <comptime> = 32
+global TINFL_MAX_HUFF_SYMBOLS_2: cint <comptime> = 19
+global TINFL_FAST_LOOKUP_BITS: cint <comptime> = 10
+global TINFL_FAST_LOOKUP_SIZE: cint <comptime> = 1024
+global tinfl_huff_table: type <cimport, nodecl> = @record{
+  m_code_size: [288]uint8,
+  m_look_up: [1024]int16,
+  m_tree: [576]int16
+}
+tinfl_decompressor_tag = @record{
+  m_state: uint32,
+  m_num_bits: uint32,
+  m_zhdr0: uint32,
+  m_zhdr1: uint32,
+  m_z_adler32: uint32,
+  m_final: uint32,
+  m_type: uint32,
+  m_check_adler32: uint32,
+  m_dist: uint32,
+  m_counter: uint32,
+  m_num_extra: uint32,
+  m_table_sizes: [3]uint32,
+  m_bit_buf: culong,
+  m_dist_from_out_buf_start: csize,
+  m_tables: [3]tinfl_huff_table,
+  m_raw_header: [4]uint8,
+  m_len_codes: [457]uint8
+}
+global MZ_ZIP_MAX_IO_BUF_SIZE: cint <comptime> = 65536
+global MZ_ZIP_MAX_ARCHIVE_FILENAME_SIZE: cint <comptime> = 512
+global MZ_ZIP_MAX_ARCHIVE_FILE_COMMENT_SIZE: cint <comptime> = 512
+global mz_zip_archive_file_stat: type <cimport, nodecl> = @record{
+  m_file_index: uint32,
+  m_central_dir_ofs: uint64,
+  m_version_made_by: uint16,
+  m_version_needed: uint16,
+  m_bit_flag: uint16,
+  m_method: uint16,
+  m_time: clong,
+  m_crc32: uint32,
+  m_comp_size: uint64,
+  m_uncomp_size: uint64,
+  m_internal_attr: uint16,
+  m_external_attr: uint32,
+  m_local_header_ofs: uint64,
+  m_comment_size: uint32,
+  m_is_directory: cint,
+  m_is_encrypted: cint,
+  m_is_supported: cint,
+  m_filename: [512]cchar,
+  m_comment: [512]cchar
+}
+global mz_file_read_func: type <cimport, nodecl> = @function(pointer, uint64, pointer, csize): csize
+global mz_file_write_func: type <cimport, nodecl> = @function(pointer, uint64, pointer, csize): csize
+global mz_file_needs_keepalive: type <cimport, nodecl> = @function(pointer): cint
+global mz_zip_internal_state_tag: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global mz_zip_internal_state: type = @mz_zip_internal_state_tag
+global mz_zip_mode: type <cimport, nodecl, using> = @enum(cint){
+  MZ_ZIP_MODE_INVALID = 0,
+  MZ_ZIP_MODE_READING = 1,
+  MZ_ZIP_MODE_WRITING = 2,
+  MZ_ZIP_MODE_WRITING_HAS_BEEN_FINALIZED = 3
+}
+global mz_zip_flags: type <cimport, nodecl, using> = @enum(cint){
+  MZ_ZIP_FLAG_CASE_SENSITIVE = 256,
+  MZ_ZIP_FLAG_IGNORE_PATH = 512,
+  MZ_ZIP_FLAG_COMPRESSED_DATA = 1024,
+  MZ_ZIP_FLAG_DO_NOT_SORT_CENTRAL_DIRECTORY = 2048,
+  MZ_ZIP_FLAG_VALIDATE_LOCATE_FILE_FLAG = 4096,
+  MZ_ZIP_FLAG_VALIDATE_HEADERS_ONLY = 8192,
+  MZ_ZIP_FLAG_WRITE_ZIP64 = 16384,
+  MZ_ZIP_FLAG_WRITE_ALLOW_READING = 32768,
+  MZ_ZIP_FLAG_ASCII_FILENAME = 65536
+}
+global mz_zip_type: type <cimport, nodecl, using> = @enum(cint){
+  MZ_ZIP_TYPE_INVALID = 0,
+  MZ_ZIP_TYPE_USER = 1,
+  MZ_ZIP_TYPE_MEMORY = 2,
+  MZ_ZIP_TYPE_HEAP = 3,
+  MZ_ZIP_TYPE_FILE = 4,
+  MZ_ZIP_TYPE_CFILE = 5,
+  MZ_ZIP_TOTAL_TYPES = 6
+}
+global mz_zip_error: type <cimport, nodecl, using> = @enum(cint){
+  MZ_ZIP_NO_ERROR = 0,
+  MZ_ZIP_UNDEFINED_ERROR = 1,
+  MZ_ZIP_TOO_MANY_FILES = 2,
+  MZ_ZIP_FILE_TOO_LARGE = 3,
+  MZ_ZIP_UNSUPPORTED_METHOD = 4,
+  MZ_ZIP_UNSUPPORTED_ENCRYPTION = 5,
+  MZ_ZIP_UNSUPPORTED_FEATURE = 6,
+  MZ_ZIP_FAILED_FINDING_CENTRAL_DIR = 7,
+  MZ_ZIP_NOT_AN_ARCHIVE = 8,
+  MZ_ZIP_INVALID_HEADER_OR_CORRUPTED = 9,
+  MZ_ZIP_UNSUPPORTED_MULTIDISK = 10,
+  MZ_ZIP_DECOMPRESSION_FAILED = 11,
+  MZ_ZIP_COMPRESSION_FAILED = 12,
+  MZ_ZIP_UNEXPECTED_DECOMPRESSED_SIZE = 13,
+  MZ_ZIP_CRC_CHECK_FAILED = 14,
+  MZ_ZIP_UNSUPPORTED_CDIR_SIZE = 15,
+  MZ_ZIP_ALLOC_FAILED = 16,
+  MZ_ZIP_FILE_OPEN_FAILED = 17,
+  MZ_ZIP_FILE_CREATE_FAILED = 18,
+  MZ_ZIP_FILE_WRITE_FAILED = 19,
+  MZ_ZIP_FILE_READ_FAILED = 20,
+  MZ_ZIP_FILE_CLOSE_FAILED = 21,
+  MZ_ZIP_FILE_SEEK_FAILED = 22,
+  MZ_ZIP_FILE_STAT_FAILED = 23,
+  MZ_ZIP_INVALID_PARAMETER = 24,
+  MZ_ZIP_INVALID_FILENAME = 25,
+  MZ_ZIP_BUF_TOO_SMALL = 26,
+  MZ_ZIP_INTERNAL_ERROR = 27,
+  MZ_ZIP_FILE_NOT_FOUND = 28,
+  MZ_ZIP_ARCHIVE_TOO_LARGE = 29,
+  MZ_ZIP_VALIDATION_FAILED = 30,
+  MZ_ZIP_WRITE_CALLBACK_FAILED = 31,
+  MZ_ZIP_TOTAL_ERRORS = 32
+}
+global mz_zip_archive: type <cimport, nodecl> = @record{
+  m_archive_size: uint64,
+  m_central_directory_file_ofs: uint64,
+  m_total_files: uint32,
+  m_zip_mode: mz_zip_mode,
+  m_zip_type: mz_zip_type,
+  m_last_error: mz_zip_error,
+  m_file_offset_alignment: uint64,
+  m_pAlloc: mz_alloc_func,
+  m_pFree: mz_free_func,
+  m_pRealloc: mz_realloc_func,
+  m_pAlloc_opaque: pointer,
+  m_pRead: mz_file_read_func,
+  m_pWrite: mz_file_write_func,
+  m_pNeeds_keepalive: mz_file_needs_keepalive,
+  m_pIO_opaque: pointer,
+  m_pState: *mz_zip_internal_state
+}
+global mz_zip_reader_extract_iter_state: type <cimport, nodecl> = @record{
+  pZip: *mz_zip_archive,
+  flags: cuint,
+  status: cint,
+  file_crc32: cuint,
+  read_buf_size: uint64,
+  read_buf_ofs: uint64,
+  read_buf_avail: uint64,
+  comp_remaining: uint64,
+  out_buf_ofs: uint64,
+  cur_file_ofs: uint64,
+  file_stat: mz_zip_archive_file_stat,
+  pRead_buf: pointer,
+  pWrite_buf: pointer,
+  out_blk_remain: csize,
+  inflator: tinfl_decompressor
+}
+global function mz_zip_reader_init(pZip: *mz_zip_archive, size: uint64, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_init_mem(pZip: *mz_zip_archive, pMem: pointer, size: csize, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_init_file(pZip: *mz_zip_archive, pFilename: cstring, flags: uint32): cint <cimport, nodecl> end
+global function mz_zip_reader_init_file_v2(pZip: *mz_zip_archive, pFilename: cstring, flags: cuint, file_start_ofs: uint64, archive_size: uint64): cint <cimport, nodecl> end
+global function mz_zip_reader_init_cfile(pZip: *mz_zip_archive, pFile: *FILE, archive_size: uint64, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_end(pZip: *mz_zip_archive): cint <cimport, nodecl> end
+global function mz_zip_zero_struct(pZip: *mz_zip_archive) <cimport, nodecl> end
+global function mz_zip_get_mode(pZip: *mz_zip_archive): mz_zip_mode <cimport, nodecl> end
+global function mz_zip_get_type(pZip: *mz_zip_archive): mz_zip_type <cimport, nodecl> end
+global function mz_zip_reader_get_num_files(pZip: *mz_zip_archive): cuint <cimport, nodecl> end
+global function mz_zip_get_archive_size(pZip: *mz_zip_archive): uint64 <cimport, nodecl> end
+global function mz_zip_get_archive_file_start_offset(pZip: *mz_zip_archive): uint64 <cimport, nodecl> end
+global function mz_zip_get_cfile(pZip: *mz_zip_archive): *FILE <cimport, nodecl> end
+global function mz_zip_read_archive_data(pZip: *mz_zip_archive, file_ofs: uint64, pBuf: pointer, n: csize): csize <cimport, nodecl> end
+global function mz_zip_set_last_error(pZip: *mz_zip_archive, err_num: mz_zip_error): mz_zip_error <cimport, nodecl> end
+global function mz_zip_peek_last_error(pZip: *mz_zip_archive): mz_zip_error <cimport, nodecl> end
+global function mz_zip_clear_last_error(pZip: *mz_zip_archive): mz_zip_error <cimport, nodecl> end
+global function mz_zip_get_last_error(pZip: *mz_zip_archive): mz_zip_error <cimport, nodecl> end
+global function mz_zip_get_error_string(mz_err: mz_zip_error): cstring <cimport, nodecl> end
+global function mz_zip_reader_is_file_a_directory(pZip: *mz_zip_archive, file_index: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_is_file_encrypted(pZip: *mz_zip_archive, file_index: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_is_file_supported(pZip: *mz_zip_archive, file_index: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_get_filename(pZip: *mz_zip_archive, file_index: cuint, pFilename: cstring, filename_buf_size: cuint): cuint <cimport, nodecl> end
+global function mz_zip_reader_locate_file(pZip: *mz_zip_archive, pName: cstring, pComment: cstring, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_locate_file_v2(pZip: *mz_zip_archive, pName: cstring, pComment: cstring, flags: cuint, file_index: *uint32): cint <cimport, nodecl> end
+global function mz_zip_reader_file_stat(pZip: *mz_zip_archive, file_index: cuint, pStat: *mz_zip_archive_file_stat): cint <cimport, nodecl> end
+global function mz_zip_is_zip64(pZip: *mz_zip_archive): cint <cimport, nodecl> end
+global function mz_zip_get_central_dir_size(pZip: *mz_zip_archive): csize <cimport, nodecl> end
+global function mz_zip_reader_extract_to_mem_no_alloc(pZip: *mz_zip_archive, file_index: cuint, pBuf: pointer, buf_size: csize, flags: cuint, pUser_read_buf: pointer, user_read_buf_size: csize): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_file_to_mem_no_alloc(pZip: *mz_zip_archive, pFilename: cstring, pBuf: pointer, buf_size: csize, flags: cuint, pUser_read_buf: pointer, user_read_buf_size: csize): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_to_mem(pZip: *mz_zip_archive, file_index: cuint, pBuf: pointer, buf_size: csize, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_file_to_mem(pZip: *mz_zip_archive, pFilename: cstring, pBuf: pointer, buf_size: csize, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_to_heap(pZip: *mz_zip_archive, file_index: cuint, pSize: *csize, flags: cuint): pointer <cimport, nodecl> end
+global function mz_zip_reader_extract_file_to_heap(pZip: *mz_zip_archive, pFilename: cstring, pSize: *csize, flags: cuint): pointer <cimport, nodecl> end
+global function mz_zip_reader_extract_to_callback(pZip: *mz_zip_archive, file_index: cuint, pCallback: mz_file_write_func, pOpaque: pointer, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_file_to_callback(pZip: *mz_zip_archive, pFilename: cstring, pCallback: mz_file_write_func, pOpaque: pointer, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_iter_new(pZip: *mz_zip_archive, file_index: cuint, flags: cuint): *mz_zip_reader_extract_iter_state <cimport, nodecl> end
+global function mz_zip_reader_extract_file_iter_new(pZip: *mz_zip_archive, pFilename: cstring, flags: cuint): *mz_zip_reader_extract_iter_state <cimport, nodecl> end
+global function mz_zip_reader_extract_iter_read(pState: *mz_zip_reader_extract_iter_state, pvBuf: pointer, buf_size: csize): csize <cimport, nodecl> end
+global function mz_zip_reader_extract_iter_free(pState: *mz_zip_reader_extract_iter_state): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_to_file(pZip: *mz_zip_archive, file_index: cuint, pDst_filename: cstring, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_file_to_file(pZip: *mz_zip_archive, pArchive_filename: cstring, pDst_filename: cstring, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_to_cfile(pZip: *mz_zip_archive, file_index: cuint, File: *FILE, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_reader_extract_file_to_cfile(pZip: *mz_zip_archive, pArchive_filename: cstring, pFile: *FILE, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_validate_file(pZip: *mz_zip_archive, file_index: cuint, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_validate_archive(pZip: *mz_zip_archive, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_validate_mem_archive(pMem: pointer, size: csize, flags: cuint, pErr: *mz_zip_error): cint <cimport, nodecl> end
+global function mz_zip_validate_file_archive(pFilename: cstring, flags: cuint, pErr: *mz_zip_error): cint <cimport, nodecl> end
+global function mz_zip_end(pZip: *mz_zip_archive): cint <cimport, nodecl> end
+global function mz_zip_writer_init(pZip: *mz_zip_archive, existing_size: uint64): cint <cimport, nodecl> end
+global function mz_zip_writer_init_v2(pZip: *mz_zip_archive, existing_size: uint64, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_init_heap(pZip: *mz_zip_archive, size_to_reserve_at_beginning: csize, initial_allocation_size: csize): cint <cimport, nodecl> end
+global function mz_zip_writer_init_heap_v2(pZip: *mz_zip_archive, size_to_reserve_at_beginning: csize, initial_allocation_size: csize, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_init_file(pZip: *mz_zip_archive, pFilename: cstring, size_to_reserve_at_beginning: uint64): cint <cimport, nodecl> end
+global function mz_zip_writer_init_file_v2(pZip: *mz_zip_archive, pFilename: cstring, size_to_reserve_at_beginning: uint64, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_init_cfile(pZip: *mz_zip_archive, pFile: *FILE, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_init_from_reader(pZip: *mz_zip_archive, pFilename: cstring): cint <cimport, nodecl> end
+global function mz_zip_writer_init_from_reader_v2(pZip: *mz_zip_archive, pFilename: cstring, flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_mem(pZip: *mz_zip_archive, pArchive_name: cstring, pBuf: pointer, buf_size: csize, level_and_flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_mem_ex(pZip: *mz_zip_archive, pArchive_name: cstring, pBuf: pointer, buf_size: csize, pComment: pointer, comment_size: uint16, level_and_flags: cuint, uncomp_size: uint64, uncomp_crc32: uint32): cint <cimport, nodecl> end
+global function mz_zip_writer_add_mem_ex_v2(pZip: *mz_zip_archive, pArchive_name: cstring, pBuf: pointer, buf_size: csize, pComment: pointer, comment_size: uint16, level_and_flags: cuint, uncomp_size: uint64, uncomp_crc32: uint32, last_modified: *clong, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_read_buf_callback(pZip: *mz_zip_archive, pArchive_name: cstring, read_callback: mz_file_read_func, callback_opaque: pointer, max_size: uint64, pFile_time: *clong, pComment: pointer, comment_size: uint16, level_and_flags: cuint, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_file(pZip: *mz_zip_archive, pArchive_name: cstring, pSrc_filename: cstring, pComment: pointer, comment_size: uint16, level_and_flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_cfile(pZip: *mz_zip_archive, pArchive_name: cstring, pSrc_file: *FILE, max_size: uint64, pFile_time: *clong, pComment: pointer, comment_size: uint16, level_and_flags: cuint, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_from_zip_reader(pZip: *mz_zip_archive, pSource_zip: *mz_zip_archive, src_file_index: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_finalize_archive(pZip: *mz_zip_archive): cint <cimport, nodecl> end
+global function mz_zip_writer_finalize_heap_archive(pZip: *mz_zip_archive, ppBuf: *pointer, pSize: *csize): cint <cimport, nodecl> end
+global function mz_zip_writer_end(pZip: *mz_zip_archive): cint <cimport, nodecl> end
+global function mz_zip_add_mem_to_archive_file_in_place(pZip_filename: cstring, pArchive_name: cstring, pBuf: pointer, buf_size: csize, pComment: pointer, comment_size: uint16, level_and_flags: cuint): cint <cimport, nodecl> end
+global function mz_zip_add_mem_to_archive_file_in_place_v2(pZip_filename: cstring, pArchive_name: cstring, pBuf: pointer, buf_size: csize, pComment: pointer, comment_size: uint16, level_and_flags: cuint, pErr: *mz_zip_error): cint <cimport, nodecl> end
+global function mz_zip_extract_archive_file_to_heap(pZip_filename: cstring, pArchive_name: cstring, pSize: *csize, flags: cuint): pointer <cimport, nodecl> end
+global function mz_zip_extract_archive_file_to_heap_v2(pZip_filename: cstring, pArchive_name: cstring, pComment: cstring, pSize: *csize, flags: cuint, pErr: *mz_zip_error): pointer <cimport, nodecl> end

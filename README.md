@@ -20,6 +20,8 @@ The following cross-platform libraries bindings are ready and generated as examp
     - [glfw.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/glfw/glfw.nelua) (OpenGL/Vullkan framework)
 * [minilua](https://github.com/edubart/minilua) (Lua)
     - [lua.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/minilua/minilua.nelua) (Lua scripting language)
+* [miniminiz](https://github.com/edubart/miniminiz) (MiniZ)
+    - [miniminiz.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/miniminiz/miniminiz.nelua) (Lossless, high performance data compression library)
 * [minicoro](https://github.com/edubart/minicoro)
     - [minicoro.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/minicoro/minicoro.nelua) (Coroutine library)
 * [miniaudio](https://miniaud.io/)

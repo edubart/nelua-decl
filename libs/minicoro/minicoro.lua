@@ -18,6 +18,3 @@ end
 cinclude 'minicoro.h'
 ]]
 ]=]
-
-nldecl.append_code = [[
-]]

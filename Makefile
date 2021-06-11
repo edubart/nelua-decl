@@ -7,6 +7,7 @@ generate:
 	$(MKC) libs/miniaudio generate
 	$(MKC) libs/minicoro generate
 	$(MKC) libs/minilua generate
+	$(MKC) libs/miniminiz generate
 	$(MKC) libs/miniphysfs generate
 	$(MKC) libs/minifs generate
 	$(MKC) libs/raylib generate
@@ -35,6 +36,7 @@ download:
 	$(MKC) libs/miniaudio download
 	$(MKC) libs/minicoro download
 	$(MKC) libs/minilua download
+	$(MKC) libs/miniminiz download
 	$(MKC) libs/miniphysfs download
 	$(MKC) libs/minifs download
 	$(MKC) libs/raylib download
@@ -63,6 +65,7 @@ test:
 	$(MKC) libs/miniaudio test
 	$(MKC) libs/minicoro test
 	$(MKC) libs/minilua test
+	$(MKC) libs/miniminiz test
 	$(MKC) libs/miniphysfs test
 	$(MKC) libs/minifs test
 	$(MKC) libs/raylib test
