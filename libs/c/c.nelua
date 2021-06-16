@@ -78,7 +78,7 @@ global FE_TONEAREST: cint <comptime> = 0
 global FE_DOWNWARD: cint <comptime> = 1024
 global FE_UPWARD: cint <comptime> = 2048
 global FE_TOWARDZERO: cint <comptime> = 3072
-global fenv_t: type <cimport, nodecl> = @record{
+global fenv_t: type <cimport, nodecl, cincomplete> = @record{
   __control_word: cushort,
   __glibc_reserved1: cushort,
   __status_word: cushort,

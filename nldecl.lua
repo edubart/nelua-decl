@@ -175,7 +175,8 @@ local function visit_fields(node)
       local annotations = {}
       if fieldnode:bit_field() then
         fieldtype = fieldnode:bit_field_type()
-        nodewarn(fieldnode, "bit field, record size will be incorrect")
+        nodewarn(fieldnode, "bit field, are not supported yet")
+        nldecl.incomplete_types[node] = true
         --local bitfieldsize = fieldnode:size():value()
         --table.insert(annotations, string.format('bitsize(%d)', bitfieldsize))
       end

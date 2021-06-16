@@ -340,7 +340,7 @@ global curl_ftpmethod: type <cimport, nodecl, using> = @enum(cint){
   CURLFTPMETHOD_SINGLECWD = 3,
   CURLFTPMETHOD_LAST = 4
 }
-global curl_hstsentry: type <cimport, nodecl, ctypedef> = @record{
+global curl_hstsentry: type <cimport, nodecl, cincomplete, ctypedef> = @record{
   name: cstring,
   namelen: csize,
   includeSubDomains: cuint,

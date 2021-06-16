@@ -13,7 +13,7 @@ global mfs_handle: type = @pointer
 global mfs_ptr: type = @pointer
 global mfs_proc: type <cimport, nodecl> = @function()
 global FILE: type <cimport, nodecl, forwarddecl> = @record{}
-global mfs_file_info: type <cimport, nodecl> = @record{
+global mfs_file_info: type <cimport, nodecl, cincomplete> = @record{
   pFileName: [256]cchar,
   sizeInBytes: uint64,
   lastModifiedTime: uint64,
