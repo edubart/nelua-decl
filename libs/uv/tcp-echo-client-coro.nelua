@@ -12,12 +12,13 @@ local function uv_write_async(stream: *uv_stream_t, message: string)
   uv_write(&write_req, stream, &buf, 1, function(req: *uv_write_t, status: cint)
     -- Resume the coroutine with the write result.
     local co = (@coroutine)(uv_handle_get_data((@*uv_handle_t)(req.handle)))
-    coroutine.push(co, status)
-    coroutine.resume(co)
+    coroutine.resume(co, status)
   end)
   -- Wait write request to complete.
   coroutine.yield()
-  return coroutine.pop(coroutine.running(), @cint)
+  local status: cint
+  coroutine.pop(coroutine.running(), &status)
+  return status
 end
 
 -- Asynchronous TCP connect.
@@ -27,12 +28,13 @@ local function uv_tcp_connect_async(tcp: *uv_tcp_t, addr: *sockaddr): (cint, *uv
   uv_tcp_connect(&connect, tcp, addr, function(req: *uv_connect_t, status: cint)
     -- Resume the coroutine with the connect result.
     local co = (@coroutine)(uv_handle_get_data((@*uv_handle_t)(req.handle)))
-    coroutine.push(co, status)
-    coroutine.resume(co)
+    coroutine.resume(co, status)
   end)
   -- Wait connect request to complete.
   coroutine.yield()
-  return coroutine.pop(coroutine.running(), @cint), connect.handle
+  local status: cint
+  coroutine.pop(coroutine.running(), &status)
+  return status, connect.handle
 end
 
 -- Asynchronous read.
@@ -47,12 +49,12 @@ local function uv_tcp_read_async(stream: *uv_stream_t): (cint, string)
   function(client: *uv_stream_t, nread: clong, buf: *uv_buf_t)
     -- Resume the coroutine with the read result.
     local co = (@coroutine)(uv_handle_get_data((@*uv_handle_t)(client)))
-    coroutine.push(co, nread) coroutine.push(co, buf)
-    coroutine.resume(co)
+    coroutine.resume(co, nread, buf)
   end)
   -- Wait the read request to complete.
   coroutine.yield()
-  local buf, nread = coroutine.pop(coroutine.running(), @*uv_buf_t), coroutine.pop(coroutine.running(), @clong)
+  local buf: *uv_buf_t, nread: clong
+  coroutine.pop(coroutine.running(), &nread, &buf)
   if nread < 0 then
     return nread, (@string){}
   end
@@ -107,12 +109,11 @@ if uv_loop_init(&loop) ~= 0 then
 end
 
 -- Create the client request coroutine and begin it.
-local co = coroutine.create(client_request)
-coroutine.resume(co)
+local co: coroutine = coroutine.spawn(client_request)
 
 -- Main loop
 uv_run(&loop, UV_RUN_DEFAULT)
 
 -- Cleanups.
-coroutine.destroy(&co)
+coroutine.destroy(co)
 uv_loop_close(&loop)
