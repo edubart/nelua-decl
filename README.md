@@ -57,6 +57,9 @@ The following cross-platform libraries bindings are ready and generated as examp
     - [znet.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/znet/znet.nelua) (Simple TCP/UDP networking library)
 * [curl](https://curl.se/)
     - [curl.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/curl/curl.nelua) (Utility for HTTP request and URL data transfer)
+* [mongoose](https://github.com/cesanta/mongoose)
+    - [mongoose.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/mongoose/mongoose.nelua) (Embedded web server
+and multi-protocol networking library)
 * [dmon](https://github.com/septag/dmon)
     - [dmon.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/dmon/dmon.nelua) (Watch file changes in a directory)
 * [c89thread](https://github.com/mackron/c89thread) and [c89atomic](https://github.com/mackron/c89atomic)

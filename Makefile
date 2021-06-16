@@ -20,6 +20,7 @@ generate:
 	$(MKC) libs/znet generate
 	$(MKC) libs/c89thread generate
 	$(MKC) libs/curl generate
+	$(MKC) libs/mongoose generate
 	$(MKC) libs/subprocess generate
 	$(MKC) libs/cj5 generate
 	$(MKC) libs/sqlite3 generate
@@ -50,6 +51,7 @@ download:
 	$(MKC) libs/znet download
 	$(MKC) libs/c89thread download
 	$(MKC) libs/curl download
+	$(MKC) libs/mongoose download
 	$(MKC) libs/subprocess download
 	$(MKC) libs/cj5 download
 	$(MKC) libs/sqlite3 download
@@ -80,6 +82,7 @@ test:
 	$(MKC) libs/znet test
 	$(MKC) libs/c89thread test
 	$(MKC) libs/curl test
+	$(MKC) libs/mongoose test
 	$(MKC) libs/subprocess test
 	$(MKC) libs/cj5 test
 	$(MKC) libs/sqlite3 test

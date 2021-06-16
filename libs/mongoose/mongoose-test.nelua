@@ -1,0 +1,40 @@
+require 'mongoose'
+
+local s_url: cstring = "https://duckduckgo.com/"
+
+local function fn(c: *mg_connection, ev: cint, ev_data: pointer, fn_data: pointer)
+  local done: *boolean = (@*boolean)(fn_data)
+  switch ev
+  case MG_EV_CONNECT then
+    local host: mg_string = mg_url_host(s_url)
+    if mg_url_is_ssl(s_url) == 1 then
+      local opts: mg_tls_opts = {ca = "ca.pem", srvname = host}
+      mg_tls_init(c, &opts)
+    end
+
+    mg_printf(c, "\z
+GET %s HTTP/1.0\r\n\z
+Host: %.*s\r\n\z
+\r\n\z
+", mg_url_uri(s_url), host.len, host.ptr)
+  case MG_EV_HTTP_MSG then
+    local hm: *mg_http_message = (@*mg_http_message)(ev_data);
+    print(hm.message.len, hm.message.ptr)
+    c.is_closing = 1
+    $done = true
+  case MG_EV_ERROR then
+    $done = true
+  end
+end
+
+local mgr: mg_mgr
+local done: boolean = false
+mg_log_set('3')
+mg_mgr_init(&mgr)
+mg_http_connect(&mgr, s_url, fn, &done)
+repeat
+  mg_mgr_poll(&mgr, 1000)
+until done
+mg_mgr_free(&mgr)
+
+print 'mongoose OK!'

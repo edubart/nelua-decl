@@ -1,0 +1,355 @@
+##[[
+if MONGOOSE_LINKLIB then
+  cfile 'mongoose.h'
+  linklib(MONGOOSE_LINKLIB)
+else
+  cdefine 'MG_ENABLE_OPENSSL 1'
+  cinclude 'mongoose.h'
+  cinclude 'mongoose.c'
+  linklib 'ssl'
+  linklib 'crypto'
+end
+]]
+global timeval: type <cimport, nodecl, ctypedef> = @record{
+  tv_sec: clong,
+  tv_usec: clong
+}
+global FILE: type <cimport, nodecl, forwarddecl> = @record{}
+global mg_string: type <cimport, nodecl, ctypedef 'mg_str'> = @record{
+  ptr: cstring,
+  len: csize
+}
+global function mg_str(s: cstring): mg_string <cimport, nodecl> end
+global function mg_str_n(s: cstring, n: csize): mg_string <cimport, nodecl> end
+global function mg_lower(s: cstring): cint <cimport, nodecl> end
+global function mg_ncasecmp(s1: cstring, s2: cstring, len: csize): cint <cimport, nodecl> end
+global function mg_casecmp(s1: cstring, s2: cstring): cint <cimport, nodecl> end
+global function mg_vcmp(s1: *mg_string, s2: cstring): cint <cimport, nodecl> end
+global function mg_vcasecmp(str1: *mg_string, str2: cstring): cint <cimport, nodecl> end
+global function mg_strcmp(str1: mg_string, str2: mg_string): cint <cimport, nodecl> end
+global function mg_strstrip(s: mg_string): mg_string <cimport, nodecl> end
+global function mg_strdup(s: mg_string): mg_string <cimport, nodecl> end
+global function mg_strstr(haystack: mg_string, needle: mg_string): cstring <cimport, nodecl> end
+global function mg_log_prefix(ll: cint, file: cstring, line: cint, fname: cstring): boolean <cimport, nodecl> end
+global function mg_log(fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function mg_log_set(spec: cstring) <cimport, nodecl> end
+global function mg_log_set_callback(fn: function(pointer, csize, pointer), param: pointer) <cimport, nodecl> end
+global mg_timer: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+mg_timer = @record{
+  period_ms: culong,
+  flags: cuint,
+  fn: function(pointer),
+  arg: pointer,
+  expire: culong,
+  next: *mg_timer
+}
+global function mg_timer_init(a1: *mg_timer, ms: culong, a3: cuint, fn: function(pointer), a5: pointer) <cimport, nodecl> end
+global function mg_timer_free(a1: *mg_timer) <cimport, nodecl> end
+global function mg_timer_poll(uptime_ms: culong) <cimport, nodecl> end
+global function mg_file_read(path: cstring, size: *csize): cstring <cimport, nodecl> end
+global function mg_file_size(path: cstring): int64 <cimport, nodecl> end
+global function mg_file_write(path: cstring, buf: pointer, len: csize): boolean <cimport, nodecl> end
+global function mg_file_printf(path: cstring, fmt: cstring, ...: cvarargs): boolean <cimport, nodecl> end
+global function mg_random(buf: pointer, len: csize) <cimport, nodecl> end
+global function mg_globmatch(pattern: cstring, plen: csize, s: cstring, n: csize): boolean <cimport, nodecl> end
+global function mg_next_comma_entry(s: *mg_string, k: *mg_string, v: *mg_string): boolean <cimport, nodecl> end
+global function mg_ntohs(net: uint16): uint16 <cimport, nodecl> end
+global function mg_ntohl(net: uint32): uint32 <cimport, nodecl> end
+global function mg_crc32(crc: uint32, buf: cstring, len: csize): uint32 <cimport, nodecl> end
+global function mg_hexdump(buf: pointer, len: csize): cstring <cimport, nodecl> end
+global function mg_hex(buf: pointer, len: csize, dst: cstring): cstring <cimport, nodecl> end
+global function mg_unhex(buf: cstring, len: csize, to: *cuchar) <cimport, nodecl> end
+global function mg_unhexn(s: cstring, len: csize): culong <cimport, nodecl> end
+global function mg_asprintf(buf: *cstring, size: csize, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function mg_vasprintf(buf: *cstring, size: csize, fmt: cstring, ap: cvalist): cint <cimport, nodecl> end
+global function mg_to64(str: mg_string): int64 <cimport, nodecl> end
+global function mg_time(): float64 <cimport, nodecl> end
+global function mg_millis(): culong <cimport, nodecl> end
+global function mg_usleep(usecs: culong) <cimport, nodecl> end
+global mg_stat_t: type <cimport, nodecl, cincomplete> = @record{
+  st_dev: culong,
+  st_ino: culong,
+  st_nlink: culong,
+  st_mode: cuint,
+  st_uid: cuint,
+  st_gid: cuint,
+  __pad0: cint,
+  st_rdev: culong,
+  st_size: clong,
+  st_blksize: clong,
+  st_blocks: clong,
+  __glibc_reserved: [3]clong
+}
+global function mg_stat(path: cstring, a2: *mg_stat_t): cint <cimport, nodecl> end
+global function mg_fopen(fp: cstring, mode: cstring): *FILE <cimport, nodecl> end
+global function mg_url_port(url: cstring): cushort <cimport, nodecl> end
+global function mg_url_is_ssl(url: cstring): cint <cimport, nodecl> end
+global function mg_url_host(url: cstring): mg_string <cimport, nodecl> end
+global function mg_url_user(url: cstring): mg_string <cimport, nodecl> end
+global function mg_url_pass(url: cstring): mg_string <cimport, nodecl> end
+global function mg_url_uri(url: cstring): cstring <cimport, nodecl> end
+global mg_iobuf: type <cimport, nodecl, ctypedef> = @record{
+  buf: *cuchar,
+  size: csize,
+  len: csize
+}
+global function mg_iobuf_init(a1: *mg_iobuf, a2: csize): cint <cimport, nodecl> end
+global function mg_iobuf_resize(a1: *mg_iobuf, a2: csize): cint <cimport, nodecl> end
+global function mg_iobuf_free(a1: *mg_iobuf) <cimport, nodecl> end
+global function mg_iobuf_append(a1: *mg_iobuf, a2: pointer, a3: csize, a4: csize): csize <cimport, nodecl> end
+global function mg_iobuf_delete(a1: *mg_iobuf, a2: csize): csize <cimport, nodecl> end
+global function mg_base64_update(p: cuchar, to: cstring, len: cint): cint <cimport, nodecl> end
+global function mg_base64_final(to: cstring, len: cint): cint <cimport, nodecl> end
+global function mg_base64_encode(p: *cuchar, n: cint, to: cstring): cint <cimport, nodecl> end
+global function mg_base64_decode(src: cstring, n: cint, dst: cstring): cint <cimport, nodecl> end
+global mg_md5_ctx: type <cimport, nodecl> = @record{
+  buf: [4]uint32,
+  bits: [2]uint32,
+  In: [64]cuchar
+}
+global function mg_md5_init(c: *mg_md5_ctx) <cimport, nodecl> end
+global function mg_md5_update(c: *mg_md5_ctx, data: *cuchar, len: csize) <cimport, nodecl> end
+global function mg_md5_final(c: *mg_md5_ctx, a2: *cuchar) <cimport, nodecl> end
+global mg_sha1_ctx: type <cimport, nodecl> = @record{
+  state: [5]uint32,
+  count: [2]uint32,
+  buffer: [64]cuchar
+}
+global function mg_sha1_init(a1: *mg_sha1_ctx) <cimport, nodecl> end
+global function mg_sha1_update(a1: *mg_sha1_ctx, data: *cuchar, len: csize) <cimport, nodecl> end
+global function mg_sha1_final(digest: *cuchar, a2: *mg_sha1_ctx) <cimport, nodecl> end
+global function mg_hmac_sha1(key: *cuchar, key_len: csize, text: *cuchar, text_len: csize, out: *cuchar) <cimport, nodecl> end
+global mg_connection: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global mg_event_handler_t: type <cimport, nodecl> = @function(*mg_connection, cint, pointer, pointer)
+global function mg_call(c: *mg_connection, ev: cint, ev_data: pointer) <cimport, nodecl> end
+global function mg_error(c: *mg_connection, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global MG_EV_ERROR: cint <comptime> = 0
+global MG_EV_POLL: cint <comptime> = 1
+global MG_EV_RESOLVE: cint <comptime> = 2
+global MG_EV_CONNECT: cint <comptime> = 3
+global MG_EV_ACCEPT: cint <comptime> = 4
+global MG_EV_READ: cint <comptime> = 5
+global MG_EV_WRITE: cint <comptime> = 6
+global MG_EV_CLOSE: cint <comptime> = 7
+global MG_EV_HTTP_MSG: cint <comptime> = 8
+global MG_EV_HTTP_CHUNK: cint <comptime> = 9
+global MG_EV_WS_OPEN: cint <comptime> = 10
+global MG_EV_WS_MSG: cint <comptime> = 11
+global MG_EV_WS_CTL: cint <comptime> = 12
+global MG_EV_MQTT_CMD: cint <comptime> = 13
+global MG_EV_MQTT_MSG: cint <comptime> = 14
+global MG_EV_MQTT_OPEN: cint <comptime> = 15
+global MG_EV_SNTP_TIME: cint <comptime> = 16
+global MG_EV_USER: cint <comptime> = 17
+global mg_dns: type <cimport, nodecl, ctypedef> = @record{
+  url: cstring,
+  c: *mg_connection
+}
+global mg_addr: type <cimport, nodecl, ctypedef> = @record{
+  port: uint16,
+  ip: uint32,
+  ip6: [16]uint8,
+  is_ip6: boolean
+}
+global mg_mgr: type <cimport, nodecl, ctypedef> = @record{
+  conns: *mg_connection,
+  dns4: mg_dns,
+  dns6: mg_dns,
+  dnstimeout: cint,
+  nextid: culong,
+  userdata: pointer
+}
+mg_connection = @record{
+  next: *mg_connection,
+  mgr: *mg_mgr,
+  peer: mg_addr,
+  fd: pointer,
+  id: culong,
+  recv: mg_iobuf,
+  send: mg_iobuf,
+  fn: mg_event_handler_t,
+  fn_data: pointer,
+  pfn: mg_event_handler_t,
+  pfn_data: pointer,
+  label: [50]cchar,
+  tls: pointer,
+  is_listening: cuint,
+  is_client: cuint,
+  is_accepted: cuint,
+  is_resolving: cuint,
+  is_connecting: cuint,
+  is_tls: cuint,
+  is_tls_hs: cuint,
+  is_udp: cuint,
+  is_websocket: cuint,
+  is_hexdumping: cuint,
+  is_draining: cuint,
+  is_closing: cuint,
+  is_readable: cuint,
+  is_writable: cuint
+}
+global function mg_mgr_poll(a1: *mg_mgr, ms: cint) <cimport, nodecl> end
+global function mg_mgr_init(a1: *mg_mgr) <cimport, nodecl> end
+global function mg_mgr_free(a1: *mg_mgr) <cimport, nodecl> end
+global function mg_listen(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_connect(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_send(a1: *mg_connection, a2: pointer, a3: csize): boolean <cimport, nodecl> end
+global function mg_printf(a1: *mg_connection, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function mg_vprintf(a1: *mg_connection, fmt: cstring, ap: cvalist): cint <cimport, nodecl> end
+global function mg_straddr(a1: *mg_connection, a2: cstring, a3: csize): cstring <cimport, nodecl> end
+global function mg_socketpair(s1: *cint, s2: *cint): boolean <cimport, nodecl> end
+global function mg_aton(str: mg_string, addr: *mg_addr): boolean <cimport, nodecl> end
+global function mg_ntoa(addr: *mg_addr, buf: cstring, len: csize): cstring <cimport, nodecl> end
+global mg_http_header: type <cimport, nodecl, ctypedef> = @record{
+  name: mg_string,
+  value: mg_string
+}
+global mg_http_message: type <cimport, nodecl, ctypedef> = @record{
+  method: mg_string,
+  uri: mg_string,
+  query: mg_string,
+  proto: mg_string,
+  headers: [40]mg_http_header,
+  body: mg_string,
+  head: mg_string,
+  chunk: mg_string,
+  message: mg_string
+}
+global mg_http_serve_opts: type <cimport, nodecl, ctypedef> = @record{
+  root_dir: cstring,
+  ssi_pattern: cstring,
+  extra_headers: cstring
+}
+global mg_http_part: type <cimport, nodecl, ctypedef> = @record{
+  name: mg_string,
+  filename: mg_string,
+  body: mg_string
+}
+global function mg_http_parse(s: cstring, len: csize, a3: *mg_http_message): cint <cimport, nodecl> end
+global function mg_http_get_request_len(buf: *cuchar, buf_len: csize): cint <cimport, nodecl> end
+global function mg_http_printf_chunk(cnn: *mg_connection, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function mg_http_write_chunk(c: *mg_connection, buf: cstring, len: csize) <cimport, nodecl> end
+global function mg_http_delete_chunk(c: *mg_connection, hm: *mg_http_message) <cimport, nodecl> end
+global function mg_http_listen(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_http_connect(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_http_serve_dir(a1: *mg_connection, hm: *mg_http_message, a3: *mg_http_serve_opts) <cimport, nodecl> end
+global function mg_http_serve_file(a1: *mg_connection, a2: *mg_http_message, a3: cstring, mime: cstring, headers: cstring) <cimport, nodecl> end
+global function mg_http_reply(a1: *mg_connection, status_code: cint, headers: cstring, body_fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function mg_http_get_header(a1: *mg_http_message, name: cstring): *mg_string <cimport, nodecl> end
+global function mg_http_event_handler(c: *mg_connection, ev: cint) <cimport, nodecl> end
+global function mg_http_get_var(a1: *mg_string, name: cstring, a3: cstring, a4: csize): cint <cimport, nodecl> end
+global function mg_url_decode(s: cstring, n: csize, to: cstring, to_len: csize, form: cint): cint <cimport, nodecl> end
+global function mg_url_encode(s: cstring, n: csize, buf: cstring, len: csize): csize <cimport, nodecl> end
+global function mg_http_creds(a1: *mg_http_message, a2: cstring, a3: csize, a4: cstring, a5: csize) <cimport, nodecl> end
+global function mg_http_match_uri(a1: *mg_http_message, glob: cstring): boolean <cimport, nodecl> end
+global function mg_http_upload(a1: *mg_connection, hm: *mg_http_message, dir: cstring): cint <cimport, nodecl> end
+global function mg_http_bauth(a1: *mg_connection, user: cstring, pass: cstring) <cimport, nodecl> end
+global function mg_http_get_header_var(s: mg_string, v: mg_string): mg_string <cimport, nodecl> end
+global function mg_http_next_multipart(a1: mg_string, a2: csize, a3: *mg_http_part): csize <cimport, nodecl> end
+global function mg_http_serve_ssi(c: *mg_connection, root: cstring, fullpath: cstring) <cimport, nodecl> end
+global mg_tls_opts: type <cimport, nodecl, ctypedef> = @record{
+  ca: cstring,
+  cert: cstring,
+  certkey: cstring,
+  ciphers: cstring,
+  srvname: mg_string
+}
+global function mg_tls_init(a1: *mg_connection, a2: *mg_tls_opts) <cimport, nodecl> end
+global function mg_tls_free(a1: *mg_connection) <cimport, nodecl> end
+global function mg_tls_send(a1: *mg_connection, buf: pointer, len: csize): clong <cimport, nodecl> end
+global function mg_tls_recv(a1: *mg_connection, buf: pointer, len: csize): clong <cimport, nodecl> end
+global function mg_tls_handshake(a1: *mg_connection) <cimport, nodecl> end
+global mg_ws_message: type <cimport, nodecl, ctypedef> = @record{
+  data: mg_string,
+  flags: uint8
+}
+global function mg_ws_connect(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer, fmt: cstring, ...: cvarargs): *mg_connection <cimport, nodecl> end
+global function mg_ws_upgrade(a1: *mg_connection, a2: *mg_http_message, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
+global function mg_ws_send(a1: *mg_connection, buf: cstring, len: csize, op: cint): csize <cimport, nodecl> end
+global function mg_sntp_connect(mgr: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_sntp_send(c: *mg_connection, utc: culong) <cimport, nodecl> end
+global function mg_sntp_parse(buf: *cuchar, len: csize, tv: *timeval): cint <cimport, nodecl> end
+global mg_mqtt_opts: type <cimport, nodecl, ctypedef> = @record{
+  client_id: mg_string,
+  will_topic: mg_string,
+  will_message: mg_string,
+  qos: uint8,
+  will_retain: boolean,
+  clean: boolean,
+  keepalive: uint16
+}
+global mg_mqtt_message: type <cimport, nodecl, ctypedef> = @record{
+  topic: mg_string,
+  data: mg_string,
+  dgram: mg_string,
+  id: uint16,
+  cmd: uint8,
+  qos: uint8,
+  ack: uint8
+}
+global function mg_mqtt_connect(a1: *mg_mgr, url: cstring, opts: *mg_mqtt_opts, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_mqtt_listen(mgr: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_mqtt_pub(c: *mg_connection, topic: *mg_string, data: *mg_string, qos: cint, retain: boolean) <cimport, nodecl> end
+global function mg_mqtt_sub(a1: *mg_connection, topic: *mg_string, qos: cint) <cimport, nodecl> end
+global function mg_mqtt_parse(buf: *uint8, len: csize, m: *mg_mqtt_message): cint <cimport, nodecl> end
+global function mg_mqtt_send_header(a1: *mg_connection, cmd: uint8, flags: uint8, len: uint32) <cimport, nodecl> end
+global function mg_mqtt_next_sub(msg: *mg_mqtt_message, topic: *mg_string, qos: *uint8, pos: csize): csize <cimport, nodecl> end
+global function mg_mqtt_next_unsub(msg: *mg_mqtt_message, topic: *mg_string, pos: csize): csize <cimport, nodecl> end
+global function mg_mqtt_ping(a1: *mg_connection) <cimport, nodecl> end
+global function mg_mqtt_pong(a1: *mg_connection) <cimport, nodecl> end
+global function mg_mqtt_disconnect(a1: *mg_connection) <cimport, nodecl> end
+global mg_dns_message: type <cimport, nodecl, ctypedef> = @record{
+  txnid: uint16,
+  resolved: boolean,
+  addr: mg_addr,
+  name: [256]cchar
+}
+global mg_dns_header: type <cimport, nodecl, ctypedef> = @record{
+  txnid: uint16,
+  flags: uint16,
+  num_questions: uint16,
+  num_answers: uint16,
+  num_authority_prs: uint16,
+  num_other_prs: uint16
+}
+global mg_dns_rr: type <cimport, nodecl, ctypedef> = @record{
+  nlen: uint16,
+  atype: uint16,
+  aclass: uint16,
+  alen: uint16
+}
+global function mg_resolve(a1: *mg_connection, a2: *mg_string, a3: cint) <cimport, nodecl> end
+global function mg_resolve_cancel(a1: *mg_connection) <cimport, nodecl> end
+global function mg_dns_parse(buf: *uint8, len: csize, a3: *mg_dns_message): boolean <cimport, nodecl> end
+global function mg_dns_parse_rr(buf: *uint8, len: csize, ofs: csize, is_question: boolean, a5: *mg_dns_rr): csize <cimport, nodecl> end
+global function mg_dns_decode_name(a1: *uint8, a2: csize, a3: csize, a4: cstring, a5: csize): csize <cimport, nodecl> end
+global MG_VERSION: cstring <comptime> = "7.3"
+global MG_ARCH_CUSTOM: cint <comptime> = 0
+global MG_ARCH_UNIX: cint <comptime> = 1
+global MG_ARCH_WIN32: cint <comptime> = 2
+global MG_ARCH_ESP32: cint <comptime> = 3
+global MG_ARCH_ESP8266: cint <comptime> = 4
+global MG_ARCH_FREERTOS_TCP: cint <comptime> = 5
+global MG_ARCH_FREERTOS_LWIP: cint <comptime> = 6
+global MG_ARCH: cint <comptime> = MG_ARCH_UNIX
+global MG_DIRSEP: cint <cimport, nodecl, const>
+global MG_ENABLE_POSIX: cint <comptime> = 1
+global MG_INT64_FMT: cint <cimport, nodecl, const>
+global MG_ENABLE_SOCKET: cint <comptime> = 1
+global MG_ENABLE_MBEDTLS: cint <comptime> = 0
+global MG_ENABLE_OPENSSL: cint <comptime> = 0
+global MG_ENABLE_FS: cint <comptime> = 1
+global MG_ENABLE_SSI: cint <comptime> = 0
+global MG_ENABLE_IPV6: cint <comptime> = 0
+global MG_ENABLE_LOG: cint <comptime> = 1
+global MG_ENABLE_MD5: cint <comptime> = 0
+global MG_ENABLE_WINSOCK: cint <comptime> = 1
+global MG_ENABLE_DIRECTORY_LISTING: cint <comptime> = 0
+global MG_ENABLE_SOCKETPAIR: cint <comptime> = 0
+global MG_IO_SIZE: cint <comptime> = 512
+global MG_MAX_RECV_BUF_SIZE: cint <cimport, nodecl, const>
+global MG_MAX_HTTP_HEADERS: cint <comptime> = 40
+global MG_PATH_MAX: cint <cimport, nodecl, const>
+global MG_NULL_STR: cint <cimport, nodecl, const>
+global MG_TIMER_REPEAT: cint <comptime> = 1
+global MG_TIMER_RUN_NOW: cint <comptime> = 2
