@@ -1,0 +1,31 @@
+require 'mpc'
+
+local expr: *mpc_parser_t  = mpc_new("expression")
+local prod: *mpc_parser_t  = mpc_new("product")
+local value: *mpc_parser_t = mpc_new("value")
+local maths: *mpc_parser_t = mpc_new("maths")
+
+mpca_lang(MPCA_LANG_DEFAULT,[[
+expression : <product> (('+' | '-') <product>)*;
+product    : <value>   (('*' | '/')   <value>)*;
+value      : /[0-9]+/ | '(' <expression> ')';
+maths      : /^/ <expression> /$/;
+]], expr, prod, value, maths, nilptr)
+
+local r: mpc_result_t
+
+local input = [[
+(4 * 2 * 11 + 2) - 5
+]]
+
+if mpc_parse("input", input, maths, &r) then
+  mpc_ast_print((@*mpc_ast_t)(r.output))
+  mpc_ast_delete((@*mpc_ast_t)(r.output))
+else
+  mpc_err_print(r.error)
+  mpc_err_delete(r.error)
+end
+
+mpc_cleanup(4, expr, prod, value, maths)
+
+print('mpc OK!')

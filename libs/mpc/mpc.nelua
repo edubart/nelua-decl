@@ -1,0 +1,203 @@
+##[[
+if MPC_LINKLIB then
+  cfile 'mpc.h'
+  linklib(MPC_LINKLIB)
+else
+  cinclude 'mpc.h'
+  cinclude 'mpc.c'
+end
+]]
+global FILE: type <cimport, nodecl, forwarddecl> = @record{}
+global mpc_state_t: type <cimport, nodecl> = @record{
+  pos: clong,
+  row: clong,
+  col: clong,
+  term: cint
+}
+global mpc_err_t: type <cimport, nodecl> = @record{
+  state: mpc_state_t,
+  expected_num: cint,
+  filename: cstring,
+  failure: cstring,
+  expected: *cstring,
+  received: cchar
+}
+global function mpc_err_delete(e: *mpc_err_t) <cimport, nodecl> end
+global function mpc_err_string(e: *mpc_err_t): cstring <cimport, nodecl> end
+global function mpc_err_print(e: *mpc_err_t) <cimport, nodecl> end
+global function mpc_err_print_to(e: *mpc_err_t, f: *FILE) <cimport, nodecl> end
+global mpc_result_t: type <cimport, nodecl> = @union{
+  error: *mpc_err_t,
+  output: pointer
+}
+global mpc_parser_t: type <cimport, nodecl, forwarddecl> = @record{}
+global function mpc_parse(filename: cstring, string: cstring, p: *mpc_parser_t, r: *mpc_result_t): cint <cimport, nodecl> end
+global function mpc_nparse(filename: cstring, string: cstring, length: csize, p: *mpc_parser_t, r: *mpc_result_t): cint <cimport, nodecl> end
+global function mpc_parse_file(filename: cstring, file: *FILE, p: *mpc_parser_t, r: *mpc_result_t): cint <cimport, nodecl> end
+global function mpc_parse_pipe(filename: cstring, pipe: *FILE, p: *mpc_parser_t, r: *mpc_result_t): cint <cimport, nodecl> end
+global function mpc_parse_contents(filename: cstring, p: *mpc_parser_t, r: *mpc_result_t): cint <cimport, nodecl> end
+global mpc_dtor_t: type <cimport, nodecl> = @function(pointer)
+global mpc_ctor_t: type <cimport, nodecl> = @function(): pointer
+global mpc_apply_t: type <cimport, nodecl> = @function(pointer): pointer
+global mpc_apply_to_t: type <cimport, nodecl> = @function(pointer, pointer): pointer
+global mpc_fold_t: type <cimport, nodecl> = @function(cint, *pointer): pointer
+global mpc_check_t: type <cimport, nodecl> = @function(*pointer): cint
+global mpc_check_with_t: type <cimport, nodecl> = @function(*pointer, pointer): cint
+global function mpc_new(name: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_copy(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_define(p: *mpc_parser_t, a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_undefine(p: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_delete(p: *mpc_parser_t) <cimport, nodecl> end
+global function mpc_cleanup(n: cint, ...: cvarargs) <cimport, nodecl> end
+global function mpc_any(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_char(c: cchar): *mpc_parser_t <cimport, nodecl> end
+global function mpc_range(s: cchar, e: cchar): *mpc_parser_t <cimport, nodecl> end
+global function mpc_oneof(s: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_noneof(s: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_satisfy(f: function(cchar): cint): *mpc_parser_t <cimport, nodecl> end
+global function mpc_string(s: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_pass(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_fail(m: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_failf(fmt: cstring, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpc_lift(f: mpc_ctor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_lift_val(x: pointer): *mpc_parser_t <cimport, nodecl> end
+global function mpc_anchor(f: function(cchar, cchar): cint): *mpc_parser_t <cimport, nodecl> end
+global function mpc_state(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_expect(a: *mpc_parser_t, e: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_expectf(a: *mpc_parser_t, fmt: cstring, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpc_apply(a: *mpc_parser_t, f: mpc_apply_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_apply_to(a: *mpc_parser_t, f: mpc_apply_to_t, x: pointer): *mpc_parser_t <cimport, nodecl> end
+global function mpc_check(a: *mpc_parser_t, da: mpc_dtor_t, f: mpc_check_t, e: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_check_with(a: *mpc_parser_t, da: mpc_dtor_t, f: mpc_check_with_t, x: pointer, e: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_checkf(a: *mpc_parser_t, da: mpc_dtor_t, f: mpc_check_t, fmt: cstring, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpc_check_withf(a: *mpc_parser_t, da: mpc_dtor_t, f: mpc_check_with_t, x: pointer, fmt: cstring, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpc_not(a: *mpc_parser_t, da: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_not_lift(a: *mpc_parser_t, da: mpc_dtor_t, lf: mpc_ctor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_maybe(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_maybe_lift(a: *mpc_parser_t, lf: mpc_ctor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_many(f: mpc_fold_t, a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_many1(f: mpc_fold_t, a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_count(n: cint, f: mpc_fold_t, a: *mpc_parser_t, da: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_or(n: cint, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpc_and(n: cint, f: mpc_fold_t, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpc_predictive(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_eoi(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_soi(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_boundary(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_boundary_newline(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_whitespace(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_whitespaces(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_blank(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_newline(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_tab(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_escape(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_digit(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_hexdigit(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_octdigit(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_digits(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_hexdigits(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_octdigits(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_lower(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_upper(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_alpha(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_underscore(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_alphanum(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_int(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_hex(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_oct(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_number(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_real(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_float(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_char_lit(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_string_lit(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_regex_lit(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_ident(): *mpc_parser_t <cimport, nodecl> end
+global function mpc_startwith(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_endwith(a: *mpc_parser_t, da: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_whole(a: *mpc_parser_t, da: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_stripl(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_stripr(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_strip(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_tok(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_sym(s: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_total(a: *mpc_parser_t, da: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_between(a: *mpc_parser_t, ad: mpc_dtor_t, o: cstring, c: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_parens(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_braces(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_brackets(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_squares(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_tok_between(a: *mpc_parser_t, ad: mpc_dtor_t, o: cstring, c: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_tok_parens(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_tok_braces(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_tok_brackets(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global function mpc_tok_squares(a: *mpc_parser_t, ad: mpc_dtor_t): *mpc_parser_t <cimport, nodecl> end
+global MPC_RE_DEFAULT: cint <comptime> = 0
+global MPC_RE_M: cint <comptime> = 1
+global MPC_RE_S: cint <comptime> = 2
+global MPC_RE_MULTILINE: cint <comptime> = 1
+global MPC_RE_DOTALL: cint <comptime> = 2
+global function mpc_re(re: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpc_re_mode(re: cstring, mode: cint): *mpc_parser_t <cimport, nodecl> end
+global mpc_ast_t: type <cimport, nodecl, forwarddecl> = @record{}
+mpc_ast_t = @record{
+  tag: cstring,
+  contents: cstring,
+  state: mpc_state_t,
+  children_num: cint,
+  children: **mpc_ast_t
+}
+global function mpc_ast_new(tag: cstring, contents: cstring): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_build(n: cint, tag: cstring, ...: cvarargs): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_add_root(a: *mpc_ast_t): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_add_child(r: *mpc_ast_t, a: *mpc_ast_t): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_add_tag(a: *mpc_ast_t, t: cstring): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_add_root_tag(a: *mpc_ast_t, t: cstring): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_tag(a: *mpc_ast_t, t: cstring): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_state(a: *mpc_ast_t, s: mpc_state_t): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_delete(a: *mpc_ast_t) <cimport, nodecl> end
+global function mpc_ast_print(a: *mpc_ast_t) <cimport, nodecl> end
+global function mpc_ast_print_to(a: *mpc_ast_t, fp: *FILE) <cimport, nodecl> end
+global function mpc_ast_get_index(ast: *mpc_ast_t, tag: cstring): cint <cimport, nodecl> end
+global function mpc_ast_get_index_lb(ast: *mpc_ast_t, tag: cstring, lb: cint): cint <cimport, nodecl> end
+global function mpc_ast_get_child(ast: *mpc_ast_t, tag: cstring): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_get_child_lb(ast: *mpc_ast_t, tag: cstring, lb: cint): *mpc_ast_t <cimport, nodecl> end
+global mpc_ast_trav_order_t: type <cimport, nodecl, using> = @enum(cint){
+  mpc_ast_trav_order_pre = 0,
+  mpc_ast_trav_order_post = 1
+}
+global mpc_ast_trav_t: type <cimport, nodecl, forwarddecl> = @record{}
+mpc_ast_trav_t = @record{
+  curr_node: *mpc_ast_t,
+  parent: *mpc_ast_trav_t,
+  curr_child: cint,
+  order: mpc_ast_trav_order_t
+}
+global function mpc_ast_traverse_start(ast: *mpc_ast_t, order: mpc_ast_trav_order_t): *mpc_ast_trav_t <cimport, nodecl> end
+global function mpc_ast_traverse_next(trav: **mpc_ast_trav_t): *mpc_ast_t <cimport, nodecl> end
+global function mpc_ast_traverse_free(trav: **mpc_ast_trav_t) <cimport, nodecl> end
+global function mpc_ast_eq(a: *mpc_ast_t, b: *mpc_ast_t): cint <cimport, nodecl> end
+global function mpca_tag(a: *mpc_parser_t, t: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpca_add_tag(a: *mpc_parser_t, t: cstring): *mpc_parser_t <cimport, nodecl> end
+global function mpca_root(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_state(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_total(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_not(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_maybe(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_many(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_many1(a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_count(n: cint, a: *mpc_parser_t): *mpc_parser_t <cimport, nodecl> end
+global function mpca_or(n: cint, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpca_and(n: cint, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global MPCA_LANG_DEFAULT: cint <comptime> = 0
+global MPCA_LANG_PREDICTIVE: cint <comptime> = 1
+global MPCA_LANG_WHITESPACE_SENSITIVE: cint <comptime> = 2
+global function mpca_grammar(flags: cint, grammar: cstring, ...: cvarargs): *mpc_parser_t <cimport, nodecl> end
+global function mpca_lang(flags: cint, language: cstring, ...: cvarargs): *mpc_err_t <cimport, nodecl> end
+global function mpca_lang_file(flags: cint, f: *FILE, ...: cvarargs): *mpc_err_t <cimport, nodecl> end
+global function mpca_lang_pipe(flags: cint, f: *FILE, ...: cvarargs): *mpc_err_t <cimport, nodecl> end
+global function mpca_lang_contents(flags: cint, filename: cstring, ...: cvarargs): *mpc_err_t <cimport, nodecl> end
+global function mpc_print(p: *mpc_parser_t) <cimport, nodecl> end
+global function mpc_optimise(p: *mpc_parser_t) <cimport, nodecl> end
+global function mpc_stats(p: *mpc_parser_t) <cimport, nodecl> end
+global function mpc_test_pass(p: *mpc_parser_t, s: cstring, d: pointer, tester: function(pointer, pointer): cint, destructor: mpc_dtor_t, printer: function(pointer)): cint <cimport, nodecl> end
+global function mpc_test_fail(p: *mpc_parser_t, s: cstring, d: pointer, tester: function(pointer, pointer): cint, destructor: mpc_dtor_t, printer: function(pointer)): cint <cimport, nodecl> end
