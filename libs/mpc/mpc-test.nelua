@@ -18,7 +18,7 @@ local input = [[
 (4 * 2 * 11 + 2) - 5
 ]]
 
-if mpc_parse("input", input, maths, &r) then
+if mpc_parse("input", input, maths, &r) ~= 0 then
   mpc_ast_print((@*mpc_ast_t)(r.output))
   mpc_ast_delete((@*mpc_ast_t)(r.output))
 else

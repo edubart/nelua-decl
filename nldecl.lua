@@ -10,7 +10,6 @@ nldecl.include_names = {}
 nldecl.force_include_names = {}
 nldecl.typedefs_names = {}
 nldecl.exclude_names = {}
-nldecl.platform_names = {}
 nldecl.include_macros = {}
 nldecl.opaque_names = {}
 

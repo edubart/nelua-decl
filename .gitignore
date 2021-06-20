@@ -1,4 +1,5 @@
 nelua_cache
+/extralibs
 /gcc-lua-cdecl
 /test
 *.h
