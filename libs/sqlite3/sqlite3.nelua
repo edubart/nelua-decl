@@ -500,9 +500,9 @@ sqlite3_rtree_query_info = @record{
   rScore: float64,
   apSqlParam: **sqlite3_value
 }
-global SQLITE_VERSION: cstring <comptime> = "3.35.5"
-global SQLITE_VERSION_NUMBER: cint <comptime> = 3035005
-global SQLITE_SOURCE_ID: cstring <comptime> = "2021-04-19 18:32:05 1b256d97b553a9611efca188a3d995a2fff712759044ba480f9a0c9e98faalt1"
+global SQLITE_VERSION: cstring <comptime> = "3.36.0"
+global SQLITE_VERSION_NUMBER: cint <comptime> = 3036000
+global SQLITE_SOURCE_ID: cstring <comptime> = "2021-06-18 18:36:39 5c9a6c06871cb9fe42814af9c039eb6da5427a6ec28f187af7ebfb62eafaalt1"
 global SQLITE_OK: cint <comptime> = 0
 global SQLITE_ERROR: cint <comptime> = 1
 global SQLITE_INTERNAL: cint <comptime> = 2
@@ -691,6 +691,8 @@ global SQLITE_FCNTL_SIZE_LIMIT: cint <comptime> = 36
 global SQLITE_FCNTL_CKPT_DONE: cint <comptime> = 37
 global SQLITE_FCNTL_RESERVE_BYTES: cint <comptime> = 38
 global SQLITE_FCNTL_CKPT_START: cint <comptime> = 39
+global SQLITE_FCNTL_EXTERNAL_READER: cint <comptime> = 40
+global SQLITE_FCNTL_CKSM_FILE: cint <comptime> = 41
 global SQLITE_GET_LOCKPROXYFILE: cint <comptime> = SQLITE_FCNTL_GET_LOCKPROXYFILE
 global SQLITE_SET_LOCKPROXYFILE: cint <comptime> = SQLITE_FCNTL_SET_LOCKPROXYFILE
 global SQLITE_LAST_ERRNO: cint <comptime> = SQLITE_FCNTL_LAST_ERRNO
@@ -889,7 +891,8 @@ global SQLITE_TESTCTRL_PRNG_SEED: cint <comptime> = 28
 global SQLITE_TESTCTRL_EXTRA_SCHEMA_CHECKS: cint <comptime> = 29
 global SQLITE_TESTCTRL_SEEK_COUNT: cint <comptime> = 30
 global SQLITE_TESTCTRL_TRACEFLAGS: cint <comptime> = 31
-global SQLITE_TESTCTRL_LAST: cint <comptime> = 31
+global SQLITE_TESTCTRL_TUNE: cint <comptime> = 32
+global SQLITE_TESTCTRL_LAST: cint <comptime> = 32
 global SQLITE_STATUS_MEMORY_USED: cint <comptime> = 0
 global SQLITE_STATUS_PAGECACHE_USED: cint <comptime> = 1
 global SQLITE_STATUS_PAGECACHE_OVERFLOW: cint <comptime> = 2

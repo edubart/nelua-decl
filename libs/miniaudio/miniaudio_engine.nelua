@@ -178,6 +178,25 @@ global ma_event: type <cimport, nodecl, cincomplete> = @record{}
 global ma_semaphore: type <cimport, nodecl, cincomplete> = @record{}
 global function ma_version(pMajor: *uint32, pMinor: *uint32, pRevision: *uint32) <cimport, nodecl> end
 global function ma_version_string(): cstring <cimport, nodecl> end
+global ma_log_callback_proc: type <cimport, nodecl> = @function(pointer, uint32, cstring)
+global ma_log_callback: type <cimport, nodecl> = @record{
+  onLog: ma_log_callback_proc,
+  pUserData: pointer
+}
+global function ma_log_callback_init(onLog: ma_log_callback_proc, pUserData: pointer): ma_log_callback <cimport, nodecl> end
+global ma_log: type <cimport, nodecl> = @record{
+  callbacks: [4]ma_log_callback,
+  callbackCount: uint32,
+  allocationCallbacks: ma_allocation_callbacks,
+  lock: ma_mutex
+}
+global function ma_log_init(pAllocationCallbacks: *ma_allocation_callbacks, pLog: *ma_log): ma_result <cimport, nodecl> end
+global function ma_log_uninit(pLog: *ma_log) <cimport, nodecl> end
+global function ma_log_register_callback(pLog: *ma_log, callback: ma_log_callback): ma_result <cimport, nodecl> end
+global function ma_log_unregister_callback(pLog: *ma_log, callback: ma_log_callback): ma_result <cimport, nodecl> end
+global function ma_log_post(pLog: *ma_log, level: uint32, pMessage: cstring): ma_result <cimport, nodecl> end
+global function ma_log_postv(pLog: *ma_log, level: uint32, pFormat: cstring, args: cvalist): ma_result <cimport, nodecl> end
+global function ma_log_postf(pLog: *ma_log, level: uint32, pFormat: cstring, ...: cvarargs): ma_result <cimport, nodecl> end
 global ma_biquad_coefficient: type <cimport, nodecl> = @union{
   f32: float32,
   s32: int32
@@ -344,6 +363,7 @@ global ma_notch2_config: type <cimport, nodecl> = @record{
   q: float64,
   frequency: float64
 }
+global ma_notch_config: type = @ma_notch2_config
 global function ma_notch2_config_init(format: ma_format, channels: uint32, sampleRate: uint32, q: float64, frequency: float64): ma_notch2_config <cimport, nodecl> end
 global ma_notch2: type <cimport, nodecl> = @record{
   bq: ma_biquad
@@ -360,6 +380,7 @@ global ma_peak2_config: type <cimport, nodecl> = @record{
   q: float64,
   frequency: float64
 }
+global ma_peak_config: type = @ma_peak2_config
 global function ma_peak2_config_init(format: ma_format, channels: uint32, sampleRate: uint32, gainDB: float64, q: float64, frequency: float64): ma_peak2_config <cimport, nodecl> end
 global ma_peak2: type <cimport, nodecl> = @record{
   bq: ma_biquad
@@ -376,6 +397,7 @@ global ma_loshelf2_config: type <cimport, nodecl> = @record{
   shelfSlope: float64,
   frequency: float64
 }
+global ma_loshelf_config: type = @ma_loshelf2_config
 global function ma_loshelf2_config_init(format: ma_format, channels: uint32, sampleRate: uint32, gainDB: float64, shelfSlope: float64, frequency: float64): ma_loshelf2_config <cimport, nodecl> end
 global ma_loshelf2: type <cimport, nodecl> = @record{
   bq: ma_biquad
@@ -392,6 +414,7 @@ global ma_hishelf2_config: type <cimport, nodecl> = @record{
   shelfSlope: float64,
   frequency: float64
 }
+global ma_hishelf_config: type = @ma_hishelf2_config
 global function ma_hishelf2_config_init(format: ma_format, channels: uint32, sampleRate: uint32, gainDB: float64, shelfSlope: float64, frequency: float64): ma_hishelf2_config <cimport, nodecl> end
 global ma_hishelf2: type <cimport, nodecl> = @record{
   bq: ma_biquad
@@ -570,6 +593,8 @@ global function ma_pcm_convert(pOut: pointer, formatOut: ma_format, pIn: pointer
 global function ma_convert_pcm_frames_format(pOut: pointer, formatOut: ma_format, pIn: pointer, formatIn: ma_format, frameCount: uint64, channels: uint32, ditherMode: ma_dither_mode) <cimport, nodecl> end
 global function ma_deinterleave_pcm_frames(format: ma_format, channels: uint32, frameCount: uint64, pInterleavedPCMFrames: pointer, ppDeinterleavedPCMFrames: *pointer) <cimport, nodecl> end
 global function ma_interleave_pcm_frames(format: ma_format, channels: uint32, frameCount: uint64, ppDeinterleavedPCMFrames: *pointer, pInterleavedPCMFrames: pointer) <cimport, nodecl> end
+global function ma_channel_map_get_default_channel(channelCount: uint32, channelIndex: uint32): cuchar <cimport, nodecl> end
+global function ma_channel_map_get_channel(pChannelMap: *cuchar, channelCount: uint32, channelIndex: uint32): cuchar <cimport, nodecl> end
 global function ma_channel_map_init_blank(channels: uint32, pChannelMap: *cuchar) <cimport, nodecl> end
 global function ma_get_standard_channel_map(standardChannelMap: ma_standard_channel_map, channels: uint32, pChannelMap: *cuchar) <cimport, nodecl> end
 global function ma_channel_map_copy(pOut: *cuchar, pIn: *cuchar, channels: uint32) <cimport, nodecl> end
@@ -887,6 +912,7 @@ ma_backend_callbacks = @record{
 }
 ma_context_config = @record{
   logCallback: ma_log_proc,
+  pLog: *ma_log,
   threadPriority: ma_thread_priority,
   threadStackSize: csize,
   pUserData: pointer,
@@ -933,6 +959,8 @@ global ma_context_command__wasapi: type <cimport, nodecl> = @record{
 ma_context = @record{
   callbacks: ma_backend_callbacks,
   backend: ma_backend,
+  pLog: *ma_log,
+  log: ma_log,
   logCallback: ma_log_proc,
   threadPriority: ma_thread_priority,
   threadStackSize: csize,
@@ -1231,6 +1259,7 @@ global function ma_context_config_init(): ma_context_config <cimport, nodecl> en
 global function ma_context_init(backends: *ma_backend, backendCount: uint32, pConfig: *ma_context_config, pContext: *ma_context): ma_result <cimport, nodecl> end
 global function ma_context_uninit(pContext: *ma_context): ma_result <cimport, nodecl> end
 global function ma_context_sizeof(): csize <cimport, nodecl> end
+global function ma_context_get_log(pContext: *ma_context): *ma_log <cimport, nodecl> end
 global function ma_context_enumerate_devices(pContext: *ma_context, callback: ma_enum_devices_callback_proc, pUserData: pointer): ma_result <cimport, nodecl> end
 global function ma_context_get_devices(pContext: *ma_context, ppPlaybackDeviceInfos: **ma_device_info, pPlaybackDeviceCount: *uint32, ppCaptureDeviceInfos: **ma_device_info, pCaptureDeviceCount: *uint32): ma_result <cimport, nodecl> end
 global function ma_context_get_device_info(pContext: *ma_context, deviceType: ma_device_type, pDeviceID: *ma_device_id, shareMode: ma_share_mode, pDeviceInfo: *ma_device_info): ma_result <cimport, nodecl> end
@@ -1239,6 +1268,8 @@ global function ma_device_config_init(deviceType: ma_device_type): ma_device_con
 global function ma_device_init(pContext: *ma_context, pConfig: *ma_device_config, pDevice: *ma_device): ma_result <cimport, nodecl> end
 global function ma_device_init_ex(backends: *ma_backend, backendCount: uint32, pContextConfig: *ma_context_config, pConfig: *ma_device_config, pDevice: *ma_device): ma_result <cimport, nodecl> end
 global function ma_device_uninit(pDevice: *ma_device) <cimport, nodecl> end
+global function ma_device_get_context(pDevice: *ma_device): *ma_context <cimport, nodecl> end
+global function ma_device_get_log(pDevice: *ma_device): *ma_log <cimport, nodecl> end
 global function ma_device_start(pDevice: *ma_device): ma_result <cimport, nodecl> end
 global function ma_device_stop(pDevice: *ma_device): ma_result <cimport, nodecl> end
 global function ma_device_is_started(pDevice: *ma_device): ma_bool32 <cimport, nodecl> end
@@ -1300,7 +1331,7 @@ global function ma_apply_volume_factor_pcm_frames_f32(pFrames: *float32, frameCo
 global function ma_apply_volume_factor_pcm_frames(pFrames: pointer, frameCount: uint64, format: ma_format, channels: uint32, factor: float32) <cimport, nodecl> end
 global function ma_factor_to_gain_db(factor: float32): float32 <cimport, nodecl> end
 global function ma_gain_db_to_factor(gain: float32): float32 <cimport, nodecl> end
-global ma_data_source_callbacks: type <cimport, nodecl> = @record{
+global ma_data_source_vtable: type <cimport, nodecl> = @record{
   onRead: function(pointer, pointer, uint64, *uint64): ma_result,
   onSeek: function(pointer, uint64): ma_result,
   onMap: function(pointer, *pointer, *uint64): ma_result,
@@ -1309,6 +1340,25 @@ global ma_data_source_callbacks: type <cimport, nodecl> = @record{
   onGetCursor: function(pointer, *uint64): ma_result,
   onGetLength: function(pointer, *uint64): ma_result
 }
+global ma_data_source_callbacks: type = @ma_data_source_vtable
+global ma_data_source_get_next_proc: type <cimport, nodecl> = @function(pointer): pointer
+global ma_data_source_config: type <cimport, nodecl> = @record{
+  vtable: *ma_data_source_vtable
+}
+global function ma_data_source_config_init(): ma_data_source_config <cimport, nodecl> end
+global ma_data_source_base: type <cimport, nodecl> = @record{
+  cb: ma_data_source_callbacks,
+  vtable: *ma_data_source_vtable,
+  rangeBegInFrames: uint64,
+  rangeEndInFrames: uint64,
+  loopBegInFrames: uint64,
+  loopEndInFrames: uint64,
+  pCurrent: pointer,
+  pNext: pointer,
+  onGetNext: ma_data_source_get_next_proc
+}
+global function ma_data_source_init(pConfig: *ma_data_source_config, pDataSource: pointer): ma_result <cimport, nodecl> end
+global function ma_data_source_uninit(pDataSource: pointer) <cimport, nodecl> end
 global function ma_data_source_read_pcm_frames(pDataSource: pointer, pFramesOut: pointer, frameCount: uint64, pFramesRead: *uint64, loop: ma_bool32): ma_result <cimport, nodecl> end
 global function ma_data_source_seek_pcm_frames(pDataSource: pointer, frameCount: uint64, pFramesSeeked: *uint64, loop: ma_bool32): ma_result <cimport, nodecl> end
 global function ma_data_source_seek_to_pcm_frame(pDataSource: pointer, frameIndex: uint64): ma_result <cimport, nodecl> end
@@ -1318,7 +1368,7 @@ global function ma_data_source_get_data_format(pDataSource: pointer, pFormat: *m
 global function ma_data_source_get_cursor_in_pcm_frames(pDataSource: pointer, pCursor: *uint64): ma_result <cimport, nodecl> end
 global function ma_data_source_get_length_in_pcm_frames(pDataSource: pointer, pLength: *uint64): ma_result <cimport, nodecl> end
 global ma_audio_buffer_ref: type <cimport, nodecl> = @record{
-  ds: ma_data_source_callbacks,
+  ds: ma_data_source_base,
   format: ma_format,
   channels: uint32,
   cursor: uint64,
@@ -1326,12 +1376,15 @@ global ma_audio_buffer_ref: type <cimport, nodecl> = @record{
   pData: pointer
 }
 global function ma_audio_buffer_ref_init(format: ma_format, channels: uint32, pData: pointer, sizeInFrames: uint64, pAudioBufferRef: *ma_audio_buffer_ref): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_uninit(pAudioBufferRef: *ma_audio_buffer_ref) <cimport, nodecl> end
 global function ma_audio_buffer_ref_set_data(pAudioBufferRef: *ma_audio_buffer_ref, pData: pointer, sizeInFrames: uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_ref_read_pcm_frames(pAudioBufferRef: *ma_audio_buffer_ref, pFramesOut: pointer, frameCount: uint64, loop: ma_bool32): uint64 <cimport, nodecl> end
 global function ma_audio_buffer_ref_seek_to_pcm_frame(pAudioBufferRef: *ma_audio_buffer_ref, frameIndex: uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_ref_map(pAudioBufferRef: *ma_audio_buffer_ref, ppFramesOut: *pointer, pFrameCount: *uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_ref_unmap(pAudioBufferRef: *ma_audio_buffer_ref, frameCount: uint64): ma_result <cimport, nodecl> end
-global function ma_audio_buffer_ref_at_end(pAudioBufferRef: *ma_audio_buffer_ref): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_at_end(pAudioBufferRef: *ma_audio_buffer_ref): ma_bool32 <cimport, nodecl> end
+global function ma_audio_buffer_ref_get_cursor_in_pcm_frames(pAudioBufferRef: *ma_audio_buffer_ref, pCursor: *uint64): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_ref_get_length_in_pcm_frames(pAudioBufferRef: *ma_audio_buffer_ref, pLength: *uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_ref_get_available_frames(pAudioBufferRef: *ma_audio_buffer_ref, pAvailableFrames: *uint64): ma_result <cimport, nodecl> end
 global ma_audio_buffer_config: type <cimport, nodecl> = @record{
   format: ma_format,
@@ -1356,7 +1409,9 @@ global function ma_audio_buffer_read_pcm_frames(pAudioBuffer: *ma_audio_buffer, 
 global function ma_audio_buffer_seek_to_pcm_frame(pAudioBuffer: *ma_audio_buffer, frameIndex: uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_map(pAudioBuffer: *ma_audio_buffer, ppFramesOut: *pointer, pFrameCount: *uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_unmap(pAudioBuffer: *ma_audio_buffer, frameCount: uint64): ma_result <cimport, nodecl> end
-global function ma_audio_buffer_at_end(pAudioBuffer: *ma_audio_buffer): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_at_end(pAudioBuffer: *ma_audio_buffer): ma_bool32 <cimport, nodecl> end
+global function ma_audio_buffer_get_cursor_in_pcm_frames(pAudioBuffer: *ma_audio_buffer, pCursor: *uint64): ma_result <cimport, nodecl> end
+global function ma_audio_buffer_get_length_in_pcm_frames(pAudioBuffer: *ma_audio_buffer, pLength: *uint64): ma_result <cimport, nodecl> end
 global function ma_audio_buffer_get_available_frames(pAudioBuffer: *ma_audio_buffer, pAvailableFrames: *uint64): ma_result <cimport, nodecl> end
 global ma_vfs_file: type = @pointer
 global ma_seek_origin: type <cimport, nodecl, using> = @enum(cint){
@@ -1391,16 +1446,35 @@ global ma_default_vfs: type <cimport, nodecl> = @record{
   allocationCallbacks: ma_allocation_callbacks
 }
 global function ma_default_vfs_init(pVFS: *ma_default_vfs, pAllocationCallbacks: *ma_allocation_callbacks): ma_result <cimport, nodecl> end
+global ma_read_proc: type <cimport, nodecl> = @function(pointer, pointer, csize, *csize): ma_result
+global ma_seek_proc: type <cimport, nodecl> = @function(pointer, int64, ma_seek_origin): ma_result
+global ma_tell_proc: type <cimport, nodecl> = @function(pointer, *int64): ma_result
 global ma_resource_format: type <cimport, nodecl, using> = @enum(cint){
   ma_resource_format_wav = 0
 }
+global ma_encoding_format: type <cimport, nodecl, using> = @enum(cint){
+  ma_encoding_format_unknown = 0,
+  ma_encoding_format_wav = 1,
+  ma_encoding_format_flac = 2,
+  ma_encoding_format_mp3 = 3,
+  ma_encoding_format_vorbis = 4
+}
 global ma_decoder: type <cimport, nodecl, forwarddecl> = @record{}
+global ma_decoding_backend_config: type <cimport, nodecl> = @record{
+  preferredFormat: ma_format
+}
+global function ma_decoding_backend_config_init(preferredFormat: ma_format): ma_decoding_backend_config <cimport, nodecl> end
+global ma_decoding_backend_vtable: type <cimport, nodecl> = @record{
+  onInit: function(pointer, ma_read_proc, ma_seek_proc, ma_tell_proc, pointer, *ma_decoding_backend_config, *ma_allocation_callbacks, *pointer): ma_result,
+  onInitFile: function(pointer, cstring, *ma_decoding_backend_config, *ma_allocation_callbacks, *pointer): ma_result,
+  onInitFileW: function(pointer, *cint, *ma_decoding_backend_config, *ma_allocation_callbacks, *pointer): ma_result,
+  onInitMemory: function(pointer, pointer, csize, *ma_decoding_backend_config, *ma_allocation_callbacks, *pointer): ma_result,
+  onUninit: function(pointer, pointer, *ma_allocation_callbacks),
+  onGetChannelMap: function(pointer, pointer, *cuchar, csize): ma_result
+}
 global ma_decoder_read_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, csize): csize
-global ma_decoder_seek_proc: type <cimport, nodecl> = @function(*ma_decoder, cint, ma_seek_origin): ma_bool32
-global ma_decoder_read_pcm_frames_proc: type <cimport, nodecl> = @function(*ma_decoder, pointer, uint64): uint64
-global ma_decoder_seek_to_pcm_frame_proc: type <cimport, nodecl> = @function(*ma_decoder, uint64): ma_result
-global ma_decoder_uninit_proc: type <cimport, nodecl> = @function(*ma_decoder): ma_result
-global ma_decoder_get_length_in_pcm_frames_proc: type <cimport, nodecl> = @function(*ma_decoder): uint64
+global ma_decoder_seek_proc: type <cimport, nodecl> = @function(*ma_decoder, int64, ma_seek_origin): ma_bool32
+global ma_decoder_tell_proc: type <cimport, nodecl> = @function(*ma_decoder, *int64): ma_result
 global ma_decoder_config: type <cimport, nodecl> = @record{
   format: ma_format,
   channels: uint32,
@@ -1417,31 +1491,29 @@ global ma_decoder_config: type <cimport, nodecl> = @record{
       quality: cint
     }
   },
-  allocationCallbacks: ma_allocation_callbacks
+  allocationCallbacks: ma_allocation_callbacks,
+  encodingFormat: ma_encoding_format,
+  ppCustomBackendVTables: **ma_decoding_backend_vtable,
+  customBackendCount: uint32,
+  pCustomBackendUserData: pointer
 }
 ma_decoder = @record{
-  ds: ma_data_source_callbacks,
+  ds: ma_data_source_base,
+  pBackend: pointer,
+  pBackendVTable: *ma_decoding_backend_vtable,
+  pBackendUserData: pointer,
   onRead: ma_decoder_read_proc,
   onSeek: ma_decoder_seek_proc,
+  onTell: ma_decoder_tell_proc,
   pUserData: pointer,
-  readPointerInBytes: uint64,
   readPointerInPCMFrames: uint64,
-  internalFormat: ma_format,
-  internalChannels: uint32,
-  internalSampleRate: uint32,
-  internalChannelMap: [32]cuchar,
   outputFormat: ma_format,
   outputChannels: uint32,
   outputSampleRate: uint32,
   outputChannelMap: [32]cuchar,
   converter: ma_data_converter,
   allocationCallbacks: ma_allocation_callbacks,
-  onReadPCMFrames: ma_decoder_read_pcm_frames_proc,
-  onSeekToPCMFrame: ma_decoder_seek_to_pcm_frame_proc,
-  onUninit: ma_decoder_uninit_proc,
-  onGetLengthInPCMFrames: ma_decoder_get_length_in_pcm_frames_proc,
-  pInternalDecoder: pointer,
-  backend: union{
+  data: union{
     vfs: record{
       pVFS: pointer,
       file: ma_vfs_file
@@ -1454,38 +1526,13 @@ ma_decoder = @record{
   }
 }
 global function ma_decoder_config_init(outputFormat: ma_format, outputChannels: uint32, outputSampleRate: uint32): ma_decoder_config <cimport, nodecl> end
+global function ma_decoder_config_init_default(): ma_decoder_config <cimport, nodecl> end
 global function ma_decoder_init(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_wav(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_flac(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_mp3(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vorbis(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_raw(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfigIn: *ma_decoder_config, pConfigOut: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global function ma_decoder_init_memory(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_memory_wav(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_memory_flac(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_memory_mp3(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_memory_vorbis(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_memory_raw(pData: pointer, dataSize: csize, pConfigIn: *ma_decoder_config, pConfigOut: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global function ma_decoder_init_vfs(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_wav(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_flac(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_mp3(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_vorbis(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global function ma_decoder_init_vfs_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_wav_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_flac_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_mp3_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_vfs_vorbis_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global function ma_decoder_init_file(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_wav(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_flac(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_mp3(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_vorbis(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global function ma_decoder_init_file_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_wav_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_flac_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_mp3_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
-global function ma_decoder_init_file_vorbis_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global function ma_decoder_uninit(pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global function ma_decoder_get_cursor_in_pcm_frames(pDecoder: *ma_decoder, pCursor: *uint64): ma_result <cimport, nodecl> end
 global function ma_decoder_get_length_in_pcm_frames(pDecoder: *ma_decoder): uint64 <cimport, nodecl> end
@@ -1495,6 +1542,30 @@ global function ma_decoder_get_available_frames(pDecoder: *ma_decoder, pAvailabl
 global function ma_decode_from_vfs(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
 global function ma_decode_file(pFilePath: cstring, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
 global function ma_decode_memory(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport, nodecl> end
+global function ma_decoder_init_wav(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_flac(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_mp3(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vorbis(onRead: ma_decoder_read_proc, onSeek: ma_decoder_seek_proc, pUserData: pointer, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_memory_wav(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_memory_flac(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_memory_mp3(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_memory_vorbis(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_wav(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_flac(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_mp3(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_vorbis(pVFS: pointer, pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_wav_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_flac_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_mp3_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_vfs_vorbis_w(pVFS: pointer, pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_wav(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_flac(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_mp3(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_vorbis(pFilePath: cstring, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_wav_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_flac_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_mp3_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
+global function ma_decoder_init_file_vorbis_w(pFilePath: *cint, pConfig: *ma_decoder_config, pDecoder: *ma_decoder): ma_result <cimport, nodecl> end
 global ma_encoder: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_encoder_write_proc: type <cimport, nodecl> = @function(*ma_encoder, pointer, csize): csize
 global ma_encoder_seek_proc: type <cimport, nodecl> = @function(*ma_encoder, cint, ma_seek_origin): ma_bool32
@@ -1541,12 +1612,13 @@ global ma_waveform_config: type <cimport, nodecl> = @record{
 }
 global function ma_waveform_config_init(format: ma_format, channels: uint32, sampleRate: uint32, type: ma_waveform_type, amplitude: float64, frequency: float64): ma_waveform_config <cimport, nodecl> end
 global ma_waveform: type <cimport, nodecl> = @record{
-  ds: ma_data_source_callbacks,
+  ds: ma_data_source_base,
   config: ma_waveform_config,
   advance: float64,
   time: float64
 }
 global function ma_waveform_init(pConfig: *ma_waveform_config, pWaveform: *ma_waveform): ma_result <cimport, nodecl> end
+global function ma_waveform_uninit(pWaveform: *ma_waveform) <cimport, nodecl> end
 global function ma_waveform_read_pcm_frames(pWaveform: *ma_waveform, pFramesOut: pointer, frameCount: uint64): uint64 <cimport, nodecl> end
 global function ma_waveform_seek_to_pcm_frame(pWaveform: *ma_waveform, frameIndex: uint64): ma_result <cimport, nodecl> end
 global function ma_waveform_set_amplitude(pWaveform: *ma_waveform, amplitude: float64): ma_result <cimport, nodecl> end
@@ -1568,7 +1640,7 @@ global ma_noise_config: type <cimport, nodecl> = @record{
 }
 global function ma_noise_config_init(format: ma_format, channels: uint32, type: ma_noise_type, seed: int32, amplitude: float64): ma_noise_config <cimport, nodecl> end
 global ma_noise: type <cimport, nodecl> = @record{
-  ds: ma_data_source_callbacks,
+  ds: ma_data_source_vtable,
   config: ma_noise_config,
   lcg: ma_lcg,
   state: union{
@@ -1583,10 +1655,49 @@ global ma_noise: type <cimport, nodecl> = @record{
   }
 }
 global function ma_noise_init(pConfig: *ma_noise_config, pNoise: *ma_noise): ma_result <cimport, nodecl> end
+global function ma_noise_uninit(pNoise: *ma_noise) <cimport, nodecl> end
 global function ma_noise_read_pcm_frames(pNoise: *ma_noise, pFramesOut: pointer, frameCount: uint64): uint64 <cimport, nodecl> end
 global function ma_noise_set_amplitude(pNoise: *ma_noise, amplitude: float64): ma_result <cimport, nodecl> end
 global function ma_noise_set_seed(pNoise: *ma_noise, seed: int32): ma_result <cimport, nodecl> end
 global function ma_noise_set_type(pNoise: *ma_noise, type: ma_noise_type): ma_result <cimport, nodecl> end
+global ma_paged_audio_buffer_page: type <cimport, nodecl, forwarddecl> = @record{}
+ma_paged_audio_buffer_page = @record{
+  pNext: *ma_paged_audio_buffer_page,
+  sizeInFrames: uint64,
+  pAudioData: [1]uint8
+}
+global ma_paged_audio_buffer_data: type <cimport, nodecl> = @record{
+  format: ma_format,
+  channels: uint32,
+  head: ma_paged_audio_buffer_page,
+  pTail: *ma_paged_audio_buffer_page
+}
+global function ma_paged_audio_buffer_data_init(format: ma_format, channels: uint32, pData: *ma_paged_audio_buffer_data): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_uninit(pData: *ma_paged_audio_buffer_data, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_get_head(pData: *ma_paged_audio_buffer_data): *ma_paged_audio_buffer_page <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_get_tail(pData: *ma_paged_audio_buffer_data): *ma_paged_audio_buffer_page <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_get_length_in_pcm_frames(pData: *ma_paged_audio_buffer_data, pLength: *uint64): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_allocate_page(pData: *ma_paged_audio_buffer_data, pageSizeInFrames: uint64, pInitialData: pointer, pAllocationCallbacks: *ma_allocation_callbacks, ppPage: **ma_paged_audio_buffer_page): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_free_page(pData: *ma_paged_audio_buffer_data, pPage: *ma_paged_audio_buffer_page, pAllocationCallbacks: *ma_allocation_callbacks): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_append_page(pData: *ma_paged_audio_buffer_data, pPage: *ma_paged_audio_buffer_page): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_data_allocate_and_append_page(pData: *ma_paged_audio_buffer_data, pageSizeInFrames: uint32, pInitialData: pointer, pAllocationCallbacks: *ma_allocation_callbacks): ma_result <cimport, nodecl> end
+global ma_paged_audio_buffer_config: type <cimport, nodecl> = @record{
+  pData: *ma_paged_audio_buffer_data
+}
+global function ma_paged_audio_buffer_config_init(pData: *ma_paged_audio_buffer_data): ma_paged_audio_buffer_config <cimport, nodecl> end
+global ma_paged_audio_buffer: type <cimport, nodecl> = @record{
+  ds: ma_data_source_base,
+  pData: *ma_paged_audio_buffer_data,
+  pCurrent: *ma_paged_audio_buffer_page,
+  relativeCursor: uint64,
+  absoluteCursor: uint64
+}
+global function ma_paged_audio_buffer_init(pConfig: *ma_paged_audio_buffer_config, pPagedAudioBuffer: *ma_paged_audio_buffer): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_uninit(pPagedAudioBuffer: *ma_paged_audio_buffer) <cimport, nodecl> end
+global function ma_paged_audio_buffer_read_pcm_frames(pPagedAudioBuffer: *ma_paged_audio_buffer, pFramesOut: pointer, frameCount: uint64, pFramesRead: *uint64): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_seek_to_pcm_frame(pPagedAudioBuffer: *ma_paged_audio_buffer, frameIndex: uint64): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_get_cursor_in_pcm_frames(pPagedAudioBuffer: *ma_paged_audio_buffer, pCursor: *uint64): ma_result <cimport, nodecl> end
+global function ma_paged_audio_buffer_get_length_in_pcm_frames(pPagedAudioBuffer: *ma_paged_audio_buffer, pLength: *uint64): ma_result <cimport, nodecl> end
 global function ma_copy_and_apply_volume_factor_per_channel_f32(pFramesOut: *float32, pFramesIn: *float32, frameCount: uint64, channels: uint32, pChannelGains: *float32) <cimport, nodecl> end
 global function ma_apply_volume_factor_per_channel_f32(pFramesOut: *float32, frameCount: uint64, channels: uint32, pChannelGains: *float32) <cimport, nodecl> end
 global function ma_get_accumulation_bytes_per_sample(format: ma_format): csize <cimport, nodecl> end
@@ -1599,10 +1710,15 @@ global function ma_gainer_config_init(channels: uint32, smoothTimeInFrames: uint
 global ma_gainer: type <cimport, nodecl> = @record{
   config: ma_gainer_config,
   t: uint32,
-  oldGains: [32]float32,
-  newGains: [32]float32
+  pOldGains: *float32,
+  pNewGains: *float32,
+  _pHeap: pointer,
+  _ownsHeap: ma_bool32
 }
-global function ma_gainer_init(pConfig: *ma_gainer_config, pGainer: *ma_gainer): ma_result <cimport, nodecl> end
+global function ma_gainer_get_heap_size(pConfig: *ma_gainer_config, pHeapSizeInBytes: *csize): ma_result <cimport, nodecl> end
+global function ma_gainer_init_preallocated(pConfig: *ma_gainer_config, pHeap: pointer, pGainer: *ma_gainer): ma_result <cimport, nodecl> end
+global function ma_gainer_init(pConfig: *ma_gainer_config, pAllocationCallbacks: *ma_allocation_callbacks, pGainer: *ma_gainer): ma_result <cimport, nodecl> end
+global function ma_gainer_uninit(pGainer: *ma_gainer, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
 global function ma_gainer_process_pcm_frames(pGainer: *ma_gainer, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
 global function ma_gainer_set_gain(pGainer: *ma_gainer, newGain: float32): ma_result <cimport, nodecl> end
 global function ma_gainer_set_gains(pGainer: *ma_gainer, pNewGains: *float32): ma_result <cimport, nodecl> end
@@ -1620,9 +1736,11 @@ global ma_node_vtable: type <cimport, nodecl> = @record{
 }
 global ma_node_config: type <cimport, nodecl> = @record{
   vtable: *ma_node_vtable,
-  inputChannels: [2]uint32,
-  outputChannels: [2]uint32,
-  initialState: ma_node_state
+  initialState: ma_node_state,
+  inputBusCount: uint32,
+  outputBusCount: uint32,
+  pInputChannels: *uint32,
+  pOutputChannels: *uint32
 }
 global function ma_node_config_init(): ma_node_config <cimport, nodecl> end
 global ma_node_output_bus: type <cimport, nodecl, forwarddecl> = @record{}
@@ -1659,9 +1777,17 @@ ma_node_base = @record{
   state: ma_node_state,
   stateTimes: [2]uint64,
   localTime: uint64,
-  inputBuses: [2]ma_node_input_bus,
-  outputBuses: [2]ma_node_output_bus
+  inputBusCount: uint32,
+  outputBusCount: uint32,
+  pInputBuses: *ma_node_input_bus,
+  pOutputBuses: *ma_node_output_bus,
+  _inputBuses: [2]ma_node_input_bus,
+  _outputBuses: [2]ma_node_output_bus,
+  _pHeap: pointer,
+  _ownsHeap: ma_bool32
 }
+global function ma_node_get_heap_size(pConfig: *ma_node_config, pHeapSizeInBytes: *csize): ma_result <cimport, nodecl> end
+global function ma_node_init_preallocated(pNodeGraph: *ma_node_graph, pConfig: *ma_node_config, pHeap: pointer, pNode: pointer): ma_result <cimport, nodecl> end
 global function ma_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: pointer): ma_result <cimport, nodecl> end
 global function ma_node_uninit(pNode: pointer, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
 global function ma_node_get_node_graph(pNode: pointer): *ma_node_graph <cimport, nodecl> end
@@ -1721,15 +1847,6 @@ global ma_splitter_node: type <cimport, nodecl> = @record{
 }
 global function ma_splitter_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_splitter_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pSplitterNode: *ma_splitter_node): ma_result <cimport, nodecl> end
 global function ma_splitter_node_uninit(pSplitterNode: *ma_splitter_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
-global ma_resource_manager_data_buffer_encoding: type <cimport, nodecl, using> = @enum(cint){
-  ma_resource_manager_data_buffer_encoding_encoded = 0,
-  ma_resource_manager_data_buffer_encoding_decoded = 1
-}
-global ma_resource_manager_data_buffer_connector: type <cimport, nodecl, using> = @enum(cint){
-  ma_resource_manager_data_buffer_connector_unknown = 0,
-  ma_resource_manager_data_buffer_connector_decoder = 1,
-  ma_resource_manager_data_buffer_connector_buffer = 2
-}
 global ma_resource_manager: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_resource_manager_data_buffer_node: type <cimport, nodecl, forwarddecl> = @record{}
 global ma_resource_manager_data_buffer: type <cimport, nodecl, forwarddecl> = @record{}
@@ -1745,11 +1862,20 @@ global ma_slot_allocator: type <cimport, nodecl> = @record{
 global function ma_slot_allocator_init(pAllocator: *ma_slot_allocator): ma_result <cimport, nodecl> end
 global function ma_slot_allocator_alloc(pAllocator: *ma_slot_allocator, pSlot: *uint64): ma_result <cimport, nodecl> end
 global function ma_slot_allocator_free(pAllocator: *ma_slot_allocator, slot: uint64): ma_result <cimport, nodecl> end
+global ma_fence: type <cimport, nodecl> = @record{
+  e: ma_event,
+  counter: uint32
+}
+global function ma_fence_init(pFence: *ma_fence): ma_result <cimport, nodecl> end
+global function ma_fence_uninit(pFence: *ma_fence) <cimport, nodecl> end
+global function ma_fence_acquire(pFence: *ma_fence): ma_result <cimport, nodecl> end
+global function ma_fence_release(pFence: *ma_fence): ma_result <cimport, nodecl> end
+global function ma_fence_wait(pFence: *ma_fence): ma_result <cimport, nodecl> end
 global ma_async_notification: type <cimport, nodecl> = @void
 global ma_async_notification_callbacks: type <cimport, nodecl> = @record{
-  onSignal: function(pointer, cint)
+  onSignal: function(pointer)
 }
-global function ma_async_notification_signal(pNotification: pointer, code: cint): ma_result <cimport, nodecl> end
+global function ma_async_notification_signal(pNotification: pointer): ma_result <cimport, nodecl> end
 global ma_async_notification_poll: type <cimport, nodecl> = @record{
   cb: ma_async_notification_callbacks,
   signalled: ma_bool32
@@ -1764,6 +1890,15 @@ global function ma_async_notification_event_init(pNotificationEvent: *ma_async_n
 global function ma_async_notification_event_uninit(pNotificationEvent: *ma_async_notification_event): ma_result <cimport, nodecl> end
 global function ma_async_notification_event_wait(pNotificationEvent: *ma_async_notification_event): ma_result <cimport, nodecl> end
 global function ma_async_notification_event_signal(pNotificationEvent: *ma_async_notification_event): ma_result <cimport, nodecl> end
+global ma_pipeline_stage_notification: type <cimport, nodecl> = @record{
+  pNotification: pointer,
+  pFence: *ma_fence
+}
+global ma_pipeline_notifications: type <cimport, nodecl> = @record{
+  init: ma_pipeline_stage_notification,
+  done: ma_pipeline_stage_notification
+}
+global function ma_pipeline_notifications_init(): ma_pipeline_notifications <cimport, nodecl> end
 global ma_job: type <cimport, nodecl> = @record{
   toc: union{
     breakup: record{
@@ -1776,36 +1911,50 @@ global ma_job: type <cimport, nodecl> = @record{
   next: uint64,
   order: uint32,
   __unnamed1: union{
-    loadDataBuffer: record{
-      pDataBuffer: *ma_resource_manager_data_buffer,
+    loadDataBufferNode: record{
+      pDataBufferNode: *ma_resource_manager_data_buffer_node,
       pFilePath: cstring,
       pFilePathW: *cint,
+      decode: ma_bool32,
       pInitNotification: pointer,
-      pCompletedNotification: pointer
+      pDoneNotification: pointer,
+      pInitFence: *ma_fence,
+      pDoneFence: *ma_fence
+    },
+    freeDataBufferNode: record{
+      pDataBufferNode: *ma_resource_manager_data_buffer_node,
+      pDoneNotification: pointer,
+      pDoneFence: *ma_fence
+    },
+    pageDataBufferNode: record{
+      pDataBufferNode: *ma_resource_manager_data_buffer_node,
+      pDecoder: *ma_decoder,
+      pDoneNotification: pointer,
+      pDoneFence: *ma_fence
+    },
+    loadDataBuffer: record{
+      pDataBuffer: *ma_resource_manager_data_buffer,
+      pInitNotification: pointer,
+      pDoneNotification: pointer,
+      pInitFence: *ma_fence,
+      pDoneFence: *ma_fence
     },
     freeDataBuffer: record{
       pDataBuffer: *ma_resource_manager_data_buffer,
-      pNotification: pointer
-    },
-    pageDataBuffer: record{
-      pDataBuffer: *ma_resource_manager_data_buffer,
-      pDecoder: *ma_decoder,
-      pInitNotification: pointer,
-      pCompletedNotification: pointer,
-      pData: pointer,
-      dataSizeInBytes: csize,
-      decodedFrameCount: uint64,
-      isUnknownLength: ma_bool32
+      pDoneNotification: pointer,
+      pDoneFence: *ma_fence
     },
     loadDataStream: record{
       pDataStream: *ma_resource_manager_data_stream,
       pFilePath: cstring,
       pFilePathW: *cint,
-      pNotification: pointer
+      pInitNotification: pointer,
+      pInitFence: *ma_fence
     },
     freeDataStream: record{
       pDataStream: *ma_resource_manager_data_stream,
-      pNotification: pointer
+      pDoneNotification: pointer,
+      pDoneFence: *ma_fence
     },
     pageDataStream: record{
       pDataStream: *ma_resource_manager_data_stream,
@@ -1834,23 +1983,32 @@ global function ma_job_queue_init(flags: uint32, pQueue: *ma_job_queue): ma_resu
 global function ma_job_queue_uninit(pQueue: *ma_job_queue): ma_result <cimport, nodecl> end
 global function ma_job_queue_post(pQueue: *ma_job_queue, pJob: *ma_job): ma_result <cimport, nodecl> end
 global function ma_job_queue_next(pQueue: *ma_job_queue, pJob: *ma_job): ma_result <cimport, nodecl> end
-global ma_decoded_data: type <cimport, nodecl> = @record{
-  pData: pointer,
-  frameCount: uint64,
-  decodedFrameCount: uint64,
-  format: ma_format,
-  channels: uint32,
-  sampleRate: uint32
+global ma_resource_manager_data_supply_type: type <cimport, nodecl, using> = @enum(cint){
+  ma_resource_manager_data_supply_type_unknown = 0,
+  ma_resource_manager_data_supply_type_encoded = 1,
+  ma_resource_manager_data_supply_type_decoded = 2,
+  ma_resource_manager_data_supply_type_decoded_paged = 3
 }
-global ma_encoded_data: type <cimport, nodecl> = @record{
-  pData: pointer,
-  sizeInBytes: csize
-}
-global ma_resource_manager_memory_buffer: type <cimport, nodecl> = @record{
-  type: ma_resource_manager_data_buffer_encoding,
+global ma_resource_manager_data_supply: type <cimport, nodecl> = @record{
+  type: ma_resource_manager_data_supply_type,
   __unnamed1: union{
-    decoded: ma_decoded_data,
-    encoded: ma_encoded_data
+    encoded: record{
+      pData: pointer,
+      sizeInBytes: csize
+    },
+    decoded: record{
+      pData: pointer,
+      totalFrameCount: uint64,
+      decodedFrameCount: uint64,
+      format: ma_format,
+      channels: uint32,
+      sampleRate: uint32
+    },
+    decodedPaged: record{
+      data: ma_paged_audio_buffer_data,
+      decodedFrameCount: uint64,
+      sampleRate: uint32
+    }
   }
 }
 ma_resource_manager_data_buffer_node = @record{
@@ -1860,28 +2018,31 @@ ma_resource_manager_data_buffer_node = @record{
   executionCounter: uint32,
   executionPointer: uint32,
   isDataOwnedByResourceManager: ma_bool32,
-  data: ma_resource_manager_memory_buffer,
+  data: ma_resource_manager_data_supply,
   pParent: *ma_resource_manager_data_buffer_node,
   pChildLo: *ma_resource_manager_data_buffer_node,
   pChildHi: *ma_resource_manager_data_buffer_node
 }
 ma_resource_manager_data_buffer = @record{
-  ds: ma_data_source_callbacks,
+  ds: ma_data_source_base,
   pResourceManager: *ma_resource_manager,
-  flags: uint32,
   pNode: *ma_resource_manager_data_buffer_node,
-  cursorInPCMFrames: uint64,
-  lengthInPCMFrames: uint64,
+  flags: uint32,
+  executionCounter: uint32,
+  executionPointer: uint32,
+  seekTargetInPCMFrames: uint64,
   seekToCursorOnNextRead: ma_bool32,
+  result: ma_result,
   isLooping: ma_bool32,
-  connectorType: ma_resource_manager_data_buffer_connector,
+  isConnectorInitialized: ma_bool32,
   connector: union{
     decoder: ma_decoder,
-    buffer: ma_audio_buffer
+    buffer: ma_audio_buffer,
+    pagedBuffer: ma_paged_audio_buffer
   }
 }
 ma_resource_manager_data_stream = @record{
-  ds: ma_data_source_callbacks,
+  ds: ma_data_source_base,
   pResourceManager: *ma_resource_manager,
   flags: uint32,
   decoder: ma_decoder,
@@ -1911,12 +2072,16 @@ ma_resource_manager_data_source = @record{
 }
 global ma_resource_manager_config: type <cimport, nodecl> = @record{
   allocationCallbacks: ma_allocation_callbacks,
+  pLog: *ma_log,
   decodedFormat: ma_format,
   decodedChannels: uint32,
   decodedSampleRate: uint32,
   jobThreadCount: uint32,
   flags: uint32,
-  pVFS: pointer
+  pVFS: pointer,
+  ppCustomDecodingBackendVTables: **ma_decoding_backend_vtable,
+  customDecodingBackendCount: uint32,
+  pCustomDecodingBackendUserData: pointer
 }
 global function ma_resource_manager_config_init(): ma_resource_manager_config <cimport, nodecl> end
 ma_resource_manager = @record{
@@ -1925,23 +2090,28 @@ ma_resource_manager = @record{
   dataBufferBSTLock: ma_mutex,
   jobThreads: [64]ma_thread,
   jobQueue: ma_job_queue,
-  defaultVFS: ma_default_vfs
+  defaultVFS: ma_default_vfs,
+  log: ma_log
 }
 global function ma_resource_manager_init(pConfig: *ma_resource_manager_config, pResourceManager: *ma_resource_manager): ma_result <cimport, nodecl> end
 global function ma_resource_manager_uninit(pResourceManager: *ma_resource_manager) <cimport, nodecl> end
+global function ma_resource_manager_get_log(pResourceManager: *ma_resource_manager): *ma_log <cimport, nodecl> end
+global function ma_resource_manager_register_file(pResourceManager: *ma_resource_manager, pFilePath: cstring, flags: uint32): ma_result <cimport, nodecl> end
+global function ma_resource_manager_register_file_w(pResourceManager: *ma_resource_manager, pFilePath: *cint, flags: uint32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_register_decoded_data(pResourceManager: *ma_resource_manager, pName: cstring, pData: pointer, frameCount: uint64, format: ma_format, channels: uint32, sampleRate: uint32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_register_decoded_data_w(pResourceManager: *ma_resource_manager, pName: *cint, pData: pointer, frameCount: uint64, format: ma_format, channels: uint32, sampleRate: uint32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_register_encoded_data(pResourceManager: *ma_resource_manager, pName: cstring, pData: pointer, sizeInBytes: csize): ma_result <cimport, nodecl> end
 global function ma_resource_manager_register_encoded_data_w(pResourceManager: *ma_resource_manager, pName: *cint, pData: pointer, sizeInBytes: csize): ma_result <cimport, nodecl> end
+global function ma_resource_manager_unregister_file(pResourceManager: *ma_resource_manager, pFilePath: cstring): ma_result <cimport, nodecl> end
+global function ma_resource_manager_unregister_file_w(pResourceManager: *ma_resource_manager, pFilePath: *cint): ma_result <cimport, nodecl> end
 global function ma_resource_manager_unregister_data(pResourceManager: *ma_resource_manager, pName: cstring): ma_result <cimport, nodecl> end
 global function ma_resource_manager_unregister_data_w(pResourceManager: *ma_resource_manager, pName: *cint): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_buffer_init(pResourceManager: *ma_resource_manager, pFilePath: cstring, flags: uint32, pNotification: pointer, pDataBuffer: *ma_resource_manager_data_buffer): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_buffer_init_w(pResourceManager: *ma_resource_manager, pFilePath: *cint, flags: uint32, pNotification: pointer, pDataBuffer: *ma_resource_manager_data_buffer): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_buffer_init(pResourceManager: *ma_resource_manager, pFilePath: cstring, flags: uint32, pNotifications: *ma_pipeline_notifications, pDataBuffer: *ma_resource_manager_data_buffer): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_buffer_init_w(pResourceManager: *ma_resource_manager, pFilePath: *cint, flags: uint32, pNotifications: *ma_pipeline_notifications, pDataBuffer: *ma_resource_manager_data_buffer): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_buffer_init_copy(pResourceManager: *ma_resource_manager, pExistingDataBuffer: *ma_resource_manager_data_buffer, pDataBuffer: *ma_resource_manager_data_buffer): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_uninit(pDataBuffer: *ma_resource_manager_data_buffer): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_read_pcm_frames(pDataBuffer: *ma_resource_manager_data_buffer, pFramesOut: pointer, frameCount: uint64, pFramesRead: *uint64): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_seek_to_pcm_frame(pDataBuffer: *ma_resource_manager_data_buffer, frameIndex: uint64): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_buffer_map(pDataBuffer: *ma_resource_manager_data_buffer, ppFramesOut: *pointer, pFrameCount: *uint64): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_buffer_unmap(pDataBuffer: *ma_resource_manager_data_buffer, frameCount: uint64): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_get_data_format(pDataBuffer: *ma_resource_manager_data_buffer, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_get_cursor_in_pcm_frames(pDataBuffer: *ma_resource_manager_data_buffer, pCursor: *uint64): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_get_length_in_pcm_frames(pDataBuffer: *ma_resource_manager_data_buffer, pLength: *uint64): ma_result <cimport, nodecl> end
@@ -1949,8 +2119,8 @@ global function ma_resource_manager_data_buffer_result(pDataBuffer: *ma_resource
 global function ma_resource_manager_data_buffer_set_looping(pDataBuffer: *ma_resource_manager_data_buffer, isLooping: ma_bool32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_get_looping(pDataBuffer: *ma_resource_manager_data_buffer, pIsLooping: *ma_bool32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_buffer_get_available_frames(pDataBuffer: *ma_resource_manager_data_buffer, pAvailableFrames: *uint64): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_stream_init(pResourceManager: *ma_resource_manager, pFilePath: cstring, flags: uint32, pNotification: pointer, pDataStream: *ma_resource_manager_data_stream): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_stream_init_w(pResourceManager: *ma_resource_manager, pFilePath: *cint, flags: uint32, pNotification: pointer, pDataStream: *ma_resource_manager_data_stream): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_stream_init(pResourceManager: *ma_resource_manager, pFilePath: cstring, flags: uint32, pNotifications: *ma_pipeline_notifications, pDataStream: *ma_resource_manager_data_stream): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_stream_init_w(pResourceManager: *ma_resource_manager, pFilePath: *cint, flags: uint32, pNotifications: *ma_pipeline_notifications, pDataStream: *ma_resource_manager_data_stream): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_stream_uninit(pDataStream: *ma_resource_manager_data_stream): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_stream_read_pcm_frames(pDataStream: *ma_resource_manager_data_stream, pFramesOut: pointer, frameCount: uint64, pFramesRead: *uint64): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_stream_seek_to_pcm_frame(pDataStream: *ma_resource_manager_data_stream, frameIndex: uint64): ma_result <cimport, nodecl> end
@@ -1963,8 +2133,9 @@ global function ma_resource_manager_data_stream_result(pDataStream: *ma_resource
 global function ma_resource_manager_data_stream_set_looping(pDataStream: *ma_resource_manager_data_stream, isLooping: ma_bool32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_stream_get_looping(pDataStream: *ma_resource_manager_data_stream, pIsLooping: *ma_bool32): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_stream_get_available_frames(pDataStream: *ma_resource_manager_data_stream, pAvailableFrames: *uint64): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_source_init(pResourceManager: *ma_resource_manager, pName: cstring, flags: uint32, pNotification: pointer, pDataSource: *ma_resource_manager_data_source): ma_result <cimport, nodecl> end
-global function ma_resource_manager_data_source_init_w(pResourceManager: *ma_resource_manager, pName: *cint, flags: uint32, pNotification: pointer, pDataSource: *ma_resource_manager_data_source): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_source_init(pResourceManager: *ma_resource_manager, pName: cstring, flags: uint32, pNotifications: *ma_pipeline_notifications, pDataSource: *ma_resource_manager_data_source): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_source_init_w(pResourceManager: *ma_resource_manager, pName: *cint, flags: uint32, pNotifications: *ma_pipeline_notifications, pDataSource: *ma_resource_manager_data_source): ma_result <cimport, nodecl> end
+global function ma_resource_manager_data_source_init_copy(pResourceManager: *ma_resource_manager, pExistingDataSource: *ma_resource_manager_data_source, pDataSource: *ma_resource_manager_data_source): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_source_uninit(pDataSource: *ma_resource_manager_data_source): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_source_read_pcm_frames(pDataSource: *ma_resource_manager_data_source, pFramesOut: pointer, frameCount: uint64, pFramesRead: *uint64): ma_result <cimport, nodecl> end
 global function ma_resource_manager_data_source_seek_to_pcm_frame(pDataSource: *ma_resource_manager_data_source, frameIndex: uint64): ma_result <cimport, nodecl> end
@@ -2003,8 +2174,8 @@ global ma_panner: type <cimport, nodecl> = @record{
 }
 global function ma_panner_init(pConfig: *ma_panner_config, pPanner: *ma_panner): ma_result <cimport, nodecl> end
 global function ma_panner_process_pcm_frames(pPanner: *ma_panner, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
-global function ma_panner_set_mode(pPanner: *ma_panner, mode: ma_pan_mode): ma_result <cimport, nodecl> end
-global function ma_panner_set_pan(pPanner: *ma_panner, pan: float32): ma_result <cimport, nodecl> end
+global function ma_panner_set_mode(pPanner: *ma_panner, mode: ma_pan_mode) <cimport, nodecl> end
+global function ma_panner_set_pan(pPanner: *ma_panner, pan: float32) <cimport, nodecl> end
 global ma_fader_config: type <cimport, nodecl> = @record{
   format: ma_format,
   channels: uint32,
@@ -2020,9 +2191,9 @@ global ma_fader: type <cimport, nodecl> = @record{
 }
 global function ma_fader_init(pConfig: *ma_fader_config, pFader: *ma_fader): ma_result <cimport, nodecl> end
 global function ma_fader_process_pcm_frames(pFader: *ma_fader, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
-global function ma_fader_get_data_format(pFader: *ma_fader, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32): ma_result <cimport, nodecl> end
-global function ma_fader_set_fade(pFader: *ma_fader, volumeBeg: float32, volumeEnd: float32, lengthInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_fader_get_current_volume(pFader: *ma_fader, pVolume: *float32): ma_result <cimport, nodecl> end
+global function ma_fader_get_data_format(pFader: *ma_fader, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32) <cimport, nodecl> end
+global function ma_fader_set_fade(pFader: *ma_fader, volumeBeg: float32, volumeEnd: float32, lengthInFrames: uint64) <cimport, nodecl> end
+global function ma_fader_get_current_volume(pFader: *ma_fader): float32 <cimport, nodecl> end
 global ma_vec3f: type <cimport, nodecl> = @record{
   x: float32,
   y: float32,
@@ -2044,7 +2215,7 @@ global ma_handedness: type <cimport, nodecl, using> = @enum(cint){
 }
 global ma_spatializer_listener_config: type <cimport, nodecl> = @record{
   channelsOut: uint32,
-  channelMapOut: [32]cuchar,
+  pChannelMapOut: *cuchar,
   handedness: ma_handedness,
   coneInnerAngleInRadians: float32,
   coneOuterAngleInRadians: float32,
@@ -2057,10 +2228,15 @@ global ma_spatializer_listener: type <cimport, nodecl> = @record{
   config: ma_spatializer_listener_config,
   position: ma_vec3f,
   direction: ma_vec3f,
-  velocity: ma_vec3f
+  velocity: ma_vec3f,
+  _pHeap: pointer,
+  _ownsHeap: ma_bool32
 }
-global function ma_spatializer_listener_init(pConfig: *ma_spatializer_listener_config, pListener: *ma_spatializer_listener): ma_result <cimport, nodecl> end
-global function ma_spatializer_listener_uninit(pListener: *ma_spatializer_listener) <cimport, nodecl> end
+global function ma_spatializer_listener_get_heap_size(pConfig: *ma_spatializer_listener_config, pHeapSizeInBytes: *csize): ma_result <cimport, nodecl> end
+global function ma_spatializer_listener_init_preallocated(pConfig: *ma_spatializer_listener_config, pHeap: pointer, pListener: *ma_spatializer_listener): ma_result <cimport, nodecl> end
+global function ma_spatializer_listener_init(pConfig: *ma_spatializer_listener_config, pAllocationCallbacks: *ma_allocation_callbacks, pListener: *ma_spatializer_listener): ma_result <cimport, nodecl> end
+global function ma_spatializer_listener_uninit(pListener: *ma_spatializer_listener, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global function ma_spatializer_listener_get_channel_map(pListener: *ma_spatializer_listener): *cuchar <cimport, nodecl> end
 global function ma_spatializer_listener_set_cone(pListener: *ma_spatializer_listener, innerAngleInRadians: float32, outerAngleInRadians: float32, outerGain: float32) <cimport, nodecl> end
 global function ma_spatializer_listener_get_cone(pListener: *ma_spatializer_listener, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
 global function ma_spatializer_listener_set_position(pListener: *ma_spatializer_listener, x: float32, y: float32, z: float32) <cimport, nodecl> end
@@ -2076,7 +2252,7 @@ global function ma_spatializer_listener_get_world_up(pListener: *ma_spatializer_
 global ma_spatializer_config: type <cimport, nodecl> = @record{
   channelsIn: uint32,
   channelsOut: uint32,
-  channelMapIn: [32]cuchar,
+  pChannelMapIn: *cuchar,
   attenuationModel: ma_attenuation_model,
   positioning: ma_positioning,
   handedness: ma_handedness,
@@ -2098,10 +2274,15 @@ global ma_spatializer: type <cimport, nodecl> = @record{
   direction: ma_vec3f,
   velocity: ma_vec3f,
   dopplerPitch: float32,
-  gainer: ma_gainer
+  gainer: ma_gainer,
+  pNewChannelGainsOut: *float32,
+  _pHeap: pointer,
+  _ownsHeap: ma_bool32
 }
-global function ma_spatializer_init(pConfig: *ma_spatializer_config, pSpatializer: *ma_spatializer): ma_result <cimport, nodecl> end
-global function ma_spatializer_uninit(pSpatializer: *ma_spatializer) <cimport, nodecl> end
+global function ma_spatializer_get_heap_size(pConfig: *ma_spatializer_config, pHeapSizeInBytes: *csize): ma_result <cimport, nodecl> end
+global function ma_spatializer_init_preallocated(pConfig: *ma_spatializer_config, pHeap: pointer, pSpatializer: *ma_spatializer): ma_result <cimport, nodecl> end
+global function ma_spatializer_init(pConfig: *ma_spatializer_config, pAllocationCallbacks: *ma_allocation_callbacks, pSpatializer: *ma_spatializer): ma_result <cimport, nodecl> end
+global function ma_spatializer_uninit(pSpatializer: *ma_spatializer, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
 global function ma_spatializer_process_pcm_frames(pSpatializer: *ma_spatializer, pListener: *ma_spatializer_listener, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport, nodecl> end
 global function ma_spatializer_get_input_channels(pSpatializer: *ma_spatializer): uint32 <cimport, nodecl> end
 global function ma_spatializer_get_output_channels(pSpatializer: *ma_spatializer): uint32 <cimport, nodecl> end
@@ -2157,8 +2338,12 @@ global ma_engine_node: type <cimport, nodecl> = @record{
   oldDopplerPitch: float32,
   isPitchDisabled: ma_bool8,
   isSpatializationDisabled: ma_bool8,
-  pinnedListenerIndex: uint8
+  pinnedListenerIndex: uint8,
+  _ownsHeap: ma_bool8,
+  _pHeap: pointer
 }
+global function ma_engine_node_get_heap_size(pConfig: *ma_engine_node_config, pHeapSizeInBytes: *csize): ma_result <cimport, nodecl> end
+global function ma_engine_node_init_preallocated(pConfig: *ma_engine_node_config, pHeap: pointer, pEngineNode: *ma_engine_node): ma_result <cimport, nodecl> end
 global function ma_engine_node_init(pConfig: *ma_engine_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pEngineNode: *ma_engine_node): ma_result <cimport, nodecl> end
 global function ma_engine_node_uninit(pEngineNode: *ma_engine_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
 global ma_sound_config: type <cimport, nodecl> = @record{
@@ -2169,7 +2354,8 @@ global ma_sound_config: type <cimport, nodecl> = @record{
   initialAttachmentInputBusIndex: uint32,
   channelsIn: uint32,
   channelsOut: uint32,
-  flags: uint32
+  flags: uint32,
+  pDoneFence: *ma_fence
 }
 global function ma_sound_config_init(): ma_sound_config <cimport, nodecl> end
 ma_sound = @record{
@@ -2194,6 +2380,7 @@ global ma_engine_config: type <cimport, nodecl> = @record{
   pResourceManager: *ma_resource_manager,
   pContext: *ma_context,
   pDevice: *ma_device,
+  pLog: *ma_log,
   listenerCount: uint32,
   channels: uint32,
   sampleRate: uint32,
@@ -2206,11 +2393,12 @@ global ma_engine_config: type <cimport, nodecl> = @record{
   noAutoStart: ma_bool32,
   pResourceManagerVFS: pointer
 }
-global function ma_engine_config_init_default(): ma_engine_config <cimport, nodecl> end
+global function ma_engine_config_init(): ma_engine_config <cimport, nodecl> end
 ma_engine = @record{
   nodeGraph: ma_node_graph,
   pResourceManager: *ma_resource_manager,
   pDevice: *ma_device,
+  pLog: *ma_log,
   listenerCount: uint32,
   listeners: [4]ma_spatializer_listener,
   allocationCallbacks: ma_allocation_callbacks,
@@ -2224,8 +2412,11 @@ ma_engine = @record{
 global function ma_engine_init(pConfig: *ma_engine_config, pEngine: *ma_engine): ma_result <cimport, nodecl> end
 global function ma_engine_uninit(pEngine: *ma_engine) <cimport, nodecl> end
 global function ma_engine_data_callback(pEngine: *ma_engine, pOutput: pointer, pInput: pointer, frameCount: uint32) <cimport, nodecl> end
+global function ma_engine_get_device(pEngine: *ma_engine): *ma_device <cimport, nodecl> end
+global function ma_engine_get_log(pEngine: *ma_engine): *ma_log <cimport, nodecl> end
 global function ma_engine_get_endpoint(pEngine: *ma_engine): pointer <cimport, nodecl> end
 global function ma_engine_get_time(pEngine: *ma_engine): uint64 <cimport, nodecl> end
+global function ma_engine_set_time(pEngine: *ma_engine, globalTime: uint64): uint64 <cimport, nodecl> end
 global function ma_engine_get_channels(pEngine: *ma_engine): uint32 <cimport, nodecl> end
 global function ma_engine_get_sample_rate(pEngine: *ma_engine): uint32 <cimport, nodecl> end
 global function ma_engine_start(pEngine: *ma_engine): ma_result <cimport, nodecl> end
@@ -2233,7 +2424,7 @@ global function ma_engine_stop(pEngine: *ma_engine): ma_result <cimport, nodecl>
 global function ma_engine_set_volume(pEngine: *ma_engine, volume: float32): ma_result <cimport, nodecl> end
 global function ma_engine_set_gain_db(pEngine: *ma_engine, gainDB: float32): ma_result <cimport, nodecl> end
 global function ma_engine_get_listener_count(pEngine: *ma_engine): uint32 <cimport, nodecl> end
-global function ma_engine_find_closest_listener(pEngine: *ma_engine, absolutePosX: float32, absolutePosY: float32, absolutePosZ: float32): uint8 <cimport, nodecl> end
+global function ma_engine_find_closest_listener(pEngine: *ma_engine, absolutePosX: float32, absolutePosY: float32, absolutePosZ: float32): uint32 <cimport, nodecl> end
 global function ma_engine_listener_set_position(pEngine: *ma_engine, listenerIndex: uint32, x: float32, y: float32, z: float32) <cimport, nodecl> end
 global function ma_engine_listener_get_position(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport, nodecl> end
 global function ma_engine_listener_set_direction(pEngine: *ma_engine, listenerIndex: uint32, x: float32, y: float32, z: float32) <cimport, nodecl> end
@@ -2245,19 +2436,21 @@ global function ma_engine_listener_get_cone(pEngine: *ma_engine, listenerIndex: 
 global function ma_engine_listener_set_world_up(pEngine: *ma_engine, listenerIndex: uint32, x: float32, y: float32, z: float32) <cimport, nodecl> end
 global function ma_engine_listener_get_world_up(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport, nodecl> end
 global function ma_engine_play_sound(pEngine: *ma_engine, pFilePath: cstring, pGroup: *ma_sound_group): ma_result <cimport, nodecl> end
-global function ma_sound_init_from_file(pEngine: *ma_engine, pFilePath: cstring, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
-global function ma_sound_init_from_file_w(pEngine: *ma_engine, pFilePath: *cint, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
+global function ma_sound_init_from_file(pEngine: *ma_engine, pFilePath: cstring, flags: uint32, pGroup: *ma_sound_group, pDoneFence: *ma_fence, pSound: *ma_sound): ma_result <cimport, nodecl> end
+global function ma_sound_init_from_file_w(pEngine: *ma_engine, pFilePath: *cint, flags: uint32, pGroup: *ma_sound_group, pDoneFence: *ma_fence, pSound: *ma_sound): ma_result <cimport, nodecl> end
+global function ma_sound_init_copy(pEngine: *ma_engine, pExistingSound: *ma_sound, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_init_from_data_source(pEngine: *ma_engine, pDataSource: pointer, flags: uint32, pGroup: *ma_sound_group, pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_init_ex(pEngine: *ma_engine, pConfig: *ma_sound_config, pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_uninit(pSound: *ma_sound) <cimport, nodecl> end
 global function ma_sound_get_engine(pSound: *ma_sound): *ma_engine <cimport, nodecl> end
+global function ma_sound_get_data_source(pSound: *ma_sound): pointer <cimport, nodecl> end
 global function ma_sound_start(pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_stop(pSound: *ma_sound): ma_result <cimport, nodecl> end
 global function ma_sound_set_volume(pSound: *ma_sound, volume: float32): ma_result <cimport, nodecl> end
 global function ma_sound_set_gain_db(pSound: *ma_sound, gainDB: float32): ma_result <cimport, nodecl> end
-global function ma_sound_set_pan(pSound: *ma_sound, pan: float32): ma_result <cimport, nodecl> end
-global function ma_sound_set_pan_mode(pSound: *ma_sound, pan_mode: ma_pan_mode): ma_result <cimport, nodecl> end
-global function ma_sound_set_pitch(pSound: *ma_sound, pitch: float32): ma_result <cimport, nodecl> end
+global function ma_sound_set_pan(pSound: *ma_sound, pan: float32) <cimport, nodecl> end
+global function ma_sound_set_pan_mode(pSound: *ma_sound, panMode: ma_pan_mode) <cimport, nodecl> end
+global function ma_sound_set_pitch(pSound: *ma_sound, pitch: float32) <cimport, nodecl> end
 global function ma_sound_set_spatialization_enabled(pSound: *ma_sound, enabled: ma_bool32) <cimport, nodecl> end
 global function ma_sound_set_pinned_listener_index(pSound: *ma_sound, listenerIndex: uint8) <cimport, nodecl> end
 global function ma_sound_get_pinned_listener_index(pSound: *ma_sound): uint8 <cimport, nodecl> end
@@ -2285,16 +2478,16 @@ global function ma_sound_set_cone(pSound: *ma_sound, innerAngleInRadians: float3
 global function ma_sound_get_cone(pSound: *ma_sound, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
 global function ma_sound_set_doppler_factor(pSound: *ma_sound, dopplerFactor: float32) <cimport, nodecl> end
 global function ma_sound_get_doppler_factor(pSound: *ma_sound): float32 <cimport, nodecl> end
-global function ma_sound_set_fade_in_pcm_frames(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_set_fade_in_milliseconds(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInMilliseconds: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_get_current_fade_volume(pSound: *ma_sound, pVolume: *float32): ma_result <cimport, nodecl> end
-global function ma_sound_set_start_time_in_pcm_frames(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_set_start_time_in_milliseconds(pSound: *ma_sound, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_set_stop_time_in_pcm_frames(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_set_stop_time_in_milliseconds(pSound: *ma_sound, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_set_fade_in_pcm_frames(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64) <cimport, nodecl> end
+global function ma_sound_set_fade_in_milliseconds(pSound: *ma_sound, volumeBeg: float32, volumeEnd: float32, fadeLengthInMilliseconds: uint64) <cimport, nodecl> end
+global function ma_sound_get_current_fade_volume(pSound: *ma_sound): float32 <cimport, nodecl> end
+global function ma_sound_set_start_time_in_pcm_frames(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64) <cimport, nodecl> end
+global function ma_sound_set_start_time_in_milliseconds(pSound: *ma_sound, absoluteGlobalTimeInMilliseconds: uint64) <cimport, nodecl> end
+global function ma_sound_set_stop_time_in_pcm_frames(pSound: *ma_sound, absoluteGlobalTimeInFrames: uint64) <cimport, nodecl> end
+global function ma_sound_set_stop_time_in_milliseconds(pSound: *ma_sound, absoluteGlobalTimeInMilliseconds: uint64) <cimport, nodecl> end
 global function ma_sound_is_playing(pSound: *ma_sound): ma_bool32 <cimport, nodecl> end
-global function ma_sound_get_time_in_pcm_frames(pSound: *ma_sound, pTimeInFrames: *uint64): ma_result <cimport, nodecl> end
-global function ma_sound_set_looping(pSound: *ma_sound, isLooping: ma_bool8): ma_result <cimport, nodecl> end
+global function ma_sound_get_time_in_pcm_frames(pSound: *ma_sound): uint64 <cimport, nodecl> end
+global function ma_sound_set_looping(pSound: *ma_sound, isLooping: ma_bool8) <cimport, nodecl> end
 global function ma_sound_is_looping(pSound: *ma_sound): ma_bool32 <cimport, nodecl> end
 global function ma_sound_at_end(pSound: *ma_sound): ma_bool32 <cimport, nodecl> end
 global function ma_sound_seek_to_pcm_frame(pSound: *ma_sound, frameIndex: uint64): ma_result <cimport, nodecl> end
@@ -2309,8 +2502,9 @@ global function ma_sound_group_start(pGroup: *ma_sound_group): ma_result <cimpor
 global function ma_sound_group_stop(pGroup: *ma_sound_group): ma_result <cimport, nodecl> end
 global function ma_sound_group_set_volume(pGroup: *ma_sound_group, volume: float32): ma_result <cimport, nodecl> end
 global function ma_sound_group_set_gain_db(pGroup: *ma_sound_group, gainDB: float32): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_pan(pGroup: *ma_sound_group, pan: float32): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_pitch(pGroup: *ma_sound_group, pitch: float32): ma_result <cimport, nodecl> end
+global function ma_sound_group_set_pan(pGroup: *ma_sound_group, pan: float32) <cimport, nodecl> end
+global function ma_sound_group_set_pan_mode(pGroup: *ma_sound_group, panMode: ma_pan_mode) <cimport, nodecl> end
+global function ma_sound_group_set_pitch(pGroup: *ma_sound_group, pitch: float32) <cimport, nodecl> end
 global function ma_sound_group_set_spatialization_enabled(pGroup: *ma_sound_group, enabled: ma_bool32) <cimport, nodecl> end
 global function ma_sound_group_set_pinned_listener_index(pGroup: *ma_sound_group, listenerIndex: uint8) <cimport, nodecl> end
 global function ma_sound_group_get_pinned_listener_index(pGroup: *ma_sound_group): uint8 <cimport, nodecl> end
@@ -2338,25 +2532,164 @@ global function ma_sound_group_set_cone(pGroup: *ma_sound_group, innerAngleInRad
 global function ma_sound_group_get_cone(pGroup: *ma_sound_group, pInnerAngleInRadians: *float32, pOuterAngleInRadians: *float32, pOuterGain: *float32) <cimport, nodecl> end
 global function ma_sound_group_set_doppler_factor(pGroup: *ma_sound_group, dopplerFactor: float32) <cimport, nodecl> end
 global function ma_sound_group_get_doppler_factor(pGroup: *ma_sound_group): float32 <cimport, nodecl> end
-global function ma_sound_group_set_fade_in_pcm_frames(pGroup: *ma_sound_group, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_fade_in_milliseconds(pGroup: *ma_sound_group, volumeBeg: float32, volumeEnd: float32, fadeLengthInMilliseconds: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_group_get_current_fade_volume(pGroup: *ma_sound_group, pVolume: *float32): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_start_time_in_pcm_frames(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_start_time_in_milliseconds(pGroup: *ma_sound_group, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_stop_time_in_pcm_frames(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64): ma_result <cimport, nodecl> end
-global function ma_sound_group_set_stop_time_in_milliseconds(pGroup: *ma_sound_group, absoluteGlobalTimeInMilliseconds: uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_set_fade_in_pcm_frames(pGroup: *ma_sound_group, volumeBeg: float32, volumeEnd: float32, fadeLengthInFrames: uint64) <cimport, nodecl> end
+global function ma_sound_group_set_fade_in_milliseconds(pGroup: *ma_sound_group, volumeBeg: float32, volumeEnd: float32, fadeLengthInMilliseconds: uint64) <cimport, nodecl> end
+global function ma_sound_group_get_current_fade_volume(pGroup: *ma_sound_group): float32 <cimport, nodecl> end
+global function ma_sound_group_set_start_time_in_pcm_frames(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64) <cimport, nodecl> end
+global function ma_sound_group_set_start_time_in_milliseconds(pGroup: *ma_sound_group, absoluteGlobalTimeInMilliseconds: uint64) <cimport, nodecl> end
+global function ma_sound_group_set_stop_time_in_pcm_frames(pGroup: *ma_sound_group, absoluteGlobalTimeInFrames: uint64) <cimport, nodecl> end
+global function ma_sound_group_set_stop_time_in_milliseconds(pGroup: *ma_sound_group, absoluteGlobalTimeInMilliseconds: uint64) <cimport, nodecl> end
 global function ma_sound_group_is_playing(pGroup: *ma_sound_group): ma_bool32 <cimport, nodecl> end
-global function ma_sound_group_get_time_in_pcm_frames(pGroup: *ma_sound_group, pTimeInFrames: *uint64): ma_result <cimport, nodecl> end
+global function ma_sound_group_get_time_in_pcm_frames(pGroup: *ma_sound_group): uint64 <cimport, nodecl> end
+global ma_biquad_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  biquad: ma_biquad_config
+}
+global function ma_biquad_node_config_init(channels: uint32, b0: float32, b1: float32, b2: float32, a0: float32, a1: float32, a2: float32): ma_biquad_node_config <cimport, nodecl> end
+global ma_biquad_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  biquad: ma_biquad
+}
+global function ma_biquad_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_biquad_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_biquad_node): ma_result <cimport, nodecl> end
+global function ma_biquad_node_reinit(pConfig: *ma_biquad_config, pNode: *ma_biquad_node): ma_result <cimport, nodecl> end
+global function ma_biquad_node_uninit(pNode: *ma_biquad_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_lpf_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  lpf: ma_lpf_config
+}
+global function ma_lpf_node_config_init(channels: uint32, sampleRate: uint32, cutoffFrequency: float64, order: uint32): ma_lpf_node_config <cimport, nodecl> end
+global ma_lpf_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  lpf: ma_lpf
+}
+global function ma_lpf_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_lpf_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_lpf_node): ma_result <cimport, nodecl> end
+global function ma_lpf_node_reinit(pConfig: *ma_lpf_config, pNode: *ma_lpf_node): ma_result <cimport, nodecl> end
+global function ma_lpf_node_uninit(pNode: *ma_lpf_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_hpf_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  hpf: ma_hpf_config
+}
+global function ma_hpf_node_config_init(channels: uint32, sampleRate: uint32, cutoffFrequency: float64, order: uint32): ma_hpf_node_config <cimport, nodecl> end
+global ma_hpf_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  hpf: ma_hpf
+}
+global function ma_hpf_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_hpf_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_hpf_node): ma_result <cimport, nodecl> end
+global function ma_hpf_node_reinit(pConfig: *ma_hpf_config, pNode: *ma_hpf_node): ma_result <cimport, nodecl> end
+global function ma_hpf_node_uninit(pNode: *ma_hpf_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_bpf_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  bpf: ma_bpf_config
+}
+global function ma_bpf_node_config_init(channels: uint32, sampleRate: uint32, cutoffFrequency: float64, order: uint32): ma_bpf_node_config <cimport, nodecl> end
+global ma_bpf_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  bpf: ma_bpf
+}
+global function ma_bpf_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_bpf_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_bpf_node): ma_result <cimport, nodecl> end
+global function ma_bpf_node_reinit(pConfig: *ma_bpf_config, pNode: *ma_bpf_node): ma_result <cimport, nodecl> end
+global function ma_bpf_node_uninit(pNode: *ma_bpf_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_notch_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  notch: ma_notch_config
+}
+global function ma_notch_node_config_init(channels: uint32, sampleRate: uint32, q: float64, frequency: float64): ma_notch_node_config <cimport, nodecl> end
+global ma_notch_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  notch: ma_notch2
+}
+global function ma_notch_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_notch_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_notch_node): ma_result <cimport, nodecl> end
+global function ma_notch_node_reinit(pConfig: *ma_notch_config, pNode: *ma_notch_node): ma_result <cimport, nodecl> end
+global function ma_notch_node_uninit(pNode: *ma_notch_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_peak_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  peak: ma_peak_config
+}
+global function ma_peak_node_config_init(channels: uint32, sampleRate: uint32, gainDB: float64, q: float64, frequency: float64): ma_peak_node_config <cimport, nodecl> end
+global ma_peak_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  peak: ma_peak2
+}
+global function ma_peak_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_peak_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_peak_node): ma_result <cimport, nodecl> end
+global function ma_peak_node_reinit(pConfig: *ma_peak_config, pNode: *ma_peak_node): ma_result <cimport, nodecl> end
+global function ma_peak_node_uninit(pNode: *ma_peak_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_loshelf_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  loshelf: ma_loshelf_config
+}
+global function ma_loshelf_node_config_init(channels: uint32, sampleRate: uint32, gainDB: float64, q: float64, frequency: float64): ma_loshelf_node_config <cimport, nodecl> end
+global ma_loshelf_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  loshelf: ma_loshelf2
+}
+global function ma_loshelf_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_loshelf_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_loshelf_node): ma_result <cimport, nodecl> end
+global function ma_loshelf_node_reinit(pConfig: *ma_loshelf_config, pNode: *ma_loshelf_node): ma_result <cimport, nodecl> end
+global function ma_loshelf_node_uninit(pNode: *ma_loshelf_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_hishelf_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  hishelf: ma_hishelf_config
+}
+global function ma_hishelf_node_config_init(channels: uint32, sampleRate: uint32, gainDB: float64, q: float64, frequency: float64): ma_hishelf_node_config <cimport, nodecl> end
+global ma_hishelf_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  hishelf: ma_hishelf2
+}
+global function ma_hishelf_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_hishelf_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: *ma_hishelf_node): ma_result <cimport, nodecl> end
+global function ma_hishelf_node_reinit(pConfig: *ma_hishelf_config, pNode: *ma_hishelf_node): ma_result <cimport, nodecl> end
+global function ma_hishelf_node_uninit(pNode: *ma_hishelf_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global ma_delay_config: type <cimport, nodecl> = @record{
+  channels: uint32,
+  sampleRate: uint32,
+  delayInFrames: uint32,
+  delayStart: ma_bool32,
+  wet: float32,
+  dry: float32,
+  decay: float32
+}
+global function ma_delay_config_init(channels: uint32, sampleRate: uint32, delayInFrames: uint32, decay: float32): ma_delay_config <cimport, nodecl> end
+global ma_delay: type <cimport, nodecl> = @record{
+  config: ma_delay_config,
+  cursor: uint32,
+  bufferSizeInFrames: uint32,
+  pBuffer: *float32
+}
+global function ma_delay_init(pConfig: *ma_delay_config, pAllocationCallbacks: *ma_allocation_callbacks, pDelay: *ma_delay): ma_result <cimport, nodecl> end
+global function ma_delay_uninit(pDelay: *ma_delay, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global function ma_delay_process_pcm_frames(pDelay: *ma_delay, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint32): ma_result <cimport, nodecl> end
+global function ma_delay_set_wet(pDelay: *ma_delay, value: float32) <cimport, nodecl> end
+global function ma_delay_get_wet(pDelay: *ma_delay): float32 <cimport, nodecl> end
+global function ma_delay_set_dry(pDelay: *ma_delay, value: float32) <cimport, nodecl> end
+global function ma_delay_get_dry(pDelay: *ma_delay): float32 <cimport, nodecl> end
+global function ma_delay_set_decay(pDelay: *ma_delay, value: float32) <cimport, nodecl> end
+global function ma_delay_get_decay(pDelay: *ma_delay): float32 <cimport, nodecl> end
+global ma_delay_node_config: type <cimport, nodecl> = @record{
+  nodeConfig: ma_node_config,
+  delay: ma_delay_config
+}
+global function ma_delay_node_config_init(channels: uint32, sampleRate: uint32, delayInFrames: uint32, decay: float32): ma_delay_node_config <cimport, nodecl> end
+global ma_delay_node: type <cimport, nodecl> = @record{
+  baseNode: ma_node_base,
+  delay: ma_delay
+}
+global function ma_delay_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_delay_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pDelayNode: *ma_delay_node): ma_result <cimport, nodecl> end
+global function ma_delay_node_uninit(pDelayNode: *ma_delay_node, pAllocationCallbacks: *ma_allocation_callbacks) <cimport, nodecl> end
+global function ma_delay_node_set_wet(pDelayNode: *ma_delay_node, value: float32) <cimport, nodecl> end
+global function ma_delay_node_get_wet(pDelayNode: *ma_delay_node): float32 <cimport, nodecl> end
+global function ma_delay_node_set_dry(pDelayNode: *ma_delay_node, value: float32) <cimport, nodecl> end
+global function ma_delay_node_get_dry(pDelayNode: *ma_delay_node): float32 <cimport, nodecl> end
+global function ma_delay_node_set_decay(pDelayNode: *ma_delay_node, value: float32) <cimport, nodecl> end
+global function ma_delay_node_get_decay(pDelayNode: *ma_delay_node): float32 <cimport, nodecl> end
 global MA_VERSION_MAJOR: cint <cimport, nodecl, const>
 global MA_VERSION_MINOR: cint <cimport, nodecl, const>
 global MA_VERSION_REVISION: cint <cimport, nodecl, const>
 global MA_VERSION_STRING: cstring <cimport, nodecl, const>
 global MA_TRUE: cint <comptime> = 1
 global MA_FALSE: cint <comptime> = 0
-global MA_LOG_LEVEL_VERBOSE: cint <comptime> = 4
+global MA_LOG_LEVEL_DEBUG: cint <comptime> = 4
 global MA_LOG_LEVEL_INFO: cint <comptime> = 3
 global MA_LOG_LEVEL_WARNING: cint <comptime> = 2
 global MA_LOG_LEVEL_ERROR: cint <comptime> = 1
+global MA_LOG_LEVEL_VERBOSE: cint <comptime> = MA_LOG_LEVEL_DEBUG
 global MA_LOG_LEVEL: cint <comptime> = MA_LOG_LEVEL_ERROR
 global MA_CHANNEL_NONE: cint <comptime> = 0
 global MA_CHANNEL_MONO: cint <comptime> = 1
@@ -2430,7 +2763,7 @@ global MA_NAME_TOO_LONG: cint <comptime> = -13
 global MA_NOT_DIRECTORY: cint <comptime> = -14
 global MA_IS_DIRECTORY: cint <comptime> = -15
 global MA_DIRECTORY_NOT_EMPTY: cint <comptime> = -16
-global MA_END_OF_FILE: cint <comptime> = -17
+global MA_AT_END: cint <comptime> = -17
 global MA_NO_SPACE: cint <comptime> = -18
 global MA_BUSY: cint <comptime> = -19
 global MA_IO_ERROR: cint <comptime> = -20
@@ -2466,7 +2799,6 @@ global MA_NO_HOST: cint <comptime> = -49
 global MA_IN_PROGRESS: cint <comptime> = -50
 global MA_CANCELLED: cint <comptime> = -51
 global MA_MEMORY_ALREADY_MAPPED: cint <comptime> = -52
-global MA_AT_END: cint <comptime> = -53
 global MA_FORMAT_NOT_SUPPORTED: cint <comptime> = -100
 global MA_DEVICE_TYPE_NOT_SUPPORTED: cint <comptime> = -101
 global MA_SHARE_MODE_NOT_SUPPORTED: cint <comptime> = -102
@@ -2488,6 +2820,8 @@ global MA_MAX_CHANNELS: cint <comptime> = 32
 global MA_MAX_FILTER_ORDER: cint <comptime> = 8
 global MA_MIN_SAMPLE_RATE: cint <cimport, nodecl, const>
 global MA_MAX_SAMPLE_RATE: cint <cimport, nodecl, const>
+global MA_MAX_LOG_CALLBACKS: cint <comptime> = 4
+global MA_CHANNEL_INDEX_NULL: cint <comptime> = 255
 global MA_STATE_UNINITIALIZED: cint <comptime> = 0
 global MA_STATE_STOPPED: cint <comptime> = 1
 global MA_STATE_STARTED: cint <comptime> = 2
@@ -2508,7 +2842,9 @@ global MA_ALLOCATION_TYPE_RESOURCE_MANAGER_DATA_BUFFER_NODE: cint <comptime> = 0
 global MA_ALLOCATION_TYPE_RESOURCE_MANAGER_DATA_BUFFER: cint <comptime> = 0x00000011
 global MA_ALLOCATION_TYPE_RESOURCE_MANAGER_DATA_STREAM: cint <comptime> = 0x00000012
 global MA_ALLOCATION_TYPE_RESOURCE_MANAGER_DATA_SOURCE: cint <comptime> = 0x00000013
-global MA_MAX_NODE_BUS_COUNT: cint <comptime> = 2
+global MA_MAX_NODE_BUS_COUNT: cint <comptime> = 254
+global MA_MAX_NODE_LOCAL_BUS_COUNT: cint <comptime> = 2
+global MA_NODE_BUS_COUNT_UNKNOWN: cint <comptime> = 255
 global MA_NODE_FLAG_PASSTHROUGH: cint <comptime> = 0x00000001
 global MA_NODE_FLAG_CONTINUOUS_PROCESSING: cint <comptime> = 0x00000002
 global MA_NODE_FLAG_ALLOW_NULL_INPUT: cint <comptime> = 0x00000004
@@ -2520,16 +2856,16 @@ global MA_DATA_SOURCE_FLAG_ASYNC: cint <comptime> = 0x00000004
 global MA_DATA_SOURCE_FLAG_WAIT_INIT: cint <comptime> = 0x00000008
 global MA_RESOURCE_MANAGER_JOB_QUEUE_CAPACITY: cint <comptime> = 1024
 global MA_JOB_QUIT: cint <comptime> = 0x00000000
-global MA_JOB_LOAD_DATA_BUFFER: cint <comptime> = 0x00000001
-global MA_JOB_FREE_DATA_BUFFER: cint <comptime> = 0x00000002
-global MA_JOB_PAGE_DATA_BUFFER: cint <comptime> = 0x00000003
-global MA_JOB_LOAD_DATA_STREAM: cint <comptime> = 0x00000004
-global MA_JOB_FREE_DATA_STREAM: cint <comptime> = 0x00000005
-global MA_JOB_PAGE_DATA_STREAM: cint <comptime> = 0x00000006
-global MA_JOB_SEEK_DATA_STREAM: cint <comptime> = 0x00000007
-global MA_JOB_CUSTOM: cint <comptime> = 0x000000ff
-global MA_NOTIFICATION_COMPLETE: cint <comptime> = 0
-global MA_NOTIFICATION_FAILED: cint <comptime> = 1
+global MA_JOB_LOAD_DATA_BUFFER_NODE: cint <comptime> = 0x00000001
+global MA_JOB_FREE_DATA_BUFFER_NODE: cint <comptime> = 0x00000002
+global MA_JOB_PAGE_DATA_BUFFER_NODE: cint <comptime> = 0x00000003
+global MA_JOB_LOAD_DATA_BUFFER: cint <comptime> = 0x00000004
+global MA_JOB_FREE_DATA_BUFFER: cint <comptime> = 0x00000005
+global MA_JOB_LOAD_DATA_STREAM: cint <comptime> = 0x00000006
+global MA_JOB_FREE_DATA_STREAM: cint <comptime> = 0x00000007
+global MA_JOB_PAGE_DATA_STREAM: cint <comptime> = 0x00000008
+global MA_JOB_SEEK_DATA_STREAM: cint <comptime> = 0x00000009
+global MA_JOB_CUSTOM: cint <comptime> = 0x00000100
 global MA_JOB_QUEUE_FLAG_NON_BLOCKING: cint <comptime> = 0x00000001
 global MA_RESOURCE_MANAGER_MAX_JOB_THREAD_COUNT: cint <comptime> = 64
 global MA_RESOURCE_MANAGER_FLAG_NON_BLOCKING: cint <comptime> = 0x00000001
@@ -2542,3 +2878,4 @@ global MA_SOUND_FLAG_NO_DEFAULT_ATTACHMENT: cint <comptime> = 0x00000010
 global MA_SOUND_FLAG_NO_PITCH: cint <comptime> = 0x00000020
 global MA_SOUND_FLAG_NO_SPATIALIZATION: cint <comptime> = 0x00000040
 global MA_ENGINE_MAX_LISTENERS: cint <comptime> = 4
+global MA_LISTENER_INDEX_CLOSEST: cint <cimport, nodecl, const>

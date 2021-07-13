@@ -24,12 +24,12 @@ nldecl.include_macros = {
 nldecl.prepend_code = [=[
 ##[[
 if MONGOOSE_LINKLIB then
-  cfile 'mongoose.h'
+  cinclude 'mongoose.h'
   linklib(MONGOOSE_LINKLIB)
 else
   cdefine 'MG_ENABLE_OPENSSL 1'
   cinclude 'mongoose.h'
-  cinclude 'mongoose.c'
+  cfile 'mongoose.c'
   linklib 'ssl'
   linklib 'crypto'
 end

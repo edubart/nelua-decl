@@ -57,6 +57,8 @@ global function stbi_is_16_bit_from_file(f: *FILE): cint <cimport, nodecl> end
 global function stbi_set_unpremultiply_on_load(flag_true_if_should_unpremultiply: cint) <cimport, nodecl> end
 global function stbi_convert_iphone_png_to_rgb(flag_true_if_should_convert: cint) <cimport, nodecl> end
 global function stbi_set_flip_vertically_on_load(flag_true_if_should_flip: cint) <cimport, nodecl> end
+global function stbi_set_unpremultiply_on_load_thread(flag_true_if_should_unpremultiply: cint) <cimport, nodecl> end
+global function stbi_convert_iphone_png_to_rgb_thread(flag_true_if_should_convert: cint) <cimport, nodecl> end
 global function stbi_set_flip_vertically_on_load_thread(flag_true_if_should_flip: cint) <cimport, nodecl> end
 global function stbi_zlib_decode_malloc_guesssize(buffer: cstring, len: cint, initial_size: cint, outlen: *cint): cstring <cimport, nodecl> end
 global function stbi_zlib_decode_malloc_guesssize_headerflag(buffer: cstring, len: cint, initial_size: cint, outlen: *cint, parse_header: cint): cstring <cimport, nodecl> end

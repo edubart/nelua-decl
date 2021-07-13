@@ -10,14 +10,14 @@ if C.argc < 2 then
   error("No input file.")
 end
 
-local config: ma_engine_config = ma_engine_config_init_default()
+local config: ma_engine_config = ma_engine_config_init()
 result = ma_engine_init(&config, &engine)
 
 if result ~= MA_SUCCESS then
   error("Failed to initialize audio engine.")
 end
 
-result = ma_sound_init_from_file(&engine, C.argv[1], 0, nilptr, &sound)
+result = ma_sound_init_from_file(&engine, C.argv[1], 0, nilptr, nilptr, &sound)
 if result ~= MA_SUCCESS then
   error("Failed to load sound.")
 end

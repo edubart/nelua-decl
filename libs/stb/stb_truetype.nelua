@@ -144,6 +144,7 @@ global function stbtt_IsGlyphEmpty(info: *stbtt_fontinfo, glyph_index: cint): ci
 global function stbtt_GetCodepointShape(info: *stbtt_fontinfo, unicode_codepoint: cint, vertices: **stbtt_vertex): cint <cimport, nodecl> end
 global function stbtt_GetGlyphShape(info: *stbtt_fontinfo, glyph_index: cint, vertices: **stbtt_vertex): cint <cimport, nodecl> end
 global function stbtt_FreeShape(info: *stbtt_fontinfo, vertices: *stbtt_vertex) <cimport, nodecl> end
+global function stbtt_FindSVGDoc(info: *stbtt_fontinfo, gl: cint): *cuchar <cimport, nodecl> end
 global function stbtt_GetCodepointSVG(info: *stbtt_fontinfo, unicode_codepoint: cint, svg: *cstring): cint <cimport, nodecl> end
 global function stbtt_GetGlyphSVG(info: *stbtt_fontinfo, gl: cint, svg: *cstring): cint <cimport, nodecl> end
 global function stbtt_FreeBitmap(bitmap: *cuchar, userdata: pointer) <cimport, nodecl> end
