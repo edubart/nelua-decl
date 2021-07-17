@@ -11,10 +11,8 @@ if NUKLEAR_LINKLIB then
   linklib(NUKLEAR_LINKLIB)
 else
   cdefine 'NK_IMPLEMENTATION'
-  cdefine 'NK_SDLSURFACE_IMPLEMENTATION'
 end
 cinclude 'nuklear.h'
-cinclude 'nuklear-sdl2surface_rawfb.h'
 ]]
 global NK_buffer: type <cimport, nodecl, forwarddecl, ctypedef 'nk_buffer'> = @record{}
 global NK_allocator: type <cimport, nodecl, forwarddecl, ctypedef 'nk_allocator'> = @record{}
@@ -1935,7 +1933,3 @@ NK_context = @record{
   count: cuint,
   seq: cuint
 }
-global sdlsurface_context: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global function nk_sdlsurface_init(fb: *SDL_Surface, fontSize: float32): *sdlsurface_context <cimport, nodecl> end
-global function nk_sdlsurface_render(sdlsurface: *sdlsurface_context, clear: NK_color, enable_clear: cuchar) <cimport, nodecl> end
-global function nk_sdlsurface_shutdown(sdlsurface: *sdlsurface_context) <cimport, nodecl> end

@@ -11,7 +11,7 @@ nldecl.exclude_names = {
 }
 
 nldecl.typedefs_names = setmetatable({}, {__index = function(_, name)
-  if name:match('nk_') then
+  if name:match('^nk_') then
     return 'NK_'..name:sub(4)
   end
 end})
@@ -30,9 +30,7 @@ if NUKLEAR_LINKLIB then
   linklib(NUKLEAR_LINKLIB)
 else
   cdefine 'NK_IMPLEMENTATION'
-  cdefine 'NK_SDLSURFACE_IMPLEMENTATION'
 end
 cinclude 'nuklear.h'
-cinclude 'nuklear-sdl2surface_rawfb.h'
 ]]
 ]=]

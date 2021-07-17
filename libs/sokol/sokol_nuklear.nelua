@@ -1,0 +1,25 @@
+##[[
+if SOKOL_NUKLEAR_LINKLIB then
+  if type(SOKOL_NUKLEAR_LINKLIB) == 'string' then
+    linklib(SOKOL_NUKLEAR_LINKLIB)
+  end
+else
+  cdefine 'SOKOL_NUKLEAR_API_DECL static'
+  cdefine 'SOKOL_NUKLEAR_IMPL'
+end
+cinclude 'sokol_nuklear.h'
+]]
+global snk_desc_t: type <cimport, nodecl> = @record{
+  max_vertices: cint,
+  color_format: sg_pixel_format,
+  depth_format: sg_pixel_format,
+  sample_count: cint,
+  dpi_scale: float32,
+  no_default_font: boolean
+}
+global function snk_setup(desc: *snk_desc_t) <cimport, nodecl> end
+global function snk_new_frame(): *NK_context <cimport, nodecl> end
+global function snk_render(width: cint, height: cint) <cimport, nodecl> end
+global function snk_handle_event(ev: *sapp_event) <cimport, nodecl> end
+global function snk_edit_string(ctx: *NK_context, flags: cuint, memory: cstring, len: *cint, max: cint, filter: nk_plugin_filter): cuint <cimport, nodecl> end
+global function snk_shutdown() <cimport, nodecl> end

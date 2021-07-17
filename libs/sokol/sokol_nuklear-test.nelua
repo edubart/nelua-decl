@@ -1,0 +1,142 @@
+require '..nuklear.nuklear'
+require 'sokol_app'
+require 'sokol_gfx'
+require 'sokol_glue'
+require 'sokol_nuklear'
+require 'sokol_time'
+require 'string'
+
+local start_time: uint64
+
+local set: boolean = false
+local prev: integer, op: integer = 0, 0
+local numbers: *[9]cchar = (@*[9]cchar)("789456123"_cstring)
+local ops: [4]byte = {'+'_byte, '-'_byte, '*'_byte, '/'_byte}
+local a: number, b: number = 0.0, 0.0
+local current: *number = &a
+
+local function calculator(ctx: *NK_context)
+  if nk_begin(ctx, "Calculator", nk_rect(10, 10, 180, 250),
+     NK_WINDOW_BORDER|NK_WINDOW_NO_SCROLLBAR|NK_WINDOW_TITLE|NK_WINDOW_MOVABLE) then
+    local solve: boolean = false
+    do
+      nk_layout_row_dynamic(ctx, 35, 1)
+      local sb: stringbuilder <close>
+      sb:prepare(256)
+      local ok: boolean, len: cint = sb:writef('%.2f', $current)
+      nk_edit_string(ctx, NK_EDIT_SIMPLE, &sb.data[0], &len, 255, nk_filter_float)
+      if len > 0 then
+        sb.size = len
+        $current = tonumber(sb:view())
+      else
+        $current = 0
+      end
+    end
+
+    nk_layout_row_dynamic(ctx, 35, 4)
+    for i=0,<16 do
+      if i >= 12 and i < 15  then
+          if i > 12 then continue end
+          if nk_button_label(ctx, "C") == nk_true then
+            a, b, op = 0, 0, 0
+            current = &a
+            set = false
+          end
+          if nk_button_label(ctx, "0") == nk_true then
+            $current = $current * 10.0
+            set = false
+          end
+          if nk_button_label(ctx, "=") == nk_true then
+            solve = true
+            prev = op
+            op = 0
+          end
+      elseif ((i+1) % 4) ~= 0 then
+        if nk_button_text(ctx, &numbers[(i//4)*3+i%4], 1) == nk_true then
+          $current = $current * 10.0 + numbers[(i//4)*3+i%4] - '0'_byte
+          set = false
+        end
+      elseif nk_button_text(ctx, &ops[i//4], 1) == nk_true then
+        if not set then
+          if current ~= &b then
+            current = &b
+          else
+            prev = op
+            solve = true
+          end
+        end
+        op = ops[i//4]
+        set = true
+      end
+    end
+    if solve then
+      if     prev == '+'_byte then a = a + b
+      elseif prev == '-'_byte then a = a - b
+      elseif prev == '*'_byte then a = a * b
+      elseif prev == '/'_byte then a = a / b end
+      current = &a
+      if set then current = &b end
+      b, set = 0, false
+    end
+  end
+  nk_end(ctx)
+end
+
+local function init()
+  -- setup graphics
+  local sgdesc: sg_desc = {
+    context = sapp_sgcontext()
+  }
+  sg_setup(&sgdesc)
+
+  -- setup time
+  stm_setup()
+  start_time = stm_now()
+
+  -- setup nuklear
+  local snkdesc: snk_desc_t = {dpi_scale = sapp_dpi_scale()}
+  snk_setup(&snkdesc)
+end
+
+local function frame()
+  local nkctx: *NK_context = snk_new_frame()
+
+  -- see big function at end of file
+  calculator(nkctx)
+
+  -- draw background
+  local pass_action = sg_pass_action{colors={{action=SG_ACTION_CLEAR, value={0.0, 0.0, 0.0, 1.0}}}}
+  sg_begin_default_pass(&pass_action, sapp_width(), sapp_height())
+  snk_render(sapp_width(), sapp_height());
+  sg_end_pass()
+  sg_commit()
+
+  -- quit after a while
+  if stm_ms(stm_since(start_time)) > 1000 then
+    sapp_quit()
+  end
+end
+
+local function input(event: *sapp_event)
+  snk_handle_event(event)
+end
+
+local function cleanup()
+  -- shutdown nuklear
+  snk_shutdown()
+  -- shutdown graphics
+  sg_shutdown()
+end
+
+local app_desc: sapp_desc = {
+  init_cb = init,
+  frame_cb = frame,
+  event_cb = input,
+  cleanup_cb = cleanup,
+  width = 512,
+  height = 512,
+  window_title = "Sokol Nuklear",
+  enable_clipboard = true,
+  html5_canvas_resize = true,
+}
+sapp_run(&app_desc)
