@@ -70,7 +70,9 @@ and multi-protocol networking library)
 * [cj5](https://github.com/septag/cj5)
     - [cj5.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/cj5/cj5.nelua) (JSON parsing)
 * [sqlite3](https://www.sqlite.org/)
-    - [cj5.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sqlite3/sqlite3.nelua) (SQLite3 database)
+    - [sqlite3.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sqlite3/sqlite3.nelua) (SQLite3 database)
+* [nuklear](https://github.com/Immediate-Mode-UI/Nuklear)
+    - [nuklear.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/nuklear/nuklear.nelua) (Immediate UI library)
 
 Plus the following platform specific libraries:
 * dl

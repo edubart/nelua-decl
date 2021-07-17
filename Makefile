@@ -24,6 +24,7 @@ generate:
 	$(MKC) libs/subprocess generate
 	$(MKC) libs/cj5 generate
 	$(MKC) libs/sqlite3 generate
+	$(MKC) libs/nuklear generate
 
 	$(MKC) libs/c generate
 	$(MKC) libs/dl generate
@@ -55,6 +56,7 @@ download:
 	$(MKC) libs/subprocess download
 	$(MKC) libs/cj5 download
 	$(MKC) libs/sqlite3 download
+	$(MKC) libs/nuklear download
 
 	$(MKC) libs/c download
 	$(MKC) libs/dl download
@@ -86,6 +88,7 @@ test:
 	$(MKC) libs/subprocess test
 	$(MKC) libs/cj5 test
 	$(MKC) libs/sqlite3 test
+	$(MKC) libs/nuklear test
 
 	$(MKC) libs/c test
 	$(MKC) libs/dl test
