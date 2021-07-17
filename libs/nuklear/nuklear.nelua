@@ -1,0 +1,1941 @@
+##[[
+cdefine 'NK_INCLUDE_FIXED_TYPES'
+cdefine 'NK_INCLUDE_STANDARD_IO'
+cdefine 'NK_INCLUDE_DEFAULT_ALLOCATOR'
+cdefine 'NK_INCLUDE_VERTEX_BUFFER_OUTPUT'
+cdefine 'NK_INCLUDE_FONT_BAKING'
+cdefine 'NK_INCLUDE_DEFAULT_FONT'
+cdefine 'NK_INCLUDE_SOFTWARE_FONT'
+cdefine 'NK_INCLUDE_STANDARD_VARARGS'
+if NUKLEAR_LINKLIB then
+  linklib(NUKLEAR_LINKLIB)
+else
+  cdefine 'NK_IMPLEMENTATION'
+  cdefine 'NK_SDLSURFACE_IMPLEMENTATION'
+end
+cinclude 'nuklear.h'
+cinclude 'nuklear-sdl2surface_rawfb.h'
+]]
+global NK_buffer: type <cimport, nodecl, forwarddecl, ctypedef 'nk_buffer'> = @record{}
+global NK_allocator: type <cimport, nodecl, forwarddecl, ctypedef 'nk_allocator'> = @record{}
+global NK_command_buffer: type <cimport, nodecl, forwarddecl, ctypedef 'nk_command_buffer'> = @record{}
+global NK_draw_command: type <cimport, nodecl, forwarddecl, ctypedef 'nk_draw_command'> = @record{}
+global NK_convert_config: type <cimport, nodecl, forwarddecl, ctypedef 'nk_convert_config'> = @record{}
+global NK_style_item: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_item'> = @record{}
+global NK_text_edit: type <cimport, nodecl, forwarddecl, ctypedef 'nk_text_edit'> = @record{}
+global NK_draw_list: type <cimport, nodecl, forwarddecl, ctypedef 'nk_draw_list'> = @record{}
+global NK_user_font: type <cimport, nodecl, forwarddecl, ctypedef 'nk_user_font'> = @record{}
+global NK_panel: type <cimport, nodecl, forwarddecl, ctypedef 'nk_panel'> = @record{}
+global NK_context: type <cimport, nodecl, forwarddecl, ctypedef 'nk_context'> = @record{}
+global NK_draw_vertex_layout_element: type <cimport, nodecl, forwarddecl, ctypedef 'nk_draw_vertex_layout_element'> = @record{}
+global NK_style_button: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_button'> = @record{}
+global NK_style_toggle: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_toggle'> = @record{}
+global NK_style_selectable: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_selectable'> = @record{}
+global NK_style_slide: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_slide'> = @record{}
+global NK_style_progress: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_progress'> = @record{}
+global NK_style_scrollbar: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_scrollbar'> = @record{}
+global NK_style_edit: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_edit'> = @record{}
+global NK_style_property: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_property'> = @record{}
+global NK_style_chart: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_chart'> = @record{}
+global NK_style_combo: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_combo'> = @record{}
+global NK_style_tab: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_tab'> = @record{}
+global NK_style_window_header: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_window_header'> = @record{}
+global NK_style_window: type <cimport, nodecl, forwarddecl, ctypedef 'nk_style_window'> = @record{}
+global nk_false: cint <comptime> = 0
+global nk_true: cint <comptime> = 1
+global NK_color: type <cimport, nodecl, ctypedef 'nk_color'> = @record{
+  r: cuchar,
+  g: cuchar,
+  b: cuchar,
+  a: cuchar
+}
+global NK_colorf: type <cimport, nodecl, ctypedef 'nk_colorf'> = @record{
+  r: float32,
+  g: float32,
+  b: float32,
+  a: float32
+}
+global NK_vec2: type <cimport, nodecl, ctypedef 'nk_vec2'> = @record{
+  x: float32,
+  y: float32
+}
+global NK_vec2i: type <cimport, nodecl, ctypedef 'nk_vec2i'> = @record{
+  x: cshort,
+  y: cshort
+}
+global NK_rect: type <cimport, nodecl, ctypedef 'nk_rect'> = @record{
+  x: float32,
+  y: float32,
+  w: float32,
+  h: float32
+}
+global NK_recti: type <cimport, nodecl, ctypedef 'nk_recti'> = @record{
+  x: cshort,
+  y: cshort,
+  w: cshort,
+  h: cshort
+}
+global NK_handle: type <cimport, nodecl> = @union{
+  ptr: pointer,
+  id: cint
+}
+global NK_image: type <cimport, nodecl, ctypedef 'nk_image'> = @record{
+  handle: NK_handle,
+  w: cushort,
+  h: cushort,
+  region: [4]cushort
+}
+global NK_cursor: type <cimport, nodecl, ctypedef 'nk_cursor'> = @record{
+  img: NK_image,
+  size: NK_vec2,
+  offset: NK_vec2
+}
+global NK_scroll: type <cimport, nodecl, ctypedef 'nk_scroll'> = @record{
+  x: cuint,
+  y: cuint
+}
+global NK_heading: type <cimport, nodecl, using, ctypedef 'nk_heading'> = @enum(cint){
+  NK_UP = 0,
+  NK_RIGHT = 1,
+  NK_DOWN = 2,
+  NK_LEFT = 3
+}
+global NK_button_behavior: type <cimport, nodecl, using, ctypedef 'nk_button_behavior'> = @enum(cint){
+  NK_BUTTON_DEFAULT = 0,
+  NK_BUTTON_REPEATER = 1
+}
+global NK_modify: type <cimport, nodecl, using, ctypedef 'nk_modify'> = @enum(cint){
+  NK_FIXED = 0,
+  NK_MODIFIABLE = 1
+}
+global NK_orientation: type <cimport, nodecl, using, ctypedef 'nk_orientation'> = @enum(cint){
+  NK_VERTICAL = 0,
+  NK_HORIZONTAL = 1
+}
+global NK_collapse_states: type <cimport, nodecl, using, ctypedef 'nk_collapse_states'> = @enum(cint){
+  NK_MINIMIZED = 0,
+  NK_MAXIMIZED = 1
+}
+global NK_show_states: type <cimport, nodecl, using, ctypedef 'nk_show_states'> = @enum(cint){
+  NK_HIDDEN = 0,
+  NK_SHOWN = 1
+}
+global NK_chart_type: type <cimport, nodecl, using, ctypedef 'nk_chart_type'> = @enum(cint){
+  NK_CHART_LINES = 0,
+  NK_CHART_COLUMN = 1,
+  NK_CHART_MAX = 2
+}
+global NK_chart_event: type <cimport, nodecl, using, ctypedef 'nk_chart_event'> = @enum(cint){
+  NK_CHART_HOVERING = 1,
+  NK_CHART_CLICKED = 2
+}
+global NK_color_format: type <cimport, nodecl, using, ctypedef 'nk_color_format'> = @enum(cint){
+  NK_RGB = 0,
+  NK_RGBA = 1
+}
+global NK_popup_type: type <cimport, nodecl, using, ctypedef 'nk_popup_type'> = @enum(cint){
+  NK_POPUP_STATIC = 0,
+  NK_POPUP_DYNAMIC = 1
+}
+global NK_layout_format: type <cimport, nodecl, using, ctypedef 'nk_layout_format'> = @enum(cint){
+  NK_DYNAMIC = 0,
+  NK_STATIC = 1
+}
+global NK_tree_type: type <cimport, nodecl, using, ctypedef 'nk_tree_type'> = @enum(cint){
+  NK_TREE_NODE = 0,
+  NK_TREE_TAB = 1
+}
+global nk_plugin_alloc: type <cimport, nodecl> = @function(NK_handle, pointer, culong): pointer
+global nk_plugin_free: type <cimport, nodecl> = @function(NK_handle, pointer)
+global nk_plugin_filter: type <cimport, nodecl> = @function(*NK_text_edit, cuint): cint
+global nk_plugin_paste: type <cimport, nodecl> = @function(NK_handle, *NK_text_edit)
+global nk_plugin_copy: type <cimport, nodecl> = @function(NK_handle, cstring, cint)
+NK_allocator = @record{
+  userdata: NK_handle,
+  alloc: nk_plugin_alloc,
+  free: nk_plugin_free
+}
+global NK_symbol_type: type <cimport, nodecl, using, ctypedef 'nk_symbol_type'> = @enum(cint){
+  NK_SYMBOL_NONE = 0,
+  NK_SYMBOL_X = 1,
+  NK_SYMBOL_UNDERSCORE = 2,
+  NK_SYMBOL_CIRCLE_SOLID = 3,
+  NK_SYMBOL_CIRCLE_OUTLINE = 4,
+  NK_SYMBOL_RECT_SOLID = 5,
+  NK_SYMBOL_RECT_OUTLINE = 6,
+  NK_SYMBOL_TRIANGLE_UP = 7,
+  NK_SYMBOL_TRIANGLE_DOWN = 8,
+  NK_SYMBOL_TRIANGLE_LEFT = 9,
+  NK_SYMBOL_TRIANGLE_RIGHT = 10,
+  NK_SYMBOL_PLUS = 11,
+  NK_SYMBOL_MINUS = 12,
+  NK_SYMBOL_MAX = 13
+}
+global function nk_init_default(a1: *NK_context, a2: *NK_user_font): cint <cimport, nodecl> end
+global function nk_init_fixed(a1: *NK_context, memory: pointer, size: culong, a4: *NK_user_font): cint <cimport, nodecl> end
+global function nk_init(a1: *NK_context, a2: *NK_allocator, a3: *NK_user_font): cint <cimport, nodecl> end
+global function nk_init_custom(a1: *NK_context, cmds: *NK_buffer, pool: *NK_buffer, a4: *NK_user_font): cint <cimport, nodecl> end
+global function nk_clear(a1: *NK_context) <cimport, nodecl> end
+global function nk_free(a1: *NK_context) <cimport, nodecl> end
+global NK_keys: type <cimport, nodecl, using, ctypedef 'nk_keys'> = @enum(cint){
+  NK_KEY_NONE = 0,
+  NK_KEY_SHIFT = 1,
+  NK_KEY_CTRL = 2,
+  NK_KEY_DEL = 3,
+  NK_KEY_ENTER = 4,
+  NK_KEY_TAB = 5,
+  NK_KEY_BACKSPACE = 6,
+  NK_KEY_COPY = 7,
+  NK_KEY_CUT = 8,
+  NK_KEY_PASTE = 9,
+  NK_KEY_UP = 10,
+  NK_KEY_DOWN = 11,
+  NK_KEY_LEFT = 12,
+  NK_KEY_RIGHT = 13,
+  NK_KEY_TEXT_INSERT_MODE = 14,
+  NK_KEY_TEXT_REPLACE_MODE = 15,
+  NK_KEY_TEXT_RESET_MODE = 16,
+  NK_KEY_TEXT_LINE_START = 17,
+  NK_KEY_TEXT_LINE_END = 18,
+  NK_KEY_TEXT_START = 19,
+  NK_KEY_TEXT_END = 20,
+  NK_KEY_TEXT_UNDO = 21,
+  NK_KEY_TEXT_REDO = 22,
+  NK_KEY_TEXT_SELECT_ALL = 23,
+  NK_KEY_TEXT_WORD_LEFT = 24,
+  NK_KEY_TEXT_WORD_RIGHT = 25,
+  NK_KEY_SCROLL_START = 26,
+  NK_KEY_SCROLL_END = 27,
+  NK_KEY_SCROLL_DOWN = 28,
+  NK_KEY_SCROLL_UP = 29,
+  NK_KEY_MAX = 30
+}
+global NK_buttons: type <cimport, nodecl, using, ctypedef 'nk_buttons'> = @enum(cint){
+  NK_BUTTON_LEFT = 0,
+  NK_BUTTON_MIDDLE = 1,
+  NK_BUTTON_RIGHT = 2,
+  NK_BUTTON_DOUBLE = 3,
+  NK_BUTTON_MAX = 4
+}
+global function nk_input_begin(a1: *NK_context) <cimport, nodecl> end
+global function nk_input_motion(a1: *NK_context, x: cint, y: cint) <cimport, nodecl> end
+global function nk_input_key(a1: *NK_context, a2: NK_keys, down: cint) <cimport, nodecl> end
+global function nk_input_button(a1: *NK_context, a2: NK_buttons, x: cint, y: cint, down: cint) <cimport, nodecl> end
+global function nk_input_scroll(a1: *NK_context, val: NK_vec2) <cimport, nodecl> end
+global function nk_input_char(a1: *NK_context, a2: cchar) <cimport, nodecl> end
+global function nk_input_glyph(a1: *NK_context, a2: cstring) <cimport, nodecl> end
+global function nk_input_unicode(a1: *NK_context, a2: cuint) <cimport, nodecl> end
+global function nk_input_end(a1: *NK_context) <cimport, nodecl> end
+global NK_anti_aliasing: type <cimport, nodecl, using, ctypedef 'nk_anti_aliasing'> = @enum(cint){
+  NK_ANTI_ALIASING_OFF = 0,
+  NK_ANTI_ALIASING_ON = 1
+}
+global NK_convert_result: type <cimport, nodecl, using, ctypedef 'nk_convert_result'> = @enum(cint){
+  NK_CONVERT_SUCCESS = 0,
+  NK_CONVERT_INVALID_PARAM = 1,
+  NK_CONVERT_COMMAND_BUFFER_FULL = 2,
+  NK_CONVERT_VERTEX_BUFFER_FULL = 4,
+  NK_CONVERT_ELEMENT_BUFFER_FULL = 8
+}
+global NK_draw_null_texture: type <cimport, nodecl, ctypedef 'nk_draw_null_texture'> = @record{
+  texture: NK_handle,
+  uv: NK_vec2
+}
+NK_convert_config = @record{
+  global_alpha: float32,
+  line_AA: NK_anti_aliasing,
+  shape_AA: NK_anti_aliasing,
+  circle_segment_count: cuint,
+  arc_segment_count: cuint,
+  curve_segment_count: cuint,
+  null: NK_draw_null_texture,
+  vertex_layout: *NK_draw_vertex_layout_element,
+  vertex_size: culong,
+  vertex_alignment: culong
+}
+global NK_command: type <cimport, nodecl, forwarddecl, ctypedef 'nk_command'> = @record{}
+global function nk__begin(a1: *NK_context): *NK_command <cimport, nodecl> end
+global function nk__next(a1: *NK_context, a2: *NK_command): *NK_command <cimport, nodecl> end
+global function nk_convert(a1: *NK_context, cmds: *NK_buffer, vertices: *NK_buffer, elements: *NK_buffer, a5: *NK_convert_config): cuint <cimport, nodecl> end
+global function nk__draw_begin(a1: *NK_context, a2: *NK_buffer): *NK_draw_command <cimport, nodecl> end
+global function nk__draw_end(a1: *NK_context, a2: *NK_buffer): *NK_draw_command <cimport, nodecl> end
+global function nk__draw_next(a1: *NK_draw_command, a2: *NK_buffer, a3: *NK_context): *NK_draw_command <cimport, nodecl> end
+global NK_panel_flags: type <cimport, nodecl, using, ctypedef 'nk_panel_flags'> = @enum(cint){
+  NK_WINDOW_BORDER = 1,
+  NK_WINDOW_MOVABLE = 2,
+  NK_WINDOW_SCALABLE = 4,
+  NK_WINDOW_CLOSABLE = 8,
+  NK_WINDOW_MINIMIZABLE = 16,
+  NK_WINDOW_NO_SCROLLBAR = 32,
+  NK_WINDOW_TITLE = 64,
+  NK_WINDOW_SCROLL_AUTO_HIDE = 128,
+  NK_WINDOW_BACKGROUND = 256,
+  NK_WINDOW_SCALE_LEFT = 512,
+  NK_WINDOW_NO_INPUT = 1024
+}
+global function nk_begin(ctx: *NK_context, title: cstring, bounds: NK_rect, flags: cuint): cint <cimport, nodecl> end
+global function nk_begin_titled(ctx: *NK_context, name: cstring, title: cstring, bounds: NK_rect, flags: cuint): cint <cimport, nodecl> end
+global function nk_end(ctx: *NK_context) <cimport, nodecl> end
+global NK_window: type <cimport, nodecl, forwarddecl, ctypedef 'nk_window'> = @record{}
+global function nk_window_find(ctx: *NK_context, name: cstring): *NK_window <cimport, nodecl> end
+global function nk_window_get_bounds(ctx: *NK_context): NK_rect <cimport, nodecl> end
+global function nk_window_get_position(ctx: *NK_context): NK_vec2 <cimport, nodecl> end
+global function nk_window_get_size(a1: *NK_context): NK_vec2 <cimport, nodecl> end
+global function nk_window_get_width(a1: *NK_context): float32 <cimport, nodecl> end
+global function nk_window_get_height(a1: *NK_context): float32 <cimport, nodecl> end
+global function nk_window_get_panel(a1: *NK_context): *NK_panel <cimport, nodecl> end
+global function nk_window_get_content_region(a1: *NK_context): NK_rect <cimport, nodecl> end
+global function nk_window_get_content_region_min(a1: *NK_context): NK_vec2 <cimport, nodecl> end
+global function nk_window_get_content_region_max(a1: *NK_context): NK_vec2 <cimport, nodecl> end
+global function nk_window_get_content_region_size(a1: *NK_context): NK_vec2 <cimport, nodecl> end
+global function nk_window_get_canvas(a1: *NK_context): *NK_command_buffer <cimport, nodecl> end
+global function nk_window_get_scroll(a1: *NK_context, offset_x: *cuint, offset_y: *cuint) <cimport, nodecl> end
+global function nk_window_has_focus(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_window_is_hovered(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_window_is_collapsed(ctx: *NK_context, name: cstring): cint <cimport, nodecl> end
+global function nk_window_is_closed(a1: *NK_context, a2: cstring): cint <cimport, nodecl> end
+global function nk_window_is_hidden(a1: *NK_context, a2: cstring): cint <cimport, nodecl> end
+global function nk_window_is_active(a1: *NK_context, a2: cstring): cint <cimport, nodecl> end
+global function nk_window_is_any_hovered(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_item_is_any_active(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_window_set_bounds(a1: *NK_context, name: cstring, bounds: NK_rect) <cimport, nodecl> end
+global function nk_window_set_position(a1: *NK_context, name: cstring, pos: NK_vec2) <cimport, nodecl> end
+global function nk_window_set_size(a1: *NK_context, name: cstring, a3: NK_vec2) <cimport, nodecl> end
+global function nk_window_set_focus(a1: *NK_context, name: cstring) <cimport, nodecl> end
+global function nk_window_set_scroll(a1: *NK_context, offset_x: cuint, offset_y: cuint) <cimport, nodecl> end
+global function nk_window_close(ctx: *NK_context, name: cstring) <cimport, nodecl> end
+global function nk_window_collapse(a1: *NK_context, name: cstring, state: NK_collapse_states) <cimport, nodecl> end
+global function nk_window_collapse_if(a1: *NK_context, name: cstring, a3: NK_collapse_states, cond: cint) <cimport, nodecl> end
+global function nk_window_show(a1: *NK_context, name: cstring, a3: NK_show_states) <cimport, nodecl> end
+global function nk_window_show_if(a1: *NK_context, name: cstring, a3: NK_show_states, cond: cint) <cimport, nodecl> end
+global function nk_layout_set_min_row_height(a1: *NK_context, height: float32) <cimport, nodecl> end
+global function nk_layout_reset_min_row_height(a1: *NK_context) <cimport, nodecl> end
+global function nk_layout_widget_bounds(a1: *NK_context): NK_rect <cimport, nodecl> end
+global function nk_layout_ratio_from_pixel(a1: *NK_context, pixel_width: float32): float32 <cimport, nodecl> end
+global function nk_layout_row_dynamic(ctx: *NK_context, height: float32, cols: cint) <cimport, nodecl> end
+global function nk_layout_row_static(ctx: *NK_context, height: float32, item_width: cint, cols: cint) <cimport, nodecl> end
+global function nk_layout_row_begin(ctx: *NK_context, fmt: NK_layout_format, row_height: float32, cols: cint) <cimport, nodecl> end
+global function nk_layout_row_push(a1: *NK_context, value: float32) <cimport, nodecl> end
+global function nk_layout_row_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_layout_row(a1: *NK_context, a2: NK_layout_format, height: float32, cols: cint, ratio: *float32) <cimport, nodecl> end
+global function nk_layout_row_template_begin(a1: *NK_context, row_height: float32) <cimport, nodecl> end
+global function nk_layout_row_template_push_dynamic(a1: *NK_context) <cimport, nodecl> end
+global function nk_layout_row_template_push_variable(a1: *NK_context, min_width: float32) <cimport, nodecl> end
+global function nk_layout_row_template_push_static(a1: *NK_context, width: float32) <cimport, nodecl> end
+global function nk_layout_row_template_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_layout_space_begin(a1: *NK_context, a2: NK_layout_format, height: float32, widget_count: cint) <cimport, nodecl> end
+global function nk_layout_space_push(a1: *NK_context, bounds: NK_rect) <cimport, nodecl> end
+global function nk_layout_space_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_layout_space_bounds(a1: *NK_context): NK_rect <cimport, nodecl> end
+global function nk_layout_space_to_screen(a1: *NK_context, a2: NK_vec2): NK_vec2 <cimport, nodecl> end
+global function nk_layout_space_to_local(a1: *NK_context, a2: NK_vec2): NK_vec2 <cimport, nodecl> end
+global function nk_layout_space_rect_to_screen(a1: *NK_context, a2: NK_rect): NK_rect <cimport, nodecl> end
+global function nk_layout_space_rect_to_local(a1: *NK_context, a2: NK_rect): NK_rect <cimport, nodecl> end
+global function nk_group_begin(a1: *NK_context, title: cstring, a3: cuint): cint <cimport, nodecl> end
+global function nk_group_begin_titled(a1: *NK_context, name: cstring, title: cstring, a4: cuint): cint <cimport, nodecl> end
+global function nk_group_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_group_scrolled_offset_begin(a1: *NK_context, x_offset: *cuint, y_offset: *cuint, title: cstring, flags: cuint): cint <cimport, nodecl> end
+global function nk_group_scrolled_begin(a1: *NK_context, off: *NK_scroll, title: cstring, a4: cuint): cint <cimport, nodecl> end
+global function nk_group_scrolled_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_group_get_scroll(a1: *NK_context, id: cstring, x_offset: *cuint, y_offset: *cuint) <cimport, nodecl> end
+global function nk_group_set_scroll(a1: *NK_context, id: cstring, x_offset: cuint, y_offset: cuint) <cimport, nodecl> end
+global function nk_tree_push_hashed(a1: *NK_context, a2: NK_tree_type, title: cstring, initial_state: NK_collapse_states, hash: cstring, len: cint, seed: cint): cint <cimport, nodecl> end
+global function nk_tree_image_push_hashed(a1: *NK_context, a2: NK_tree_type, a3: NK_image, title: cstring, initial_state: NK_collapse_states, hash: cstring, len: cint, seed: cint): cint <cimport, nodecl> end
+global function nk_tree_pop(a1: *NK_context) <cimport, nodecl> end
+global function nk_tree_state_push(a1: *NK_context, a2: NK_tree_type, title: cstring, state: *NK_collapse_states): cint <cimport, nodecl> end
+global function nk_tree_state_image_push(a1: *NK_context, a2: NK_tree_type, a3: NK_image, title: cstring, state: *NK_collapse_states): cint <cimport, nodecl> end
+global function nk_tree_state_pop(a1: *NK_context) <cimport, nodecl> end
+global function nk_tree_element_push_hashed(a1: *NK_context, a2: NK_tree_type, title: cstring, initial_state: NK_collapse_states, selected: *cint, hash: cstring, len: cint, seed: cint): cint <cimport, nodecl> end
+global function nk_tree_element_image_push_hashed(a1: *NK_context, a2: NK_tree_type, a3: NK_image, title: cstring, initial_state: NK_collapse_states, selected: *cint, hash: cstring, len: cint, seed: cint): cint <cimport, nodecl> end
+global function nk_tree_element_pop(a1: *NK_context) <cimport, nodecl> end
+global NK_list_view: type <cimport, nodecl, ctypedef 'nk_list_view'> = @record{
+  begin: cint,
+  End: cint,
+  count: cint,
+  total_height: cint,
+  ctx: *NK_context,
+  scroll_pointer: *cuint,
+  scroll_value: cuint
+}
+global function nk_list_view_begin(a1: *NK_context, out: *NK_list_view, id: cstring, a4: cuint, row_height: cint, row_count: cint): cint <cimport, nodecl> end
+global function nk_list_view_end(a1: *NK_list_view) <cimport, nodecl> end
+global NK_widget_layout_states: type <cimport, nodecl, using, ctypedef 'nk_widget_layout_states'> = @enum(cint){
+  NK_WIDGET_INVALID = 0,
+  NK_WIDGET_VALID = 1,
+  NK_WIDGET_ROM = 2
+}
+global NK_widget_states: type <cimport, nodecl, using, ctypedef 'nk_widget_states'> = @enum(cint){
+  NK_WIDGET_STATE_MODIFIED = 2,
+  NK_WIDGET_STATE_INACTIVE = 4,
+  NK_WIDGET_STATE_ENTERED = 8,
+  NK_WIDGET_STATE_HOVER = 16,
+  NK_WIDGET_STATE_ACTIVED = 32,
+  NK_WIDGET_STATE_LEFT = 64,
+  NK_WIDGET_STATE_HOVERED = 18,
+  NK_WIDGET_STATE_ACTIVE = 34
+}
+global function nk_widget(a1: *NK_rect, a2: *NK_context): NK_widget_layout_states <cimport, nodecl> end
+global function nk_widget_fitting(a1: *NK_rect, a2: *NK_context, a3: NK_vec2): NK_widget_layout_states <cimport, nodecl> end
+global function nk_widget_bounds(a1: *NK_context): NK_rect <cimport, nodecl> end
+global function nk_widget_position(a1: *NK_context): NK_vec2 <cimport, nodecl> end
+global function nk_widget_size(a1: *NK_context): NK_vec2 <cimport, nodecl> end
+global function nk_widget_width(a1: *NK_context): float32 <cimport, nodecl> end
+global function nk_widget_height(a1: *NK_context): float32 <cimport, nodecl> end
+global function nk_widget_is_hovered(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_widget_is_mouse_clicked(a1: *NK_context, a2: NK_buttons): cint <cimport, nodecl> end
+global function nk_widget_has_mouse_click_down(a1: *NK_context, a2: NK_buttons, down: cint): cint <cimport, nodecl> end
+global function nk_spacing(a1: *NK_context, cols: cint) <cimport, nodecl> end
+global NK_text_align: type <cimport, nodecl, using, ctypedef 'nk_text_align'> = @enum(cint){
+  NK_TEXT_ALIGN_LEFT = 1,
+  NK_TEXT_ALIGN_CENTERED = 2,
+  NK_TEXT_ALIGN_RIGHT = 4,
+  NK_TEXT_ALIGN_TOP = 8,
+  NK_TEXT_ALIGN_MIDDLE = 16,
+  NK_TEXT_ALIGN_BOTTOM = 32
+}
+global NK_text_alignment: type <cimport, nodecl, using, ctypedef 'nk_text_alignment'> = @enum(cint){
+  NK_TEXT_LEFT = 17,
+  NK_TEXT_CENTERED = 18,
+  NK_TEXT_RIGHT = 20
+}
+global function nk_text(a1: *NK_context, a2: cstring, a3: cint, a4: cuint) <cimport, nodecl> end
+global function nk_text_colored(a1: *NK_context, a2: cstring, a3: cint, a4: cuint, a5: NK_color) <cimport, nodecl> end
+global function nk_text_wrap(a1: *NK_context, a2: cstring, a3: cint) <cimport, nodecl> end
+global function nk_text_wrap_colored(a1: *NK_context, a2: cstring, a3: cint, a4: NK_color) <cimport, nodecl> end
+global function nk_label(a1: *NK_context, a2: cstring, align: cuint) <cimport, nodecl> end
+global function nk_label_colored(a1: *NK_context, a2: cstring, align: cuint, a4: NK_color) <cimport, nodecl> end
+global function nk_label_wrap(a1: *NK_context, a2: cstring) <cimport, nodecl> end
+global function nk_label_colored_wrap(a1: *NK_context, a2: cstring, a3: NK_color) <cimport, nodecl> end
+global function nk_image(a1: *NK_context, a2: NK_image) <cimport, nodecl> end
+global function nk_image_color(a1: *NK_context, a2: NK_image, a3: NK_color) <cimport, nodecl> end
+global function nk_labelf(a1: *NK_context, a2: cuint, a3: cstring, ...: cvarargs) <cimport, nodecl> end
+global function nk_labelf_colored(a1: *NK_context, a2: cuint, a3: NK_color, a4: cstring, ...: cvarargs) <cimport, nodecl> end
+global function nk_labelf_wrap(a1: *NK_context, a2: cstring, ...: cvarargs) <cimport, nodecl> end
+global function nk_labelf_colored_wrap(a1: *NK_context, a2: NK_color, a3: cstring, ...: cvarargs) <cimport, nodecl> end
+global function nk_labelfv(a1: *NK_context, a2: cuint, a3: cstring, a4: cvalist) <cimport, nodecl> end
+global function nk_labelfv_colored(a1: *NK_context, a2: cuint, a3: NK_color, a4: cstring, a5: cvalist) <cimport, nodecl> end
+global function nk_labelfv_wrap(a1: *NK_context, a2: cstring, a3: cvalist) <cimport, nodecl> end
+global function nk_labelfv_colored_wrap(a1: *NK_context, a2: NK_color, a3: cstring, a4: cvalist) <cimport, nodecl> end
+global function nk_value_bool(a1: *NK_context, prefix: cstring, a3: cint) <cimport, nodecl> end
+global function nk_value_int(a1: *NK_context, prefix: cstring, a3: cint) <cimport, nodecl> end
+global function nk_value_uint(a1: *NK_context, prefix: cstring, a3: cuint) <cimport, nodecl> end
+global function nk_value_float(a1: *NK_context, prefix: cstring, a3: float32) <cimport, nodecl> end
+global function nk_value_color_byte(a1: *NK_context, prefix: cstring, a3: NK_color) <cimport, nodecl> end
+global function nk_value_color_float(a1: *NK_context, prefix: cstring, a3: NK_color) <cimport, nodecl> end
+global function nk_value_color_hex(a1: *NK_context, prefix: cstring, a3: NK_color) <cimport, nodecl> end
+global function nk_button_text(a1: *NK_context, title: cstring, len: cint): cint <cimport, nodecl> end
+global function nk_button_label(a1: *NK_context, title: cstring): cint <cimport, nodecl> end
+global function nk_button_color(a1: *NK_context, a2: NK_color): cint <cimport, nodecl> end
+global function nk_button_symbol(a1: *NK_context, a2: NK_symbol_type): cint <cimport, nodecl> end
+global function nk_button_image(a1: *NK_context, img: NK_image): cint <cimport, nodecl> end
+global function nk_button_symbol_label(a1: *NK_context, a2: NK_symbol_type, a3: cstring, text_alignment: cuint): cint <cimport, nodecl> end
+global function nk_button_symbol_text(a1: *NK_context, a2: NK_symbol_type, a3: cstring, a4: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_button_image_label(a1: *NK_context, img: NK_image, a3: cstring, text_alignment: cuint): cint <cimport, nodecl> end
+global function nk_button_image_text(a1: *NK_context, img: NK_image, a3: cstring, a4: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_button_text_styled(a1: *NK_context, a2: *NK_style_button, title: cstring, len: cint): cint <cimport, nodecl> end
+global function nk_button_label_styled(a1: *NK_context, a2: *NK_style_button, title: cstring): cint <cimport, nodecl> end
+global function nk_button_symbol_styled(a1: *NK_context, a2: *NK_style_button, a3: NK_symbol_type): cint <cimport, nodecl> end
+global function nk_button_image_styled(a1: *NK_context, a2: *NK_style_button, img: NK_image): cint <cimport, nodecl> end
+global function nk_button_symbol_text_styled(a1: *NK_context, a2: *NK_style_button, a3: NK_symbol_type, a4: cstring, a5: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_button_symbol_label_styled(ctx: *NK_context, style: *NK_style_button, symbol: NK_symbol_type, title: cstring, align: cuint): cint <cimport, nodecl> end
+global function nk_button_image_label_styled(a1: *NK_context, a2: *NK_style_button, img: NK_image, a4: cstring, text_alignment: cuint): cint <cimport, nodecl> end
+global function nk_button_image_text_styled(a1: *NK_context, a2: *NK_style_button, img: NK_image, a4: cstring, a5: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_button_set_behavior(a1: *NK_context, a2: NK_button_behavior) <cimport, nodecl> end
+global function nk_button_push_behavior(a1: *NK_context, a2: NK_button_behavior): cint <cimport, nodecl> end
+global function nk_button_pop_behavior(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_check_label(a1: *NK_context, a2: cstring, active: cint): cint <cimport, nodecl> end
+global function nk_check_text(a1: *NK_context, a2: cstring, a3: cint, active: cint): cint <cimport, nodecl> end
+global function nk_check_flags_label(a1: *NK_context, a2: cstring, flags: cuint, value: cuint): cuint <cimport, nodecl> end
+global function nk_check_flags_text(a1: *NK_context, a2: cstring, a3: cint, flags: cuint, value: cuint): cuint <cimport, nodecl> end
+global function nk_checkbox_label(a1: *NK_context, a2: cstring, active: *cint): cint <cimport, nodecl> end
+global function nk_checkbox_text(a1: *NK_context, a2: cstring, a3: cint, active: *cint): cint <cimport, nodecl> end
+global function nk_checkbox_flags_label(a1: *NK_context, a2: cstring, flags: *cuint, value: cuint): cint <cimport, nodecl> end
+global function nk_checkbox_flags_text(a1: *NK_context, a2: cstring, a3: cint, flags: *cuint, value: cuint): cint <cimport, nodecl> end
+global function nk_radio_label(a1: *NK_context, a2: cstring, active: *cint): cint <cimport, nodecl> end
+global function nk_radio_text(a1: *NK_context, a2: cstring, a3: cint, active: *cint): cint <cimport, nodecl> end
+global function nk_option_label(a1: *NK_context, a2: cstring, active: cint): cint <cimport, nodecl> end
+global function nk_option_text(a1: *NK_context, a2: cstring, a3: cint, active: cint): cint <cimport, nodecl> end
+global function nk_selectable_label(a1: *NK_context, a2: cstring, align: cuint, value: *cint): cint <cimport, nodecl> end
+global function nk_selectable_text(a1: *NK_context, a2: cstring, a3: cint, align: cuint, value: *cint): cint <cimport, nodecl> end
+global function nk_selectable_image_label(a1: *NK_context, a2: NK_image, a3: cstring, align: cuint, value: *cint): cint <cimport, nodecl> end
+global function nk_selectable_image_text(a1: *NK_context, a2: NK_image, a3: cstring, a4: cint, align: cuint, value: *cint): cint <cimport, nodecl> end
+global function nk_selectable_symbol_label(a1: *NK_context, a2: NK_symbol_type, a3: cstring, align: cuint, value: *cint): cint <cimport, nodecl> end
+global function nk_selectable_symbol_text(a1: *NK_context, a2: NK_symbol_type, a3: cstring, a4: cint, align: cuint, value: *cint): cint <cimport, nodecl> end
+global function nk_select_label(a1: *NK_context, a2: cstring, align: cuint, value: cint): cint <cimport, nodecl> end
+global function nk_select_text(a1: *NK_context, a2: cstring, a3: cint, align: cuint, value: cint): cint <cimport, nodecl> end
+global function nk_select_image_label(a1: *NK_context, a2: NK_image, a3: cstring, align: cuint, value: cint): cint <cimport, nodecl> end
+global function nk_select_image_text(a1: *NK_context, a2: NK_image, a3: cstring, a4: cint, align: cuint, value: cint): cint <cimport, nodecl> end
+global function nk_select_symbol_label(a1: *NK_context, a2: NK_symbol_type, a3: cstring, align: cuint, value: cint): cint <cimport, nodecl> end
+global function nk_select_symbol_text(a1: *NK_context, a2: NK_symbol_type, a3: cstring, a4: cint, align: cuint, value: cint): cint <cimport, nodecl> end
+global function nk_slide_float(a1: *NK_context, min: float32, val: float32, max: float32, step: float32): float32 <cimport, nodecl> end
+global function nk_slide_int(a1: *NK_context, min: cint, val: cint, max: cint, step: cint): cint <cimport, nodecl> end
+global function nk_slider_float(a1: *NK_context, min: float32, val: *float32, max: float32, step: float32): cint <cimport, nodecl> end
+global function nk_slider_int(a1: *NK_context, min: cint, val: *cint, max: cint, step: cint): cint <cimport, nodecl> end
+global function nk_progress(a1: *NK_context, cur: *culong, max: culong, modifyable: cint): cint <cimport, nodecl> end
+global function nk_prog(a1: *NK_context, cur: culong, max: culong, modifyable: cint): culong <cimport, nodecl> end
+global function nk_color_picker(a1: *NK_context, a2: NK_colorf, a3: NK_color_format): NK_colorf <cimport, nodecl> end
+global function nk_color_pick(a1: *NK_context, a2: *NK_colorf, a3: NK_color_format): cint <cimport, nodecl> end
+global function nk_property_int(a1: *NK_context, name: cstring, min: cint, val: *cint, max: cint, step: cint, inc_per_pixel: float32) <cimport, nodecl> end
+global function nk_property_float(a1: *NK_context, name: cstring, min: float32, val: *float32, max: float32, step: float32, inc_per_pixel: float32) <cimport, nodecl> end
+global function nk_property_double(a1: *NK_context, name: cstring, min: float64, val: *float64, max: float64, step: float64, inc_per_pixel: float32) <cimport, nodecl> end
+global function nk_propertyi(a1: *NK_context, name: cstring, min: cint, val: cint, max: cint, step: cint, inc_per_pixel: float32): cint <cimport, nodecl> end
+global function nk_propertyf(a1: *NK_context, name: cstring, min: float32, val: float32, max: float32, step: float32, inc_per_pixel: float32): float32 <cimport, nodecl> end
+global function nk_propertyd(a1: *NK_context, name: cstring, min: float64, val: float64, max: float64, step: float64, inc_per_pixel: float32): float64 <cimport, nodecl> end
+global NK_edit_flags: type <cimport, nodecl, using, ctypedef 'nk_edit_flags'> = @enum(cint){
+  NK_EDIT_DEFAULT = 0,
+  NK_EDIT_READ_ONLY = 1,
+  NK_EDIT_AUTO_SELECT = 2,
+  NK_EDIT_SIG_ENTER = 4,
+  NK_EDIT_ALLOW_TAB = 8,
+  NK_EDIT_NO_CURSOR = 16,
+  NK_EDIT_SELECTABLE = 32,
+  NK_EDIT_CLIPBOARD = 64,
+  NK_EDIT_CTRL_ENTER_NEWLINE = 128,
+  NK_EDIT_NO_HORIZONTAL_SCROLL = 256,
+  NK_EDIT_ALWAYS_INSERT_MODE = 512,
+  NK_EDIT_MULTILINE = 1024,
+  NK_EDIT_GOTO_END_ON_ACTIVATE = 2048
+}
+global NK_edit_types: type <cimport, nodecl, using, ctypedef 'nk_edit_types'> = @enum(cint){
+  NK_EDIT_SIMPLE = 512,
+  NK_EDIT_FIELD = 608,
+  NK_EDIT_BOX = 1640,
+  NK_EDIT_EDITOR = 1128
+}
+global NK_edit_events: type <cimport, nodecl, using, ctypedef 'nk_edit_events'> = @enum(cint){
+  NK_EDIT_ACTIVE = 1,
+  NK_EDIT_INACTIVE = 2,
+  NK_EDIT_ACTIVATED = 4,
+  NK_EDIT_DEACTIVATED = 8,
+  NK_EDIT_COMMITED = 16
+}
+global function nk_edit_string(a1: *NK_context, a2: cuint, buffer: cstring, len: *cint, max: cint, a6: nk_plugin_filter): cuint <cimport, nodecl> end
+global function nk_edit_string_zero_terminated(a1: *NK_context, a2: cuint, buffer: cstring, max: cint, a5: nk_plugin_filter): cuint <cimport, nodecl> end
+global function nk_edit_buffer(a1: *NK_context, a2: cuint, a3: *NK_text_edit, a4: nk_plugin_filter): cuint <cimport, nodecl> end
+global function nk_edit_focus(a1: *NK_context, flags: cuint) <cimport, nodecl> end
+global function nk_edit_unfocus(a1: *NK_context) <cimport, nodecl> end
+global function nk_chart_begin(a1: *NK_context, a2: NK_chart_type, num: cint, min: float32, max: float32): cint <cimport, nodecl> end
+global function nk_chart_begin_colored(a1: *NK_context, a2: NK_chart_type, a3: NK_color, active: NK_color, num: cint, min: float32, max: float32): cint <cimport, nodecl> end
+global function nk_chart_add_slot(ctx: *NK_context, a2: NK_chart_type, count: cint, min_value: float32, max_value: float32) <cimport, nodecl> end
+global function nk_chart_add_slot_colored(ctx: *NK_context, a2: NK_chart_type, a3: NK_color, active: NK_color, count: cint, min_value: float32, max_value: float32) <cimport, nodecl> end
+global function nk_chart_push(a1: *NK_context, a2: float32): cuint <cimport, nodecl> end
+global function nk_chart_push_slot(a1: *NK_context, a2: float32, a3: cint): cuint <cimport, nodecl> end
+global function nk_chart_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_plot(a1: *NK_context, a2: NK_chart_type, values: *float32, count: cint, offset: cint) <cimport, nodecl> end
+global function nk_plot_function(a1: *NK_context, a2: NK_chart_type, userdata: pointer, value_getter: function(pointer, cint): float32, count: cint, offset: cint) <cimport, nodecl> end
+global function nk_popup_begin(a1: *NK_context, a2: NK_popup_type, a3: cstring, a4: cuint, bounds: NK_rect): cint <cimport, nodecl> end
+global function nk_popup_close(a1: *NK_context) <cimport, nodecl> end
+global function nk_popup_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_popup_get_scroll(a1: *NK_context, offset_x: *cuint, offset_y: *cuint) <cimport, nodecl> end
+global function nk_popup_set_scroll(a1: *NK_context, offset_x: cuint, offset_y: cuint) <cimport, nodecl> end
+global function nk_combo(a1: *NK_context, items: *cstring, count: cint, selected: cint, item_height: cint, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_separator(a1: *NK_context, items_separated_by_separator: cstring, separator: cint, selected: cint, count: cint, item_height: cint, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_string(a1: *NK_context, items_separated_by_zeros: cstring, selected: cint, count: cint, item_height: cint, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_callback(a1: *NK_context, item_getter: function(pointer, cint, *cstring), userdata: pointer, selected: cint, count: cint, item_height: cint, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combobox(a1: *NK_context, items: *cstring, count: cint, selected: *cint, item_height: cint, size: NK_vec2) <cimport, nodecl> end
+global function nk_combobox_string(a1: *NK_context, items_separated_by_zeros: cstring, selected: *cint, count: cint, item_height: cint, size: NK_vec2) <cimport, nodecl> end
+global function nk_combobox_separator(a1: *NK_context, items_separated_by_separator: cstring, separator: cint, selected: *cint, count: cint, item_height: cint, size: NK_vec2) <cimport, nodecl> end
+global function nk_combobox_callback(a1: *NK_context, item_getter: function(pointer, cint, *cstring), a3: pointer, selected: *cint, count: cint, item_height: cint, size: NK_vec2) <cimport, nodecl> end
+global function nk_combo_begin_text(a1: *NK_context, selected: cstring, a3: cint, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_label(a1: *NK_context, selected: cstring, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_color(a1: *NK_context, color: NK_color, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_symbol(a1: *NK_context, a2: NK_symbol_type, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_symbol_label(a1: *NK_context, selected: cstring, a3: NK_symbol_type, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_symbol_text(a1: *NK_context, selected: cstring, a3: cint, a4: NK_symbol_type, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_image(a1: *NK_context, img: NK_image, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_image_label(a1: *NK_context, selected: cstring, a3: NK_image, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_begin_image_text(a1: *NK_context, selected: cstring, a3: cint, a4: NK_image, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_combo_item_label(a1: *NK_context, a2: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_combo_item_text(a1: *NK_context, a2: cstring, a3: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_combo_item_image_label(a1: *NK_context, a2: NK_image, a3: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_combo_item_image_text(a1: *NK_context, a2: NK_image, a3: cstring, a4: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_combo_item_symbol_label(a1: *NK_context, a2: NK_symbol_type, a3: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_combo_item_symbol_text(a1: *NK_context, a2: NK_symbol_type, a3: cstring, a4: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_combo_close(a1: *NK_context) <cimport, nodecl> end
+global function nk_combo_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_contextual_begin(a1: *NK_context, a2: cuint, a3: NK_vec2, trigger_bounds: NK_rect): cint <cimport, nodecl> end
+global function nk_contextual_item_text(a1: *NK_context, a2: cstring, a3: cint, align: cuint): cint <cimport, nodecl> end
+global function nk_contextual_item_label(a1: *NK_context, a2: cstring, align: cuint): cint <cimport, nodecl> end
+global function nk_contextual_item_image_label(a1: *NK_context, a2: NK_image, a3: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_contextual_item_image_text(a1: *NK_context, a2: NK_image, a3: cstring, len: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_contextual_item_symbol_label(a1: *NK_context, a2: NK_symbol_type, a3: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_contextual_item_symbol_text(a1: *NK_context, a2: NK_symbol_type, a3: cstring, a4: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_contextual_close(a1: *NK_context) <cimport, nodecl> end
+global function nk_contextual_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_tooltip(a1: *NK_context, a2: cstring) <cimport, nodecl> end
+global function nk_tooltipf(a1: *NK_context, a2: cstring, ...: cvarargs) <cimport, nodecl> end
+global function nk_tooltipfv(a1: *NK_context, a2: cstring, a3: cvalist) <cimport, nodecl> end
+global function nk_tooltip_begin(a1: *NK_context, width: float32): cint <cimport, nodecl> end
+global function nk_tooltip_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_menubar_begin(a1: *NK_context) <cimport, nodecl> end
+global function nk_menubar_end(a1: *NK_context) <cimport, nodecl> end
+global function nk_menu_begin_text(a1: *NK_context, title: cstring, title_len: cint, align: cuint, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_begin_label(a1: *NK_context, a2: cstring, align: cuint, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_begin_image(a1: *NK_context, a2: cstring, a3: NK_image, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_begin_image_text(a1: *NK_context, a2: cstring, a3: cint, align: cuint, a5: NK_image, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_begin_image_label(a1: *NK_context, a2: cstring, align: cuint, a4: NK_image, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_begin_symbol(a1: *NK_context, a2: cstring, a3: NK_symbol_type, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_begin_symbol_text(a1: *NK_context, a2: cstring, a3: cint, align: cuint, a5: NK_symbol_type, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_begin_symbol_label(a1: *NK_context, a2: cstring, align: cuint, a4: NK_symbol_type, size: NK_vec2): cint <cimport, nodecl> end
+global function nk_menu_item_text(a1: *NK_context, a2: cstring, a3: cint, align: cuint): cint <cimport, nodecl> end
+global function nk_menu_item_label(a1: *NK_context, a2: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_menu_item_image_label(a1: *NK_context, a2: NK_image, a3: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_menu_item_image_text(a1: *NK_context, a2: NK_image, a3: cstring, len: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_menu_item_symbol_text(a1: *NK_context, a2: NK_symbol_type, a3: cstring, a4: cint, alignment: cuint): cint <cimport, nodecl> end
+global function nk_menu_item_symbol_label(a1: *NK_context, a2: NK_symbol_type, a3: cstring, alignment: cuint): cint <cimport, nodecl> end
+global function nk_menu_close(a1: *NK_context) <cimport, nodecl> end
+global function nk_menu_end(a1: *NK_context) <cimport, nodecl> end
+global NK_style_colors: type <cimport, nodecl, using, ctypedef 'nk_style_colors'> = @enum(cint){
+  NK_COLOR_TEXT = 0,
+  NK_COLOR_WINDOW = 1,
+  NK_COLOR_HEADER = 2,
+  NK_COLOR_BORDER = 3,
+  NK_COLOR_BUTTON = 4,
+  NK_COLOR_BUTTON_HOVER = 5,
+  NK_COLOR_BUTTON_ACTIVE = 6,
+  NK_COLOR_TOGGLE = 7,
+  NK_COLOR_TOGGLE_HOVER = 8,
+  NK_COLOR_TOGGLE_CURSOR = 9,
+  NK_COLOR_SELECT = 10,
+  NK_COLOR_SELECT_ACTIVE = 11,
+  NK_COLOR_SLIDER = 12,
+  NK_COLOR_SLIDER_CURSOR = 13,
+  NK_COLOR_SLIDER_CURSOR_HOVER = 14,
+  NK_COLOR_SLIDER_CURSOR_ACTIVE = 15,
+  NK_COLOR_PROPERTY = 16,
+  NK_COLOR_EDIT = 17,
+  NK_COLOR_EDIT_CURSOR = 18,
+  NK_COLOR_COMBO = 19,
+  NK_COLOR_CHART = 20,
+  NK_COLOR_CHART_COLOR = 21,
+  NK_COLOR_CHART_COLOR_HIGHLIGHT = 22,
+  NK_COLOR_SCROLLBAR = 23,
+  NK_COLOR_SCROLLBAR_CURSOR = 24,
+  NK_COLOR_SCROLLBAR_CURSOR_HOVER = 25,
+  NK_COLOR_SCROLLBAR_CURSOR_ACTIVE = 26,
+  NK_COLOR_TAB_HEADER = 27,
+  NK_COLOR_COUNT = 28
+}
+global NK_style_cursor: type <cimport, nodecl, using, ctypedef 'nk_style_cursor'> = @enum(cint){
+  NK_CURSOR_ARROW = 0,
+  NK_CURSOR_TEXT = 1,
+  NK_CURSOR_MOVE = 2,
+  NK_CURSOR_RESIZE_VERTICAL = 3,
+  NK_CURSOR_RESIZE_HORIZONTAL = 4,
+  NK_CURSOR_RESIZE_TOP_LEFT_DOWN_RIGHT = 5,
+  NK_CURSOR_RESIZE_TOP_RIGHT_DOWN_LEFT = 6,
+  NK_CURSOR_COUNT = 7
+}
+global function nk_style_default(a1: *NK_context) <cimport, nodecl> end
+global function nk_style_from_table(a1: *NK_context, a2: *NK_color) <cimport, nodecl> end
+global function nk_style_load_cursor(a1: *NK_context, a2: NK_style_cursor, a3: *NK_cursor) <cimport, nodecl> end
+global function nk_style_load_all_cursors(a1: *NK_context, a2: *NK_cursor) <cimport, nodecl> end
+global function nk_style_get_color_by_name(a1: NK_style_colors): cstring <cimport, nodecl> end
+global function nk_style_set_font(a1: *NK_context, a2: *NK_user_font) <cimport, nodecl> end
+global function nk_style_set_cursor(a1: *NK_context, a2: NK_style_cursor): cint <cimport, nodecl> end
+global function nk_style_show_cursor(a1: *NK_context) <cimport, nodecl> end
+global function nk_style_hide_cursor(a1: *NK_context) <cimport, nodecl> end
+global function nk_style_push_font(a1: *NK_context, a2: *NK_user_font): cint <cimport, nodecl> end
+global function nk_style_push_float(a1: *NK_context, a2: *float32, a3: float32): cint <cimport, nodecl> end
+global function nk_style_push_vec2(a1: *NK_context, a2: *NK_vec2, a3: NK_vec2): cint <cimport, nodecl> end
+global function nk_style_push_flags(a1: *NK_context, a2: *cuint, a3: cuint): cint <cimport, nodecl> end
+global function nk_style_push_color(a1: *NK_context, a2: *NK_color, a3: NK_color): cint <cimport, nodecl> end
+global function nk_style_pop_font(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_style_pop_float(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_style_pop_vec2(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_style_pop_style_item(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_style_pop_flags(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_style_pop_color(a1: *NK_context): cint <cimport, nodecl> end
+global function nk_rgb(r: cint, g: cint, b: cint): NK_color <cimport, nodecl> end
+global function nk_rgb_iv(rgb: *cint): NK_color <cimport, nodecl> end
+global function nk_rgb_bv(rgb: *cuchar): NK_color <cimport, nodecl> end
+global function nk_rgb_f(r: float32, g: float32, b: float32): NK_color <cimport, nodecl> end
+global function nk_rgb_fv(rgb: *float32): NK_color <cimport, nodecl> end
+global function nk_rgb_cf(c: NK_colorf): NK_color <cimport, nodecl> end
+global function nk_rgb_hex(rgb: cstring): NK_color <cimport, nodecl> end
+global function nk_rgba(r: cint, g: cint, b: cint, a: cint): NK_color <cimport, nodecl> end
+global function nk_rgba_u32(a1: cuint): NK_color <cimport, nodecl> end
+global function nk_rgba_iv(rgba: *cint): NK_color <cimport, nodecl> end
+global function nk_rgba_bv(rgba: *cuchar): NK_color <cimport, nodecl> end
+global function nk_rgba_f(r: float32, g: float32, b: float32, a: float32): NK_color <cimport, nodecl> end
+global function nk_rgba_fv(rgba: *float32): NK_color <cimport, nodecl> end
+global function nk_rgba_cf(c: NK_colorf): NK_color <cimport, nodecl> end
+global function nk_rgba_hex(rgb: cstring): NK_color <cimport, nodecl> end
+global function nk_hsva_colorf(h: float32, s: float32, v: float32, a: float32): NK_colorf <cimport, nodecl> end
+global function nk_hsva_colorfv(c: *float32): NK_colorf <cimport, nodecl> end
+global function nk_colorf_hsva_f(out_h: *float32, out_s: *float32, out_v: *float32, out_a: *float32, In: NK_colorf) <cimport, nodecl> end
+global function nk_colorf_hsva_fv(hsva: *float32, In: NK_colorf) <cimport, nodecl> end
+global function nk_hsv(h: cint, s: cint, v: cint): NK_color <cimport, nodecl> end
+global function nk_hsv_iv(hsv: *cint): NK_color <cimport, nodecl> end
+global function nk_hsv_bv(hsv: *cuchar): NK_color <cimport, nodecl> end
+global function nk_hsv_f(h: float32, s: float32, v: float32): NK_color <cimport, nodecl> end
+global function nk_hsv_fv(hsv: *float32): NK_color <cimport, nodecl> end
+global function nk_hsva(h: cint, s: cint, v: cint, a: cint): NK_color <cimport, nodecl> end
+global function nk_hsva_iv(hsva: *cint): NK_color <cimport, nodecl> end
+global function nk_hsva_bv(hsva: *cuchar): NK_color <cimport, nodecl> end
+global function nk_hsva_f(h: float32, s: float32, v: float32, a: float32): NK_color <cimport, nodecl> end
+global function nk_hsva_fv(hsva: *float32): NK_color <cimport, nodecl> end
+global function nk_color_f(r: *float32, g: *float32, b: *float32, a: *float32, a5: NK_color) <cimport, nodecl> end
+global function nk_color_fv(rgba_out: *float32, a2: NK_color) <cimport, nodecl> end
+global function nk_color_cf(a1: NK_color): NK_colorf <cimport, nodecl> end
+global function nk_color_d(r: *float64, g: *float64, b: *float64, a: *float64, a5: NK_color) <cimport, nodecl> end
+global function nk_color_dv(rgba_out: *float64, a2: NK_color) <cimport, nodecl> end
+global function nk_color_u32(a1: NK_color): cuint <cimport, nodecl> end
+global function nk_color_hex_rgba(output: cstring, a2: NK_color) <cimport, nodecl> end
+global function nk_color_hex_rgb(output: cstring, a2: NK_color) <cimport, nodecl> end
+global function nk_color_hsv_i(out_h: *cint, out_s: *cint, out_v: *cint, a4: NK_color) <cimport, nodecl> end
+global function nk_color_hsv_b(out_h: *cuchar, out_s: *cuchar, out_v: *cuchar, a4: NK_color) <cimport, nodecl> end
+global function nk_color_hsv_iv(hsv_out: *cint, a2: NK_color) <cimport, nodecl> end
+global function nk_color_hsv_bv(hsv_out: *cuchar, a2: NK_color) <cimport, nodecl> end
+global function nk_color_hsv_f(out_h: *float32, out_s: *float32, out_v: *float32, a4: NK_color) <cimport, nodecl> end
+global function nk_color_hsv_fv(hsv_out: *float32, a2: NK_color) <cimport, nodecl> end
+global function nk_color_hsva_i(h: *cint, s: *cint, v: *cint, a: *cint, a5: NK_color) <cimport, nodecl> end
+global function nk_color_hsva_b(h: *cuchar, s: *cuchar, v: *cuchar, a: *cuchar, a5: NK_color) <cimport, nodecl> end
+global function nk_color_hsva_iv(hsva_out: *cint, a2: NK_color) <cimport, nodecl> end
+global function nk_color_hsva_bv(hsva_out: *cuchar, a2: NK_color) <cimport, nodecl> end
+global function nk_color_hsva_f(out_h: *float32, out_s: *float32, out_v: *float32, out_a: *float32, a5: NK_color) <cimport, nodecl> end
+global function nk_color_hsva_fv(hsva_out: *float32, a2: NK_color) <cimport, nodecl> end
+global function nk_handle_ptr(a1: pointer): NK_handle <cimport, nodecl> end
+global function nk_handle_id(a1: cint): NK_handle <cimport, nodecl> end
+global function nk_image_handle(a1: NK_handle): NK_image <cimport, nodecl> end
+global function nk_image_ptr(a1: pointer): NK_image <cimport, nodecl> end
+global function nk_image_id(a1: cint): NK_image <cimport, nodecl> end
+global function nk_image_is_subimage(img: *NK_image): cint <cimport, nodecl> end
+global function nk_subimage_ptr(a1: pointer, w: cushort, h: cushort, sub_region: NK_rect): NK_image <cimport, nodecl> end
+global function nk_subimage_id(a1: cint, w: cushort, h: cushort, sub_region: NK_rect): NK_image <cimport, nodecl> end
+global function nk_subimage_handle(a1: NK_handle, w: cushort, h: cushort, sub_region: NK_rect): NK_image <cimport, nodecl> end
+global function nk_murmur_hash(key: pointer, len: cint, seed: cuint): cuint <cimport, nodecl> end
+global function nk_triangle_from_direction(result: *NK_vec2, r: NK_rect, pad_x: float32, pad_y: float32, a5: NK_heading) <cimport, nodecl> end
+global function nk_vec2(x: float32, y: float32): NK_vec2 <cimport, nodecl> end
+global function nk_vec2i(x: cint, y: cint): NK_vec2 <cimport, nodecl> end
+global function nk_vec2v(xy: *float32): NK_vec2 <cimport, nodecl> end
+global function nk_vec2iv(xy: *cint): NK_vec2 <cimport, nodecl> end
+global function nk_get_null_rect(): NK_rect <cimport, nodecl> end
+global function nk_rect(x: float32, y: float32, w: float32, h: float32): NK_rect <cimport, nodecl> end
+global function nk_recti(x: cint, y: cint, w: cint, h: cint): NK_rect <cimport, nodecl> end
+global function nk_recta(pos: NK_vec2, size: NK_vec2): NK_rect <cimport, nodecl> end
+global function nk_rectv(xywh: *float32): NK_rect <cimport, nodecl> end
+global function nk_rectiv(xywh: *cint): NK_rect <cimport, nodecl> end
+global function nk_rect_pos(a1: NK_rect): NK_vec2 <cimport, nodecl> end
+global function nk_rect_size(a1: NK_rect): NK_vec2 <cimport, nodecl> end
+global function nk_strlen(str: cstring): cint <cimport, nodecl> end
+global function nk_stricmp(s1: cstring, s2: cstring): cint <cimport, nodecl> end
+global function nk_stricmpn(s1: cstring, s2: cstring, n: cint): cint <cimport, nodecl> end
+global function nk_strtoi(str: cstring, endptr: *cstring): cint <cimport, nodecl> end
+global function nk_strtof(str: cstring, endptr: *cstring): float32 <cimport, nodecl> end
+global function nk_strtod(str: cstring, endptr: *cstring): float64 <cimport, nodecl> end
+global function nk_strfilter(text: cstring, regexp: cstring): cint <cimport, nodecl> end
+global function nk_strmatch_fuzzy_string(str: cstring, pattern: cstring, out_score: *cint): cint <cimport, nodecl> end
+global function nk_strmatch_fuzzy_text(txt: cstring, txt_len: cint, pattern: cstring, out_score: *cint): cint <cimport, nodecl> end
+global function nk_utf_decode(a1: cstring, a2: *cuint, a3: cint): cint <cimport, nodecl> end
+global function nk_utf_encode(a1: cuint, a2: cstring, a3: cint): cint <cimport, nodecl> end
+global function nk_utf_len(a1: cstring, byte_len: cint): cint <cimport, nodecl> end
+global function nk_utf_at(buffer: cstring, length: cint, index: cint, unicode: *cuint, len: *cint): cstring <cimport, nodecl> end
+global NK_user_font_glyph: type <cimport, nodecl, forwarddecl, ctypedef 'nk_user_font_glyph'> = @record{}
+global nk_text_width_f: type <cimport, nodecl> = @function(NK_handle, float32, cstring, cint): float32
+global nk_query_font_glyph_f: type <cimport, nodecl> = @function(NK_handle, float32, *NK_user_font_glyph, cuint, cuint)
+NK_user_font_glyph = @record{
+  uv: [2]NK_vec2,
+  offset: NK_vec2,
+  width: float32,
+  height: float32,
+  xadvance: float32
+}
+NK_user_font = @record{
+  userdata: NK_handle,
+  height: float32,
+  width: nk_text_width_f,
+  query: nk_query_font_glyph_f,
+  texture: NK_handle
+}
+global NK_font_coord_type: type <cimport, nodecl, using, ctypedef 'nk_font_coord_type'> = @enum(cint){
+  NK_COORD_UV = 0,
+  NK_COORD_PIXEL = 1
+}
+global NK_font: type <cimport, nodecl, forwarddecl, ctypedef 'nk_font'> = @record{}
+global NK_baked_font: type <cimport, nodecl, ctypedef 'nk_baked_font'> = @record{
+  height: float32,
+  ascent: float32,
+  descent: float32,
+  glyph_offset: cuint,
+  glyph_count: cuint,
+  ranges: *cuint
+}
+global NK_font_config: type <cimport, nodecl, forwarddecl, ctypedef 'nk_font_config'> = @record{}
+NK_font_config = @record{
+  next: *NK_font_config,
+  ttf_blob: pointer,
+  ttf_size: culong,
+  ttf_data_owned_by_atlas: cuchar,
+  merge_mode: cuchar,
+  pixel_snap: cuchar,
+  oversample_v: cuchar,
+  oversample_h: cuchar,
+  padding: [3]cuchar,
+  size: float32,
+  coord_type: NK_font_coord_type,
+  spacing: NK_vec2,
+  range: *cuint,
+  font: *NK_baked_font,
+  fallback_glyph: cuint,
+  n: *NK_font_config,
+  p: *NK_font_config
+}
+global NK_font_glyph: type <cimport, nodecl, ctypedef 'nk_font_glyph'> = @record{
+  codepoint: cuint,
+  xadvance: float32,
+  x0: float32,
+  y0: float32,
+  x1: float32,
+  y1: float32,
+  w: float32,
+  h: float32,
+  u0: float32,
+  v0: float32,
+  u1: float32,
+  v1: float32
+}
+NK_font = @record{
+  next: *NK_font,
+  handle: NK_user_font,
+  info: NK_baked_font,
+  scale: float32,
+  glyphs: *NK_font_glyph,
+  fallback: *NK_font_glyph,
+  fallback_codepoint: cuint,
+  texture: NK_handle,
+  config: *NK_font_config
+}
+global NK_font_atlas_format: type <cimport, nodecl, using, ctypedef 'nk_font_atlas_format'> = @enum(cint){
+  NK_FONT_ATLAS_ALPHA8 = 0,
+  NK_FONT_ATLAS_RGBA32 = 1
+}
+global NK_font_atlas: type <cimport, nodecl, ctypedef 'nk_font_atlas'> = @record{
+  pixel: pointer,
+  tex_width: cint,
+  tex_height: cint,
+  permanent: NK_allocator,
+  temporary: NK_allocator,
+  custom: NK_recti,
+  cursors: [7]NK_cursor,
+  glyph_count: cint,
+  glyphs: *NK_font_glyph,
+  default_font: *NK_font,
+  fonts: *NK_font,
+  config: *NK_font_config,
+  font_num: cint
+}
+global function nk_font_default_glyph_ranges(): *cuint <cimport, nodecl> end
+global function nk_font_chinese_glyph_ranges(): *cuint <cimport, nodecl> end
+global function nk_font_cyrillic_glyph_ranges(): *cuint <cimport, nodecl> end
+global function nk_font_korean_glyph_ranges(): *cuint <cimport, nodecl> end
+global function nk_font_atlas_init_default(a1: *NK_font_atlas) <cimport, nodecl> end
+global function nk_font_atlas_init(a1: *NK_font_atlas, a2: *NK_allocator) <cimport, nodecl> end
+global function nk_font_atlas_init_custom(a1: *NK_font_atlas, persistent: *NK_allocator, transient: *NK_allocator) <cimport, nodecl> end
+global function nk_font_atlas_begin(a1: *NK_font_atlas) <cimport, nodecl> end
+global function nk_font_config(pixel_height: float32): NK_font_config <cimport, nodecl> end
+global function nk_font_atlas_add(a1: *NK_font_atlas, a2: *NK_font_config): *NK_font <cimport, nodecl> end
+global function nk_font_atlas_add_default(a1: *NK_font_atlas, height: float32, a3: *NK_font_config): *NK_font <cimport, nodecl> end
+global function nk_font_atlas_add_from_memory(atlas: *NK_font_atlas, memory: pointer, size: culong, height: float32, config: *NK_font_config): *NK_font <cimport, nodecl> end
+global function nk_font_atlas_add_from_file(atlas: *NK_font_atlas, file_path: cstring, height: float32, a4: *NK_font_config): *NK_font <cimport, nodecl> end
+global function nk_font_atlas_add_compressed(a1: *NK_font_atlas, memory: pointer, size: culong, height: float32, a5: *NK_font_config): *NK_font <cimport, nodecl> end
+global function nk_font_atlas_add_compressed_base85(a1: *NK_font_atlas, data: cstring, height: float32, config: *NK_font_config): *NK_font <cimport, nodecl> end
+global function nk_font_atlas_bake(a1: *NK_font_atlas, width: *cint, height: *cint, a4: NK_font_atlas_format): pointer <cimport, nodecl> end
+global function nk_font_atlas_end(a1: *NK_font_atlas, tex: NK_handle, a3: *NK_draw_null_texture) <cimport, nodecl> end
+global function nk_font_find_glyph(a1: *NK_font, unicode: cuint): *NK_font_glyph <cimport, nodecl> end
+global function nk_font_atlas_cleanup(atlas: *NK_font_atlas) <cimport, nodecl> end
+global function nk_font_atlas_clear(a1: *NK_font_atlas) <cimport, nodecl> end
+global NK_memory_status: type <cimport, nodecl, ctypedef 'nk_memory_status'> = @record{
+  memory: pointer,
+  type: cuint,
+  size: culong,
+  allocated: culong,
+  needed: culong,
+  calls: culong
+}
+global NK_allocation_type: type <cimport, nodecl, using, ctypedef 'nk_allocation_type'> = @enum(cint){
+  NK_BUFFER_FIXED = 0,
+  NK_BUFFER_DYNAMIC = 1
+}
+global NK_buffer_allocation_type: type <cimport, nodecl, using, ctypedef 'nk_buffer_allocation_type'> = @enum(cint){
+  NK_BUFFER_FRONT = 0,
+  NK_BUFFER_BACK = 1,
+  NK_BUFFER_MAX = 2
+}
+global NK_buffer_marker: type <cimport, nodecl, ctypedef 'nk_buffer_marker'> = @record{
+  active: cint,
+  offset: culong
+}
+global NK_memory: type <cimport, nodecl, ctypedef 'nk_memory'> = @record{
+  ptr: pointer,
+  size: culong
+}
+NK_buffer = @record{
+  marker: [2]NK_buffer_marker,
+  pool: NK_allocator,
+  type: NK_allocation_type,
+  memory: NK_memory,
+  grow_factor: float32,
+  allocated: culong,
+  needed: culong,
+  calls: culong,
+  size: culong
+}
+global function nk_buffer_init_default(a1: *NK_buffer) <cimport, nodecl> end
+global function nk_buffer_init(a1: *NK_buffer, a2: *NK_allocator, size: culong) <cimport, nodecl> end
+global function nk_buffer_init_fixed(a1: *NK_buffer, memory: pointer, size: culong) <cimport, nodecl> end
+global function nk_buffer_info(a1: *NK_memory_status, a2: *NK_buffer) <cimport, nodecl> end
+global function nk_buffer_push(a1: *NK_buffer, type: NK_buffer_allocation_type, memory: pointer, size: culong, align: culong) <cimport, nodecl> end
+global function nk_buffer_mark(a1: *NK_buffer, type: NK_buffer_allocation_type) <cimport, nodecl> end
+global function nk_buffer_reset(a1: *NK_buffer, type: NK_buffer_allocation_type) <cimport, nodecl> end
+global function nk_buffer_clear(a1: *NK_buffer) <cimport, nodecl> end
+global function nk_buffer_free(a1: *NK_buffer) <cimport, nodecl> end
+global function nk_buffer_memory(a1: *NK_buffer): pointer <cimport, nodecl> end
+global function nk_buffer_memory_const(a1: *NK_buffer): pointer <cimport, nodecl> end
+global function nk_buffer_total(a1: *NK_buffer): culong <cimport, nodecl> end
+global NK_str: type <cimport, nodecl, ctypedef 'nk_str'> = @record{
+  buffer: NK_buffer,
+  len: cint
+}
+global function nk_str_init_default(a1: *NK_str) <cimport, nodecl> end
+global function nk_str_init(a1: *NK_str, a2: *NK_allocator, size: culong) <cimport, nodecl> end
+global function nk_str_init_fixed(a1: *NK_str, memory: pointer, size: culong) <cimport, nodecl> end
+global function nk_str_clear(a1: *NK_str) <cimport, nodecl> end
+global function nk_str_free(a1: *NK_str) <cimport, nodecl> end
+global function nk_str_append_text_char(a1: *NK_str, a2: cstring, a3: cint): cint <cimport, nodecl> end
+global function nk_str_append_str_char(a1: *NK_str, a2: cstring): cint <cimport, nodecl> end
+global function nk_str_append_text_utf8(a1: *NK_str, a2: cstring, a3: cint): cint <cimport, nodecl> end
+global function nk_str_append_str_utf8(a1: *NK_str, a2: cstring): cint <cimport, nodecl> end
+global function nk_str_append_text_runes(a1: *NK_str, a2: *cuint, a3: cint): cint <cimport, nodecl> end
+global function nk_str_append_str_runes(a1: *NK_str, a2: *cuint): cint <cimport, nodecl> end
+global function nk_str_insert_at_char(a1: *NK_str, pos: cint, a3: cstring, a4: cint): cint <cimport, nodecl> end
+global function nk_str_insert_at_rune(a1: *NK_str, pos: cint, a3: cstring, a4: cint): cint <cimport, nodecl> end
+global function nk_str_insert_text_char(a1: *NK_str, pos: cint, a3: cstring, a4: cint): cint <cimport, nodecl> end
+global function nk_str_insert_str_char(a1: *NK_str, pos: cint, a3: cstring): cint <cimport, nodecl> end
+global function nk_str_insert_text_utf8(a1: *NK_str, pos: cint, a3: cstring, a4: cint): cint <cimport, nodecl> end
+global function nk_str_insert_str_utf8(a1: *NK_str, pos: cint, a3: cstring): cint <cimport, nodecl> end
+global function nk_str_insert_text_runes(a1: *NK_str, pos: cint, a3: *cuint, a4: cint): cint <cimport, nodecl> end
+global function nk_str_insert_str_runes(a1: *NK_str, pos: cint, a3: *cuint): cint <cimport, nodecl> end
+global function nk_str_remove_chars(a1: *NK_str, len: cint) <cimport, nodecl> end
+global function nk_str_remove_runes(str: *NK_str, len: cint) <cimport, nodecl> end
+global function nk_str_delete_chars(a1: *NK_str, pos: cint, len: cint) <cimport, nodecl> end
+global function nk_str_delete_runes(a1: *NK_str, pos: cint, len: cint) <cimport, nodecl> end
+global function nk_str_at_char(a1: *NK_str, pos: cint): cstring <cimport, nodecl> end
+global function nk_str_at_rune(a1: *NK_str, pos: cint, unicode: *cuint, len: *cint): cstring <cimport, nodecl> end
+global function nk_str_rune_at(a1: *NK_str, pos: cint): cuint <cimport, nodecl> end
+global function nk_str_at_char_const(a1: *NK_str, pos: cint): cstring <cimport, nodecl> end
+global function nk_str_at_const(a1: *NK_str, pos: cint, unicode: *cuint, len: *cint): cstring <cimport, nodecl> end
+global function nk_str_get(a1: *NK_str): cstring <cimport, nodecl> end
+global function nk_str_get_const(a1: *NK_str): cstring <cimport, nodecl> end
+global function nk_str_len(a1: *NK_str): cint <cimport, nodecl> end
+global function nk_str_len_char(a1: *NK_str): cint <cimport, nodecl> end
+global NK_clipboard: type <cimport, nodecl, ctypedef 'nk_clipboard'> = @record{
+  userdata: NK_handle,
+  paste: nk_plugin_paste,
+  copy: nk_plugin_copy
+}
+global NK_text_undo_record: type <cimport, nodecl, ctypedef 'nk_text_undo_record'> = @record{
+  where: cint,
+  insert_length: cshort,
+  delete_length: cshort,
+  char_storage: cshort
+}
+global NK_text_undo_state: type <cimport, nodecl, ctypedef 'nk_text_undo_state'> = @record{
+  undo_rec: [99]NK_text_undo_record,
+  undo_char: [999]cuint,
+  undo_point: cshort,
+  redo_point: cshort,
+  undo_char_point: cshort,
+  redo_char_point: cshort
+}
+global NK_text_edit_type: type <cimport, nodecl, using, ctypedef 'nk_text_edit_type'> = @enum(cint){
+  NK_TEXT_EDIT_SINGLE_LINE = 0,
+  NK_TEXT_EDIT_MULTI_LINE = 1
+}
+global NK_text_edit_mode: type <cimport, nodecl, using, ctypedef 'nk_text_edit_mode'> = @enum(cint){
+  NK_TEXT_EDIT_MODE_VIEW = 0,
+  NK_TEXT_EDIT_MODE_INSERT = 1,
+  NK_TEXT_EDIT_MODE_REPLACE = 2
+}
+NK_text_edit = @record{
+  clip: NK_clipboard,
+  string: NK_str,
+  filter: nk_plugin_filter,
+  scrollbar: NK_vec2,
+  cursor: cint,
+  select_start: cint,
+  select_end: cint,
+  mode: cuchar,
+  cursor_at_end_of_line: cuchar,
+  initialized: cuchar,
+  has_preferred_x: cuchar,
+  single_line: cuchar,
+  active: cuchar,
+  padding1: cuchar,
+  preferred_x: float32,
+  undo: NK_text_undo_state
+}
+global function nk_filter_default(a1: *NK_text_edit, unicode: cuint): cint <cimport, nodecl> end
+global function nk_filter_ascii(a1: *NK_text_edit, unicode: cuint): cint <cimport, nodecl> end
+global function nk_filter_float(a1: *NK_text_edit, unicode: cuint): cint <cimport, nodecl> end
+global function nk_filter_decimal(a1: *NK_text_edit, unicode: cuint): cint <cimport, nodecl> end
+global function nk_filter_hex(a1: *NK_text_edit, unicode: cuint): cint <cimport, nodecl> end
+global function nk_filter_oct(a1: *NK_text_edit, unicode: cuint): cint <cimport, nodecl> end
+global function nk_filter_binary(a1: *NK_text_edit, unicode: cuint): cint <cimport, nodecl> end
+global function nk_textedit_init_default(a1: *NK_text_edit) <cimport, nodecl> end
+global function nk_textedit_init(a1: *NK_text_edit, a2: *NK_allocator, size: culong) <cimport, nodecl> end
+global function nk_textedit_init_fixed(a1: *NK_text_edit, memory: pointer, size: culong) <cimport, nodecl> end
+global function nk_textedit_free(a1: *NK_text_edit) <cimport, nodecl> end
+global function nk_textedit_text(a1: *NK_text_edit, a2: cstring, total_len: cint) <cimport, nodecl> end
+global function nk_textedit_delete(a1: *NK_text_edit, where: cint, len: cint) <cimport, nodecl> end
+global function nk_textedit_delete_selection(a1: *NK_text_edit) <cimport, nodecl> end
+global function nk_textedit_select_all(a1: *NK_text_edit) <cimport, nodecl> end
+global function nk_textedit_cut(a1: *NK_text_edit): cint <cimport, nodecl> end
+global function nk_textedit_paste(a1: *NK_text_edit, a2: cstring, len: cint): cint <cimport, nodecl> end
+global function nk_textedit_undo(a1: *NK_text_edit) <cimport, nodecl> end
+global function nk_textedit_redo(a1: *NK_text_edit) <cimport, nodecl> end
+global NK_command_type: type <cimport, nodecl, using, ctypedef 'nk_command_type'> = @enum(cint){
+  NK_COMMAND_NOP = 0,
+  NK_COMMAND_SCISSOR = 1,
+  NK_COMMAND_LINE = 2,
+  NK_COMMAND_CURVE = 3,
+  NK_COMMAND_RECT = 4,
+  NK_COMMAND_RECT_FILLED = 5,
+  NK_COMMAND_RECT_MULTI_COLOR = 6,
+  NK_COMMAND_CIRCLE = 7,
+  NK_COMMAND_CIRCLE_FILLED = 8,
+  NK_COMMAND_ARC = 9,
+  NK_COMMAND_ARC_FILLED = 10,
+  NK_COMMAND_TRIANGLE = 11,
+  NK_COMMAND_TRIANGLE_FILLED = 12,
+  NK_COMMAND_POLYGON = 13,
+  NK_COMMAND_POLYGON_FILLED = 14,
+  NK_COMMAND_POLYLINE = 15,
+  NK_COMMAND_TEXT = 16,
+  NK_COMMAND_IMAGE = 17,
+  NK_COMMAND_CUSTOM = 18
+}
+NK_command = @record{
+  type: NK_command_type,
+  next: culong
+}
+global NK_command_scissor: type <cimport, nodecl, ctypedef 'nk_command_scissor'> = @record{
+  header: NK_command,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort
+}
+global NK_command_line: type <cimport, nodecl, ctypedef 'nk_command_line'> = @record{
+  header: NK_command,
+  line_thickness: cushort,
+  begin: NK_vec2i,
+  End: NK_vec2i,
+  color: NK_color
+}
+global NK_command_curve: type <cimport, nodecl, ctypedef 'nk_command_curve'> = @record{
+  header: NK_command,
+  line_thickness: cushort,
+  begin: NK_vec2i,
+  End: NK_vec2i,
+  ctrl: [2]NK_vec2i,
+  color: NK_color
+}
+global NK_command_rect: type <cimport, nodecl, ctypedef 'nk_command_rect'> = @record{
+  header: NK_command,
+  rounding: cushort,
+  line_thickness: cushort,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort,
+  color: NK_color
+}
+global NK_command_rect_filled: type <cimport, nodecl, ctypedef 'nk_command_rect_filled'> = @record{
+  header: NK_command,
+  rounding: cushort,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort,
+  color: NK_color
+}
+global NK_command_rect_multi_color: type <cimport, nodecl, ctypedef 'nk_command_rect_multi_color'> = @record{
+  header: NK_command,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort,
+  left: NK_color,
+  top: NK_color,
+  bottom: NK_color,
+  right: NK_color
+}
+global NK_command_triangle: type <cimport, nodecl, ctypedef 'nk_command_triangle'> = @record{
+  header: NK_command,
+  line_thickness: cushort,
+  a: NK_vec2i,
+  b: NK_vec2i,
+  c: NK_vec2i,
+  color: NK_color
+}
+global NK_command_triangle_filled: type <cimport, nodecl, ctypedef 'nk_command_triangle_filled'> = @record{
+  header: NK_command,
+  a: NK_vec2i,
+  b: NK_vec2i,
+  c: NK_vec2i,
+  color: NK_color
+}
+global NK_command_circle: type <cimport, nodecl, ctypedef 'nk_command_circle'> = @record{
+  header: NK_command,
+  x: cshort,
+  y: cshort,
+  line_thickness: cushort,
+  w: cushort,
+  h: cushort,
+  color: NK_color
+}
+global NK_command_circle_filled: type <cimport, nodecl, ctypedef 'nk_command_circle_filled'> = @record{
+  header: NK_command,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort,
+  color: NK_color
+}
+global NK_command_arc: type <cimport, nodecl, ctypedef 'nk_command_arc'> = @record{
+  header: NK_command,
+  cx: cshort,
+  cy: cshort,
+  r: cushort,
+  line_thickness: cushort,
+  a: [2]float32,
+  color: NK_color
+}
+global NK_command_arc_filled: type <cimport, nodecl, ctypedef 'nk_command_arc_filled'> = @record{
+  header: NK_command,
+  cx: cshort,
+  cy: cshort,
+  r: cushort,
+  a: [2]float32,
+  color: NK_color
+}
+global NK_command_polygon: type <cimport, nodecl, ctypedef 'nk_command_polygon'> = @record{
+  header: NK_command,
+  color: NK_color,
+  line_thickness: cushort,
+  point_count: cushort,
+  points: [1]NK_vec2i
+}
+global NK_command_polygon_filled: type <cimport, nodecl, ctypedef 'nk_command_polygon_filled'> = @record{
+  header: NK_command,
+  color: NK_color,
+  point_count: cushort,
+  points: [1]NK_vec2i
+}
+global NK_command_polyline: type <cimport, nodecl, ctypedef 'nk_command_polyline'> = @record{
+  header: NK_command,
+  color: NK_color,
+  line_thickness: cushort,
+  point_count: cushort,
+  points: [1]NK_vec2i
+}
+global NK_command_image: type <cimport, nodecl, ctypedef 'nk_command_image'> = @record{
+  header: NK_command,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort,
+  img: NK_image,
+  col: NK_color
+}
+global nk_command_custom_callback: type <cimport, nodecl> = @function(pointer, cshort, cshort, cushort, cushort, NK_handle)
+global NK_command_custom: type <cimport, nodecl, ctypedef 'nk_command_custom'> = @record{
+  header: NK_command,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort,
+  callback_data: NK_handle,
+  callback: nk_command_custom_callback
+}
+global NK_command_text: type <cimport, nodecl, ctypedef 'nk_command_text'> = @record{
+  header: NK_command,
+  font: *NK_user_font,
+  background: NK_color,
+  foreground: NK_color,
+  x: cshort,
+  y: cshort,
+  w: cushort,
+  h: cushort,
+  height: float32,
+  length: cint,
+  string: [1]cchar
+}
+global NK_command_clipping: type <cimport, nodecl, using, ctypedef 'nk_command_clipping'> = @enum(cint){
+  NK_CLIPPING_OFF = 0,
+  NK_CLIPPING_ON = 1
+}
+NK_command_buffer = @record{
+  base: *NK_buffer,
+  clip: NK_rect,
+  use_clipping: cint,
+  userdata: NK_handle,
+  begin: culong,
+  End: culong,
+  last: culong
+}
+global function nk_stroke_line(b: *NK_command_buffer, x0: float32, y0: float32, x1: float32, y1: float32, line_thickness: float32, a7: NK_color) <cimport, nodecl> end
+global function nk_stroke_curve(a1: *NK_command_buffer, a2: float32, a3: float32, a4: float32, a5: float32, a6: float32, a7: float32, a8: float32, a9: float32, line_thickness: float32, a11: NK_color) <cimport, nodecl> end
+global function nk_stroke_rect(a1: *NK_command_buffer, a2: NK_rect, rounding: float32, line_thickness: float32, a5: NK_color) <cimport, nodecl> end
+global function nk_stroke_circle(a1: *NK_command_buffer, a2: NK_rect, line_thickness: float32, a4: NK_color) <cimport, nodecl> end
+global function nk_stroke_arc(a1: *NK_command_buffer, cx: float32, cy: float32, radius: float32, a_min: float32, a_max: float32, line_thickness: float32, a8: NK_color) <cimport, nodecl> end
+global function nk_stroke_triangle(a1: *NK_command_buffer, a2: float32, a3: float32, a4: float32, a5: float32, a6: float32, a7: float32, line_thichness: float32, a9: NK_color) <cimport, nodecl> end
+global function nk_stroke_polyline(a1: *NK_command_buffer, points: *float32, point_count: cint, line_thickness: float32, col: NK_color) <cimport, nodecl> end
+global function nk_stroke_polygon(a1: *NK_command_buffer, a2: *float32, point_count: cint, line_thickness: float32, a5: NK_color) <cimport, nodecl> end
+global function nk_fill_rect(a1: *NK_command_buffer, a2: NK_rect, rounding: float32, a4: NK_color) <cimport, nodecl> end
+global function nk_fill_rect_multi_color(a1: *NK_command_buffer, a2: NK_rect, left: NK_color, top: NK_color, right: NK_color, bottom: NK_color) <cimport, nodecl> end
+global function nk_fill_circle(a1: *NK_command_buffer, a2: NK_rect, a3: NK_color) <cimport, nodecl> end
+global function nk_fill_arc(a1: *NK_command_buffer, cx: float32, cy: float32, radius: float32, a_min: float32, a_max: float32, a7: NK_color) <cimport, nodecl> end
+global function nk_fill_triangle(a1: *NK_command_buffer, x0: float32, y0: float32, x1: float32, y1: float32, x2: float32, y2: float32, a8: NK_color) <cimport, nodecl> end
+global function nk_fill_polygon(a1: *NK_command_buffer, a2: *float32, point_count: cint, a4: NK_color) <cimport, nodecl> end
+global function nk_draw_image(a1: *NK_command_buffer, a2: NK_rect, a3: *NK_image, a4: NK_color) <cimport, nodecl> end
+global function nk_draw_text(a1: *NK_command_buffer, a2: NK_rect, text: cstring, len: cint, a5: *NK_user_font, a6: NK_color, a7: NK_color) <cimport, nodecl> end
+global function nk_push_scissor(a1: *NK_command_buffer, a2: NK_rect) <cimport, nodecl> end
+global function nk_push_custom(a1: *NK_command_buffer, a2: NK_rect, a3: nk_command_custom_callback, usr: NK_handle) <cimport, nodecl> end
+global NK_mouse_button: type <cimport, nodecl, ctypedef 'nk_mouse_button'> = @record{
+  down: cint,
+  clicked: cuint,
+  clicked_pos: NK_vec2
+}
+global NK_mouse: type <cimport, nodecl, ctypedef 'nk_mouse'> = @record{
+  buttons: [4]NK_mouse_button,
+  pos: NK_vec2,
+  prev: NK_vec2,
+  delta: NK_vec2,
+  scroll_delta: NK_vec2,
+  grab: cuchar,
+  grabbed: cuchar,
+  ungrab: cuchar
+}
+global NK_key: type <cimport, nodecl, ctypedef 'nk_key'> = @record{
+  down: cint,
+  clicked: cuint
+}
+global NK_keyboard: type <cimport, nodecl, ctypedef 'nk_keyboard'> = @record{
+  keys: [30]NK_key,
+  text: [16]cchar,
+  text_len: cint
+}
+global NK_input: type <cimport, nodecl, ctypedef 'nk_input'> = @record{
+  keyboard: NK_keyboard,
+  mouse: NK_mouse
+}
+global function nk_input_has_mouse_click(a1: *NK_input, a2: NK_buttons): cint <cimport, nodecl> end
+global function nk_input_has_mouse_click_in_rect(a1: *NK_input, a2: NK_buttons, a3: NK_rect): cint <cimport, nodecl> end
+global function nk_input_has_mouse_click_down_in_rect(a1: *NK_input, a2: NK_buttons, a3: NK_rect, down: cint): cint <cimport, nodecl> end
+global function nk_input_is_mouse_click_in_rect(a1: *NK_input, a2: NK_buttons, a3: NK_rect): cint <cimport, nodecl> end
+global function nk_input_is_mouse_click_down_in_rect(i: *NK_input, id: NK_buttons, b: NK_rect, down: cint): cint <cimport, nodecl> end
+global function nk_input_any_mouse_click_in_rect(a1: *NK_input, a2: NK_rect): cint <cimport, nodecl> end
+global function nk_input_is_mouse_prev_hovering_rect(a1: *NK_input, a2: NK_rect): cint <cimport, nodecl> end
+global function nk_input_is_mouse_hovering_rect(a1: *NK_input, a2: NK_rect): cint <cimport, nodecl> end
+global function nk_input_mouse_clicked(a1: *NK_input, a2: NK_buttons, a3: NK_rect): cint <cimport, nodecl> end
+global function nk_input_is_mouse_down(a1: *NK_input, a2: NK_buttons): cint <cimport, nodecl> end
+global function nk_input_is_mouse_pressed(a1: *NK_input, a2: NK_buttons): cint <cimport, nodecl> end
+global function nk_input_is_mouse_released(a1: *NK_input, a2: NK_buttons): cint <cimport, nodecl> end
+global function nk_input_is_key_pressed(a1: *NK_input, a2: NK_keys): cint <cimport, nodecl> end
+global function nk_input_is_key_released(a1: *NK_input, a2: NK_keys): cint <cimport, nodecl> end
+global function nk_input_is_key_down(a1: *NK_input, a2: NK_keys): cint <cimport, nodecl> end
+global NK_draw_list_stroke: type <cimport, nodecl, using, ctypedef 'nk_draw_list_stroke'> = @enum(cint){
+  NK_STROKE_OPEN = 0,
+  NK_STROKE_CLOSED = 1
+}
+global NK_draw_vertex_layout_attribute: type <cimport, nodecl, using, ctypedef 'nk_draw_vertex_layout_attribute'> = @enum(cint){
+  NK_VERTEX_POSITION = 0,
+  NK_VERTEX_COLOR = 1,
+  NK_VERTEX_TEXCOORD = 2,
+  NK_VERTEX_ATTRIBUTE_COUNT = 3
+}
+global NK_draw_vertex_layout_format: type <cimport, nodecl, using, ctypedef 'nk_draw_vertex_layout_format'> = @enum(cint){
+  NK_FORMAT_SCHAR = 0,
+  NK_FORMAT_SSHORT = 1,
+  NK_FORMAT_SINT = 2,
+  NK_FORMAT_UCHAR = 3,
+  NK_FORMAT_USHORT = 4,
+  NK_FORMAT_UINT = 5,
+  NK_FORMAT_FLOAT = 6,
+  NK_FORMAT_DOUBLE = 7,
+  NK_FORMAT_COLOR_BEGIN = 8,
+  NK_FORMAT_R8G8B8 = 8,
+  NK_FORMAT_R16G15B16 = 9,
+  NK_FORMAT_R32G32B32 = 10,
+  NK_FORMAT_R8G8B8A8 = 11,
+  NK_FORMAT_B8G8R8A8 = 12,
+  NK_FORMAT_R16G15B16A16 = 13,
+  NK_FORMAT_R32G32B32A32 = 14,
+  NK_FORMAT_R32G32B32A32_FLOAT = 15,
+  NK_FORMAT_R32G32B32A32_DOUBLE = 16,
+  NK_FORMAT_RGB32 = 17,
+  NK_FORMAT_RGBA32 = 18,
+  NK_FORMAT_COLOR_END = 18,
+  NK_FORMAT_COUNT = 19
+}
+NK_draw_vertex_layout_element = @record{
+  attribute: NK_draw_vertex_layout_attribute,
+  format: NK_draw_vertex_layout_format,
+  offset: culong
+}
+NK_draw_command = @record{
+  elem_count: cuint,
+  clip_rect: NK_rect,
+  texture: NK_handle
+}
+NK_draw_list = @record{
+  clip_rect: NK_rect,
+  circle_vtx: [12]NK_vec2,
+  config: NK_convert_config,
+  buffer: *NK_buffer,
+  vertices: *NK_buffer,
+  elements: *NK_buffer,
+  element_count: cuint,
+  vertex_count: cuint,
+  cmd_count: cuint,
+  cmd_offset: culong,
+  path_count: cuint,
+  path_offset: cuint,
+  line_AA: NK_anti_aliasing,
+  shape_AA: NK_anti_aliasing
+}
+global function nk_draw_list_init(a1: *NK_draw_list) <cimport, nodecl> end
+global function nk_draw_list_setup(a1: *NK_draw_list, a2: *NK_convert_config, cmds: *NK_buffer, vertices: *NK_buffer, elements: *NK_buffer, line_aa: NK_anti_aliasing, shape_aa: NK_anti_aliasing) <cimport, nodecl> end
+global function nk__draw_list_begin(a1: *NK_draw_list, a2: *NK_buffer): *NK_draw_command <cimport, nodecl> end
+global function nk__draw_list_next(a1: *NK_draw_command, a2: *NK_buffer, a3: *NK_draw_list): *NK_draw_command <cimport, nodecl> end
+global function nk__draw_list_end(a1: *NK_draw_list, a2: *NK_buffer): *NK_draw_command <cimport, nodecl> end
+global function nk_draw_list_path_clear(a1: *NK_draw_list) <cimport, nodecl> end
+global function nk_draw_list_path_line_to(a1: *NK_draw_list, pos: NK_vec2) <cimport, nodecl> end
+global function nk_draw_list_path_arc_to_fast(a1: *NK_draw_list, center: NK_vec2, radius: float32, a_min: cint, a_max: cint) <cimport, nodecl> end
+global function nk_draw_list_path_arc_to(a1: *NK_draw_list, center: NK_vec2, radius: float32, a_min: float32, a_max: float32, segments: cuint) <cimport, nodecl> end
+global function nk_draw_list_path_rect_to(a1: *NK_draw_list, a: NK_vec2, b: NK_vec2, rounding: float32) <cimport, nodecl> end
+global function nk_draw_list_path_curve_to(a1: *NK_draw_list, p2: NK_vec2, p3: NK_vec2, p4: NK_vec2, num_segments: cuint) <cimport, nodecl> end
+global function nk_draw_list_path_fill(a1: *NK_draw_list, a2: NK_color) <cimport, nodecl> end
+global function nk_draw_list_path_stroke(a1: *NK_draw_list, a2: NK_color, closed: NK_draw_list_stroke, thickness: float32) <cimport, nodecl> end
+global function nk_draw_list_stroke_line(a1: *NK_draw_list, a: NK_vec2, b: NK_vec2, a4: NK_color, thickness: float32) <cimport, nodecl> end
+global function nk_draw_list_stroke_rect(a1: *NK_draw_list, rect: NK_rect, a3: NK_color, rounding: float32, thickness: float32) <cimport, nodecl> end
+global function nk_draw_list_stroke_triangle(a1: *NK_draw_list, a: NK_vec2, b: NK_vec2, c: NK_vec2, a5: NK_color, thickness: float32) <cimport, nodecl> end
+global function nk_draw_list_stroke_circle(a1: *NK_draw_list, center: NK_vec2, radius: float32, a4: NK_color, segs: cuint, thickness: float32) <cimport, nodecl> end
+global function nk_draw_list_stroke_curve(a1: *NK_draw_list, p0: NK_vec2, cp0: NK_vec2, cp1: NK_vec2, p1: NK_vec2, a6: NK_color, segments: cuint, thickness: float32) <cimport, nodecl> end
+global function nk_draw_list_stroke_poly_line(a1: *NK_draw_list, pnts: *NK_vec2, cnt: cuint, a4: NK_color, a5: NK_draw_list_stroke, thickness: float32, a7: NK_anti_aliasing) <cimport, nodecl> end
+global function nk_draw_list_fill_rect(a1: *NK_draw_list, rect: NK_rect, a3: NK_color, rounding: float32) <cimport, nodecl> end
+global function nk_draw_list_fill_rect_multi_color(a1: *NK_draw_list, rect: NK_rect, left: NK_color, top: NK_color, right: NK_color, bottom: NK_color) <cimport, nodecl> end
+global function nk_draw_list_fill_triangle(a1: *NK_draw_list, a: NK_vec2, b: NK_vec2, c: NK_vec2, a5: NK_color) <cimport, nodecl> end
+global function nk_draw_list_fill_circle(a1: *NK_draw_list, center: NK_vec2, radius: float32, col: NK_color, segs: cuint) <cimport, nodecl> end
+global function nk_draw_list_fill_poly_convex(a1: *NK_draw_list, points: *NK_vec2, count: cuint, a4: NK_color, a5: NK_anti_aliasing) <cimport, nodecl> end
+global function nk_draw_list_add_image(a1: *NK_draw_list, texture: NK_image, rect: NK_rect, a4: NK_color) <cimport, nodecl> end
+global function nk_draw_list_add_text(a1: *NK_draw_list, a2: *NK_user_font, a3: NK_rect, text: cstring, len: cint, font_height: float32, a7: NK_color) <cimport, nodecl> end
+global NK_style_item_type: type <cimport, nodecl, using, ctypedef 'nk_style_item_type'> = @enum(cint){
+  NK_STYLE_ITEM_COLOR = 0,
+  NK_STYLE_ITEM_IMAGE = 1
+}
+global NK_style_item_data: type <cimport, nodecl, ctypedef 'nk_style_item_data'> = @union{
+  image: NK_image,
+  color: NK_color
+}
+NK_style_item = @record{
+  type: NK_style_item_type,
+  data: NK_style_item_data
+}
+global NK_style_text: type <cimport, nodecl, ctypedef 'nk_style_text'> = @record{
+  color: NK_color,
+  padding: NK_vec2
+}
+NK_style_button = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  text_background: NK_color,
+  text_normal: NK_color,
+  text_hover: NK_color,
+  text_active: NK_color,
+  text_alignment: cuint,
+  border: float32,
+  rounding: float32,
+  padding: NK_vec2,
+  image_padding: NK_vec2,
+  touch_padding: NK_vec2,
+  userdata: NK_handle,
+  draw_begin: function(*NK_command_buffer, NK_handle),
+  draw_end: function(*NK_command_buffer, NK_handle)
+}
+NK_style_toggle = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  cursor_normal: NK_style_item,
+  cursor_hover: NK_style_item,
+  text_normal: NK_color,
+  text_hover: NK_color,
+  text_active: NK_color,
+  text_background: NK_color,
+  text_alignment: cuint,
+  padding: NK_vec2,
+  touch_padding: NK_vec2,
+  spacing: float32,
+  border: float32,
+  userdata: NK_handle,
+  draw_begin: function(*NK_command_buffer, NK_handle),
+  draw_end: function(*NK_command_buffer, NK_handle)
+}
+NK_style_selectable = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  pressed: NK_style_item,
+  normal_active: NK_style_item,
+  hover_active: NK_style_item,
+  pressed_active: NK_style_item,
+  text_normal: NK_color,
+  text_hover: NK_color,
+  text_pressed: NK_color,
+  text_normal_active: NK_color,
+  text_hover_active: NK_color,
+  text_pressed_active: NK_color,
+  text_background: NK_color,
+  text_alignment: cuint,
+  rounding: float32,
+  padding: NK_vec2,
+  touch_padding: NK_vec2,
+  image_padding: NK_vec2,
+  userdata: NK_handle,
+  draw_begin: function(*NK_command_buffer, NK_handle),
+  draw_end: function(*NK_command_buffer, NK_handle)
+}
+global NK_style_slider: type <cimport, nodecl, ctypedef 'nk_style_slider'> = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  bar_normal: NK_color,
+  bar_hover: NK_color,
+  bar_active: NK_color,
+  bar_filled: NK_color,
+  cursor_normal: NK_style_item,
+  cursor_hover: NK_style_item,
+  cursor_active: NK_style_item,
+  border: float32,
+  rounding: float32,
+  bar_height: float32,
+  padding: NK_vec2,
+  spacing: NK_vec2,
+  cursor_size: NK_vec2,
+  show_buttons: cint,
+  inc_button: NK_style_button,
+  dec_button: NK_style_button,
+  inc_symbol: NK_symbol_type,
+  dec_symbol: NK_symbol_type,
+  userdata: NK_handle,
+  draw_begin: function(*NK_command_buffer, NK_handle),
+  draw_end: function(*NK_command_buffer, NK_handle)
+}
+NK_style_progress = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  cursor_normal: NK_style_item,
+  cursor_hover: NK_style_item,
+  cursor_active: NK_style_item,
+  cursor_border_color: NK_color,
+  rounding: float32,
+  border: float32,
+  cursor_border: float32,
+  cursor_rounding: float32,
+  padding: NK_vec2,
+  userdata: NK_handle,
+  draw_begin: function(*NK_command_buffer, NK_handle),
+  draw_end: function(*NK_command_buffer, NK_handle)
+}
+NK_style_scrollbar = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  cursor_normal: NK_style_item,
+  cursor_hover: NK_style_item,
+  cursor_active: NK_style_item,
+  cursor_border_color: NK_color,
+  border: float32,
+  rounding: float32,
+  border_cursor: float32,
+  rounding_cursor: float32,
+  padding: NK_vec2,
+  show_buttons: cint,
+  inc_button: NK_style_button,
+  dec_button: NK_style_button,
+  inc_symbol: NK_symbol_type,
+  dec_symbol: NK_symbol_type,
+  userdata: NK_handle,
+  draw_begin: function(*NK_command_buffer, NK_handle),
+  draw_end: function(*NK_command_buffer, NK_handle)
+}
+NK_style_edit = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  scrollbar: NK_style_scrollbar,
+  cursor_normal: NK_color,
+  cursor_hover: NK_color,
+  cursor_text_normal: NK_color,
+  cursor_text_hover: NK_color,
+  text_normal: NK_color,
+  text_hover: NK_color,
+  text_active: NK_color,
+  selected_normal: NK_color,
+  selected_hover: NK_color,
+  selected_text_normal: NK_color,
+  selected_text_hover: NK_color,
+  border: float32,
+  rounding: float32,
+  cursor_size: float32,
+  scrollbar_size: NK_vec2,
+  padding: NK_vec2,
+  row_padding: float32
+}
+NK_style_property = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  label_normal: NK_color,
+  label_hover: NK_color,
+  label_active: NK_color,
+  sym_left: NK_symbol_type,
+  sym_right: NK_symbol_type,
+  border: float32,
+  rounding: float32,
+  padding: NK_vec2,
+  edit: NK_style_edit,
+  inc_button: NK_style_button,
+  dec_button: NK_style_button,
+  userdata: NK_handle,
+  draw_begin: function(*NK_command_buffer, NK_handle),
+  draw_end: function(*NK_command_buffer, NK_handle)
+}
+NK_style_chart = @record{
+  background: NK_style_item,
+  border_color: NK_color,
+  selected_color: NK_color,
+  color: NK_color,
+  border: float32,
+  rounding: float32,
+  padding: NK_vec2
+}
+NK_style_combo = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  border_color: NK_color,
+  label_normal: NK_color,
+  label_hover: NK_color,
+  label_active: NK_color,
+  symbol_normal: NK_color,
+  symbol_hover: NK_color,
+  symbol_active: NK_color,
+  button: NK_style_button,
+  sym_normal: NK_symbol_type,
+  sym_hover: NK_symbol_type,
+  sym_active: NK_symbol_type,
+  border: float32,
+  rounding: float32,
+  content_padding: NK_vec2,
+  button_padding: NK_vec2,
+  spacing: NK_vec2
+}
+NK_style_tab = @record{
+  background: NK_style_item,
+  border_color: NK_color,
+  text: NK_color,
+  tab_maximize_button: NK_style_button,
+  tab_minimize_button: NK_style_button,
+  node_maximize_button: NK_style_button,
+  node_minimize_button: NK_style_button,
+  sym_minimize: NK_symbol_type,
+  sym_maximize: NK_symbol_type,
+  border: float32,
+  rounding: float32,
+  indent: float32,
+  padding: NK_vec2,
+  spacing: NK_vec2
+}
+global NK_style_header_align: type <cimport, nodecl, using, ctypedef 'nk_style_header_align'> = @enum(cint){
+  NK_HEADER_LEFT = 0,
+  NK_HEADER_RIGHT = 1
+}
+NK_style_window_header = @record{
+  normal: NK_style_item,
+  hover: NK_style_item,
+  active: NK_style_item,
+  close_button: NK_style_button,
+  minimize_button: NK_style_button,
+  close_symbol: NK_symbol_type,
+  minimize_symbol: NK_symbol_type,
+  maximize_symbol: NK_symbol_type,
+  label_normal: NK_color,
+  label_hover: NK_color,
+  label_active: NK_color,
+  align: NK_style_header_align,
+  padding: NK_vec2,
+  label_padding: NK_vec2,
+  spacing: NK_vec2
+}
+NK_style_window = @record{
+  header: NK_style_window_header,
+  fixed_background: NK_style_item,
+  background: NK_color,
+  border_color: NK_color,
+  popup_border_color: NK_color,
+  combo_border_color: NK_color,
+  contextual_border_color: NK_color,
+  menu_border_color: NK_color,
+  group_border_color: NK_color,
+  tooltip_border_color: NK_color,
+  scaler: NK_style_item,
+  border: float32,
+  combo_border: float32,
+  contextual_border: float32,
+  menu_border: float32,
+  group_border: float32,
+  tooltip_border: float32,
+  popup_border: float32,
+  min_row_height_padding: float32,
+  rounding: float32,
+  spacing: NK_vec2,
+  scrollbar_size: NK_vec2,
+  min_size: NK_vec2,
+  padding: NK_vec2,
+  group_padding: NK_vec2,
+  popup_padding: NK_vec2,
+  combo_padding: NK_vec2,
+  contextual_padding: NK_vec2,
+  menu_padding: NK_vec2,
+  tooltip_padding: NK_vec2
+}
+global NK_style: type <cimport, nodecl, ctypedef 'nk_style'> = @record{
+  font: *NK_user_font,
+  cursors: [7]*NK_cursor,
+  cursor_active: *NK_cursor,
+  cursor_last: *NK_cursor,
+  cursor_visible: cint,
+  text: NK_style_text,
+  button: NK_style_button,
+  contextual_button: NK_style_button,
+  menu_button: NK_style_button,
+  option: NK_style_toggle,
+  checkbox: NK_style_toggle,
+  selectable: NK_style_selectable,
+  slider: NK_style_slider,
+  progress: NK_style_progress,
+  property: NK_style_property,
+  edit: NK_style_edit,
+  chart: NK_style_chart,
+  scrollh: NK_style_scrollbar,
+  scrollv: NK_style_scrollbar,
+  tab: NK_style_tab,
+  combo: NK_style_combo,
+  window: NK_style_window
+}
+global function nk_style_item_image(img: NK_image): NK_style_item <cimport, nodecl> end
+global function nk_style_item_color(a1: NK_color): NK_style_item <cimport, nodecl> end
+global function nk_style_item_hide(): NK_style_item <cimport, nodecl> end
+global NK_panel_type: type <cimport, nodecl, using, ctypedef 'nk_panel_type'> = @enum(cint){
+  NK_PANEL_NONE = 0,
+  NK_PANEL_WINDOW = 1,
+  NK_PANEL_GROUP = 2,
+  NK_PANEL_POPUP = 4,
+  NK_PANEL_CONTEXTUAL = 16,
+  NK_PANEL_COMBO = 32,
+  NK_PANEL_MENU = 64,
+  NK_PANEL_TOOLTIP = 128
+}
+global NK_panel_set: type <cimport, nodecl, using, ctypedef 'nk_panel_set'> = @enum(cint){
+  NK_PANEL_SET_NONBLOCK = 240,
+  NK_PANEL_SET_POPUP = 244,
+  NK_PANEL_SET_SUB = 246
+}
+global NK_chart_slot: type <cimport, nodecl, ctypedef 'nk_chart_slot'> = @record{
+  type: NK_chart_type,
+  color: NK_color,
+  highlight: NK_color,
+  min: float32,
+  max: float32,
+  range: float32,
+  count: cint,
+  last: NK_vec2,
+  index: cint
+}
+global NK_chart: type <cimport, nodecl, ctypedef 'nk_chart'> = @record{
+  slot: cint,
+  x: float32,
+  y: float32,
+  w: float32,
+  h: float32,
+  slots: [4]NK_chart_slot
+}
+global NK_panel_row_layout_type: type <cimport, nodecl, using, ctypedef 'nk_panel_row_layout_type'> = @enum(cint){
+  NK_LAYOUT_DYNAMIC_FIXED = 0,
+  NK_LAYOUT_DYNAMIC_ROW = 1,
+  NK_LAYOUT_DYNAMIC_FREE = 2,
+  NK_LAYOUT_DYNAMIC = 3,
+  NK_LAYOUT_STATIC_FIXED = 4,
+  NK_LAYOUT_STATIC_ROW = 5,
+  NK_LAYOUT_STATIC_FREE = 6,
+  NK_LAYOUT_STATIC = 7,
+  NK_LAYOUT_TEMPLATE = 8,
+  NK_LAYOUT_COUNT = 9
+}
+global NK_row_layout: type <cimport, nodecl, ctypedef 'nk_row_layout'> = @record{
+  type: NK_panel_row_layout_type,
+  index: cint,
+  height: float32,
+  min_height: float32,
+  columns: cint,
+  ratio: *float32,
+  item_width: float32,
+  item_height: float32,
+  item_offset: float32,
+  filled: float32,
+  item: NK_rect,
+  tree_depth: cint,
+  templates: [16]float32
+}
+global NK_popup_buffer: type <cimport, nodecl, ctypedef 'nk_popup_buffer'> = @record{
+  begin: culong,
+  parent: culong,
+  last: culong,
+  End: culong,
+  active: cint
+}
+global NK_menu_state: type <cimport, nodecl, ctypedef 'nk_menu_state'> = @record{
+  x: float32,
+  y: float32,
+  w: float32,
+  h: float32,
+  offset: NK_scroll
+}
+NK_panel = @record{
+  type: NK_panel_type,
+  flags: cuint,
+  bounds: NK_rect,
+  offset_x: *cuint,
+  offset_y: *cuint,
+  at_x: float32,
+  at_y: float32,
+  max_x: float32,
+  footer_height: float32,
+  header_height: float32,
+  border: float32,
+  has_scrolling: cuint,
+  clip: NK_rect,
+  menu: NK_menu_state,
+  row: NK_row_layout,
+  chart: NK_chart,
+  buffer: *NK_command_buffer,
+  parent: *NK_panel
+}
+global NK_table: type <cimport, nodecl, forwarddecl, ctypedef 'nk_table'> = @record{}
+global NK_window_flags: type <cimport, nodecl, using, ctypedef 'nk_window_flags'> = @enum(cint){
+  NK_WINDOW_PRIVATE = 2048,
+  NK_WINDOW_DYNAMIC = 2048,
+  NK_WINDOW_ROM = 4096,
+  NK_WINDOW_NOT_INTERACTIVE = 5120,
+  NK_WINDOW_HIDDEN = 8192,
+  NK_WINDOW_CLOSED = 16384,
+  NK_WINDOW_MINIMIZED = 32768,
+  NK_WINDOW_REMOVE_ROM = 65536
+}
+global NK_popup_state: type <cimport, nodecl, ctypedef 'nk_popup_state'> = @record{
+  win: *NK_window,
+  type: NK_panel_type,
+  buf: NK_popup_buffer,
+  name: cuint,
+  active: cint,
+  combo_count: cuint,
+  con_count: cuint,
+  con_old: cuint,
+  active_con: cuint,
+  header: NK_rect
+}
+global NK_edit_state: type <cimport, nodecl, ctypedef 'nk_edit_state'> = @record{
+  name: cuint,
+  seq: cuint,
+  old: cuint,
+  active: cint,
+  prev: cint,
+  cursor: cint,
+  sel_start: cint,
+  sel_end: cint,
+  scrollbar: NK_scroll,
+  mode: cuchar,
+  single_line: cuchar
+}
+global NK_property_state: type <cimport, nodecl, ctypedef 'nk_property_state'> = @record{
+  active: cint,
+  prev: cint,
+  buffer: [64]cchar,
+  length: cint,
+  cursor: cint,
+  select_start: cint,
+  select_end: cint,
+  name: cuint,
+  seq: cuint,
+  old: cuint,
+  state: cint
+}
+NK_window = @record{
+  seq: cuint,
+  name: cuint,
+  name_string: [64]cchar,
+  flags: cuint,
+  bounds: NK_rect,
+  scrollbar: NK_scroll,
+  buffer: NK_command_buffer,
+  layout: *NK_panel,
+  scrollbar_hiding_timer: float32,
+  property: NK_property_state,
+  popup: NK_popup_state,
+  edit: NK_edit_state,
+  scrolled: cuint,
+  tables: *NK_table,
+  table_count: cuint,
+  next: *NK_window,
+  prev: *NK_window,
+  parent: *NK_window
+}
+global NK_config_stack_style_item_element: type <cimport, nodecl, ctypedef 'nk_config_stack_style_item_element'> = @record{
+  address: *NK_style_item,
+  old_value: NK_style_item
+}
+global NK_config_stack_float_element: type <cimport, nodecl, ctypedef 'nk_config_stack_float_element'> = @record{
+  address: *float32,
+  old_value: float32
+}
+global NK_config_stack_vec2_element: type <cimport, nodecl, ctypedef 'nk_config_stack_vec2_element'> = @record{
+  address: *NK_vec2,
+  old_value: NK_vec2
+}
+global NK_config_stack_flags_element: type <cimport, nodecl, ctypedef 'nk_config_stack_flags_element'> = @record{
+  address: *cuint,
+  old_value: cuint
+}
+global NK_config_stack_color_element: type <cimport, nodecl, ctypedef 'nk_config_stack_color_element'> = @record{
+  address: *NK_color,
+  old_value: NK_color
+}
+global NK_config_stack_user_font_element: type <cimport, nodecl, ctypedef 'nk_config_stack_user_font_element'> = @record{
+  address: **NK_user_font,
+  old_value: *NK_user_font
+}
+global NK_config_stack_button_behavior_element: type <cimport, nodecl, ctypedef 'nk_config_stack_button_behavior_element'> = @record{
+  address: *NK_button_behavior,
+  old_value: NK_button_behavior
+}
+global NK_config_stack_style_item: type <cimport, nodecl, ctypedef 'nk_config_stack_style_item'> = @record{
+  head: cint,
+  elements: [16]NK_config_stack_style_item_element
+}
+global NK_config_stack_float: type <cimport, nodecl, ctypedef 'nk_config_stack_float'> = @record{
+  head: cint,
+  elements: [32]NK_config_stack_float_element
+}
+global NK_config_stack_vec2: type <cimport, nodecl, ctypedef 'nk_config_stack_vec2'> = @record{
+  head: cint,
+  elements: [16]NK_config_stack_vec2_element
+}
+global NK_config_stack_flags: type <cimport, nodecl, ctypedef 'nk_config_stack_flags'> = @record{
+  head: cint,
+  elements: [32]NK_config_stack_flags_element
+}
+global NK_config_stack_color: type <cimport, nodecl, ctypedef 'nk_config_stack_color'> = @record{
+  head: cint,
+  elements: [32]NK_config_stack_color_element
+}
+global NK_config_stack_user_font: type <cimport, nodecl, ctypedef 'nk_config_stack_user_font'> = @record{
+  head: cint,
+  elements: [8]NK_config_stack_user_font_element
+}
+global NK_config_stack_button_behavior: type <cimport, nodecl, ctypedef 'nk_config_stack_button_behavior'> = @record{
+  head: cint,
+  elements: [8]NK_config_stack_button_behavior_element
+}
+global NK_configuration_stacks: type <cimport, nodecl, ctypedef 'nk_configuration_stacks'> = @record{
+  style_items: NK_config_stack_style_item,
+  floats: NK_config_stack_float,
+  vectors: NK_config_stack_vec2,
+  flags: NK_config_stack_flags,
+  colors: NK_config_stack_color,
+  fonts: NK_config_stack_user_font,
+  button_behaviors: NK_config_stack_button_behavior
+}
+NK_table = @record{
+  seq: cuint,
+  size: cuint,
+  keys: [59]cuint,
+  values: [59]cuint,
+  next: *NK_table,
+  prev: *NK_table
+}
+global NK_page_data: type <cimport, nodecl, ctypedef 'nk_page_data'> = @union{
+  tbl: NK_table,
+  pan: NK_panel,
+  win: NK_window
+}
+global NK_page_element: type <cimport, nodecl, forwarddecl, ctypedef 'nk_page_element'> = @record{}
+NK_page_element = @record{
+  data: NK_page_data,
+  next: *NK_page_element,
+  prev: *NK_page_element
+}
+global NK_page: type <cimport, nodecl, forwarddecl, ctypedef 'nk_page'> = @record{}
+NK_page = @record{
+  size: cuint,
+  next: *NK_page,
+  win: [1]NK_page_element
+}
+global NK_pool: type <cimport, nodecl, ctypedef 'nk_pool'> = @record{
+  alloc: NK_allocator,
+  type: NK_allocation_type,
+  page_count: cuint,
+  pages: *NK_page,
+  freelist: *NK_page_element,
+  capacity: cuint,
+  size: culong,
+  cap: culong
+}
+NK_context = @record{
+  input: NK_input,
+  style: NK_style,
+  memory: NK_buffer,
+  clip: NK_clipboard,
+  last_widget_state: cuint,
+  button_behavior: NK_button_behavior,
+  stacks: NK_configuration_stacks,
+  delta_time_seconds: float32,
+  draw_list: NK_draw_list,
+  text_edit: NK_text_edit,
+  overlay: NK_command_buffer,
+  build: cint,
+  use_pool: cint,
+  pool: NK_pool,
+  begin: *NK_window,
+  End: *NK_window,
+  active: *NK_window,
+  current: *NK_window,
+  freelist: *NK_page_element,
+  count: cuint,
+  seq: cuint
+}
+global sdlsurface_context: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global function nk_sdlsurface_init(fb: *SDL_Surface, fontSize: float32): *sdlsurface_context <cimport, nodecl> end
+global function nk_sdlsurface_render(sdlsurface: *sdlsurface_context, clear: NK_color, enable_clear: cuchar) <cimport, nodecl> end
+global function nk_sdlsurface_shutdown(sdlsurface: *sdlsurface_context) <cimport, nodecl> end

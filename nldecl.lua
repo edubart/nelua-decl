@@ -203,6 +203,9 @@ end
 
 function nldecl.record_type(node, decl)
   local typename = get_type_node_name(node)
+  if nldecl.typedefs_names[typename] then
+    typename = nldecl.typedefs_names[typename]
+  end
   if not decl and typename then
     assert(not node:anonymous())
     emitter:add(typename)
@@ -220,6 +223,9 @@ end
 
 function nldecl.union_type(node, decl)
   local typename = get_type_node_name(node)
+  if nldecl.typedefs_names[typename] then
+    typename = nldecl.typedefs_names[typename]
+  end
   if not decl and typename then
     assert(not node:anonymous())
     emitter:add(typename)

@@ -1,0 +1,102 @@
+require 'sdl2'
+require 'nuklear'
+require 'io'
+
+local function translate_sdl_key(k: *SDL_Keysym): cint
+  -- keyboard handling left as an exercise for the reader
+  return NK_KEY_NONE
+end
+
+local function sdl_button_to_nk(button: cint): cint
+  switch button
+  case SDL_BUTTON_LEFT then
+    return NK_BUTTON_LEFT
+  case SDL_BUTTON_MIDDLE then
+    return NK_BUTTON_MIDDLE
+  case SDL_BUTTON_RIGHT then
+    return NK_BUTTON_RIGHT
+  end
+  return 0
+end
+
+local a: NK_buffer
+print(a.needed)
+
+SDL_Init(SDL_INIT_VIDEO)
+
+local clear: NK_color = {0,100,0,255}
+local vec: NK_vec2
+local bounds: NK_rect = {40,40,400,400}
+
+SDL_Init(SDL_INIT_VIDEO)
+io.printf("sdl init called...\n")
+
+SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "smooth")
+local window: *SDL_Window = SDL_CreateWindow("Puzzle",
+  SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+  512, 512,
+  SDL_WINDOW_OPENGL)
+if not window then
+  io.printf("can't open window!\n")
+  return 1
+end
+
+local renderer: *SDL_Renderer = SDL_CreateRenderer(window, -1, 0)
+local surface: *SDL_Surface = SDL_CreateRGBSurfaceWithFormat(0, 512, 512, 32, SDL_PIXELFORMAT_ARGB8888)
+
+local nksdlctx: *sdlsurface_context = nk_sdlsurface_init(surface, 13.0)
+local nkctx: *NK_context = (@*NK_context)(nksdlctx)
+
+local op: cint = 0
+local property: cint = 20
+
+while true do
+  nk_input_begin(nkctx)
+  local event: SDL_Event
+  while SDL_PollEvent(&event) ~= 0 do
+    switch event.type
+    case SDL_QUIT then
+      return 0
+    case SDL_KEYDOWN then
+      nk_input_key(nkctx, translate_sdl_key(&event.key.keysym), 1)
+    case SDL_KEYUP then
+      nk_input_key(nkctx, translate_sdl_key(&event.key.keysym), 0)
+    case SDL_MOUSEMOTION then
+      nk_input_motion(nkctx, event.motion.x, event.motion.y)
+    case SDL_MOUSEBUTTONDOWN then
+      nk_input_button(nkctx, sdl_button_to_nk(event.button.button), event.button.x, event.button.y,1)
+    case SDL_MOUSEBUTTONUP then
+      nk_input_button(nkctx, sdl_button_to_nk(event.button.button), event.button.x, event.button.y,0)
+    case SDL_MOUSEWHEEL then
+      vec.x = event.wheel.x
+      vec.y = event.wheel.y
+      nk_input_scroll(nkctx, vec)
+    end
+  end
+  nk_input_end(nkctx)
+
+  if nk_begin(nkctx, "Test", bounds, NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE | NK_WINDOW_TITLE) ~= 0 then
+    nk_layout_row_static(nkctx, 30, 80, 1)
+    if nk_button_label(nkctx, "button") ~= 0 then
+      io.printf("button pressed\n")
+    end
+    nk_layout_row_dynamic(nkctx, 40, 2)
+    if nk_option_label(nkctx, "easy", op == 0 and 1 or 0) ~= 0 then op = 0 end
+    if nk_option_label(nkctx, "hard", op == 1 and 1 or 0) ~= 0 then op = 1 end
+    nk_layout_row_dynamic(nkctx, 45, 1)
+    nk_property_int(nkctx, "Compression:", 0, &property, 100, 10, 1)
+  end
+  nk_end(nkctx)
+  nk_sdlsurface_render(nksdlctx, clear, 1)
+
+  local tex: *SDL_Texture = SDL_CreateTextureFromSurface(renderer, surface)
+  SDL_RenderCopy(renderer, tex, nilptr, nilptr)
+  SDL_RenderPresent(renderer)
+  SDL_DestroyTexture(tex)
+end
+
+nk_sdlsurface_shutdown(nksdlctx)
+
+SDL_FreeSurface(surface)
+SDL_DestroyRenderer(renderer)
+SDL_DestroyWindow(window)
