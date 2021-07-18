@@ -10,7 +10,7 @@ nldecl.prepend_code = [=[
 cinclude '<chipmunk/chipmunk.h>'
 linklib 'chipmunk'
 if ccinfo.is_linux then
-  linklib 'pthread'
+  cflags '-pthread'
 end
 ]]
 ]=]

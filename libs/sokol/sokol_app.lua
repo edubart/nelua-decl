@@ -27,6 +27,7 @@ if ccinfo.is_linux then
   linklib 'Xi'
   linklib 'Xcursor'
   linklib 'dl'
+  cflags '-pthread'
 elseif ccinfo.is_windows then
   linklib 'kernel32'
   linklib 'user32'

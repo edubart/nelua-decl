@@ -50,7 +50,7 @@ end
 cinclude 'miniaudio.h'
 if ccinfo.is_linux then
   linklib 'dl'
-  linklib 'pthread'
+  cflags '-pthread'
 elseif ccinfo.is_windows then
   linklib 'ole32'
 end

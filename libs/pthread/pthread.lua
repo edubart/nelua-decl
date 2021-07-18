@@ -9,5 +9,5 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ## cinclude '<pthread.h>'
-## linklib 'pthread'
+## cflags '-pthread'
 ]=]

@@ -1,5 +1,5 @@
 ## cinclude '<pthread.h>'
-## linklib 'pthread'
+## cflags '-pthread'
 global timespec: type <cimport, nodecl, ctypedef> = @record{
   tv_sec: clong,
   tv_nsec: clong

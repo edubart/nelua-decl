@@ -25,7 +25,7 @@ else
 end
 cinclude 'c89thread.h'
 if ccinfo.is_linux then
-  linklib 'pthread'
+  cflags '-pthread'
 end
 ]]
 ]=]

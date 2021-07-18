@@ -20,7 +20,7 @@ if ccinfo.is_windows then
   linklib 'ole32'
 elseif ccinfo.is_linux then
   linklib 'asound'
-  linklib 'pthread'
+  cflags '-pthread'
 end
 ]]
 ]=]

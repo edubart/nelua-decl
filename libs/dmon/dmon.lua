@@ -17,7 +17,7 @@ else
 end
 cinclude 'dmon.h'
 if ccinfo.is_linux then
-  linklib 'pthread'
+  cflags '-pthread'
 end
 ]]
 ]=]

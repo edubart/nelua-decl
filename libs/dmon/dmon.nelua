@@ -9,7 +9,7 @@ else
 end
 cinclude 'dmon.h'
 if ccinfo.is_linux then
-  linklib 'pthread'
+  cflags '-pthread'
 end
 ]]
 global dmon_watch_id: type <cimport, nodecl> = @record{
