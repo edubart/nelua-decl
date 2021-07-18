@@ -6,7 +6,7 @@ local function fn(c: *mg_connection, ev: cint, ev_data: pointer, fn_data: pointe
   local done: *boolean = (@*boolean)(fn_data)
   switch ev
   case MG_EV_CONNECT then
-    local host: mg_string = mg_url_host(s_url)
+    local host: mg_str = mg_url_host(s_url)
     if mg_url_is_ssl(s_url) == 1 then
       local opts: mg_tls_opts = {ca = "ca.pem", srvname = host}
       mg_tls_init(c, &opts)

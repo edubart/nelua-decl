@@ -16,11 +16,10 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
+cinclude 'mpc.h'
 if MPC_LINKLIB then
-  cfile 'mpc.h'
   linklib(MPC_LINKLIB)
 else
-  cinclude 'mpc.h'
   cinclude 'mpc.c'
 end
 ]]
