@@ -86,7 +86,7 @@ nldecl.include_macros = {
 nldecl.prepend_code = [=[
 ##[[
 cdefine 'SDL_MAIN_HANDLED'
-if ccinfo.is_tcc then
+if not ccinfo.is_gcc then
   cdefine 'SDL_DISABLE_IMMINTRIN_H'
 end
 cinclude '<SDL2/SDL.h>'

@@ -7,7 +7,7 @@ else
   cdefine 'STB_IMAGE_STATIC'
   cdefine 'STB_IMAGE_IMPLEMENTATION'
 end
-if ccinfo.is_tcc then
+if not ccinfo.is_gcc then
   cdefine 'STBI_NO_SIMD'
 end
 cinclude 'stb_image.h'

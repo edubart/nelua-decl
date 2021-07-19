@@ -36,6 +36,8 @@ nldecl.prepend_code = [=[
 ##[[
 cinclude '<uv.h>'
 linklib 'uv'
-cflags '-fno-strict-aliasing'
+if ccinfo.is_gcc then
+  cflags '-fno-strict-aliasing'
+end
 ]]
 ]=]
