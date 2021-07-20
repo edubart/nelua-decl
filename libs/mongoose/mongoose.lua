@@ -2,6 +2,7 @@ local nldecl = require 'nldecl'
 
 nldecl.include_names = {
   '^MG_',
+  '^WEBSOCKET_',
   '^mg_',
   FILE = true,
   timeval = true,
@@ -11,6 +12,7 @@ nldecl.include_names = {
 nldecl.include_macros = {
   cint = {
     '^MG_',
+    '^WEBSOCKET_',
   },
   cstring = {
     MG_VERSION = true,

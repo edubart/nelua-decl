@@ -1,0 +1,141 @@
+require 'mongoose'
+require 'coroutine'
+require 'string'
+
+local mgr: mg_mgr
+local running: boolean
+
+-- Converts a Nelua string to a Mongoose string, reusing the string reference.
+local function string2mgstr(s: string): mg_str
+  return mg_str_n(s, #s)
+end
+
+-- Converts a Mongoose string to a Nelua string, allocating new space.
+local function mgstr2string(s: mg_str): string
+  return string.copy((@string){data=s.ptr, size=s.len})
+end
+
+-- Web socket connection record.
+local WSConn = @record{
+  mgconn: *mg_connection, -- Mongoose connection.
+  co: coroutine, -- Coroutine for the connection (also know as a "green thread").
+  url: string, -- WebSocket URL of the connection.
+}
+
+-- Polls connection events.
+local function wsconn_poll(mgconn: *mg_connection, ev: cint, ev_data: pointer, fn_data: pointer)
+  local conn = (@*WSConn)(fn_data)
+  switch ev
+  case MG_EV_CONNECT then -- Connected, setup TLS if needed.
+    local host: mg_str = mg_url_host(conn.url)
+    if mg_url_is_ssl(conn.url) == 1 then
+      local opts: mg_tls_opts = {ca = "ca.pem", srvname = host}
+      mg_tls_init(mgconn, &opts)
+    end
+  case MG_EV_WS_OPEN then -- Web socket handshake completed.
+    coroutine.resume(conn.co, true, '')
+  case MG_EV_WS_MSG then -- Read data from web socket.
+    local wsmsg: *mg_ws_message = (@*mg_ws_message)(ev_data)
+    local msg: string = mgstr2string(wsmsg.data)
+    coroutine.resume(conn.co, true, msg)
+  case MG_EV_CLOSE then -- Connection closed.
+    coroutine.resume(conn.co, false, 'closed')
+  case MG_EV_ERROR then -- Connection error.
+    local error_message: string = tostring((@cstring)(ev_data))
+    coroutine.resume(conn.co, false, error_message)
+  end
+end
+
+--[[
+Connects to a WebSocket URL, it yields the running coroutine.
+The coroutine will be resumed as soon the connection is completed, closed or gets an error.
+]]
+function WSConn.connect_async(url: string): (*WSConn, string)
+  local co = coroutine.running()
+  local conn: *WSConn = new(WSConn{co=co, url=url})
+  conn.mgconn = mg_ws_connect(&mgr, url, wsconn_poll, conn, nilptr)
+  if not conn.mgconn then return nilptr, 'mg_ws_connect failed' end
+  coroutine.yield()
+  local ok: boolean, err: string
+  coroutine.pop(co, &ok, &err)
+  if not ok then return nilptr, err end
+  return conn, err
+end
+
+--[[
+Reads data from a WebSocket, it yields the running coroutine.
+The coroutine will be resumed as soon a message is read,
+or the connection is closed or gets an error.
+]]
+function WSConn:read_async(conn: *WSConn): (boolean, string)
+  coroutine.yield()
+  local ok: boolean, errormsg: string
+  coroutine.pop(coroutine.running(), &ok, &errormsg)
+  return ok, errormsg
+end
+
+--[[
+Sends data to the WebSocket, returns immediately.
+The operation may fail if the output buffer is full.
+]]
+function WSConn:send(conn: *WSConn, msg: string): (boolean, string)
+  local len = mg_ws_send(conn.mgconn, msg, #msg, WEBSOCKET_OP_TEXT)
+  if len < #msg then return false, 'unable to send all bytes' end
+  return true, ''
+end
+
+-- Marks a connection be closed, returns immediately.
+function WSConn:close()
+  self.mgconn.is_closing = 1
+end
+
+-- Sends a message and read a message from a web socket.
+local function echo_request(url: string, msg: string)
+  --[[
+  Spawns a new coroutine to handle network events asynchronously,
+  the coroutine is a "gree thread" for the connection.
+  ]]
+  coroutine.spawn(function(url: string, msg: string)
+    -- Connect
+    local conn: *WSConn, ok: boolean, err: string
+    conn, err = WSConn.connect_async(url)
+    assert(conn, err)
+    print('Connected!')
+    -- Send message
+    ok, err = conn:send(conn, msg)
+    assert(ok, err)
+    print('Message sent:', msg)
+    -- Read message
+    ok, err = conn:read_async(conn)
+    assert(ok, err)
+    print('Got message:', err)
+    running = false
+  end, url, msg)
+end
+
+-- Initialize Mongoose.
+local function setup()
+  print 'Initializing...'
+  mg_log_set('0')
+  mg_mgr_init(&mgr)
+  running = true
+end
+
+-- Shutdown Mongoose.
+local function shutdown()
+  print 'Shutting down...'
+  mg_mgr_free(&mgr)
+end
+
+-- Poll Mongoose network events.
+local function run()
+  print 'Running...'
+  while running do
+    mg_mgr_poll(&mgr, 1000)
+  end
+end
+
+setup()
+echo_request("wss://echo.websocket.org", "hello world")
+run()
+shutdown()

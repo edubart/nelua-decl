@@ -353,3 +353,11 @@ global MG_PATH_MAX: cint <cimport, nodecl, const>
 global MG_NULL_STR: cint <cimport, nodecl, const>
 global MG_TIMER_REPEAT: cint <comptime> = 1
 global MG_TIMER_RUN_NOW: cint <comptime> = 2
+global WEBSOCKET_OP_CONTINUE: cint <comptime> = 0
+global WEBSOCKET_OP_TEXT: cint <comptime> = 1
+global WEBSOCKET_OP_BINARY: cint <comptime> = 2
+global WEBSOCKET_OP_CLOSE: cint <comptime> = 8
+global WEBSOCKET_OP_PING: cint <comptime> = 9
+global WEBSOCKET_OP_PONG: cint <comptime> = 10
+global WEBSOCKET_FLAGS_MASK_FIN: cint <comptime> = 128
+global WEBSOCKET_FLAGS_MASK_OP: cint <comptime> = 15
