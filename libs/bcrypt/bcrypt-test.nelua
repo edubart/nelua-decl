@@ -1,0 +1,26 @@
+require("libcrypt.bcrypt")
+require("string")
+local salt: [256]cchar
+local hash: [256]cchar
+local passwd = "T3stP4ssw0rd"
+print("Generating salt")
+local stat = bcrypt_gensalt(12, &salt) 
+if stat ~= 0 then
+    panic("Error generating salt")
+end
+print("Hashing password")
+local stat = bcrypt_hashpw(passwd, &salt, &hash)
+if stat ~= 0 then
+    panic("Error hashing password")
+end
+print("HASHED PASSWORD: "..tostring(&hash[0]))
+print("VERIFYING PASSWORD AGAINST HASH")
+local stat = bcrypt_checkpw(passwd, &hash)
+switch stat
+case 0 then
+    print("VERIF OK")
+case -1 then
+    panic("ERROR WHILE VERIFYING PASSWORD AGAINST HASH")
+case 1 then
+    print("VERIF NOT OK")
+end
