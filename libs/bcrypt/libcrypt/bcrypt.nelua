@@ -1,0 +1,10 @@
+##[[
+cinclude "bcrypt.h"
+cfile "bcrypt.c"
+cfile "crypt_blowfish/crypt_gensalt.c"
+cfile "crypt_blowfish/wrapper.c"
+cfile "crypt_blowfish/crypt_blowfish.c"
+]]
+global function bcrypt_gensalt(workfactor: cint, salt: cstring): cint <cimport, nodecl> end
+global function bcrypt_hashpw(passwd: cstring, salt: cstring, hash: cstring): cint <cimport, nodecl> end
+global function bcrypt_checkpw(passwd: cstring, hash: cstring): cint <cimport, nodecl> end
