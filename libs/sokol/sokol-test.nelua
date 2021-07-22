@@ -21,10 +21,8 @@ local function init()
     context = sapp_sgcontext()
   }
   sg_setup(&sgdesc)
-  state.pass_action = {
-    colors = {
-      {action=SG_ACTION_CLEAR, value={1.0, 0.0, 0.0, 1.0}}
-    }
+  state.pass_action.colors[0] = {
+    action=SG_ACTION_CLEAR, value={1.0, 0.0, 0.0, 1.0}
   }
 
   -- setup audio

@@ -24,6 +24,8 @@ end
 cinclude 'znet.h'
 if ccinfo.is_windows then
   linklib 'ws2_32'
+elseif ccinfo.is_linux then
+  cflags '-pthread'
 end
 ]]
 ]=]
