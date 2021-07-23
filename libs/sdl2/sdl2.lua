@@ -89,6 +89,9 @@ cdefine 'SDL_MAIN_HANDLED'
 if not ccinfo.is_gcc then
   cdefine 'SDL_DISABLE_IMMINTRIN_H'
 end
+if ccinfo.is_emscripten then
+  cflags '-s USE_SDL=2'
+end
 cinclude '<SDL2/SDL.h>'
 linklib 'SDL2'
 ]]

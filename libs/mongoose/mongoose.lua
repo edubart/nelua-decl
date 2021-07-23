@@ -31,5 +31,8 @@ else
   linklib 'ssl'
   linklib 'crypto'
 end
+if ccinfo.is_windows then
+  linklib 'ws2_32'
+end
 ]]
 ]=]
