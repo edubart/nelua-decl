@@ -1,0 +1,23 @@
+require 'mbedtls'
+require 'span'
+require 'stringbuilder'
+
+local function hexify(buf: span(byte)): string
+  local sb: stringbuilder
+  for i=0,<#buf do
+    sb:writef('%02x', buf[i])
+  end
+  return sb:promote()
+end
+
+local function sha256(s: string): string
+  local buf: [32]byte
+  mbedtls_sha256(s, #s, &buf[0], 0)
+  return hexify(&buf)
+end
+
+do -- SHA256
+  assert(sha256('hello world') == 'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9')
+end
+
+print 'mbedtls OK!'

@@ -1,0 +1,24 @@
+##[[
+cinclude '<mbedtls/sha256.h>'
+linklib 'mbedcrypto'
+]]
+global mbedtls_sha256_context: type <cimport, nodecl> = @record{
+  total: [2]uint32,
+  state: [8]uint32,
+  buffer: [64]cuchar,
+  is224: cint
+}
+global function mbedtls_sha256_init(ctx: *mbedtls_sha256_context) <cimport, nodecl> end
+global function mbedtls_sha256_free(ctx: *mbedtls_sha256_context) <cimport, nodecl> end
+global function mbedtls_sha256_clone(dst: *mbedtls_sha256_context, src: *mbedtls_sha256_context) <cimport, nodecl> end
+global function mbedtls_sha256_starts_ret(ctx: *mbedtls_sha256_context, is224: cint): cint <cimport, nodecl> end
+global function mbedtls_sha256_update_ret(ctx: *mbedtls_sha256_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
+global function mbedtls_sha256_finish_ret(ctx: *mbedtls_sha256_context, output: *cuchar): cint <cimport, nodecl> end
+global function mbedtls_internal_sha256_process(ctx: *mbedtls_sha256_context, data: *cuchar): cint <cimport, nodecl> end
+global function mbedtls_sha256_starts(ctx: *mbedtls_sha256_context, is224: cint) <cimport, nodecl> end
+global function mbedtls_sha256_update(ctx: *mbedtls_sha256_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
+global function mbedtls_sha256_finish(ctx: *mbedtls_sha256_context, output: *cuchar) <cimport, nodecl> end
+global function mbedtls_sha256_process(ctx: *mbedtls_sha256_context, data: *cuchar) <cimport, nodecl> end
+global function mbedtls_sha256_ret(input: *cuchar, ilen: csize, output: *cuchar, is224: cint): cint <cimport, nodecl> end
+global function mbedtls_sha256(input: *cuchar, ilen: csize, output: *cuchar, is224: cint) <cimport, nodecl> end
+global function mbedtls_sha256_self_test(verbose: cint): cint <cimport, nodecl> end
