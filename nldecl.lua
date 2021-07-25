@@ -11,6 +11,7 @@ nldecl.force_include_names = {}
 nldecl.typedefs_names = {}
 nldecl.exclude_names = {}
 nldecl.include_macros = {}
+nldecl.incomplete_names = {}
 nldecl.opaque_names = {}
 
 nldecl.predeclared_names = {}
@@ -167,8 +168,11 @@ local function visit_fields(node)
     if fieldtypename and
       (fieldtype:code() == 'record_type' or fieldtype:code() == 'union_type') and
       not gccutils.is_primitive_name(fieldtypename) and
-      not nldecl.is_name_included(fieldtypename) then
+      not nldecl.is_name_included(fieldtypename) and
+      not nldecl.allow_incomplete_types then
       -- ignore
+      nldecl.incomplete_types[node] = true
+    elseif fieldtypename and nldecl.incomplete_names[fieldtypename] then
       nldecl.incomplete_types[node] = true
     else
       local annotations = {}
@@ -523,7 +527,21 @@ local function process_macros()
       for nltype,patts in pairs(nldecl.include_macros) do
         for patt,forcevalue in pairs(patts) do
           local ispatt = type(patt) == 'string' and not not patt:match('^%^')
-          if (name == patt or (ispatt and name:match(patt))) and nldecl.can_decl(name) then
+          if not ispatt and name == patt and nldecl.can_decl(name) then
+            foundnltype = nltype
+            if forcevalue == false then
+              value = nil
+            elseif forcevalue ~= true then
+              value = tostring(forcevalue)
+            end
+            goto just_found
+          end
+        end
+      end
+      for nltype,patts in pairs(nldecl.include_macros) do
+        for patt,forcevalue in pairs(patts) do
+          local ispatt = type(patt) == 'string' and not not patt:match('^%^')
+          if ispatt and name:match(patt) and nldecl.can_decl(name) then
             foundnltype = nltype
             if forcevalue == false then
               value = nil

@@ -74,6 +74,8 @@ and multi-protocol networking library)
     - [sqlite3.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sqlite3/sqlite3.nelua) (SQLite3 database)
 * [nuklear](https://github.com/Immediate-Mode-UI/Nuklear)
     - [nuklear.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/nuklear/nuklear.nelua) (Immediate UI library)
+* [mbedtls](https://github.com/ARMmbed/mbedtls)
+    - [nuklear.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/mbedtls/mbedtls.nelua) (Cryptographic library)
 
 Plus the following platform specific libraries:
 * dl
