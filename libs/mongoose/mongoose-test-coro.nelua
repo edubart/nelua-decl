@@ -1,3 +1,5 @@
+## MONGOOSE_OPENSSL = true
+
 require 'mongoose'
 require 'coroutine'
 require 'string'

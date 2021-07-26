@@ -1,13 +1,22 @@
 ##[[
+if not ccinfo.is_emscripten then
+end
+if MONGOOSE_MBEDTLS then
+  cdefine 'MG_ENABLE_MBEDTLS 1'
+  linklib 'mbedtls'
+  linklib 'mbedcrypto'
+  linklib 'mbedx509'
+elseif MONGOOSE_OPENSSL then
+  cdefine 'MG_ENABLE_OPENSSL 1'
+  linklib 'ssl'
+  linklib 'crypto'
+end
 if MONGOOSE_LINKLIB then
   cinclude 'mongoose.h'
   linklib(MONGOOSE_LINKLIB)
 else
-  cdefine 'MG_ENABLE_OPENSSL 1'
   cinclude 'mongoose.h'
   cinclude 'mongoose.c'
-  linklib 'ssl'
-  linklib 'crypto'
 end
 if ccinfo.is_windows then
   linklib 'ws2_32'

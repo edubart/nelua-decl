@@ -1,3 +1,4 @@
+## MONGOOSE_OPENSSL = true
 require 'mongoose'
 
 local s_url: cstring = "https://duckduckgo.com/"
