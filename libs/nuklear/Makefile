@@ -13,7 +13,6 @@ generate:
 
 download:
 	wget -O nuklear.h https://raw.githubusercontent.com/Immediate-Mode-UI/Nuklear/master/nuklear.h
-	wget -O nuklear-sdl2surface_rawfb.h https://raw.githubusercontent.com/Immediate-Mode-UI/Nuklear/master/demo/sdl2surface_rawfb/sdl2surface_rawfb.h
 
 test:
 	$(NELUA) $(TFILE)

@@ -12,8 +12,8 @@ Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
 Good morning Dr. Chandra. This is Hal. I am ready for my first lesson.
 ]]
 
-local uncomplen = str.size
-local complen = mz_compressBound(uncomplen)
+local uncomplen: culong = str.size
+local complen: culong = mz_compressBound(uncomplen)
 local comp = (@*byte)(default_allocator:xalloc(complen))
 local uncomp = (@*byte)(default_allocator:xalloc(uncomplen))
 
