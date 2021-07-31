@@ -59,7 +59,6 @@ global function mg_timer_init(a1: *mg_timer, ms: culong, a3: cuint, fn: function
 global function mg_timer_free(a1: *mg_timer) <cimport, nodecl> end
 global function mg_timer_poll(uptime_ms: culong) <cimport, nodecl> end
 global function mg_file_read(path: cstring, size: *csize): cstring <cimport, nodecl> end
-global function mg_file_size(path: cstring): int64 <cimport, nodecl> end
 global function mg_file_write(path: cstring, buf: pointer, len: csize): boolean <cimport, nodecl> end
 global function mg_file_printf(path: cstring, fmt: cstring, ...: cvarargs): boolean <cimport, nodecl> end
 global function mg_random(buf: pointer, len: csize) <cimport, nodecl> end
@@ -78,22 +77,26 @@ global function mg_to64(str: mg_str): int64 <cimport, nodecl> end
 global function mg_time(): float64 <cimport, nodecl> end
 global function mg_millis(): culong <cimport, nodecl> end
 global function mg_usleep(usecs: culong) <cimport, nodecl> end
-global mg_stat_t: type <cimport, nodecl, cincomplete> = @record{
-  st_dev: culong,
-  st_ino: culong,
-  st_nlink: culong,
-  st_mode: cuint,
-  st_uid: cuint,
-  st_gid: cuint,
-  __pad0: cint,
-  st_rdev: culong,
-  st_size: clong,
-  st_blksize: clong,
-  st_blocks: clong,
-  __glibc_reserved: [3]clong
+global MG_FS_READ: cint <comptime> = 1
+global MG_FS_WRITE: cint <comptime> = 2
+global MG_FS_DIR: cint <comptime> = 4
+global mg_fd: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global mg_fs: type <cimport, nodecl, ctypedef> = @record{
+  realpath: function(cstring, cstring): cstring,
+  stat: function(cstring, *csize, *clong): cint,
+  list: function(cstring, function(cstring, pointer), pointer),
+  open: function(cstring, cint): *mg_fd,
+  close: function(*mg_fd),
+  read: function(pointer, pointer, csize): csize,
+  write: function(pointer, pointer, csize): csize,
+  seek: function(pointer, csize): csize
 }
-global function mg_stat(path: cstring, a2: *mg_stat_t): cint <cimport, nodecl> end
-global function mg_fopen(fp: cstring, mode: cstring): *FILE <cimport, nodecl> end
+mg_fd = @record{
+  fd: pointer,
+  fs: *mg_fs
+}
+global mg_fs_posix: mg_fs <cimport, nodecl>
+global mg_fs_packed: mg_fs <cimport, nodecl>
 global function mg_url_port(url: cstring): cushort <cimport, nodecl> end
 global function mg_url_is_ssl(url: cstring): cint <cimport, nodecl> end
 global function mg_url_host(url: cstring): mg_str <cimport, nodecl> end
@@ -230,7 +233,9 @@ global mg_http_message: type <cimport, nodecl, ctypedef> = @record{
 global mg_http_serve_opts: type <cimport, nodecl, ctypedef> = @record{
   root_dir: cstring,
   ssi_pattern: cstring,
-  extra_headers: cstring
+  extra_headers: cstring,
+  mime_types: cstring,
+  fs: *mg_fs
 }
 global mg_http_part: type <cimport, nodecl, ctypedef> = @record{
   name: mg_str,
@@ -244,11 +249,10 @@ global function mg_http_write_chunk(c: *mg_connection, buf: cstring, len: csize)
 global function mg_http_delete_chunk(c: *mg_connection, hm: *mg_http_message) <cimport, nodecl> end
 global function mg_http_listen(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
 global function mg_http_connect(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
-global function mg_http_serve_dir(a1: *mg_connection, hm: *mg_http_message, a3: *mg_http_serve_opts) <cimport, nodecl> end
-global function mg_http_serve_file(a1: *mg_connection, a2: *mg_http_message, a3: cstring, mime: cstring, headers: cstring) <cimport, nodecl> end
+global function mg_http_serve_dir(a1: *mg_connection, hm: *mg_http_message, opts: *mg_http_serve_opts) <cimport, nodecl> end
+global function mg_http_serve_file(a1: *mg_connection, hm: *mg_http_message, path: cstring, opts: *mg_http_serve_opts) <cimport, nodecl> end
 global function mg_http_reply(a1: *mg_connection, status_code: cint, headers: cstring, body_fmt: cstring, ...: cvarargs) <cimport, nodecl> end
 global function mg_http_get_header(a1: *mg_http_message, name: cstring): *mg_str <cimport, nodecl> end
-global function mg_http_event_handler(c: *mg_connection, ev: cint) <cimport, nodecl> end
 global function mg_http_get_var(a1: *mg_str, name: cstring, a3: cstring, a4: csize): cint <cimport, nodecl> end
 global function mg_url_decode(s: cstring, n: csize, to: cstring, to_len: csize, form: cint): cint <cimport, nodecl> end
 global function mg_url_encode(s: cstring, n: csize, buf: cstring, len: csize): csize <cimport, nodecl> end
@@ -335,7 +339,23 @@ global function mg_resolve_cancel(a1: *mg_connection) <cimport, nodecl> end
 global function mg_dns_parse(buf: *uint8, len: csize, a3: *mg_dns_message): boolean <cimport, nodecl> end
 global function mg_dns_parse_rr(buf: *uint8, len: csize, ofs: csize, is_question: boolean, a5: *mg_dns_rr): csize <cimport, nodecl> end
 global function mg_dns_decode_name(a1: *uint8, a2: csize, a3: csize, a4: cstring, a5: csize): csize <cimport, nodecl> end
-global MG_VERSION: cstring <comptime> = "7.3"
+global MG_VERSION: cstring <comptime> = "7.4"
+global MG_ENABLE_SOCKET: cint <comptime> = 1
+global MG_ENABLE_MBEDTLS: cint <comptime> = 0
+global MG_ENABLE_OPENSSL: cint <comptime> = 0
+global MG_ENABLE_SSI: cint <comptime> = 1
+global MG_ENABLE_IPV6: cint <comptime> = 0
+global MG_ENABLE_LOG: cint <comptime> = 1
+global MG_ENABLE_MD5: cint <comptime> = 0
+global MG_ENABLE_WINSOCK: cint <comptime> = 1
+global MG_ENABLE_DIRLIST: cint <comptime> = 0
+global MG_ENABLE_SOCKETPAIR: cint <comptime> = 0
+global MG_ENABLE_CUSTOM_RANDOM: cint <comptime> = 0
+global MG_ENABLE_PACKED_FS: cint <comptime> = 0
+global MG_IO_SIZE: cint <comptime> = 2048
+global MG_MAX_RECV_BUF_SIZE: cint <cimport, nodecl, const>
+global MG_MAX_HTTP_HEADERS: cint <comptime> = 40
+global MG_PATH_MAX: cint <cimport, nodecl, const>
 global MG_ARCH_CUSTOM: cint <comptime> = 0
 global MG_ARCH_UNIX: cint <comptime> = 1
 global MG_ARCH_WIN32: cint <comptime> = 2
@@ -345,23 +365,8 @@ global MG_ARCH_FREERTOS_TCP: cint <comptime> = 5
 global MG_ARCH_FREERTOS_LWIP: cint <comptime> = 6
 global MG_ARCH: cint <comptime> = MG_ARCH_UNIX
 global MG_DIRSEP: cint <cimport, nodecl, const>
-global MG_ENABLE_POSIX: cint <comptime> = 1
 global MG_INT64_FMT: cint <cimport, nodecl, const>
-global MG_ENABLE_SOCKET: cint <comptime> = 1
-global MG_ENABLE_MBEDTLS: cint <comptime> = 0
-global MG_ENABLE_OPENSSL: cint <comptime> = 0
-global MG_ENABLE_FS: cint <comptime> = 1
-global MG_ENABLE_SSI: cint <comptime> = 0
-global MG_ENABLE_IPV6: cint <comptime> = 0
-global MG_ENABLE_LOG: cint <comptime> = 1
-global MG_ENABLE_MD5: cint <comptime> = 0
-global MG_ENABLE_WINSOCK: cint <comptime> = 1
-global MG_ENABLE_DIRECTORY_LISTING: cint <comptime> = 0
-global MG_ENABLE_SOCKETPAIR: cint <comptime> = 0
-global MG_IO_SIZE: cint <comptime> = 512
-global MG_MAX_RECV_BUF_SIZE: cint <cimport, nodecl, const>
-global MG_MAX_HTTP_HEADERS: cint <comptime> = 40
-global MG_PATH_MAX: cint <cimport, nodecl, const>
+global MG_ENABLE_DIRLIST: cint <comptime> = 1
 global MG_NULL_STR: cint <cimport, nodecl, const>
 global MG_TIMER_REPEAT: cint <comptime> = 1
 global MG_TIMER_RUN_NOW: cint <comptime> = 2

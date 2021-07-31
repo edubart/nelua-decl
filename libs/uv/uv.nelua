@@ -125,6 +125,7 @@ global uv_errno_t: type <cimport, nodecl, using> = @enum(cint){
   UV_ENOTEMPTY = -39,
   UV_ENOTSOCK = -88,
   UV_ENOTSUP = -95,
+  UV_EOVERFLOW = -75,
   UV_EPERM = -1,
   UV_EPIPE = -32,
   UV_EPROTO = -71,
@@ -147,6 +148,7 @@ global uv_errno_t: type <cimport, nodecl, using> = @enum(cint){
   UV_ENOTTY = -25,
   UV_EFTYPE = -4028,
   UV_EILSEQ = -84,
+  UV_ESOCKTNOSUPPORT = -94,
   UV_ERRNO_MAX = -4096
 }
 global uv_handle_type: type <cimport, nodecl, using> = @enum(cint){
@@ -424,6 +426,7 @@ global function uv_read_stop(a1: *uv_stream_t): cint <cimport, nodecl> end
 global function uv_write(req: *uv_write_t, handle: *uv_stream_t, bufs: *uv_buf_t, nbufs: cuint, cb: uv_write_cb): cint <cimport, nodecl> end
 global function uv_write2(req: *uv_write_t, handle: *uv_stream_t, bufs: *uv_buf_t, nbufs: cuint, send_handle: *uv_stream_t, cb: uv_write_cb): cint <cimport, nodecl> end
 global function uv_try_write(handle: *uv_stream_t, bufs: *uv_buf_t, nbufs: cuint): cint <cimport, nodecl> end
+global function uv_try_write2(handle: *uv_stream_t, bufs: *uv_buf_t, nbufs: cuint, send_handle: *uv_stream_t): cint <cimport, nodecl> end
 uv_write_s = @record{
   data: pointer,
   type: uv_req_type,
@@ -495,6 +498,7 @@ global uv_udp_flags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   UV_UDP_REUSEADDR = 4,
   UV_UDP_MMSG_CHUNK = 8,
   UV_UDP_MMSG_FREE = 16,
+  UV_UDP_LINUX_RECVERR = 32,
   UV_UDP_RECVMMSG = 256
 }
 global uv_udp_send_cb: type <cimport, nodecl> = @function(*uv_udp_send_t, cint)
