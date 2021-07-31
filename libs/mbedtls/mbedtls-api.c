@@ -1,3 +1,4 @@
+#define MBEDTLS_DEPRECATED_REMOVED
 #include <mbedtls/aes.h>
 #include <mbedtls/aesni.h>
 #include <mbedtls/arc4.h>
@@ -35,7 +36,6 @@
 #include <mbedtls/md4.h>
 #include <mbedtls/md5.h>
 #include <mbedtls/md.h>
-#include <mbedtls/net.h>
 #include <mbedtls/net_sockets.h>
 #include <mbedtls/nist_kw.h>
 #include <mbedtls/oid.h>

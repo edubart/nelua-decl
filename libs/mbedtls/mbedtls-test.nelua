@@ -13,7 +13,7 @@ end
 
 local function sha256(s: string): string
   local buf: [32]byte
-  mbedtls_sha256(s, #s, &buf, 0)
+  mbedtls_sha256_ret(s, #s, &buf, 0)
   return hexify(&buf)
 end
 

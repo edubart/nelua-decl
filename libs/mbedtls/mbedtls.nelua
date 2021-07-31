@@ -36,7 +36,6 @@ cinclude '<mbedtls/md2.h>'
 cinclude '<mbedtls/md4.h>'
 cinclude '<mbedtls/md5.h>'
 cinclude '<mbedtls/md.h>'
-cinclude '<mbedtls/net.h>'
 cinclude '<mbedtls/net_sockets.h>'
 cinclude '<mbedtls/nist_kw.h>'
 cinclude '<mbedtls/oid.h>'
@@ -99,8 +98,6 @@ global function mbedtls_aes_crypt_ofb(ctx: *mbedtls_aes_context, length: csize, 
 global function mbedtls_aes_crypt_ctr(ctx: *mbedtls_aes_context, length: csize, nc_off: *csize, nonce_counter: *cuchar, stream_block: *cuchar, input: *cuchar, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_aes_encrypt(ctx: *mbedtls_aes_context, input: *cuchar, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_aes_decrypt(ctx: *mbedtls_aes_context, input: *cuchar, output: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_aes_encrypt(ctx: *mbedtls_aes_context, input: *cuchar, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_aes_decrypt(ctx: *mbedtls_aes_context, input: *cuchar, output: *cuchar) <cimport, nodecl> end
 global function mbedtls_aes_self_test(verbose: cint): cint <cimport, nodecl> end
 global function mbedtls_aesni_has_support(what: cuint): cint <cimport, nodecl> end
 global function mbedtls_aesni_crypt_ecb(ctx: *mbedtls_aes_context, mode: cint, input: *cuchar, output: *cuchar): cint <cimport, nodecl> end
@@ -196,7 +193,6 @@ global function mbedtls_mpi_fill_random(X: *mbedtls_mpi, size: csize, f_rng: fun
 global function mbedtls_mpi_random(X: *mbedtls_mpi, min: clong, N: *mbedtls_mpi, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport, nodecl> end
 global function mbedtls_mpi_gcd(G: *mbedtls_mpi, A: *mbedtls_mpi, B: *mbedtls_mpi): cint <cimport, nodecl> end
 global function mbedtls_mpi_inv_mod(X: *mbedtls_mpi, A: *mbedtls_mpi, N: *mbedtls_mpi): cint <cimport, nodecl> end
-global function mbedtls_mpi_is_prime(X: *mbedtls_mpi, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport, nodecl> end
 global function mbedtls_mpi_is_prime_ext(X: *mbedtls_mpi, rounds: cint, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport, nodecl> end
 global mbedtls_mpi_gen_prime_flag_t: type <cimport, nodecl, using> = @enum(cint){
   MBEDTLS_MPI_GEN_PRIME_FLAG_DH = 1,
@@ -460,8 +456,6 @@ global function mbedtls_cipher_finish(ctx: *mbedtls_cipher_context_t, output: *c
 global function mbedtls_cipher_write_tag(ctx: *mbedtls_cipher_context_t, tag: *cuchar, tag_len: csize): cint <cimport, nodecl> end
 global function mbedtls_cipher_check_tag(ctx: *mbedtls_cipher_context_t, tag: *cuchar, tag_len: csize): cint <cimport, nodecl> end
 global function mbedtls_cipher_crypt(ctx: *mbedtls_cipher_context_t, iv: *cuchar, iv_len: csize, input: *cuchar, ilen: csize, output: *cuchar, olen: *csize): cint <cimport, nodecl> end
-global function mbedtls_cipher_auth_encrypt(ctx: *mbedtls_cipher_context_t, iv: *cuchar, iv_len: csize, ad: *cuchar, ad_len: csize, input: *cuchar, ilen: csize, output: *cuchar, olen: *csize, tag: *cuchar, tag_len: csize): cint <cimport, nodecl> end
-global function mbedtls_cipher_auth_decrypt(ctx: *mbedtls_cipher_context_t, iv: *cuchar, iv_len: csize, ad: *cuchar, ad_len: csize, input: *cuchar, ilen: csize, output: *cuchar, olen: *csize, tag: *cuchar, tag_len: csize): cint <cimport, nodecl> end
 global function mbedtls_cipher_auth_encrypt_ext(ctx: *mbedtls_cipher_context_t, iv: *cuchar, iv_len: csize, ad: *cuchar, ad_len: csize, input: *cuchar, ilen: csize, output: *cuchar, output_len: csize, olen: *csize, tag_len: csize): cint <cimport, nodecl> end
 global function mbedtls_cipher_auth_decrypt_ext(ctx: *mbedtls_cipher_context_t, iv: *cuchar, iv_len: csize, ad: *cuchar, ad_len: csize, input: *cuchar, ilen: csize, output: *cuchar, output_len: csize, olen: *csize, tag_len: csize): cint <cimport, nodecl> end
 global mbedtls_ccm_context: type <cimport, nodecl> = @record{
@@ -706,7 +700,6 @@ global function mbedtls_ctr_drbg_reseed(ctx: *mbedtls_ctr_drbg_context, addition
 global function mbedtls_ctr_drbg_update_ret(ctx: *mbedtls_ctr_drbg_context, additional: *cuchar, add_len: csize): cint <cimport, nodecl> end
 global function mbedtls_ctr_drbg_random_with_add(p_rng: pointer, output: *cuchar, output_len: csize, additional: *cuchar, add_len: csize): cint <cimport, nodecl> end
 global function mbedtls_ctr_drbg_random(p_rng: pointer, output: *cuchar, output_len: csize): cint <cimport, nodecl> end
-global function mbedtls_ctr_drbg_update(ctx: *mbedtls_ctr_drbg_context, additional: *cuchar, add_len: csize) <cimport, nodecl> end
 global function mbedtls_ctr_drbg_write_seed_file(ctx: *mbedtls_ctr_drbg_context, path: cstring): cint <cimport, nodecl> end
 global function mbedtls_ctr_drbg_update_seed_file(ctx: *mbedtls_ctr_drbg_context, path: cstring): cint <cimport, nodecl> end
 global function mbedtls_ctr_drbg_self_test(verbose: cint): cint <cimport, nodecl> end
@@ -827,7 +820,6 @@ global function mbedtls_md_info_from_string(md_name: cstring): *mbedtls_md_info_
 global function mbedtls_md_info_from_type(md_type: mbedtls_md_type_t): *mbedtls_md_info_t <cimport, nodecl> end
 global function mbedtls_md_init(ctx: *mbedtls_md_context_t) <cimport, nodecl> end
 global function mbedtls_md_free(ctx: *mbedtls_md_context_t) <cimport, nodecl> end
-global function mbedtls_md_init_ctx(ctx: *mbedtls_md_context_t, md_info: *mbedtls_md_info_t): cint <cimport, nodecl> end
 global function mbedtls_md_setup(ctx: *mbedtls_md_context_t, md_info: *mbedtls_md_info_t, hmac: cint): cint <cimport, nodecl> end
 global function mbedtls_md_clone(dst: *mbedtls_md_context_t, src: *mbedtls_md_context_t): cint <cimport, nodecl> end
 global function mbedtls_md_get_size(md_info: *mbedtls_md_info_t): cuchar <cimport, nodecl> end
@@ -899,12 +891,10 @@ global function mbedtls_rsa_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_ecdsa_context: type = @mbedtls_ecp_keypair
 global function mbedtls_ecdsa_can_do(gid: mbedtls_ecp_group_id): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_sign(grp: *mbedtls_ecp_group, r: *mbedtls_mpi, s: *mbedtls_mpi, d: *mbedtls_mpi, buf: *cuchar, blen: csize, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport, nodecl> end
-global function mbedtls_ecdsa_sign_det(grp: *mbedtls_ecp_group, r: *mbedtls_mpi, s: *mbedtls_mpi, d: *mbedtls_mpi, buf: *cuchar, blen: csize, md_alg: mbedtls_md_type_t): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_sign_det_ext(grp: *mbedtls_ecp_group, r: *mbedtls_mpi, s: *mbedtls_mpi, d: *mbedtls_mpi, buf: *cuchar, blen: csize, md_alg: mbedtls_md_type_t, f_rng_blind: function(pointer, *cuchar, csize): cint, p_rng_blind: pointer): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_verify(grp: *mbedtls_ecp_group, buf: *cuchar, blen: csize, Q: *mbedtls_ecp_point, r: *mbedtls_mpi, s: *mbedtls_mpi): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_write_signature(ctx: *mbedtls_ecdsa_context, md_alg: mbedtls_md_type_t, hash: *cuchar, hlen: csize, sig: *cuchar, slen: *csize, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_write_signature_restartable(ctx: *mbedtls_ecdsa_context, md_alg: mbedtls_md_type_t, hash: *cuchar, hlen: csize, sig: *cuchar, slen: *csize, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer, rs_ctx: pointer): cint <cimport, nodecl> end
-global function mbedtls_ecdsa_write_signature_det(ctx: *mbedtls_ecdsa_context, hash: *cuchar, hlen: csize, sig: *cuchar, slen: *csize, md_alg: mbedtls_md_type_t): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_read_signature(ctx: *mbedtls_ecdsa_context, hash: *cuchar, hlen: csize, sig: *cuchar, slen: csize): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_read_signature_restartable(ctx: *mbedtls_ecdsa_context, hash: *cuchar, hlen: csize, sig: *cuchar, slen: csize, rs_ctx: pointer): cint <cimport, nodecl> end
 global function mbedtls_ecdsa_genkey(ctx: *mbedtls_ecdsa_context, gid: mbedtls_ecp_group_id, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport, nodecl> end
@@ -1490,7 +1480,6 @@ global function mbedtls_ssl_conf_own_cert(conf: *mbedtls_ssl_config, own_cert: *
 global function mbedtls_ssl_conf_psk(conf: *mbedtls_ssl_config, psk: *cuchar, psk_len: csize, psk_identity: *cuchar, psk_identity_len: csize): cint <cimport, nodecl> end
 global function mbedtls_ssl_set_hs_psk(ssl: *mbedtls_ssl_context, psk: *cuchar, psk_len: csize): cint <cimport, nodecl> end
 global function mbedtls_ssl_conf_psk_cb(conf: *mbedtls_ssl_config, f_psk: function(pointer, *mbedtls_ssl_context, *cuchar, csize): cint, p_psk: pointer) <cimport, nodecl> end
-global function mbedtls_ssl_conf_dh_param(conf: *mbedtls_ssl_config, dhm_P: cstring, dhm_G: cstring): cint <cimport, nodecl> end
 global function mbedtls_ssl_conf_dh_param_bin(conf: *mbedtls_ssl_config, dhm_P: *cuchar, P_len: csize, dhm_G: *cuchar, G_len: csize): cint <cimport, nodecl> end
 global function mbedtls_ssl_conf_dh_param_ctx(conf: *mbedtls_ssl_config, dhm_ctx: *mbedtls_dhm_context): cint <cimport, nodecl> end
 global function mbedtls_ssl_conf_dhm_min_bitlen(conf: *mbedtls_ssl_config, bitlen: cuint) <cimport, nodecl> end
@@ -1526,7 +1515,6 @@ global function mbedtls_ssl_get_version(ssl: *mbedtls_ssl_context): cstring <cim
 global function mbedtls_ssl_get_record_expansion(ssl: *mbedtls_ssl_context): cint <cimport, nodecl> end
 global function mbedtls_ssl_get_output_max_frag_len(ssl: *mbedtls_ssl_context): csize <cimport, nodecl> end
 global function mbedtls_ssl_get_input_max_frag_len(ssl: *mbedtls_ssl_context): csize <cimport, nodecl> end
-global function mbedtls_ssl_get_max_frag_len(ssl: *mbedtls_ssl_context): csize <cimport, nodecl> end
 global function mbedtls_ssl_get_max_out_record_payload(ssl: *mbedtls_ssl_context): cint <cimport, nodecl> end
 global function mbedtls_ssl_get_peer_cert(ssl: *mbedtls_ssl_context): *mbedtls_x509_crt <cimport, nodecl> end
 global function mbedtls_ssl_get_session(ssl: *mbedtls_ssl_context, session: *mbedtls_ssl_session): cint <cimport, nodecl> end
@@ -1625,12 +1613,7 @@ global function mbedtls_sha512_starts_ret(ctx: *mbedtls_sha512_context, is384: c
 global function mbedtls_sha512_update_ret(ctx: *mbedtls_sha512_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
 global function mbedtls_sha512_finish_ret(ctx: *mbedtls_sha512_context, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_sha512_process(ctx: *mbedtls_sha512_context, data: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_sha512_starts(ctx: *mbedtls_sha512_context, is384: cint) <cimport, nodecl> end
-global function mbedtls_sha512_update(ctx: *mbedtls_sha512_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
-global function mbedtls_sha512_finish(ctx: *mbedtls_sha512_context, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_sha512_process(ctx: *mbedtls_sha512_context, data: *cuchar) <cimport, nodecl> end
 global function mbedtls_sha512_ret(input: *cuchar, ilen: csize, output: *cuchar, is384: cint): cint <cimport, nodecl> end
-global function mbedtls_sha512(input: *cuchar, ilen: csize, output: *cuchar, is384: cint) <cimport, nodecl> end
 global function mbedtls_sha512_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_entropy_f_source_ptr: type <cimport, nodecl> = @function(pointer, *cuchar, csize, *csize): cint
 global mbedtls_entropy_source_state: type <cimport, nodecl> = @record{
@@ -1717,7 +1700,6 @@ global function mbedtls_hmac_drbg_reseed(ctx: *mbedtls_hmac_drbg_context, additi
 global function mbedtls_hmac_drbg_random_with_add(p_rng: pointer, output: *cuchar, output_len: csize, additional: *cuchar, add_len: csize): cint <cimport, nodecl> end
 global function mbedtls_hmac_drbg_random(p_rng: pointer, output: *cuchar, out_len: csize): cint <cimport, nodecl> end
 global function mbedtls_hmac_drbg_free(ctx: *mbedtls_hmac_drbg_context) <cimport, nodecl> end
-global function mbedtls_hmac_drbg_update(ctx: *mbedtls_hmac_drbg_context, additional: *cuchar, add_len: csize) <cimport, nodecl> end
 global function mbedtls_hmac_drbg_write_seed_file(ctx: *mbedtls_hmac_drbg_context, path: cstring): cint <cimport, nodecl> end
 global function mbedtls_hmac_drbg_update_seed_file(ctx: *mbedtls_hmac_drbg_context, path: cstring): cint <cimport, nodecl> end
 global function mbedtls_hmac_drbg_self_test(verbose: cint): cint <cimport, nodecl> end
@@ -1734,12 +1716,7 @@ global function mbedtls_md2_starts_ret(ctx: *mbedtls_md2_context): cint <cimport
 global function mbedtls_md2_update_ret(ctx: *mbedtls_md2_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
 global function mbedtls_md2_finish_ret(ctx: *mbedtls_md2_context, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_md2_process(ctx: *mbedtls_md2_context): cint <cimport, nodecl> end
-global function mbedtls_md2_starts(ctx: *mbedtls_md2_context) <cimport, nodecl> end
-global function mbedtls_md2_update(ctx: *mbedtls_md2_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
-global function mbedtls_md2_finish(ctx: *mbedtls_md2_context, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_md2_process(ctx: *mbedtls_md2_context) <cimport, nodecl> end
 global function mbedtls_md2_ret(input: *cuchar, ilen: csize, output: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_md2(input: *cuchar, ilen: csize, output: *cuchar) <cimport, nodecl> end
 global function mbedtls_md2_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_md4_context: type <cimport, nodecl> = @record{
   total: [2]uint32,
@@ -1753,12 +1730,7 @@ global function mbedtls_md4_starts_ret(ctx: *mbedtls_md4_context): cint <cimport
 global function mbedtls_md4_update_ret(ctx: *mbedtls_md4_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
 global function mbedtls_md4_finish_ret(ctx: *mbedtls_md4_context, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_md4_process(ctx: *mbedtls_md4_context, data: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_md4_starts(ctx: *mbedtls_md4_context) <cimport, nodecl> end
-global function mbedtls_md4_update(ctx: *mbedtls_md4_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
-global function mbedtls_md4_finish(ctx: *mbedtls_md4_context, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_md4_process(ctx: *mbedtls_md4_context, data: *cuchar) <cimport, nodecl> end
 global function mbedtls_md4_ret(input: *cuchar, ilen: csize, output: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_md4(input: *cuchar, ilen: csize, output: *cuchar) <cimport, nodecl> end
 global function mbedtls_md4_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_md5_context: type <cimport, nodecl> = @record{
   total: [2]uint32,
@@ -1772,12 +1744,7 @@ global function mbedtls_md5_starts_ret(ctx: *mbedtls_md5_context): cint <cimport
 global function mbedtls_md5_update_ret(ctx: *mbedtls_md5_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
 global function mbedtls_md5_finish_ret(ctx: *mbedtls_md5_context, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_md5_process(ctx: *mbedtls_md5_context, data: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_md5_starts(ctx: *mbedtls_md5_context) <cimport, nodecl> end
-global function mbedtls_md5_update(ctx: *mbedtls_md5_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
-global function mbedtls_md5_finish(ctx: *mbedtls_md5_context, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_md5_process(ctx: *mbedtls_md5_context, data: *cuchar) <cimport, nodecl> end
 global function mbedtls_md5_ret(input: *cuchar, ilen: csize, output: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_md5(input: *cuchar, ilen: csize, output: *cuchar) <cimport, nodecl> end
 global function mbedtls_md5_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_net_context: type <cimport, nodecl> = @record{
   fd: cint
@@ -1866,12 +1833,7 @@ global function mbedtls_ripemd160_starts_ret(ctx: *mbedtls_ripemd160_context): c
 global function mbedtls_ripemd160_update_ret(ctx: *mbedtls_ripemd160_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
 global function mbedtls_ripemd160_finish_ret(ctx: *mbedtls_ripemd160_context, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_ripemd160_process(ctx: *mbedtls_ripemd160_context, data: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_ripemd160_starts(ctx: *mbedtls_ripemd160_context) <cimport, nodecl> end
-global function mbedtls_ripemd160_update(ctx: *mbedtls_ripemd160_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
-global function mbedtls_ripemd160_finish(ctx: *mbedtls_ripemd160_context, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_ripemd160_process(ctx: *mbedtls_ripemd160_context, data: *cuchar) <cimport, nodecl> end
 global function mbedtls_ripemd160_ret(input: *cuchar, ilen: csize, output: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_ripemd160(input: *cuchar, ilen: csize, output: *cuchar) <cimport, nodecl> end
 global function mbedtls_ripemd160_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_sha1_context: type <cimport, nodecl> = @record{
   total: [2]uint32,
@@ -1885,12 +1847,7 @@ global function mbedtls_sha1_starts_ret(ctx: *mbedtls_sha1_context): cint <cimpo
 global function mbedtls_sha1_update_ret(ctx: *mbedtls_sha1_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
 global function mbedtls_sha1_finish_ret(ctx: *mbedtls_sha1_context, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_sha1_process(ctx: *mbedtls_sha1_context, data: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_sha1_starts(ctx: *mbedtls_sha1_context) <cimport, nodecl> end
-global function mbedtls_sha1_update(ctx: *mbedtls_sha1_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
-global function mbedtls_sha1_finish(ctx: *mbedtls_sha1_context, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_sha1_process(ctx: *mbedtls_sha1_context, data: *cuchar) <cimport, nodecl> end
 global function mbedtls_sha1_ret(input: *cuchar, ilen: csize, output: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_sha1(input: *cuchar, ilen: csize, output: *cuchar) <cimport, nodecl> end
 global function mbedtls_sha1_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_sha256_context: type <cimport, nodecl> = @record{
   total: [2]uint32,
@@ -1905,12 +1862,7 @@ global function mbedtls_sha256_starts_ret(ctx: *mbedtls_sha256_context, is224: c
 global function mbedtls_sha256_update_ret(ctx: *mbedtls_sha256_context, input: *cuchar, ilen: csize): cint <cimport, nodecl> end
 global function mbedtls_sha256_finish_ret(ctx: *mbedtls_sha256_context, output: *cuchar): cint <cimport, nodecl> end
 global function mbedtls_internal_sha256_process(ctx: *mbedtls_sha256_context, data: *cuchar): cint <cimport, nodecl> end
-global function mbedtls_sha256_starts(ctx: *mbedtls_sha256_context, is224: cint) <cimport, nodecl> end
-global function mbedtls_sha256_update(ctx: *mbedtls_sha256_context, input: *cuchar, ilen: csize) <cimport, nodecl> end
-global function mbedtls_sha256_finish(ctx: *mbedtls_sha256_context, output: *cuchar) <cimport, nodecl> end
-global function mbedtls_sha256_process(ctx: *mbedtls_sha256_context, data: *cuchar) <cimport, nodecl> end
 global function mbedtls_sha256_ret(input: *cuchar, ilen: csize, output: *cuchar, is224: cint): cint <cimport, nodecl> end
-global function mbedtls_sha256(input: *cuchar, ilen: csize, output: *cuchar, is224: cint) <cimport, nodecl> end
 global function mbedtls_sha256_self_test(verbose: cint): cint <cimport, nodecl> end
 global mbedtls_ssl_cache_context: type <cimport, nodecl, forwarddecl> = @record{}
 global mbedtls_ssl_cache_entry: type <cimport, nodecl, forwarddecl> = @record{}
@@ -2039,7 +1991,6 @@ global MBEDTLS_ARIA_DECRYPT: cint <cimport, nodecl, const>
 global MBEDTLS_ARIA_BLOCKSIZE: cint <cimport, nodecl, const>
 global MBEDTLS_ARIA_MAX_ROUNDS: cint <cimport, nodecl, const>
 global MBEDTLS_ARIA_MAX_KEYSIZE: cint <cimport, nodecl, const>
-global MBEDTLS_ERR_ARIA_INVALID_KEY_LENGTH: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_ARIA_BAD_INPUT_DATA: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_ARIA_INVALID_INPUT_LENGTH: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_ARIA_FEATURE_UNAVAILABLE: cint <cimport, nodecl, const>
@@ -2097,13 +2048,11 @@ global MBEDTLS_BLOWFISH_MAX_KEY_BITS: cint <cimport, nodecl, const>
 global MBEDTLS_BLOWFISH_MIN_KEY_BITS: cint <cimport, nodecl, const>
 global MBEDTLS_BLOWFISH_ROUNDS: cint <cimport, nodecl, const>
 global MBEDTLS_BLOWFISH_BLOCKSIZE: cint <cimport, nodecl, const>
-global MBEDTLS_ERR_BLOWFISH_INVALID_KEY_LENGTH: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_BLOWFISH_BAD_INPUT_DATA: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_BLOWFISH_INVALID_INPUT_LENGTH: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_BLOWFISH_HW_ACCEL_FAILED: cint <cimport, nodecl, const>
 global MBEDTLS_CAMELLIA_ENCRYPT: cint <cimport, nodecl, const>
 global MBEDTLS_CAMELLIA_DECRYPT: cint <cimport, nodecl, const>
-global MBEDTLS_ERR_CAMELLIA_INVALID_KEY_LENGTH: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_CAMELLIA_BAD_INPUT_DATA: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_CAMELLIA_INVALID_INPUT_LENGTH: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_CAMELLIA_HW_ACCEL_FAILED: cint <cimport, nodecl, const>
@@ -2533,14 +2482,6 @@ global MBEDTLS_ERR_DHM_ALLOC_FAILED: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_DHM_FILE_IO_ERROR: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_DHM_HW_ACCEL_FAILED: cint <cimport, nodecl, const>
 global MBEDTLS_ERR_DHM_SET_GROUP_FAILED: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC5114_MODP_2048_P: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC5114_MODP_2048_G: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC3526_MODP_2048_P: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC3526_MODP_2048_G: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC3526_MODP_3072_P: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC3526_MODP_3072_G: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC3526_MODP_4096_P: cint <cimport, nodecl, const>
-global MBEDTLS_DHM_RFC3526_MODP_4096_G: cint <cimport, nodecl, const>
 global MBEDTLS_DHM_RFC3526_MODP_2048_P_BIN: cint <cimport, nodecl, const>
 global MBEDTLS_DHM_RFC3526_MODP_2048_G_BIN: cint <cimport, nodecl, const>
 global MBEDTLS_DHM_RFC3526_MODP_3072_P_BIN: cint <cimport, nodecl, const>
