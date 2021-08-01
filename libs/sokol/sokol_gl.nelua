@@ -1,0 +1,105 @@
+##[[
+if SOKOL_GL_LINKLIB then
+  if type(SOKOL_GL_LINKLIB) == 'string' then
+    linklib(SOKOL_GL_LINKLIB)
+  end
+else
+  cdefine 'SOKOL_GL_API_DECL static'
+  cdefine 'SOKOL_GL_IMPL'
+end
+cinclude 'sokol_gl.h'
+]]
+global sgl_pipeline: type <cimport, nodecl> = @record{
+  id: uint32
+}
+global sgl_error_t: type <cimport, nodecl, using> = @enum(cint){
+  SGL_NO_ERROR = 0,
+  SGL_ERROR_VERTICES_FULL = 1,
+  SGL_ERROR_UNIFORMS_FULL = 2,
+  SGL_ERROR_COMMANDS_FULL = 3,
+  SGL_ERROR_STACK_OVERFLOW = 4,
+  SGL_ERROR_STACK_UNDERFLOW = 5
+}
+global sgl_desc_t: type <cimport, nodecl> = @record{
+  max_vertices: cint,
+  max_commands: cint,
+  pipeline_pool_size: cint,
+  color_format: sg_pixel_format,
+  depth_format: sg_pixel_format,
+  sample_count: cint,
+  face_winding: sg_face_winding
+}
+global function sgl_setup(desc: *sgl_desc_t) <cimport, nodecl> end
+global function sgl_shutdown() <cimport, nodecl> end
+global function sgl_error(): sgl_error_t <cimport, nodecl> end
+global function sgl_defaults() <cimport, nodecl> end
+global function sgl_rad(deg: float32): float32 <cimport, nodecl> end
+global function sgl_deg(rad: float32): float32 <cimport, nodecl> end
+global function sgl_make_pipeline(desc: *sg_pipeline_desc): sgl_pipeline <cimport, nodecl> end
+global function sgl_destroy_pipeline(pip: sgl_pipeline) <cimport, nodecl> end
+global function sgl_viewport(x: cint, y: cint, w: cint, h: cint, origin_top_left: boolean) <cimport, nodecl> end
+global function sgl_viewportf(x: float32, y: float32, w: float32, h: float32, origin_top_left: boolean) <cimport, nodecl> end
+global function sgl_scissor_rect(x: cint, y: cint, w: cint, h: cint, origin_top_left: boolean) <cimport, nodecl> end
+global function sgl_scissor_rectf(x: float32, y: float32, w: float32, h: float32, origin_top_left: boolean) <cimport, nodecl> end
+global function sgl_enable_texture() <cimport, nodecl> end
+global function sgl_disable_texture() <cimport, nodecl> end
+global function sgl_texture(img: sg_image) <cimport, nodecl> end
+global function sgl_default_pipeline() <cimport, nodecl> end
+global function sgl_load_pipeline(pip: sgl_pipeline) <cimport, nodecl> end
+global function sgl_push_pipeline() <cimport, nodecl> end
+global function sgl_pop_pipeline() <cimport, nodecl> end
+global function sgl_matrix_mode_modelview() <cimport, nodecl> end
+global function sgl_matrix_mode_projection() <cimport, nodecl> end
+global function sgl_matrix_mode_texture() <cimport, nodecl> end
+global function sgl_load_identity() <cimport, nodecl> end
+global function sgl_load_matrix(m: *float32) <cimport, nodecl> end
+global function sgl_load_transpose_matrix(m: *float32) <cimport, nodecl> end
+global function sgl_mult_matrix(m: *float32) <cimport, nodecl> end
+global function sgl_mult_transpose_matrix(m: *float32) <cimport, nodecl> end
+global function sgl_rotate(angle_rad: float32, x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function sgl_scale(x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function sgl_translate(x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function sgl_frustum(l: float32, r: float32, b: float32, t: float32, n: float32, f: float32) <cimport, nodecl> end
+global function sgl_ortho(l: float32, r: float32, b: float32, t: float32, n: float32, f: float32) <cimport, nodecl> end
+global function sgl_perspective(fov_y: float32, aspect: float32, z_near: float32, z_far: float32) <cimport, nodecl> end
+global function sgl_lookat(eye_x: float32, eye_y: float32, eye_z: float32, center_x: float32, center_y: float32, center_z: float32, up_x: float32, up_y: float32, up_z: float32) <cimport, nodecl> end
+global function sgl_push_matrix() <cimport, nodecl> end
+global function sgl_pop_matrix() <cimport, nodecl> end
+global function sgl_t2f(u: float32, v: float32) <cimport, nodecl> end
+global function sgl_c3f(r: float32, g: float32, b: float32) <cimport, nodecl> end
+global function sgl_c4f(r: float32, g: float32, b: float32, a: float32) <cimport, nodecl> end
+global function sgl_c3b(r: uint8, g: uint8, b: uint8) <cimport, nodecl> end
+global function sgl_c4b(r: uint8, g: uint8, b: uint8, a: uint8) <cimport, nodecl> end
+global function sgl_c1i(rgba: uint32) <cimport, nodecl> end
+global function sgl_begin_points() <cimport, nodecl> end
+global function sgl_begin_lines() <cimport, nodecl> end
+global function sgl_begin_line_strip() <cimport, nodecl> end
+global function sgl_begin_triangles() <cimport, nodecl> end
+global function sgl_begin_triangle_strip() <cimport, nodecl> end
+global function sgl_begin_quads() <cimport, nodecl> end
+global function sgl_v2f(x: float32, y: float32) <cimport, nodecl> end
+global function sgl_v3f(x: float32, y: float32, z: float32) <cimport, nodecl> end
+global function sgl_v2f_t2f(x: float32, y: float32, u: float32, v: float32) <cimport, nodecl> end
+global function sgl_v3f_t2f(x: float32, y: float32, z: float32, u: float32, v: float32) <cimport, nodecl> end
+global function sgl_v2f_c3f(x: float32, y: float32, r: float32, g: float32, b: float32) <cimport, nodecl> end
+global function sgl_v2f_c3b(x: float32, y: float32, r: uint8, g: uint8, b: uint8) <cimport, nodecl> end
+global function sgl_v2f_c4f(x: float32, y: float32, r: float32, g: float32, b: float32, a: float32) <cimport, nodecl> end
+global function sgl_v2f_c4b(x: float32, y: float32, r: uint8, g: uint8, b: uint8, a: uint8) <cimport, nodecl> end
+global function sgl_v2f_c1i(x: float32, y: float32, rgba: uint32) <cimport, nodecl> end
+global function sgl_v3f_c3f(x: float32, y: float32, z: float32, r: float32, g: float32, b: float32) <cimport, nodecl> end
+global function sgl_v3f_c3b(x: float32, y: float32, z: float32, r: uint8, g: uint8, b: uint8) <cimport, nodecl> end
+global function sgl_v3f_c4f(x: float32, y: float32, z: float32, r: float32, g: float32, b: float32, a: float32) <cimport, nodecl> end
+global function sgl_v3f_c4b(x: float32, y: float32, z: float32, r: uint8, g: uint8, b: uint8, a: uint8) <cimport, nodecl> end
+global function sgl_v3f_c1i(x: float32, y: float32, z: float32, rgba: uint32) <cimport, nodecl> end
+global function sgl_v2f_t2f_c3f(x: float32, y: float32, u: float32, v: float32, r: float32, g: float32, b: float32) <cimport, nodecl> end
+global function sgl_v2f_t2f_c3b(x: float32, y: float32, u: float32, v: float32, r: uint8, g: uint8, b: uint8) <cimport, nodecl> end
+global function sgl_v2f_t2f_c4f(x: float32, y: float32, u: float32, v: float32, r: float32, g: float32, b: float32, a: float32) <cimport, nodecl> end
+global function sgl_v2f_t2f_c4b(x: float32, y: float32, u: float32, v: float32, r: uint8, g: uint8, b: uint8, a: uint8) <cimport, nodecl> end
+global function sgl_v2f_t2f_c1i(x: float32, y: float32, u: float32, v: float32, rgba: uint32) <cimport, nodecl> end
+global function sgl_v3f_t2f_c3f(x: float32, y: float32, z: float32, u: float32, v: float32, r: float32, g: float32, b: float32) <cimport, nodecl> end
+global function sgl_v3f_t2f_c3b(x: float32, y: float32, z: float32, u: float32, v: float32, r: uint8, g: uint8, b: uint8) <cimport, nodecl> end
+global function sgl_v3f_t2f_c4f(x: float32, y: float32, z: float32, u: float32, v: float32, r: float32, g: float32, b: float32, a: float32) <cimport, nodecl> end
+global function sgl_v3f_t2f_c4b(x: float32, y: float32, z: float32, u: float32, v: float32, r: uint8, g: uint8, b: uint8, a: uint8) <cimport, nodecl> end
+global function sgl_v3f_t2f_c1i(x: float32, y: float32, z: float32, u: float32, v: float32, rgba: uint32) <cimport, nodecl> end
+global function sgl_end() <cimport, nodecl> end
+global function sgl_draw() <cimport, nodecl> end

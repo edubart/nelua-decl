@@ -1,0 +1,240 @@
+require 'sokol_app'
+require 'sokol_gfx'
+require 'sokol_glue'
+require 'sokol_gl'
+require 'sokol_time'
+require 'string'
+require 'math'
+
+local start_time: uint64
+
+local state: record{
+  pass_action: sg_pass_action,
+  img: sg_image,
+  pip_3d: sgl_pipeline,
+}
+
+local function init()
+  -- setup graphics
+  local sgdesc: sg_desc = {
+    context = sapp_sgcontext()
+  }
+  sg_setup(&sgdesc)
+
+  -- setup time
+  stm_setup()
+  start_time = stm_now()
+
+  -- setup Sokol GP
+  local sgldesc: sgl_desc_t = {sample_count = sapp_sample_count()}
+  sgl_setup(&sgldesc)
+
+  -- checkerboard texture
+  local pixels: [8][8]uint32
+  for y=0,<8 do
+    for x=0,<8 do
+      pixels[y][x] = ((y ~ x) & 1 ~= 0) and 0xFFFFFFFF_u32 or 0xFF000000_u32
+    end
+  end
+  local imgdesc: sg_image_desc = {
+    width = 8,
+    height = 8,
+    data = {subimage = {{{ptr=&pixels[0][0], size=8*8}}}}
+  }
+  state.img = sg_make_image(&imgdesc)
+
+  --[[
+     create a pipeline object for 3d rendering, with less-equal
+     depth-test and cull-face enabled, note that we don't provide
+     a shader, vertex-layout, pixel formats and sample count here,
+     these are all filled in by sokol-gl
+  ]]
+  local pipdesc: sg_pipeline_desc = {
+    cull_mode = SG_CULLMODE_BACK,
+    depth = {
+      write_enabled = true,
+      compare = SG_COMPAREFUNC_LESS_EQUAL,
+    }
+  }
+  state.pip_3d = sgl_make_pipeline(&pipdesc)
+
+  -- default pass action
+  state.pass_action = (sg_pass_action) {
+    colors = {{
+      action = SG_ACTION_CLEAR,
+      value = { 0.0, 0.0, 0.0, 1.0 }
+    }}
+  }
+end
+
+local function draw_triangle()
+  sgl_defaults()
+  sgl_begin_triangles()
+  sgl_v2f_c3b( 0.0,  0.5, 255, 0, 0)
+  sgl_v2f_c3b(-0.5, -0.5, 0, 0, 255)
+  sgl_v2f_c3b( 0.5, -0.5, 0, 255, 0)
+  sgl_end()
+end
+
+local angle_deg = 0.0
+local function draw_quad()
+  local scale = 1.0 + math.sin(sgl_rad(angle_deg)) * 0.5
+  angle_deg = angle_deg + 1.0
+  sgl_defaults()
+  sgl_rotate(sgl_rad(angle_deg), 0.0, 0.0, 1.0)
+  sgl_scale(scale, scale, 1.0)
+  sgl_begin_quads()
+  sgl_v2f_c3b( -0.5, -0.5,  255, 255, 0)
+  sgl_v2f_c3b(  0.5, -0.5,  0, 255, 0)
+  sgl_v2f_c3b(  0.5,  0.5,  0, 0, 255)
+  sgl_v2f_c3b( -0.5,  0.5,  255, 0, 0)
+  sgl_end()
+end
+
+local function cube()
+  sgl_begin_quads()
+  sgl_c3f(1.0, 0.0, 0.0)
+      sgl_v3f_t2f(-1.0,  1.0, -1.0, -1.0,  1.0)
+      sgl_v3f_t2f( 1.0,  1.0, -1.0,  1.0,  1.0)
+      sgl_v3f_t2f( 1.0, -1.0, -1.0,  1.0, -1.0)
+      sgl_v3f_t2f(-1.0, -1.0, -1.0, -1.0, -1.0)
+  sgl_c3f(0.0, 1.0, 0.0)
+      sgl_v3f_t2f(-1.0, -1.0,  1.0, -1.0,  1.0)
+      sgl_v3f_t2f( 1.0, -1.0,  1.0,  1.0,  1.0)
+      sgl_v3f_t2f( 1.0,  1.0,  1.0,  1.0, -1.0)
+      sgl_v3f_t2f(-1.0,  1.0,  1.0, -1.0, -1.0)
+  sgl_c3f(0.0, 0.0, 1.0)
+      sgl_v3f_t2f(-1.0, -1.0,  1.0, -1.0,  1.0)
+      sgl_v3f_t2f(-1.0,  1.0,  1.0,  1.0,  1.0)
+      sgl_v3f_t2f(-1.0,  1.0, -1.0,  1.0, -1.0)
+      sgl_v3f_t2f(-1.0, -1.0, -1.0, -1.0, -1.0)
+  sgl_c3f(1.0, 0.5, 0.0)
+      sgl_v3f_t2f(1.0, -1.0,  1.0, -1.0,   1.0)
+      sgl_v3f_t2f(1.0, -1.0, -1.0,  1.0,   1.0)
+      sgl_v3f_t2f(1.0,  1.0, -1.0,  1.0,  -1.0)
+      sgl_v3f_t2f(1.0,  1.0,  1.0, -1.0,  -1.0)
+  sgl_c3f(0.0, 0.5, 1.0)
+      sgl_v3f_t2f( 1.0, -1.0, -1.0, -1.0,  1.0)
+      sgl_v3f_t2f( 1.0, -1.0,  1.0,  1.0,  1.0)
+      sgl_v3f_t2f(-1.0, -1.0,  1.0,  1.0, -1.0)
+      sgl_v3f_t2f(-1.0, -1.0, -1.0, -1.0, -1.0)
+  sgl_c3f(1.0, 0.0, 0.5)
+      sgl_v3f_t2f(-1.0,  1.0, -1.0, -1.0,  1.0)
+      sgl_v3f_t2f(-1.0,  1.0,  1.0,  1.0,  1.0)
+      sgl_v3f_t2f( 1.0,  1.0,  1.0,  1.0, -1.0)
+      sgl_v3f_t2f( 1.0,  1.0, -1.0, -1.0, -1.0)
+  sgl_end()
+end
+
+local rot: [2]number = { 0.0, 0.0 }
+local function draw_cubes()
+  rot[0] = rot[0] + 1.0
+  rot[1] = rot[0] + 2.0
+
+  sgl_defaults()
+  sgl_load_pipeline(state.pip_3d)
+
+  sgl_matrix_mode_projection()
+  sgl_perspective(sgl_rad(45.0), 1.0, 0.1, 100.0)
+
+  sgl_matrix_mode_modelview()
+  sgl_translate(0.0, 0.0, -12.0)
+  sgl_rotate(sgl_rad(rot[0]), 1.0, 0.0, 0.0)
+  sgl_rotate(sgl_rad(rot[1]), 0.0, 1.0, 0.0)
+  cube()
+  sgl_push_matrix()
+      sgl_translate(0.0, 0.0, 3.0)
+      sgl_scale(0.5, 0.5, 0.5)
+      sgl_rotate(-2.0 * sgl_rad(rot[0]), 1.0, 0.0, 0.0)
+      sgl_rotate(-2.0 * sgl_rad(rot[1]), 0.0, 1.0, 0.0)
+      cube()
+      sgl_push_matrix()
+          sgl_translate(0.0, 0.0, 3.0)
+          sgl_scale(0.5, 0.5, 0.5)
+          sgl_rotate(-3.0 * sgl_rad(2*rot[0]), 1.0, 0.0, 0.0)
+          sgl_rotate(3.0 * sgl_rad(2*rot[1]), 0.0, 0.0, 1.0)
+          cube()
+      sgl_pop_matrix()
+  sgl_pop_matrix()
+end
+
+local frame_count = 0.0
+local function draw_tex_cube()
+  frame_count = frame_count + 1.0
+  local a = sgl_rad(frame_count)
+
+  -- texture matrix rotation and scale
+  local tex_rot = 0.5 * a
+  local tex_scale = 1.0 + math.sin(a) * 0.5
+
+  -- compute an orbiting eye-position for testing sgl_lookat()
+  local eye_x = math.sin(a) * 6.0
+  local eye_z = math.cos(a) * 6.0
+  local eye_y = math.sin(a) * 3.0
+
+  sgl_defaults()
+  sgl_load_pipeline(state.pip_3d)
+
+  sgl_enable_texture()
+  sgl_texture(state.img)
+
+  sgl_matrix_mode_projection()
+  sgl_perspective(sgl_rad(45.0), 1.0, 0.1, 100.0)
+  sgl_matrix_mode_modelview()
+  sgl_lookat(eye_x, eye_y, eye_z, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0)
+  sgl_matrix_mode_texture()
+  sgl_rotate(tex_rot, 0.0, 0.0, 1.0)
+  sgl_scale(tex_scale, tex_scale, 1.0)
+  cube()
+end
+
+local function frame()
+  local dw = sapp_width()
+  local dh = sapp_height()
+  local ww = dh/2
+  local hh = dh/2
+  local x0 = dw/2 - hh
+  local x1 = dw/2
+  local y0 = 0
+  local y1 = dh/2
+  sgl_viewport(x0, y0, ww, hh, true)
+  draw_triangle()
+  sgl_viewport(x1, y0, ww, hh, true)
+  draw_quad()
+  sgl_viewport(x0, y1, ww, hh, true)
+  draw_cubes()
+  sgl_viewport(x1, y1, ww, hh, true)
+  draw_tex_cube()
+  sgl_viewport(0, 0, dw, dh, true)
+
+  -- draw everything
+  local pass_action = sg_pass_action{colors={{action=SG_ACTION_CLEAR, value={0.0, 0.0, 0.0, 1.0}}}}
+  sg_begin_default_pass(&pass_action, sapp_width(), sapp_height())
+  sgl_draw()
+  sg_end_pass()
+  sg_commit()
+
+  -- quit after a while
+  if stm_ms(stm_since(start_time)) > 2000 then
+    sapp_quit()
+  end
+end
+
+local function cleanup()
+  -- shutdown Sokol GL
+  sgl_shutdown()
+  -- shutdown SOkol GFX
+  sg_shutdown()
+end
+
+local app_desc: sapp_desc = {
+  init_cb = init,
+  frame_cb = frame,
+  cleanup_cb = cleanup,
+  width = 512,
+  height = 512,
+  window_title = "Sokol GL",
+  enable_clipboard = true,
+  html5_canvas_resize = true,
+}
+sapp_run(&app_desc)
