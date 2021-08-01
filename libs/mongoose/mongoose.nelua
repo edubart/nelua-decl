@@ -282,6 +282,7 @@ global mg_ws_message: type <cimport, nodecl, ctypedef> = @record{
 global function mg_ws_connect(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer, fmt: cstring, ...: cvarargs): *mg_connection <cimport, nodecl> end
 global function mg_ws_upgrade(a1: *mg_connection, a2: *mg_http_message, fmt: cstring, ...: cvarargs) <cimport, nodecl> end
 global function mg_ws_send(a1: *mg_connection, buf: cstring, len: csize, op: cint): csize <cimport, nodecl> end
+global function mg_ws_wrap(a1: *mg_connection, len: csize, op: cint): csize <cimport, nodecl> end
 global function mg_sntp_connect(mgr: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
 global function mg_sntp_send(c: *mg_connection, utc: culong) <cimport, nodecl> end
 global function mg_sntp_parse(buf: *cuchar, len: csize, tv: *timeval): cint <cimport, nodecl> end
@@ -305,6 +306,7 @@ global mg_mqtt_message: type <cimport, nodecl, ctypedef> = @record{
 }
 global function mg_mqtt_connect(a1: *mg_mgr, url: cstring, opts: *mg_mqtt_opts, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
 global function mg_mqtt_listen(mgr: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport, nodecl> end
+global function mg_mqtt_login(c: *mg_connection, url: cstring, opts: *mg_mqtt_opts) <cimport, nodecl> end
 global function mg_mqtt_pub(c: *mg_connection, topic: *mg_str, data: *mg_str, qos: cint, retain: boolean) <cimport, nodecl> end
 global function mg_mqtt_sub(a1: *mg_connection, topic: *mg_str, qos: cint) <cimport, nodecl> end
 global function mg_mqtt_parse(buf: *uint8, len: csize, m: *mg_mqtt_message): cint <cimport, nodecl> end
