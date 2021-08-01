@@ -87,7 +87,12 @@ nldecl.prepend_code = [=[
 ##[[
 cdefine 'SDL_MAIN_HANDLED'
 if not ccinfo.is_gcc then
+  cdefine 'SDL_DISABLE_MM3DNOW_H'
   cdefine 'SDL_DISABLE_IMMINTRIN_H'
+  cdefine 'SDL_DISABLE_MMINTRIN_H'
+  cdefine 'SDL_DISABLE_XMMINTRIN_H'
+  cdefine 'SDL_DISABLE_EMMINTRIN_H'
+  cdefine 'SDL_DISABLE_PMMINTRIN_H'
 end
 if ccinfo.is_emscripten then
   cflags '-s USE_SDL=2'
