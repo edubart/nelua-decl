@@ -96,7 +96,8 @@ Plus the following platform specific libraries:
     - [inotify.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/inotify.nelua) (Linux filesystem watcher)
     - [epoll.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/epoll.nelua) (Linux I/O event notification facility)
     - [iouring.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/iouring.nelua) (Linux newest IO interface)
-
+* X11
+    - [x11.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/x11/x11.nelua) (X11 Window APIs)
 
 ## How to generate bindings
 

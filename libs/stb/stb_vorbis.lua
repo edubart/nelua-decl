@@ -2,7 +2,8 @@ local nldecl = require 'nldecl'
 
 nldecl.include_names = {
   '^stb_',
-  '^STB_'
+  '^STB_',
+  FILE = true,
 }
 
 nldecl.prepend_code = [=[
@@ -15,5 +16,4 @@ if STB_VORBIS_LINKLIB then
 end
 cinclude 'stb_vorbis.h'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 ]=]

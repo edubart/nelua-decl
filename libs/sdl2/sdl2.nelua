@@ -14,8 +14,8 @@ end
 cinclude '<SDL2/SDL.h>'
 linklib 'SDL2'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 global function SDL_GetPlatform(): cstring <cimport, nodecl> end
+global FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global SDL_bool: type <cimport, nodecl, using> = @enum(cint){
   SDL_FALSE = 0,
   SDL_TRUE = 1

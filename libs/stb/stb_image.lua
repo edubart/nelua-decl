@@ -2,7 +2,8 @@ local nldecl = require 'nldecl'
 
 nldecl.include_names = {
   '^stbi_',
-  '^STBI_'
+  '^STBI_',
+  FILE = true,
 }
 
 nldecl.prepend_code = [=[
@@ -20,5 +21,4 @@ if not ccinfo.is_gcc then
 end
 cinclude 'stb_image.h'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 ]=]

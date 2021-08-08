@@ -4,6 +4,7 @@ nldecl.include_names = {
   '^SDL',
   WindowShapeMode = true,
   _SDL_iconv_t = true,
+  FILE = true,
 }
 
 nldecl.exclude_names = {
@@ -100,7 +101,6 @@ end
 cinclude '<SDL2/SDL.h>'
 linklib 'SDL2'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 ]=]
 
 nldecl.append_code = [[

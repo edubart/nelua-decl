@@ -21,5 +21,5 @@ global function snk_setup(desc: *snk_desc_t) <cimport, nodecl> end
 global function snk_new_frame(): *NK_context <cimport, nodecl> end
 global function snk_render(width: cint, height: cint) <cimport, nodecl> end
 global function snk_handle_event(ev: *sapp_event) <cimport, nodecl> end
-global function snk_edit_string(ctx: *NK_context, flags: cuint, memory: cstring, len: *cint, max: cint, filter: nk_plugin_filter): cuint <cimport, nodecl> end
+global function snk_edit_string(ctx: *NK_context, flags: cuint, memory: cstring, len: *cint, max: cint, filter: function(*NK_text_edit, cuint): cint): cuint <cimport, nodecl> end
 global function snk_shutdown() <cimport, nodecl> end

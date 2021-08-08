@@ -7,6 +7,7 @@ nldecl.include_names = {
   '^TDEFL_',
   '^tinfl_',
   '^TINFL_',
+  FILE = true,
 }
 
 nldecl.prepend_code = [=[
@@ -22,5 +23,4 @@ end
 cdefine 'MINIZ_NO_ZLIB_COMPATIBLE_NAMES'
 cinclude 'miniminiz.h'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 ]=]

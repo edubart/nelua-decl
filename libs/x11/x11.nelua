@@ -1,0 +1,3128 @@
+global Mask: type = @culong
+global Atom: type = @culong
+global VisualID: type = @culong
+global Time: type = @culong
+global Window: type = @culong
+global Drawable: type = @culong
+global Font: type = @culong
+global Pixmap: type = @culong
+global Cursor: type = @culong
+global Colormap: type = @culong
+global GContext: type = @culong
+global KeySym: type = @culong
+global KeyCode: type = @cuchar
+global XPointer: type = @cstring
+global XExtData: type <cimport, nodecl> = @record{
+  number: cint,
+  next: *XExtData,
+  free_private: function(*XExtData): cint,
+  private_data: XPointer
+}
+global XExtCodes: type <cimport, nodecl> = @record{
+  extension: cint,
+  major_opcode: cint,
+  first_event: cint,
+  first_error: cint
+}
+global XPixmapFormatValues: type <cimport, nodecl> = @record{
+  depth: cint,
+  bits_per_pixel: cint,
+  scanline_pad: cint
+}
+global XGCValues: type <cimport, nodecl> = @record{
+  Function: cint,
+  plane_mask: culong,
+  foreground: culong,
+  background: culong,
+  line_width: cint,
+  line_style: cint,
+  cap_style: cint,
+  join_style: cint,
+  fill_style: cint,
+  fill_rule: cint,
+  arc_mode: cint,
+  tile: Pixmap,
+  stipple: Pixmap,
+  ts_x_origin: cint,
+  ts_y_origin: cint,
+  font: Font,
+  subwindow_mode: cint,
+  graphics_exposures: cint,
+  clip_x_origin: cint,
+  clip_y_origin: cint,
+  clip_mask: Pixmap,
+  dash_offset: cint,
+  dashes: cchar
+}
+global GC: type = @pointer
+global Visual: type <cimport, nodecl> = @record{
+  ext_data: *XExtData,
+  visualid: VisualID,
+  class: cint,
+  red_mask: culong,
+  green_mask: culong,
+  blue_mask: culong,
+  bits_per_rgb: cint,
+  map_entries: cint
+}
+global Depth: type <cimport, nodecl> = @record{
+  depth: cint,
+  nvisuals: cint,
+  visuals: *Visual
+}
+global Screen: type <cimport, nodecl> = @record{
+  ext_data: *XExtData,
+  display: pointer,
+  root: Window,
+  width: cint,
+  height: cint,
+  mwidth: cint,
+  mheight: cint,
+  ndepths: cint,
+  depths: *Depth,
+  root_depth: cint,
+  root_visual: *Visual,
+  default_gc: GC,
+  cmap: Colormap,
+  white_pixel: culong,
+  black_pixel: culong,
+  max_maps: cint,
+  min_maps: cint,
+  backing_store: cint,
+  save_unders: cint,
+  root_input_mask: clong
+}
+global ScreenFormat: type <cimport, nodecl> = @record{
+  ext_data: *XExtData,
+  depth: cint,
+  bits_per_pixel: cint,
+  scanline_pad: cint
+}
+global XSetWindowAttributes: type <cimport, nodecl> = @record{
+  background_pixmap: Pixmap,
+  background_pixel: culong,
+  border_pixmap: Pixmap,
+  border_pixel: culong,
+  bit_gravity: cint,
+  win_gravity: cint,
+  backing_store: cint,
+  backing_planes: culong,
+  backing_pixel: culong,
+  save_under: cint,
+  event_mask: clong,
+  do_not_propagate_mask: clong,
+  override_redirect: cint,
+  colormap: Colormap,
+  cursor: Cursor
+}
+global XWindowAttributes: type <cimport, nodecl> = @record{
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  border_width: cint,
+  depth: cint,
+  visual: *Visual,
+  root: Window,
+  class: cint,
+  bit_gravity: cint,
+  win_gravity: cint,
+  backing_store: cint,
+  backing_planes: culong,
+  backing_pixel: culong,
+  save_under: cint,
+  colormap: Colormap,
+  map_installed: cint,
+  map_state: cint,
+  all_event_masks: clong,
+  your_event_mask: clong,
+  do_not_propagate_mask: clong,
+  override_redirect: cint,
+  screen: *Screen
+}
+global XHostAddress: type <cimport, nodecl> = @record{
+  family: cint,
+  length: cint,
+  address: cstring
+}
+global XServerInterpretedAddress: type <cimport, nodecl> = @record{
+  typelength: cint,
+  valuelength: cint,
+  type: cstring,
+  value: cstring
+}
+global XImage: type <cimport, nodecl, cincomplete> = @record{
+  width: cint,
+  height: cint,
+  xoffset: cint,
+  format: cint,
+  data: cstring,
+  byte_order: cint,
+  bitmap_unit: cint,
+  bitmap_bit_order: cint,
+  bitmap_pad: cint,
+  depth: cint,
+  bytes_per_line: cint,
+  bits_per_pixel: cint,
+  red_mask: culong,
+  green_mask: culong,
+  blue_mask: culong,
+  obdata: XPointer,
+}
+global XWindowChanges: type <cimport, nodecl> = @record{
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  border_width: cint,
+  sibling: Window,
+  stack_mode: cint
+}
+global XColor: type <cimport, nodecl> = @record{
+  pixel: culong,
+  red: cushort,
+  green: cushort,
+  blue: cushort,
+  flags: cchar,
+  pad: cchar
+}
+global XSegment: type <cimport, nodecl> = @record{
+  x1: cshort,
+  y1: cshort,
+  x2: cshort,
+  y2: cshort
+}
+global XPoint: type <cimport, nodecl> = @record{
+  x: cshort,
+  y: cshort
+}
+global XRectangle: type <cimport, nodecl> = @record{
+  x: cshort,
+  y: cshort,
+  width: cushort,
+  height: cushort
+}
+global XArc: type <cimport, nodecl> = @record{
+  x: cshort,
+  y: cshort,
+  width: cushort,
+  height: cushort,
+  angle1: cshort,
+  angle2: cshort
+}
+global XKeyboardControl: type <cimport, nodecl> = @record{
+  key_click_percent: cint,
+  bell_percent: cint,
+  bell_pitch: cint,
+  bell_duration: cint,
+  led: cint,
+  led_mode: cint,
+  key: cint,
+  auto_repeat_mode: cint
+}
+global XKeyboardState: type <cimport, nodecl> = @record{
+  key_click_percent: cint,
+  bell_percent: cint,
+  bell_pitch: cuint,
+  bell_duration: cuint,
+  led_mask: culong,
+  global_auto_repeat: cint,
+  auto_repeats: [32]cchar
+}
+global XTimeCoord: type <cimport, nodecl> = @record{
+  time: Time,
+  x: cshort,
+  y: cshort
+}
+global XModifierKeymap: type <cimport, nodecl> = @record{
+  max_keypermod: cint,
+  modifiermap: *KeyCode
+}
+global Display: type <cimport, nodecl, forwarddecl> = @record{}
+global XKeyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  state: cuint,
+  keycode: cuint,
+  same_screen: cint
+}
+global XKeyPressedEvent: type = @XKeyEvent
+global XKeyReleasedEvent: type = @XKeyEvent
+global XButtonEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  state: cuint,
+  button: cuint,
+  same_screen: cint
+}
+global XButtonPressedEvent: type = @XButtonEvent
+global XButtonReleasedEvent: type = @XButtonEvent
+global XMotionEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  state: cuint,
+  is_hint: cchar,
+  same_screen: cint
+}
+global XPointerMovedEvent: type = @XMotionEvent
+global XCrossingEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  mode: cint,
+  detail: cint,
+  same_screen: cint,
+  focus: cint,
+  state: cuint
+}
+global XEnterWindowEvent: type = @XCrossingEvent
+global XLeaveWindowEvent: type = @XCrossingEvent
+global XFocusChangeEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  mode: cint,
+  detail: cint
+}
+global XFocusInEvent: type = @XFocusChangeEvent
+global XFocusOutEvent: type = @XFocusChangeEvent
+global XKeymapEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  key_vector: [32]cchar
+}
+global XExposeEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  count: cint
+}
+global XGraphicsExposeEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  drawable: Drawable,
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  count: cint,
+  major_code: cint,
+  minor_code: cint
+}
+global XNoExposeEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  drawable: Drawable,
+  major_code: cint,
+  minor_code: cint
+}
+global XVisibilityEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  state: cint
+}
+global XCreateWindowEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  parent: Window,
+  window: Window,
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  border_width: cint,
+  override_redirect: cint
+}
+global XDestroyWindowEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  event: Window,
+  window: Window
+}
+global XUnmapEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  event: Window,
+  window: Window,
+  from_configure: cint
+}
+global XMapEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  event: Window,
+  window: Window,
+  override_redirect: cint
+}
+global XMapRequestEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  parent: Window,
+  window: Window
+}
+global XReparentEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  event: Window,
+  window: Window,
+  parent: Window,
+  x: cint,
+  y: cint,
+  override_redirect: cint
+}
+global XConfigureEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  event: Window,
+  window: Window,
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  border_width: cint,
+  above: Window,
+  override_redirect: cint
+}
+global XGravityEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  event: Window,
+  window: Window,
+  x: cint,
+  y: cint
+}
+global XResizeRequestEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  width: cint,
+  height: cint
+}
+global XConfigureRequestEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  parent: Window,
+  window: Window,
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  border_width: cint,
+  above: Window,
+  detail: cint,
+  value_mask: culong
+}
+global XCirculateEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  event: Window,
+  window: Window,
+  place: cint
+}
+global XCirculateRequestEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  parent: Window,
+  window: Window,
+  place: cint
+}
+global XPropertyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  atom: Atom,
+  time: Time,
+  state: cint
+}
+global XSelectionClearEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  selection: Atom,
+  time: Time
+}
+global XSelectionRequestEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  owner: Window,
+  requestor: Window,
+  selection: Atom,
+  target: Atom,
+  property: Atom,
+  time: Time
+}
+global XSelectionEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  requestor: Window,
+  selection: Atom,
+  target: Atom,
+  property: Atom,
+  time: Time
+}
+global XColormapEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  colormap: Colormap,
+  new: cint,
+  state: cint
+}
+global XClientMessageEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  message_type: Atom,
+  format: cint,
+  data: union{
+    b: [20]cchar,
+    s: [10]cshort,
+    l: [5]clong
+  }
+}
+global XMappingEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  request: cint,
+  first_keycode: cint,
+  count: cint
+}
+global XErrorEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  display: *Display,
+  resourceid: culong,
+  serial: culong,
+  error_code: cuchar,
+  request_code: cuchar,
+  minor_code: cuchar
+}
+global XAnyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window
+}
+global XGenericEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  extension: cint,
+  evtype: cint
+}
+global XGenericEventCookie: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  extension: cint,
+  evtype: cint,
+  cookie: cuint,
+  data: pointer
+}
+global XEvent: type <cimport, nodecl> = @union{
+  type: cint,
+  xany: XAnyEvent,
+  xkey: XKeyEvent,
+  xbutton: XButtonEvent,
+  xmotion: XMotionEvent,
+  xcrossing: XCrossingEvent,
+  xfocus: XFocusChangeEvent,
+  xexpose: XExposeEvent,
+  xgraphicsexpose: XGraphicsExposeEvent,
+  xnoexpose: XNoExposeEvent,
+  xvisibility: XVisibilityEvent,
+  xcreatewindow: XCreateWindowEvent,
+  xdestroywindow: XDestroyWindowEvent,
+  xunmap: XUnmapEvent,
+  xmap: XMapEvent,
+  xmaprequest: XMapRequestEvent,
+  xreparent: XReparentEvent,
+  xconfigure: XConfigureEvent,
+  xgravity: XGravityEvent,
+  xresizerequest: XResizeRequestEvent,
+  xconfigurerequest: XConfigureRequestEvent,
+  xcirculate: XCirculateEvent,
+  xcirculaterequest: XCirculateRequestEvent,
+  xproperty: XPropertyEvent,
+  xselectionclear: XSelectionClearEvent,
+  xselectionrequest: XSelectionRequestEvent,
+  xselection: XSelectionEvent,
+  xcolormap: XColormapEvent,
+  xclient: XClientMessageEvent,
+  xmapping: XMappingEvent,
+  xerror: XErrorEvent,
+  xkeymap: XKeymapEvent,
+  xgeneric: XGenericEvent,
+  xcookie: XGenericEventCookie,
+  pad: [24]clong
+}
+global XCharStruct: type <cimport, nodecl> = @record{
+  lbearing: cshort,
+  rbearing: cshort,
+  width: cshort,
+  ascent: cshort,
+  descent: cshort,
+  attributes: cushort
+}
+global XFontProp: type <cimport, nodecl> = @record{
+  name: Atom,
+  card32: culong
+}
+global XFontStruct: type <cimport, nodecl> = @record{
+  ext_data: *XExtData,
+  fid: Font,
+  direction: cuint,
+  min_char_or_byte2: cuint,
+  max_char_or_byte2: cuint,
+  min_byte1: cuint,
+  max_byte1: cuint,
+  all_chars_exist: cint,
+  default_char: cuint,
+  n_properties: cint,
+  properties: *XFontProp,
+  min_bounds: XCharStruct,
+  max_bounds: XCharStruct,
+  per_char: *XCharStruct,
+  ascent: cint,
+  descent: cint
+}
+global XTextItem: type <cimport, nodecl> = @record{
+  chars: cstring,
+  nchars: cint,
+  delta: cint,
+  font: Font
+}
+global XChar2b: type <cimport, nodecl> = @record{
+  byte1: cuchar,
+  byte2: cuchar
+}
+global XTextItem16: type <cimport, nodecl> = @record{
+  chars: *XChar2b,
+  nchars: cint,
+  delta: cint,
+  font: Font
+}
+global XEDataObject: type <cimport, nodecl> = @union{
+  display: *Display,
+  gc: GC,
+  visual: *Visual,
+  screen: *Screen,
+  pixmap_format: *ScreenFormat,
+  font: *XFontStruct
+}
+global XFontSetExtents: type <cimport, nodecl> = @record{
+  max_ink_extent: XRectangle,
+  max_logical_extent: XRectangle
+}
+global XOM: type = @pointer
+global XOC: type = @pointer
+global XFontSet: type = @pointer
+global XmbTextItem: type <cimport, nodecl> = @record{
+  chars: cstring,
+  nchars: cint,
+  delta: cint,
+  font_set: XFontSet
+}
+global XwcTextItem: type <cimport, nodecl> = @record{
+  chars: *cint,
+  nchars: cint,
+  delta: cint,
+  font_set: XFontSet
+}
+global XOMCharSetList: type <cimport, nodecl> = @record{
+  charset_count: cint,
+  charset_list: *cstring
+}
+global XOrientation: type <cimport, nodecl, using> = @enum(cint){
+  XOMOrientation_LTR_TTB = 0,
+  XOMOrientation_RTL_TTB = 1,
+  XOMOrientation_TTB_LTR = 2,
+  XOMOrientation_TTB_RTL = 3,
+  XOMOrientation_Context = 4
+}
+global XOMOrientation: type <cimport, nodecl> = @record{
+  num_orientation: cint,
+  orientation: *XOrientation
+}
+global XOMFontInfo: type <cimport, nodecl> = @record{
+  num_font: cint,
+  font_struct_list: **XFontStruct,
+  font_name_list: *cstring
+}
+global XIM: type = @pointer
+global XIC: type = @pointer
+global XIMProc: type <cimport, nodecl> = @function(XIM, XPointer, XPointer)
+global XICProc: type <cimport, nodecl> = @function(XIC, XPointer, XPointer): cint
+global XIDProc: type <cimport, nodecl> = @function(*Display, XPointer, XPointer)
+global XIMStyles: type <cimport, nodecl> = @record{
+  count_styles: cushort,
+  supported_styles: *culong
+}
+global XVaNestedList: type = @pointer
+global XIMCallback: type <cimport, nodecl> = @record{
+  client_data: XPointer,
+  callback: XIMProc
+}
+global XICCallback: type <cimport, nodecl> = @record{
+  client_data: XPointer,
+  callback: XICProc
+}
+global XIMText: type <cimport, nodecl> = @record{
+  length: cushort,
+  feedback: *culong,
+  encoding_is_wchar: cint,
+  string: union{
+    multi_byte: cstring,
+    wide_char: *cint
+  }
+}
+global XIMPreeditStateNotifyCallbackStruct: type <cimport, nodecl> = @record{
+  state: culong
+}
+global XIMStringConversionText: type <cimport, nodecl> = @record{
+  length: cushort,
+  feedback: *culong,
+  encoding_is_wchar: cint,
+  string: union{
+    mbs: cstring,
+    wcs: *cint
+  }
+}
+global XIMCaretDirection: type <cimport, nodecl, using> = @enum(cint){
+  XIMForwardChar = 0,
+  XIMBackwardChar = 1,
+  XIMForwardWord = 2,
+  XIMBackwardWord = 3,
+  XIMCaretUp = 4,
+  XIMCaretDown = 5,
+  XIMNextLine = 6,
+  XIMPreviousLine = 7,
+  XIMLineStart = 8,
+  XIMLineEnd = 9,
+  XIMAbsolutePosition = 10,
+  XIMDontChange = 11
+}
+global XIMStringConversionCallbackStruct: type <cimport, nodecl> = @record{
+  position: cushort,
+  direction: XIMCaretDirection,
+  operation: cushort,
+  factor: cushort,
+  text: *XIMStringConversionText
+}
+global XIMPreeditDrawCallbackStruct: type <cimport, nodecl> = @record{
+  caret: cint,
+  chg_first: cint,
+  chg_length: cint,
+  text: *XIMText
+}
+global XIMCaretStyle: type <cimport, nodecl, using> = @enum(cint){
+  XIMIsInvisible = 0,
+  XIMIsPrimary = 1,
+  XIMIsSecondary = 2
+}
+global XIMPreeditCaretCallbackStruct: type <cimport, nodecl> = @record{
+  position: cint,
+  direction: XIMCaretDirection,
+  style: XIMCaretStyle
+}
+global XIMStatusDataType: type <cimport, nodecl, using> = @enum(cint){
+  XIMTextType = 0,
+  XIMBitmapType = 1
+}
+global XIMStatusDrawCallbackStruct: type <cimport, nodecl> = @record{
+  type: XIMStatusDataType,
+  data: union{
+    text: *XIMText,
+    bitmap: Pixmap
+  }
+}
+global XIMHotKeyTrigger: type <cimport, nodecl> = @record{
+  keysym: KeySym,
+  modifier: cint,
+  modifier_mask: cint
+}
+global XIMHotKeyTriggers: type <cimport, nodecl> = @record{
+  num_hot_key: cint,
+  key: *XIMHotKeyTrigger
+}
+global XIMValuesList: type <cimport, nodecl> = @record{
+  count_values: cushort,
+  supported_values: *cstring
+}
+global function XLoadQueryFont(a1: *Display, a2: cstring): *XFontStruct <cimport, nodecl> end
+global function XQueryFont(a1: *Display, a2: culong): *XFontStruct <cimport, nodecl> end
+global function XGetMotionEvents(a1: *Display, a2: Window, a3: Time, a4: Time, a5: *cint): *XTimeCoord <cimport, nodecl> end
+global function XDeleteModifiermapEntry(a1: *XModifierKeymap, a2: KeyCode, a3: cint): *XModifierKeymap <cimport, nodecl> end
+global function XGetModifierMapping(a1: *Display): *XModifierKeymap <cimport, nodecl> end
+global function XInsertModifiermapEntry(a1: *XModifierKeymap, a2: KeyCode, a3: cint): *XModifierKeymap <cimport, nodecl> end
+global function XNewModifiermap(a1: cint): *XModifierKeymap <cimport, nodecl> end
+global function XCreateImage(a1: *Display, a2: *Visual, a3: cuint, a4: cint, a5: cint, a6: cstring, a7: cuint, a8: cuint, a9: cint, a10: cint): *XImage <cimport, nodecl> end
+global function XInitImage(a1: *XImage): cint <cimport, nodecl> end
+global function XGetImage(a1: *Display, a2: Drawable, a3: cint, a4: cint, a5: cuint, a6: cuint, a7: culong, a8: cint): *XImage <cimport, nodecl> end
+global function XGetSubImage(a1: *Display, a2: Drawable, a3: cint, a4: cint, a5: cuint, a6: cuint, a7: culong, a8: cint, a9: *XImage, a10: cint, a11: cint): *XImage <cimport, nodecl> end
+global function XOpenDisplay(a1: cstring): *Display <cimport, nodecl> end
+global function XrmInitialize() <cimport, nodecl> end
+global function XFetchBytes(a1: *Display, a2: *cint): cstring <cimport, nodecl> end
+global function XFetchBuffer(a1: *Display, a2: *cint, a3: cint): cstring <cimport, nodecl> end
+global function XGetAtomName(a1: *Display, a2: Atom): cstring <cimport, nodecl> end
+global function XGetAtomNames(a1: *Display, a2: *Atom, a3: cint, a4: *cstring): cint <cimport, nodecl> end
+global function XGetDefault(a1: *Display, a2: cstring, a3: cstring): cstring <cimport, nodecl> end
+global function XDisplayName(a1: cstring): cstring <cimport, nodecl> end
+global function XKeysymToString(a1: KeySym): cstring <cimport, nodecl> end
+global function XSynchronize(a1: *Display, a2: cint): function(*Display): cint <cimport, nodecl> end
+global function XSetAfterFunction(a1: *Display, a2: function(*Display): cint): function(*Display): cint <cimport, nodecl> end
+global function XInternAtom(a1: *Display, a2: cstring, a3: cint): Atom <cimport, nodecl> end
+global function XInternAtoms(a1: *Display, a2: *cstring, a3: cint, a4: cint, a5: *Atom): cint <cimport, nodecl> end
+global function XCopyColormapAndFree(a1: *Display, a2: Colormap): Colormap <cimport, nodecl> end
+global function XCreateColormap(a1: *Display, a2: Window, a3: *Visual, a4: cint): Colormap <cimport, nodecl> end
+global function XCreatePixmapCursor(a1: *Display, a2: Pixmap, a3: Pixmap, a4: *XColor, a5: *XColor, a6: cuint, a7: cuint): Cursor <cimport, nodecl> end
+global function XCreateGlyphCursor(a1: *Display, a2: Font, a3: Font, a4: cuint, a5: cuint, a6: *XColor, a7: *XColor): Cursor <cimport, nodecl> end
+global function XCreateFontCursor(a1: *Display, a2: cuint): Cursor <cimport, nodecl> end
+global function XLoadFont(a1: *Display, a2: cstring): Font <cimport, nodecl> end
+global function XCreateGC(a1: *Display, a2: Drawable, a3: culong, a4: *XGCValues): GC <cimport, nodecl> end
+global function XGContextFromGC(a1: GC): GContext <cimport, nodecl> end
+global function XFlushGC(a1: *Display, a2: GC) <cimport, nodecl> end
+global function XCreatePixmap(a1: *Display, a2: Drawable, a3: cuint, a4: cuint, a5: cuint): Pixmap <cimport, nodecl> end
+global function XCreateBitmapFromData(a1: *Display, a2: Drawable, a3: cstring, a4: cuint, a5: cuint): Pixmap <cimport, nodecl> end
+global function XCreatePixmapFromBitmapData(a1: *Display, a2: Drawable, a3: cstring, a4: cuint, a5: cuint, a6: culong, a7: culong, a8: cuint): Pixmap <cimport, nodecl> end
+global function XCreateSimpleWindow(a1: *Display, a2: Window, a3: cint, a4: cint, a5: cuint, a6: cuint, a7: cuint, a8: culong, a9: culong): Window <cimport, nodecl> end
+global function XGetSelectionOwner(a1: *Display, a2: Atom): Window <cimport, nodecl> end
+global function XCreateWindow(a1: *Display, a2: Window, a3: cint, a4: cint, a5: cuint, a6: cuint, a7: cuint, a8: cint, a9: cuint, a10: *Visual, a11: culong, a12: *XSetWindowAttributes): Window <cimport, nodecl> end
+global function XListInstalledColormaps(a1: *Display, a2: Window, a3: *cint): *Colormap <cimport, nodecl> end
+global function XListFonts(a1: *Display, a2: cstring, a3: cint, a4: *cint): *cstring <cimport, nodecl> end
+global function XListFontsWithInfo(a1: *Display, a2: cstring, a3: cint, a4: *cint, a5: **XFontStruct): *cstring <cimport, nodecl> end
+global function XGetFontPath(a1: *Display, a2: *cint): *cstring <cimport, nodecl> end
+global function XListExtensions(a1: *Display, a2: *cint): *cstring <cimport, nodecl> end
+global function XListProperties(a1: *Display, a2: Window, a3: *cint): *Atom <cimport, nodecl> end
+global function XListHosts(a1: *Display, a2: *cint, a3: *cint): *XHostAddress <cimport, nodecl> end
+global function XKeycodeToKeysym(a1: *Display, a2: KeyCode, a3: cint): KeySym <cimport, nodecl> end
+global function XLookupKeysym(a1: *XKeyEvent, a2: cint): KeySym <cimport, nodecl> end
+global function XGetKeyboardMapping(a1: *Display, a2: KeyCode, a3: cint, a4: *cint): *KeySym <cimport, nodecl> end
+global function XStringToKeysym(a1: cstring): KeySym <cimport, nodecl> end
+global function XMaxRequestSize(a1: *Display): clong <cimport, nodecl> end
+global function XExtendedMaxRequestSize(a1: *Display): clong <cimport, nodecl> end
+global function XResourceManagerString(a1: *Display): cstring <cimport, nodecl> end
+global function XScreenResourceString(a1: *Screen): cstring <cimport, nodecl> end
+global function XDisplayMotionBufferSize(a1: *Display): culong <cimport, nodecl> end
+global function XVisualIDFromVisual(a1: *Visual): VisualID <cimport, nodecl> end
+global function XInitThreads(): cint <cimport, nodecl> end
+global function XLockDisplay(a1: *Display) <cimport, nodecl> end
+global function XUnlockDisplay(a1: *Display) <cimport, nodecl> end
+global function XInitExtension(a1: *Display, a2: cstring): *XExtCodes <cimport, nodecl> end
+global function XAddExtension(a1: *Display): *XExtCodes <cimport, nodecl> end
+global function XFindOnExtensionList(a1: **XExtData, a2: cint): *XExtData <cimport, nodecl> end
+global function XEHeadOfExtensionList(a1: XEDataObject): **XExtData <cimport, nodecl> end
+global function XRootWindow(a1: *Display, a2: cint): Window <cimport, nodecl> end
+global function XDefaultRootWindow(a1: *Display): Window <cimport, nodecl> end
+global function XRootWindowOfScreen(a1: *Screen): Window <cimport, nodecl> end
+global function XDefaultVisual(a1: *Display, a2: cint): *Visual <cimport, nodecl> end
+global function XDefaultVisualOfScreen(a1: *Screen): *Visual <cimport, nodecl> end
+global function XDefaultGC(a1: *Display, a2: cint): GC <cimport, nodecl> end
+global function XDefaultGCOfScreen(a1: *Screen): GC <cimport, nodecl> end
+global function XBlackPixel(a1: *Display, a2: cint): culong <cimport, nodecl> end
+global function XWhitePixel(a1: *Display, a2: cint): culong <cimport, nodecl> end
+global function XAllPlanes(): culong <cimport, nodecl> end
+global function XBlackPixelOfScreen(a1: *Screen): culong <cimport, nodecl> end
+global function XWhitePixelOfScreen(a1: *Screen): culong <cimport, nodecl> end
+global function XNextRequest(a1: *Display): culong <cimport, nodecl> end
+global function XLastKnownRequestProcessed(a1: *Display): culong <cimport, nodecl> end
+global function XServerVendor(a1: *Display): cstring <cimport, nodecl> end
+global function XDisplayString(a1: *Display): cstring <cimport, nodecl> end
+global function XDefaultColormap(a1: *Display, a2: cint): Colormap <cimport, nodecl> end
+global function XDefaultColormapOfScreen(a1: *Screen): Colormap <cimport, nodecl> end
+global function XDisplayOfScreen(a1: *Screen): *Display <cimport, nodecl> end
+global function XScreenOfDisplay(a1: *Display, a2: cint): *Screen <cimport, nodecl> end
+global function XDefaultScreenOfDisplay(a1: *Display): *Screen <cimport, nodecl> end
+global function XEventMaskOfScreen(a1: *Screen): clong <cimport, nodecl> end
+global function XScreenNumberOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global XErrorHandler: type <cimport, nodecl> = @function(*Display, *XErrorEvent): cint
+global function XSetErrorHandler(a1: XErrorHandler): XErrorHandler <cimport, nodecl> end
+global XIOErrorHandler: type <cimport, nodecl> = @function(*Display): cint
+global function XSetIOErrorHandler(a1: XIOErrorHandler): XIOErrorHandler <cimport, nodecl> end
+global XIOErrorExitHandler: type <cimport, nodecl> = @function(*Display, pointer)
+global function XSetIOErrorExitHandler(a1: *Display, a2: XIOErrorExitHandler, a3: pointer) <cimport, nodecl> end
+global function XListPixmapFormats(a1: *Display, a2: *cint): *XPixmapFormatValues <cimport, nodecl> end
+global function XListDepths(a1: *Display, a2: cint, a3: *cint): *cint <cimport, nodecl> end
+global function XReconfigureWMWindow(a1: *Display, a2: Window, a3: cint, a4: cuint, a5: *XWindowChanges): cint <cimport, nodecl> end
+global function XGetWMProtocols(a1: *Display, a2: Window, a3: **Atom, a4: *cint): cint <cimport, nodecl> end
+global function XSetWMProtocols(a1: *Display, a2: Window, a3: *Atom, a4: cint): cint <cimport, nodecl> end
+global function XIconifyWindow(a1: *Display, a2: Window, a3: cint): cint <cimport, nodecl> end
+global function XWithdrawWindow(a1: *Display, a2: Window, a3: cint): cint <cimport, nodecl> end
+global function XGetCommand(a1: *Display, a2: Window, a3: **cstring, a4: *cint): cint <cimport, nodecl> end
+global function XGetWMColormapWindows(a1: *Display, a2: Window, a3: **Window, a4: *cint): cint <cimport, nodecl> end
+global function XSetWMColormapWindows(a1: *Display, a2: Window, a3: *Window, a4: cint): cint <cimport, nodecl> end
+global function XFreeStringList(a1: *cstring) <cimport, nodecl> end
+global function XSetTransientForHint(a1: *Display, a2: Window, a3: Window): cint <cimport, nodecl> end
+global function XActivateScreenSaver(a1: *Display): cint <cimport, nodecl> end
+global function XAddHost(a1: *Display, a2: *XHostAddress): cint <cimport, nodecl> end
+global function XAddHosts(a1: *Display, a2: *XHostAddress, a3: cint): cint <cimport, nodecl> end
+global function XAddToExtensionList(a1: **XExtData, a2: *XExtData): cint <cimport, nodecl> end
+global function XAddToSaveSet(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XAllocColor(a1: *Display, a2: Colormap, a3: *XColor): cint <cimport, nodecl> end
+global function XAllocColorCells(a1: *Display, a2: Colormap, a3: cint, a4: *culong, a5: cuint, a6: *culong, a7: cuint): cint <cimport, nodecl> end
+global function XAllocColorPlanes(a1: *Display, a2: Colormap, a3: cint, a4: *culong, a5: cint, a6: cint, a7: cint, a8: cint, a9: *culong, a10: *culong, a11: *culong): cint <cimport, nodecl> end
+global function XAllocNamedColor(a1: *Display, a2: Colormap, a3: cstring, a4: *XColor, a5: *XColor): cint <cimport, nodecl> end
+global function XAllowEvents(a1: *Display, a2: cint, a3: Time): cint <cimport, nodecl> end
+global function XAutoRepeatOff(a1: *Display): cint <cimport, nodecl> end
+global function XAutoRepeatOn(a1: *Display): cint <cimport, nodecl> end
+global function XBell(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XBitmapBitOrder(a1: *Display): cint <cimport, nodecl> end
+global function XBitmapPad(a1: *Display): cint <cimport, nodecl> end
+global function XBitmapUnit(a1: *Display): cint <cimport, nodecl> end
+global function XCellsOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XChangeActivePointerGrab(a1: *Display, a2: cuint, a3: Cursor, a4: Time): cint <cimport, nodecl> end
+global function XChangeGC(a1: *Display, a2: GC, a3: culong, a4: *XGCValues): cint <cimport, nodecl> end
+global function XChangeKeyboardControl(a1: *Display, a2: culong, a3: *XKeyboardControl): cint <cimport, nodecl> end
+global function XChangeKeyboardMapping(a1: *Display, a2: cint, a3: cint, a4: *KeySym, a5: cint): cint <cimport, nodecl> end
+global function XChangePointerControl(a1: *Display, a2: cint, a3: cint, a4: cint, a5: cint, a6: cint): cint <cimport, nodecl> end
+global function XChangeProperty(a1: *Display, a2: Window, a3: Atom, a4: Atom, a5: cint, a6: cint, a7: *cuchar, a8: cint): cint <cimport, nodecl> end
+global function XChangeSaveSet(a1: *Display, a2: Window, a3: cint): cint <cimport, nodecl> end
+global function XChangeWindowAttributes(a1: *Display, a2: Window, a3: culong, a4: *XSetWindowAttributes): cint <cimport, nodecl> end
+global function XCheckIfEvent(a1: *Display, a2: *XEvent, a3: function(*Display, *XEvent, XPointer): cint, a4: XPointer): cint <cimport, nodecl> end
+global function XCheckMaskEvent(a1: *Display, a2: clong, a3: *XEvent): cint <cimport, nodecl> end
+global function XCheckTypedEvent(a1: *Display, a2: cint, a3: *XEvent): cint <cimport, nodecl> end
+global function XCheckTypedWindowEvent(a1: *Display, a2: Window, a3: cint, a4: *XEvent): cint <cimport, nodecl> end
+global function XCheckWindowEvent(a1: *Display, a2: Window, a3: clong, a4: *XEvent): cint <cimport, nodecl> end
+global function XCirculateSubwindows(a1: *Display, a2: Window, a3: cint): cint <cimport, nodecl> end
+global function XCirculateSubwindowsDown(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XCirculateSubwindowsUp(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XClearArea(a1: *Display, a2: Window, a3: cint, a4: cint, a5: cuint, a6: cuint, a7: cint): cint <cimport, nodecl> end
+global function XClearWindow(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XCloseDisplay(a1: *Display): cint <cimport, nodecl> end
+global function XConfigureWindow(a1: *Display, a2: Window, a3: cuint, a4: *XWindowChanges): cint <cimport, nodecl> end
+global function XConnectionNumber(a1: *Display): cint <cimport, nodecl> end
+global function XConvertSelection(a1: *Display, a2: Atom, a3: Atom, a4: Atom, a5: Window, a6: Time): cint <cimport, nodecl> end
+global function XCopyArea(a1: *Display, a2: Drawable, a3: Drawable, a4: GC, a5: cint, a6: cint, a7: cuint, a8: cuint, a9: cint, a10: cint): cint <cimport, nodecl> end
+global function XCopyGC(a1: *Display, a2: GC, a3: culong, a4: GC): cint <cimport, nodecl> end
+global function XCopyPlane(a1: *Display, a2: Drawable, a3: Drawable, a4: GC, a5: cint, a6: cint, a7: cuint, a8: cuint, a9: cint, a10: cint, a11: culong): cint <cimport, nodecl> end
+global function XDefaultDepth(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XDefaultDepthOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XDefaultScreen(a1: *Display): cint <cimport, nodecl> end
+global function XDefineCursor(a1: *Display, a2: Window, a3: Cursor): cint <cimport, nodecl> end
+global function XDeleteProperty(a1: *Display, a2: Window, a3: Atom): cint <cimport, nodecl> end
+global function XDestroyWindow(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XDestroySubwindows(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XDoesBackingStore(a1: *Screen): cint <cimport, nodecl> end
+global function XDoesSaveUnders(a1: *Screen): cint <cimport, nodecl> end
+global function XDisableAccessControl(a1: *Display): cint <cimport, nodecl> end
+global function XDisplayCells(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XDisplayHeight(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XDisplayHeightMM(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XDisplayKeycodes(a1: *Display, a2: *cint, a3: *cint): cint <cimport, nodecl> end
+global function XDisplayPlanes(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XDisplayWidth(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XDisplayWidthMM(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XDrawArc(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: cuint, a7: cuint, a8: cint, a9: cint): cint <cimport, nodecl> end
+global function XDrawArcs(a1: *Display, a2: Drawable, a3: GC, a4: *XArc, a5: cint): cint <cimport, nodecl> end
+global function XDrawImageString(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: cstring, a7: cint): cint <cimport, nodecl> end
+global function XDrawImageString16(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XChar2b, a7: cint): cint <cimport, nodecl> end
+global function XDrawLine(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: cint, a7: cint): cint <cimport, nodecl> end
+global function XDrawLines(a1: *Display, a2: Drawable, a3: GC, a4: *XPoint, a5: cint, a6: cint): cint <cimport, nodecl> end
+global function XDrawPoint(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint): cint <cimport, nodecl> end
+global function XDrawPoints(a1: *Display, a2: Drawable, a3: GC, a4: *XPoint, a5: cint, a6: cint): cint <cimport, nodecl> end
+global function XDrawRectangle(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: cuint, a7: cuint): cint <cimport, nodecl> end
+global function XDrawRectangles(a1: *Display, a2: Drawable, a3: GC, a4: *XRectangle, a5: cint): cint <cimport, nodecl> end
+global function XDrawSegments(a1: *Display, a2: Drawable, a3: GC, a4: *XSegment, a5: cint): cint <cimport, nodecl> end
+global function XDrawString(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: cstring, a7: cint): cint <cimport, nodecl> end
+global function XDrawString16(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XChar2b, a7: cint): cint <cimport, nodecl> end
+global function XDrawText(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XTextItem, a7: cint): cint <cimport, nodecl> end
+global function XDrawText16(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XTextItem16, a7: cint): cint <cimport, nodecl> end
+global function XEnableAccessControl(a1: *Display): cint <cimport, nodecl> end
+global function XEventsQueued(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XFetchName(a1: *Display, a2: Window, a3: *cstring): cint <cimport, nodecl> end
+global function XFillArc(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: cuint, a7: cuint, a8: cint, a9: cint): cint <cimport, nodecl> end
+global function XFillArcs(a1: *Display, a2: Drawable, a3: GC, a4: *XArc, a5: cint): cint <cimport, nodecl> end
+global function XFillPolygon(a1: *Display, a2: Drawable, a3: GC, a4: *XPoint, a5: cint, a6: cint, a7: cint): cint <cimport, nodecl> end
+global function XFillRectangle(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: cuint, a7: cuint): cint <cimport, nodecl> end
+global function XFillRectangles(a1: *Display, a2: Drawable, a3: GC, a4: *XRectangle, a5: cint): cint <cimport, nodecl> end
+global function XFlush(a1: *Display): cint <cimport, nodecl> end
+global function XForceScreenSaver(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XFree(a1: pointer): cint <cimport, nodecl> end
+global function XFreeColormap(a1: *Display, a2: Colormap): cint <cimport, nodecl> end
+global function XFreeColors(a1: *Display, a2: Colormap, a3: *culong, a4: cint, a5: culong): cint <cimport, nodecl> end
+global function XFreeCursor(a1: *Display, a2: Cursor): cint <cimport, nodecl> end
+global function XFreeExtensionList(a1: *cstring): cint <cimport, nodecl> end
+global function XFreeFont(a1: *Display, a2: *XFontStruct): cint <cimport, nodecl> end
+global function XFreeFontInfo(a1: *cstring, a2: *XFontStruct, a3: cint): cint <cimport, nodecl> end
+global function XFreeFontNames(a1: *cstring): cint <cimport, nodecl> end
+global function XFreeFontPath(a1: *cstring): cint <cimport, nodecl> end
+global function XFreeGC(a1: *Display, a2: GC): cint <cimport, nodecl> end
+global function XFreeModifiermap(a1: *XModifierKeymap): cint <cimport, nodecl> end
+global function XFreePixmap(a1: *Display, a2: Pixmap): cint <cimport, nodecl> end
+global function XGeometry(a1: *Display, a2: cint, a3: cstring, a4: cstring, a5: cuint, a6: cuint, a7: cuint, a8: cint, a9: cint, a10: *cint, a11: *cint, a12: *cint, a13: *cint): cint <cimport, nodecl> end
+global function XGetErrorDatabaseText(a1: *Display, a2: cstring, a3: cstring, a4: cstring, a5: cstring, a6: cint): cint <cimport, nodecl> end
+global function XGetErrorText(a1: *Display, a2: cint, a3: cstring, a4: cint): cint <cimport, nodecl> end
+global function XGetFontProperty(a1: *XFontStruct, a2: Atom, a3: *culong): cint <cimport, nodecl> end
+global function XGetGCValues(a1: *Display, a2: GC, a3: culong, a4: *XGCValues): cint <cimport, nodecl> end
+global function XGetGeometry(a1: *Display, a2: Drawable, a3: *Window, a4: *cint, a5: *cint, a6: *cuint, a7: *cuint, a8: *cuint, a9: *cuint): cint <cimport, nodecl> end
+global function XGetIconName(a1: *Display, a2: Window, a3: *cstring): cint <cimport, nodecl> end
+global function XGetInputFocus(a1: *Display, a2: *Window, a3: *cint): cint <cimport, nodecl> end
+global function XGetKeyboardControl(a1: *Display, a2: *XKeyboardState): cint <cimport, nodecl> end
+global function XGetPointerControl(a1: *Display, a2: *cint, a3: *cint, a4: *cint): cint <cimport, nodecl> end
+global function XGetPointerMapping(a1: *Display, a2: *cuchar, a3: cint): cint <cimport, nodecl> end
+global function XGetScreenSaver(a1: *Display, a2: *cint, a3: *cint, a4: *cint, a5: *cint): cint <cimport, nodecl> end
+global function XGetTransientForHint(a1: *Display, a2: Window, a3: *Window): cint <cimport, nodecl> end
+global function XGetWindowProperty(a1: *Display, a2: Window, a3: Atom, a4: clong, a5: clong, a6: cint, a7: Atom, a8: *Atom, a9: *cint, a10: *culong, a11: *culong, a12: **cuchar): cint <cimport, nodecl> end
+global function XGetWindowAttributes(a1: *Display, a2: Window, a3: *XWindowAttributes): cint <cimport, nodecl> end
+global function XGrabButton(a1: *Display, a2: cuint, a3: cuint, a4: Window, a5: cint, a6: cuint, a7: cint, a8: cint, a9: Window, a10: Cursor): cint <cimport, nodecl> end
+global function XGrabKey(a1: *Display, a2: cint, a3: cuint, a4: Window, a5: cint, a6: cint, a7: cint): cint <cimport, nodecl> end
+global function XGrabKeyboard(a1: *Display, a2: Window, a3: cint, a4: cint, a5: cint, a6: Time): cint <cimport, nodecl> end
+global function XGrabPointer(a1: *Display, a2: Window, a3: cint, a4: cuint, a5: cint, a6: cint, a7: Window, a8: Cursor, a9: Time): cint <cimport, nodecl> end
+global function XGrabServer(a1: *Display): cint <cimport, nodecl> end
+global function XHeightMMOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XHeightOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XIfEvent(a1: *Display, a2: *XEvent, a3: function(*Display, *XEvent, XPointer): cint, a4: XPointer): cint <cimport, nodecl> end
+global function XImageByteOrder(a1: *Display): cint <cimport, nodecl> end
+global function XInstallColormap(a1: *Display, a2: Colormap): cint <cimport, nodecl> end
+global function XKeysymToKeycode(a1: *Display, a2: KeySym): KeyCode <cimport, nodecl> end
+global function XKillClient(a1: *Display, a2: culong): cint <cimport, nodecl> end
+global function XLookupColor(a1: *Display, a2: Colormap, a3: cstring, a4: *XColor, a5: *XColor): cint <cimport, nodecl> end
+global function XLowerWindow(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XMapRaised(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XMapSubwindows(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XMapWindow(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XMaskEvent(a1: *Display, a2: clong, a3: *XEvent): cint <cimport, nodecl> end
+global function XMaxCmapsOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XMinCmapsOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XMoveResizeWindow(a1: *Display, a2: Window, a3: cint, a4: cint, a5: cuint, a6: cuint): cint <cimport, nodecl> end
+global function XMoveWindow(a1: *Display, a2: Window, a3: cint, a4: cint): cint <cimport, nodecl> end
+global function XNextEvent(a1: *Display, a2: *XEvent): cint <cimport, nodecl> end
+global function XNoOp(a1: *Display): cint <cimport, nodecl> end
+global function XParseColor(a1: *Display, a2: Colormap, a3: cstring, a4: *XColor): cint <cimport, nodecl> end
+global function XParseGeometry(a1: cstring, a2: *cint, a3: *cint, a4: *cuint, a5: *cuint): cint <cimport, nodecl> end
+global function XPeekEvent(a1: *Display, a2: *XEvent): cint <cimport, nodecl> end
+global function XPeekIfEvent(a1: *Display, a2: *XEvent, a3: function(*Display, *XEvent, XPointer): cint, a4: XPointer): cint <cimport, nodecl> end
+global function XPending(a1: *Display): cint <cimport, nodecl> end
+global function XPlanesOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XProtocolRevision(a1: *Display): cint <cimport, nodecl> end
+global function XProtocolVersion(a1: *Display): cint <cimport, nodecl> end
+global function XPutBackEvent(a1: *Display, a2: *XEvent): cint <cimport, nodecl> end
+global function XPutImage(a1: *Display, a2: Drawable, a3: GC, a4: *XImage, a5: cint, a6: cint, a7: cint, a8: cint, a9: cuint, a10: cuint): cint <cimport, nodecl> end
+global function XQLength(a1: *Display): cint <cimport, nodecl> end
+global function XQueryBestCursor(a1: *Display, a2: Drawable, a3: cuint, a4: cuint, a5: *cuint, a6: *cuint): cint <cimport, nodecl> end
+global function XQueryBestSize(a1: *Display, a2: cint, a3: Drawable, a4: cuint, a5: cuint, a6: *cuint, a7: *cuint): cint <cimport, nodecl> end
+global function XQueryBestStipple(a1: *Display, a2: Drawable, a3: cuint, a4: cuint, a5: *cuint, a6: *cuint): cint <cimport, nodecl> end
+global function XQueryBestTile(a1: *Display, a2: Drawable, a3: cuint, a4: cuint, a5: *cuint, a6: *cuint): cint <cimport, nodecl> end
+global function XQueryColor(a1: *Display, a2: Colormap, a3: *XColor): cint <cimport, nodecl> end
+global function XQueryColors(a1: *Display, a2: Colormap, a3: *XColor, a4: cint): cint <cimport, nodecl> end
+global function XQueryExtension(a1: *Display, a2: cstring, a3: *cint, a4: *cint, a5: *cint): cint <cimport, nodecl> end
+global function XQueryKeymap(a1: *Display, a2: cstring): cint <cimport, nodecl> end
+global function XQueryPointer(a1: *Display, a2: Window, a3: *Window, a4: *Window, a5: *cint, a6: *cint, a7: *cint, a8: *cint, a9: *cuint): cint <cimport, nodecl> end
+global function XQueryTextExtents(a1: *Display, a2: culong, a3: cstring, a4: cint, a5: *cint, a6: *cint, a7: *cint, a8: *XCharStruct): cint <cimport, nodecl> end
+global function XQueryTextExtents16(a1: *Display, a2: culong, a3: *XChar2b, a4: cint, a5: *cint, a6: *cint, a7: *cint, a8: *XCharStruct): cint <cimport, nodecl> end
+global function XQueryTree(a1: *Display, a2: Window, a3: *Window, a4: *Window, a5: **Window, a6: *cuint): cint <cimport, nodecl> end
+global function XRaiseWindow(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XReadBitmapFile(a1: *Display, a2: Drawable, a3: cstring, a4: *cuint, a5: *cuint, a6: *Pixmap, a7: *cint, a8: *cint): cint <cimport, nodecl> end
+global function XReadBitmapFileData(a1: cstring, a2: *cuint, a3: *cuint, a4: **cuchar, a5: *cint, a6: *cint): cint <cimport, nodecl> end
+global function XRebindKeysym(a1: *Display, a2: KeySym, a3: *KeySym, a4: cint, a5: *cuchar, a6: cint): cint <cimport, nodecl> end
+global function XRecolorCursor(a1: *Display, a2: Cursor, a3: *XColor, a4: *XColor): cint <cimport, nodecl> end
+global function XRefreshKeyboardMapping(a1: *XMappingEvent): cint <cimport, nodecl> end
+global function XRemoveFromSaveSet(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XRemoveHost(a1: *Display, a2: *XHostAddress): cint <cimport, nodecl> end
+global function XRemoveHosts(a1: *Display, a2: *XHostAddress, a3: cint): cint <cimport, nodecl> end
+global function XReparentWindow(a1: *Display, a2: Window, a3: Window, a4: cint, a5: cint): cint <cimport, nodecl> end
+global function XResetScreenSaver(a1: *Display): cint <cimport, nodecl> end
+global function XResizeWindow(a1: *Display, a2: Window, a3: cuint, a4: cuint): cint <cimport, nodecl> end
+global function XRestackWindows(a1: *Display, a2: *Window, a3: cint): cint <cimport, nodecl> end
+global function XRotateBuffers(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XRotateWindowProperties(a1: *Display, a2: Window, a3: *Atom, a4: cint, a5: cint): cint <cimport, nodecl> end
+global function XScreenCount(a1: *Display): cint <cimport, nodecl> end
+global function XSelectInput(a1: *Display, a2: Window, a3: clong): cint <cimport, nodecl> end
+global function XSendEvent(a1: *Display, a2: Window, a3: cint, a4: clong, a5: *XEvent): cint <cimport, nodecl> end
+global function XSetAccessControl(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XSetArcMode(a1: *Display, a2: GC, a3: cint): cint <cimport, nodecl> end
+global function XSetBackground(a1: *Display, a2: GC, a3: culong): cint <cimport, nodecl> end
+global function XSetClipMask(a1: *Display, a2: GC, a3: Pixmap): cint <cimport, nodecl> end
+global function XSetClipOrigin(a1: *Display, a2: GC, a3: cint, a4: cint): cint <cimport, nodecl> end
+global function XSetClipRectangles(a1: *Display, a2: GC, a3: cint, a4: cint, a5: *XRectangle, a6: cint, a7: cint): cint <cimport, nodecl> end
+global function XSetCloseDownMode(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XSetCommand(a1: *Display, a2: Window, a3: *cstring, a4: cint): cint <cimport, nodecl> end
+global function XSetDashes(a1: *Display, a2: GC, a3: cint, a4: cstring, a5: cint): cint <cimport, nodecl> end
+global function XSetFillRule(a1: *Display, a2: GC, a3: cint): cint <cimport, nodecl> end
+global function XSetFillStyle(a1: *Display, a2: GC, a3: cint): cint <cimport, nodecl> end
+global function XSetFont(a1: *Display, a2: GC, a3: Font): cint <cimport, nodecl> end
+global function XSetFontPath(a1: *Display, a2: *cstring, a3: cint): cint <cimport, nodecl> end
+global function XSetForeground(a1: *Display, a2: GC, a3: culong): cint <cimport, nodecl> end
+global function XSetFunction(a1: *Display, a2: GC, a3: cint): cint <cimport, nodecl> end
+global function XSetGraphicsExposures(a1: *Display, a2: GC, a3: cint): cint <cimport, nodecl> end
+global function XSetIconName(a1: *Display, a2: Window, a3: cstring): cint <cimport, nodecl> end
+global function XSetInputFocus(a1: *Display, a2: Window, a3: cint, a4: Time): cint <cimport, nodecl> end
+global function XSetLineAttributes(a1: *Display, a2: GC, a3: cuint, a4: cint, a5: cint, a6: cint): cint <cimport, nodecl> end
+global function XSetModifierMapping(a1: *Display, a2: *XModifierKeymap): cint <cimport, nodecl> end
+global function XSetPlaneMask(a1: *Display, a2: GC, a3: culong): cint <cimport, nodecl> end
+global function XSetPointerMapping(a1: *Display, a2: *cuchar, a3: cint): cint <cimport, nodecl> end
+global function XSetScreenSaver(a1: *Display, a2: cint, a3: cint, a4: cint, a5: cint): cint <cimport, nodecl> end
+global function XSetSelectionOwner(a1: *Display, a2: Atom, a3: Window, a4: Time): cint <cimport, nodecl> end
+global function XSetState(a1: *Display, a2: GC, a3: culong, a4: culong, a5: cint, a6: culong): cint <cimport, nodecl> end
+global function XSetStipple(a1: *Display, a2: GC, a3: Pixmap): cint <cimport, nodecl> end
+global function XSetSubwindowMode(a1: *Display, a2: GC, a3: cint): cint <cimport, nodecl> end
+global function XSetTSOrigin(a1: *Display, a2: GC, a3: cint, a4: cint): cint <cimport, nodecl> end
+global function XSetTile(a1: *Display, a2: GC, a3: Pixmap): cint <cimport, nodecl> end
+global function XSetWindowBackground(a1: *Display, a2: Window, a3: culong): cint <cimport, nodecl> end
+global function XSetWindowBackgroundPixmap(a1: *Display, a2: Window, a3: Pixmap): cint <cimport, nodecl> end
+global function XSetWindowBorder(a1: *Display, a2: Window, a3: culong): cint <cimport, nodecl> end
+global function XSetWindowBorderPixmap(a1: *Display, a2: Window, a3: Pixmap): cint <cimport, nodecl> end
+global function XSetWindowBorderWidth(a1: *Display, a2: Window, a3: cuint): cint <cimport, nodecl> end
+global function XSetWindowColormap(a1: *Display, a2: Window, a3: Colormap): cint <cimport, nodecl> end
+global function XStoreBuffer(a1: *Display, a2: cstring, a3: cint, a4: cint): cint <cimport, nodecl> end
+global function XStoreBytes(a1: *Display, a2: cstring, a3: cint): cint <cimport, nodecl> end
+global function XStoreColor(a1: *Display, a2: Colormap, a3: *XColor): cint <cimport, nodecl> end
+global function XStoreColors(a1: *Display, a2: Colormap, a3: *XColor, a4: cint): cint <cimport, nodecl> end
+global function XStoreName(a1: *Display, a2: Window, a3: cstring): cint <cimport, nodecl> end
+global function XStoreNamedColor(a1: *Display, a2: Colormap, a3: cstring, a4: culong, a5: cint): cint <cimport, nodecl> end
+global function XSync(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XTextExtents(a1: *XFontStruct, a2: cstring, a3: cint, a4: *cint, a5: *cint, a6: *cint, a7: *XCharStruct): cint <cimport, nodecl> end
+global function XTextExtents16(a1: *XFontStruct, a2: *XChar2b, a3: cint, a4: *cint, a5: *cint, a6: *cint, a7: *XCharStruct): cint <cimport, nodecl> end
+global function XTextWidth(a1: *XFontStruct, a2: cstring, a3: cint): cint <cimport, nodecl> end
+global function XTextWidth16(a1: *XFontStruct, a2: *XChar2b, a3: cint): cint <cimport, nodecl> end
+global function XTranslateCoordinates(a1: *Display, a2: Window, a3: Window, a4: cint, a5: cint, a6: *cint, a7: *cint, a8: *Window): cint <cimport, nodecl> end
+global function XUndefineCursor(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XUngrabButton(a1: *Display, a2: cuint, a3: cuint, a4: Window): cint <cimport, nodecl> end
+global function XUngrabKey(a1: *Display, a2: cint, a3: cuint, a4: Window): cint <cimport, nodecl> end
+global function XUngrabKeyboard(a1: *Display, a2: Time): cint <cimport, nodecl> end
+global function XUngrabPointer(a1: *Display, a2: Time): cint <cimport, nodecl> end
+global function XUngrabServer(a1: *Display): cint <cimport, nodecl> end
+global function XUninstallColormap(a1: *Display, a2: Colormap): cint <cimport, nodecl> end
+global function XUnloadFont(a1: *Display, a2: Font): cint <cimport, nodecl> end
+global function XUnmapSubwindows(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XUnmapWindow(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XVendorRelease(a1: *Display): cint <cimport, nodecl> end
+global function XWarpPointer(a1: *Display, a2: Window, a3: Window, a4: cint, a5: cint, a6: cuint, a7: cuint, a8: cint, a9: cint): cint <cimport, nodecl> end
+global function XWidthMMOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XWidthOfScreen(a1: *Screen): cint <cimport, nodecl> end
+global function XWindowEvent(a1: *Display, a2: Window, a3: clong, a4: *XEvent): cint <cimport, nodecl> end
+global function XWriteBitmapFile(a1: *Display, a2: cstring, a3: Pixmap, a4: cuint, a5: cuint, a6: cint, a7: cint): cint <cimport, nodecl> end
+global function XSupportsLocale(): cint <cimport, nodecl> end
+global function XSetLocaleModifiers(a1: cstring): cstring <cimport, nodecl> end
+global function XOpenOM(a1: *Display, a2: pointer, a3: cstring, a4: cstring): XOM <cimport, nodecl> end
+global function XCloseOM(a1: XOM): cint <cimport, nodecl> end
+global function XSetOMValues(a1: XOM, ...: cvarargs): cstring <cimport, nodecl> end
+global function XGetOMValues(a1: XOM, ...: cvarargs): cstring <cimport, nodecl> end
+global function XDisplayOfOM(a1: XOM): *Display <cimport, nodecl> end
+global function XLocaleOfOM(a1: XOM): cstring <cimport, nodecl> end
+global function XCreateOC(a1: XOM, ...: cvarargs): XOC <cimport, nodecl> end
+global function XDestroyOC(a1: XOC) <cimport, nodecl> end
+global function XOMOfOC(a1: XOC): XOM <cimport, nodecl> end
+global function XSetOCValues(a1: XOC, ...: cvarargs): cstring <cimport, nodecl> end
+global function XGetOCValues(a1: XOC, ...: cvarargs): cstring <cimport, nodecl> end
+global function XCreateFontSet(a1: *Display, a2: cstring, a3: **cstring, a4: *cint, a5: *cstring): XFontSet <cimport, nodecl> end
+global function XFreeFontSet(a1: *Display, a2: XFontSet) <cimport, nodecl> end
+global function XFontsOfFontSet(a1: XFontSet, a2: ***XFontStruct, a3: **cstring): cint <cimport, nodecl> end
+global function XBaseFontNameListOfFontSet(a1: XFontSet): cstring <cimport, nodecl> end
+global function XLocaleOfFontSet(a1: XFontSet): cstring <cimport, nodecl> end
+global function XContextDependentDrawing(a1: XFontSet): cint <cimport, nodecl> end
+global function XDirectionalDependentDrawing(a1: XFontSet): cint <cimport, nodecl> end
+global function XContextualDrawing(a1: XFontSet): cint <cimport, nodecl> end
+global function XExtentsOfFontSet(a1: XFontSet): *XFontSetExtents <cimport, nodecl> end
+global function XmbTextEscapement(a1: XFontSet, a2: cstring, a3: cint): cint <cimport, nodecl> end
+global function XwcTextEscapement(a1: XFontSet, a2: *cint, a3: cint): cint <cimport, nodecl> end
+global function Xutf8TextEscapement(a1: XFontSet, a2: cstring, a3: cint): cint <cimport, nodecl> end
+global function XmbTextExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle): cint <cimport, nodecl> end
+global function XwcTextExtents(a1: XFontSet, a2: *cint, a3: cint, a4: *XRectangle, a5: *XRectangle): cint <cimport, nodecl> end
+global function Xutf8TextExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle): cint <cimport, nodecl> end
+global function XmbTextPerCharExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle, a6: cint, a7: *cint, a8: *XRectangle, a9: *XRectangle): cint <cimport, nodecl> end
+global function XwcTextPerCharExtents(a1: XFontSet, a2: *cint, a3: cint, a4: *XRectangle, a5: *XRectangle, a6: cint, a7: *cint, a8: *XRectangle, a9: *XRectangle): cint <cimport, nodecl> end
+global function Xutf8TextPerCharExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle, a6: cint, a7: *cint, a8: *XRectangle, a9: *XRectangle): cint <cimport, nodecl> end
+global function XmbDrawText(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XmbTextItem, a7: cint) <cimport, nodecl> end
+global function XwcDrawText(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XwcTextItem, a7: cint) <cimport, nodecl> end
+global function Xutf8DrawText(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XmbTextItem, a7: cint) <cimport, nodecl> end
+global function XmbDrawString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint) <cimport, nodecl> end
+global function XwcDrawString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: *cint, a8: cint) <cimport, nodecl> end
+global function Xutf8DrawString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint) <cimport, nodecl> end
+global function XmbDrawImageString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint) <cimport, nodecl> end
+global function XwcDrawImageString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: *cint, a8: cint) <cimport, nodecl> end
+global function Xutf8DrawImageString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint) <cimport, nodecl> end
+global function XOpenIM(a1: *Display, a2: pointer, a3: cstring, a4: cstring): XIM <cimport, nodecl> end
+global function XCloseIM(a1: XIM): cint <cimport, nodecl> end
+global function XGetIMValues(a1: XIM, ...: cvarargs): cstring <cimport, nodecl> end
+global function XSetIMValues(a1: XIM, ...: cvarargs): cstring <cimport, nodecl> end
+global function XDisplayOfIM(a1: XIM): *Display <cimport, nodecl> end
+global function XLocaleOfIM(a1: XIM): cstring <cimport, nodecl> end
+global function XCreateIC(a1: XIM, ...: cvarargs): XIC <cimport, nodecl> end
+global function XDestroyIC(a1: XIC) <cimport, nodecl> end
+global function XSetICFocus(a1: XIC) <cimport, nodecl> end
+global function XUnsetICFocus(a1: XIC) <cimport, nodecl> end
+global function XwcResetIC(a1: XIC): *cint <cimport, nodecl> end
+global function XmbResetIC(a1: XIC): cstring <cimport, nodecl> end
+global function Xutf8ResetIC(a1: XIC): cstring <cimport, nodecl> end
+global function XSetICValues(a1: XIC, ...: cvarargs): cstring <cimport, nodecl> end
+global function XGetICValues(a1: XIC, ...: cvarargs): cstring <cimport, nodecl> end
+global function XIMOfIC(a1: XIC): XIM <cimport, nodecl> end
+global function XFilterEvent(a1: *XEvent, a2: Window): cint <cimport, nodecl> end
+global function XmbLookupString(a1: XIC, a2: *XKeyPressedEvent, a3: cstring, a4: cint, a5: *KeySym, a6: *cint): cint <cimport, nodecl> end
+global function XwcLookupString(a1: XIC, a2: *XKeyPressedEvent, a3: *cint, a4: cint, a5: *KeySym, a6: *cint): cint <cimport, nodecl> end
+global function Xutf8LookupString(a1: XIC, a2: *XKeyPressedEvent, a3: cstring, a4: cint, a5: *KeySym, a6: *cint): cint <cimport, nodecl> end
+global function XVaCreateNestedList(a1: cint, ...: cvarargs): XVaNestedList <cimport, nodecl> end
+global function XRegisterIMInstantiateCallback(a1: *Display, a2: pointer, a3: cstring, a4: cstring, a5: XIDProc, a6: XPointer): cint <cimport, nodecl> end
+global function XUnregisterIMInstantiateCallback(a1: *Display, a2: pointer, a3: cstring, a4: cstring, a5: XIDProc, a6: XPointer): cint <cimport, nodecl> end
+global XConnectionWatchProc: type <cimport, nodecl> = @function(*Display, XPointer, cint, cint, *XPointer)
+global function XInternalConnectionNumbers(a1: *Display, a2: **cint, a3: *cint): cint <cimport, nodecl> end
+global function XProcessInternalConnection(a1: *Display, a2: cint) <cimport, nodecl> end
+global function XAddConnectionWatch(a1: *Display, a2: XConnectionWatchProc, a3: XPointer): cint <cimport, nodecl> end
+global function XRemoveConnectionWatch(a1: *Display, a2: XConnectionWatchProc, a3: XPointer) <cimport, nodecl> end
+global function XSetAuthorization(a1: cstring, a2: cint, a3: cstring, a4: cint) <cimport, nodecl> end
+global function XGetEventData(a1: *Display, a2: *XGenericEventCookie): cint <cimport, nodecl> end
+global function XFreeEventData(a1: *Display, a2: *XGenericEventCookie) <cimport, nodecl> end
+global XSizeHints: type <cimport, nodecl> = @record{
+  flags: clong,
+  x: cint,
+  y: cint,
+  width: cint,
+  height: cint,
+  min_width: cint,
+  min_height: cint,
+  max_width: cint,
+  max_height: cint,
+  width_inc: cint,
+  height_inc: cint,
+  min_aspect: record{
+    x: cint,
+    y: cint
+  },
+  max_aspect: record{
+    x: cint,
+    y: cint
+  },
+  base_width: cint,
+  base_height: cint,
+  win_gravity: cint
+}
+global XWMHints: type <cimport, nodecl> = @record{
+  flags: clong,
+  input: cint,
+  initial_state: cint,
+  icon_pixmap: Pixmap,
+  icon_window: Window,
+  icon_x: cint,
+  icon_y: cint,
+  icon_mask: Pixmap,
+  window_group: culong
+}
+global XTextProperty: type <cimport, nodecl> = @record{
+  value: *cuchar,
+  encoding: Atom,
+  format: cint,
+  nitems: culong
+}
+global XICCEncodingStyle: type <cimport, nodecl, using> = @enum(cint){
+  XStringStyle = 0,
+  XCompoundTextStyle = 1,
+  XTextStyle = 2,
+  XStdICCTextStyle = 3,
+  XUTF8StringStyle = 4
+}
+global XIconSize: type <cimport, nodecl> = @record{
+  min_width: cint,
+  min_height: cint,
+  max_width: cint,
+  max_height: cint,
+  width_inc: cint,
+  height_inc: cint
+}
+global XClassHint: type <cimport, nodecl> = @record{
+  res_name: cstring,
+  res_class: cstring
+}
+global XComposeStatus: type <cimport, nodecl> = @record{
+  compose_ptr: XPointer,
+  chars_matched: cint
+}
+global Region: type = @pointer
+global XVisualInfo: type <cimport, nodecl> = @record{
+  visual: *Visual,
+  visualid: VisualID,
+  screen: cint,
+  depth: cint,
+  class: cint,
+  red_mask: culong,
+  green_mask: culong,
+  blue_mask: culong,
+  colormap_size: cint,
+  bits_per_rgb: cint
+}
+global XStandardColormap: type <cimport, nodecl> = @record{
+  colormap: Colormap,
+  red_max: culong,
+  red_mult: culong,
+  green_max: culong,
+  green_mult: culong,
+  blue_max: culong,
+  blue_mult: culong,
+  base_pixel: culong,
+  visualid: VisualID,
+  killid: culong
+}
+global function XAllocClassHint(): *XClassHint <cimport, nodecl> end
+global function XAllocIconSize(): *XIconSize <cimport, nodecl> end
+global function XAllocSizeHints(): *XSizeHints <cimport, nodecl> end
+global function XAllocStandardColormap(): *XStandardColormap <cimport, nodecl> end
+global function XAllocWMHints(): *XWMHints <cimport, nodecl> end
+global function XClipBox(a1: Region, a2: *XRectangle): cint <cimport, nodecl> end
+global function XCreateRegion(): Region <cimport, nodecl> end
+global function XDefaultString(): cstring <cimport, nodecl> end
+global function XDeleteContext(a1: *Display, a2: culong, a3: cint): cint <cimport, nodecl> end
+global function XDestroyRegion(a1: Region): cint <cimport, nodecl> end
+global function XEmptyRegion(a1: Region): cint <cimport, nodecl> end
+global function XEqualRegion(a1: Region, a2: Region): cint <cimport, nodecl> end
+global function XFindContext(a1: *Display, a2: culong, a3: cint, a4: *XPointer): cint <cimport, nodecl> end
+global function XGetClassHint(a1: *Display, a2: Window, a3: *XClassHint): cint <cimport, nodecl> end
+global function XGetIconSizes(a1: *Display, a2: Window, a3: **XIconSize, a4: *cint): cint <cimport, nodecl> end
+global function XGetNormalHints(a1: *Display, a2: Window, a3: *XSizeHints): cint <cimport, nodecl> end
+global function XGetRGBColormaps(a1: *Display, a2: Window, a3: **XStandardColormap, a4: *cint, a5: Atom): cint <cimport, nodecl> end
+global function XGetSizeHints(a1: *Display, a2: Window, a3: *XSizeHints, a4: Atom): cint <cimport, nodecl> end
+global function XGetStandardColormap(a1: *Display, a2: Window, a3: *XStandardColormap, a4: Atom): cint <cimport, nodecl> end
+global function XGetTextProperty(a1: *Display, a2: Window, a3: *XTextProperty, a4: Atom): cint <cimport, nodecl> end
+global function XGetVisualInfo(a1: *Display, a2: clong, a3: *XVisualInfo, a4: *cint): *XVisualInfo <cimport, nodecl> end
+global function XGetWMClientMachine(a1: *Display, a2: Window, a3: *XTextProperty): cint <cimport, nodecl> end
+global function XGetWMHints(a1: *Display, a2: Window): *XWMHints <cimport, nodecl> end
+global function XGetWMIconName(a1: *Display, a2: Window, a3: *XTextProperty): cint <cimport, nodecl> end
+global function XGetWMName(a1: *Display, a2: Window, a3: *XTextProperty): cint <cimport, nodecl> end
+global function XGetWMNormalHints(a1: *Display, a2: Window, a3: *XSizeHints, a4: *clong): cint <cimport, nodecl> end
+global function XGetWMSizeHints(a1: *Display, a2: Window, a3: *XSizeHints, a4: *clong, a5: Atom): cint <cimport, nodecl> end
+global function XGetZoomHints(a1: *Display, a2: Window, a3: *XSizeHints): cint <cimport, nodecl> end
+global function XIntersectRegion(a1: Region, a2: Region, a3: Region): cint <cimport, nodecl> end
+global function XConvertCase(a1: KeySym, a2: *KeySym, a3: *KeySym) <cimport, nodecl> end
+global function XLookupString(a1: *XKeyEvent, a2: cstring, a3: cint, a4: *KeySym, a5: *XComposeStatus): cint <cimport, nodecl> end
+global function XMatchVisualInfo(a1: *Display, a2: cint, a3: cint, a4: cint, a5: *XVisualInfo): cint <cimport, nodecl> end
+global function XOffsetRegion(a1: Region, a2: cint, a3: cint): cint <cimport, nodecl> end
+global function XPointInRegion(a1: Region, a2: cint, a3: cint): cint <cimport, nodecl> end
+global function XPolygonRegion(a1: *XPoint, a2: cint, a3: cint): Region <cimport, nodecl> end
+global function XRectInRegion(a1: Region, a2: cint, a3: cint, a4: cuint, a5: cuint): cint <cimport, nodecl> end
+global function XSaveContext(a1: *Display, a2: culong, a3: cint, a4: cstring): cint <cimport, nodecl> end
+global function XSetClassHint(a1: *Display, a2: Window, a3: *XClassHint): cint <cimport, nodecl> end
+global function XSetIconSizes(a1: *Display, a2: Window, a3: *XIconSize, a4: cint): cint <cimport, nodecl> end
+global function XSetNormalHints(a1: *Display, a2: Window, a3: *XSizeHints): cint <cimport, nodecl> end
+global function XSetRGBColormaps(a1: *Display, a2: Window, a3: *XStandardColormap, a4: cint, a5: Atom) <cimport, nodecl> end
+global function XSetSizeHints(a1: *Display, a2: Window, a3: *XSizeHints, a4: Atom): cint <cimport, nodecl> end
+global function XSetStandardProperties(a1: *Display, a2: Window, a3: cstring, a4: cstring, a5: Pixmap, a6: *cstring, a7: cint, a8: *XSizeHints): cint <cimport, nodecl> end
+global function XSetTextProperty(a1: *Display, a2: Window, a3: *XTextProperty, a4: Atom) <cimport, nodecl> end
+global function XSetWMClientMachine(a1: *Display, a2: Window, a3: *XTextProperty) <cimport, nodecl> end
+global function XSetWMHints(a1: *Display, a2: Window, a3: *XWMHints): cint <cimport, nodecl> end
+global function XSetWMIconName(a1: *Display, a2: Window, a3: *XTextProperty) <cimport, nodecl> end
+global function XSetWMName(a1: *Display, a2: Window, a3: *XTextProperty) <cimport, nodecl> end
+global function XSetWMNormalHints(a1: *Display, a2: Window, a3: *XSizeHints) <cimport, nodecl> end
+global function XSetWMProperties(a1: *Display, a2: Window, a3: *XTextProperty, a4: *XTextProperty, a5: *cstring, a6: cint, a7: *XSizeHints, a8: *XWMHints, a9: *XClassHint) <cimport, nodecl> end
+global function XmbSetWMProperties(a1: *Display, a2: Window, a3: cstring, a4: cstring, a5: *cstring, a6: cint, a7: *XSizeHints, a8: *XWMHints, a9: *XClassHint) <cimport, nodecl> end
+global function Xutf8SetWMProperties(a1: *Display, a2: Window, a3: cstring, a4: cstring, a5: *cstring, a6: cint, a7: *XSizeHints, a8: *XWMHints, a9: *XClassHint) <cimport, nodecl> end
+global function XSetWMSizeHints(a1: *Display, a2: Window, a3: *XSizeHints, a4: Atom) <cimport, nodecl> end
+global function XSetRegion(a1: *Display, a2: GC, a3: Region): cint <cimport, nodecl> end
+global function XSetStandardColormap(a1: *Display, a2: Window, a3: *XStandardColormap, a4: Atom) <cimport, nodecl> end
+global function XSetZoomHints(a1: *Display, a2: Window, a3: *XSizeHints): cint <cimport, nodecl> end
+global function XShrinkRegion(a1: Region, a2: cint, a3: cint): cint <cimport, nodecl> end
+global function XStringListToTextProperty(a1: *cstring, a2: cint, a3: *XTextProperty): cint <cimport, nodecl> end
+global function XSubtractRegion(a1: Region, a2: Region, a3: Region): cint <cimport, nodecl> end
+global function XmbTextListToTextProperty(display: *Display, list: *cstring, count: cint, style: XICCEncodingStyle, text_prop_return: *XTextProperty): cint <cimport, nodecl> end
+global function XwcTextListToTextProperty(display: *Display, list: **cint, count: cint, style: XICCEncodingStyle, text_prop_return: *XTextProperty): cint <cimport, nodecl> end
+global function Xutf8TextListToTextProperty(display: *Display, list: *cstring, count: cint, style: XICCEncodingStyle, text_prop_return: *XTextProperty): cint <cimport, nodecl> end
+global function XwcFreeStringList(list: **cint) <cimport, nodecl> end
+global function XTextPropertyToStringList(a1: *XTextProperty, a2: **cstring, a3: *cint): cint <cimport, nodecl> end
+global function XmbTextPropertyToTextList(display: *Display, text_prop: *XTextProperty, list_return: **cstring, count_return: *cint): cint <cimport, nodecl> end
+global function XwcTextPropertyToTextList(display: *Display, text_prop: *XTextProperty, list_return: ***cint, count_return: *cint): cint <cimport, nodecl> end
+global function Xutf8TextPropertyToTextList(display: *Display, text_prop: *XTextProperty, list_return: **cstring, count_return: *cint): cint <cimport, nodecl> end
+global function XUnionRectWithRegion(a1: *XRectangle, a2: Region, a3: Region): cint <cimport, nodecl> end
+global function XUnionRegion(a1: Region, a2: Region, a3: Region): cint <cimport, nodecl> end
+global function XWMGeometry(a1: *Display, a2: cint, a3: cstring, a4: cstring, a5: cuint, a6: *XSizeHints, a7: *cint, a8: *cint, a9: *cint, a10: *cint, a11: *cint): cint <cimport, nodecl> end
+global function XXorRegion(a1: Region, a2: Region, a3: Region): cint <cimport, nodecl> end
+global function Xpermalloc(a1: cuint): cstring <cimport, nodecl> end
+global XrmQuarkList: type = @*cint
+global XrmString: type = @cstring
+global function XrmStringToQuark(a1: cstring): cint <cimport, nodecl> end
+global function XrmPermStringToQuark(a1: cstring): cint <cimport, nodecl> end
+global function XrmQuarkToString(a1: cint): XrmString <cimport, nodecl> end
+global function XrmUniqueQuark(): cint <cimport, nodecl> end
+global XrmBinding: type <cimport, nodecl, using> = @enum(cint){
+  XrmBindTightly = 0,
+  XrmBindLoosely = 1
+}
+global XrmBindingList: type = @*cint
+global function XrmStringToQuarkList(a1: cstring, a2: XrmQuarkList) <cimport, nodecl> end
+global function XrmStringToBindingQuarkList(a1: cstring, a2: XrmBindingList, a3: XrmQuarkList) <cimport, nodecl> end
+global XrmNameList: type = @*cint
+global XrmClassList: type = @*cint
+global XrmValue: type <cimport, nodecl> = @record{
+  size: cuint,
+  addr: XPointer
+}
+global XrmValuePtr: type = @*record{
+  size: cuint,
+  addr: XPointer
+}
+global XrmHashBucket: type = @pointer
+global XrmHashTable: type = @*XrmHashBucket
+global XrmDatabase: type = @pointer
+global function XrmDestroyDatabase(a1: XrmDatabase) <cimport, nodecl> end
+global function XrmQPutResource(a1: *XrmDatabase, a2: XrmBindingList, a3: XrmQuarkList, a4: cint, a5: *XrmValue) <cimport, nodecl> end
+global function XrmPutResource(a1: *XrmDatabase, a2: cstring, a3: cstring, a4: *XrmValue) <cimport, nodecl> end
+global function XrmQPutStringResource(a1: *XrmDatabase, a2: XrmBindingList, a3: XrmQuarkList, a4: cstring) <cimport, nodecl> end
+global function XrmPutStringResource(a1: *XrmDatabase, a2: cstring, a3: cstring) <cimport, nodecl> end
+global function XrmPutLineResource(a1: *XrmDatabase, a2: cstring) <cimport, nodecl> end
+global function XrmQGetResource(a1: XrmDatabase, a2: XrmNameList, a3: XrmClassList, a4: *cint, a5: *XrmValue): cint <cimport, nodecl> end
+global function XrmGetResource(a1: XrmDatabase, a2: cstring, a3: cstring, a4: *cstring, a5: *XrmValue): cint <cimport, nodecl> end
+global function XrmQGetSearchList(a1: XrmDatabase, a2: XrmNameList, a3: XrmClassList, a4: *XrmHashTable, a5: cint): cint <cimport, nodecl> end
+global function XrmQGetSearchResource(a1: *XrmHashTable, a2: cint, a3: cint, a4: *cint, a5: *XrmValue): cint <cimport, nodecl> end
+global function XrmSetDatabase(a1: *Display, a2: XrmDatabase) <cimport, nodecl> end
+global function XrmGetDatabase(a1: *Display): XrmDatabase <cimport, nodecl> end
+global function XrmGetFileDatabase(a1: cstring): XrmDatabase <cimport, nodecl> end
+global function XrmCombineFileDatabase(a1: cstring, a2: *XrmDatabase, a3: cint): cint <cimport, nodecl> end
+global function XrmGetStringDatabase(a1: cstring): XrmDatabase <cimport, nodecl> end
+global function XrmPutFileDatabase(a1: XrmDatabase, a2: cstring) <cimport, nodecl> end
+global function XrmMergeDatabases(a1: XrmDatabase, a2: *XrmDatabase) <cimport, nodecl> end
+global function XrmCombineDatabase(a1: XrmDatabase, a2: *XrmDatabase, a3: cint) <cimport, nodecl> end
+global function XrmEnumerateDatabase(a1: XrmDatabase, a2: XrmNameList, a3: XrmClassList, a4: cint, a5: function(*XrmDatabase, XrmBindingList, XrmQuarkList, *cint, *XrmValue, XPointer): cint, a6: XPointer): cint <cimport, nodecl> end
+global function XrmLocaleOfDatabase(a1: XrmDatabase): cstring <cimport, nodecl> end
+global XrmOptionKind: type <cimport, nodecl, using> = @enum(cint){
+  XrmoptionNoArg = 0,
+  XrmoptionIsArg = 1,
+  XrmoptionStickyArg = 2,
+  XrmoptionSepArg = 3,
+  XrmoptionResArg = 4,
+  XrmoptionSkipArg = 5,
+  XrmoptionSkipLine = 6,
+  XrmoptionSkipNArgs = 7
+}
+global XrmOptionDescRec: type <cimport, nodecl> = @record{
+  option: cstring,
+  specifier: cstring,
+  argKind: XrmOptionKind,
+  value: XPointer
+}
+global XrmOptionDescList: type = @*record{
+  option: cstring,
+  specifier: cstring,
+  argKind: XrmOptionKind,
+  value: XPointer
+}
+global function XrmParseCommand(a1: *XrmDatabase, a2: XrmOptionDescList, a3: cint, a4: cstring, a5: *cint, a6: *cstring) <cimport, nodecl> end
+global XkbStateRec: type <cimport, nodecl> = @record{
+  group: cuchar,
+  locked_group: cuchar,
+  base_group: cushort,
+  latched_group: cushort,
+  mods: cuchar,
+  base_mods: cuchar,
+  latched_mods: cuchar,
+  locked_mods: cuchar,
+  compat_state: cuchar,
+  grab_mods: cuchar,
+  compat_grab_mods: cuchar,
+  lookup_mods: cuchar,
+  compat_lookup_mods: cuchar,
+  ptr_buttons: cushort
+}
+global XkbStatePtr: type = @*XkbStateRec
+global XkbModsRec: type <cimport, nodecl> = @record{
+  mask: cuchar,
+  real_mods: cuchar,
+  vmods: cushort
+}
+global XkbModsPtr: type = @*XkbModsRec
+global XkbKTMapEntryRec: type <cimport, nodecl> = @record{
+  active: cint,
+  level: cuchar,
+  mods: XkbModsRec
+}
+global XkbKTMapEntryPtr: type = @*XkbKTMapEntryRec
+global XkbKeyTypeRec: type <cimport, nodecl> = @record{
+  mods: XkbModsRec,
+  num_levels: cuchar,
+  map_count: cuchar,
+  map: XkbKTMapEntryPtr,
+  preserve: XkbModsPtr,
+  name: Atom,
+  level_names: *Atom
+}
+global XkbKeyTypePtr: type = @*XkbKeyTypeRec
+global XkbBehavior: type <cimport, nodecl> = @record{
+  type: cuchar,
+  data: cuchar
+}
+global XkbAnyAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  data: [7]cuchar
+}
+global XkbModAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  mask: cuchar,
+  real_mods: cuchar,
+  vmods1: cuchar,
+  vmods2: cuchar
+}
+global XkbGroupAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  group_XXX: cchar
+}
+global XkbISOAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  mask: cuchar,
+  real_mods: cuchar,
+  group_XXX: cchar,
+  affect: cuchar,
+  vmods1: cuchar,
+  vmods2: cuchar
+}
+global XkbPtrAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  high_XXX: cuchar,
+  low_XXX: cuchar,
+  high_YYY: cuchar,
+  low_YYY: cuchar
+}
+global XkbPtrBtnAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  count: cuchar,
+  button: cuchar
+}
+global XkbPtrDfltAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  affect: cuchar,
+  valueXXX: cchar
+}
+global XkbSwitchScreenAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  screenXXX: cchar
+}
+global XkbCtrlsAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  ctrls3: cuchar,
+  ctrls2: cuchar,
+  ctrls1: cuchar,
+  ctrls0: cuchar
+}
+global XkbMessageAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  message: [6]cuchar
+}
+global XkbRedirectKeyAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  new_key: cuchar,
+  mods_mask: cuchar,
+  mods: cuchar,
+  vmods_mask0: cuchar,
+  vmods_mask1: cuchar,
+  vmods0: cuchar,
+  vmods1: cuchar
+}
+global XkbDeviceBtnAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  flags: cuchar,
+  count: cuchar,
+  button: cuchar,
+  device: cuchar
+}
+global XkbDeviceValuatorAction: type <cimport, nodecl> = @record{
+  type: cuchar,
+  device: cuchar,
+  v1_what: cuchar,
+  v1_ndx: cuchar,
+  v1_value: cuchar,
+  v2_what: cuchar,
+  v2_ndx: cuchar,
+  v2_value: cuchar
+}
+global XkbAction: type <cimport, nodecl> = @union{
+  any: XkbAnyAction,
+  mods: XkbModAction,
+  group: XkbGroupAction,
+  iso: XkbISOAction,
+  ptr: XkbPtrAction,
+  btn: XkbPtrBtnAction,
+  dflt: XkbPtrDfltAction,
+  screen: XkbSwitchScreenAction,
+  ctrls: XkbCtrlsAction,
+  msg: XkbMessageAction,
+  redirect: XkbRedirectKeyAction,
+  devbtn: XkbDeviceBtnAction,
+  devval: XkbDeviceValuatorAction,
+  type: cuchar
+}
+global XkbControlsRec: type <cimport, nodecl> = @record{
+  mk_dflt_btn: cuchar,
+  num_groups: cuchar,
+  groups_wrap: cuchar,
+  internal: XkbModsRec,
+  ignore_lock: XkbModsRec,
+  enabled_ctrls: cuint,
+  repeat_delay: cushort,
+  repeat_interval: cushort,
+  slow_keys_delay: cushort,
+  debounce_delay: cushort,
+  mk_delay: cushort,
+  mk_interval: cushort,
+  mk_time_to_max: cushort,
+  mk_max_speed: cushort,
+  mk_curve: cshort,
+  ax_options: cushort,
+  ax_timeout: cushort,
+  axt_opts_mask: cushort,
+  axt_opts_values: cushort,
+  axt_ctrls_mask: cuint,
+  axt_ctrls_values: cuint,
+  per_key_repeat: [32]cuchar
+}
+global XkbControlsPtr: type = @*XkbControlsRec
+global XkbServerMapRec: type <cimport, nodecl> = @record{
+  num_acts: cushort,
+  size_acts: cushort,
+  acts: *XkbAction,
+  behaviors: *XkbBehavior,
+  key_acts: *cushort,
+  explicit: *cuchar,
+  vmods: [16]cuchar,
+  vmodmap: *cushort
+}
+global XkbServerMapPtr: type = @*XkbServerMapRec
+global XkbSymMapRec: type <cimport, nodecl> = @record{
+  kt_index: [4]cuchar,
+  group_info: cuchar,
+  width: cuchar,
+  offset: cushort
+}
+global XkbSymMapPtr: type = @*XkbSymMapRec
+global XkbClientMapRec: type <cimport, nodecl> = @record{
+  size_types: cuchar,
+  num_types: cuchar,
+  types: XkbKeyTypePtr,
+  size_syms: cushort,
+  num_syms: cushort,
+  syms: *KeySym,
+  key_sym_map: XkbSymMapPtr,
+  modmap: *cuchar
+}
+global XkbClientMapPtr: type = @*XkbClientMapRec
+global XkbSymInterpretRec: type <cimport, nodecl> = @record{
+  sym: KeySym,
+  flags: cuchar,
+  match: cuchar,
+  mods: cuchar,
+  virtual_mod: cuchar,
+  act: XkbAnyAction
+}
+global XkbSymInterpretPtr: type = @*XkbSymInterpretRec
+global XkbCompatMapRec: type <cimport, nodecl> = @record{
+  sym_interpret: XkbSymInterpretPtr,
+  groups: [4]XkbModsRec,
+  num_si: cushort,
+  size_si: cushort
+}
+global XkbCompatMapPtr: type = @*XkbCompatMapRec
+global XkbIndicatorMapRec: type <cimport, nodecl> = @record{
+  flags: cuchar,
+  which_groups: cuchar,
+  groups: cuchar,
+  which_mods: cuchar,
+  mods: XkbModsRec,
+  ctrls: cuint
+}
+global XkbIndicatorMapPtr: type = @*XkbIndicatorMapRec
+global XkbIndicatorRec: type <cimport, nodecl> = @record{
+  phys_indicators: culong,
+  maps: [32]XkbIndicatorMapRec
+}
+global XkbIndicatorPtr: type = @*XkbIndicatorRec
+global XkbKeyNameRec: type <cimport, nodecl> = @record{
+  name: [4]cchar
+}
+global XkbKeyNamePtr: type = @*XkbKeyNameRec
+global XkbKeyAliasRec: type <cimport, nodecl> = @record{
+  real: [4]cchar,
+  alias: [4]cchar
+}
+global XkbKeyAliasPtr: type = @*XkbKeyAliasRec
+global XkbNamesRec: type <cimport, nodecl> = @record{
+  keycodes: Atom,
+  geometry: Atom,
+  symbols: Atom,
+  types: Atom,
+  compat: Atom,
+  vmods: [16]Atom,
+  indicators: [32]Atom,
+  groups: [4]Atom,
+  keys: XkbKeyNamePtr,
+  key_aliases: XkbKeyAliasPtr,
+  radio_groups: *Atom,
+  phys_symbols: Atom,
+  num_keys: cuchar,
+  num_key_aliases: cuchar,
+  num_rg: cushort
+}
+global XkbNamesPtr: type = @*XkbNamesRec
+global XkbGeometryPtr: type = @pointer
+global XkbDescRec: type <cimport, nodecl> = @record{
+  dpy: *Display,
+  flags: cushort,
+  device_spec: cushort,
+  min_key_code: KeyCode,
+  max_key_code: KeyCode,
+  ctrls: XkbControlsPtr,
+  server: XkbServerMapPtr,
+  map: XkbClientMapPtr,
+  indicators: XkbIndicatorPtr,
+  names: XkbNamesPtr,
+  compat: XkbCompatMapPtr,
+  geom: XkbGeometryPtr
+}
+global XkbDescPtr: type = @*XkbDescRec
+global XkbMapChangesRec: type <cimport, nodecl> = @record{
+  changed: cushort,
+  min_key_code: KeyCode,
+  max_key_code: KeyCode,
+  first_type: cuchar,
+  num_types: cuchar,
+  first_key_sym: KeyCode,
+  num_key_syms: cuchar,
+  first_key_act: KeyCode,
+  num_key_acts: cuchar,
+  first_key_behavior: KeyCode,
+  num_key_behaviors: cuchar,
+  first_key_explicit: KeyCode,
+  num_key_explicit: cuchar,
+  first_modmap_key: KeyCode,
+  num_modmap_keys: cuchar,
+  first_vmodmap_key: KeyCode,
+  num_vmodmap_keys: cuchar,
+  pad: cuchar,
+  vmods: cushort
+}
+global XkbMapChangesPtr: type = @*XkbMapChangesRec
+global XkbControlsChangesRec: type <cimport, nodecl> = @record{
+  changed_ctrls: cuint,
+  enabled_ctrls_changes: cuint,
+  num_groups_changed: cint
+}
+global XkbControlsChangesPtr: type = @*XkbControlsChangesRec
+global XkbIndicatorChangesRec: type <cimport, nodecl> = @record{
+  state_changes: cuint,
+  map_changes: cuint
+}
+global XkbIndicatorChangesPtr: type = @*XkbIndicatorChangesRec
+global XkbNameChangesRec: type <cimport, nodecl> = @record{
+  changed: cuint,
+  first_type: cuchar,
+  num_types: cuchar,
+  first_lvl: cuchar,
+  num_lvls: cuchar,
+  num_aliases: cuchar,
+  num_rg: cuchar,
+  first_key: cuchar,
+  num_keys: cuchar,
+  changed_vmods: cushort,
+  changed_indicators: culong,
+  changed_groups: cuchar
+}
+global XkbNameChangesPtr: type = @*XkbNameChangesRec
+global XkbCompatChangesRec: type <cimport, nodecl> = @record{
+  changed_groups: cuchar,
+  first_si: cushort,
+  num_si: cushort
+}
+global XkbCompatChangesPtr: type = @*XkbCompatChangesRec
+global XkbChangesRec: type <cimport, nodecl> = @record{
+  device_spec: cushort,
+  state_changes: cushort,
+  map: XkbMapChangesRec,
+  ctrls: XkbControlsChangesRec,
+  indicators: XkbIndicatorChangesRec,
+  names: XkbNameChangesRec,
+  compat: XkbCompatChangesRec
+}
+global XkbChangesPtr: type = @*XkbChangesRec
+global XkbComponentNamesRec: type <cimport, nodecl> = @record{
+  keymap: cstring,
+  keycodes: cstring,
+  types: cstring,
+  compat: cstring,
+  symbols: cstring,
+  geometry: cstring
+}
+global XkbComponentNamesPtr: type = @*XkbComponentNamesRec
+global XkbComponentNameRec: type <cimport, nodecl> = @record{
+  flags: cushort,
+  name: cstring
+}
+global XkbComponentNamePtr: type = @*XkbComponentNameRec
+global XkbComponentListRec: type <cimport, nodecl> = @record{
+  num_keymaps: cint,
+  num_keycodes: cint,
+  num_types: cint,
+  num_compat: cint,
+  num_symbols: cint,
+  num_geometry: cint,
+  keymaps: XkbComponentNamePtr,
+  keycodes: XkbComponentNamePtr,
+  types: XkbComponentNamePtr,
+  compat: XkbComponentNamePtr,
+  symbols: XkbComponentNamePtr,
+  geometry: XkbComponentNamePtr
+}
+global XkbComponentListPtr: type = @*XkbComponentListRec
+global XkbDeviceLedInfoRec: type <cimport, nodecl> = @record{
+  led_class: cushort,
+  led_id: cushort,
+  phys_indicators: cuint,
+  maps_present: cuint,
+  names_present: cuint,
+  state: cuint,
+  names: [32]Atom,
+  maps: [32]XkbIndicatorMapRec
+}
+global XkbDeviceLedInfoPtr: type = @*XkbDeviceLedInfoRec
+global XkbDeviceInfoRec: type <cimport, nodecl> = @record{
+  name: cstring,
+  type: Atom,
+  device_spec: cushort,
+  has_own_state: cint,
+  supported: cushort,
+  unsupported: cushort,
+  num_btns: cushort,
+  btn_acts: *XkbAction,
+  sz_leds: cushort,
+  num_leds: cushort,
+  dflt_kbd_fb: cushort,
+  dflt_led_fb: cushort,
+  leds: XkbDeviceLedInfoPtr
+}
+global XkbDeviceInfoPtr: type = @*XkbDeviceInfoRec
+global XkbDeviceLedChangesRec: type <cimport, nodecl> = @record{
+  led_class: cushort,
+  led_id: cushort,
+  defined: cuint,
+  next: *XkbDeviceLedChangesRec
+}
+global XkbDeviceLedChangesPtr: type = @*XkbDeviceLedChangesRec
+global XkbDeviceChangesRec: type <cimport, nodecl> = @record{
+  changed: cuint,
+  first_btn: cushort,
+  num_btns: cushort,
+  leds: XkbDeviceLedChangesRec
+}
+global XkbDeviceChangesPtr: type = @*XkbDeviceChangesRec
+global XkbAnyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cuint
+}
+global XkbNewKeyboardNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  old_device: cint,
+  min_key_code: cint,
+  max_key_code: cint,
+  old_min_key_code: cint,
+  old_max_key_code: cint,
+  changed: cuint,
+  req_major: cchar,
+  req_minor: cchar
+}
+global XkbMapNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  changed: cuint,
+  flags: cuint,
+  first_type: cint,
+  num_types: cint,
+  min_key_code: KeyCode,
+  max_key_code: KeyCode,
+  first_key_sym: KeyCode,
+  first_key_act: KeyCode,
+  first_key_behavior: KeyCode,
+  first_key_explicit: KeyCode,
+  first_modmap_key: KeyCode,
+  first_vmodmap_key: KeyCode,
+  num_key_syms: cint,
+  num_key_acts: cint,
+  num_key_behaviors: cint,
+  num_key_explicit: cint,
+  num_modmap_keys: cint,
+  num_vmodmap_keys: cint,
+  vmods: cuint
+}
+global XkbStateNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  changed: cuint,
+  group: cint,
+  base_group: cint,
+  latched_group: cint,
+  locked_group: cint,
+  mods: cuint,
+  base_mods: cuint,
+  latched_mods: cuint,
+  locked_mods: cuint,
+  compat_state: cint,
+  grab_mods: cuchar,
+  compat_grab_mods: cuchar,
+  lookup_mods: cuchar,
+  compat_lookup_mods: cuchar,
+  ptr_buttons: cint,
+  keycode: KeyCode,
+  event_type: cchar,
+  req_major: cchar,
+  req_minor: cchar
+}
+global XkbControlsNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  changed_ctrls: cuint,
+  enabled_ctrls: cuint,
+  enabled_ctrl_changes: cuint,
+  num_groups: cint,
+  keycode: KeyCode,
+  event_type: cchar,
+  req_major: cchar,
+  req_minor: cchar
+}
+global XkbIndicatorNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  changed: cuint,
+  state: cuint
+}
+global XkbNamesNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  changed: cuint,
+  first_type: cint,
+  num_types: cint,
+  first_lvl: cint,
+  num_lvls: cint,
+  num_aliases: cint,
+  num_radio_groups: cint,
+  changed_vmods: cuint,
+  changed_groups: cuint,
+  changed_indicators: cuint,
+  first_key: cint,
+  num_keys: cint
+}
+global XkbCompatMapNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  changed_groups: cuint,
+  first_si: cint,
+  num_si: cint,
+  num_total_si: cint
+}
+global XkbBellNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  percent: cint,
+  pitch: cint,
+  duration: cint,
+  bell_class: cint,
+  bell_id: cint,
+  name: Atom,
+  window: Window,
+  event_only: cint
+}
+global XkbActionMessageEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  keycode: KeyCode,
+  press: cint,
+  key_event_follows: cint,
+  group: cint,
+  mods: cuint,
+  message: [7]cchar
+}
+global XkbAccessXNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  detail: cint,
+  keycode: cint,
+  sk_delay: cint,
+  debounce_delay: cint
+}
+global XkbExtensionDeviceNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  time: Time,
+  xkb_type: cint,
+  device: cint,
+  reason: cuint,
+  supported: cuint,
+  unsupported: cuint,
+  first_btn: cint,
+  num_btns: cint,
+  leds_defined: cuint,
+  led_state: cuint,
+  led_class: cint,
+  led_id: cint
+}
+global XkbEvent: type <cimport, nodecl> = @union{
+  type: cint,
+  any: XkbAnyEvent,
+  new_kbd: XkbNewKeyboardNotifyEvent,
+  map: XkbMapNotifyEvent,
+  state: XkbStateNotifyEvent,
+  ctrls: XkbControlsNotifyEvent,
+  indicators: XkbIndicatorNotifyEvent,
+  names: XkbNamesNotifyEvent,
+  compat: XkbCompatMapNotifyEvent,
+  bell: XkbBellNotifyEvent,
+  message: XkbActionMessageEvent,
+  accessx: XkbAccessXNotifyEvent,
+  device: XkbExtensionDeviceNotifyEvent,
+  core: XEvent
+}
+global XkbKbdDpyStateRec: type <cimport, nodecl, forwarddecl> = @record{}
+global XkbKbdDpyStatePtr: type = @*XkbKbdDpyStateRec
+global function XkbIgnoreExtension(a1: cint): cint <cimport, nodecl> end
+global function XkbOpenDisplay(a1: cstring, a2: *cint, a3: *cint, a4: *cint, a5: *cint, a6: *cint): *Display <cimport, nodecl> end
+global function XkbQueryExtension(a1: *Display, a2: *cint, a3: *cint, a4: *cint, a5: *cint, a6: *cint): cint <cimport, nodecl> end
+global function XkbUseExtension(a1: *Display, a2: *cint, a3: *cint): cint <cimport, nodecl> end
+global function XkbLibraryVersion(a1: *cint, a2: *cint): cint <cimport, nodecl> end
+global function XkbSetXlibControls(a1: *Display, a2: cuint, a3: cuint): cuint <cimport, nodecl> end
+global function XkbGetXlibControls(a1: *Display): cuint <cimport, nodecl> end
+global function XkbXlibControlsImplemented(): cuint <cimport, nodecl> end
+global XkbInternAtomFunc: type <cimport, nodecl> = @function(*Display, cstring, cint): Atom
+global XkbGetAtomNameFunc: type <cimport, nodecl> = @function(*Display, Atom): cstring
+global function XkbSetAtomFuncs(a1: XkbInternAtomFunc, a2: XkbGetAtomNameFunc) <cimport, nodecl> end
+global function XkbKeycodeToKeysym(a1: *Display, a2: KeyCode, a3: cint, a4: cint): KeySym <cimport, nodecl> end
+global function XkbKeysymToModifiers(a1: *Display, a2: KeySym): cuint <cimport, nodecl> end
+global function XkbLookupKeySym(a1: *Display, a2: KeyCode, a3: cuint, a4: *cuint, a5: *KeySym): cint <cimport, nodecl> end
+global function XkbLookupKeyBinding(a1: *Display, a2: KeySym, a3: cuint, a4: cstring, a5: cint, a6: *cint): cint <cimport, nodecl> end
+global function XkbTranslateKeyCode(a1: XkbDescPtr, a2: KeyCode, a3: cuint, a4: *cuint, a5: *KeySym): cint <cimport, nodecl> end
+global function XkbTranslateKeySym(a1: *Display, a2: *KeySym, a3: cuint, a4: cstring, a5: cint, a6: *cint): cint <cimport, nodecl> end
+global function XkbSetAutoRepeatRate(a1: *Display, a2: cuint, a3: cuint, a4: cuint): cint <cimport, nodecl> end
+global function XkbGetAutoRepeatRate(a1: *Display, a2: cuint, a3: *cuint, a4: *cuint): cint <cimport, nodecl> end
+global function XkbChangeEnabledControls(a1: *Display, a2: cuint, a3: cuint, a4: cuint): cint <cimport, nodecl> end
+global function XkbDeviceBell(a1: *Display, a2: Window, a3: cint, a4: cint, a5: cint, a6: cint, a7: Atom): cint <cimport, nodecl> end
+global function XkbForceDeviceBell(a1: *Display, a2: cint, a3: cint, a4: cint, a5: cint): cint <cimport, nodecl> end
+global function XkbDeviceBellEvent(a1: *Display, a2: Window, a3: cint, a4: cint, a5: cint, a6: cint, a7: Atom): cint <cimport, nodecl> end
+global function XkbBell(a1: *Display, a2: Window, a3: cint, a4: Atom): cint <cimport, nodecl> end
+global function XkbForceBell(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XkbBellEvent(a1: *Display, a2: Window, a3: cint, a4: Atom): cint <cimport, nodecl> end
+global function XkbSelectEvents(a1: *Display, a2: cuint, a3: cuint, a4: cuint): cint <cimport, nodecl> end
+global function XkbSelectEventDetails(a1: *Display, a2: cuint, a3: cuint, a4: culong, a5: culong): cint <cimport, nodecl> end
+global function XkbNoteMapChanges(a1: XkbMapChangesPtr, a2: *XkbMapNotifyEvent, a3: cuint) <cimport, nodecl> end
+global function XkbNoteNameChanges(a1: XkbNameChangesPtr, a2: *XkbNamesNotifyEvent, a3: cuint) <cimport, nodecl> end
+global function XkbGetIndicatorState(a1: *Display, a2: cuint, a3: *cuint): cint <cimport, nodecl> end
+global function XkbGetDeviceIndicatorState(a1: *Display, a2: cuint, a3: cuint, a4: cuint, a5: *cuint): cint <cimport, nodecl> end
+global function XkbGetIndicatorMap(a1: *Display, a2: culong, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbSetIndicatorMap(a1: *Display, a2: culong, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetNamedIndicator(a1: *Display, a2: Atom, a3: *cint, a4: *cint, a5: XkbIndicatorMapPtr, a6: *cint): cint <cimport, nodecl> end
+global function XkbGetNamedDeviceIndicator(a1: *Display, a2: cuint, a3: cuint, a4: cuint, a5: Atom, a6: *cint, a7: *cint, a8: XkbIndicatorMapPtr, a9: *cint): cint <cimport, nodecl> end
+global function XkbSetNamedIndicator(a1: *Display, a2: Atom, a3: cint, a4: cint, a5: cint, a6: XkbIndicatorMapPtr): cint <cimport, nodecl> end
+global function XkbSetNamedDeviceIndicator(a1: *Display, a2: cuint, a3: cuint, a4: cuint, a5: Atom, a6: cint, a7: cint, a8: cint, a9: XkbIndicatorMapPtr): cint <cimport, nodecl> end
+global function XkbLockModifiers(a1: *Display, a2: cuint, a3: cuint, a4: cuint): cint <cimport, nodecl> end
+global function XkbLatchModifiers(a1: *Display, a2: cuint, a3: cuint, a4: cuint): cint <cimport, nodecl> end
+global function XkbLockGroup(a1: *Display, a2: cuint, a3: cuint): cint <cimport, nodecl> end
+global function XkbLatchGroup(a1: *Display, a2: cuint, a3: cuint): cint <cimport, nodecl> end
+global function XkbSetServerInternalMods(a1: *Display, a2: cuint, a3: cuint, a4: cuint, a5: cuint, a6: cuint): cint <cimport, nodecl> end
+global function XkbSetIgnoreLockMods(a1: *Display, a2: cuint, a3: cuint, a4: cuint, a5: cuint, a6: cuint): cint <cimport, nodecl> end
+global function XkbVirtualModsToReal(a1: XkbDescPtr, a2: cuint, a3: *cuint): cint <cimport, nodecl> end
+global function XkbComputeEffectiveMap(a1: XkbDescPtr, a2: XkbKeyTypePtr, a3: *cuchar): cint <cimport, nodecl> end
+global function XkbInitCanonicalKeyTypes(a1: XkbDescPtr, a2: cuint, a3: cint): cint <cimport, nodecl> end
+global function XkbAllocKeyboard(): XkbDescPtr <cimport, nodecl> end
+global function XkbFreeKeyboard(a1: XkbDescPtr, a2: cuint, a3: cint) <cimport, nodecl> end
+global function XkbAllocClientMap(a1: XkbDescPtr, a2: cuint, a3: cuint): cint <cimport, nodecl> end
+global function XkbAllocServerMap(a1: XkbDescPtr, a2: cuint, a3: cuint): cint <cimport, nodecl> end
+global function XkbFreeClientMap(a1: XkbDescPtr, a2: cuint, a3: cint) <cimport, nodecl> end
+global function XkbFreeServerMap(a1: XkbDescPtr, a2: cuint, a3: cint) <cimport, nodecl> end
+global function XkbAddKeyType(a1: XkbDescPtr, a2: Atom, a3: cint, a4: cint, a5: cint): XkbKeyTypePtr <cimport, nodecl> end
+global function XkbAllocIndicatorMaps(a1: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbFreeIndicatorMaps(a1: XkbDescPtr) <cimport, nodecl> end
+global function XkbGetMap(a1: *Display, a2: cuint, a3: cuint): XkbDescPtr <cimport, nodecl> end
+global function XkbGetUpdatedMap(a1: *Display, a2: cuint, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetMapChanges(a1: *Display, a2: XkbDescPtr, a3: XkbMapChangesPtr): cint <cimport, nodecl> end
+global function XkbRefreshKeyboardMapping(a1: *XkbMapNotifyEvent): cint <cimport, nodecl> end
+global function XkbGetKeyTypes(a1: *Display, a2: cuint, a3: cuint, a4: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetKeySyms(a1: *Display, a2: cuint, a3: cuint, a4: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetKeyActions(a1: *Display, a2: cuint, a3: cuint, a4: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetKeyBehaviors(a1: *Display, a2: cuint, a3: cuint, a4: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetVirtualMods(a1: *Display, a2: cuint, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetKeyExplicitComponents(a1: *Display, a2: cuint, a3: cuint, a4: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetKeyModifierMap(a1: *Display, a2: cuint, a3: cuint, a4: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbGetKeyVirtualModMap(a1: *Display, a2: cuint, a3: cuint, a4: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbAllocControls(a1: XkbDescPtr, a2: cuint): cint <cimport, nodecl> end
+global function XkbFreeControls(a1: XkbDescPtr, a2: cuint, a3: cint) <cimport, nodecl> end
+global function XkbGetControls(a1: *Display, a2: culong, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbSetControls(a1: *Display, a2: culong, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbNoteControlsChanges(a1: XkbControlsChangesPtr, a2: *XkbControlsNotifyEvent, a3: cuint) <cimport, nodecl> end
+global function XkbAllocCompatMap(a1: XkbDescPtr, a2: cuint, a3: cuint): cint <cimport, nodecl> end
+global function XkbFreeCompatMap(a1: XkbDescPtr, a2: cuint, a3: cint) <cimport, nodecl> end
+global function XkbGetCompatMap(a1: *Display, a2: cuint, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbSetCompatMap(a1: *Display, a2: cuint, a3: XkbDescPtr, a4: cint): cint <cimport, nodecl> end
+global function XkbAddSymInterpret(a1: XkbDescPtr, a2: XkbSymInterpretPtr, a3: cint, a4: XkbChangesPtr): XkbSymInterpretPtr <cimport, nodecl> end
+global function XkbAllocNames(a1: XkbDescPtr, a2: cuint, a3: cint, a4: cint): cint <cimport, nodecl> end
+global function XkbGetNames(a1: *Display, a2: cuint, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbSetNames(a1: *Display, a2: cuint, a3: cuint, a4: cuint, a5: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbChangeNames(a1: *Display, a2: XkbDescPtr, a3: XkbNameChangesPtr): cint <cimport, nodecl> end
+global function XkbFreeNames(a1: XkbDescPtr, a2: cuint, a3: cint) <cimport, nodecl> end
+global function XkbGetState(a1: *Display, a2: cuint, a3: XkbStatePtr): cint <cimport, nodecl> end
+global function XkbSetMap(a1: *Display, a2: cuint, a3: XkbDescPtr): cint <cimport, nodecl> end
+global function XkbChangeMap(a1: *Display, a2: XkbDescPtr, a3: XkbMapChangesPtr): cint <cimport, nodecl> end
+global function XkbSetDetectableAutoRepeat(a1: *Display, a2: cint, a3: *cint): cint <cimport, nodecl> end
+global function XkbGetDetectableAutoRepeat(a1: *Display, a2: *cint): cint <cimport, nodecl> end
+global function XkbSetAutoResetControls(a1: *Display, a2: cuint, a3: *cuint, a4: *cuint): cint <cimport, nodecl> end
+global function XkbGetAutoResetControls(a1: *Display, a2: *cuint, a3: *cuint): cint <cimport, nodecl> end
+global function XkbSetPerClientControls(a1: *Display, a2: cuint, a3: *cuint): cint <cimport, nodecl> end
+global function XkbGetPerClientControls(a1: *Display, a2: *cuint): cint <cimport, nodecl> end
+global function XkbCopyKeyType(a1: XkbKeyTypePtr, a2: XkbKeyTypePtr): cint <cimport, nodecl> end
+global function XkbCopyKeyTypes(a1: XkbKeyTypePtr, a2: XkbKeyTypePtr, a3: cint): cint <cimport, nodecl> end
+global function XkbResizeKeyType(a1: XkbDescPtr, a2: cint, a3: cint, a4: cint, a5: cint): cint <cimport, nodecl> end
+global function XkbResizeKeySyms(a1: XkbDescPtr, a2: cint, a3: cint): *KeySym <cimport, nodecl> end
+global function XkbResizeKeyActions(a1: XkbDescPtr, a2: cint, a3: cint): *XkbAction <cimport, nodecl> end
+global function XkbChangeTypesOfKey(a1: XkbDescPtr, a2: cint, a3: cint, a4: cuint, a5: *cint, a6: XkbMapChangesPtr): cint <cimport, nodecl> end
+global function XkbChangeKeycodeRange(a1: XkbDescPtr, a2: cint, a3: cint, a4: XkbChangesPtr): cint <cimport, nodecl> end
+global function XkbListComponents(a1: *Display, a2: cuint, a3: XkbComponentNamesPtr, a4: *cint): XkbComponentListPtr <cimport, nodecl> end
+global function XkbFreeComponentList(a1: XkbComponentListPtr) <cimport, nodecl> end
+global function XkbGetKeyboard(a1: *Display, a2: cuint, a3: cuint): XkbDescPtr <cimport, nodecl> end
+global function XkbGetKeyboardByName(a1: *Display, a2: cuint, a3: XkbComponentNamesPtr, a4: cuint, a5: cuint, a6: cint): XkbDescPtr <cimport, nodecl> end
+global function XkbKeyTypesForCoreSymbols(a1: XkbDescPtr, a2: cint, a3: *KeySym, a4: cuint, a5: *cint, a6: *KeySym): cint <cimport, nodecl> end
+global function XkbApplyCompatMapToKey(a1: XkbDescPtr, a2: KeyCode, a3: XkbChangesPtr): cint <cimport, nodecl> end
+global function XkbUpdateMapFromCore(a1: XkbDescPtr, a2: KeyCode, a3: cint, a4: cint, a5: *KeySym, a6: XkbChangesPtr): cint <cimport, nodecl> end
+global function XkbAddDeviceLedInfo(a1: XkbDeviceInfoPtr, a2: cuint, a3: cuint): XkbDeviceLedInfoPtr <cimport, nodecl> end
+global function XkbResizeDeviceButtonActions(a1: XkbDeviceInfoPtr, a2: cuint): cint <cimport, nodecl> end
+global function XkbAllocDeviceInfo(a1: cuint, a2: cuint, a3: cuint): XkbDeviceInfoPtr <cimport, nodecl> end
+global function XkbFreeDeviceInfo(a1: XkbDeviceInfoPtr, a2: cuint, a3: cint) <cimport, nodecl> end
+global function XkbNoteDeviceChanges(a1: XkbDeviceChangesPtr, a2: *XkbExtensionDeviceNotifyEvent, a3: cuint) <cimport, nodecl> end
+global function XkbGetDeviceInfo(a1: *Display, a2: cuint, a3: cuint, a4: cuint, a5: cuint): XkbDeviceInfoPtr <cimport, nodecl> end
+global function XkbGetDeviceInfoChanges(a1: *Display, a2: XkbDeviceInfoPtr, a3: XkbDeviceChangesPtr): cint <cimport, nodecl> end
+global function XkbGetDeviceButtonActions(a1: *Display, a2: XkbDeviceInfoPtr, a3: cint, a4: cuint, a5: cuint): cint <cimport, nodecl> end
+global function XkbGetDeviceLedInfo(a1: *Display, a2: XkbDeviceInfoPtr, a3: cuint, a4: cuint, a5: cuint): cint <cimport, nodecl> end
+global function XkbSetDeviceInfo(a1: *Display, a2: cuint, a3: XkbDeviceInfoPtr): cint <cimport, nodecl> end
+global function XkbChangeDeviceInfo(a1: *Display, a2: XkbDeviceInfoPtr, a3: XkbDeviceChangesPtr): cint <cimport, nodecl> end
+global function XkbSetDeviceLedInfo(a1: *Display, a2: XkbDeviceInfoPtr, a3: cuint, a4: cuint, a5: cuint): cint <cimport, nodecl> end
+global function XkbSetDeviceButtonActions(a1: *Display, a2: XkbDeviceInfoPtr, a3: cuint, a4: cuint): cint <cimport, nodecl> end
+global function XkbToControl(a1: cchar): cchar <cimport, nodecl> end
+global function XkbSetDebuggingFlags(a1: *Display, a2: cuint, a3: cuint, a4: cstring, a5: cuint, a6: cuint, a7: *cuint, a8: *cuint): cint <cimport, nodecl> end
+global function XkbApplyVirtualModChanges(a1: XkbDescPtr, a2: cuint, a3: XkbChangesPtr): cint <cimport, nodecl> end
+global function XkbUpdateActionVirtualMods(a1: XkbDescPtr, a2: *XkbAction, a3: cuint): cint <cimport, nodecl> end
+global function XkbUpdateKeyTypeVirtualMods(a1: XkbDescPtr, a2: XkbKeyTypePtr, a3: cuint, a4: XkbChangesPtr) <cimport, nodecl> end
+global XExtensionVersion: type <cimport, nodecl> = @record{
+  present: cint,
+  major_version: cshort,
+  minor_version: cshort
+}
+global XAnyClassPtr: type = @pointer
+global XDeviceKeyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  state: cuint,
+  keycode: cuint,
+  same_screen: cint,
+  device_state: cuint,
+  axes_count: cuchar,
+  first_axis: cuchar,
+  axis_data: [6]cint
+}
+global XDeviceKeyPressedEvent: type = @XDeviceKeyEvent
+global XDeviceKeyReleasedEvent: type = @XDeviceKeyEvent
+global XDeviceButtonEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  state: cuint,
+  button: cuint,
+  same_screen: cint,
+  device_state: cuint,
+  axes_count: cuchar,
+  first_axis: cuchar,
+  axis_data: [6]cint
+}
+global XDeviceButtonPressedEvent: type = @XDeviceButtonEvent
+global XDeviceButtonReleasedEvent: type = @XDeviceButtonEvent
+global XDeviceMotionEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  state: cuint,
+  is_hint: cchar,
+  same_screen: cint,
+  device_state: cuint,
+  axes_count: cuchar,
+  first_axis: cuchar,
+  axis_data: [6]cint
+}
+global XDeviceFocusChangeEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  mode: cint,
+  detail: cint,
+  time: Time
+}
+global XDeviceFocusInEvent: type = @XDeviceFocusChangeEvent
+global XDeviceFocusOutEvent: type = @XDeviceFocusChangeEvent
+global XProximityNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  root: Window,
+  subwindow: Window,
+  time: Time,
+  x: cint,
+  y: cint,
+  x_root: cint,
+  y_root: cint,
+  state: cuint,
+  same_screen: cint,
+  device_state: cuint,
+  axes_count: cuchar,
+  first_axis: cuchar,
+  axis_data: [6]cint
+}
+global XProximityInEvent: type = @XProximityNotifyEvent
+global XProximityOutEvent: type = @XProximityNotifyEvent
+global XInputClass: type <cimport, nodecl> = @record{
+  class: cuchar,
+  length: cuchar
+}
+global XDeviceStateNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  time: Time,
+  num_classes: cint,
+  data: [64]cchar
+}
+global XValuatorStatus: type <cimport, nodecl> = @record{
+  class: cuchar,
+  length: cuchar,
+  num_valuators: cuchar,
+  mode: cuchar,
+  valuators: [6]cint
+}
+global XKeyStatus: type <cimport, nodecl> = @record{
+  class: cuchar,
+  length: cuchar,
+  num_keys: cshort,
+  keys: [32]cchar
+}
+global XButtonStatus: type <cimport, nodecl> = @record{
+  class: cuchar,
+  length: cuchar,
+  num_buttons: cshort,
+  buttons: [32]cchar
+}
+global XDeviceMappingEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  time: Time,
+  request: cint,
+  first_keycode: cint,
+  count: cint
+}
+global XChangeDeviceNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  deviceid: culong,
+  time: Time,
+  request: cint
+}
+global XDevicePresenceNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  time: Time,
+  devchange: cint,
+  deviceid: culong,
+  control: culong
+}
+global XDevicePropertyNotifyEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  window: Window,
+  time: Time,
+  deviceid: culong,
+  atom: Atom,
+  state: cint
+}
+global XFeedbackState: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong
+}
+global XKbdFeedbackState: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  click: cint,
+  percent: cint,
+  pitch: cint,
+  duration: cint,
+  led_mask: cint,
+  global_auto_repeat: cint,
+  auto_repeats: [32]cchar
+}
+global XPtrFeedbackState: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  accelNum: cint,
+  accelDenom: cint,
+  threshold: cint
+}
+global XIntegerFeedbackState: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  resolution: cint,
+  minVal: cint,
+  maxVal: cint
+}
+global XStringFeedbackState: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  max_symbols: cint,
+  num_syms_supported: cint,
+  syms_supported: *KeySym
+}
+global XBellFeedbackState: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  percent: cint,
+  pitch: cint,
+  duration: cint
+}
+global XLedFeedbackState: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  led_values: cint,
+  led_mask: cint
+}
+global XFeedbackControl: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong
+}
+global XPtrFeedbackControl: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  accelNum: cint,
+  accelDenom: cint,
+  threshold: cint
+}
+global XKbdFeedbackControl: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  click: cint,
+  percent: cint,
+  pitch: cint,
+  duration: cint,
+  led_mask: cint,
+  led_value: cint,
+  key: cint,
+  auto_repeat_mode: cint
+}
+global XStringFeedbackControl: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  num_keysyms: cint,
+  syms_to_display: *KeySym
+}
+global XIntegerFeedbackControl: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  int_to_display: cint
+}
+global XBellFeedbackControl: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  percent: cint,
+  pitch: cint,
+  duration: cint
+}
+global XLedFeedbackControl: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  id: culong,
+  led_mask: cint,
+  led_values: cint
+}
+global XDeviceControl: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint
+}
+global XDeviceResolutionControl: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint,
+  first_valuator: cint,
+  num_valuators: cint,
+  resolutions: *cint
+}
+global XDeviceResolutionState: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint,
+  num_valuators: cint,
+  resolutions: *cint,
+  min_resolutions: *cint,
+  max_resolutions: *cint
+}
+global XDeviceAbsCalibControl: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint,
+  min_x: cint,
+  max_x: cint,
+  min_y: cint,
+  max_y: cint,
+  flip_x: cint,
+  flip_y: cint,
+  rotation: cint,
+  button_threshold: cint
+}
+global XDeviceAbsCalibState: type = @XDeviceAbsCalibControl
+global XDeviceAbsAreaControl: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint,
+  offset_x: cint,
+  offset_y: cint,
+  width: cint,
+  height: cint,
+  screen: cint,
+  following: culong
+}
+global XDeviceAbsAreaState: type = @XDeviceAbsAreaControl
+global XDeviceCoreControl: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint,
+  status: cint
+}
+global XDeviceCoreState: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint,
+  status: cint,
+  iscore: cint
+}
+global XDeviceEnableControl: type <cimport, nodecl> = @record{
+  control: culong,
+  length: cint,
+  enable: cint
+}
+global XDeviceEnableState: type = @XDeviceEnableControl
+global XAnyClassInfo: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint
+}
+global XDeviceInfoPtr: type = @pointer
+global XDeviceInfo: type <cimport, nodecl> = @record{
+  id: culong,
+  type: Atom,
+  name: cstring,
+  num_classes: cint,
+  use: cint,
+  inputclassinfo: XAnyClassPtr
+}
+global XKeyInfoPtr: type = @pointer
+global XKeyInfo: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  min_keycode: cushort,
+  max_keycode: cushort,
+  num_keys: cushort
+}
+global XButtonInfoPtr: type = @pointer
+global XButtonInfo: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  num_buttons: cshort
+}
+global XAxisInfoPtr: type = @pointer
+global XAxisInfo: type <cimport, nodecl> = @record{
+  resolution: cint,
+  min_value: cint,
+  max_value: cint
+}
+global XValuatorInfoPtr: type = @pointer
+global XValuatorInfo: type <cimport, nodecl> = @record{
+  class: culong,
+  length: cint,
+  num_axes: cuchar,
+  mode: cuchar,
+  motion_buffer: culong,
+  axes: XAxisInfoPtr
+}
+global XInputClassInfo: type <cimport, nodecl> = @record{
+  input_class: cuchar,
+  event_type_base: cuchar
+}
+global XDevice: type <cimport, nodecl> = @record{
+  device_id: culong,
+  num_classes: cint,
+  classes: *XInputClassInfo
+}
+global XEventList: type <cimport, nodecl> = @record{
+  event_type: culong,
+  device: culong
+}
+global XDeviceTimeCoord: type <cimport, nodecl> = @record{
+  time: Time,
+  data: *cint
+}
+global XDeviceState: type <cimport, nodecl> = @record{
+  device_id: culong,
+  num_classes: cint,
+  data: *XInputClass
+}
+global XValuatorState: type <cimport, nodecl> = @record{
+  class: cuchar,
+  length: cuchar,
+  num_valuators: cuchar,
+  mode: cuchar,
+  valuators: *cint
+}
+global XKeyState: type <cimport, nodecl> = @record{
+  class: cuchar,
+  length: cuchar,
+  num_keys: cshort,
+  keys: [32]cchar
+}
+global XButtonState: type <cimport, nodecl> = @record{
+  class: cuchar,
+  length: cuchar,
+  num_buttons: cshort,
+  buttons: [32]cchar
+}
+global function XChangeKeyboardDevice(a1: *Display, a2: *XDevice): cint <cimport, nodecl> end
+global function XChangePointerDevice(a1: *Display, a2: *XDevice, a3: cint, a4: cint): cint <cimport, nodecl> end
+global function XGrabDevice(a1: *Display, a2: *XDevice, a3: Window, a4: cint, a5: cint, a6: *culong, a7: cint, a8: cint, a9: Time): cint <cimport, nodecl> end
+global function XUngrabDevice(a1: *Display, a2: *XDevice, a3: Time): cint <cimport, nodecl> end
+global function XGrabDeviceKey(a1: *Display, a2: *XDevice, a3: cuint, a4: cuint, a5: *XDevice, a6: Window, a7: cint, a8: cuint, a9: *culong, a10: cint, a11: cint): cint <cimport, nodecl> end
+global function XUngrabDeviceKey(a1: *Display, a2: *XDevice, a3: cuint, a4: cuint, a5: *XDevice, a6: Window): cint <cimport, nodecl> end
+global function XGrabDeviceButton(a1: *Display, a2: *XDevice, a3: cuint, a4: cuint, a5: *XDevice, a6: Window, a7: cint, a8: cuint, a9: *culong, a10: cint, a11: cint): cint <cimport, nodecl> end
+global function XUngrabDeviceButton(a1: *Display, a2: *XDevice, a3: cuint, a4: cuint, a5: *XDevice, a6: Window): cint <cimport, nodecl> end
+global function XAllowDeviceEvents(a1: *Display, a2: *XDevice, a3: cint, a4: Time): cint <cimport, nodecl> end
+global function XGetDeviceFocus(a1: *Display, a2: *XDevice, a3: *Window, a4: *cint, a5: *Time): cint <cimport, nodecl> end
+global function XSetDeviceFocus(a1: *Display, a2: *XDevice, a3: Window, a4: cint, a5: Time): cint <cimport, nodecl> end
+global function XGetFeedbackControl(a1: *Display, a2: *XDevice, a3: *cint): *XFeedbackState <cimport, nodecl> end
+global function XFreeFeedbackList(a1: *XFeedbackState) <cimport, nodecl> end
+global function XChangeFeedbackControl(a1: *Display, a2: *XDevice, a3: culong, a4: *XFeedbackControl): cint <cimport, nodecl> end
+global function XDeviceBell(a1: *Display, a2: *XDevice, a3: culong, a4: culong, a5: cint): cint <cimport, nodecl> end
+global function XGetDeviceKeyMapping(a1: *Display, a2: *XDevice, a3: KeyCode, a4: cint, a5: *cint): *KeySym <cimport, nodecl> end
+global function XChangeDeviceKeyMapping(a1: *Display, a2: *XDevice, a3: cint, a4: cint, a5: *KeySym, a6: cint): cint <cimport, nodecl> end
+global function XGetDeviceModifierMapping(a1: *Display, a2: *XDevice): *XModifierKeymap <cimport, nodecl> end
+global function XSetDeviceModifierMapping(a1: *Display, a2: *XDevice, a3: *XModifierKeymap): cint <cimport, nodecl> end
+global function XSetDeviceButtonMapping(a1: *Display, a2: *XDevice, a3: *cuchar, a4: cint): cint <cimport, nodecl> end
+global function XGetDeviceButtonMapping(a1: *Display, a2: *XDevice, a3: *cuchar, a4: cuint): cint <cimport, nodecl> end
+global function XQueryDeviceState(a1: *Display, a2: *XDevice): *XDeviceState <cimport, nodecl> end
+global function XFreeDeviceState(a1: *XDeviceState) <cimport, nodecl> end
+global function XGetExtensionVersion(a1: *Display, a2: cstring): *XExtensionVersion <cimport, nodecl> end
+global function XListInputDevices(a1: *Display, a2: *cint): *XDeviceInfo <cimport, nodecl> end
+global function XFreeDeviceList(a1: *XDeviceInfo) <cimport, nodecl> end
+global function XOpenDevice(a1: *Display, a2: culong): *XDevice <cimport, nodecl> end
+global function XCloseDevice(a1: *Display, a2: *XDevice): cint <cimport, nodecl> end
+global function XSetDeviceMode(a1: *Display, a2: *XDevice, a3: cint): cint <cimport, nodecl> end
+global function XSetDeviceValuators(a1: *Display, a2: *XDevice, a3: *cint, a4: cint, a5: cint): cint <cimport, nodecl> end
+global function XGetDeviceControl(a1: *Display, a2: *XDevice, a3: cint): *XDeviceControl <cimport, nodecl> end
+global function XChangeDeviceControl(a1: *Display, a2: *XDevice, a3: cint, a4: *XDeviceControl): cint <cimport, nodecl> end
+global function XSelectExtensionEvent(a1: *Display, a2: Window, a3: *culong, a4: cint): cint <cimport, nodecl> end
+global function XGetSelectedExtensionEvents(a1: *Display, a2: Window, a3: *cint, a4: **culong, a5: *cint, a6: **culong): cint <cimport, nodecl> end
+global function XChangeDeviceDontPropagateList(a1: *Display, a2: Window, a3: cint, a4: *culong, a5: cint): cint <cimport, nodecl> end
+global function XGetDeviceDontPropagateList(a1: *Display, a2: Window, a3: *cint): *culong <cimport, nodecl> end
+global function XSendExtensionEvent(a1: *Display, a2: *XDevice, a3: Window, a4: cint, a5: cint, a6: *culong, a7: *XEvent): cint <cimport, nodecl> end
+global function XGetDeviceMotionEvents(a1: *Display, a2: *XDevice, a3: Time, a4: Time, a5: *cint, a6: *cint, a7: *cint): *XDeviceTimeCoord <cimport, nodecl> end
+global function XFreeDeviceMotionEvents(a1: *XDeviceTimeCoord) <cimport, nodecl> end
+global function XFreeDeviceControl(a1: *XDeviceControl) <cimport, nodecl> end
+global function XListDeviceProperties(a1: *Display, a2: *XDevice, a3: *cint): *Atom <cimport, nodecl> end
+global function XChangeDeviceProperty(a1: *Display, a2: *XDevice, a3: Atom, a4: Atom, a5: cint, a6: cint, a7: *cuchar, a8: cint) <cimport, nodecl> end
+global function XDeleteDeviceProperty(a1: *Display, a2: *XDevice, a3: Atom) <cimport, nodecl> end
+global function XGetDeviceProperty(a1: *Display, a2: *XDevice, a3: Atom, a4: clong, a5: clong, a6: cint, a7: Atom, a8: *Atom, a9: *cint, a10: *culong, a11: *culong, a12: **cuchar): cint <cimport, nodecl> end
+global function XTestQueryExtension(a1: *Display, a2: *cint, a3: *cint, a4: *cint, a5: *cint): cint <cimport, nodecl> end
+global function XTestCompareCursorWithWindow(a1: *Display, a2: Window, a3: Cursor): cint <cimport, nodecl> end
+global function XTestCompareCurrentCursorWithWindow(a1: *Display, a2: Window): cint <cimport, nodecl> end
+global function XTestFakeKeyEvent(a1: *Display, a2: cuint, a3: cint, a4: culong): cint <cimport, nodecl> end
+global function XTestFakeButtonEvent(a1: *Display, a2: cuint, a3: cint, a4: culong): cint <cimport, nodecl> end
+global function XTestFakeMotionEvent(a1: *Display, a2: cint, a3: cint, a4: cint, a5: culong): cint <cimport, nodecl> end
+global function XTestFakeRelativeMotionEvent(a1: *Display, a2: cint, a3: cint, a4: culong): cint <cimport, nodecl> end
+global function XTestFakeDeviceKeyEvent(a1: *Display, a2: *XDevice, a3: cuint, a4: cint, a5: *cint, a6: cint, a7: culong): cint <cimport, nodecl> end
+global function XTestFakeDeviceButtonEvent(a1: *Display, a2: *XDevice, a3: cuint, a4: cint, a5: *cint, a6: cint, a7: culong): cint <cimport, nodecl> end
+global function XTestFakeProximityEvent(a1: *Display, a2: *XDevice, a3: cint, a4: *cint, a5: cint, a6: culong): cint <cimport, nodecl> end
+global function XTestFakeDeviceMotionEvent(a1: *Display, a2: *XDevice, a3: cint, a4: cint, a5: *cint, a6: cint, a7: culong): cint <cimport, nodecl> end
+global function XTestGrabControl(a1: *Display, a2: cint): cint <cimport, nodecl> end
+global function XTestSetGContextOfGC(a1: GC, a2: GContext) <cimport, nodecl> end
+global function XTestSetVisualIDOfVisual(a1: *Visual, a2: VisualID) <cimport, nodecl> end
+global function XTestDiscard(a1: *Display): cint <cimport, nodecl> end
+global XShmCompletionEvent: type <cimport, nodecl> = @record{
+  type: cint,
+  serial: culong,
+  send_event: cint,
+  display: *Display,
+  drawable: Drawable,
+  major_code: cint,
+  minor_code: cint,
+  shmseg: culong,
+  offset: culong
+}
+global XShmSegmentInfo: type <cimport, nodecl> = @record{
+  shmseg: culong,
+  shmid: cint,
+  shmaddr: cstring,
+  readOnly: cint
+}
+global function XShmQueryExtension(a1: *Display): cint <cimport, nodecl> end
+global function XShmGetEventBase(a1: *Display): cint <cimport, nodecl> end
+global function XShmQueryVersion(a1: *Display, a2: *cint, a3: *cint, a4: *cint): cint <cimport, nodecl> end
+global function XShmPixmapFormat(a1: *Display): cint <cimport, nodecl> end
+global function XShmAttach(a1: *Display, a2: *XShmSegmentInfo): cint <cimport, nodecl> end
+global function XShmDetach(a1: *Display, a2: *XShmSegmentInfo): cint <cimport, nodecl> end
+global function XShmPutImage(a1: *Display, a2: Drawable, a3: GC, a4: *XImage, a5: cint, a6: cint, a7: cint, a8: cint, a9: cuint, a10: cuint, a11: cint): cint <cimport, nodecl> end
+global function XShmGetImage(a1: *Display, a2: Drawable, a3: *XImage, a4: cint, a5: cint, a6: culong): cint <cimport, nodecl> end
+global function XShmCreateImage(a1: *Display, a2: *Visual, a3: cuint, a4: cint, a5: cstring, a6: *XShmSegmentInfo, a7: cuint, a8: cuint): *XImage <cimport, nodecl> end
+global function XShmCreatePixmap(a1: *Display, a2: Drawable, a3: cstring, a4: *XShmSegmentInfo, a5: cuint, a6: cuint, a7: cuint): Pixmap <cimport, nodecl> end
+global None: cint <cimport, nodecl, const>
+global ParentRelative: cint <cimport, nodecl, const>
+global CopyFromParent: cint <cimport, nodecl, const>
+global PointerWindow: cint <cimport, nodecl, const>
+global InputFocus: cint <cimport, nodecl, const>
+global PointerRoot: cint <cimport, nodecl, const>
+global AnyPropertyType: cint <cimport, nodecl, const>
+global AnyKey: cint <cimport, nodecl, const>
+global AnyButton: cint <cimport, nodecl, const>
+global AllTemporary: cint <cimport, nodecl, const>
+global CurrentTime: cint <cimport, nodecl, const>
+global NoSymbol: cint <cimport, nodecl, const>
+global NoEventMask: cint <cimport, nodecl, const>
+global KeyPressMask: cint <cimport, nodecl, const>
+global KeyReleaseMask: cint <cimport, nodecl, const>
+global ButtonPressMask: cint <cimport, nodecl, const>
+global ButtonReleaseMask: cint <cimport, nodecl, const>
+global EnterWindowMask: cint <cimport, nodecl, const>
+global LeaveWindowMask: cint <cimport, nodecl, const>
+global PointerMotionMask: cint <cimport, nodecl, const>
+global PointerMotionHintMask: cint <cimport, nodecl, const>
+global Button1MotionMask: cint <cimport, nodecl, const>
+global Button2MotionMask: cint <cimport, nodecl, const>
+global Button3MotionMask: cint <cimport, nodecl, const>
+global Button4MotionMask: cint <cimport, nodecl, const>
+global Button5MotionMask: cint <cimport, nodecl, const>
+global ButtonMotionMask: cint <cimport, nodecl, const>
+global KeymapStateMask: cint <cimport, nodecl, const>
+global ExposureMask: cint <cimport, nodecl, const>
+global VisibilityChangeMask: cint <cimport, nodecl, const>
+global StructureNotifyMask: cint <cimport, nodecl, const>
+global ResizeRedirectMask: cint <cimport, nodecl, const>
+global SubstructureNotifyMask: cint <cimport, nodecl, const>
+global SubstructureRedirectMask: cint <cimport, nodecl, const>
+global FocusChangeMask: cint <cimport, nodecl, const>
+global PropertyChangeMask: cint <cimport, nodecl, const>
+global ColormapChangeMask: cint <cimport, nodecl, const>
+global OwnerGrabButtonMask: cint <cimport, nodecl, const>
+global KeyPress: cint <cimport, nodecl, const>
+global KeyRelease: cint <cimport, nodecl, const>
+global ButtonPress: cint <cimport, nodecl, const>
+global ButtonRelease: cint <cimport, nodecl, const>
+global MotionNotify: cint <cimport, nodecl, const>
+global EnterNotify: cint <cimport, nodecl, const>
+global LeaveNotify: cint <cimport, nodecl, const>
+global FocusIn: cint <cimport, nodecl, const>
+global FocusOut: cint <cimport, nodecl, const>
+global KeymapNotify: cint <cimport, nodecl, const>
+global Expose: cint <cimport, nodecl, const>
+global GraphicsExpose: cint <cimport, nodecl, const>
+global NoExpose: cint <cimport, nodecl, const>
+global VisibilityNotify: cint <cimport, nodecl, const>
+global CreateNotify: cint <cimport, nodecl, const>
+global DestroyNotify: cint <cimport, nodecl, const>
+global UnmapNotify: cint <cimport, nodecl, const>
+global MapNotify: cint <cimport, nodecl, const>
+global MapRequest: cint <cimport, nodecl, const>
+global ReparentNotify: cint <cimport, nodecl, const>
+global ConfigureNotify: cint <cimport, nodecl, const>
+global ConfigureRequest: cint <cimport, nodecl, const>
+global GravityNotify: cint <cimport, nodecl, const>
+global ResizeRequest: cint <cimport, nodecl, const>
+global CirculateNotify: cint <cimport, nodecl, const>
+global CirculateRequest: cint <cimport, nodecl, const>
+global PropertyNotify: cint <cimport, nodecl, const>
+global SelectionClear: cint <cimport, nodecl, const>
+global SelectionRequest: cint <cimport, nodecl, const>
+global SelectionNotify: cint <cimport, nodecl, const>
+global ColormapNotify: cint <cimport, nodecl, const>
+global ClientMessage: cint <cimport, nodecl, const>
+global MappingNotify: cint <cimport, nodecl, const>
+global GenericEvent: cint <cimport, nodecl, const>
+global LASTEvent: cint <cimport, nodecl, const>
+global ShiftMask: cint <cimport, nodecl, const>
+global LockMask: cint <cimport, nodecl, const>
+global ControlMask: cint <cimport, nodecl, const>
+global Mod1Mask: cint <cimport, nodecl, const>
+global Mod2Mask: cint <cimport, nodecl, const>
+global Mod3Mask: cint <cimport, nodecl, const>
+global Mod4Mask: cint <cimport, nodecl, const>
+global Mod5Mask: cint <cimport, nodecl, const>
+global ShiftMapIndex: cint <cimport, nodecl, const>
+global LockMapIndex: cint <cimport, nodecl, const>
+global ControlMapIndex: cint <cimport, nodecl, const>
+global Mod1MapIndex: cint <cimport, nodecl, const>
+global Mod2MapIndex: cint <cimport, nodecl, const>
+global Mod3MapIndex: cint <cimport, nodecl, const>
+global Mod4MapIndex: cint <cimport, nodecl, const>
+global Mod5MapIndex: cint <cimport, nodecl, const>
+global Button1Mask: cint <cimport, nodecl, const>
+global Button2Mask: cint <cimport, nodecl, const>
+global Button3Mask: cint <cimport, nodecl, const>
+global Button4Mask: cint <cimport, nodecl, const>
+global Button5Mask: cint <cimport, nodecl, const>
+global AnyModifier: cint <cimport, nodecl, const>
+global Button1: cint <cimport, nodecl, const>
+global Button2: cint <cimport, nodecl, const>
+global Button3: cint <cimport, nodecl, const>
+global Button4: cint <cimport, nodecl, const>
+global Button5: cint <cimport, nodecl, const>
+global NotifyNormal: cint <cimport, nodecl, const>
+global NotifyGrab: cint <cimport, nodecl, const>
+global NotifyUngrab: cint <cimport, nodecl, const>
+global NotifyWhileGrabbed: cint <cimport, nodecl, const>
+global NotifyHint: cint <cimport, nodecl, const>
+global NotifyAncestor: cint <cimport, nodecl, const>
+global NotifyVirtual: cint <cimport, nodecl, const>
+global NotifyInferior: cint <cimport, nodecl, const>
+global NotifyNonlinear: cint <cimport, nodecl, const>
+global NotifyNonlinearVirtual: cint <cimport, nodecl, const>
+global NotifyPointer: cint <cimport, nodecl, const>
+global NotifyPointerRoot: cint <cimport, nodecl, const>
+global NotifyDetailNone: cint <cimport, nodecl, const>
+global VisibilityUnobscured: cint <cimport, nodecl, const>
+global VisibilityPartiallyObscured: cint <cimport, nodecl, const>
+global VisibilityFullyObscured: cint <cimport, nodecl, const>
+global PlaceOnTop: cint <cimport, nodecl, const>
+global PlaceOnBottom: cint <cimport, nodecl, const>
+global FamilyInternet: cint <cimport, nodecl, const>
+global FamilyDECnet: cint <cimport, nodecl, const>
+global FamilyChaos: cint <cimport, nodecl, const>
+global FamilyInternet6: cint <cimport, nodecl, const>
+global FamilyServerInterpreted: cint <cimport, nodecl, const>
+global PropertyNewValue: cint <cimport, nodecl, const>
+global PropertyDelete: cint <cimport, nodecl, const>
+global ColormapUninstalled: cint <cimport, nodecl, const>
+global ColormapInstalled: cint <cimport, nodecl, const>
+global GrabModeSync: cint <cimport, nodecl, const>
+global GrabModeAsync: cint <cimport, nodecl, const>
+global GrabSuccess: cint <cimport, nodecl, const>
+global AlreadyGrabbed: cint <cimport, nodecl, const>
+global GrabInvalidTime: cint <cimport, nodecl, const>
+global GrabNotViewable: cint <cimport, nodecl, const>
+global GrabFrozen: cint <cimport, nodecl, const>
+global AsyncPointer: cint <cimport, nodecl, const>
+global SyncPointer: cint <cimport, nodecl, const>
+global ReplayPointer: cint <cimport, nodecl, const>
+global AsyncKeyboard: cint <cimport, nodecl, const>
+global SyncKeyboard: cint <cimport, nodecl, const>
+global ReplayKeyboard: cint <cimport, nodecl, const>
+global AsyncBoth: cint <cimport, nodecl, const>
+global SyncBoth: cint <cimport, nodecl, const>
+global RevertToNone: cint <cimport, nodecl, const>
+global RevertToPointerRoot: cint <cimport, nodecl, const>
+global RevertToParent: cint <cimport, nodecl, const>
+global Success: cint <cimport, nodecl, const>
+global BadRequest: cint <cimport, nodecl, const>
+global BadValue: cint <cimport, nodecl, const>
+global BadWindow: cint <cimport, nodecl, const>
+global BadPixmap: cint <cimport, nodecl, const>
+global BadAtom: cint <cimport, nodecl, const>
+global BadCursor: cint <cimport, nodecl, const>
+global BadFont: cint <cimport, nodecl, const>
+global BadMatch: cint <cimport, nodecl, const>
+global BadDrawable: cint <cimport, nodecl, const>
+global BadAccess: cint <cimport, nodecl, const>
+global BadAlloc: cint <cimport, nodecl, const>
+global BadColor: cint <cimport, nodecl, const>
+global BadGC: cint <cimport, nodecl, const>
+global BadIDChoice: cint <cimport, nodecl, const>
+global BadName: cint <cimport, nodecl, const>
+global BadLength: cint <cimport, nodecl, const>
+global BadImplementation: cint <cimport, nodecl, const>
+global FirstExtensionError: cint <cimport, nodecl, const>
+global LastExtensionError: cint <cimport, nodecl, const>
+global InputOutput: cint <cimport, nodecl, const>
+global InputOnly: cint <cimport, nodecl, const>
+global CWBackPixmap: cint <cimport, nodecl, const>
+global CWBackPixel: cint <cimport, nodecl, const>
+global CWBorderPixmap: cint <cimport, nodecl, const>
+global CWBorderPixel: cint <cimport, nodecl, const>
+global CWBitGravity: cint <cimport, nodecl, const>
+global CWWinGravity: cint <cimport, nodecl, const>
+global CWBackingStore: cint <cimport, nodecl, const>
+global CWBackingPlanes: cint <cimport, nodecl, const>
+global CWBackingPixel: cint <cimport, nodecl, const>
+global CWOverrideRedirect: cint <cimport, nodecl, const>
+global CWSaveUnder: cint <cimport, nodecl, const>
+global CWEventMask: cint <cimport, nodecl, const>
+global CWDontPropagate: cint <cimport, nodecl, const>
+global CWColormap: cint <cimport, nodecl, const>
+global CWCursor: cint <cimport, nodecl, const>
+global CWX: cint <cimport, nodecl, const>
+global CWY: cint <cimport, nodecl, const>
+global CWWidth: cint <cimport, nodecl, const>
+global CWHeight: cint <cimport, nodecl, const>
+global CWBorderWidth: cint <cimport, nodecl, const>
+global CWSibling: cint <cimport, nodecl, const>
+global CWStackMode: cint <cimport, nodecl, const>
+global ForgetGravity: cint <cimport, nodecl, const>
+global NorthWestGravity: cint <cimport, nodecl, const>
+global NorthGravity: cint <cimport, nodecl, const>
+global NorthEastGravity: cint <cimport, nodecl, const>
+global WestGravity: cint <cimport, nodecl, const>
+global CenterGravity: cint <cimport, nodecl, const>
+global EastGravity: cint <cimport, nodecl, const>
+global SouthWestGravity: cint <cimport, nodecl, const>
+global SouthGravity: cint <cimport, nodecl, const>
+global SouthEastGravity: cint <cimport, nodecl, const>
+global StaticGravity: cint <cimport, nodecl, const>
+global UnmapGravity: cint <cimport, nodecl, const>
+global NotUseful: cint <cimport, nodecl, const>
+global WhenMapped: cint <cimport, nodecl, const>
+global Always: cint <cimport, nodecl, const>
+global IsUnmapped: cint <cimport, nodecl, const>
+global IsUnviewable: cint <cimport, nodecl, const>
+global IsViewable: cint <cimport, nodecl, const>
+global SetModeInsert: cint <cimport, nodecl, const>
+global SetModeDelete: cint <cimport, nodecl, const>
+global DestroyAll: cint <cimport, nodecl, const>
+global RetainPermanent: cint <cimport, nodecl, const>
+global RetainTemporary: cint <cimport, nodecl, const>
+global Above: cint <cimport, nodecl, const>
+global Below: cint <cimport, nodecl, const>
+global TopIf: cint <cimport, nodecl, const>
+global BottomIf: cint <cimport, nodecl, const>
+global Opposite: cint <cimport, nodecl, const>
+global RaiseLowest: cint <cimport, nodecl, const>
+global LowerHighest: cint <cimport, nodecl, const>
+global PropModeReplace: cint <cimport, nodecl, const>
+global PropModePrepend: cint <cimport, nodecl, const>
+global PropModeAppend: cint <cimport, nodecl, const>
+global GXclear: cint <cimport, nodecl, const>
+global GXand: cint <cimport, nodecl, const>
+global GXandReverse: cint <cimport, nodecl, const>
+global GXcopy: cint <cimport, nodecl, const>
+global GXandInverted: cint <cimport, nodecl, const>
+global GXnoop: cint <cimport, nodecl, const>
+global GXxor: cint <cimport, nodecl, const>
+global GXor: cint <cimport, nodecl, const>
+global GXnor: cint <cimport, nodecl, const>
+global GXequiv: cint <cimport, nodecl, const>
+global GXinvert: cint <cimport, nodecl, const>
+global GXorReverse: cint <cimport, nodecl, const>
+global GXcopyInverted: cint <cimport, nodecl, const>
+global GXorInverted: cint <cimport, nodecl, const>
+global GXnand: cint <cimport, nodecl, const>
+global GXset: cint <cimport, nodecl, const>
+global LineSolid: cint <cimport, nodecl, const>
+global LineOnOffDash: cint <cimport, nodecl, const>
+global LineDoubleDash: cint <cimport, nodecl, const>
+global CapNotLast: cint <cimport, nodecl, const>
+global CapButt: cint <cimport, nodecl, const>
+global CapRound: cint <cimport, nodecl, const>
+global CapProjecting: cint <cimport, nodecl, const>
+global JoinMiter: cint <cimport, nodecl, const>
+global JoinRound: cint <cimport, nodecl, const>
+global JoinBevel: cint <cimport, nodecl, const>
+global FillSolid: cint <cimport, nodecl, const>
+global FillTiled: cint <cimport, nodecl, const>
+global FillStippled: cint <cimport, nodecl, const>
+global FillOpaqueStippled: cint <cimport, nodecl, const>
+global EvenOddRule: cint <cimport, nodecl, const>
+global WindingRule: cint <cimport, nodecl, const>
+global ClipByChildren: cint <cimport, nodecl, const>
+global IncludeInferiors: cint <cimport, nodecl, const>
+global Unsorted: cint <cimport, nodecl, const>
+global YSorted: cint <cimport, nodecl, const>
+global YXSorted: cint <cimport, nodecl, const>
+global YXBanded: cint <cimport, nodecl, const>
+global CoordModeOrigin: cint <cimport, nodecl, const>
+global CoordModePrevious: cint <cimport, nodecl, const>
+global Complex: cint <cimport, nodecl, const>
+global Nonconvex: cint <cimport, nodecl, const>
+global Convex: cint <cimport, nodecl, const>
+global ArcChord: cint <cimport, nodecl, const>
+global ArcPieSlice: cint <cimport, nodecl, const>
+global GCFunction: cint <cimport, nodecl, const>
+global GCPlaneMask: cint <cimport, nodecl, const>
+global GCForeground: cint <cimport, nodecl, const>
+global GCBackground: cint <cimport, nodecl, const>
+global GCLineWidth: cint <cimport, nodecl, const>
+global GCLineStyle: cint <cimport, nodecl, const>
+global GCCapStyle: cint <cimport, nodecl, const>
+global GCJoinStyle: cint <cimport, nodecl, const>
+global GCFillStyle: cint <cimport, nodecl, const>
+global GCFillRule: cint <cimport, nodecl, const>
+global GCTile: cint <cimport, nodecl, const>
+global GCStipple: cint <cimport, nodecl, const>
+global GCTileStipXOrigin: cint <cimport, nodecl, const>
+global GCTileStipYOrigin: cint <cimport, nodecl, const>
+global GCFont: cint <cimport, nodecl, const>
+global GCSubwindowMode: cint <cimport, nodecl, const>
+global GCGraphicsExposures: cint <cimport, nodecl, const>
+global GCClipXOrigin: cint <cimport, nodecl, const>
+global GCClipYOrigin: cint <cimport, nodecl, const>
+global GCClipMask: cint <cimport, nodecl, const>
+global GCDashOffset: cint <cimport, nodecl, const>
+global GCDashList: cint <cimport, nodecl, const>
+global GCArcMode: cint <cimport, nodecl, const>
+global GCLastBit: cint <cimport, nodecl, const>
+global FontLeftToRight: cint <cimport, nodecl, const>
+global FontRightToLeft: cint <cimport, nodecl, const>
+global FontChange: cint <cimport, nodecl, const>
+global XYBitmap: cint <cimport, nodecl, const>
+global XYPixmap: cint <cimport, nodecl, const>
+global ZPixmap: cint <cimport, nodecl, const>
+global AllocNone: cint <cimport, nodecl, const>
+global AllocAll: cint <cimport, nodecl, const>
+global DoRed: cint <cimport, nodecl, const>
+global DoGreen: cint <cimport, nodecl, const>
+global DoBlue: cint <cimport, nodecl, const>
+global CursorShape: cint <cimport, nodecl, const>
+global TileShape: cint <cimport, nodecl, const>
+global StippleShape: cint <cimport, nodecl, const>
+global AutoRepeatModeOff: cint <cimport, nodecl, const>
+global AutoRepeatModeOn: cint <cimport, nodecl, const>
+global AutoRepeatModeDefault: cint <cimport, nodecl, const>
+global LedModeOff: cint <cimport, nodecl, const>
+global LedModeOn: cint <cimport, nodecl, const>
+global KBKeyClickPercent: cint <cimport, nodecl, const>
+global KBBellPercent: cint <cimport, nodecl, const>
+global KBBellPitch: cint <cimport, nodecl, const>
+global KBBellDuration: cint <cimport, nodecl, const>
+global KBLed: cint <cimport, nodecl, const>
+global KBLedMode: cint <cimport, nodecl, const>
+global KBKey: cint <cimport, nodecl, const>
+global KBAutoRepeatMode: cint <cimport, nodecl, const>
+global MappingSuccess: cint <cimport, nodecl, const>
+global MappingBusy: cint <cimport, nodecl, const>
+global MappingFailed: cint <cimport, nodecl, const>
+global MappingModifier: cint <cimport, nodecl, const>
+global MappingKeyboard: cint <cimport, nodecl, const>
+global MappingPointer: cint <cimport, nodecl, const>
+global DontPreferBlanking: cint <cimport, nodecl, const>
+global PreferBlanking: cint <cimport, nodecl, const>
+global DefaultBlanking: cint <cimport, nodecl, const>
+global DisableScreenSaver: cint <cimport, nodecl, const>
+global DisableScreenInterval: cint <cimport, nodecl, const>
+global DontAllowExposures: cint <cimport, nodecl, const>
+global AllowExposures: cint <cimport, nodecl, const>
+global DefaultExposures: cint <cimport, nodecl, const>
+global ScreenSaverReset: cint <cimport, nodecl, const>
+global ScreenSaverActive: cint <cimport, nodecl, const>
+global HostInsert: cint <cimport, nodecl, const>
+global HostDelete: cint <cimport, nodecl, const>
+global EnableAccess: cint <cimport, nodecl, const>
+global DisableAccess: cint <cimport, nodecl, const>
+global StaticGray: cint <cimport, nodecl, const>
+global GrayScale: cint <cimport, nodecl, const>
+global StaticColor: cint <cimport, nodecl, const>
+global PseudoColor: cint <cimport, nodecl, const>
+global TrueColor: cint <cimport, nodecl, const>
+global DirectColor: cint <cimport, nodecl, const>
+global LSBFirst: cint <cimport, nodecl, const>
+global MSBFirst: cint <cimport, nodecl, const>

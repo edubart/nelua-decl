@@ -11,7 +11,6 @@ if ccinfo.is_linux then
   linklib 'dl'
 end
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 global lua_State: type <cimport, nodecl, forwarddecl> = @record{}
 global lua_Number: type = @float64
 global lua_Integer: type = @clonglong
@@ -143,6 +142,7 @@ lua_Debug = @record{
   short_src: [60]cchar,
   i_ci: *CallInfo
 }
+global FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global luaL_Buffer: type <cimport, nodecl, forwarddecl> = @record{}
 global luaL_Reg: type <cimport, nodecl> = @record{
   name: cstring,

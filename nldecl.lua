@@ -20,6 +20,8 @@ nldecl.type_names = {}
 nldecl.declared_typedefs_names = {}
 nldecl.incomplete_types = {}
 
+nldecl.exclude_foregin_pointers = false
+
 local function dump(...)
   io.stderr:write(table.concat({...}, ' ') .. '\n')
   io.stderr:flush()
@@ -133,17 +135,26 @@ function nldecl.pointer_type(node, decl)
   local subnode = node:type()
   local typename = get_type_node_name(node)
   if not decl and typename then
-    emitter:add(typename)
+    if not nldecl.is_name_included(typename) then
+      visit(node:main_variant())
+    else
+      emitter:add(typename)
+    end
   else
     local subnodeid = get_type_node_name(subnode)
+    local subnodecode = subnode:code()
     if subnodeid == '__va_list_tag' then
       emitter:add('cvalist')
-    elseif subnode:code() == 'integer_type' and gccutils.get_id(subnode:canonical()) == 'char' then
+    elseif subnodecode == 'integer_type' and gccutils.get_id(subnode:canonical()) == 'char' then
       emitter:add('cstring')
-    elseif subnode:code() == 'void_type' then
+    elseif subnodecode == 'void_type' then
       emitter:add('pointer')
-    elseif subnode:code() == 'function_type' then
+    elseif subnodecode == 'function_type' then
       visit(subnode)
+    elseif nldecl.exclude_foregin_pointers and subnodeid and
+      (subnodecode == 'record_type' or subnodecode == 'union_type') and
+      not nldecl.is_name_included(subnodeid) then
+      emitter:add('pointer')
     else
       emitter:add('*')
       visit(subnode)
@@ -383,7 +394,6 @@ local function visit_type_def(typename, type, is_typedef)
     nldecl.declared_names[typename] = true
   else
     emitter:add('global '..typename..': type ')
-
     if (not is_pointer or is_function) and not is_scalar then
       -- not a pointer to a function
       local annotations = {'cimport'}
@@ -527,7 +537,7 @@ local function process_macros()
       for nltype,patts in pairs(nldecl.include_macros) do
         for patt,forcevalue in pairs(patts) do
           local ispatt = type(patt) == 'string' and not not patt:match('^%^')
-          if not ispatt and name == patt and nldecl.can_decl(name) then
+          if not ispatt and name == patt then
             foundnltype = nltype
             if forcevalue == false then
               value = nil

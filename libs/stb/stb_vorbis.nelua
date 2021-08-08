@@ -7,7 +7,7 @@ if STB_VORBIS_LINKLIB then
 end
 cinclude 'stb_vorbis.h'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
+global FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global stb_vorbis_alloc: type <cimport, nodecl> = @record{
   alloc_buffer: cstring,
   alloc_buffer_length_in_bytes: cint

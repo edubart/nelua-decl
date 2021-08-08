@@ -12,7 +12,7 @@ if not ccinfo.is_gcc then
 end
 cinclude 'stb_image.h'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
+global FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global STBI_default: cint <comptime> = 0
 global STBI_grey: cint <comptime> = 1
 global STBI_grey_alpha: cint <comptime> = 2

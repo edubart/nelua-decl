@@ -10,7 +10,6 @@ end
 cdefine 'MINIZ_NO_ZLIB_COMPATIBLE_NAMES'
 cinclude 'miniminiz.h'
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 global function mz_free(p: pointer) <cimport, nodecl> end
 global function mz_adler32(adler: culong, ptr: *cuchar, buf_len: csize): culong <cimport, nodecl> end
 global function mz_crc32(crc: culong, ptr: *cuchar, buf_len: csize): culong <cimport, nodecl> end
@@ -81,6 +80,7 @@ global function mz_inflateEnd(pStream: mz_streamp): cint <cimport, nodecl> end
 global function mz_uncompress(pDest: *cuchar, pDest_len: *culong, pSource: *cuchar, source_len: culong): cint <cimport, nodecl> end
 global function mz_uncompress2(pDest: *cuchar, pDest_len: *culong, pSource: *cuchar, pSource_len: *culong): cint <cimport, nodecl> end
 global function mz_error(err: cint): cstring <cimport, nodecl> end
+global FILE: type <cimport, nodecl, forwarddecl> = @record{}
 global TDEFL_HUFFMAN_ONLY: cint <comptime> = 0
 global TDEFL_DEFAULT_MAX_PROBES: cint <comptime> = 128
 global TDEFL_MAX_PROBES_MASK: cint <comptime> = 4095

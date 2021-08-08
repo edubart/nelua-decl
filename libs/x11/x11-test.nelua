@@ -1,0 +1,20 @@
+
+##[[
+cinclude '<X11/Xlib.h>'
+linklib 'X11'
+]]
+
+require 'os'
+require 'x11'
+
+local display: *Display = XOpenDisplay(nilptr)
+local window: Window = XCreateSimpleWindow(
+    display, XDefaultRootWindow(display),
+    100, 100, 200, 200, 4, 0, 0)
+local event: XEvent
+
+XMapWindow(display, window)
+XSelectInput(display, window, KeyPressMask | ButtonPressMask | ExposureMask)
+
+XFlush(display)
+os.sleep(1)

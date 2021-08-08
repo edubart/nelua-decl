@@ -8,6 +8,7 @@ nldecl.include_names = {
   lua_Unsigned = true,
   lua_KContext = true,
   CallInfo = true,
+  FILE = true,
 }
 
 nldecl.include_macros = {
@@ -70,7 +71,6 @@ if ccinfo.is_linux then
   linklib 'dl'
 end
 ]]
-local FILE <cimport, nodecl, forwarddecl> = @record{}
 ]=]
 
 
