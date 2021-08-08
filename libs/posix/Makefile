@@ -27,3 +27,4 @@ generate:
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S sys/socket.c -fplugin-arg-gcclua-script=sys/socket.lua > sys/socket.nelua
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S sys/stat.c -fplugin-arg-gcclua-script=sys/stat.lua > sys/stat.nelua
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S sys/wait.c -fplugin-arg-gcclua-script=sys/wait.lua > sys/wait.nelua
+	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S sys/shm.c -fplugin-arg-gcclua-script=sys/shm.lua > sys/shm.nelua

@@ -1,0 +1,29 @@
+## cinclude '<sys/shm.h>'
+global ipc_perm: type <cimport, nodecl, ctypedef> = @record{
+  __key: cint,
+  uid: cuint,
+  gid: cuint,
+  cuid: cuint,
+  cgid: cuint,
+  mode: cuint,
+  __seq: cushort,
+  __pad2: cushort,
+  __glibc_reserved1: culong,
+  __glibc_reserved2: culong
+}
+global shmid_ds: type <cimport, nodecl, ctypedef> = @record{
+  shm_perm: ipc_perm,
+  shm_segsz: csize,
+  shm_atime: clong,
+  shm_dtime: clong,
+  shm_ctime: clong,
+  shm_cpid: cint,
+  shm_lpid: cint,
+  shm_nattch: culong,
+  __glibc_reserved5: culong,
+  __glibc_reserved6: culong
+}
+global function shmctl(__shmid: cint, __cmd: cint, __buf: *shmid_ds): cint <cimport, nodecl> end
+global function shmget(__key: cint, __size: csize, __shmflg: cint): cint <cimport, nodecl> end
+global function shmat(__shmid: cint, __shmaddr: pointer, __shmflg: cint): pointer <cimport, nodecl> end
+global function shmdt(__shmaddr: pointer): cint <cimport, nodecl> end
