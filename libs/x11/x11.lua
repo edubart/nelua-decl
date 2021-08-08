@@ -32,7 +32,12 @@ nldecl.include_names = {
 }
 
 nldecl.include_macros = {
-  cint = {
+  {cstring = {
+    XkbName = true,
+  }},
+  {clong = {
+    ['^Xkb%w+Mask$'] = false,
+
     None           = false,
     ParentRelative = false,
     CopyFromParent = false,
@@ -74,6 +79,63 @@ nldecl.include_macros = {
     PropertyChangeMask       = false,
     ColormapChangeMask       = false,
     OwnerGrabButtonMask      = false,
+
+    -- GC components
+    GCFunction          = false,
+    GCPlaneMask         = false,
+    GCForeground        = false,
+    GCBackground        = false,
+    GCLineWidth         = false,
+    GCLineStyle         = false,
+    GCCapStyle          = false,
+    GCJoinStyle         = false,
+    GCFillStyle         = false,
+    GCFillRule          = false,
+    GCTile              = false,
+    GCStipple           = false,
+    GCTileStipXOrigin   = false,
+    GCTileStipYOrigin   = false,
+    GCFont              = false,
+    GCSubwindowMode     = false,
+    GCGraphicsExposures = false,
+    GCClipXOrigin       = false,
+    GCClipYOrigin       = false,
+    GCClipMask          = false,
+    GCDashOffset        = false,
+    GCDashList          = false,
+    GCArcMode           = false,
+    GCLastBit           = false,
+
+    -- Window attributes for CreateWindow and ChangeWindowAttributes
+    CWBackPixmap       = false,
+    CWBackPixel        = false,
+    CWBorderPixmap     = false,
+    CWBorderPixel      = false,
+    CWBitGravity       = false,
+    CWWinGravity       = false,
+    CWBackingStore     = false,
+    CWBackingPlanes    = false,
+    CWBackingPixel     = false,
+    CWOverrideRedirect = false,
+    CWSaveUnder        = false,
+    CWEventMask        = false,
+    CWDontPropagate    = false,
+    CWColormap         = false,
+    CWCursor           = false,
+
+    -- Masks for ChangeKeyboardControl
+    KBKeyClickPercent = false,
+    KBBellPercent     = false,
+    KBBellPitch       = false,
+    KBBellDuration    = false,
+    KBLed             = false,
+    KBLedMode         = false,
+    KBKey             = false,
+    KBAutoRepeatMode  = false,
+  }},
+  {cint = {
+    ['^XK_'] = false,
+    ['^Xkb%w+$'] = false,
 
     -- Event names
     KeyPress         = false,
@@ -244,23 +306,6 @@ nldecl.include_macros = {
     InputOutput = false,
     InputOnly   = false,
 
-    -- Window attributes for CreateWindow and ChangeWindowAttributes
-    CWBackPixmap       = false,
-    CWBackPixel        = false,
-    CWBorderPixmap     = false,
-    CWBorderPixel      = false,
-    CWBitGravity       = false,
-    CWWinGravity       = false,
-    CWBackingStore     = false,
-    CWBackingPlanes    = false,
-    CWBackingPixel     = false,
-    CWOverrideRedirect = false,
-    CWSaveUnder        = false,
-    CWEventMask        = false,
-    CWDontPropagate    = false,
-    CWColormap         = false,
-    CWCursor           = false,
-
     -- ConfigureWindow structure
     CWX           = false,
     CWY           = false,
@@ -388,32 +433,6 @@ nldecl.include_macros = {
     ArcChord    = false,
     ArcPieSlice = false,
 
-    -- GC components
-    GCFunction          = false,
-    GCPlaneMask         = false,
-    GCForeground        = false,
-    GCBackground        = false,
-    GCLineWidth         = false,
-    GCLineStyle         = false,
-    GCCapStyle          = false,
-    GCJoinStyle         = false,
-    GCFillStyle         = false,
-    GCFillRule          = false,
-    GCTile              = false,
-    GCStipple           = false,
-    GCTileStipXOrigin   = false,
-    GCTileStipYOrigin   = false,
-    GCFont              = false,
-    GCSubwindowMode     = false,
-    GCGraphicsExposures = false,
-    GCClipXOrigin       = false,
-    GCClipYOrigin       = false,
-    GCClipMask          = false,
-    GCDashOffset        = false,
-    GCDashList          = false,
-    GCArcMode           = false,
-    GCLastBit = false,
-
     -- Fonts
     FontLeftToRight = false,
     FontRightToLeft = false,
@@ -445,16 +464,6 @@ nldecl.include_macros = {
 
     LedModeOff = false,
     LedModeOn  = false,
-
-    -- Masks for ChangeKeyboardControl
-    KBKeyClickPercent = false,
-    KBBellPercent     = false,
-    KBBellPitch       = false,
-    KBBellDuration    = false,
-    KBLed             = false,
-    KBLedMode         = false,
-    KBKey             = false,
-    KBAutoRepeatMode  = false,
 
     MappingSuccess = false,
     MappingBusy    = false,
@@ -497,5 +506,5 @@ nldecl.include_macros = {
     -- Byte order
     LSBFirst = false,
     MSBFirst = false,
-  },
+  }}
 }

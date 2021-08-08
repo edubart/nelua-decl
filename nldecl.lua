@@ -535,8 +535,12 @@ local function process_macros()
     if name then -- is a macro constant
       -- find in customized macros
       for nltype,patts in pairs(nldecl.include_macros) do
+        if type(nltype) == 'number' then
+          nltype = next(patts)
+          patts = patts[nltype]
+        end
         for patt,forcevalue in pairs(patts) do
-          local ispatt = type(patt) == 'string' and not not patt:match('^%^')
+          local ispatt = type(patt) == 'string' and not patt:match('^[%w_]+$')
           if not ispatt and name == patt then
             foundnltype = nltype
             if forcevalue == false then
@@ -549,8 +553,12 @@ local function process_macros()
         end
       end
       for nltype,patts in pairs(nldecl.include_macros) do
+        if type(nltype) == 'number' then
+          nltype = next(patts)
+          patts = patts[nltype]
+        end
         for patt,forcevalue in pairs(patts) do
-          local ispatt = type(patt) == 'string' and not not patt:match('^%^')
+          local ispatt = type(patt) == 'string' and not patt:match('^[%w_]+$')
           if ispatt and name:match(patt) and nldecl.can_decl(name) then
             foundnltype = nltype
             if forcevalue == false then
@@ -564,6 +572,10 @@ local function process_macros()
       end
       -- find in macro patterns
       for nltype,patts in pairs(nldecl.include_macros) do
+        if type(nltype) == 'number' then
+          nltype = next(patts)
+          patts = patts[nltype]
+        end
         for _,patt in ipairs(patts) do
           if name:match(patt) and nldecl.can_decl(name) then
             foundnltype = nltype

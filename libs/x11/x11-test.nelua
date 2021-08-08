@@ -1,4 +1,3 @@
-
 ##[[
 cinclude '<X11/Xlib.h>'
 linklib 'X11'
