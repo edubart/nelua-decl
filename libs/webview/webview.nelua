@@ -1,0 +1,64 @@
+##[[
+if WEBVIEW_LINKLIB then
+  linklib(WEBVIEW_LINKLIB)
+else
+  cdefine 'WEBVIEW_STATIC'
+  cdefine 'WEBVIEW_IMPLEMENTATION'
+  if ccinfo.is_apple then
+    cflags '-framework WebKit'
+  elseif ccinfo.is_windows then
+    cflags '-Ims.webview2/include -lole32 -lcomctl32 -loleaut32 -luuid -lgdi32'
+  else
+    cflags(executor.eval'pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0')
+  end
+end
+cinclude 'webview.h'
+]]
+global webview_priv: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global webview: type <cimport, nodecl, forwarddecl> = @record{}
+global webview_external_invoke_cb_t: type <cimport, nodecl> = @function(*webview, cstring)
+webview = @record{
+  url: cstring,
+  title: cstring,
+  width: cint,
+  height: cint,
+  resizable: cint,
+  debug: cint,
+  external_invoke_cb: webview_external_invoke_cb_t,
+  priv: *webview_priv,
+  userdata: pointer
+}
+global webview_dialog_type: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  WEBVIEW_DIALOG_TYPE_OPEN = 0,
+  WEBVIEW_DIALOG_TYPE_SAVE = 1,
+  WEBVIEW_DIALOG_TYPE_ALERT = 2
+}
+global webview_dialog_flag: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+  WEBVIEW_DIALOG_FLAG_FILE = 0,
+  WEBVIEW_DIALOG_FLAG_DIRECTORY = 1,
+  WEBVIEW_DIALOG_FLAG_INFO = 2,
+  WEBVIEW_DIALOG_FLAG_WARNING = 4,
+  WEBVIEW_DIALOG_FLAG_ERROR = 6,
+  WEBVIEW_DIALOG_FLAG_ALERT_MASK = 6
+}
+global webview_dispatch_fn: type <cimport, nodecl> = @function(*webview, pointer)
+global webview_dispatch_arg: type <cimport, nodecl, forwarddecl> = @record{}
+webview_dispatch_arg = @record{
+  fn: webview_dispatch_fn,
+  w: *webview,
+  arg: pointer
+}
+global function webview_run(title: cstring, url: cstring, width: cint, height: cint, resizable: cint): cint <cimport, nodecl> end
+global function webview_init(w: *webview): cint <cimport, nodecl> end
+global function webview_loop(w: *webview, blocking: cint): cint <cimport, nodecl> end
+global function webview_eval(w: *webview, js: cstring): cint <cimport, nodecl> end
+global function webview_inject_css(w: *webview, css: cstring): cint <cimport, nodecl> end
+global function webview_set_title(w: *webview, title: cstring) <cimport, nodecl> end
+global function webview_set_fullscreen(w: *webview, fullscreen: cint) <cimport, nodecl> end
+global function webview_set_color(w: *webview, r: uint8, g: uint8, b: uint8, a: uint8) <cimport, nodecl> end
+global function webview_dialog(w: *webview, dlgtype: webview_dialog_type, flags: cint, title: cstring, arg: cstring, result: cstring, resultsz: csize) <cimport, nodecl> end
+global function webview_dispatch(w: *webview, fn: webview_dispatch_fn, arg: pointer) <cimport, nodecl> end
+global function webview_terminate(w: *webview) <cimport, nodecl> end
+global function webview_exit(w: *webview) <cimport, nodecl> end
+global function webview_debug(format: cstring, ...: cvarargs) <cimport, nodecl> end
+global function webview_print_log(s: cstring) <cimport, nodecl> end

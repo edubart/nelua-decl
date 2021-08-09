@@ -1,0 +1,12 @@
+require 'webview'
+
+local w: webview
+w.title = 'Minimal test'
+w.width = 480
+w.height = 320
+webview_init(&w)
+webview_dispatch(&w, function(w: *webview, arg: pointer)
+  webview_terminate(w)
+end, nilptr)
+while webview_loop(&w, 1) == 0 do end
+webview_exit(&w)
