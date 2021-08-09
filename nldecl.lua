@@ -527,6 +527,7 @@ local function eval_macro_value(value)
 end
 
 local function process_macros()
+  if not next(nldecl.include_macros) then return end
   local cppcmd = 'gcc -E -P -dD ' .. gcc.get_main_input_filename()
   local file = assert(io.popen(cppcmd))
   for line in file:lines() do

@@ -1,6 +1,4 @@
 ##[[
-if not ccinfo.is_emscripten then
-end
 if MONGOOSE_MBEDTLS then
   cdefine 'MG_ENABLE_MBEDTLS 1'
   linklib 'mbedtls'
@@ -352,6 +350,7 @@ global MG_ENABLE_MD5: cint <comptime> = 0
 global MG_ENABLE_WINSOCK: cint <comptime> = 1
 global MG_ENABLE_DIRLIST: cint <comptime> = 0
 global MG_ENABLE_SOCKETPAIR: cint <comptime> = 0
+global MG_ENABLE_NATIVE_SOCKETPAIR: cint <comptime> = 0
 global MG_ENABLE_CUSTOM_RANDOM: cint <comptime> = 0
 global MG_ENABLE_PACKED_FS: cint <comptime> = 0
 global MG_IO_SIZE: cint <comptime> = 2048

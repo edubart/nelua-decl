@@ -21,8 +21,6 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-if not ccinfo.is_emscripten then
-end
 if MONGOOSE_MBEDTLS then
   cdefine 'MG_ENABLE_MBEDTLS 1'
   linklib 'mbedtls'
