@@ -63,7 +63,7 @@ global curlfiletype: type <cimport, nodecl, using> = @enum(cint){
 global curl_fileinfo: type <cimport, nodecl, ctypedef> = @record{
   filename: cstring,
   filetype: curlfiletype,
-  time: clong,
+  time: ctime_t,
   perm: cuint,
   uid: cint,
   gid: cint,
@@ -793,7 +793,7 @@ global CURLsslset: type <cimport, nodecl, using> = @enum(cint){
 global function curl_global_sslset(id: curl_sslbackend, name: cstring, avail: ***curl_ssl_backend): CURLsslset <cimport, nodecl> end
 global function curl_slist_append(a1: *curl_slist, a2: cstring): *curl_slist <cimport, nodecl> end
 global function curl_slist_free_all(a1: *curl_slist) <cimport, nodecl> end
-global function curl_getdate(p: cstring, unused: *clong): clong <cimport, nodecl> end
+global function curl_getdate(p: cstring, unused: *ctime_t): ctime_t <cimport, nodecl> end
 global curl_certinfo: type <cimport, nodecl, ctypedef> = @record{
   num_of_certs: cint,
   certinfo: **curl_slist

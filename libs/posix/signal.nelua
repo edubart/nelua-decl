@@ -4,7 +4,7 @@ global __sigset_t: type <cimport, nodecl> = @record{
 }
 global sigset_t: type = @__sigset_t
 global timespec: type <cimport, nodecl, ctypedef> = @record{
-  tv_sec: clong,
+  tv_sec: ctime_t,
   tv_nsec: clong
 }
 global sigval: type <cimport, nodecl, ctypedef> = @union{
@@ -37,8 +37,8 @@ global siginfo_t: type <cimport, nodecl> = @record{
       si_pid: cint,
       si_uid: cuint,
       si_status: cint,
-      si_utime: clong,
-      si_stime: clong
+      si_utime: cclock_t,
+      si_stime: cclock_t
     },
     _sigfault: record{
       si_addr: pointer,

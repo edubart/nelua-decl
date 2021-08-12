@@ -81,6 +81,10 @@ local ctype2nltype = {
   ['_Float128'] = 'float128',
   ['bool'] = 'boolean',
   ['void'] = 'void',
+  ['clock_t'] = 'cclock_t',
+  ['__clock_t'] = 'cclock_t',
+  ['time_t'] = 'ctime_t',
+  ['__time_t'] = 'ctime_t',
 }
 
 function gccutils.is_primitive_name(name)

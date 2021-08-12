@@ -240,7 +240,7 @@ global mz_zip_archive_file_stat: type <cimport, nodecl> = @record{
   m_version_needed: uint16,
   m_bit_flag: uint16,
   m_method: uint16,
-  m_time: clong,
+  m_time: ctime_t,
   m_crc32: uint32,
   m_comp_size: uint64,
   m_uncomp_size: uint64,
@@ -415,10 +415,10 @@ global function mz_zip_writer_init_from_reader(pZip: *mz_zip_archive, pFilename:
 global function mz_zip_writer_init_from_reader_v2(pZip: *mz_zip_archive, pFilename: cstring, flags: cuint): cint <cimport, nodecl> end
 global function mz_zip_writer_add_mem(pZip: *mz_zip_archive, pArchive_name: cstring, pBuf: pointer, buf_size: csize, level_and_flags: cuint): cint <cimport, nodecl> end
 global function mz_zip_writer_add_mem_ex(pZip: *mz_zip_archive, pArchive_name: cstring, pBuf: pointer, buf_size: csize, pComment: pointer, comment_size: uint16, level_and_flags: cuint, uncomp_size: uint64, uncomp_crc32: uint32): cint <cimport, nodecl> end
-global function mz_zip_writer_add_mem_ex_v2(pZip: *mz_zip_archive, pArchive_name: cstring, pBuf: pointer, buf_size: csize, pComment: pointer, comment_size: uint16, level_and_flags: cuint, uncomp_size: uint64, uncomp_crc32: uint32, last_modified: *clong, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
-global function mz_zip_writer_add_read_buf_callback(pZip: *mz_zip_archive, pArchive_name: cstring, read_callback: mz_file_read_func, callback_opaque: pointer, max_size: uint64, pFile_time: *clong, pComment: pointer, comment_size: uint16, level_and_flags: cuint, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_mem_ex_v2(pZip: *mz_zip_archive, pArchive_name: cstring, pBuf: pointer, buf_size: csize, pComment: pointer, comment_size: uint16, level_and_flags: cuint, uncomp_size: uint64, uncomp_crc32: uint32, last_modified: *ctime_t, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_read_buf_callback(pZip: *mz_zip_archive, pArchive_name: cstring, read_callback: mz_file_read_func, callback_opaque: pointer, max_size: uint64, pFile_time: *ctime_t, pComment: pointer, comment_size: uint16, level_and_flags: cuint, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
 global function mz_zip_writer_add_file(pZip: *mz_zip_archive, pArchive_name: cstring, pSrc_filename: cstring, pComment: pointer, comment_size: uint16, level_and_flags: cuint): cint <cimport, nodecl> end
-global function mz_zip_writer_add_cfile(pZip: *mz_zip_archive, pArchive_name: cstring, pSrc_file: *FILE, max_size: uint64, pFile_time: *clong, pComment: pointer, comment_size: uint16, level_and_flags: cuint, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
+global function mz_zip_writer_add_cfile(pZip: *mz_zip_archive, pArchive_name: cstring, pSrc_file: *FILE, max_size: uint64, pFile_time: *ctime_t, pComment: pointer, comment_size: uint16, level_and_flags: cuint, user_extra_data_local: cstring, user_extra_data_local_len: cuint, user_extra_data_central: cstring, user_extra_data_central_len: cuint): cint <cimport, nodecl> end
 global function mz_zip_writer_add_from_zip_reader(pZip: *mz_zip_archive, pSource_zip: *mz_zip_archive, src_file_index: cuint): cint <cimport, nodecl> end
 global function mz_zip_writer_finalize_archive(pZip: *mz_zip_archive): cint <cimport, nodecl> end
 global function mz_zip_writer_finalize_heap_archive(pZip: *mz_zip_archive, ppBuf: *pointer, pSize: *csize): cint <cimport, nodecl> end

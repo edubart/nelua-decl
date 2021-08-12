@@ -28,8 +28,8 @@ global siginfo_t: type <cimport, nodecl> = @record{
       si_pid: cint,
       si_uid: cuint,
       si_status: cint,
-      si_utime: clong,
-      si_stime: clong
+      si_utime: cclock_t,
+      si_stime: cclock_t
     },
     _sigfault: record{
       si_addr: pointer,

@@ -1,49 +1,23 @@
 ## cinclude '<pthread.h>'
 ## cflags '-pthread'
 global timespec: type <cimport, nodecl, ctypedef> = @record{
-  tv_sec: clong,
+  tv_sec: ctime_t,
   tv_nsec: clong
 }
 global sched_param: type <cimport, nodecl, ctypedef> = @record{
   sched_priority: cint
 }
-global pthread_t: type = @culong
-global pthread_mutexattr_t: type <cimport, nodecl> = @union{
-  __size: [4]cchar,
-  __align: cint
-}
-global pthread_condattr_t: type <cimport, nodecl> = @union{
-  __size: [4]cchar,
-  __align: cint
-}
-global pthread_attr_t: type <cimport, nodecl> = @union{
-  __size: [56]cchar,
-  __align: clong
-}
-global pthread_mutex_t: type <cimport, nodecl, cincomplete> = @union{
-  __size: [40]cchar,
-  __align: clong
-}
-global pthread_cond_t: type <cimport, nodecl, cincomplete> = @union{
-  __size: [48]cchar,
-  __align: clonglong
-}
-global pthread_rwlock_t: type <cimport, nodecl, cincomplete> = @union{
-  __size: [56]cchar,
-  __align: clong
-}
-global pthread_rwlockattr_t: type <cimport, nodecl> = @union{
-  __size: [8]cchar,
-  __align: clong
-}
-global pthread_barrier_t: type <cimport, nodecl> = @union{
-  __size: [32]cchar,
-  __align: clong
-}
-global pthread_barrierattr_t: type <cimport, nodecl> = @union{
-  __size: [4]cchar,
-  __align: cint
-}
+global pthread_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_mutexattr_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_condattr_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_key_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_attr_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_mutex_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_cond_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_rwlock_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_rwlockattr_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_barrier_t: type <cimport, nodecl, cincomplete> = @record{}
+global pthread_barrierattr_t: type <cimport, nodecl, cincomplete> = @record{}
 global function pthread_create(__newthread: *pthread_t, __attr: *pthread_attr_t, __start_routine: function(pointer): pointer, __arg: pointer): cint <cimport, nodecl> end
 global function pthread_exit(__retval: pointer) <cimport, nodecl> end
 global function pthread_join(__th: pthread_t, __thread_return: *pointer): cint <cimport, nodecl> end
@@ -138,9 +112,9 @@ global function pthread_barrierattr_init(__attr: *pthread_barrierattr_t): cint <
 global function pthread_barrierattr_destroy(__attr: *pthread_barrierattr_t): cint <cimport, nodecl> end
 global function pthread_barrierattr_getpshared(__attr: *pthread_barrierattr_t, __pshared: *cint): cint <cimport, nodecl> end
 global function pthread_barrierattr_setpshared(__attr: *pthread_barrierattr_t, __pshared: cint): cint <cimport, nodecl> end
-global function pthread_key_create(__key: *cuint, __destr_function: function(pointer)): cint <cimport, nodecl> end
-global function pthread_key_delete(__key: cuint): cint <cimport, nodecl> end
-global function pthread_getspecific(__key: cuint): pointer <cimport, nodecl> end
-global function pthread_setspecific(__key: cuint, __pointer: pointer): cint <cimport, nodecl> end
+global function pthread_key_create(__key: *pthread_key_t, __destr_function: function(pointer)): cint <cimport, nodecl> end
+global function pthread_key_delete(__key: pthread_key_t): cint <cimport, nodecl> end
+global function pthread_getspecific(__key: pthread_key_t): pointer <cimport, nodecl> end
+global function pthread_setspecific(__key: pthread_key_t, __pointer: pointer): cint <cimport, nodecl> end
 global function pthread_getcpuclockid(__thread_id: pthread_t, __clock_id: *cint): cint <cimport, nodecl> end
 global function pthread_atfork(__prepare: function(), __parent: function(), __child: function()): cint <cimport, nodecl> end

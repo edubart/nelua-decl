@@ -13,7 +13,7 @@ end
 ]]
 global c89thread_handle: type = @pointer
 global timespec: type <cimport, nodecl, ctypedef> = @record{
-  tv_sec: clong,
+  tv_sec: ctime_t,
   tv_nsec: clong
 }
 global c89thrd_success: cint <comptime> = 0
@@ -75,9 +75,9 @@ global function c89evnt_timedwait(evnt: *c89evnt_t, time_point: *timespec): cint
 global function c89evnt_signal(evnt: *c89evnt_t): cint <cimport, nodecl> end
 global function c89timespec_get(ts: *timespec, base: cint): cint <cimport, nodecl> end
 global function c89timespec_now(): timespec <cimport, nodecl> end
-global function c89timespec_nanoseconds(nanoseconds: clong): timespec <cimport, nodecl> end
-global function c89timespec_milliseconds(milliseconds: clong): timespec <cimport, nodecl> end
-global function c89timespec_seconds(seconds: clong): timespec <cimport, nodecl> end
+global function c89timespec_nanoseconds(nanoseconds: ctime_t): timespec <cimport, nodecl> end
+global function c89timespec_milliseconds(milliseconds: ctime_t): timespec <cimport, nodecl> end
+global function c89timespec_seconds(seconds: ctime_t): timespec <cimport, nodecl> end
 global function c89timespec_diff(lhs: timespec, rhs: timespec): timespec <cimport, nodecl> end
 global function c89timespec_add(tsA: timespec, tsB: timespec): timespec <cimport, nodecl> end
 global function c89timespec_cmp(tsA: timespec, tsB: timespec): cint <cimport, nodecl> end

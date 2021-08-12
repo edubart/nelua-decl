@@ -16,6 +16,7 @@ download:
 	wget -O webview-cocoa.c https://raw.githubusercontent.com/edubart/webview-c/master/webview-cocoa.c
 	wget -O webview-gtk.c https://raw.githubusercontent.com/edubart/webview-c/master/webview-gtk.c
 	wget -O webview-win32.c https://raw.githubusercontent.com/edubart/webview-c/master/webview-win32.c
+	wget -O webview-ms-webview2.h https://raw.githubusercontent.com/edubart/webview-c/master/webview-ms-webview2.h
 
 test:
 	$(NELUA) $(TFILE)

@@ -14,9 +14,9 @@ global ipc_perm: type <cimport, nodecl, ctypedef> = @record{
 global shmid_ds: type <cimport, nodecl, ctypedef> = @record{
   shm_perm: ipc_perm,
   shm_segsz: csize,
-  shm_atime: clong,
-  shm_dtime: clong,
-  shm_ctime: clong,
+  shm_atime: ctime_t,
+  shm_dtime: ctime_t,
+  shm_ctime: ctime_t,
   shm_cpid: cint,
   shm_lpid: cint,
   shm_nattch: culong,

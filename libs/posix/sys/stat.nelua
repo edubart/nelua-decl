@@ -1,6 +1,6 @@
 ## cinclude '<sys/stat.h>'
 global timespec: type <cimport, nodecl, ctypedef> = @record{
-  tv_sec: clong,
+  tv_sec: ctime_t,
   tv_nsec: clong
 }
 global stat_t: type <cimport, nodecl, ctypedef 'stat'> = @record{

@@ -13,7 +13,7 @@ global tm: type <cimport, nodecl, ctypedef> = @record{
   __tm_zone: cstring
 }
 global timespec: type <cimport, nodecl, ctypedef> = @record{
-  tv_sec: clong,
+  tv_sec: ctime_t,
   tv_nsec: clong
 }
 global timer_t: type = @pointer
@@ -31,21 +31,21 @@ global __locale_struct: type <cimport, nodecl, ctypedef> = @record{
   __names: [13]cstring
 }
 global locale_t: type = @*__locale_struct
-global function clock(): clong <cimport, nodecl> end
-global function time(__timer: *clong): clong <cimport, nodecl> end
-global function difftime(__time1: clong, __time0: clong): float64 <cimport, nodecl> end
-global function mktime(__tp: *tm): clong <cimport, nodecl> end
+global function clock(): cclock_t <cimport, nodecl> end
+global function time(__timer: *ctime_t): ctime_t <cimport, nodecl> end
+global function difftime(__time1: ctime_t, __time0: ctime_t): float64 <cimport, nodecl> end
+global function mktime(__tp: *tm): ctime_t <cimport, nodecl> end
 global function strftime(__s: cstring, __maxsize: csize, __format: cstring, __tp: *tm): csize <cimport, nodecl> end
 global function strptime(__s: cstring, __fmt: cstring, __tp: *tm): cstring <cimport, nodecl> end
 global function strftime_l(__s: cstring, __maxsize: csize, __format: cstring, __tp: *tm, __loc: locale_t): csize <cimport, nodecl> end
-global function gmtime(__timer: *clong): *tm <cimport, nodecl> end
-global function localtime(__timer: *clong): *tm <cimport, nodecl> end
-global function gmtime_r(__timer: *clong, __tp: *tm): *tm <cimport, nodecl> end
-global function localtime_r(__timer: *clong, __tp: *tm): *tm <cimport, nodecl> end
+global function gmtime(__timer: *ctime_t): *tm <cimport, nodecl> end
+global function localtime(__timer: *ctime_t): *tm <cimport, nodecl> end
+global function gmtime_r(__timer: *ctime_t, __tp: *tm): *tm <cimport, nodecl> end
+global function localtime_r(__timer: *ctime_t, __tp: *tm): *tm <cimport, nodecl> end
 global function asctime(__tp: *tm): cstring <cimport, nodecl> end
-global function ctime(__timer: *clong): cstring <cimport, nodecl> end
+global function ctime(__timer: *ctime_t): cstring <cimport, nodecl> end
 global function asctime_r(__tp: *tm, __buf: cstring): cstring <cimport, nodecl> end
-global function ctime_r(__timer: *clong, __buf: cstring): cstring <cimport, nodecl> end
+global function ctime_r(__timer: *ctime_t, __buf: cstring): cstring <cimport, nodecl> end
 global tzname: [2]cstring <cimport, nodecl>
 global function tzset() <cimport, nodecl> end
 global daylight: cint <cimport, nodecl>
