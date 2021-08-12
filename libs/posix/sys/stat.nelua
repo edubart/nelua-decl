@@ -20,22 +20,22 @@ global stat_t: type <cimport, nodecl, ctypedef 'stat'> = @record{
   st_ctim: timespec,
   __glibc_reserved: [3]clong
 }
-global function stat(__file: cstring, __buf: *stat_t): cint <cimport, nodecl> end
-global function fstat(__fd: cint, __buf: *stat_t): cint <cimport, nodecl> end
-global function fstatat(__fd: cint, __file: cstring, __buf: *stat_t, __flag: cint): cint <cimport, nodecl> end
-global function lstat(__file: cstring, __buf: *stat_t): cint <cimport, nodecl> end
-global function chmod(__file: cstring, __mode: cuint): cint <cimport, nodecl> end
-global function fchmod(__fd: cint, __mode: cuint): cint <cimport, nodecl> end
-global function fchmodat(__fd: cint, __file: cstring, __mode: cuint, __flag: cint): cint <cimport, nodecl> end
-global function umask(__mask: cuint): cuint <cimport, nodecl> end
-global function mkdir(__path: cstring, __mode: cuint): cint <cimport, nodecl> end
-global function mkdirat(__fd: cint, __path: cstring, __mode: cuint): cint <cimport, nodecl> end
-global function mknod(__path: cstring, __mode: cuint, __dev: culong): cint <cimport, nodecl> end
-global function mknodat(__fd: cint, __path: cstring, __mode: cuint, __dev: culong): cint <cimport, nodecl> end
-global function mkfifo(__path: cstring, __mode: cuint): cint <cimport, nodecl> end
-global function mkfifoat(__fd: cint, __path: cstring, __mode: cuint): cint <cimport, nodecl> end
-global function utimensat(__fd: cint, __path: cstring, __times: *timespec, __flags: cint): cint <cimport, nodecl> end
-global function futimens(__fd: cint, __times: *timespec): cint <cimport, nodecl> end
+global function stat(file: cstring, buf: *stat_t): cint <cimport, nodecl> end
+global function fstat(fd: cint, buf: *stat_t): cint <cimport, nodecl> end
+global function fstatat(fd: cint, file: cstring, buf: *stat_t, flag: cint): cint <cimport, nodecl> end
+global function lstat(file: cstring, buf: *stat_t): cint <cimport, nodecl> end
+global function chmod(file: cstring, mode: cuint): cint <cimport, nodecl> end
+global function fchmod(fd: cint, mode: cuint): cint <cimport, nodecl> end
+global function fchmodat(fd: cint, file: cstring, mode: cuint, flag: cint): cint <cimport, nodecl> end
+global function umask(mask: cuint): cuint <cimport, nodecl> end
+global function mkdir(path: cstring, mode: cuint): cint <cimport, nodecl> end
+global function mkdirat(fd: cint, path: cstring, mode: cuint): cint <cimport, nodecl> end
+global function mknod(path: cstring, mode: cuint, dev: culong): cint <cimport, nodecl> end
+global function mknodat(fd: cint, path: cstring, mode: cuint, dev: culong): cint <cimport, nodecl> end
+global function mkfifo(path: cstring, mode: cuint): cint <cimport, nodecl> end
+global function mkfifoat(fd: cint, path: cstring, mode: cuint): cint <cimport, nodecl> end
+global function utimensat(fd: cint, path: cstring, times: *timespec, flags: cint): cint <cimport, nodecl> end
+global function futimens(fd: cint, times: *timespec): cint <cimport, nodecl> end
 global S_IFMT: cuint <cimport, nodecl, const>
 global S_IFDIR: cuint <cimport, nodecl, const>
 global S_IFCHR: cuint <cimport, nodecl, const>

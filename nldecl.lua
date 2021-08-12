@@ -343,6 +343,7 @@ function nldecl.function_decl(node)
     if not argname then
       argname = 'a'..i
     end
+    argname = argname:gsub('^__', '')
     argname = gccutils.normalize_name(argname)
     emitter:add(argname..': ')
     visit(argtype)

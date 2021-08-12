@@ -31,11 +31,11 @@ global epoll_event: type <cimport, nodecl, ctypedef> = @record{
   events: uint32,
   data: epoll_data_t
 }
-global function epoll_create(__size: cint): cint <cimport, nodecl> end
-global function epoll_create1(__flags: cint): cint <cimport, nodecl> end
-global function epoll_ctl(__epfd: cint, __op: cint, __fd: cint, __event: *epoll_event): cint <cimport, nodecl> end
-global function epoll_wait(__epfd: cint, __events: *epoll_event, __maxevents: cint, __timeout: cint): cint <cimport, nodecl> end
-global function epoll_pwait(__epfd: cint, __events: *epoll_event, __maxevents: cint, __timeout: cint, __ss: *__sigset_t): cint <cimport, nodecl> end
+global function epoll_create(size: cint): cint <cimport, nodecl> end
+global function epoll_create1(flags: cint): cint <cimport, nodecl> end
+global function epoll_ctl(epfd: cint, op: cint, fd: cint, event: *epoll_event): cint <cimport, nodecl> end
+global function epoll_wait(epfd: cint, events: *epoll_event, maxevents: cint, timeout: cint): cint <cimport, nodecl> end
+global function epoll_pwait(epfd: cint, events: *epoll_event, maxevents: cint, timeout: cint, ss: *__sigset_t): cint <cimport, nodecl> end
 global EPOLL_CTL_ADD: cint <comptime> = 1
 global EPOLL_CTL_DEL: cint <comptime> = 2
 global EPOLL_CTL_MOD: cint <comptime> = 3

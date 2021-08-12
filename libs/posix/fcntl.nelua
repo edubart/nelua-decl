@@ -6,12 +6,12 @@ global flock: type <cimport, nodecl, ctypedef> = @record{
   l_len: clong,
   l_pid: cint
 }
-global function fcntl(__fd: cint, __cmd: cint, ...: cvarargs): cint <cimport, nodecl> end
-global function open(__file: cstring, __oflag: cint, ...: cvarargs): cint <cimport, nodecl> end
-global function openat(__fd: cint, __file: cstring, __oflag: cint, ...: cvarargs): cint <cimport, nodecl> end
-global function creat(__file: cstring, __mode: cuint): cint <cimport, nodecl> end
-global function posix_fadvise(__fd: cint, __offset: clong, __len: clong, __advise: cint): cint <cimport, nodecl> end
-global function posix_fallocate(__fd: cint, __offset: clong, __len: clong): cint <cimport, nodecl> end
+global function fcntl(fd: cint, cmd: cint, ...: cvarargs): cint <cimport, nodecl> end
+global function open(file: cstring, oflag: cint, ...: cvarargs): cint <cimport, nodecl> end
+global function openat(fd: cint, file: cstring, oflag: cint, ...: cvarargs): cint <cimport, nodecl> end
+global function creat(file: cstring, mode: cuint): cint <cimport, nodecl> end
+global function posix_fadvise(fd: cint, offset: clong, len: clong, advise: cint): cint <cimport, nodecl> end
+global function posix_fallocate(fd: cint, offset: clong, len: clong): cint <cimport, nodecl> end
 global F_GETLK64: cint <comptime> = 5
 global F_SETLK64: cint <comptime> = 6
 global F_SETLKW64: cint <comptime> = 7

@@ -23,7 +23,7 @@ global shmid_ds: type <cimport, nodecl, ctypedef> = @record{
   __glibc_reserved5: culong,
   __glibc_reserved6: culong
 }
-global function shmctl(__shmid: cint, __cmd: cint, __buf: *shmid_ds): cint <cimport, nodecl> end
-global function shmget(__key: cint, __size: csize, __shmflg: cint): cint <cimport, nodecl> end
-global function shmat(__shmid: cint, __shmaddr: pointer, __shmflg: cint): pointer <cimport, nodecl> end
-global function shmdt(__shmaddr: pointer): cint <cimport, nodecl> end
+global function shmctl(shmid: cint, cmd: cint, buf: *shmid_ds): cint <cimport, nodecl> end
+global function shmget(key: cint, size: csize, shmflg: cint): cint <cimport, nodecl> end
+global function shmat(shmid: cint, shmaddr: pointer, shmflg: cint): pointer <cimport, nodecl> end
+global function shmdt(shmaddr: pointer): cint <cimport, nodecl> end

@@ -58,6 +58,6 @@ global idtype_t: type <cimport, nodecl, using> = @enum(cint){
   P_PID = 1,
   P_PGID = 2
 }
-global function wait(__stat_loc: *cint): cint <cimport, nodecl> end
-global function waitpid(__pid: cint, __stat_loc: *cint, __options: cint): cint <cimport, nodecl> end
-global function waitid(__idtype: idtype_t, __id: cuint, __infop: *siginfo_t, __options: cint): cint <cimport, nodecl> end
+global function wait(stat_loc: *cint): cint <cimport, nodecl> end
+global function waitpid(pid: cint, stat_loc: *cint, options: cint): cint <cimport, nodecl> end
+global function waitid(idtype: idtype_t, id: cuint, infop: *siginfo_t, options: cint): cint <cimport, nodecl> end

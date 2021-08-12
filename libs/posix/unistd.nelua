@@ -1,34 +1,34 @@
 ## cinclude '<unistd.h>'
-global function access(__name: cstring, __type: cint): cint <cimport, nodecl> end
-global function faccessat(__fd: cint, __file: cstring, __type: cint, __flag: cint): cint <cimport, nodecl> end
-global function lseek(__fd: cint, __offset: clong, __whence: cint): clong <cimport, nodecl> end
-global function close(__fd: cint): cint <cimport, nodecl> end
-global function read(__fd: cint, __buf: pointer, __nbytes: csize): clong <cimport, nodecl> end
-global function write(__fd: cint, __buf: pointer, __n: csize): clong <cimport, nodecl> end
-global function pread(__fd: cint, __buf: pointer, __nbytes: csize, __offset: clong): clong <cimport, nodecl> end
-global function pwrite(__fd: cint, __buf: pointer, __n: csize, __offset: clong): clong <cimport, nodecl> end
-global function pipe(__pipedes: *cint): cint <cimport, nodecl> end
-global function alarm(__seconds: cuint): cuint <cimport, nodecl> end
-global function sleep(__seconds: cuint): cuint <cimport, nodecl> end
+global function access(name: cstring, type: cint): cint <cimport, nodecl> end
+global function faccessat(fd: cint, file: cstring, type: cint, flag: cint): cint <cimport, nodecl> end
+global function lseek(fd: cint, offset: clong, whence: cint): clong <cimport, nodecl> end
+global function close(fd: cint): cint <cimport, nodecl> end
+global function read(fd: cint, buf: pointer, nbytes: csize): clong <cimport, nodecl> end
+global function write(fd: cint, buf: pointer, n: csize): clong <cimport, nodecl> end
+global function pread(fd: cint, buf: pointer, nbytes: csize, offset: clong): clong <cimport, nodecl> end
+global function pwrite(fd: cint, buf: pointer, n: csize, offset: clong): clong <cimport, nodecl> end
+global function pipe(pipedes: *cint): cint <cimport, nodecl> end
+global function alarm(seconds: cuint): cuint <cimport, nodecl> end
+global function sleep(seconds: cuint): cuint <cimport, nodecl> end
 global function pause(): cint <cimport, nodecl> end
-global function chown(__file: cstring, __owner: cuint, __group: cuint): cint <cimport, nodecl> end
-global function fchown(__fd: cint, __owner: cuint, __group: cuint): cint <cimport, nodecl> end
-global function lchown(__file: cstring, __owner: cuint, __group: cuint): cint <cimport, nodecl> end
-global function fchownat(__fd: cint, __file: cstring, __owner: cuint, __group: cuint, __flag: cint): cint <cimport, nodecl> end
-global function chdir(__path: cstring): cint <cimport, nodecl> end
-global function fchdir(__fd: cint): cint <cimport, nodecl> end
-global function getcwd(__buf: cstring, __size: csize): cstring <cimport, nodecl> end
-global function dup(__fd: cint): cint <cimport, nodecl> end
-global function dup2(__fd: cint, __fd2: cint): cint <cimport, nodecl> end
-global function execve(__path: cstring, __argv: *cstring, __envp: *cstring): cint <cimport, nodecl> end
-global function fexecve(__fd: cint, __argv: *cstring, __envp: *cstring): cint <cimport, nodecl> end
-global function execv(__path: cstring, __argv: *cstring): cint <cimport, nodecl> end
-global function execle(__path: cstring, __arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function execl(__path: cstring, __arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function execvp(__file: cstring, __argv: *cstring): cint <cimport, nodecl> end
-global function execlp(__file: cstring, __arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function nice(__inc: cint): cint <cimport, nodecl> end
-global function _exit(__status: cint) <cimport, nodecl> end
+global function chown(file: cstring, owner: cuint, group: cuint): cint <cimport, nodecl> end
+global function fchown(fd: cint, owner: cuint, group: cuint): cint <cimport, nodecl> end
+global function lchown(file: cstring, owner: cuint, group: cuint): cint <cimport, nodecl> end
+global function fchownat(fd: cint, file: cstring, owner: cuint, group: cuint, flag: cint): cint <cimport, nodecl> end
+global function chdir(path: cstring): cint <cimport, nodecl> end
+global function fchdir(fd: cint): cint <cimport, nodecl> end
+global function getcwd(buf: cstring, size: csize): cstring <cimport, nodecl> end
+global function dup(fd: cint): cint <cimport, nodecl> end
+global function dup2(fd: cint, fd2: cint): cint <cimport, nodecl> end
+global function execve(path: cstring, argv: *cstring, envp: *cstring): cint <cimport, nodecl> end
+global function fexecve(fd: cint, argv: *cstring, envp: *cstring): cint <cimport, nodecl> end
+global function execv(path: cstring, argv: *cstring): cint <cimport, nodecl> end
+global function execle(path: cstring, arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function execl(path: cstring, arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function execvp(file: cstring, argv: *cstring): cint <cimport, nodecl> end
+global function execlp(file: cstring, arg: cstring, ...: cvarargs): cint <cimport, nodecl> end
+global function nice(inc: cint): cint <cimport, nodecl> end
+global function _exit(status: cint) <cimport, nodecl> end
 global _PC_LINK_MAX: cint <comptime> = 0
 global _PC_MAX_CANON: cint <comptime> = 1
 global _PC_MAX_INPUT: cint <comptime> = 2
@@ -329,53 +329,53 @@ global _CS_POSIX_V7_LPBIG_OFFBIG_LIBS: cint <comptime> = 1146
 global _CS_POSIX_V7_LPBIG_OFFBIG_LINTFLAGS: cint <comptime> = 1147
 global _CS_V6_ENV: cint <comptime> = 1148
 global _CS_V7_ENV: cint <comptime> = 1149
-global function pathconf(__path: cstring, __name: cint): clong <cimport, nodecl> end
-global function fpathconf(__fd: cint, __name: cint): clong <cimport, nodecl> end
-global function sysconf(__name: cint): clong <cimport, nodecl> end
-global function confstr(__name: cint, __buf: cstring, __len: csize): csize <cimport, nodecl> end
+global function pathconf(path: cstring, name: cint): clong <cimport, nodecl> end
+global function fpathconf(fd: cint, name: cint): clong <cimport, nodecl> end
+global function sysconf(name: cint): clong <cimport, nodecl> end
+global function confstr(name: cint, buf: cstring, len: csize): csize <cimport, nodecl> end
 global function getpid(): cint <cimport, nodecl> end
 global function getppid(): cint <cimport, nodecl> end
 global function getpgrp(): cint <cimport, nodecl> end
-global function getpgid(__pid: cint): cint <cimport, nodecl> end
-global function setpgid(__pid: cint, __pgid: cint): cint <cimport, nodecl> end
+global function getpgid(pid: cint): cint <cimport, nodecl> end
+global function setpgid(pid: cint, pgid: cint): cint <cimport, nodecl> end
 global function setpgrp(): cint <cimport, nodecl> end
 global function setsid(): cint <cimport, nodecl> end
-global function getsid(__pid: cint): cint <cimport, nodecl> end
+global function getsid(pid: cint): cint <cimport, nodecl> end
 global function getuid(): cuint <cimport, nodecl> end
 global function geteuid(): cuint <cimport, nodecl> end
 global function getgid(): cuint <cimport, nodecl> end
 global function getegid(): cuint <cimport, nodecl> end
-global function getgroups(__size: cint, __list: *cuint): cint <cimport, nodecl> end
-global function setuid(__uid: cuint): cint <cimport, nodecl> end
-global function setreuid(__ruid: cuint, __euid: cuint): cint <cimport, nodecl> end
-global function seteuid(__uid: cuint): cint <cimport, nodecl> end
-global function setgid(__gid: cuint): cint <cimport, nodecl> end
-global function setregid(__rgid: cuint, __egid: cuint): cint <cimport, nodecl> end
-global function setegid(__gid: cuint): cint <cimport, nodecl> end
+global function getgroups(size: cint, list: *cuint): cint <cimport, nodecl> end
+global function setuid(uid: cuint): cint <cimport, nodecl> end
+global function setreuid(ruid: cuint, euid: cuint): cint <cimport, nodecl> end
+global function seteuid(uid: cuint): cint <cimport, nodecl> end
+global function setgid(gid: cuint): cint <cimport, nodecl> end
+global function setregid(rgid: cuint, egid: cuint): cint <cimport, nodecl> end
+global function setegid(gid: cuint): cint <cimport, nodecl> end
 global function fork(): cint <cimport, nodecl> end
-global function ttyname(__fd: cint): cstring <cimport, nodecl> end
-global function ttyname_r(__fd: cint, __buf: cstring, __buflen: csize): cint <cimport, nodecl> end
-global function isatty(__fd: cint): cint <cimport, nodecl> end
-global function link(__from: cstring, __to: cstring): cint <cimport, nodecl> end
-global function linkat(__fromfd: cint, __from: cstring, __tofd: cint, __to: cstring, __flags: cint): cint <cimport, nodecl> end
-global function symlink(__from: cstring, __to: cstring): cint <cimport, nodecl> end
-global function readlink(__path: cstring, __buf: cstring, __len: csize): clong <cimport, nodecl> end
-global function symlinkat(__from: cstring, __tofd: cint, __to: cstring): cint <cimport, nodecl> end
-global function readlinkat(__fd: cint, __path: cstring, __buf: cstring, __len: csize): clong <cimport, nodecl> end
-global function unlink(__name: cstring): cint <cimport, nodecl> end
-global function unlinkat(__fd: cint, __name: cstring, __flag: cint): cint <cimport, nodecl> end
-global function rmdir(__path: cstring): cint <cimport, nodecl> end
-global function tcgetpgrp(__fd: cint): cint <cimport, nodecl> end
-global function tcsetpgrp(__fd: cint, __pgrp_id: cint): cint <cimport, nodecl> end
+global function ttyname(fd: cint): cstring <cimport, nodecl> end
+global function ttyname_r(fd: cint, buf: cstring, buflen: csize): cint <cimport, nodecl> end
+global function isatty(fd: cint): cint <cimport, nodecl> end
+global function link(from: cstring, to: cstring): cint <cimport, nodecl> end
+global function linkat(fromfd: cint, from: cstring, tofd: cint, to: cstring, flags: cint): cint <cimport, nodecl> end
+global function symlink(from: cstring, to: cstring): cint <cimport, nodecl> end
+global function readlink(path: cstring, buf: cstring, len: csize): clong <cimport, nodecl> end
+global function symlinkat(from: cstring, tofd: cint, to: cstring): cint <cimport, nodecl> end
+global function readlinkat(fd: cint, path: cstring, buf: cstring, len: csize): clong <cimport, nodecl> end
+global function unlink(name: cstring): cint <cimport, nodecl> end
+global function unlinkat(fd: cint, name: cstring, flag: cint): cint <cimport, nodecl> end
+global function rmdir(path: cstring): cint <cimport, nodecl> end
+global function tcgetpgrp(fd: cint): cint <cimport, nodecl> end
+global function tcsetpgrp(fd: cint, pgrp_id: cint): cint <cimport, nodecl> end
 global function getlogin(): cstring <cimport, nodecl> end
-global function getlogin_r(__name: cstring, __name_len: csize): cint <cimport, nodecl> end
-global function getopt(___argc: cint, ___argv: *cstring, __shortopts: cstring): cint <cimport, nodecl> end
-global function gethostname(__name: cstring, __len: csize): cint <cimport, nodecl> end
-global function fsync(__fd: cint): cint <cimport, nodecl> end
+global function getlogin_r(name: cstring, name_len: csize): cint <cimport, nodecl> end
+global function getopt(_argc: cint, _argv: *cstring, shortopts: cstring): cint <cimport, nodecl> end
+global function gethostname(name: cstring, len: csize): cint <cimport, nodecl> end
+global function fsync(fd: cint): cint <cimport, nodecl> end
 global function gethostid(): clong <cimport, nodecl> end
 global function sync() <cimport, nodecl> end
-global function truncate(__file: cstring, __length: clong): cint <cimport, nodecl> end
-global function ftruncate(__fd: cint, __length: clong): cint <cimport, nodecl> end
-global function lockf(__fd: cint, __cmd: cint, __len: clong): cint <cimport, nodecl> end
-global function fdatasync(__fildes: cint): cint <cimport, nodecl> end
-global function swab(__from: pointer, __to: pointer, __n: clong) <cimport, nodecl> end
+global function truncate(file: cstring, length: clong): cint <cimport, nodecl> end
+global function ftruncate(fd: cint, length: clong): cint <cimport, nodecl> end
+global function lockf(fd: cint, cmd: cint, len: clong): cint <cimport, nodecl> end
+global function fdatasync(fildes: cint): cint <cimport, nodecl> end
+global function swab(from: pointer, to: pointer, n: clong) <cimport, nodecl> end

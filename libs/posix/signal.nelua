@@ -142,25 +142,25 @@ global SIGEV_NONE: cint <comptime> = 1
 global SIGEV_THREAD: cint <comptime> = 2
 global SIGEV_THREAD_ID: cint <comptime> = 4
 global __sighandler_t: type <cimport, nodecl> = @function(cint)
-global function signal(__sig: cint, __handler: __sighandler_t): __sighandler_t <cimport, nodecl> end
-global function kill(__pid: cint, __sig: cint): cint <cimport, nodecl> end
-global function killpg(__pgrp: cint, __sig: cint): cint <cimport, nodecl> end
-global function raise(__sig: cint): cint <cimport, nodecl> end
-global function psignal(__sig: cint, __s: cstring) <cimport, nodecl> end
-global function psiginfo(__pinfo: *siginfo_t, __s: cstring) <cimport, nodecl> end
-global function sigpause(__sig: cint): cint <cimport, nodecl> end
-global function sigemptyset(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigfillset(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigaddset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
-global function sigdelset(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
-global function sigismember(__set: *sigset_t, __signo: cint): cint <cimport, nodecl> end
-global function sigprocmask(__how: cint, __set: *sigset_t, __oset: *sigset_t): cint <cimport, nodecl> end
-global function sigsuspend(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigpending(__set: *sigset_t): cint <cimport, nodecl> end
-global function sigwait(__set: *sigset_t, __sig: *cint): cint <cimport, nodecl> end
-global function sigwaitinfo(__set: *sigset_t, __info: *siginfo_t): cint <cimport, nodecl> end
-global function sigtimedwait(__set: *sigset_t, __info: *siginfo_t, __timeout: *timespec): cint <cimport, nodecl> end
-global function sigqueue(__pid: cint, __sig: cint, __val: sigval): cint <cimport, nodecl> end
+global function signal(sig: cint, handler: __sighandler_t): __sighandler_t <cimport, nodecl> end
+global function kill(pid: cint, sig: cint): cint <cimport, nodecl> end
+global function killpg(pgrp: cint, sig: cint): cint <cimport, nodecl> end
+global function raise(sig: cint): cint <cimport, nodecl> end
+global function psignal(sig: cint, s: cstring) <cimport, nodecl> end
+global function psiginfo(pinfo: *siginfo_t, s: cstring) <cimport, nodecl> end
+global function sigpause(sig: cint): cint <cimport, nodecl> end
+global function sigemptyset(set: *sigset_t): cint <cimport, nodecl> end
+global function sigfillset(set: *sigset_t): cint <cimport, nodecl> end
+global function sigaddset(set: *sigset_t, signo: cint): cint <cimport, nodecl> end
+global function sigdelset(set: *sigset_t, signo: cint): cint <cimport, nodecl> end
+global function sigismember(set: *sigset_t, signo: cint): cint <cimport, nodecl> end
+global function sigprocmask(how: cint, set: *sigset_t, oset: *sigset_t): cint <cimport, nodecl> end
+global function sigsuspend(set: *sigset_t): cint <cimport, nodecl> end
+global function sigpending(set: *sigset_t): cint <cimport, nodecl> end
+global function sigwait(set: *sigset_t, sig: *cint): cint <cimport, nodecl> end
+global function sigwaitinfo(set: *sigset_t, info: *siginfo_t): cint <cimport, nodecl> end
+global function sigtimedwait(set: *sigset_t, info: *siginfo_t, timeout: *timespec): cint <cimport, nodecl> end
+global function sigqueue(pid: cint, sig: cint, val: sigval): cint <cimport, nodecl> end
 global stack_t: type <cimport, nodecl> = @record{
   ss_sp: pointer,
   ss_flags: cint,
@@ -176,14 +176,14 @@ ucontext_t = @record{
   uc_sigmask: sigset_t,
   __ssp: [4]culonglong
 }
-global function siginterrupt(__sig: cint, __interrupt: cint): cint <cimport, nodecl> end
+global function siginterrupt(sig: cint, interrupt: cint): cint <cimport, nodecl> end
 global SS_ONSTACK: cint <comptime> = 1
 global SS_DISABLE: cint <comptime> = 2
-global function sigaltstack(__ss: *stack_t, __oss: *stack_t): cint <cimport, nodecl> end
-global function sighold(__sig: cint): cint <cimport, nodecl> end
-global function sigrelse(__sig: cint): cint <cimport, nodecl> end
-global function sigignore(__sig: cint): cint <cimport, nodecl> end
-global function sigset(__sig: cint, __disp: __sighandler_t): __sighandler_t <cimport, nodecl> end
+global function sigaltstack(ss: *stack_t, oss: *stack_t): cint <cimport, nodecl> end
+global function sighold(sig: cint): cint <cimport, nodecl> end
+global function sigrelse(sig: cint): cint <cimport, nodecl> end
+global function sigignore(sig: cint): cint <cimport, nodecl> end
+global function sigset(sig: cint, disp: __sighandler_t): __sighandler_t <cimport, nodecl> end
 pthread_attr_t = @union{
   __size: [56]cchar,
   __align: clong

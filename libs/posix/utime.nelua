@@ -3,4 +3,4 @@ global utimbuf: type <cimport, nodecl, ctypedef> = @record{
   actime: ctime_t,
   modtime: ctime_t
 }
-global function utime(__file: cstring, __file_times: *utimbuf): cint <cimport, nodecl> end
+global function utime(file: cstring, file_times: *utimbuf): cint <cimport, nodecl> end

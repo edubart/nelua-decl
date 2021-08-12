@@ -9,17 +9,17 @@ global termios: type <cimport, nodecl, ctypedef> = @record{
   c_ispeed: cuint,
   c_ospeed: cuint
 }
-global function cfgetospeed(__termios_p: *termios): cuint <cimport, nodecl> end
-global function cfgetispeed(__termios_p: *termios): cuint <cimport, nodecl> end
-global function cfsetospeed(__termios_p: *termios, __speed: cuint): cint <cimport, nodecl> end
-global function cfsetispeed(__termios_p: *termios, __speed: cuint): cint <cimport, nodecl> end
-global function tcgetattr(__fd: cint, __termios_p: *termios): cint <cimport, nodecl> end
-global function tcsetattr(__fd: cint, __optional_actions: cint, __termios_p: *termios): cint <cimport, nodecl> end
-global function tcsendbreak(__fd: cint, __duration: cint): cint <cimport, nodecl> end
-global function tcdrain(__fd: cint): cint <cimport, nodecl> end
-global function tcflush(__fd: cint, __queue_selector: cint): cint <cimport, nodecl> end
-global function tcflow(__fd: cint, __action: cint): cint <cimport, nodecl> end
-global function tcgetsid(__fd: cint): cint <cimport, nodecl> end
+global function cfgetospeed(termios_p: *termios): cuint <cimport, nodecl> end
+global function cfgetispeed(termios_p: *termios): cuint <cimport, nodecl> end
+global function cfsetospeed(termios_p: *termios, speed: cuint): cint <cimport, nodecl> end
+global function cfsetispeed(termios_p: *termios, speed: cuint): cint <cimport, nodecl> end
+global function tcgetattr(fd: cint, termios_p: *termios): cint <cimport, nodecl> end
+global function tcsetattr(fd: cint, optional_actions: cint, termios_p: *termios): cint <cimport, nodecl> end
+global function tcsendbreak(fd: cint, duration: cint): cint <cimport, nodecl> end
+global function tcdrain(fd: cint): cint <cimport, nodecl> end
+global function tcflush(fd: cint, queue_selector: cint): cint <cimport, nodecl> end
+global function tcflow(fd: cint, action: cint): cint <cimport, nodecl> end
+global function tcgetsid(fd: cint): cint <cimport, nodecl> end
 global VINTR: cuint <comptime> = 0
 global VQUIT: cuint <comptime> = 1
 global VERASE: cuint <comptime> = 2

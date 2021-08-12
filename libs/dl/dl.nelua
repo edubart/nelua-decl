@@ -5,11 +5,11 @@ if ccinfo.is_linux then
   linklib 'dl'
 end
 ]]
-global function dlopen(__file: cstring, __mode: cint): pointer <cimport, nodecl> end
-global function dlclose(__handle: pointer): cint <cimport, nodecl> end
-global function dlsym(__handle: pointer, __name: cstring): pointer <cimport, nodecl> end
-global function dlmopen(__nsid: clong, __file: cstring, __mode: cint): pointer <cimport, nodecl> end
-global function dlvsym(__handle: pointer, __name: cstring, __version: cstring): pointer <cimport, nodecl> end
+global function dlopen(file: cstring, mode: cint): pointer <cimport, nodecl> end
+global function dlclose(handle: pointer): cint <cimport, nodecl> end
+global function dlsym(handle: pointer, name: cstring): pointer <cimport, nodecl> end
+global function dlmopen(nsid: clong, file: cstring, mode: cint): pointer <cimport, nodecl> end
+global function dlvsym(handle: pointer, name: cstring, version: cstring): pointer <cimport, nodecl> end
 global function dlerror(): cstring <cimport, nodecl> end
 global Dl_info: type <cimport, nodecl> = @record{
   dli_fname: cstring,
@@ -17,11 +17,11 @@ global Dl_info: type <cimport, nodecl> = @record{
   dli_sname: cstring,
   dli_saddr: pointer
 }
-global function dladdr(__address: pointer, __info: *Dl_info): cint <cimport, nodecl> end
-global function dladdr1(__address: pointer, __info: *Dl_info, __extra_info: *pointer, __flags: cint): cint <cimport, nodecl> end
+global function dladdr(address: pointer, info: *Dl_info): cint <cimport, nodecl> end
+global function dladdr1(address: pointer, info: *Dl_info, extra_info: *pointer, flags: cint): cint <cimport, nodecl> end
 global RTLD_DL_SYMENT: cint <comptime> = 1
 global RTLD_DL_LINKMAP: cint <comptime> = 2
-global function dlinfo(__handle: pointer, __request: cint, __arg: pointer): cint <cimport, nodecl> end
+global function dlinfo(handle: pointer, request: cint, arg: pointer): cint <cimport, nodecl> end
 global RTLD_DI_LMID: cint <comptime> = 1
 global RTLD_DI_LINKMAP: cint <comptime> = 2
 global RTLD_DI_CONFIGADDR: cint <comptime> = 3

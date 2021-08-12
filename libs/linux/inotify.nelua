@@ -7,9 +7,9 @@ global inotify_event: type <cimport, nodecl, ctypedef> = @record{
   name: [0]cchar
 }
 global function inotify_init(): cint <cimport, nodecl> end
-global function inotify_init1(__flags: cint): cint <cimport, nodecl> end
-global function inotify_add_watch(__fd: cint, __name: cstring, __mask: uint32): cint <cimport, nodecl> end
-global function inotify_rm_watch(__fd: cint, __wd: cint): cint <cimport, nodecl> end
+global function inotify_init1(flags: cint): cint <cimport, nodecl> end
+global function inotify_add_watch(fd: cint, name: cstring, mask: uint32): cint <cimport, nodecl> end
+global function inotify_rm_watch(fd: cint, wd: cint): cint <cimport, nodecl> end
 global IN_ACCESS: cint <cimport, nodecl, const>
 global IN_MODIFY: cint <cimport, nodecl, const>
 global IN_ATTRIB: cint <cimport, nodecl, const>
