@@ -210,9 +210,10 @@ global function mg_send(a1: *mg_connection, a2: pointer, a3: csize): boolean <ci
 global function mg_printf(a1: *mg_connection, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function mg_vprintf(a1: *mg_connection, fmt: cstring, ap: cvalist): cint <cimport, nodecl> end
 global function mg_straddr(a1: *mg_connection, a2: cstring, a3: csize): cstring <cimport, nodecl> end
-global function mg_socketpair(s1: *cint, s2: *cint): boolean <cimport, nodecl> end
 global function mg_aton(str: mg_str, addr: *mg_addr): boolean <cimport, nodecl> end
 global function mg_ntoa(addr: *mg_addr, buf: cstring, len: csize): cstring <cimport, nodecl> end
+global function mg_mkpipe(a1: *mg_mgr, a2: mg_event_handler_t, a3: pointer): *mg_connection <cimport, nodecl> end
+global function mg_mgr_wakeup(pipe: *mg_connection) <cimport, nodecl> end
 global mg_http_header: type <cimport, nodecl, ctypedef> = @record{
   name: mg_str,
   value: mg_str
@@ -349,8 +350,6 @@ global MG_ENABLE_LOG: cint <comptime> = 1
 global MG_ENABLE_MD5: cint <comptime> = 0
 global MG_ENABLE_WINSOCK: cint <comptime> = 1
 global MG_ENABLE_DIRLIST: cint <comptime> = 0
-global MG_ENABLE_SOCKETPAIR: cint <comptime> = 0
-global MG_ENABLE_NATIVE_SOCKETPAIR: cint <comptime> = 0
 global MG_ENABLE_CUSTOM_RANDOM: cint <comptime> = 0
 global MG_ENABLE_PACKED_FS: cint <comptime> = 0
 global MG_IO_SIZE: cint <comptime> = 2048

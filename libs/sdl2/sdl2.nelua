@@ -35,10 +35,18 @@ global function SDL_getenv(name: cstring): cstring <cimport, nodecl> end
 global function SDL_setenv(name: cstring, value: cstring, overwrite: cint): cint <cimport, nodecl> end
 global function SDL_qsort(base: pointer, nmemb: csize, size: csize, compare: function(pointer, pointer): cint) <cimport, nodecl> end
 global function SDL_abs(x: cint): cint <cimport, nodecl> end
+global function SDL_isalpha(x: cint): cint <cimport, nodecl> end
+global function SDL_isalnum(x: cint): cint <cimport, nodecl> end
+global function SDL_isblank(x: cint): cint <cimport, nodecl> end
+global function SDL_iscntrl(x: cint): cint <cimport, nodecl> end
 global function SDL_isdigit(x: cint): cint <cimport, nodecl> end
+global function SDL_isxdigit(x: cint): cint <cimport, nodecl> end
+global function SDL_ispunct(x: cint): cint <cimport, nodecl> end
 global function SDL_isspace(x: cint): cint <cimport, nodecl> end
 global function SDL_isupper(x: cint): cint <cimport, nodecl> end
 global function SDL_islower(x: cint): cint <cimport, nodecl> end
+global function SDL_isprint(x: cint): cint <cimport, nodecl> end
+global function SDL_isgraph(x: cint): cint <cimport, nodecl> end
 global function SDL_toupper(x: cint): cint <cimport, nodecl> end
 global function SDL_tolower(x: cint): cint <cimport, nodecl> end
 global function SDL_crc32(crc: uint32, data: pointer, len: csize): uint32 <cimport, nodecl> end
@@ -120,6 +128,10 @@ global function SDL_log10(x: float64): float64 <cimport, nodecl> end
 global function SDL_log10f(x: float32): float32 <cimport, nodecl> end
 global function SDL_pow(x: float64, y: float64): float64 <cimport, nodecl> end
 global function SDL_powf(x: float32, y: float32): float32 <cimport, nodecl> end
+global function SDL_round(x: float64): float64 <cimport, nodecl> end
+global function SDL_roundf(x: float32): float32 <cimport, nodecl> end
+global function SDL_lround(x: float64): clong <cimport, nodecl> end
+global function SDL_lroundf(x: float32): clong <cimport, nodecl> end
 global function SDL_scalbn(x: float64, n: cint): float64 <cimport, nodecl> end
 global function SDL_scalbnf(x: float32, n: cint): float32 <cimport, nodecl> end
 global function SDL_sin(x: float64): float64 <cimport, nodecl> end
@@ -190,9 +202,6 @@ global SDL_errorcode: type <cimport, nodecl, using> = @enum(cint){
   SDL_LASTERROR = 5
 }
 global function SDL_Error(code: SDL_errorcode): cint <cimport, nodecl> end
-global function SDL_Swap16(x: uint16): uint16 <cimport, nodecl> end
-global function SDL_Swap32(x: uint32): uint32 <cimport, nodecl> end
-global function SDL_Swap64(x: uint64): uint64 <cimport, nodecl> end
 global function SDL_SwapFloat(x: float32): float32 <cimport, nodecl> end
 global SDL_mutex: type <cimport, nodecl, forwarddecl> = @record{}
 global function SDL_CreateMutex(): *SDL_mutex <cimport, nodecl> end
@@ -235,6 +244,7 @@ global function SDL_DetachThread(thread: *SDL_Thread) <cimport, nodecl> end
 global function SDL_TLSCreate(): cuint <cimport, nodecl> end
 global function SDL_TLSGet(id: cuint): pointer <cimport, nodecl> end
 global function SDL_TLSSet(id: cuint, value: pointer, destructor: function(pointer)): cint <cimport, nodecl> end
+global function SDL_TLSCleanup() <cimport, nodecl> end
 global SDL_RWops: type <cimport, nodecl, forwarddecl> = @record{}
 SDL_RWops = @record{
   size: function(*SDL_RWops): int64,
@@ -322,6 +332,7 @@ global function SDL_GetCurrentAudioDriver(): cstring <cimport, nodecl> end
 global function SDL_OpenAudio(desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec): cint <cimport, nodecl> end
 global function SDL_GetNumAudioDevices(iscapture: cint): cint <cimport, nodecl> end
 global function SDL_GetAudioDeviceName(index: cint, iscapture: cint): cstring <cimport, nodecl> end
+global function SDL_GetAudioDeviceSpec(index: cint, iscapture: cint, spec: *SDL_AudioSpec): cint <cimport, nodecl> end
 global function SDL_OpenAudioDevice(device: cstring, iscapture: cint, desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec, allowed_changes: cint): cuint <cimport, nodecl> end
 global SDL_AudioStatus: type <cimport, nodecl, using> = @enum(cint){
   SDL_AUDIO_STOPPED = 0,
@@ -640,6 +651,7 @@ global function SDL_FillRects(dst: *SDL_Surface, rects: *SDL_Rect, count: cint, 
 global function SDL_UpperBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
 global function SDL_LowerBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
 global function SDL_SoftStretch(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
+global function SDL_SoftStretchLinear(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
 global function SDL_UpperBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
 global function SDL_LowerBlitScaled(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport, nodecl> end
 global function SDL_SetYUVConversionMode(mode: SDL_YUV_CONVERSION_MODE) <cimport, nodecl> end
@@ -662,7 +674,7 @@ global SDL_WindowFlags: type <cimport, nodecl, using> = @enum(cint){
   SDL_WINDOW_RESIZABLE = 32,
   SDL_WINDOW_MINIMIZED = 64,
   SDL_WINDOW_MAXIMIZED = 128,
-  SDL_WINDOW_INPUT_GRABBED = 256,
+  SDL_WINDOW_MOUSE_GRABBED = 256,
   SDL_WINDOW_INPUT_FOCUS = 512,
   SDL_WINDOW_MOUSE_FOCUS = 1024,
   SDL_WINDOW_FULLSCREEN_DESKTOP = 4097,
@@ -674,8 +686,10 @@ global SDL_WindowFlags: type <cimport, nodecl, using> = @enum(cint){
   SDL_WINDOW_UTILITY = 131072,
   SDL_WINDOW_TOOLTIP = 262144,
   SDL_WINDOW_POPUP_MENU = 524288,
+  SDL_WINDOW_KEYBOARD_GRABBED = 1048576,
   SDL_WINDOW_VULKAN = 268435456,
-  SDL_WINDOW_METAL = 536870912
+  SDL_WINDOW_METAL = 536870912,
+  SDL_WINDOW_INPUT_GRABBED = 256
 }
 global SDL_WindowEventID: type <cimport, nodecl, using> = @enum(cint){
   SDL_WINDOWEVENT_NONE = 0,
@@ -708,6 +722,11 @@ global SDL_DisplayOrientation: type <cimport, nodecl, using> = @enum(cint){
   SDL_ORIENTATION_LANDSCAPE_FLIPPED = 2,
   SDL_ORIENTATION_PORTRAIT = 3,
   SDL_ORIENTATION_PORTRAIT_FLIPPED = 4
+}
+global SDL_FlashOperation: type <cimport, nodecl, using> = @enum(cint){
+  SDL_FLASH_CANCEL = 0,
+  SDL_FLASH_BRIEFLY = 1,
+  SDL_FLASH_UNTIL_FOCUSED = 2
 }
 global SDL_GLContext: type = @pointer
 global SDL_GLattr: type <cimport, nodecl, using> = @enum(cint){
@@ -799,6 +818,7 @@ global function SDL_SetWindowMaximumSize(window: *SDL_Window, max_w: cint, max_h
 global function SDL_GetWindowMaximumSize(window: *SDL_Window, w: *cint, h: *cint) <cimport, nodecl> end
 global function SDL_SetWindowBordered(window: *SDL_Window, bordered: SDL_bool) <cimport, nodecl> end
 global function SDL_SetWindowResizable(window: *SDL_Window, resizable: SDL_bool) <cimport, nodecl> end
+global function SDL_SetWindowAlwaysOnTop(window: *SDL_Window, on_top: SDL_bool) <cimport, nodecl> end
 global function SDL_ShowWindow(window: *SDL_Window) <cimport, nodecl> end
 global function SDL_HideWindow(window: *SDL_Window) <cimport, nodecl> end
 global function SDL_RaiseWindow(window: *SDL_Window) <cimport, nodecl> end
@@ -810,7 +830,11 @@ global function SDL_GetWindowSurface(window: *SDL_Window): *SDL_Surface <cimport
 global function SDL_UpdateWindowSurface(window: *SDL_Window): cint <cimport, nodecl> end
 global function SDL_UpdateWindowSurfaceRects(window: *SDL_Window, rects: *SDL_Rect, numrects: cint): cint <cimport, nodecl> end
 global function SDL_SetWindowGrab(window: *SDL_Window, grabbed: SDL_bool) <cimport, nodecl> end
+global function SDL_SetWindowKeyboardGrab(window: *SDL_Window, grabbed: SDL_bool) <cimport, nodecl> end
+global function SDL_SetWindowMouseGrab(window: *SDL_Window, grabbed: SDL_bool) <cimport, nodecl> end
 global function SDL_GetWindowGrab(window: *SDL_Window): SDL_bool <cimport, nodecl> end
+global function SDL_GetWindowKeyboardGrab(window: *SDL_Window): SDL_bool <cimport, nodecl> end
+global function SDL_GetWindowMouseGrab(window: *SDL_Window): SDL_bool <cimport, nodecl> end
 global function SDL_GetGrabbedWindow(): *SDL_Window <cimport, nodecl> end
 global function SDL_SetWindowBrightness(window: *SDL_Window, brightness: float32): cint <cimport, nodecl> end
 global function SDL_GetWindowBrightness(window: *SDL_Window): float32 <cimport, nodecl> end
@@ -834,6 +858,7 @@ global SDL_HitTestResult: type <cimport, nodecl, using> = @enum(cint){
 }
 global SDL_HitTest: type <cimport, nodecl> = @function(*SDL_Window, *SDL_Point, pointer): SDL_HitTestResult
 global function SDL_SetWindowHitTest(window: *SDL_Window, callback: SDL_HitTest, callback_data: pointer): cint <cimport, nodecl> end
+global function SDL_FlashWindow(window: *SDL_Window, operation: SDL_FlashOperation): cint <cimport, nodecl> end
 global function SDL_DestroyWindow(window: *SDL_Window) <cimport, nodecl> end
 global function SDL_IsScreenSaverEnabled(): SDL_bool <cimport, nodecl> end
 global function SDL_EnableScreenSaver() <cimport, nodecl> end
@@ -1493,6 +1518,7 @@ global function SDL_JoystickRumble(joystick: *SDL_Joystick, low_frequency_rumble
 global function SDL_JoystickRumbleTriggers(joystick: *SDL_Joystick, left_rumble: uint16, right_rumble: uint16, duration_ms: uint32): cint <cimport, nodecl> end
 global function SDL_JoystickHasLED(joystick: *SDL_Joystick): SDL_bool <cimport, nodecl> end
 global function SDL_JoystickSetLED(joystick: *SDL_Joystick, red: uint8, green: uint8, blue: uint8): cint <cimport, nodecl> end
+global function SDL_JoystickSendEffect(joystick: *SDL_Joystick, data: pointer, size: cint): cint <cimport, nodecl> end
 global function SDL_JoystickClose(joystick: *SDL_Joystick) <cimport, nodecl> end
 global function SDL_JoystickCurrentPowerLevel(joystick: *SDL_Joystick): SDL_JoystickPowerLevel <cimport, nodecl> end
 global SDL_Sensor: type <cimport, nodecl, forwarddecl> = @record{}
@@ -1527,7 +1553,9 @@ global SDL_GameControllerType: type <cimport, nodecl, using> = @enum(cint){
   SDL_CONTROLLER_TYPE_PS4 = 4,
   SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO = 5,
   SDL_CONTROLLER_TYPE_VIRTUAL = 6,
-  SDL_CONTROLLER_TYPE_PS5 = 7
+  SDL_CONTROLLER_TYPE_PS5 = 7,
+  SDL_CONTROLLER_TYPE_AMAZON_LUNA = 8,
+  SDL_CONTROLLER_TYPE_GOOGLE_STADIA = 9
 }
 global SDL_GameControllerBindType: type <cimport, nodecl, using> = @enum(cint){
   SDL_CONTROLLER_BINDTYPE_NONE = 0,
@@ -1581,7 +1609,7 @@ global SDL_GameControllerAxis: type <cimport, nodecl, using> = @enum(cint){
   SDL_CONTROLLER_AXIS_TRIGGERRIGHT = 5,
   SDL_CONTROLLER_AXIS_MAX = 6
 }
-global function SDL_GameControllerGetAxisFromString(pchString: cstring): SDL_GameControllerAxis <cimport, nodecl> end
+global function SDL_GameControllerGetAxisFromString(str: cstring): SDL_GameControllerAxis <cimport, nodecl> end
 global function SDL_GameControllerGetStringForAxis(axis: SDL_GameControllerAxis): cstring <cimport, nodecl> end
 global function SDL_GameControllerGetBindForAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): SDL_GameControllerButtonBind <cimport, nodecl> end
 global function SDL_GameControllerHasAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): SDL_bool <cimport, nodecl> end
@@ -1611,7 +1639,7 @@ global SDL_GameControllerButton: type <cimport, nodecl, using> = @enum(cint){
   SDL_CONTROLLER_BUTTON_TOUCHPAD = 20,
   SDL_CONTROLLER_BUTTON_MAX = 21
 }
-global function SDL_GameControllerGetButtonFromString(pchString: cstring): SDL_GameControllerButton <cimport, nodecl> end
+global function SDL_GameControllerGetButtonFromString(str: cstring): SDL_GameControllerButton <cimport, nodecl> end
 global function SDL_GameControllerGetStringForButton(button: SDL_GameControllerButton): cstring <cimport, nodecl> end
 global function SDL_GameControllerGetBindForButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): SDL_GameControllerButtonBind <cimport, nodecl> end
 global function SDL_GameControllerHasButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): SDL_bool <cimport, nodecl> end
@@ -1622,11 +1650,13 @@ global function SDL_GameControllerGetTouchpadFinger(gamecontroller: *SDL_GameCon
 global function SDL_GameControllerHasSensor(gamecontroller: *SDL_GameController, type: SDL_SensorType): SDL_bool <cimport, nodecl> end
 global function SDL_GameControllerSetSensorEnabled(gamecontroller: *SDL_GameController, type: SDL_SensorType, enabled: SDL_bool): cint <cimport, nodecl> end
 global function SDL_GameControllerIsSensorEnabled(gamecontroller: *SDL_GameController, type: SDL_SensorType): SDL_bool <cimport, nodecl> end
+global function SDL_GameControllerGetSensorDataRate(gamecontroller: *SDL_GameController, type: SDL_SensorType): float32 <cimport, nodecl> end
 global function SDL_GameControllerGetSensorData(gamecontroller: *SDL_GameController, type: SDL_SensorType, data: *float32, num_values: cint): cint <cimport, nodecl> end
 global function SDL_GameControllerRumble(gamecontroller: *SDL_GameController, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint <cimport, nodecl> end
 global function SDL_GameControllerRumbleTriggers(gamecontroller: *SDL_GameController, left_rumble: uint16, right_rumble: uint16, duration_ms: uint32): cint <cimport, nodecl> end
 global function SDL_GameControllerHasLED(gamecontroller: *SDL_GameController): SDL_bool <cimport, nodecl> end
 global function SDL_GameControllerSetLED(gamecontroller: *SDL_GameController, red: uint8, green: uint8, blue: uint8): cint <cimport, nodecl> end
+global function SDL_GameControllerSendEffect(gamecontroller: *SDL_GameController, data: pointer, size: cint): cint <cimport, nodecl> end
 global function SDL_GameControllerClose(gamecontroller: *SDL_GameController) <cimport, nodecl> end
 global SDL_TouchDeviceType: type <cimport, nodecl, using> = @enum(cint){
   SDL_TOUCH_DEVICE_INVALID = -1,
@@ -2307,6 +2337,7 @@ global function SDL_SetTextureScaleMode(texture: *SDL_Texture, scaleMode: SDL_Sc
 global function SDL_GetTextureScaleMode(texture: *SDL_Texture, scaleMode: *SDL_ScaleMode): cint <cimport, nodecl> end
 global function SDL_UpdateTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: pointer, pitch: cint): cint <cimport, nodecl> end
 global function SDL_UpdateYUVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Yplane: *uint8, Ypitch: cint, Uplane: *uint8, Upitch: cint, Vplane: *uint8, Vpitch: cint): cint <cimport, nodecl> end
+global function SDL_UpdateNVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Yplane: *uint8, Ypitch: cint, UVplane: *uint8, UVpitch: cint): cint <cimport, nodecl> end
 global function SDL_LockTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: *pointer, pitch: *cint): cint <cimport, nodecl> end
 global function SDL_LockTextureToSurface(texture: *SDL_Texture, rect: *SDL_Rect, surface: **SDL_Surface): cint <cimport, nodecl> end
 global function SDL_UnlockTexture(texture: *SDL_Texture) <cimport, nodecl> end
@@ -2501,112 +2532,127 @@ global SDL_HAPTIC_CARTESIAN: uint32 <comptime> = 1
 global SDL_HAPTIC_SPHERICAL: uint32 <comptime> = 2
 global SDL_HAPTIC_STEERING_AXIS: uint32 <comptime> = 3
 global SDL_HAPTIC_INFINITY: uint32 <comptime> = 4294967295
-global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring <comptime> = "SDL_FRAMEBUFFER_ACCELERATION"
-global SDL_HINT_RENDER_DRIVER: cstring <comptime> = "SDL_RENDER_DRIVER"
-global SDL_HINT_RENDER_OPENGL_SHADERS: cstring <comptime> = "SDL_RENDER_OPENGL_SHADERS"
-global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring <comptime> = "SDL_RENDER_DIRECT3D_THREADSAFE"
-global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring <comptime> = "SDL_RENDER_DIRECT3D11_DEBUG"
-global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring <comptime> = "SDL_RENDER_LOGICAL_SIZE_MODE"
-global SDL_HINT_RENDER_SCALE_QUALITY: cstring <comptime> = "SDL_RENDER_SCALE_QUALITY"
-global SDL_HINT_RENDER_VSYNC: cstring <comptime> = "SDL_RENDER_VSYNC"
-global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring <comptime> = "SDL_VIDEO_ALLOW_SCREENSAVER"
-global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring <comptime> = "SDL_VIDEO_EXTERNAL_CONTEXT"
-global SDL_HINT_VIDEO_X11_XVIDMODE: cstring <comptime> = "SDL_VIDEO_X11_XVIDMODE"
-global SDL_HINT_VIDEO_X11_XINERAMA: cstring <comptime> = "SDL_VIDEO_X11_XINERAMA"
-global SDL_HINT_VIDEO_X11_XRANDR: cstring <comptime> = "SDL_VIDEO_X11_XRANDR"
-global SDL_HINT_VIDEO_X11_WINDOW_VISUALID: cstring <comptime> = "SDL_VIDEO_X11_WINDOW_VISUALID"
-global SDL_HINT_VIDEO_X11_NET_WM_PING: cstring <comptime> = "SDL_VIDEO_X11_NET_WM_PING"
-global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring <comptime> = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
-global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring <comptime> = "SDL_VIDEO_X11_FORCE_EGL"
-global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring <comptime> = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
-global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring <comptime> = "SDL_WINDOWS_INTRESOURCE_ICON"
-global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring <comptime> = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
-global SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: cstring <comptime> = "SDL_WINDOWS_ENABLE_MESSAGELOOP"
-global SDL_HINT_GRAB_KEYBOARD: cstring <comptime> = "SDL_GRAB_KEYBOARD"
-global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_TIME"
-global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_RADIUS"
-global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_NORMAL_SPEED_SCALE"
-global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_RELATIVE_SPEED_SCALE"
-global SDL_HINT_MOUSE_RELATIVE_SCALING: cstring <comptime> = "SDL_MOUSE_RELATIVE_SCALING"
-global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring <comptime> = "SDL_MOUSE_RELATIVE_MODE_WARP"
-global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring <comptime> = "SDL_MOUSE_FOCUS_CLICKTHROUGH"
-global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring <comptime> = "SDL_TOUCH_MOUSE_EVENTS"
-global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring <comptime> = "SDL_MOUSE_TOUCH_EVENTS"
-global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring <comptime> = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS"
-global SDL_HINT_IDLE_TIMER_DISABLED: cstring <comptime> = "SDL_IOS_IDLE_TIMER_DISABLED"
-global SDL_HINT_ORIENTATIONS: cstring <comptime> = "SDL_IOS_ORIENTATIONS"
+global SDL_HINT_ACCELEROMETER_AS_JOYSTICK: cstring <comptime> = "SDL_ACCELEROMETER_AS_JOYSTICK"
+global SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED: cstring <comptime> = "SDL_ALLOW_ALT_TAB_WHILE_GRABBED"
+global SDL_HINT_ALLOW_TOPMOST: cstring <comptime> = "SDL_ALLOW_TOPMOST"
+global SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: cstring <comptime> = "SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION"
+global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring <comptime> = "SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION"
+global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring <comptime> = "SDL_ANDROID_BLOCK_ON_PAUSE"
+global SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: cstring <comptime> = "SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO"
+global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring <comptime> = "SDL_ANDROID_TRAP_BACK_BUTTON"
 global SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS: cstring <comptime> = "SDL_APPLE_TV_CONTROLLER_UI_EVENTS"
 global SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION: cstring <comptime> = "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION"
-global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring <comptime> = "SDL_IOS_HIDE_HOME_INDICATOR"
-global SDL_HINT_ACCELEROMETER_AS_JOYSTICK: cstring <comptime> = "SDL_ACCELEROMETER_AS_JOYSTICK"
-global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring <comptime> = "SDL_TV_REMOTE_AS_JOYSTICK"
-global SDL_HINT_XINPUT_ENABLED: cstring <comptime> = "SDL_XINPUT_ENABLED"
-global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring <comptime> = "SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING"
-global SDL_HINT_GAMECONTROLLERTYPE: cstring <comptime> = "SDL_GAMECONTROLLERTYPE"
+global SDL_HINT_AUDIO_CATEGORY: cstring <comptime> = "SDL_AUDIO_CATEGORY"
+global SDL_HINT_AUDIO_DEVICE_APP_NAME: cstring <comptime> = "SDL_AUDIO_DEVICE_APP_NAME"
+global SDL_HINT_AUDIO_DEVICE_STREAM_NAME: cstring <comptime> = "SDL_AUDIO_DEVICE_STREAM_NAME"
+global SDL_HINT_AUDIO_DEVICE_STREAM_ROLE: cstring <comptime> = "SDL_AUDIO_DEVICE_STREAM_ROLE"
+global SDL_HINT_AUDIO_RESAMPLING_MODE: cstring <comptime> = "SDL_AUDIO_RESAMPLING_MODE"
+global SDL_HINT_AUTO_UPDATE_JOYSTICKS: cstring <comptime> = "SDL_AUTO_UPDATE_JOYSTICKS"
+global SDL_HINT_AUTO_UPDATE_SENSORS: cstring <comptime> = "SDL_AUTO_UPDATE_SENSORS"
+global SDL_HINT_BMP_SAVE_LEGACY_FORMAT: cstring <comptime> = "SDL_BMP_SAVE_LEGACY_FORMAT"
+global SDL_HINT_DISPLAY_USABLE_BOUNDS: cstring <comptime> = "SDL_DISPLAY_USABLE_BOUNDS"
+global SDL_HINT_EMSCRIPTEN_ASYNCIFY: cstring <comptime> = "SDL_EMSCRIPTEN_ASYNCIFY"
+global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring <comptime> = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
+global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring <comptime> = "SDL_ENABLE_STEAM_CONTROLLERS"
+global SDL_HINT_EVENT_LOGGING: cstring <comptime> = "SDL_EVENT_LOGGING"
+global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring <comptime> = "SDL_FRAMEBUFFER_ACCELERATION"
 global SDL_HINT_GAMECONTROLLERCONFIG: cstring <comptime> = "SDL_GAMECONTROLLERCONFIG"
 global SDL_HINT_GAMECONTROLLERCONFIG_FILE: cstring <comptime> = "SDL_GAMECONTROLLERCONFIG_FILE"
+global SDL_HINT_GAMECONTROLLERTYPE: cstring <comptime> = "SDL_GAMECONTROLLERTYPE"
 global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES: cstring <comptime> = "SDL_GAMECONTROLLER_IGNORE_DEVICES"
 global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT: cstring <comptime> = "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
 global SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: cstring <comptime> = "SDL_GAMECONTROLLER_USE_BUTTON_LABELS"
+global SDL_HINT_GRAB_KEYBOARD: cstring <comptime> = "SDL_GRAB_KEYBOARD"
+global SDL_HINT_IDLE_TIMER_DISABLED: cstring <comptime> = "SDL_IOS_IDLE_TIMER_DISABLED"
+global SDL_HINT_IME_INTERNAL_EDITING: cstring <comptime> = "SDL_IME_INTERNAL_EDITING"
+global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring <comptime> = "SDL_IOS_HIDE_HOME_INDICATOR"
 global SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS: cstring <comptime> = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS"
 global SDL_HINT_JOYSTICK_HIDAPI: cstring <comptime> = "SDL_JOYSTICK_HIDAPI"
+global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_GAMECUBE"
+global SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_JOY_CONS"
+global SDL_HINT_JOYSTICK_HIDAPI_LUNA: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_LUNA"
 global SDL_HINT_JOYSTICK_HIDAPI_PS4: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS4"
-global SDL_HINT_JOYSTICK_HIDAPI_PS5: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS5"
 global SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS4_RUMBLE"
+global SDL_HINT_JOYSTICK_HIDAPI_PS5: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS5"
+global SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED"
+global SDL_HINT_JOYSTICK_HIDAPI_PS5_RUMBLE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS5_RUMBLE"
+global SDL_HINT_JOYSTICK_HIDAPI_STADIA: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_STADIA"
 global SDL_HINT_JOYSTICK_HIDAPI_STEAM: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_STEAM"
 global SDL_HINT_JOYSTICK_HIDAPI_SWITCH: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_SWITCH"
+global SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED"
 global SDL_HINT_JOYSTICK_HIDAPI_XBOX: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX"
-global SDL_HINT_JOYSTICK_HIDAPI_CORRELATE_XINPUT: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_CORRELATE_XINPUT"
-global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_GAMECUBE"
-global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring <comptime> = "SDL_ENABLE_STEAM_CONTROLLERS"
 global SDL_HINT_JOYSTICK_RAWINPUT: cstring <comptime> = "SDL_JOYSTICK_RAWINPUT"
+global SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT: cstring <comptime> = "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
 global SDL_HINT_JOYSTICK_THREAD: cstring <comptime> = "SDL_JOYSTICK_THREAD"
+global SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER: cstring <comptime> = "SDL_KMSDRM_REQUIRE_DRM_MASTER"
 global SDL_HINT_LINUX_JOYSTICK_DEADZONES: cstring <comptime> = "SDL_LINUX_JOYSTICK_DEADZONES"
-global SDL_HINT_ALLOW_TOPMOST: cstring <comptime> = "SDL_ALLOW_TOPMOST"
-global SDL_HINT_TIMER_RESOLUTION: cstring <comptime> = "SDL_TIMER_RESOLUTION"
+global SDL_HINT_MAC_BACKGROUND_APP: cstring <comptime> = "SDL_MAC_BACKGROUND_APP"
+global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring <comptime> = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
+global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_RADIUS"
+global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_TIME"
+global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring <comptime> = "SDL_MOUSE_FOCUS_CLICKTHROUGH"
+global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_NORMAL_SPEED_SCALE"
+global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring <comptime> = "SDL_MOUSE_RELATIVE_MODE_WARP"
+global SDL_HINT_MOUSE_RELATIVE_SCALING: cstring <comptime> = "SDL_MOUSE_RELATIVE_SCALING"
+global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_RELATIVE_SPEED_SCALE"
+global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring <comptime> = "SDL_MOUSE_TOUCH_EVENTS"
+global SDL_HINT_NO_SIGNAL_HANDLERS: cstring <comptime> = "SDL_NO_SIGNAL_HANDLERS"
+global SDL_HINT_OPENGL_ES_DRIVER: cstring <comptime> = "SDL_OPENGL_ES_DRIVER"
+global SDL_HINT_ORIENTATIONS: cstring <comptime> = "SDL_IOS_ORIENTATIONS"
+global SDL_HINT_PREFERRED_LOCALES: cstring <comptime> = "SDL_PREFERRED_LOCALES"
 global SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION: cstring <comptime> = "SDL_QTWAYLAND_CONTENT_ORIENTATION"
 global SDL_HINT_QTWAYLAND_WINDOW_FLAGS: cstring <comptime> = "SDL_QTWAYLAND_WINDOW_FLAGS"
-global SDL_HINT_THREAD_STACK_SIZE: cstring <comptime> = "SDL_THREAD_STACK_SIZE"
-global SDL_HINT_THREAD_PRIORITY_POLICY: cstring <comptime> = "SDL_THREAD_PRIORITY_POLICY"
-global SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: cstring <comptime> = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL"
-global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring <comptime> = "SDL_VIDEO_HIGHDPI_DISABLED"
-global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring <comptime> = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
-global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring <comptime> = "SDL_VIDEO_WIN_D3DCOMPILER"
-global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring <comptime> = "SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
-global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_URL"
-global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_LABEL"
-global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring <comptime> = "SDL_WINRT_HANDLE_BACK_BUTTON"
-global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring <comptime> = "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
-global SDL_HINT_MAC_BACKGROUND_APP: cstring <comptime> = "SDL_MAC_BACKGROUND_APP"
-global SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION: cstring <comptime> = "SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION"
-global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring <comptime> = "SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION"
-global SDL_HINT_IME_INTERNAL_EDITING: cstring <comptime> = "SDL_IME_INTERNAL_EDITING"
-global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring <comptime> = "SDL_ANDROID_TRAP_BACK_BUTTON"
-global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring <comptime> = "SDL_ANDROID_BLOCK_ON_PAUSE"
-global SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: cstring <comptime> = "SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO"
-global SDL_HINT_RETURN_KEY_HIDES_IME: cstring <comptime> = "SDL_RETURN_KEY_HIDES_IME"
-global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring <comptime> = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
-global SDL_HINT_EMSCRIPTEN_ASYNCIFY: cstring <comptime> = "SDL_EMSCRIPTEN_ASYNCIFY"
-global SDL_HINT_NO_SIGNAL_HANDLERS: cstring <comptime> = "SDL_NO_SIGNAL_HANDLERS"
-global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring <comptime> = "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4"
-global SDL_HINT_BMP_SAVE_LEGACY_FORMAT: cstring <comptime> = "SDL_BMP_SAVE_LEGACY_FORMAT"
-global SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: cstring <comptime> = "SDL_WINDOWS_DISABLE_THREAD_NAMING"
-global SDL_HINT_RPI_VIDEO_LAYER: cstring <comptime> = "SDL_RPI_VIDEO_LAYER"
-global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring <comptime> = "SDL_VIDEO_DOUBLE_BUFFER"
-global SDL_HINT_OPENGL_ES_DRIVER: cstring <comptime> = "SDL_OPENGL_ES_DRIVER"
-global SDL_HINT_AUDIO_RESAMPLING_MODE: cstring <comptime> = "SDL_AUDIO_RESAMPLING_MODE"
-global SDL_HINT_AUDIO_CATEGORY: cstring <comptime> = "SDL_AUDIO_CATEGORY"
 global SDL_HINT_RENDER_BATCHING: cstring <comptime> = "SDL_RENDER_BATCHING"
-global SDL_HINT_AUTO_UPDATE_JOYSTICKS: cstring <comptime> = "SDL_AUTO_UPDATE_JOYSTICKS"
-global SDL_HINT_AUTO_UPDATE_SENSORS: cstring <comptime> = "SDL_AUTO_UPDATE_SENSORS"
-global SDL_HINT_EVENT_LOGGING: cstring <comptime> = "SDL_EVENT_LOGGING"
+global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring <comptime> = "SDL_RENDER_DIRECT3D11_DEBUG"
+global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring <comptime> = "SDL_RENDER_DIRECT3D_THREADSAFE"
+global SDL_HINT_RENDER_DRIVER: cstring <comptime> = "SDL_RENDER_DRIVER"
+global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring <comptime> = "SDL_RENDER_LOGICAL_SIZE_MODE"
+global SDL_HINT_RENDER_OPENGL_SHADERS: cstring <comptime> = "SDL_RENDER_OPENGL_SHADERS"
+global SDL_HINT_RENDER_SCALE_QUALITY: cstring <comptime> = "SDL_RENDER_SCALE_QUALITY"
+global SDL_HINT_RENDER_VSYNC: cstring <comptime> = "SDL_RENDER_VSYNC"
+global SDL_HINT_RETURN_KEY_HIDES_IME: cstring <comptime> = "SDL_RETURN_KEY_HIDES_IME"
+global SDL_HINT_RPI_VIDEO_LAYER: cstring <comptime> = "SDL_RPI_VIDEO_LAYER"
+global SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: cstring <comptime> = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL"
+global SDL_HINT_THREAD_PRIORITY_POLICY: cstring <comptime> = "SDL_THREAD_PRIORITY_POLICY"
+global SDL_HINT_THREAD_STACK_SIZE: cstring <comptime> = "SDL_THREAD_STACK_SIZE"
+global SDL_HINT_TIMER_RESOLUTION: cstring <comptime> = "SDL_TIMER_RESOLUTION"
+global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring <comptime> = "SDL_TOUCH_MOUSE_EVENTS"
+global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring <comptime> = "SDL_TV_REMOTE_AS_JOYSTICK"
+global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring <comptime> = "SDL_VIDEO_ALLOW_SCREENSAVER"
+global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring <comptime> = "SDL_VIDEO_DOUBLE_BUFFER"
+global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring <comptime> = "SDL_VIDEO_EXTERNAL_CONTEXT"
+global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring <comptime> = "SDL_VIDEO_HIGHDPI_DISABLED"
+global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring <comptime> = "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
+global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring <comptime> = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS"
+global SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR: cstring <comptime> = "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR"
+global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring <comptime> = "SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
+global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring <comptime> = "SDL_VIDEO_WIN_D3DCOMPILER"
+global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring <comptime> = "SDL_VIDEO_X11_FORCE_EGL"
+global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring <comptime> = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
+global SDL_HINT_VIDEO_X11_NET_WM_PING: cstring <comptime> = "SDL_VIDEO_X11_NET_WM_PING"
+global SDL_HINT_VIDEO_X11_WINDOW_VISUALID: cstring <comptime> = "SDL_VIDEO_X11_WINDOW_VISUALID"
+global SDL_HINT_VIDEO_X11_XINERAMA: cstring <comptime> = "SDL_VIDEO_X11_XINERAMA"
+global SDL_HINT_VIDEO_X11_XRANDR: cstring <comptime> = "SDL_VIDEO_X11_XRANDR"
+global SDL_HINT_VIDEO_X11_XVIDMODE: cstring <comptime> = "SDL_VIDEO_X11_XVIDMODE"
+global SDL_HINT_WAVE_FACT_CHUNK: cstring <comptime> = "SDL_WAVE_FACT_CHUNK"
 global SDL_HINT_WAVE_RIFF_CHUNK_SIZE: cstring <comptime> = "SDL_WAVE_RIFF_CHUNK_SIZE"
 global SDL_HINT_WAVE_TRUNCATION: cstring <comptime> = "SDL_WAVE_TRUNCATION"
-global SDL_HINT_WAVE_FACT_CHUNK: cstring <comptime> = "SDL_WAVE_FACT_CHUNK"
-global SDL_HINT_DISPLAY_USABLE_BOUNDS: cstring <comptime> = "SDL_DISPLAY_USABLE_BOUNDS"
-global SDL_HINT_AUDIO_DEVICE_APP_NAME: cstring <comptime> = "SDL_AUDIO_DEVICE_APP_NAME"
-global SDL_HINT_AUDIO_DEVICE_STREAM_NAME: cstring <comptime> = "SDL_AUDIO_DEVICE_STREAM_NAME"
-global SDL_HINT_PREFERRED_LOCALES: cstring <comptime> = "SDL_PREFERRED_LOCALES"
+global SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING: cstring <comptime> = "SDL_WINDOWS_DISABLE_THREAD_NAMING"
+global SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP: cstring <comptime> = "SDL_WINDOWS_ENABLE_MESSAGELOOP"
+global SDL_HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS: cstring <comptime> = "SDL_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS"
+global SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL: cstring <comptime> = "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL"
+global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring <comptime> = "SDL_WINDOWS_INTRESOURCE_ICON"
+global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring <comptime> = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
+global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring <comptime> = "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4"
+global SDL_HINT_WINDOWS_USE_D3D9EX: cstring <comptime> = "SDL_WINDOWS_USE_D3D9EX"
+global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring <comptime> = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
+global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring <comptime> = "SDL_WINRT_HANDLE_BACK_BUTTON"
+global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_LABEL"
+global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_URL"
+global SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT: cstring <comptime> = "SDL_X11_FORCE_OVERRIDE_REDIRECT"
+global SDL_HINT_XINPUT_ENABLED: cstring <comptime> = "SDL_XINPUT_ENABLED"
+global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring <comptime> = "SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING"
+global SDL_HINT_AUDIO_INCLUDE_MONITORS: cstring <comptime> = "SDL_AUDIO_INCLUDE_MONITORS"
 global SDL_MAX_LOG_MESSAGE: cint <comptime> = 4096
 global SDL_NONSHAPEABLE_WINDOW: cint <comptime> = -1
 global SDL_INVALID_SHAPE_ARGUMENT: cint <comptime> = -2

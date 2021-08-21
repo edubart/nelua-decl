@@ -83,6 +83,13 @@ global NK_image: type <cimport, nodecl, ctypedef 'nk_image'> = @record{
   h: cushort,
   region: [4]cushort
 }
+global NK_nine_slice: type <cimport, nodecl, ctypedef 'nk_nine_slice'> = @record{
+  img: NK_image,
+  l: cushort,
+  t: cushort,
+  r: cushort,
+  b: cushort
+}
 global NK_cursor: type <cimport, nodecl, ctypedef 'nk_cursor'> = @record{
   img: NK_image,
   size: NK_vec2,
@@ -702,6 +709,13 @@ global function nk_image_is_subimage(img: *NK_image): cint <cimport, nodecl> end
 global function nk_subimage_ptr(a1: pointer, w: cushort, h: cushort, sub_region: NK_rect): NK_image <cimport, nodecl> end
 global function nk_subimage_id(a1: cint, w: cushort, h: cushort, sub_region: NK_rect): NK_image <cimport, nodecl> end
 global function nk_subimage_handle(a1: NK_handle, w: cushort, h: cushort, sub_region: NK_rect): NK_image <cimport, nodecl> end
+global function nk_nine_slice_handle(a1: NK_handle, l: cushort, t: cushort, r: cushort, b: cushort): NK_nine_slice <cimport, nodecl> end
+global function nk_nine_slice_ptr(a1: pointer, l: cushort, t: cushort, r: cushort, b: cushort): NK_nine_slice <cimport, nodecl> end
+global function nk_nine_slice_id(a1: cint, l: cushort, t: cushort, r: cushort, b: cushort): NK_nine_slice <cimport, nodecl> end
+global function nk_nine_slice_is_sub9slice(img: *NK_nine_slice): cint <cimport, nodecl> end
+global function nk_sub9slice_ptr(a1: pointer, w: cushort, h: cushort, sub_region: NK_rect, l: cushort, t: cushort, r: cushort, b: cushort): NK_nine_slice <cimport, nodecl> end
+global function nk_sub9slice_id(a1: cint, w: cushort, h: cushort, sub_region: NK_rect, l: cushort, t: cushort, r: cushort, b: cushort): NK_nine_slice <cimport, nodecl> end
+global function nk_sub9slice_handle(a1: NK_handle, w: cushort, h: cushort, sub_region: NK_rect, l: cushort, t: cushort, r: cushort, b: cushort): NK_nine_slice <cimport, nodecl> end
 global function nk_murmur_hash(key: pointer, len: cint, seed: cuint): cuint <cimport, nodecl> end
 global function nk_triangle_from_direction(result: *NK_vec2, r: NK_rect, pad_x: float32, pad_y: float32, a5: NK_heading) <cimport, nodecl> end
 global function nk_vec2(x: float32, y: float32): NK_vec2 <cimport, nodecl> end
@@ -1198,6 +1212,7 @@ global function nk_fill_arc(a1: *NK_command_buffer, cx: float32, cy: float32, ra
 global function nk_fill_triangle(a1: *NK_command_buffer, x0: float32, y0: float32, x1: float32, y1: float32, x2: float32, y2: float32, a8: NK_color) <cimport, nodecl> end
 global function nk_fill_polygon(a1: *NK_command_buffer, a2: *float32, point_count: cint, a4: NK_color) <cimport, nodecl> end
 global function nk_draw_image(a1: *NK_command_buffer, a2: NK_rect, a3: *NK_image, a4: NK_color) <cimport, nodecl> end
+global function nk_draw_nine_slice(a1: *NK_command_buffer, a2: NK_rect, a3: *NK_nine_slice, a4: NK_color) <cimport, nodecl> end
 global function nk_draw_text(a1: *NK_command_buffer, a2: NK_rect, text: cstring, len: cint, a5: *NK_user_font, a6: NK_color, a7: NK_color) <cimport, nodecl> end
 global function nk_push_scissor(a1: *NK_command_buffer, a2: NK_rect) <cimport, nodecl> end
 global function nk_push_custom(a1: *NK_command_buffer, a2: NK_rect, a3: nk_command_custom_callback, usr: NK_handle) <cimport, nodecl> end
@@ -1332,11 +1347,13 @@ global function nk_draw_list_add_image(a1: *NK_draw_list, texture: NK_image, rec
 global function nk_draw_list_add_text(a1: *NK_draw_list, a2: *NK_user_font, a3: NK_rect, text: cstring, len: cint, font_height: float32, a7: NK_color) <cimport, nodecl> end
 global NK_style_item_type: type <cimport, nodecl, using, ctypedef 'nk_style_item_type'> = @enum(cint){
   NK_STYLE_ITEM_COLOR = 0,
-  NK_STYLE_ITEM_IMAGE = 1
+  NK_STYLE_ITEM_IMAGE = 1,
+  NK_STYLE_ITEM_NINE_SLICE = 2
 }
 global NK_style_item_data: type <cimport, nodecl, ctypedef 'nk_style_item_data'> = @union{
+  color: NK_color,
   image: NK_image,
-  color: NK_color
+  slice: NK_nine_slice
 }
 NK_style_item = @record{
   type: NK_style_item_type,
@@ -1643,8 +1660,9 @@ global NK_style: type <cimport, nodecl, ctypedef 'nk_style'> = @record{
   combo: NK_style_combo,
   window: NK_style_window
 }
-global function nk_style_item_image(img: NK_image): NK_style_item <cimport, nodecl> end
 global function nk_style_item_color(a1: NK_color): NK_style_item <cimport, nodecl> end
+global function nk_style_item_image(img: NK_image): NK_style_item <cimport, nodecl> end
+global function nk_style_item_nine_slice(slice: NK_nine_slice): NK_style_item <cimport, nodecl> end
 global function nk_style_item_hide(): NK_style_item <cimport, nodecl> end
 global NK_panel_type: type <cimport, nodecl, using, ctypedef 'nk_panel_type'> = @enum(cint){
   NK_PANEL_NONE = 0,
