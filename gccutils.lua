@@ -127,7 +127,7 @@ function gccutils.get_enum_nltype(node)
   local large
   for fieldnode in gccutils.chain(node:values()) do
     local fieldvalue = fieldnode:value():value()
-    if fieldvalue >= (1<<32)//2 then
+    if fieldvalue >= 2147483648 then
       large = true
     elseif fieldvalue < 0 then
       negative = true
