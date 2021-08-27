@@ -1,3 +1,3 @@
 [submodule "gcc-lua"]
 	path = gcc-lua
-	url = git@github.com:edubart/gcc-lua.git
+	url = https://github.com/edubart/gcc-lua.git

@@ -27,7 +27,8 @@ global mco_result: type <cimport, nodecl, using> = @enum(cint){
   MCO_NOT_ENOUGH_SPACE = 8,
   MCO_OUT_OF_MEMORY = 9,
   MCO_INVALID_ARGUMENTS = 10,
-  MCO_INVALID_OPERATION = 11
+  MCO_INVALID_OPERATION = 11,
+  MCO_STACK_OVERFLOW = 12
 }
 global mco_coro: type <cimport, nodecl, forwarddecl> = @record{}
 mco_coro = @record{
@@ -45,7 +46,8 @@ mco_coro = @record{
   storage_size: csize,
   asan_prev_stack: pointer,
   tsan_prev_fiber: pointer,
-  tsan_fiber: pointer
+  tsan_fiber: pointer,
+  magic_number: csize
 }
 global mco_desc: type <cimport, nodecl> = @record{
   func: function(*mco_coro),

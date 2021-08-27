@@ -286,7 +286,7 @@ end
 
 function nldecl.vector_type(node)
   local subtype = node:type()
-  local len = node:size():value() // subtype:size():value()
+  local len = math.floor(node:size():value() / subtype:size():value())
   emitter:add(string.format('[%d]',len))
   visit(subtype)
 end

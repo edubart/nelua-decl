@@ -61,7 +61,7 @@ global function mg_file_write(path: cstring, buf: pointer, len: csize): boolean 
 global function mg_file_printf(path: cstring, fmt: cstring, ...: cvarargs): boolean <cimport, nodecl> end
 global function mg_random(buf: pointer, len: csize) <cimport, nodecl> end
 global function mg_globmatch(pattern: cstring, plen: csize, s: cstring, n: csize): boolean <cimport, nodecl> end
-global function mg_next_comma_entry(s: *mg_str, k: *mg_str, v: *mg_str): boolean <cimport, nodecl> end
+global function mg_comma(s: *mg_str, k: *mg_str, v: *mg_str): boolean <cimport, nodecl> end
 global function mg_ntohs(net: uint16): uint16 <cimport, nodecl> end
 global function mg_ntohl(net: uint32): uint32 <cimport, nodecl> end
 global function mg_crc32(crc: uint32, buf: cstring, len: csize): uint32 <cimport, nodecl> end
@@ -72,6 +72,7 @@ global function mg_unhexn(s: cstring, len: csize): culong <cimport, nodecl> end
 global function mg_asprintf(buf: *cstring, size: csize, fmt: cstring, ...: cvarargs): cint <cimport, nodecl> end
 global function mg_vasprintf(buf: *cstring, size: csize, fmt: cstring, ap: cvalist): cint <cimport, nodecl> end
 global function mg_to64(str: mg_str): int64 <cimport, nodecl> end
+global function mg_check_ip_acl(acl: mg_str, remote_ip: uint32): cint <cimport, nodecl> end
 global function mg_time(): float64 <cimport, nodecl> end
 global function mg_millis(): culong <cimport, nodecl> end
 global function mg_usleep(usecs: culong) <cimport, nodecl> end
