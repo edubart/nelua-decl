@@ -537,6 +537,7 @@ local function process_macros()
     if name then -- is a macro constant
       -- find in customized macros
       for nltype,patts in pairs(nldecl.include_macros) do
+        if foundnltype then break end
         if type(nltype) == 'number' then
           nltype = next(patts)
           patts = patts[nltype]
@@ -550,11 +551,12 @@ local function process_macros()
             elseif forcevalue ~= true then
               value = tostring(forcevalue)
             end
-            goto just_found
+            break
           end
         end
       end
       for nltype,patts in pairs(nldecl.include_macros) do
+        if foundnltype then break end
         if type(nltype) == 'number' then
           nltype = next(patts)
           patts = patts[nltype]
@@ -568,12 +570,13 @@ local function process_macros()
             elseif forcevalue ~= true then
               value = tostring(forcevalue)
             end
-            goto just_found
+            break
           end
         end
       end
       -- find in macro patterns
       for nltype,patts in pairs(nldecl.include_macros) do
+        if foundnltype then break end
         if type(nltype) == 'number' then
           nltype = next(patts)
           patts = patts[nltype]
@@ -581,12 +584,11 @@ local function process_macros()
         for _,patt in ipairs(patts) do
           if name:match(patt) and nldecl.can_decl(name) then
             foundnltype = nltype
-            goto just_found
+            break
           end
         end
       end
     end
-::just_found::
     if foundnltype then
       local parsedvalue = eval_macro_value(value)
       if parsedvalue then
