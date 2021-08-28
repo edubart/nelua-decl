@@ -61,7 +61,7 @@ global function mg_file_write(path: cstring, buf: pointer, len: csize): boolean 
 global function mg_file_printf(path: cstring, fmt: cstring, ...: cvarargs): boolean <cimport, nodecl> end
 global function mg_random(buf: pointer, len: csize) <cimport, nodecl> end
 global function mg_globmatch(pattern: cstring, plen: csize, s: cstring, n: csize): boolean <cimport, nodecl> end
-global function mg_comma(s: *mg_str, k: *mg_str, v: *mg_str): boolean <cimport, nodecl> end
+global function mg_commalist(s: *mg_str, k: *mg_str, v: *mg_str): boolean <cimport, nodecl> end
 global function mg_ntohs(net: uint16): uint16 <cimport, nodecl> end
 global function mg_ntohl(net: uint32): uint32 <cimport, nodecl> end
 global function mg_crc32(crc: uint32, buf: cstring, len: csize): uint32 <cimport, nodecl> end
@@ -110,8 +110,8 @@ global mg_iobuf: type <cimport, nodecl, ctypedef> = @record{
 global function mg_iobuf_init(a1: *mg_iobuf, a2: csize): cint <cimport, nodecl> end
 global function mg_iobuf_resize(a1: *mg_iobuf, a2: csize): cint <cimport, nodecl> end
 global function mg_iobuf_free(a1: *mg_iobuf) <cimport, nodecl> end
-global function mg_iobuf_append(a1: *mg_iobuf, a2: pointer, a3: csize, a4: csize): csize <cimport, nodecl> end
-global function mg_iobuf_delete(a1: *mg_iobuf, a2: csize): csize <cimport, nodecl> end
+global function mg_iobuf_add(a1: *mg_iobuf, a2: csize, a3: pointer, a4: csize, a5: csize): csize <cimport, nodecl> end
+global function mg_iobuf_del(a1: *mg_iobuf, ofs: csize, len: csize): csize <cimport, nodecl> end
 global function mg_base64_update(p: cuchar, to: cstring, len: cint): cint <cimport, nodecl> end
 global function mg_base64_final(to: cstring, len: cint): cint <cimport, nodecl> end
 global function mg_base64_encode(p: *cuchar, n: cint, to: cstring): cint <cimport, nodecl> end
@@ -377,5 +377,3 @@ global WEBSOCKET_OP_BINARY: cint <comptime> = 2
 global WEBSOCKET_OP_CLOSE: cint <comptime> = 8
 global WEBSOCKET_OP_PING: cint <comptime> = 9
 global WEBSOCKET_OP_PONG: cint <comptime> = 10
-global WEBSOCKET_FLAGS_MASK_FIN: cint <comptime> = 128
-global WEBSOCKET_FLAGS_MASK_OP: cint <comptime> = 15
