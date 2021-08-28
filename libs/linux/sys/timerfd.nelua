@@ -1,0 +1,8 @@
+## cinclude '<sys/timerfd.h>'
+global TFD_CLOEXEC: cint <comptime> = 524288
+global TFD_NONBLOCK: cint <comptime> = 2048
+global TFD_TIMER_ABSTIME: cint <comptime> = 1
+global TFD_TIMER_CANCEL_ON_SET: cint <comptime> = 2
+global function timerfd_create(clock_id: cint, flags: cint): cint <cimport, nodecl> end
+global function timerfd_settime(ufd: cint, flags: cint, utmr: *itimerspec, otmr: *itimerspec): cint <cimport, nodecl> end
+global function timerfd_gettime(ufd: cint, otmr: *itimerspec): cint <cimport, nodecl> end

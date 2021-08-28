@@ -17,3 +17,5 @@ generate:
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S inotify.c -fplugin-arg-gcclua-script=inotify.lua > inotify.nelua
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S epoll.c -fplugin-arg-gcclua-script=epoll.lua > epoll.nelua
 	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S iouring.c -fplugin-arg-gcclua-script=iouring.lua > iouring.nelua
+
+	$(LUA_PATH) $(CC) $(CSTD) $(GCCPLUGIN) -S sys/timerfd.c -fplugin-arg-gcclua-script=sys/timerfd.lua > sys/timerfd.nelua
