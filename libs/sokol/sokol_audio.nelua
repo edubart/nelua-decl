@@ -1,9 +1,5 @@
 ##[[
-if SOKOL_AUDIO_LINKLIB then
-  if type(SOKOL_AUDIO_LINKLIB) == 'string' then
-    linklib(SOKOL_AUDIO_LINKLIB)
-  end
-else
+if not SOKOL_AUDIO_NO_IMPL then
   cdefine 'SOKOL_AUDIO_API_DECL static'
   cdefine 'SOKOL_AUDIO_IMPL'
 end

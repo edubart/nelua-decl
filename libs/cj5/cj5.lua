@@ -6,11 +6,7 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if CJ5_LINKLIB then
-  if type(CJ5_LINKLIB) == 'string' then
-    linklib(CJ5_LINKLIB)
-  end
-else
+if not CJ5_NO_IMPL then
   cdefine 'CJ5_API static'
   cdefine 'CJ5_IMPLEMENT'
 end

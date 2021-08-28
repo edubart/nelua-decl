@@ -8,11 +8,7 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if STB_TRUETYPE_LINKLIB then
-  if type(STB_TRUETYPE_LINKLIB) == 'string' then
-    linklib(STB_TRUETYPE_LINKLIB)
-  end
-else
+if not STB_TRUETYPE_NO_IMPL then
   cdefine 'STBTT_STATIC'
   cdefine 'STB_TRUETYPE_IMPLEMENTATION'
 end

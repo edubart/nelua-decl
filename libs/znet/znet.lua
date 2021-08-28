@@ -13,11 +13,7 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-if ZNET_LINKLIB then
-  if type(ZNET_LINKLIB) == 'string' then
-    linklib(ZNET_LINKLIB)
-  end
-else
+if not ZNET_NO_IMPL then
   cdefine 'ZN_STATIC_API'
   cdefine 'ZN_IMPLEMENTATION'
 end

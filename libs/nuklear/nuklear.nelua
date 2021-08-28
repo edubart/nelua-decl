@@ -7,9 +7,7 @@ cdefine 'NK_INCLUDE_FONT_BAKING'
 cdefine 'NK_INCLUDE_DEFAULT_FONT'
 cdefine 'NK_INCLUDE_SOFTWARE_FONT'
 cdefine 'NK_INCLUDE_STANDARD_VARARGS'
-if NUKLEAR_LINKLIB then
-  linklib(NUKLEAR_LINKLIB)
-else
+if not NUKLEAR_NO_IMPL then
   cdefine 'NK_IMPLEMENTATION'
 end
 cinclude 'nuklear.h'

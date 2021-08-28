@@ -22,11 +22,7 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-if ENET_LINKLIB then
-  if type(ENET_LINKLIB) == 'string' then
-    linklib(ENET_LINKLIB)
-  end
-else
+if not ENET_NO_IMPL then
   cdefine 'ENET_IMPLEMENTATION'
 end
 cinclude 'enet.h'

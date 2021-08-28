@@ -14,11 +14,7 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-if MINIFS_LINKLIB then
-  if type(MINIFS_LINKLIB) == 'string' then
-    linklib(MINIFS_LINKLIB)
-  end
-else
+if not MINIFS_NO_IMPL then
   cdefine 'MINIFS_IMPLEMENTATION'
 end
 cinclude 'minifs.h'

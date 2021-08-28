@@ -59,11 +59,7 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
-if MINILUA_LINKLIB then
-  if type(MINILUA_LINKLIB) == 'string' then
-    linklib(MINILUA_LINKLIB)
-  end
-else
+if not MINILUA_NO_IMPL then
   cdefine 'LUA_IMPL'
 end
 cinclude 'minilua.h'

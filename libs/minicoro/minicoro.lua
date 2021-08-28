@@ -7,11 +7,7 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if MINICORO_LINKLIB then
-  if type(MINICORO_LINKLIB) == 'string' then
-    linklib(MINICORO_LINKLIB)
-  end
-else
+if not MINICORO_NO_IMPL then
   cdefine 'MCO_API static'
   cdefine 'MINICORO_IMPL'
 end

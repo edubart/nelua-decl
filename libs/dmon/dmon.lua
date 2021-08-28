@@ -7,11 +7,7 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if DMON_LINKLIB then
-  if type(DMON_LINKLIB) == 'string' then
-    linklib(DMON_LINKLIB)
-  end
-else
+if not DMON_NO_IMPL then
   cdefine 'DMON_API_DECL static'
   cdefine 'DMON_IMPL'
 end

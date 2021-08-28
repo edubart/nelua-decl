@@ -8,7 +8,11 @@ end
 require 'mir'
 require 'string'
 require 'hashmap'
+require 'io'
+require 'os'
 require 'C.stdio'
+require 'C.stdlib'
+require 'C.string'
 
 
 local StringReader = @record{
@@ -37,35 +41,41 @@ end
 
 local import_symbols: hashmap(string, pointer)
 
-local function fill_import_symbols(): void
-  ##[[
+##[[
+local function fill_import_symbols()
   local iterators = require 'nelua.utils.iterators'
   local ignored = {tmpnam = true, gets = true}
   for k,v in iterators.ospairs(C.value.metafields) do
-    if v.type.is_function and not ignored[k] then
-      ]] import_symbols[#[k]#] = (@pointer)(#[v]#) ##[[
+    if not ignored[k] then
+      if v.type.is_function then ]]
+        import_symbols[#[k]#] = (@pointer)(#[v]#)
+##[[  elseif v.type.is_pointer then ]]
+        local #|k..'_storage'|#: pointer = (@pointer)(#[v]#)
+        import_symbols[#[k]#] = &#|k..'_storage'|#
+##[[  end
     end
   end
-  ]]
 end
+
 fill_import_symbols()
+]]
 
 local function import_resolver(name: cstring): pointer
-  local addr = import_symbols:peek(name)
-  if addr then
-    return $addr
+  local paddr = import_symbols:peek(name)
+  if paddr then
+    return $paddr
   end
   return nilptr
 end
 
-local function load_main(ctx: MIR_context_t): MIR_item_t
+local function load_func(ctx: MIR_context_t, name: string): MIR_item_t
   local list = MIR_get_module_list(ctx)
   local module = DLIST_MIR_module_t_head(MIR_get_module_list(ctx))
   local main_func = nilptr
   while module do
     local item = DLIST_MIR_item_t_head(module.items)
     while item do
-      if item.item_type == MIR_func_item and item.u.func.name == 'main' then
+      if item.item_type == MIR_func_item and item.u.func.name == name then
         main_func = item
       end
       item = DLIST_MIR_item_t_next(item)
@@ -76,11 +86,11 @@ local function load_main(ctx: MIR_context_t): MIR_item_t
   return main_func
 end
 
-local function run(code: string): integer
+local function run_c(code: string, name: string): integer
   local ctx: MIR_context_t = MIR_init()
   c2mir_init(ctx)
   compile(ctx, code, '<input>')
-  local main_func = load_main(ctx)
+  local main_func = load_func(ctx, name)
   MIR_link(ctx, MIR_set_interp_interface, import_resolver)
   local res: MIR_val_t
   local argc: cint = 0
@@ -91,13 +101,20 @@ local function run(code: string): integer
   return res.i
 end
 
-local res = run([[
-extern int printf(const char* msg, ...);
-int main(int argc, char** argv) {
-  printf("hello world\n", argc);
-  return 10;
-}
-]])
-assert(res == 10)
+local function compile_nelua_to_c(code: string): string
+  local filename = os.tmpname()
+  local file <close> = io.open(filename, 'w')
+  file:write(code)
+  local out <close> = io.popen(string.format("nelua --print-code %s", filename))
+  return out:read('a')
+end
 
+local nelua_code = [[
+print 'hello'
+return 10
+]]
+
+local c_code = compile_nelua_to_c(nelua_code)
+local res = run_c(c_code, 'main')
+assert(res == 10)
 print("mir OK!")

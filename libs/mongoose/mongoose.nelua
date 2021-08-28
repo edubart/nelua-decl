@@ -9,11 +9,8 @@ elseif MONGOOSE_OPENSSL then
   linklib 'ssl'
   linklib 'crypto'
 end
-if MONGOOSE_LINKLIB then
-  cinclude 'mongoose.h'
-  linklib(MONGOOSE_LINKLIB)
-else
-  cinclude 'mongoose.h'
+cinclude 'mongoose.h'
+if not MONGOOSE_NO_IMPL then
   cinclude 'mongoose.c'
 end
 if ccinfo.is_windows then

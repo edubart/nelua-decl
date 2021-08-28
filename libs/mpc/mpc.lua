@@ -17,9 +17,7 @@ nldecl.include_macros = {
 nldecl.prepend_code = [=[
 ##[[
 cinclude 'mpc.h'
-if MPC_LINKLIB then
-  linklib(MPC_LINKLIB)
-else
+if not MPC_NO_IMPL then
   cinclude 'mpc.c'
 end
 ]]

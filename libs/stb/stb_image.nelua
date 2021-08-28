@@ -1,9 +1,5 @@
 ##[[
-if STB_IMAGE_LINKLIB then
-  if type(STB_IMAGE_LINKLIB) == 'string' then
-    linklib(STB_IMAGE_LINKLIB)
-  end
-else
+if not STB_IMAGE_NO_IMPL then
   cdefine 'STB_IMAGE_STATIC'
   cdefine 'STB_IMAGE_IMPLEMENTATION'
 end

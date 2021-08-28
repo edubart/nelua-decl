@@ -12,11 +12,7 @@ end})
 
 nldecl.prepend_code = [=[
 ##[[
-if SOKOL_NUKLEAR_LINKLIB then
-  if type(SOKOL_NUKLEAR_LINKLIB) == 'string' then
-    linklib(SOKOL_NUKLEAR_LINKLIB)
-  end
-else
+if not SOKOL_NUKLEAR_NO_IMPL then
   cdefine 'SOKOL_NUKLEAR_API_DECL static'
   cdefine 'SOKOL_NUKLEAR_IMPL'
 end

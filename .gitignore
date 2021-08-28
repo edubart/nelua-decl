@@ -6,3 +6,6 @@ nelua_cache
 *.s
 *.bmp
 *.db
+*.o
+*.a
+*.so

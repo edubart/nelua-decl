@@ -12,11 +12,7 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if MINIZ_LINKLIB then
-  if type(MINIZ_LINKLIB) == 'string' then
-    linklib(MINIZ_LINKLIB)
-  end
-else
+if not MINIZ_NO_IMPL then
   cdefine 'MINIZ_EXPORT static'
   cdefine 'MINIZ_IMPL'
 end

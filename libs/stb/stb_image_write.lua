@@ -7,11 +7,7 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if STB_IMAGE_WRITE_LINKLIB then
-  if type(STB_IMAGE_WRITE_LINKLIB) == 'string' then
-    linklib(STB_IMAGE_WRITE_LINKLIB)
-  end
-else
+if not STB_IMAGE_WRITE_NO_IMPL then
   cdefine 'STB_IMAGE_WRITE_STATIC'
   cdefine 'STB_IMAGE_WRITE_IMPLEMENTATION'
 end

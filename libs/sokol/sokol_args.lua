@@ -6,11 +6,7 @@ nldecl.include_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if SOKOL_ARGS_LINKLIB then
-  if type(SOKOL_ARGS_LINKLIB) == 'string' then
-    linklib(SOKOL_ARGS_LINKLIB)
-  end
-else
+if not SOKOL_ARGS_NO_IMPL then
   cdefine 'SOKOL_ARGS_API_DECL static'
   cdefine 'SOKOL_ARGS_IMPL'
 end

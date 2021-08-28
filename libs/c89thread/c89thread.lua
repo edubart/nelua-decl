@@ -16,11 +16,7 @@ nldecl.opaque_names = {
 
 nldecl.prepend_code = [=[
 ##[[
-if C89THREAD_LINKLIB then
-  if type(C89THREAD_LINKLIB) == 'string' then
-    linklib(C89THREAD_LINKLIB)
-  end
-else
+if not C89THREAD_NO_IMPL then
   cdefine 'C89THREAD_IMPLEMENTATION'
 end
 cinclude 'c89thread.h'
