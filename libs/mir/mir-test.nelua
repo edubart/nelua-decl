@@ -1,0 +1,103 @@
+##[[
+-- Disables "note: the ABI of passing union with 'long double' has changed"
+if ccinfo.is_gcc then
+  cflags '-fcompare-debug-second'
+end
+]]
+
+require 'mir'
+require 'string'
+require 'hashmap'
+require 'C.stdio'
+
+
+local StringReader = @record{
+  str: string,
+  pos: isize
+}
+
+function StringReader:getc(): cint
+  if self.pos <= #self.str then
+    local c: byte = self.str[self.pos]
+    self.pos = self.pos + 1
+    return c
+  end
+  return C.EOF
+end
+
+local function compile(ctx: MIR_context_t, source: string, name: string): boolean
+  local reader: StringReader = {source, 1}
+  local opts: c2mir_options = {message_file = C.stderr}
+  if c2mir_compile(ctx, &opts, (@function(pointer):cint)(StringReader.getc), &reader, name, nilptr) == 0 then
+    return false
+  end
+  c2mir_finish(ctx)
+  return true
+end
+
+local import_symbols: hashmap(string, pointer)
+
+local function fill_import_symbols(): void
+  ##[[
+  local iterators = require 'nelua.utils.iterators'
+  local ignored = {tmpnam = true, gets = true}
+  for k,v in iterators.ospairs(C.value.metafields) do
+    if v.type.is_function and not ignored[k] then
+      ]] import_symbols[#[k]#] = (@pointer)(#[v]#) ##[[
+    end
+  end
+  ]]
+end
+fill_import_symbols()
+
+local function import_resolver(name: cstring): pointer
+  local addr = import_symbols:peek(name)
+  if addr then
+    return $addr
+  end
+  return nilptr
+end
+
+local function load_main(ctx: MIR_context_t): MIR_item_t
+  local list = MIR_get_module_list(ctx)
+  local module = DLIST_MIR_module_t_head(MIR_get_module_list(ctx))
+  local main_func = nilptr
+  while module do
+    local item = DLIST_MIR_item_t_head(module.items)
+    while item do
+      if item.item_type == MIR_func_item and item.u.func.name == 'main' then
+        main_func = item
+      end
+      item = DLIST_MIR_item_t_next(item)
+    end
+    MIR_load_module(ctx, module)
+    module = DLIST_MIR_module_t_next(module)
+  end
+  return main_func
+end
+
+local function run(code: string): integer
+  local ctx: MIR_context_t = MIR_init()
+  c2mir_init(ctx)
+  compile(ctx, code, '<input>')
+  local main_func = load_main(ctx)
+  MIR_link(ctx, MIR_set_interp_interface, import_resolver)
+  local res: MIR_val_t
+  local argc: cint = 0
+  local argv: *cstring = nilptr
+  local env: pointer = nilptr
+  MIR_interp(ctx, main_func, &res, 3, (@MIR_val_t){i=argc}, (@MIR_val_t){a=argv}, (@MIR_val_t){a=env})
+  MIR_finish(ctx)
+  return res.i
+end
+
+local res = run([[
+extern int printf(const char* msg, ...);
+int main(int argc, char** argv) {
+  printf("hello world\n", argc);
+  return 10;
+}
+]])
+assert(res == 10)
+
+print("mir OK!")

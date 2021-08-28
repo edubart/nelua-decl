@@ -76,6 +76,8 @@ and multi-protocol networking library)
     - [nuklear.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/nuklear/nuklear.nelua) (Immediate UI library)
 * [mbedtls](https://github.com/ARMmbed/mbedtls)
     - [nuklear.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/mbedtls/mbedtls.nelua) (Cryptographic library)
+* [MIR](https://github.com/vnmakarov/mir)
+    - [mir.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/mir/mir.nelua) (A lightweight JIT compiler and C11 JIT compiler/interpreter based on MIR)
 
 Plus the following platform specific libraries:
 * dl
