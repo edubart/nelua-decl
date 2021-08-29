@@ -1,5 +1,5 @@
 ## cinclude '<termios.h>'
-global termios: type <cimport, nodecl, ctypedef> = @record{
+global termios: type <cimport,nodecl,ctypedef> = @record{
   c_iflag: cuint,
   c_oflag: cuint,
   c_cflag: cuint,
@@ -9,17 +9,17 @@ global termios: type <cimport, nodecl, ctypedef> = @record{
   c_ispeed: cuint,
   c_ospeed: cuint
 }
-global function cfgetospeed(termios_p: *termios): cuint <cimport, nodecl> end
-global function cfgetispeed(termios_p: *termios): cuint <cimport, nodecl> end
-global function cfsetospeed(termios_p: *termios, speed: cuint): cint <cimport, nodecl> end
-global function cfsetispeed(termios_p: *termios, speed: cuint): cint <cimport, nodecl> end
-global function tcgetattr(fd: cint, termios_p: *termios): cint <cimport, nodecl> end
-global function tcsetattr(fd: cint, optional_actions: cint, termios_p: *termios): cint <cimport, nodecl> end
-global function tcsendbreak(fd: cint, duration: cint): cint <cimport, nodecl> end
-global function tcdrain(fd: cint): cint <cimport, nodecl> end
-global function tcflush(fd: cint, queue_selector: cint): cint <cimport, nodecl> end
-global function tcflow(fd: cint, action: cint): cint <cimport, nodecl> end
-global function tcgetsid(fd: cint): cint <cimport, nodecl> end
+global function cfgetospeed(termios_p: *termios): cuint <cimport,nodecl> end
+global function cfgetispeed(termios_p: *termios): cuint <cimport,nodecl> end
+global function cfsetospeed(termios_p: *termios, speed: cuint): cint <cimport,nodecl> end
+global function cfsetispeed(termios_p: *termios, speed: cuint): cint <cimport,nodecl> end
+global function tcgetattr(fd: cint, termios_p: *termios): cint <cimport,nodecl> end
+global function tcsetattr(fd: cint, optional_actions: cint, termios_p: *termios): cint <cimport,nodecl> end
+global function tcsendbreak(fd: cint, duration: cint): cint <cimport,nodecl> end
+global function tcdrain(fd: cint): cint <cimport,nodecl> end
+global function tcflush(fd: cint, queue_selector: cint): cint <cimport,nodecl> end
+global function tcflow(fd: cint, action: cint): cint <cimport,nodecl> end
+global function tcgetsid(fd: cint): cint <cimport,nodecl> end
 global VINTR: cuint <comptime> = 0
 global VQUIT: cuint <comptime> = 1
 global VERASE: cuint <comptime> = 2

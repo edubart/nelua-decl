@@ -2,111 +2,111 @@
 cinclude '<blend2d.h>'
 linklib 'blend2d'
 ]]
-global BLRange: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRandom: type <cimport, nodecl, forwarddecl> = @record{}
-global BLCreateForeignInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFileCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRuntimeBuildInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRuntimeSystemInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRuntimeResourceInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLStringCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLStringImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLArrayCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLArrayImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLVariantCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLVariantImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPointI: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPoint: type <cimport, nodecl, forwarddecl> = @record{}
-global BLSizeI: type <cimport, nodecl, forwarddecl> = @record{}
-global BLSize: type <cimport, nodecl, forwarddecl> = @record{}
-global BLBoxI: type <cimport, nodecl, forwarddecl> = @record{}
-global BLBox: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRectI: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRect: type <cimport, nodecl, forwarddecl> = @record{}
-global BLLine: type <cimport, nodecl, forwarddecl> = @record{}
-global BLTriangle: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRoundRect: type <cimport, nodecl, forwarddecl> = @record{}
-global BLCircle: type <cimport, nodecl, forwarddecl> = @record{}
-global BLEllipse: type <cimport, nodecl, forwarddecl> = @record{}
-global BLArc: type <cimport, nodecl, forwarddecl> = @record{}
-global BLMatrix2D: type <cimport, nodecl, forwarddecl> = @record{}
-global BLApproximationOptions: type <cimport, nodecl, forwarddecl> = @record{}
-global BLStrokeOptionsCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPathCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPathImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPathView: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRegionCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRegionImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFormatInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageData: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageScaleOptions: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPixelConverterCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPixelConverterOptions: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageCodecCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageCodecImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageCodecVirt: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageDecoderCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageDecoderImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageDecoderVirt: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageEncoderCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageEncoderImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLImageEncoderVirt: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRgba32: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRgba64: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRgba: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGradientCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGradientImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGradientStop: type <cimport, nodecl, forwarddecl> = @record{}
-global BLLinearGradientValues: type <cimport, nodecl, forwarddecl> = @record{}
-global BLRadialGradientValues: type <cimport, nodecl, forwarddecl> = @record{}
-global BLConicalGradientValues: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPatternCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLPatternImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLStyleCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLContextCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLContextImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLContextVirt: type <cimport, nodecl, forwarddecl> = @record{}
-global BLContextCookie: type <cimport, nodecl, forwarddecl> = @record{}
-global BLContextCreateInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLContextHints: type <cimport, nodecl, forwarddecl> = @record{}
-global BLContextState: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGlyphBufferCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGlyphBufferImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGlyphInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGlyphMappingState: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGlyphOutlineSinkInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGlyphPlacement: type <cimport, nodecl, forwarddecl> = @record{}
-global BLGlyphRun: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontUnicodeCoverage: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontFaceInfo: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontQueryProperties: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontFeature: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontDesignMetrics: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontMatrix: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontMetrics: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontPanose: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontTable: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontVariation: type <cimport, nodecl, forwarddecl> = @record{}
-global BLTextMetrics: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontVirt: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontFaceCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontFaceImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontFaceVirt: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontDataCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontDataImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontDataVirt: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontManagerCore: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontManagerImpl: type <cimport, nodecl, forwarddecl> = @record{}
-global BLFontManagerVirt: type <cimport, nodecl, forwarddecl> = @record{}
+global BLRange: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRandom: type <cimport,nodecl,forwarddecl> = @record{}
+global BLCreateForeignInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFileCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRuntimeBuildInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRuntimeSystemInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRuntimeResourceInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLStringCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLStringImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLArrayCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLArrayImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLVariantCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLVariantImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPointI: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPoint: type <cimport,nodecl,forwarddecl> = @record{}
+global BLSizeI: type <cimport,nodecl,forwarddecl> = @record{}
+global BLSize: type <cimport,nodecl,forwarddecl> = @record{}
+global BLBoxI: type <cimport,nodecl,forwarddecl> = @record{}
+global BLBox: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRectI: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRect: type <cimport,nodecl,forwarddecl> = @record{}
+global BLLine: type <cimport,nodecl,forwarddecl> = @record{}
+global BLTriangle: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRoundRect: type <cimport,nodecl,forwarddecl> = @record{}
+global BLCircle: type <cimport,nodecl,forwarddecl> = @record{}
+global BLEllipse: type <cimport,nodecl,forwarddecl> = @record{}
+global BLArc: type <cimport,nodecl,forwarddecl> = @record{}
+global BLMatrix2D: type <cimport,nodecl,forwarddecl> = @record{}
+global BLApproximationOptions: type <cimport,nodecl,forwarddecl> = @record{}
+global BLStrokeOptionsCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPathCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPathImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPathView: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRegionCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRegionImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFormatInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageData: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageScaleOptions: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPixelConverterCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPixelConverterOptions: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageCodecCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageCodecImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageCodecVirt: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageDecoderCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageDecoderImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageDecoderVirt: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageEncoderCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageEncoderImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLImageEncoderVirt: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRgba32: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRgba64: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRgba: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGradientCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGradientImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGradientStop: type <cimport,nodecl,forwarddecl> = @record{}
+global BLLinearGradientValues: type <cimport,nodecl,forwarddecl> = @record{}
+global BLRadialGradientValues: type <cimport,nodecl,forwarddecl> = @record{}
+global BLConicalGradientValues: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPatternCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLPatternImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLStyleCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLContextCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLContextImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLContextVirt: type <cimport,nodecl,forwarddecl> = @record{}
+global BLContextCookie: type <cimport,nodecl,forwarddecl> = @record{}
+global BLContextCreateInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLContextHints: type <cimport,nodecl,forwarddecl> = @record{}
+global BLContextState: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGlyphBufferCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGlyphBufferImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGlyphInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGlyphMappingState: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGlyphOutlineSinkInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGlyphPlacement: type <cimport,nodecl,forwarddecl> = @record{}
+global BLGlyphRun: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontUnicodeCoverage: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontFaceInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontQueryProperties: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontFeature: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontDesignMetrics: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontMatrix: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontMetrics: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontPanose: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontTable: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontVariation: type <cimport,nodecl,forwarddecl> = @record{}
+global BLTextMetrics: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontVirt: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontFaceCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontFaceImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontFaceVirt: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontDataCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontDataImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontDataVirt: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontManagerCore: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontManagerImpl: type <cimport,nodecl,forwarddecl> = @record{}
+global BLFontManagerVirt: type <cimport,nodecl,forwarddecl> = @record{}
 global BLResult: type = @cuint
-global BLDestroyImplFunc: type <cimport, nodecl> = @function(pointer, pointer)
-global BLPathSinkFunc: type <cimport, nodecl> = @function(*BLPathCore, pointer, pointer): BLResult
-global BLResultCode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLDestroyImplFunc: type <cimport,nodecl> = @function(pointer, pointer): void
+global BLPathSinkFunc: type <cimport,nodecl> = @function(*BLPathCore, pointer, pointer): BLResult
+global BLResultCode: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_SUCCESS = 0,
   BL_ERROR_START_INDEX = 65536,
   BL_ERROR_OUT_OF_MEMORY = 65536,
@@ -188,32 +188,32 @@ global BLResultCode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_ERROR_FONT_PROGRAM_TERMINATED = 65612,
   BL_ERROR_INVALID_GLYPH = 65613
 }
-global BLByteOrder: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLByteOrder: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_BYTE_ORDER_LE = 0,
   BL_BYTE_ORDER_BE = 1,
   BL_BYTE_ORDER_NATIVE = 0,
   BL_BYTE_ORDER_SWAPPED = 1
 }
-global BLDataAccessFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLDataAccessFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_DATA_ACCESS_READ = 1,
   BL_DATA_ACCESS_WRITE = 2,
   BL_DATA_ACCESS_RW = 3
 }
-global BLDataSourceType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLDataSourceType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_DATA_SOURCE_TYPE_NONE = 0,
   BL_DATA_SOURCE_TYPE_MEMORY = 1,
   BL_DATA_SOURCE_TYPE_FILE = 2,
   BL_DATA_SOURCE_TYPE_CUSTOM = 3,
   BL_DATA_SOURCE_TYPE_COUNT = 4
 }
-global BLModifyOp: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLModifyOp: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_MODIFY_OP_ASSIGN_FIT = 0,
   BL_MODIFY_OP_ASSIGN_GROW = 1,
   BL_MODIFY_OP_APPEND_FIT = 2,
   BL_MODIFY_OP_APPEND_GROW = 3,
   BL_MODIFY_OP_COUNT = 4
 }
-global BLBooleanOp: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLBooleanOp: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_BOOLEAN_OP_COPY = 0,
   BL_BOOLEAN_OP_AND = 1,
   BL_BOOLEAN_OP_OR = 2,
@@ -221,7 +221,7 @@ global BLBooleanOp: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_BOOLEAN_OP_SUB = 4,
   BL_BOOLEAN_OP_COUNT = 5
 }
-global BLExtendMode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLExtendMode: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_EXTEND_MODE_PAD = 0,
   BL_EXTEND_MODE_REPEAT = 1,
   BL_EXTEND_MODE_REFLECT = 2,
@@ -237,7 +237,7 @@ global BLExtendMode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_EXTEND_MODE_SIMPLE_COUNT = 3,
   BL_EXTEND_MODE_COMPLEX_COUNT = 9
 }
-global BLTextEncoding: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLTextEncoding: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_TEXT_ENCODING_UTF8 = 0,
   BL_TEXT_ENCODING_UTF16 = 1,
   BL_TEXT_ENCODING_UTF32 = 2,
@@ -245,7 +245,7 @@ global BLTextEncoding: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_TEXT_ENCODING_WCHAR = 2,
   BL_TEXT_ENCODING_COUNT = 4
 }
-global function blTraceError(result: BLResult): BLResult <cimport, nodecl> end
+global function blTraceError(result: BLResult): BLResult <cimport,nodecl> end
 BLRange = @record{
   start: csize,
   End: csize
@@ -256,492 +256,492 @@ BLCreateForeignInfo = @record{
   destroyFunc: BLDestroyImplFunc,
   destroyData: pointer
 }
-global BLArrayView: type <cimport, nodecl> = @record{
+global BLArrayView: type <cimport,nodecl> = @record{
   data: pointer,
   size: csize
 }
-global BLStringView: type <cimport, nodecl> = @record{
+global BLStringView: type <cimport,nodecl> = @record{
   data: cstring,
   size: csize
 }
-global BLRegionView: type <cimport, nodecl> = @record{
+global BLRegionView: type <cimport,nodecl> = @record{
   data: *BLBoxI,
   size: csize
 }
 global BLDataView: type = @BLArrayView
-global function blArrayInit(self: *BLArrayCore, arrayTypeId: uint32): BLResult <cimport, nodecl> end
-global function blArrayDestroy(self: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blArrayReset(self: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blArrayCreateFromData(self: *BLArrayCore, data: pointer, size: csize, capacity: csize, dataAccessFlags: uint32, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport, nodecl> end
-global function blArrayGetSize(self: *BLArrayCore): csize <cimport, nodecl> end
-global function blArrayGetCapacity(self: *BLArrayCore): csize <cimport, nodecl> end
-global function blArrayGetData(self: *BLArrayCore): pointer <cimport, nodecl> end
-global function blArrayClear(self: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blArrayShrink(self: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blArrayReserve(self: *BLArrayCore, n: csize): BLResult <cimport, nodecl> end
-global function blArrayResize(self: *BLArrayCore, n: csize, fill: pointer): BLResult <cimport, nodecl> end
-global function blArrayMakeMutable(self: *BLArrayCore, dataOut: *pointer): BLResult <cimport, nodecl> end
-global function blArrayModifyOp(self: *BLArrayCore, op: uint32, n: csize, dataOut: *pointer): BLResult <cimport, nodecl> end
-global function blArrayInsertOp(self: *BLArrayCore, index: csize, n: csize, dataOut: *pointer): BLResult <cimport, nodecl> end
-global function blArrayAssignMove(self: *BLArrayCore, other: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blArrayAssignWeak(self: *BLArrayCore, other: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blArrayAssignDeep(self: *BLArrayCore, other: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blArrayAssignView(self: *BLArrayCore, items: pointer, n: csize): BLResult <cimport, nodecl> end
-global function blArrayAppendU8(self: *BLArrayCore, value: uint8): BLResult <cimport, nodecl> end
-global function blArrayAppendU16(self: *BLArrayCore, value: uint16): BLResult <cimport, nodecl> end
-global function blArrayAppendU32(self: *BLArrayCore, value: uint32): BLResult <cimport, nodecl> end
-global function blArrayAppendU64(self: *BLArrayCore, value: uint64): BLResult <cimport, nodecl> end
-global function blArrayAppendF32(self: *BLArrayCore, value: float32): BLResult <cimport, nodecl> end
-global function blArrayAppendF64(self: *BLArrayCore, value: float64): BLResult <cimport, nodecl> end
-global function blArrayAppendItem(self: *BLArrayCore, item: pointer): BLResult <cimport, nodecl> end
-global function blArrayAppendView(self: *BLArrayCore, items: pointer, n: csize): BLResult <cimport, nodecl> end
-global function blArrayInsertU8(self: *BLArrayCore, index: csize, value: uint8): BLResult <cimport, nodecl> end
-global function blArrayInsertU16(self: *BLArrayCore, index: csize, value: uint16): BLResult <cimport, nodecl> end
-global function blArrayInsertU32(self: *BLArrayCore, index: csize, value: uint32): BLResult <cimport, nodecl> end
-global function blArrayInsertU64(self: *BLArrayCore, index: csize, value: uint64): BLResult <cimport, nodecl> end
-global function blArrayInsertF32(self: *BLArrayCore, index: csize, value: float32): BLResult <cimport, nodecl> end
-global function blArrayInsertF64(self: *BLArrayCore, index: csize, value: float64): BLResult <cimport, nodecl> end
-global function blArrayInsertItem(self: *BLArrayCore, index: csize, item: pointer): BLResult <cimport, nodecl> end
-global function blArrayInsertView(self: *BLArrayCore, index: csize, items: pointer, n: csize): BLResult <cimport, nodecl> end
-global function blArrayReplaceU8(self: *BLArrayCore, index: csize, value: uint8): BLResult <cimport, nodecl> end
-global function blArrayReplaceU16(self: *BLArrayCore, index: csize, value: uint16): BLResult <cimport, nodecl> end
-global function blArrayReplaceU32(self: *BLArrayCore, index: csize, value: uint32): BLResult <cimport, nodecl> end
-global function blArrayReplaceU64(self: *BLArrayCore, index: csize, value: uint64): BLResult <cimport, nodecl> end
-global function blArrayReplaceF32(self: *BLArrayCore, index: csize, value: float32): BLResult <cimport, nodecl> end
-global function blArrayReplaceF64(self: *BLArrayCore, index: csize, value: float64): BLResult <cimport, nodecl> end
-global function blArrayReplaceItem(self: *BLArrayCore, index: csize, item: pointer): BLResult <cimport, nodecl> end
-global function blArrayReplaceView(self: *BLArrayCore, rStart: csize, rEnd: csize, items: pointer, n: csize): BLResult <cimport, nodecl> end
-global function blArrayRemoveIndex(self: *BLArrayCore, index: csize): BLResult <cimport, nodecl> end
-global function blArrayRemoveRange(self: *BLArrayCore, rStart: csize, rEnd: csize): BLResult <cimport, nodecl> end
-global function blArrayEquals(a: *BLArrayCore, b: *BLArrayCore): boolean <cimport, nodecl> end
-global function blContextInit(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextInitAs(self: *BLContextCore, image: *BLImageCore, options: *BLContextCreateInfo): BLResult <cimport, nodecl> end
-global function blContextDestroy(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextReset(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextAssignMove(self: *BLContextCore, other: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextAssignWeak(self: *BLContextCore, other: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextGetType(self: *BLContextCore): uint32 <cimport, nodecl> end
-global function blContextGetTargetSize(self: *BLContextCore, targetSizeOut: *BLSize): BLResult <cimport, nodecl> end
-global function blContextGetTargetImage(self: *BLContextCore): *BLImageCore <cimport, nodecl> end
-global function blContextBegin(self: *BLContextCore, image: *BLImageCore, options: *BLContextCreateInfo): BLResult <cimport, nodecl> end
-global function blContextEnd(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextFlush(self: *BLContextCore, flags: uint32): BLResult <cimport, nodecl> end
-global function blContextQueryProperty(self: *BLContextCore, propertyId: uint32, valueOut: pointer): BLResult <cimport, nodecl> end
-global function blContextSave(self: *BLContextCore, cookie: *BLContextCookie): BLResult <cimport, nodecl> end
-global function blContextRestore(self: *BLContextCore, cookie: *BLContextCookie): BLResult <cimport, nodecl> end
-global function blContextGetMetaMatrix(self: *BLContextCore, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blContextGetUserMatrix(self: *BLContextCore, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blContextUserToMeta(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextMatrixOp(self: *BLContextCore, opType: uint32, opData: pointer): BLResult <cimport, nodecl> end
-global function blContextSetHint(self: *BLContextCore, hintType: uint32, value: uint32): BLResult <cimport, nodecl> end
-global function blContextSetHints(self: *BLContextCore, hints: *BLContextHints): BLResult <cimport, nodecl> end
-global function blContextSetFlattenMode(self: *BLContextCore, mode: uint32): BLResult <cimport, nodecl> end
-global function blContextSetFlattenTolerance(self: *BLContextCore, tolerance: float64): BLResult <cimport, nodecl> end
-global function blContextSetApproximationOptions(self: *BLContextCore, options: *BLApproximationOptions): BLResult <cimport, nodecl> end
-global function blContextSetCompOp(self: *BLContextCore, compOp: uint32): BLResult <cimport, nodecl> end
-global function blContextSetGlobalAlpha(self: *BLContextCore, alpha: float64): BLResult <cimport, nodecl> end
-global function blContextSetFillAlpha(self: *BLContextCore, alpha: float64): BLResult <cimport, nodecl> end
-global function blContextGetFillStyle(self: *BLContextCore, styleOut: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blContextSetFillStyle(self: *BLContextCore, style: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blContextSetFillStyleRgba(self: *BLContextCore, rgba: *BLRgba): BLResult <cimport, nodecl> end
-global function blContextSetFillStyleRgba32(self: *BLContextCore, rgba32: uint32): BLResult <cimport, nodecl> end
-global function blContextSetFillStyleRgba64(self: *BLContextCore, rgba64: uint64): BLResult <cimport, nodecl> end
-global function blContextSetFillStyleObject(self: *BLContextCore, object: pointer): BLResult <cimport, nodecl> end
-global function blContextSetFillRule(self: *BLContextCore, fillRule: uint32): BLResult <cimport, nodecl> end
-global function blContextSetStrokeAlpha(self: *BLContextCore, alpha: float64): BLResult <cimport, nodecl> end
-global function blContextGetStrokeStyle(self: *BLContextCore, styleOut: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blContextSetStrokeStyle(self: *BLContextCore, style: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blContextSetStrokeStyleRgba(self: *BLContextCore, rgba: *BLRgba): BLResult <cimport, nodecl> end
-global function blContextSetStrokeStyleRgba32(self: *BLContextCore, rgba32: uint32): BLResult <cimport, nodecl> end
-global function blContextSetStrokeStyleRgba64(self: *BLContextCore, rgba64: uint64): BLResult <cimport, nodecl> end
-global function blContextSetStrokeStyleObject(self: *BLContextCore, object: pointer): BLResult <cimport, nodecl> end
-global function blContextSetStrokeWidth(self: *BLContextCore, width: float64): BLResult <cimport, nodecl> end
-global function blContextSetStrokeMiterLimit(self: *BLContextCore, miterLimit: float64): BLResult <cimport, nodecl> end
-global function blContextSetStrokeCap(self: *BLContextCore, position: uint32, strokeCap: uint32): BLResult <cimport, nodecl> end
-global function blContextSetStrokeCaps(self: *BLContextCore, strokeCap: uint32): BLResult <cimport, nodecl> end
-global function blContextSetStrokeJoin(self: *BLContextCore, strokeJoin: uint32): BLResult <cimport, nodecl> end
-global function blContextSetStrokeDashOffset(self: *BLContextCore, dashOffset: float64): BLResult <cimport, nodecl> end
-global function blContextSetStrokeDashArray(self: *BLContextCore, dashArray: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blContextSetStrokeTransformOrder(self: *BLContextCore, transformOrder: uint32): BLResult <cimport, nodecl> end
-global function blContextGetStrokeOptions(self: *BLContextCore, options: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blContextSetStrokeOptions(self: *BLContextCore, options: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blContextClipToRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport, nodecl> end
-global function blContextClipToRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport, nodecl> end
-global function blContextRestoreClipping(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextClearAll(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextClearRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport, nodecl> end
-global function blContextClearRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport, nodecl> end
-global function blContextFillAll(self: *BLContextCore): BLResult <cimport, nodecl> end
-global function blContextFillRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport, nodecl> end
-global function blContextFillRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport, nodecl> end
-global function blContextFillPathD(self: *BLContextCore, path: *BLPathCore): BLResult <cimport, nodecl> end
-global function blContextFillGeometry(self: *BLContextCore, geometryType: uint32, geometryData: pointer): BLResult <cimport, nodecl> end
-global function blContextFillTextI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport, nodecl> end
-global function blContextFillTextD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport, nodecl> end
-global function blContextFillGlyphRunI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport, nodecl> end
-global function blContextFillGlyphRunD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport, nodecl> end
-global function blContextStrokeRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport, nodecl> end
-global function blContextStrokeRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport, nodecl> end
-global function blContextStrokePathD(self: *BLContextCore, path: *BLPathCore): BLResult <cimport, nodecl> end
-global function blContextStrokeGeometry(self: *BLContextCore, geometryType: uint32, geometryData: pointer): BLResult <cimport, nodecl> end
-global function blContextStrokeTextI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport, nodecl> end
-global function blContextStrokeTextD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport, nodecl> end
-global function blContextStrokeGlyphRunI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport, nodecl> end
-global function blContextStrokeGlyphRunD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport, nodecl> end
-global function blContextBlitImageI(self: *BLContextCore, pt: *BLPointI, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport, nodecl> end
-global function blContextBlitImageD(self: *BLContextCore, pt: *BLPoint, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport, nodecl> end
-global function blContextBlitScaledImageI(self: *BLContextCore, rect: *BLRectI, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport, nodecl> end
-global function blContextBlitScaledImageD(self: *BLContextCore, rect: *BLRect, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport, nodecl> end
-global function blFileInit(self: *BLFileCore): BLResult <cimport, nodecl> end
-global function blFileReset(self: *BLFileCore): BLResult <cimport, nodecl> end
-global function blFileOpen(self: *BLFileCore, fileName: cstring, openFlags: uint32): BLResult <cimport, nodecl> end
-global function blFileClose(self: *BLFileCore): BLResult <cimport, nodecl> end
-global function blFileSeek(self: *BLFileCore, offset: int64, seekType: uint32, positionOut: *int64): BLResult <cimport, nodecl> end
-global function blFileRead(self: *BLFileCore, buffer: pointer, n: csize, bytesReadOut: *csize): BLResult <cimport, nodecl> end
-global function blFileWrite(self: *BLFileCore, buffer: pointer, n: csize, bytesWrittenOut: *csize): BLResult <cimport, nodecl> end
-global function blFileTruncate(self: *BLFileCore, maxSize: int64): BLResult <cimport, nodecl> end
-global function blFileGetSize(self: *BLFileCore, fileSizeOut: *uint64): BLResult <cimport, nodecl> end
-global function blFileSystemReadFile(fileName: cstring, dst: *BLArrayCore, maxSize: csize, readFlags: uint32): BLResult <cimport, nodecl> end
-global function blFileSystemWriteFile(fileName: cstring, data: pointer, size: csize, bytesWrittenOut: *csize): BLResult <cimport, nodecl> end
-global function blFontInit(self: *BLFontCore): BLResult <cimport, nodecl> end
-global function blFontDestroy(self: *BLFontCore): BLResult <cimport, nodecl> end
-global function blFontReset(self: *BLFontCore): BLResult <cimport, nodecl> end
-global function blFontAssignMove(self: *BLFontCore, other: *BLFontCore): BLResult <cimport, nodecl> end
-global function blFontAssignWeak(self: *BLFontCore, other: *BLFontCore): BLResult <cimport, nodecl> end
-global function blFontEquals(a: *BLFontCore, b: *BLFontCore): boolean <cimport, nodecl> end
-global function blFontCreateFromFace(self: *BLFontCore, face: *BLFontFaceCore, size: float32): BLResult <cimport, nodecl> end
-global function blFontShape(self: *BLFontCore, gb: *BLGlyphBufferCore): BLResult <cimport, nodecl> end
-global function blFontMapTextToGlyphs(self: *BLFontCore, gb: *BLGlyphBufferCore, stateOut: *BLGlyphMappingState): BLResult <cimport, nodecl> end
-global function blFontPositionGlyphs(self: *BLFontCore, gb: *BLGlyphBufferCore, positioningFlags: uint32): BLResult <cimport, nodecl> end
-global function blFontApplyKerning(self: *BLFontCore, gb: *BLGlyphBufferCore): BLResult <cimport, nodecl> end
-global function blFontApplyGSub(self: *BLFontCore, gb: *BLGlyphBufferCore, index: csize, lookups: culong): BLResult <cimport, nodecl> end
-global function blFontApplyGPos(self: *BLFontCore, gb: *BLGlyphBufferCore, index: csize, lookups: culong): BLResult <cimport, nodecl> end
-global function blFontGetMatrix(self: *BLFontCore, out: *BLFontMatrix): BLResult <cimport, nodecl> end
-global function blFontGetMetrics(self: *BLFontCore, out: *BLFontMetrics): BLResult <cimport, nodecl> end
-global function blFontGetDesignMetrics(self: *BLFontCore, out: *BLFontDesignMetrics): BLResult <cimport, nodecl> end
-global function blFontGetTextMetrics(self: *BLFontCore, gb: *BLGlyphBufferCore, out: *BLTextMetrics): BLResult <cimport, nodecl> end
-global function blFontGetGlyphBounds(self: *BLFontCore, glyphData: *uint32, glyphAdvance: isize, out: *BLBoxI, count: csize): BLResult <cimport, nodecl> end
-global function blFontGetGlyphAdvances(self: *BLFontCore, glyphData: *uint32, glyphAdvance: isize, out: *BLGlyphPlacement, count: csize): BLResult <cimport, nodecl> end
-global function blFontGetGlyphOutlines(self: *BLFontCore, glyphId: uint32, userMatrix: *BLMatrix2D, out: *BLPathCore, sink: BLPathSinkFunc, closure: pointer): BLResult <cimport, nodecl> end
-global function blFontGetGlyphRunOutlines(self: *BLFontCore, glyphRun: *BLGlyphRun, userMatrix: *BLMatrix2D, out: *BLPathCore, sink: BLPathSinkFunc, closure: pointer): BLResult <cimport, nodecl> end
-global function blFontDataInit(self: *BLFontDataCore): BLResult <cimport, nodecl> end
-global function blFontDataDestroy(self: *BLFontDataCore): BLResult <cimport, nodecl> end
-global function blFontDataReset(self: *BLFontDataCore): BLResult <cimport, nodecl> end
-global function blFontDataAssignMove(self: *BLFontDataCore, other: *BLFontDataCore): BLResult <cimport, nodecl> end
-global function blFontDataAssignWeak(self: *BLFontDataCore, other: *BLFontDataCore): BLResult <cimport, nodecl> end
-global function blFontDataCreateFromFile(self: *BLFontDataCore, fileName: cstring, readFlags: uint32): BLResult <cimport, nodecl> end
-global function blFontDataCreateFromDataArray(self: *BLFontDataCore, dataArray: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blFontDataCreateFromData(self: *BLFontDataCore, data: pointer, dataSize: csize, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport, nodecl> end
-global function blFontDataEquals(a: *BLFontDataCore, b: *BLFontDataCore): boolean <cimport, nodecl> end
-global function blFontDataListTags(self: *BLFontDataCore, faceIndex: uint32, dst: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blFontDataQueryTables(self: *BLFontDataCore, faceIndex: uint32, dst: *BLFontTable, tags: *cuint, count: csize): csize <cimport, nodecl> end
-global function blFontFaceInit(self: *BLFontFaceCore): BLResult <cimport, nodecl> end
-global function blFontFaceDestroy(self: *BLFontFaceCore): BLResult <cimport, nodecl> end
-global function blFontFaceReset(self: *BLFontFaceCore): BLResult <cimport, nodecl> end
-global function blFontFaceAssignMove(self: *BLFontFaceCore, other: *BLFontFaceCore): BLResult <cimport, nodecl> end
-global function blFontFaceAssignWeak(self: *BLFontFaceCore, other: *BLFontFaceCore): BLResult <cimport, nodecl> end
-global function blFontFaceEquals(a: *BLFontFaceCore, b: *BLFontFaceCore): boolean <cimport, nodecl> end
-global function blFontFaceCreateFromFile(self: *BLFontFaceCore, fileName: cstring, readFlags: uint32): BLResult <cimport, nodecl> end
-global function blFontFaceCreateFromData(self: *BLFontFaceCore, fontData: *BLFontDataCore, faceIndex: uint32): BLResult <cimport, nodecl> end
-global function blFontFaceGetFaceInfo(self: *BLFontFaceCore, out: *BLFontFaceInfo): BLResult <cimport, nodecl> end
-global function blFontFaceGetDesignMetrics(self: *BLFontFaceCore, out: *BLFontDesignMetrics): BLResult <cimport, nodecl> end
-global function blFontFaceGetUnicodeCoverage(self: *BLFontFaceCore, out: *BLFontUnicodeCoverage): BLResult <cimport, nodecl> end
-global function blFontManagerInit(self: *BLFontManagerCore): BLResult <cimport, nodecl> end
-global function blFontManagerInitNew(self: *BLFontManagerCore): BLResult <cimport, nodecl> end
-global function blFontManagerDestroy(self: *BLFontManagerCore): BLResult <cimport, nodecl> end
-global function blFontManagerReset(self: *BLFontManagerCore): BLResult <cimport, nodecl> end
-global function blFontManagerAssignMove(self: *BLFontManagerCore, other: *BLFontManagerCore): BLResult <cimport, nodecl> end
-global function blFontManagerAssignWeak(self: *BLFontManagerCore, other: *BLFontManagerCore): BLResult <cimport, nodecl> end
-global function blFontManagerCreate(self: *BLFontManagerCore): BLResult <cimport, nodecl> end
-global function blFontManagerGetFaceCount(self: *BLFontManagerCore): csize <cimport, nodecl> end
-global function blFontManagerGetFamilyCount(self: *BLFontManagerCore): csize <cimport, nodecl> end
-global function blFontManagerHasFace(self: *BLFontManagerCore, face: *BLFontFaceCore): boolean <cimport, nodecl> end
-global function blFontManagerAddFace(self: *BLFontManagerCore, face: *BLFontFaceCore): BLResult <cimport, nodecl> end
-global function blFontManagerQueryFace(self: *BLFontManagerCore, name: cstring, nameSize: csize, properties: *BLFontQueryProperties, out: *BLFontFaceCore): BLResult <cimport, nodecl> end
-global function blFontManagerQueryFacesByFamilyName(self: *BLFontManagerCore, name: cstring, nameSize: csize, out: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blFontManagerEquals(a: *BLFontManagerCore, b: *BLFontManagerCore): boolean <cimport, nodecl> end
-global function blFormatInfoQuery(self: *BLFormatInfo, format: uint32): BLResult <cimport, nodecl> end
-global function blFormatInfoSanitize(self: *BLFormatInfo): BLResult <cimport, nodecl> end
-global function blGlyphBufferInit(self: *BLGlyphBufferCore): BLResult <cimport, nodecl> end
-global function blGlyphBufferInitMove(self: *BLGlyphBufferCore, other: *BLGlyphBufferCore): BLResult <cimport, nodecl> end
-global function blGlyphBufferDestroy(self: *BLGlyphBufferCore): BLResult <cimport, nodecl> end
-global function blGlyphBufferReset(self: *BLGlyphBufferCore): BLResult <cimport, nodecl> end
-global function blGlyphBufferClear(self: *BLGlyphBufferCore): BLResult <cimport, nodecl> end
-global function blGlyphBufferGetSize(self: *BLGlyphBufferCore): csize <cimport, nodecl> end
-global function blGlyphBufferGetFlags(self: *BLGlyphBufferCore): uint32 <cimport, nodecl> end
-global function blGlyphBufferGetGlyphRun(self: *BLGlyphBufferCore): *BLGlyphRun <cimport, nodecl> end
-global function blGlyphBufferGetContent(self: *BLGlyphBufferCore): *uint32 <cimport, nodecl> end
-global function blGlyphBufferGetInfoData(self: *BLGlyphBufferCore): *BLGlyphInfo <cimport, nodecl> end
-global function blGlyphBufferGetPlacementData(self: *BLGlyphBufferCore): *BLGlyphPlacement <cimport, nodecl> end
-global function blGlyphBufferSetText(self: *BLGlyphBufferCore, textData: pointer, size: csize, encoding: uint32): BLResult <cimport, nodecl> end
-global function blGlyphBufferSetGlyphs(self: *BLGlyphBufferCore, glyphData: *uint32, size: csize): BLResult <cimport, nodecl> end
-global function blGlyphBufferSetGlyphsFromStruct(self: *BLGlyphBufferCore, glyphData: pointer, size: csize, glyphIdSize: csize, glyphIdAdvance: isize): BLResult <cimport, nodecl> end
-global function blGradientInit(self: *BLGradientCore): BLResult <cimport, nodecl> end
-global function blGradientInitAs(self: *BLGradientCore, type: uint32, values: pointer, extendMode: uint32, stops: *BLGradientStop, n: csize, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blGradientDestroy(self: *BLGradientCore): BLResult <cimport, nodecl> end
-global function blGradientReset(self: *BLGradientCore): BLResult <cimport, nodecl> end
-global function blGradientAssignMove(self: *BLGradientCore, other: *BLGradientCore): BLResult <cimport, nodecl> end
-global function blGradientAssignWeak(self: *BLGradientCore, other: *BLGradientCore): BLResult <cimport, nodecl> end
-global function blGradientCreate(self: *BLGradientCore, type: uint32, values: pointer, extendMode: uint32, stops: *BLGradientStop, n: csize, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blGradientShrink(self: *BLGradientCore): BLResult <cimport, nodecl> end
-global function blGradientReserve(self: *BLGradientCore, n: csize): BLResult <cimport, nodecl> end
-global function blGradientGetType(self: *BLGradientCore): uint32 <cimport, nodecl> end
-global function blGradientSetType(self: *BLGradientCore, type: uint32): BLResult <cimport, nodecl> end
-global function blGradientGetValue(self: *BLGradientCore, index: csize): float64 <cimport, nodecl> end
-global function blGradientSetValue(self: *BLGradientCore, index: csize, value: float64): BLResult <cimport, nodecl> end
-global function blGradientSetValues(self: *BLGradientCore, index: csize, values: *float64, n: csize): BLResult <cimport, nodecl> end
-global function blGradientGetExtendMode(self: *BLGradientCore): uint32 <cimport, nodecl> end
-global function blGradientSetExtendMode(self: *BLGradientCore, extendMode: uint32): BLResult <cimport, nodecl> end
-global function blGradientGetSize(self: *BLGradientCore): csize <cimport, nodecl> end
-global function blGradientGetCapacity(self: *BLGradientCore): csize <cimport, nodecl> end
-global function blGradientGetStops(self: *BLGradientCore): *BLGradientStop <cimport, nodecl> end
-global function blGradientResetStops(self: *BLGradientCore): BLResult <cimport, nodecl> end
-global function blGradientAssignStops(self: *BLGradientCore, stops: *BLGradientStop, n: csize): BLResult <cimport, nodecl> end
-global function blGradientAddStopRgba32(self: *BLGradientCore, offset: float64, argb32: uint32): BLResult <cimport, nodecl> end
-global function blGradientAddStopRgba64(self: *BLGradientCore, offset: float64, argb64: uint64): BLResult <cimport, nodecl> end
-global function blGradientRemoveStop(self: *BLGradientCore, index: csize): BLResult <cimport, nodecl> end
-global function blGradientRemoveStopByOffset(self: *BLGradientCore, offset: float64, all: uint32): BLResult <cimport, nodecl> end
-global function blGradientRemoveStops(self: *BLGradientCore, rStart: csize, rEnd: csize): BLResult <cimport, nodecl> end
-global function blGradientRemoveStopsFromTo(self: *BLGradientCore, offsetMin: float64, offsetMax: float64): BLResult <cimport, nodecl> end
-global function blGradientReplaceStopRgba32(self: *BLGradientCore, index: csize, offset: float64, rgba32: uint32): BLResult <cimport, nodecl> end
-global function blGradientReplaceStopRgba64(self: *BLGradientCore, index: csize, offset: float64, rgba64: uint64): BLResult <cimport, nodecl> end
-global function blGradientIndexOfStop(self: *BLGradientCore, offset: float64): csize <cimport, nodecl> end
-global function blGradientApplyMatrixOp(self: *BLGradientCore, opType: uint32, opData: pointer): BLResult <cimport, nodecl> end
-global function blGradientEquals(a: *BLGradientCore, b: *BLGradientCore): boolean <cimport, nodecl> end
-global function blImageInit(self: *BLImageCore): BLResult <cimport, nodecl> end
-global function blImageInitAs(self: *BLImageCore, w: cint, h: cint, format: uint32): BLResult <cimport, nodecl> end
-global function blImageInitAsFromData(self: *BLImageCore, w: cint, h: cint, format: uint32, pixelData: pointer, stride: isize, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport, nodecl> end
-global function blImageDestroy(self: *BLImageCore): BLResult <cimport, nodecl> end
-global function blImageReset(self: *BLImageCore): BLResult <cimport, nodecl> end
-global function blImageAssignMove(self: *BLImageCore, other: *BLImageCore): BLResult <cimport, nodecl> end
-global function blImageAssignWeak(self: *BLImageCore, other: *BLImageCore): BLResult <cimport, nodecl> end
-global function blImageAssignDeep(self: *BLImageCore, other: *BLImageCore): BLResult <cimport, nodecl> end
-global function blImageCreate(self: *BLImageCore, w: cint, h: cint, format: uint32): BLResult <cimport, nodecl> end
-global function blImageCreateFromData(self: *BLImageCore, w: cint, h: cint, format: uint32, pixelData: pointer, stride: isize, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport, nodecl> end
-global function blImageGetData(self: *BLImageCore, dataOut: *BLImageData): BLResult <cimport, nodecl> end
-global function blImageMakeMutable(self: *BLImageCore, dataOut: *BLImageData): BLResult <cimport, nodecl> end
-global function blImageConvert(self: *BLImageCore, format: uint32): BLResult <cimport, nodecl> end
-global function blImageEquals(a: *BLImageCore, b: *BLImageCore): boolean <cimport, nodecl> end
-global function blImageScale(dst: *BLImageCore, src: *BLImageCore, size: *BLSizeI, filter: uint32, options: *BLImageScaleOptions): BLResult <cimport, nodecl> end
-global function blImageReadFromFile(self: *BLImageCore, fileName: cstring, codecs: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blImageReadFromData(self: *BLImageCore, data: pointer, size: csize, codecs: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blImageWriteToFile(self: *BLImageCore, fileName: cstring, codec: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageWriteToData(self: *BLImageCore, dst: *BLArrayCore, codec: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageCodecInit(self: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageCodecDestroy(self: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageCodecReset(self: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageCodecAssignWeak(self: *BLImageCodecCore, other: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageCodecFindByName(self: *BLImageCodecCore, name: cstring, size: csize, codecs: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blImageCodecFindByExtension(self: *BLImageCodecCore, name: cstring, size: csize, codecs: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blImageCodecFindByData(self: *BLImageCodecCore, data: pointer, size: csize, codecs: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blImageCodecInspectData(self: *BLImageCodecCore, data: pointer, size: csize): uint32 <cimport, nodecl> end
-global function blImageCodecCreateDecoder(self: *BLImageCodecCore, dst: *BLImageDecoderCore): BLResult <cimport, nodecl> end
-global function blImageCodecCreateEncoder(self: *BLImageCodecCore, dst: *BLImageEncoderCore): BLResult <cimport, nodecl> end
-global function blImageCodecArrayInitBuiltInCodecs(self: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blImageCodecArrayAssignBuiltInCodecs(self: *BLArrayCore): BLResult <cimport, nodecl> end
-global function blImageCodecAddToBuiltIn(codec: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageCodecRemoveFromBuiltIn(codec: *BLImageCodecCore): BLResult <cimport, nodecl> end
-global function blImageDecoderInit(self: *BLImageDecoderCore): BLResult <cimport, nodecl> end
-global function blImageDecoderDestroy(self: *BLImageDecoderCore): BLResult <cimport, nodecl> end
-global function blImageDecoderReset(self: *BLImageDecoderCore): BLResult <cimport, nodecl> end
-global function blImageDecoderAssignMove(self: *BLImageDecoderCore, other: *BLImageDecoderCore): BLResult <cimport, nodecl> end
-global function blImageDecoderAssignWeak(self: *BLImageDecoderCore, other: *BLImageDecoderCore): BLResult <cimport, nodecl> end
-global function blImageDecoderRestart(self: *BLImageDecoderCore): BLResult <cimport, nodecl> end
-global function blImageDecoderReadInfo(self: *BLImageDecoderCore, infoOut: *BLImageInfo, data: *uint8, size: csize): BLResult <cimport, nodecl> end
-global function blImageDecoderReadFrame(self: *BLImageDecoderCore, imageOut: *BLImageCore, data: *uint8, size: csize): BLResult <cimport, nodecl> end
-global function blImageEncoderInit(self: *BLImageEncoderCore): BLResult <cimport, nodecl> end
-global function blImageEncoderDestroy(self: *BLImageEncoderCore): BLResult <cimport, nodecl> end
-global function blImageEncoderReset(self: *BLImageEncoderCore): BLResult <cimport, nodecl> end
-global function blImageEncoderAssignMove(self: *BLImageEncoderCore, other: *BLImageEncoderCore): BLResult <cimport, nodecl> end
-global function blImageEncoderAssignWeak(self: *BLImageEncoderCore, other: *BLImageEncoderCore): BLResult <cimport, nodecl> end
-global function blImageEncoderRestart(self: *BLImageEncoderCore): BLResult <cimport, nodecl> end
-global function blImageEncoderWriteFrame(self: *BLImageEncoderCore, dst: *BLArrayCore, image: *BLImageCore): BLResult <cimport, nodecl> end
-global function blMatrix2DSetIdentity(self: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blMatrix2DSetTranslation(self: *BLMatrix2D, x: float64, y: float64): BLResult <cimport, nodecl> end
-global function blMatrix2DSetScaling(self: *BLMatrix2D, x: float64, y: float64): BLResult <cimport, nodecl> end
-global function blMatrix2DSetSkewing(self: *BLMatrix2D, x: float64, y: float64): BLResult <cimport, nodecl> end
-global function blMatrix2DSetRotation(self: *BLMatrix2D, angle: float64, cx: float64, cy: float64): BLResult <cimport, nodecl> end
-global function blMatrix2DApplyOp(self: *BLMatrix2D, opType: uint32, opData: pointer): BLResult <cimport, nodecl> end
-global function blMatrix2DInvert(dst: *BLMatrix2D, src: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blMatrix2DGetType(self: *BLMatrix2D): uint32 <cimport, nodecl> end
-global function blMatrix2DMapPointDArray(self: *BLMatrix2D, dst: *BLPoint, src: *BLPoint, count: csize): BLResult <cimport, nodecl> end
-global function blPathInit(self: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathDestroy(self: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathReset(self: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathGetSize(self: *BLPathCore): csize <cimport, nodecl> end
-global function blPathGetCapacity(self: *BLPathCore): csize <cimport, nodecl> end
-global function blPathGetCommandData(self: *BLPathCore): *uint8 <cimport, nodecl> end
-global function blPathGetVertexData(self: *BLPathCore): *BLPoint <cimport, nodecl> end
-global function blPathClear(self: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathShrink(self: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathReserve(self: *BLPathCore, n: csize): BLResult <cimport, nodecl> end
-global function blPathModifyOp(self: *BLPathCore, op: uint32, n: csize, cmdDataOut: **uint8, vtxDataOut: **BLPoint): BLResult <cimport, nodecl> end
-global function blPathAssignMove(self: *BLPathCore, other: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathAssignWeak(self: *BLPathCore, other: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathAssignDeep(self: *BLPathCore, other: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathSetVertexAt(self: *BLPathCore, index: csize, cmd: uint32, x: float64, y: float64): BLResult <cimport, nodecl> end
-global function blPathMoveTo(self: *BLPathCore, x0: float64, y0: float64): BLResult <cimport, nodecl> end
-global function blPathLineTo(self: *BLPathCore, x1: float64, y1: float64): BLResult <cimport, nodecl> end
-global function blPathPolyTo(self: *BLPathCore, poly: *BLPoint, count: csize): BLResult <cimport, nodecl> end
-global function blPathQuadTo(self: *BLPathCore, x1: float64, y1: float64, x2: float64, y2: float64): BLResult <cimport, nodecl> end
-global function blPathCubicTo(self: *BLPathCore, x1: float64, y1: float64, x2: float64, y2: float64, x3: float64, y3: float64): BLResult <cimport, nodecl> end
-global function blPathSmoothQuadTo(self: *BLPathCore, x2: float64, y2: float64): BLResult <cimport, nodecl> end
-global function blPathSmoothCubicTo(self: *BLPathCore, x2: float64, y2: float64, x3: float64, y3: float64): BLResult <cimport, nodecl> end
-global function blPathArcTo(self: *BLPathCore, x: float64, y: float64, rx: float64, ry: float64, start: float64, sweep: float64, forceMoveTo: boolean): BLResult <cimport, nodecl> end
-global function blPathArcQuadrantTo(self: *BLPathCore, x1: float64, y1: float64, x2: float64, y2: float64): BLResult <cimport, nodecl> end
-global function blPathEllipticArcTo(self: *BLPathCore, rx: float64, ry: float64, xAxisRotation: float64, largeArcFlag: boolean, sweepFlag: boolean, x1: float64, y1: float64): BLResult <cimport, nodecl> end
-global function blPathClose(self: *BLPathCore): BLResult <cimport, nodecl> end
-global function blPathAddGeometry(self: *BLPathCore, geometryType: uint32, geometryData: pointer, m: *BLMatrix2D, dir: uint32): BLResult <cimport, nodecl> end
-global function blPathAddBoxI(self: *BLPathCore, box: *BLBoxI, dir: uint32): BLResult <cimport, nodecl> end
-global function blPathAddBoxD(self: *BLPathCore, box: *BLBox, dir: uint32): BLResult <cimport, nodecl> end
-global function blPathAddRectI(self: *BLPathCore, rect: *BLRectI, dir: uint32): BLResult <cimport, nodecl> end
-global function blPathAddRectD(self: *BLPathCore, rect: *BLRect, dir: uint32): BLResult <cimport, nodecl> end
-global function blPathAddPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange): BLResult <cimport, nodecl> end
-global function blPathAddTranslatedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, p: *BLPoint): BLResult <cimport, nodecl> end
-global function blPathAddTransformedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blPathAddReversedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, reverseMode: uint32): BLResult <cimport, nodecl> end
-global function blPathAddStrokedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, options: *BLStrokeOptionsCore, approx: *BLApproximationOptions): BLResult <cimport, nodecl> end
-global function blPathRemoveRange(self: *BLPathCore, range: *BLRange): BLResult <cimport, nodecl> end
-global function blPathTranslate(self: *BLPathCore, range: *BLRange, p: *BLPoint): BLResult <cimport, nodecl> end
-global function blPathTransform(self: *BLPathCore, range: *BLRange, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blPathFitTo(self: *BLPathCore, range: *BLRange, rect: *BLRect, fitFlags: uint32): BLResult <cimport, nodecl> end
-global function blPathEquals(a: *BLPathCore, b: *BLPathCore): boolean <cimport, nodecl> end
-global function blPathGetInfoFlags(self: *BLPathCore, flagsOut: *uint32): BLResult <cimport, nodecl> end
-global function blPathGetControlBox(self: *BLPathCore, boxOut: *BLBox): BLResult <cimport, nodecl> end
-global function blPathGetBoundingBox(self: *BLPathCore, boxOut: *BLBox): BLResult <cimport, nodecl> end
-global function blPathGetFigureRange(self: *BLPathCore, index: csize, rangeOut: *BLRange): BLResult <cimport, nodecl> end
-global function blPathGetLastVertex(self: *BLPathCore, vtxOut: *BLPoint): BLResult <cimport, nodecl> end
-global function blPathGetClosestVertex(self: *BLPathCore, p: *BLPoint, maxDistance: float64, indexOut: *csize, distanceOut: *float64): BLResult <cimport, nodecl> end
-global function blPathHitTest(self: *BLPathCore, p: *BLPoint, fillRule: uint32): uint32 <cimport, nodecl> end
-global function blPatternInit(self: *BLPatternCore): BLResult <cimport, nodecl> end
-global function blPatternInitAs(self: *BLPatternCore, image: *BLImageCore, area: *BLRectI, extendMode: uint32, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blPatternDestroy(self: *BLPatternCore): BLResult <cimport, nodecl> end
-global function blPatternReset(self: *BLPatternCore): BLResult <cimport, nodecl> end
-global function blPatternAssignMove(self: *BLPatternCore, other: *BLPatternCore): BLResult <cimport, nodecl> end
-global function blPatternAssignWeak(self: *BLPatternCore, other: *BLPatternCore): BLResult <cimport, nodecl> end
-global function blPatternAssignDeep(self: *BLPatternCore, other: *BLPatternCore): BLResult <cimport, nodecl> end
-global function blPatternCreate(self: *BLPatternCore, image: *BLImageCore, area: *BLRectI, extendMode: uint32, m: *BLMatrix2D): BLResult <cimport, nodecl> end
-global function blPatternSetImage(self: *BLPatternCore, image: *BLImageCore, area: *BLRectI): BLResult <cimport, nodecl> end
-global function blPatternSetArea(self: *BLPatternCore, area: *BLRectI): BLResult <cimport, nodecl> end
-global function blPatternSetExtendMode(self: *BLPatternCore, extendMode: uint32): BLResult <cimport, nodecl> end
-global function blPatternApplyMatrixOp(self: *BLPatternCore, opType: uint32, opData: pointer): BLResult <cimport, nodecl> end
-global function blPatternEquals(a: *BLPatternCore, b: *BLPatternCore): boolean <cimport, nodecl> end
-global function blPixelConverterInit(self: *BLPixelConverterCore): BLResult <cimport, nodecl> end
-global function blPixelConverterInitWeak(self: *BLPixelConverterCore, other: *BLPixelConverterCore): BLResult <cimport, nodecl> end
-global function blPixelConverterDestroy(self: *BLPixelConverterCore): BLResult <cimport, nodecl> end
-global function blPixelConverterReset(self: *BLPixelConverterCore): BLResult <cimport, nodecl> end
-global function blPixelConverterAssign(self: *BLPixelConverterCore, other: *BLPixelConverterCore): BLResult <cimport, nodecl> end
-global function blPixelConverterCreate(self: *BLPixelConverterCore, dstInfo: *BLFormatInfo, srcInfo: *BLFormatInfo, createFlags: uint32): BLResult <cimport, nodecl> end
-global function blPixelConverterConvert(self: *BLPixelConverterCore, dstData: pointer, dstStride: isize, srcData: pointer, srcStride: isize, w: uint32, h: uint32, options: *BLPixelConverterOptions): BLResult <cimport, nodecl> end
-global function blRandomReset(self: *BLRandom, seed: uint64): BLResult <cimport, nodecl> end
-global function blRandomNextUInt32(self: *BLRandom): uint32 <cimport, nodecl> end
-global function blRandomNextUInt64(self: *BLRandom): uint64 <cimport, nodecl> end
-global function blRandomNextDouble(self: *BLRandom): float64 <cimport, nodecl> end
-global function blRegionInit(self: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionDestroy(self: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionReset(self: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionGetSize(self: *BLRegionCore): csize <cimport, nodecl> end
-global function blRegionGetCapacity(self: *BLRegionCore): csize <cimport, nodecl> end
-global function blRegionGetData(self: *BLRegionCore): *BLBoxI <cimport, nodecl> end
-global function blRegionClear(self: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionShrink(self: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionReserve(self: *BLRegionCore, n: csize): BLResult <cimport, nodecl> end
-global function blRegionAssignMove(self: *BLRegionCore, other: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionAssignWeak(self: *BLRegionCore, other: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionAssignDeep(self: *BLRegionCore, other: *BLRegionCore): BLResult <cimport, nodecl> end
-global function blRegionAssignBoxI(self: *BLRegionCore, src: *BLBoxI): BLResult <cimport, nodecl> end
-global function blRegionAssignBoxIArray(self: *BLRegionCore, data: *BLBoxI, n: csize): BLResult <cimport, nodecl> end
-global function blRegionAssignRectI(self: *BLRegionCore, rect: *BLRectI): BLResult <cimport, nodecl> end
-global function blRegionAssignRectIArray(self: *BLRegionCore, data: *BLRectI, n: csize): BLResult <cimport, nodecl> end
-global function blRegionCombine(self: *BLRegionCore, a: *BLRegionCore, b: *BLRegionCore, booleanOp: uint32): BLResult <cimport, nodecl> end
-global function blRegionCombineRB(self: *BLRegionCore, a: *BLRegionCore, b: *BLBoxI, booleanOp: uint32): BLResult <cimport, nodecl> end
-global function blRegionCombineBR(self: *BLRegionCore, a: *BLBoxI, b: *BLRegionCore, booleanOp: uint32): BLResult <cimport, nodecl> end
-global function blRegionCombineBB(self: *BLRegionCore, a: *BLBoxI, b: *BLBoxI, booleanOp: uint32): BLResult <cimport, nodecl> end
-global function blRegionTranslate(self: *BLRegionCore, r: *BLRegionCore, pt: *BLPointI): BLResult <cimport, nodecl> end
-global function blRegionTranslateAndClip(self: *BLRegionCore, r: *BLRegionCore, pt: *BLPointI, clipBox: *BLBoxI): BLResult <cimport, nodecl> end
-global function blRegionIntersectAndClip(self: *BLRegionCore, a: *BLRegionCore, b: *BLRegionCore, clipBox: *BLBoxI): BLResult <cimport, nodecl> end
-global function blRegionEquals(a: *BLRegionCore, b: *BLRegionCore): boolean <cimport, nodecl> end
-global function blRegionGetType(self: *BLRegionCore): uint32 <cimport, nodecl> end
-global function blRegionHitTest(self: *BLRegionCore, pt: *BLPointI): uint32 <cimport, nodecl> end
-global function blRegionHitTestBoxI(self: *BLRegionCore, box: *BLBoxI): uint32 <cimport, nodecl> end
-global function blRuntimeInit(): BLResult <cimport, nodecl> end
-global function blRuntimeShutdown(): BLResult <cimport, nodecl> end
-global function blRuntimeCleanup(cleanupFlags: uint32): BLResult <cimport, nodecl> end
-global function blRuntimeQueryInfo(infoType: uint32, infoOut: pointer): BLResult <cimport, nodecl> end
-global function blRuntimeMessageOut(msg: cstring): BLResult <cimport, nodecl> end
-global function blRuntimeMessageFmt(fmt: cstring, ...: cvarargs): BLResult <cimport, nodecl> end
-global function blRuntimeMessageVFmt(fmt: cstring, ap: cvalist): BLResult <cimport, nodecl> end
-global function blRuntimeAssertionFailure(file: cstring, line: cint, msg: cstring) <cimport, nodecl> end
-global function blResultFromPosixError(e: cint): BLResult <cimport, nodecl> end
-global function blStringInit(self: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringInitWithData(self: *BLStringCore, str: cstring, size: csize): BLResult <cimport, nodecl> end
-global function blStringDestroy(self: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringReset(self: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringGetSize(self: *BLStringCore): csize <cimport, nodecl> end
-global function blStringGetCapacity(self: *BLStringCore): csize <cimport, nodecl> end
-global function blStringGetData(self: *BLStringCore): cstring <cimport, nodecl> end
-global function blStringClear(self: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringShrink(self: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringReserve(self: *BLStringCore, n: csize): BLResult <cimport, nodecl> end
-global function blStringResize(self: *BLStringCore, n: csize, fill: cchar): BLResult <cimport, nodecl> end
-global function blStringMakeMutable(self: *BLStringCore, dataOut: *cstring): BLResult <cimport, nodecl> end
-global function blStringModifyOp(self: *BLStringCore, op: uint32, n: csize, dataOut: *cstring): BLResult <cimport, nodecl> end
-global function blStringInsertOp(self: *BLStringCore, index: csize, n: csize, dataOut: *cstring): BLResult <cimport, nodecl> end
-global function blStringAssignMove(self: *BLStringCore, other: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringAssignWeak(self: *BLStringCore, other: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringAssignDeep(self: *BLStringCore, other: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringAssignData(self: *BLStringCore, str: cstring, n: csize): BLResult <cimport, nodecl> end
-global function blStringApplyOpChar(self: *BLStringCore, op: uint32, c: cchar, n: csize): BLResult <cimport, nodecl> end
-global function blStringApplyOpData(self: *BLStringCore, op: uint32, str: cstring, n: csize): BLResult <cimport, nodecl> end
-global function blStringApplyOpString(self: *BLStringCore, op: uint32, other: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringApplyOpFormat(self: *BLStringCore, op: uint32, fmt: cstring, ...: cvarargs): BLResult <cimport, nodecl> end
-global function blStringApplyOpFormatV(self: *BLStringCore, op: uint32, fmt: cstring, ap: cvalist): BLResult <cimport, nodecl> end
-global function blStringInsertChar(self: *BLStringCore, index: csize, c: cchar, n: csize): BLResult <cimport, nodecl> end
-global function blStringInsertData(self: *BLStringCore, index: csize, str: cstring, n: csize): BLResult <cimport, nodecl> end
-global function blStringInsertString(self: *BLStringCore, index: csize, other: *BLStringCore): BLResult <cimport, nodecl> end
-global function blStringRemoveRange(self: *BLStringCore, rStart: csize, rEnd: csize): BLResult <cimport, nodecl> end
-global function blStringEquals(self: *BLStringCore, other: *BLStringCore): boolean <cimport, nodecl> end
-global function blStringEqualsData(self: *BLStringCore, str: cstring, n: csize): boolean <cimport, nodecl> end
-global function blStringCompare(self: *BLStringCore, other: *BLStringCore): cint <cimport, nodecl> end
-global function blStringCompareData(self: *BLStringCore, str: cstring, n: csize): cint <cimport, nodecl> end
-global function blStrokeOptionsInit(self: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blStrokeOptionsInitMove(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blStrokeOptionsInitWeak(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blStrokeOptionsDestroy(self: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blStrokeOptionsReset(self: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blStrokeOptionsAssignMove(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blStrokeOptionsAssignWeak(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport, nodecl> end
-global function blStyleInit(self: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blStyleInitMove(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blStyleInitWeak(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blStyleInitRgba(self: *BLStyleCore, rgba: *BLRgba): BLResult <cimport, nodecl> end
-global function blStyleInitRgba32(self: *BLStyleCore, rgba32: uint32): BLResult <cimport, nodecl> end
-global function blStyleInitRgba64(self: *BLStyleCore, rgba64: uint64): BLResult <cimport, nodecl> end
-global function blStyleInitObject(self: *BLStyleCore, object: pointer): BLResult <cimport, nodecl> end
-global function blStyleDestroy(self: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blStyleReset(self: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blStyleAssignMove(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blStyleAssignWeak(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport, nodecl> end
-global function blStyleAssignRgba(self: *BLStyleCore, rgba: *BLRgba): BLResult <cimport, nodecl> end
-global function blStyleAssignRgba32(self: *BLStyleCore, rgba32: uint32): BLResult <cimport, nodecl> end
-global function blStyleAssignRgba64(self: *BLStyleCore, rgba64: uint64): BLResult <cimport, nodecl> end
-global function blStyleAssignObject(self: *BLStyleCore, object: pointer): BLResult <cimport, nodecl> end
-global function blStyleGetType(self: *BLStyleCore): uint32 <cimport, nodecl> end
-global function blStyleGetRgba(self: *BLStyleCore, rgbaOut: *BLRgba): BLResult <cimport, nodecl> end
-global function blStyleGetRgba32(self: *BLStyleCore, rgba32Out: *uint32): BLResult <cimport, nodecl> end
-global function blStyleGetRgba64(self: *BLStyleCore, rgba64Out: *uint64): BLResult <cimport, nodecl> end
-global function blStyleGetObject(self: *BLStyleCore, object: pointer): BLResult <cimport, nodecl> end
-global function blStyleEquals(a: *BLStyleCore, b: *BLStyleCore): boolean <cimport, nodecl> end
-global function blVariantInit(self: pointer): BLResult <cimport, nodecl> end
-global function blVariantInitMove(self: pointer, other: pointer): BLResult <cimport, nodecl> end
-global function blVariantInitWeak(self: pointer, other: pointer): BLResult <cimport, nodecl> end
-global function blVariantDestroy(self: pointer): BLResult <cimport, nodecl> end
-global function blVariantReset(self: pointer): BLResult <cimport, nodecl> end
-global function blVariantGetImplType(self: pointer): uint32 <cimport, nodecl> end
-global function blVariantAssignMove(self: pointer, other: pointer): BLResult <cimport, nodecl> end
-global function blVariantAssignWeak(self: pointer, other: pointer): BLResult <cimport, nodecl> end
-global function blVariantEquals(a: pointer, b: pointer): boolean <cimport, nodecl> end
-global BLImplType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global function blArrayInit(self: *BLArrayCore, arrayTypeId: uint32): BLResult <cimport,nodecl> end
+global function blArrayDestroy(self: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blArrayReset(self: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blArrayCreateFromData(self: *BLArrayCore, data: pointer, size: csize, capacity: csize, dataAccessFlags: uint32, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport,nodecl> end
+global function blArrayGetSize(self: *BLArrayCore): csize <cimport,nodecl> end
+global function blArrayGetCapacity(self: *BLArrayCore): csize <cimport,nodecl> end
+global function blArrayGetData(self: *BLArrayCore): pointer <cimport,nodecl> end
+global function blArrayClear(self: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blArrayShrink(self: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blArrayReserve(self: *BLArrayCore, n: csize): BLResult <cimport,nodecl> end
+global function blArrayResize(self: *BLArrayCore, n: csize, fill: pointer): BLResult <cimport,nodecl> end
+global function blArrayMakeMutable(self: *BLArrayCore, dataOut: *pointer): BLResult <cimport,nodecl> end
+global function blArrayModifyOp(self: *BLArrayCore, op: uint32, n: csize, dataOut: *pointer): BLResult <cimport,nodecl> end
+global function blArrayInsertOp(self: *BLArrayCore, index: csize, n: csize, dataOut: *pointer): BLResult <cimport,nodecl> end
+global function blArrayAssignMove(self: *BLArrayCore, other: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blArrayAssignWeak(self: *BLArrayCore, other: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blArrayAssignDeep(self: *BLArrayCore, other: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blArrayAssignView(self: *BLArrayCore, items: pointer, n: csize): BLResult <cimport,nodecl> end
+global function blArrayAppendU8(self: *BLArrayCore, value: uint8): BLResult <cimport,nodecl> end
+global function blArrayAppendU16(self: *BLArrayCore, value: uint16): BLResult <cimport,nodecl> end
+global function blArrayAppendU32(self: *BLArrayCore, value: uint32): BLResult <cimport,nodecl> end
+global function blArrayAppendU64(self: *BLArrayCore, value: uint64): BLResult <cimport,nodecl> end
+global function blArrayAppendF32(self: *BLArrayCore, value: float32): BLResult <cimport,nodecl> end
+global function blArrayAppendF64(self: *BLArrayCore, value: float64): BLResult <cimport,nodecl> end
+global function blArrayAppendItem(self: *BLArrayCore, item: pointer): BLResult <cimport,nodecl> end
+global function blArrayAppendView(self: *BLArrayCore, items: pointer, n: csize): BLResult <cimport,nodecl> end
+global function blArrayInsertU8(self: *BLArrayCore, index: csize, value: uint8): BLResult <cimport,nodecl> end
+global function blArrayInsertU16(self: *BLArrayCore, index: csize, value: uint16): BLResult <cimport,nodecl> end
+global function blArrayInsertU32(self: *BLArrayCore, index: csize, value: uint32): BLResult <cimport,nodecl> end
+global function blArrayInsertU64(self: *BLArrayCore, index: csize, value: uint64): BLResult <cimport,nodecl> end
+global function blArrayInsertF32(self: *BLArrayCore, index: csize, value: float32): BLResult <cimport,nodecl> end
+global function blArrayInsertF64(self: *BLArrayCore, index: csize, value: float64): BLResult <cimport,nodecl> end
+global function blArrayInsertItem(self: *BLArrayCore, index: csize, item: pointer): BLResult <cimport,nodecl> end
+global function blArrayInsertView(self: *BLArrayCore, index: csize, items: pointer, n: csize): BLResult <cimport,nodecl> end
+global function blArrayReplaceU8(self: *BLArrayCore, index: csize, value: uint8): BLResult <cimport,nodecl> end
+global function blArrayReplaceU16(self: *BLArrayCore, index: csize, value: uint16): BLResult <cimport,nodecl> end
+global function blArrayReplaceU32(self: *BLArrayCore, index: csize, value: uint32): BLResult <cimport,nodecl> end
+global function blArrayReplaceU64(self: *BLArrayCore, index: csize, value: uint64): BLResult <cimport,nodecl> end
+global function blArrayReplaceF32(self: *BLArrayCore, index: csize, value: float32): BLResult <cimport,nodecl> end
+global function blArrayReplaceF64(self: *BLArrayCore, index: csize, value: float64): BLResult <cimport,nodecl> end
+global function blArrayReplaceItem(self: *BLArrayCore, index: csize, item: pointer): BLResult <cimport,nodecl> end
+global function blArrayReplaceView(self: *BLArrayCore, rStart: csize, rEnd: csize, items: pointer, n: csize): BLResult <cimport,nodecl> end
+global function blArrayRemoveIndex(self: *BLArrayCore, index: csize): BLResult <cimport,nodecl> end
+global function blArrayRemoveRange(self: *BLArrayCore, rStart: csize, rEnd: csize): BLResult <cimport,nodecl> end
+global function blArrayEquals(a: *BLArrayCore, b: *BLArrayCore): boolean <cimport,nodecl> end
+global function blContextInit(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextInitAs(self: *BLContextCore, image: *BLImageCore, options: *BLContextCreateInfo): BLResult <cimport,nodecl> end
+global function blContextDestroy(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextReset(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextAssignMove(self: *BLContextCore, other: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextAssignWeak(self: *BLContextCore, other: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextGetType(self: *BLContextCore): uint32 <cimport,nodecl> end
+global function blContextGetTargetSize(self: *BLContextCore, targetSizeOut: *BLSize): BLResult <cimport,nodecl> end
+global function blContextGetTargetImage(self: *BLContextCore): *BLImageCore <cimport,nodecl> end
+global function blContextBegin(self: *BLContextCore, image: *BLImageCore, options: *BLContextCreateInfo): BLResult <cimport,nodecl> end
+global function blContextEnd(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextFlush(self: *BLContextCore, flags: uint32): BLResult <cimport,nodecl> end
+global function blContextQueryProperty(self: *BLContextCore, propertyId: uint32, valueOut: pointer): BLResult <cimport,nodecl> end
+global function blContextSave(self: *BLContextCore, cookie: *BLContextCookie): BLResult <cimport,nodecl> end
+global function blContextRestore(self: *BLContextCore, cookie: *BLContextCookie): BLResult <cimport,nodecl> end
+global function blContextGetMetaMatrix(self: *BLContextCore, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blContextGetUserMatrix(self: *BLContextCore, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blContextUserToMeta(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextMatrixOp(self: *BLContextCore, opType: uint32, opData: pointer): BLResult <cimport,nodecl> end
+global function blContextSetHint(self: *BLContextCore, hintType: uint32, value: uint32): BLResult <cimport,nodecl> end
+global function blContextSetHints(self: *BLContextCore, hints: *BLContextHints): BLResult <cimport,nodecl> end
+global function blContextSetFlattenMode(self: *BLContextCore, mode: uint32): BLResult <cimport,nodecl> end
+global function blContextSetFlattenTolerance(self: *BLContextCore, tolerance: float64): BLResult <cimport,nodecl> end
+global function blContextSetApproximationOptions(self: *BLContextCore, options: *BLApproximationOptions): BLResult <cimport,nodecl> end
+global function blContextSetCompOp(self: *BLContextCore, compOp: uint32): BLResult <cimport,nodecl> end
+global function blContextSetGlobalAlpha(self: *BLContextCore, alpha: float64): BLResult <cimport,nodecl> end
+global function blContextSetFillAlpha(self: *BLContextCore, alpha: float64): BLResult <cimport,nodecl> end
+global function blContextGetFillStyle(self: *BLContextCore, styleOut: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blContextSetFillStyle(self: *BLContextCore, style: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blContextSetFillStyleRgba(self: *BLContextCore, rgba: *BLRgba): BLResult <cimport,nodecl> end
+global function blContextSetFillStyleRgba32(self: *BLContextCore, rgba32: uint32): BLResult <cimport,nodecl> end
+global function blContextSetFillStyleRgba64(self: *BLContextCore, rgba64: uint64): BLResult <cimport,nodecl> end
+global function blContextSetFillStyleObject(self: *BLContextCore, object: pointer): BLResult <cimport,nodecl> end
+global function blContextSetFillRule(self: *BLContextCore, fillRule: uint32): BLResult <cimport,nodecl> end
+global function blContextSetStrokeAlpha(self: *BLContextCore, alpha: float64): BLResult <cimport,nodecl> end
+global function blContextGetStrokeStyle(self: *BLContextCore, styleOut: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blContextSetStrokeStyle(self: *BLContextCore, style: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blContextSetStrokeStyleRgba(self: *BLContextCore, rgba: *BLRgba): BLResult <cimport,nodecl> end
+global function blContextSetStrokeStyleRgba32(self: *BLContextCore, rgba32: uint32): BLResult <cimport,nodecl> end
+global function blContextSetStrokeStyleRgba64(self: *BLContextCore, rgba64: uint64): BLResult <cimport,nodecl> end
+global function blContextSetStrokeStyleObject(self: *BLContextCore, object: pointer): BLResult <cimport,nodecl> end
+global function blContextSetStrokeWidth(self: *BLContextCore, width: float64): BLResult <cimport,nodecl> end
+global function blContextSetStrokeMiterLimit(self: *BLContextCore, miterLimit: float64): BLResult <cimport,nodecl> end
+global function blContextSetStrokeCap(self: *BLContextCore, position: uint32, strokeCap: uint32): BLResult <cimport,nodecl> end
+global function blContextSetStrokeCaps(self: *BLContextCore, strokeCap: uint32): BLResult <cimport,nodecl> end
+global function blContextSetStrokeJoin(self: *BLContextCore, strokeJoin: uint32): BLResult <cimport,nodecl> end
+global function blContextSetStrokeDashOffset(self: *BLContextCore, dashOffset: float64): BLResult <cimport,nodecl> end
+global function blContextSetStrokeDashArray(self: *BLContextCore, dashArray: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blContextSetStrokeTransformOrder(self: *BLContextCore, transformOrder: uint32): BLResult <cimport,nodecl> end
+global function blContextGetStrokeOptions(self: *BLContextCore, options: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blContextSetStrokeOptions(self: *BLContextCore, options: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blContextClipToRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport,nodecl> end
+global function blContextClipToRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport,nodecl> end
+global function blContextRestoreClipping(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextClearAll(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextClearRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport,nodecl> end
+global function blContextClearRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport,nodecl> end
+global function blContextFillAll(self: *BLContextCore): BLResult <cimport,nodecl> end
+global function blContextFillRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport,nodecl> end
+global function blContextFillRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport,nodecl> end
+global function blContextFillPathD(self: *BLContextCore, path: *BLPathCore): BLResult <cimport,nodecl> end
+global function blContextFillGeometry(self: *BLContextCore, geometryType: uint32, geometryData: pointer): BLResult <cimport,nodecl> end
+global function blContextFillTextI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport,nodecl> end
+global function blContextFillTextD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport,nodecl> end
+global function blContextFillGlyphRunI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport,nodecl> end
+global function blContextFillGlyphRunD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport,nodecl> end
+global function blContextStrokeRectI(self: *BLContextCore, rect: *BLRectI): BLResult <cimport,nodecl> end
+global function blContextStrokeRectD(self: *BLContextCore, rect: *BLRect): BLResult <cimport,nodecl> end
+global function blContextStrokePathD(self: *BLContextCore, path: *BLPathCore): BLResult <cimport,nodecl> end
+global function blContextStrokeGeometry(self: *BLContextCore, geometryType: uint32, geometryData: pointer): BLResult <cimport,nodecl> end
+global function blContextStrokeTextI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport,nodecl> end
+global function blContextStrokeTextD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, text: pointer, size: csize, encoding: uint32): BLResult <cimport,nodecl> end
+global function blContextStrokeGlyphRunI(self: *BLContextCore, pt: *BLPointI, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport,nodecl> end
+global function blContextStrokeGlyphRunD(self: *BLContextCore, pt: *BLPoint, font: *BLFontCore, glyphRun: *BLGlyphRun): BLResult <cimport,nodecl> end
+global function blContextBlitImageI(self: *BLContextCore, pt: *BLPointI, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport,nodecl> end
+global function blContextBlitImageD(self: *BLContextCore, pt: *BLPoint, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport,nodecl> end
+global function blContextBlitScaledImageI(self: *BLContextCore, rect: *BLRectI, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport,nodecl> end
+global function blContextBlitScaledImageD(self: *BLContextCore, rect: *BLRect, img: *BLImageCore, imgArea: *BLRectI): BLResult <cimport,nodecl> end
+global function blFileInit(self: *BLFileCore): BLResult <cimport,nodecl> end
+global function blFileReset(self: *BLFileCore): BLResult <cimport,nodecl> end
+global function blFileOpen(self: *BLFileCore, fileName: cstring, openFlags: uint32): BLResult <cimport,nodecl> end
+global function blFileClose(self: *BLFileCore): BLResult <cimport,nodecl> end
+global function blFileSeek(self: *BLFileCore, offset: int64, seekType: uint32, positionOut: *int64): BLResult <cimport,nodecl> end
+global function blFileRead(self: *BLFileCore, buffer: pointer, n: csize, bytesReadOut: *csize): BLResult <cimport,nodecl> end
+global function blFileWrite(self: *BLFileCore, buffer: pointer, n: csize, bytesWrittenOut: *csize): BLResult <cimport,nodecl> end
+global function blFileTruncate(self: *BLFileCore, maxSize: int64): BLResult <cimport,nodecl> end
+global function blFileGetSize(self: *BLFileCore, fileSizeOut: *uint64): BLResult <cimport,nodecl> end
+global function blFileSystemReadFile(fileName: cstring, dst: *BLArrayCore, maxSize: csize, readFlags: uint32): BLResult <cimport,nodecl> end
+global function blFileSystemWriteFile(fileName: cstring, data: pointer, size: csize, bytesWrittenOut: *csize): BLResult <cimport,nodecl> end
+global function blFontInit(self: *BLFontCore): BLResult <cimport,nodecl> end
+global function blFontDestroy(self: *BLFontCore): BLResult <cimport,nodecl> end
+global function blFontReset(self: *BLFontCore): BLResult <cimport,nodecl> end
+global function blFontAssignMove(self: *BLFontCore, other: *BLFontCore): BLResult <cimport,nodecl> end
+global function blFontAssignWeak(self: *BLFontCore, other: *BLFontCore): BLResult <cimport,nodecl> end
+global function blFontEquals(a: *BLFontCore, b: *BLFontCore): boolean <cimport,nodecl> end
+global function blFontCreateFromFace(self: *BLFontCore, face: *BLFontFaceCore, size: float32): BLResult <cimport,nodecl> end
+global function blFontShape(self: *BLFontCore, gb: *BLGlyphBufferCore): BLResult <cimport,nodecl> end
+global function blFontMapTextToGlyphs(self: *BLFontCore, gb: *BLGlyphBufferCore, stateOut: *BLGlyphMappingState): BLResult <cimport,nodecl> end
+global function blFontPositionGlyphs(self: *BLFontCore, gb: *BLGlyphBufferCore, positioningFlags: uint32): BLResult <cimport,nodecl> end
+global function blFontApplyKerning(self: *BLFontCore, gb: *BLGlyphBufferCore): BLResult <cimport,nodecl> end
+global function blFontApplyGSub(self: *BLFontCore, gb: *BLGlyphBufferCore, index: csize, lookups: culong): BLResult <cimport,nodecl> end
+global function blFontApplyGPos(self: *BLFontCore, gb: *BLGlyphBufferCore, index: csize, lookups: culong): BLResult <cimport,nodecl> end
+global function blFontGetMatrix(self: *BLFontCore, out: *BLFontMatrix): BLResult <cimport,nodecl> end
+global function blFontGetMetrics(self: *BLFontCore, out: *BLFontMetrics): BLResult <cimport,nodecl> end
+global function blFontGetDesignMetrics(self: *BLFontCore, out: *BLFontDesignMetrics): BLResult <cimport,nodecl> end
+global function blFontGetTextMetrics(self: *BLFontCore, gb: *BLGlyphBufferCore, out: *BLTextMetrics): BLResult <cimport,nodecl> end
+global function blFontGetGlyphBounds(self: *BLFontCore, glyphData: *uint32, glyphAdvance: isize, out: *BLBoxI, count: csize): BLResult <cimport,nodecl> end
+global function blFontGetGlyphAdvances(self: *BLFontCore, glyphData: *uint32, glyphAdvance: isize, out: *BLGlyphPlacement, count: csize): BLResult <cimport,nodecl> end
+global function blFontGetGlyphOutlines(self: *BLFontCore, glyphId: uint32, userMatrix: *BLMatrix2D, out: *BLPathCore, sink: BLPathSinkFunc, closure: pointer): BLResult <cimport,nodecl> end
+global function blFontGetGlyphRunOutlines(self: *BLFontCore, glyphRun: *BLGlyphRun, userMatrix: *BLMatrix2D, out: *BLPathCore, sink: BLPathSinkFunc, closure: pointer): BLResult <cimport,nodecl> end
+global function blFontDataInit(self: *BLFontDataCore): BLResult <cimport,nodecl> end
+global function blFontDataDestroy(self: *BLFontDataCore): BLResult <cimport,nodecl> end
+global function blFontDataReset(self: *BLFontDataCore): BLResult <cimport,nodecl> end
+global function blFontDataAssignMove(self: *BLFontDataCore, other: *BLFontDataCore): BLResult <cimport,nodecl> end
+global function blFontDataAssignWeak(self: *BLFontDataCore, other: *BLFontDataCore): BLResult <cimport,nodecl> end
+global function blFontDataCreateFromFile(self: *BLFontDataCore, fileName: cstring, readFlags: uint32): BLResult <cimport,nodecl> end
+global function blFontDataCreateFromDataArray(self: *BLFontDataCore, dataArray: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blFontDataCreateFromData(self: *BLFontDataCore, data: pointer, dataSize: csize, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport,nodecl> end
+global function blFontDataEquals(a: *BLFontDataCore, b: *BLFontDataCore): boolean <cimport,nodecl> end
+global function blFontDataListTags(self: *BLFontDataCore, faceIndex: uint32, dst: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blFontDataQueryTables(self: *BLFontDataCore, faceIndex: uint32, dst: *BLFontTable, tags: *cuint, count: csize): csize <cimport,nodecl> end
+global function blFontFaceInit(self: *BLFontFaceCore): BLResult <cimport,nodecl> end
+global function blFontFaceDestroy(self: *BLFontFaceCore): BLResult <cimport,nodecl> end
+global function blFontFaceReset(self: *BLFontFaceCore): BLResult <cimport,nodecl> end
+global function blFontFaceAssignMove(self: *BLFontFaceCore, other: *BLFontFaceCore): BLResult <cimport,nodecl> end
+global function blFontFaceAssignWeak(self: *BLFontFaceCore, other: *BLFontFaceCore): BLResult <cimport,nodecl> end
+global function blFontFaceEquals(a: *BLFontFaceCore, b: *BLFontFaceCore): boolean <cimport,nodecl> end
+global function blFontFaceCreateFromFile(self: *BLFontFaceCore, fileName: cstring, readFlags: uint32): BLResult <cimport,nodecl> end
+global function blFontFaceCreateFromData(self: *BLFontFaceCore, fontData: *BLFontDataCore, faceIndex: uint32): BLResult <cimport,nodecl> end
+global function blFontFaceGetFaceInfo(self: *BLFontFaceCore, out: *BLFontFaceInfo): BLResult <cimport,nodecl> end
+global function blFontFaceGetDesignMetrics(self: *BLFontFaceCore, out: *BLFontDesignMetrics): BLResult <cimport,nodecl> end
+global function blFontFaceGetUnicodeCoverage(self: *BLFontFaceCore, out: *BLFontUnicodeCoverage): BLResult <cimport,nodecl> end
+global function blFontManagerInit(self: *BLFontManagerCore): BLResult <cimport,nodecl> end
+global function blFontManagerInitNew(self: *BLFontManagerCore): BLResult <cimport,nodecl> end
+global function blFontManagerDestroy(self: *BLFontManagerCore): BLResult <cimport,nodecl> end
+global function blFontManagerReset(self: *BLFontManagerCore): BLResult <cimport,nodecl> end
+global function blFontManagerAssignMove(self: *BLFontManagerCore, other: *BLFontManagerCore): BLResult <cimport,nodecl> end
+global function blFontManagerAssignWeak(self: *BLFontManagerCore, other: *BLFontManagerCore): BLResult <cimport,nodecl> end
+global function blFontManagerCreate(self: *BLFontManagerCore): BLResult <cimport,nodecl> end
+global function blFontManagerGetFaceCount(self: *BLFontManagerCore): csize <cimport,nodecl> end
+global function blFontManagerGetFamilyCount(self: *BLFontManagerCore): csize <cimport,nodecl> end
+global function blFontManagerHasFace(self: *BLFontManagerCore, face: *BLFontFaceCore): boolean <cimport,nodecl> end
+global function blFontManagerAddFace(self: *BLFontManagerCore, face: *BLFontFaceCore): BLResult <cimport,nodecl> end
+global function blFontManagerQueryFace(self: *BLFontManagerCore, name: cstring, nameSize: csize, properties: *BLFontQueryProperties, out: *BLFontFaceCore): BLResult <cimport,nodecl> end
+global function blFontManagerQueryFacesByFamilyName(self: *BLFontManagerCore, name: cstring, nameSize: csize, out: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blFontManagerEquals(a: *BLFontManagerCore, b: *BLFontManagerCore): boolean <cimport,nodecl> end
+global function blFormatInfoQuery(self: *BLFormatInfo, format: uint32): BLResult <cimport,nodecl> end
+global function blFormatInfoSanitize(self: *BLFormatInfo): BLResult <cimport,nodecl> end
+global function blGlyphBufferInit(self: *BLGlyphBufferCore): BLResult <cimport,nodecl> end
+global function blGlyphBufferInitMove(self: *BLGlyphBufferCore, other: *BLGlyphBufferCore): BLResult <cimport,nodecl> end
+global function blGlyphBufferDestroy(self: *BLGlyphBufferCore): BLResult <cimport,nodecl> end
+global function blGlyphBufferReset(self: *BLGlyphBufferCore): BLResult <cimport,nodecl> end
+global function blGlyphBufferClear(self: *BLGlyphBufferCore): BLResult <cimport,nodecl> end
+global function blGlyphBufferGetSize(self: *BLGlyphBufferCore): csize <cimport,nodecl> end
+global function blGlyphBufferGetFlags(self: *BLGlyphBufferCore): uint32 <cimport,nodecl> end
+global function blGlyphBufferGetGlyphRun(self: *BLGlyphBufferCore): *BLGlyphRun <cimport,nodecl> end
+global function blGlyphBufferGetContent(self: *BLGlyphBufferCore): *uint32 <cimport,nodecl> end
+global function blGlyphBufferGetInfoData(self: *BLGlyphBufferCore): *BLGlyphInfo <cimport,nodecl> end
+global function blGlyphBufferGetPlacementData(self: *BLGlyphBufferCore): *BLGlyphPlacement <cimport,nodecl> end
+global function blGlyphBufferSetText(self: *BLGlyphBufferCore, textData: pointer, size: csize, encoding: uint32): BLResult <cimport,nodecl> end
+global function blGlyphBufferSetGlyphs(self: *BLGlyphBufferCore, glyphData: *uint32, size: csize): BLResult <cimport,nodecl> end
+global function blGlyphBufferSetGlyphsFromStruct(self: *BLGlyphBufferCore, glyphData: pointer, size: csize, glyphIdSize: csize, glyphIdAdvance: isize): BLResult <cimport,nodecl> end
+global function blGradientInit(self: *BLGradientCore): BLResult <cimport,nodecl> end
+global function blGradientInitAs(self: *BLGradientCore, type: uint32, values: pointer, extendMode: uint32, stops: *BLGradientStop, n: csize, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blGradientDestroy(self: *BLGradientCore): BLResult <cimport,nodecl> end
+global function blGradientReset(self: *BLGradientCore): BLResult <cimport,nodecl> end
+global function blGradientAssignMove(self: *BLGradientCore, other: *BLGradientCore): BLResult <cimport,nodecl> end
+global function blGradientAssignWeak(self: *BLGradientCore, other: *BLGradientCore): BLResult <cimport,nodecl> end
+global function blGradientCreate(self: *BLGradientCore, type: uint32, values: pointer, extendMode: uint32, stops: *BLGradientStop, n: csize, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blGradientShrink(self: *BLGradientCore): BLResult <cimport,nodecl> end
+global function blGradientReserve(self: *BLGradientCore, n: csize): BLResult <cimport,nodecl> end
+global function blGradientGetType(self: *BLGradientCore): uint32 <cimport,nodecl> end
+global function blGradientSetType(self: *BLGradientCore, type: uint32): BLResult <cimport,nodecl> end
+global function blGradientGetValue(self: *BLGradientCore, index: csize): float64 <cimport,nodecl> end
+global function blGradientSetValue(self: *BLGradientCore, index: csize, value: float64): BLResult <cimport,nodecl> end
+global function blGradientSetValues(self: *BLGradientCore, index: csize, values: *float64, n: csize): BLResult <cimport,nodecl> end
+global function blGradientGetExtendMode(self: *BLGradientCore): uint32 <cimport,nodecl> end
+global function blGradientSetExtendMode(self: *BLGradientCore, extendMode: uint32): BLResult <cimport,nodecl> end
+global function blGradientGetSize(self: *BLGradientCore): csize <cimport,nodecl> end
+global function blGradientGetCapacity(self: *BLGradientCore): csize <cimport,nodecl> end
+global function blGradientGetStops(self: *BLGradientCore): *BLGradientStop <cimport,nodecl> end
+global function blGradientResetStops(self: *BLGradientCore): BLResult <cimport,nodecl> end
+global function blGradientAssignStops(self: *BLGradientCore, stops: *BLGradientStop, n: csize): BLResult <cimport,nodecl> end
+global function blGradientAddStopRgba32(self: *BLGradientCore, offset: float64, argb32: uint32): BLResult <cimport,nodecl> end
+global function blGradientAddStopRgba64(self: *BLGradientCore, offset: float64, argb64: uint64): BLResult <cimport,nodecl> end
+global function blGradientRemoveStop(self: *BLGradientCore, index: csize): BLResult <cimport,nodecl> end
+global function blGradientRemoveStopByOffset(self: *BLGradientCore, offset: float64, all: uint32): BLResult <cimport,nodecl> end
+global function blGradientRemoveStops(self: *BLGradientCore, rStart: csize, rEnd: csize): BLResult <cimport,nodecl> end
+global function blGradientRemoveStopsFromTo(self: *BLGradientCore, offsetMin: float64, offsetMax: float64): BLResult <cimport,nodecl> end
+global function blGradientReplaceStopRgba32(self: *BLGradientCore, index: csize, offset: float64, rgba32: uint32): BLResult <cimport,nodecl> end
+global function blGradientReplaceStopRgba64(self: *BLGradientCore, index: csize, offset: float64, rgba64: uint64): BLResult <cimport,nodecl> end
+global function blGradientIndexOfStop(self: *BLGradientCore, offset: float64): csize <cimport,nodecl> end
+global function blGradientApplyMatrixOp(self: *BLGradientCore, opType: uint32, opData: pointer): BLResult <cimport,nodecl> end
+global function blGradientEquals(a: *BLGradientCore, b: *BLGradientCore): boolean <cimport,nodecl> end
+global function blImageInit(self: *BLImageCore): BLResult <cimport,nodecl> end
+global function blImageInitAs(self: *BLImageCore, w: cint, h: cint, format: uint32): BLResult <cimport,nodecl> end
+global function blImageInitAsFromData(self: *BLImageCore, w: cint, h: cint, format: uint32, pixelData: pointer, stride: isize, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport,nodecl> end
+global function blImageDestroy(self: *BLImageCore): BLResult <cimport,nodecl> end
+global function blImageReset(self: *BLImageCore): BLResult <cimport,nodecl> end
+global function blImageAssignMove(self: *BLImageCore, other: *BLImageCore): BLResult <cimport,nodecl> end
+global function blImageAssignWeak(self: *BLImageCore, other: *BLImageCore): BLResult <cimport,nodecl> end
+global function blImageAssignDeep(self: *BLImageCore, other: *BLImageCore): BLResult <cimport,nodecl> end
+global function blImageCreate(self: *BLImageCore, w: cint, h: cint, format: uint32): BLResult <cimport,nodecl> end
+global function blImageCreateFromData(self: *BLImageCore, w: cint, h: cint, format: uint32, pixelData: pointer, stride: isize, destroyFunc: BLDestroyImplFunc, destroyData: pointer): BLResult <cimport,nodecl> end
+global function blImageGetData(self: *BLImageCore, dataOut: *BLImageData): BLResult <cimport,nodecl> end
+global function blImageMakeMutable(self: *BLImageCore, dataOut: *BLImageData): BLResult <cimport,nodecl> end
+global function blImageConvert(self: *BLImageCore, format: uint32): BLResult <cimport,nodecl> end
+global function blImageEquals(a: *BLImageCore, b: *BLImageCore): boolean <cimport,nodecl> end
+global function blImageScale(dst: *BLImageCore, src: *BLImageCore, size: *BLSizeI, filter: uint32, options: *BLImageScaleOptions): BLResult <cimport,nodecl> end
+global function blImageReadFromFile(self: *BLImageCore, fileName: cstring, codecs: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blImageReadFromData(self: *BLImageCore, data: pointer, size: csize, codecs: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blImageWriteToFile(self: *BLImageCore, fileName: cstring, codec: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageWriteToData(self: *BLImageCore, dst: *BLArrayCore, codec: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageCodecInit(self: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageCodecDestroy(self: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageCodecReset(self: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageCodecAssignWeak(self: *BLImageCodecCore, other: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageCodecFindByName(self: *BLImageCodecCore, name: cstring, size: csize, codecs: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blImageCodecFindByExtension(self: *BLImageCodecCore, name: cstring, size: csize, codecs: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blImageCodecFindByData(self: *BLImageCodecCore, data: pointer, size: csize, codecs: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blImageCodecInspectData(self: *BLImageCodecCore, data: pointer, size: csize): uint32 <cimport,nodecl> end
+global function blImageCodecCreateDecoder(self: *BLImageCodecCore, dst: *BLImageDecoderCore): BLResult <cimport,nodecl> end
+global function blImageCodecCreateEncoder(self: *BLImageCodecCore, dst: *BLImageEncoderCore): BLResult <cimport,nodecl> end
+global function blImageCodecArrayInitBuiltInCodecs(self: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blImageCodecArrayAssignBuiltInCodecs(self: *BLArrayCore): BLResult <cimport,nodecl> end
+global function blImageCodecAddToBuiltIn(codec: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageCodecRemoveFromBuiltIn(codec: *BLImageCodecCore): BLResult <cimport,nodecl> end
+global function blImageDecoderInit(self: *BLImageDecoderCore): BLResult <cimport,nodecl> end
+global function blImageDecoderDestroy(self: *BLImageDecoderCore): BLResult <cimport,nodecl> end
+global function blImageDecoderReset(self: *BLImageDecoderCore): BLResult <cimport,nodecl> end
+global function blImageDecoderAssignMove(self: *BLImageDecoderCore, other: *BLImageDecoderCore): BLResult <cimport,nodecl> end
+global function blImageDecoderAssignWeak(self: *BLImageDecoderCore, other: *BLImageDecoderCore): BLResult <cimport,nodecl> end
+global function blImageDecoderRestart(self: *BLImageDecoderCore): BLResult <cimport,nodecl> end
+global function blImageDecoderReadInfo(self: *BLImageDecoderCore, infoOut: *BLImageInfo, data: *uint8, size: csize): BLResult <cimport,nodecl> end
+global function blImageDecoderReadFrame(self: *BLImageDecoderCore, imageOut: *BLImageCore, data: *uint8, size: csize): BLResult <cimport,nodecl> end
+global function blImageEncoderInit(self: *BLImageEncoderCore): BLResult <cimport,nodecl> end
+global function blImageEncoderDestroy(self: *BLImageEncoderCore): BLResult <cimport,nodecl> end
+global function blImageEncoderReset(self: *BLImageEncoderCore): BLResult <cimport,nodecl> end
+global function blImageEncoderAssignMove(self: *BLImageEncoderCore, other: *BLImageEncoderCore): BLResult <cimport,nodecl> end
+global function blImageEncoderAssignWeak(self: *BLImageEncoderCore, other: *BLImageEncoderCore): BLResult <cimport,nodecl> end
+global function blImageEncoderRestart(self: *BLImageEncoderCore): BLResult <cimport,nodecl> end
+global function blImageEncoderWriteFrame(self: *BLImageEncoderCore, dst: *BLArrayCore, image: *BLImageCore): BLResult <cimport,nodecl> end
+global function blMatrix2DSetIdentity(self: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blMatrix2DSetTranslation(self: *BLMatrix2D, x: float64, y: float64): BLResult <cimport,nodecl> end
+global function blMatrix2DSetScaling(self: *BLMatrix2D, x: float64, y: float64): BLResult <cimport,nodecl> end
+global function blMatrix2DSetSkewing(self: *BLMatrix2D, x: float64, y: float64): BLResult <cimport,nodecl> end
+global function blMatrix2DSetRotation(self: *BLMatrix2D, angle: float64, cx: float64, cy: float64): BLResult <cimport,nodecl> end
+global function blMatrix2DApplyOp(self: *BLMatrix2D, opType: uint32, opData: pointer): BLResult <cimport,nodecl> end
+global function blMatrix2DInvert(dst: *BLMatrix2D, src: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blMatrix2DGetType(self: *BLMatrix2D): uint32 <cimport,nodecl> end
+global function blMatrix2DMapPointDArray(self: *BLMatrix2D, dst: *BLPoint, src: *BLPoint, count: csize): BLResult <cimport,nodecl> end
+global function blPathInit(self: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathDestroy(self: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathReset(self: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathGetSize(self: *BLPathCore): csize <cimport,nodecl> end
+global function blPathGetCapacity(self: *BLPathCore): csize <cimport,nodecl> end
+global function blPathGetCommandData(self: *BLPathCore): *uint8 <cimport,nodecl> end
+global function blPathGetVertexData(self: *BLPathCore): *BLPoint <cimport,nodecl> end
+global function blPathClear(self: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathShrink(self: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathReserve(self: *BLPathCore, n: csize): BLResult <cimport,nodecl> end
+global function blPathModifyOp(self: *BLPathCore, op: uint32, n: csize, cmdDataOut: **uint8, vtxDataOut: **BLPoint): BLResult <cimport,nodecl> end
+global function blPathAssignMove(self: *BLPathCore, other: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathAssignWeak(self: *BLPathCore, other: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathAssignDeep(self: *BLPathCore, other: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathSetVertexAt(self: *BLPathCore, index: csize, cmd: uint32, x: float64, y: float64): BLResult <cimport,nodecl> end
+global function blPathMoveTo(self: *BLPathCore, x0: float64, y0: float64): BLResult <cimport,nodecl> end
+global function blPathLineTo(self: *BLPathCore, x1: float64, y1: float64): BLResult <cimport,nodecl> end
+global function blPathPolyTo(self: *BLPathCore, poly: *BLPoint, count: csize): BLResult <cimport,nodecl> end
+global function blPathQuadTo(self: *BLPathCore, x1: float64, y1: float64, x2: float64, y2: float64): BLResult <cimport,nodecl> end
+global function blPathCubicTo(self: *BLPathCore, x1: float64, y1: float64, x2: float64, y2: float64, x3: float64, y3: float64): BLResult <cimport,nodecl> end
+global function blPathSmoothQuadTo(self: *BLPathCore, x2: float64, y2: float64): BLResult <cimport,nodecl> end
+global function blPathSmoothCubicTo(self: *BLPathCore, x2: float64, y2: float64, x3: float64, y3: float64): BLResult <cimport,nodecl> end
+global function blPathArcTo(self: *BLPathCore, x: float64, y: float64, rx: float64, ry: float64, start: float64, sweep: float64, forceMoveTo: boolean): BLResult <cimport,nodecl> end
+global function blPathArcQuadrantTo(self: *BLPathCore, x1: float64, y1: float64, x2: float64, y2: float64): BLResult <cimport,nodecl> end
+global function blPathEllipticArcTo(self: *BLPathCore, rx: float64, ry: float64, xAxisRotation: float64, largeArcFlag: boolean, sweepFlag: boolean, x1: float64, y1: float64): BLResult <cimport,nodecl> end
+global function blPathClose(self: *BLPathCore): BLResult <cimport,nodecl> end
+global function blPathAddGeometry(self: *BLPathCore, geometryType: uint32, geometryData: pointer, m: *BLMatrix2D, dir: uint32): BLResult <cimport,nodecl> end
+global function blPathAddBoxI(self: *BLPathCore, box: *BLBoxI, dir: uint32): BLResult <cimport,nodecl> end
+global function blPathAddBoxD(self: *BLPathCore, box: *BLBox, dir: uint32): BLResult <cimport,nodecl> end
+global function blPathAddRectI(self: *BLPathCore, rect: *BLRectI, dir: uint32): BLResult <cimport,nodecl> end
+global function blPathAddRectD(self: *BLPathCore, rect: *BLRect, dir: uint32): BLResult <cimport,nodecl> end
+global function blPathAddPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange): BLResult <cimport,nodecl> end
+global function blPathAddTranslatedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, p: *BLPoint): BLResult <cimport,nodecl> end
+global function blPathAddTransformedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blPathAddReversedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, reverseMode: uint32): BLResult <cimport,nodecl> end
+global function blPathAddStrokedPath(self: *BLPathCore, other: *BLPathCore, range: *BLRange, options: *BLStrokeOptionsCore, approx: *BLApproximationOptions): BLResult <cimport,nodecl> end
+global function blPathRemoveRange(self: *BLPathCore, range: *BLRange): BLResult <cimport,nodecl> end
+global function blPathTranslate(self: *BLPathCore, range: *BLRange, p: *BLPoint): BLResult <cimport,nodecl> end
+global function blPathTransform(self: *BLPathCore, range: *BLRange, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blPathFitTo(self: *BLPathCore, range: *BLRange, rect: *BLRect, fitFlags: uint32): BLResult <cimport,nodecl> end
+global function blPathEquals(a: *BLPathCore, b: *BLPathCore): boolean <cimport,nodecl> end
+global function blPathGetInfoFlags(self: *BLPathCore, flagsOut: *uint32): BLResult <cimport,nodecl> end
+global function blPathGetControlBox(self: *BLPathCore, boxOut: *BLBox): BLResult <cimport,nodecl> end
+global function blPathGetBoundingBox(self: *BLPathCore, boxOut: *BLBox): BLResult <cimport,nodecl> end
+global function blPathGetFigureRange(self: *BLPathCore, index: csize, rangeOut: *BLRange): BLResult <cimport,nodecl> end
+global function blPathGetLastVertex(self: *BLPathCore, vtxOut: *BLPoint): BLResult <cimport,nodecl> end
+global function blPathGetClosestVertex(self: *BLPathCore, p: *BLPoint, maxDistance: float64, indexOut: *csize, distanceOut: *float64): BLResult <cimport,nodecl> end
+global function blPathHitTest(self: *BLPathCore, p: *BLPoint, fillRule: uint32): uint32 <cimport,nodecl> end
+global function blPatternInit(self: *BLPatternCore): BLResult <cimport,nodecl> end
+global function blPatternInitAs(self: *BLPatternCore, image: *BLImageCore, area: *BLRectI, extendMode: uint32, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blPatternDestroy(self: *BLPatternCore): BLResult <cimport,nodecl> end
+global function blPatternReset(self: *BLPatternCore): BLResult <cimport,nodecl> end
+global function blPatternAssignMove(self: *BLPatternCore, other: *BLPatternCore): BLResult <cimport,nodecl> end
+global function blPatternAssignWeak(self: *BLPatternCore, other: *BLPatternCore): BLResult <cimport,nodecl> end
+global function blPatternAssignDeep(self: *BLPatternCore, other: *BLPatternCore): BLResult <cimport,nodecl> end
+global function blPatternCreate(self: *BLPatternCore, image: *BLImageCore, area: *BLRectI, extendMode: uint32, m: *BLMatrix2D): BLResult <cimport,nodecl> end
+global function blPatternSetImage(self: *BLPatternCore, image: *BLImageCore, area: *BLRectI): BLResult <cimport,nodecl> end
+global function blPatternSetArea(self: *BLPatternCore, area: *BLRectI): BLResult <cimport,nodecl> end
+global function blPatternSetExtendMode(self: *BLPatternCore, extendMode: uint32): BLResult <cimport,nodecl> end
+global function blPatternApplyMatrixOp(self: *BLPatternCore, opType: uint32, opData: pointer): BLResult <cimport,nodecl> end
+global function blPatternEquals(a: *BLPatternCore, b: *BLPatternCore): boolean <cimport,nodecl> end
+global function blPixelConverterInit(self: *BLPixelConverterCore): BLResult <cimport,nodecl> end
+global function blPixelConverterInitWeak(self: *BLPixelConverterCore, other: *BLPixelConverterCore): BLResult <cimport,nodecl> end
+global function blPixelConverterDestroy(self: *BLPixelConverterCore): BLResult <cimport,nodecl> end
+global function blPixelConverterReset(self: *BLPixelConverterCore): BLResult <cimport,nodecl> end
+global function blPixelConverterAssign(self: *BLPixelConverterCore, other: *BLPixelConverterCore): BLResult <cimport,nodecl> end
+global function blPixelConverterCreate(self: *BLPixelConverterCore, dstInfo: *BLFormatInfo, srcInfo: *BLFormatInfo, createFlags: uint32): BLResult <cimport,nodecl> end
+global function blPixelConverterConvert(self: *BLPixelConverterCore, dstData: pointer, dstStride: isize, srcData: pointer, srcStride: isize, w: uint32, h: uint32, options: *BLPixelConverterOptions): BLResult <cimport,nodecl> end
+global function blRandomReset(self: *BLRandom, seed: uint64): BLResult <cimport,nodecl> end
+global function blRandomNextUInt32(self: *BLRandom): uint32 <cimport,nodecl> end
+global function blRandomNextUInt64(self: *BLRandom): uint64 <cimport,nodecl> end
+global function blRandomNextDouble(self: *BLRandom): float64 <cimport,nodecl> end
+global function blRegionInit(self: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionDestroy(self: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionReset(self: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionGetSize(self: *BLRegionCore): csize <cimport,nodecl> end
+global function blRegionGetCapacity(self: *BLRegionCore): csize <cimport,nodecl> end
+global function blRegionGetData(self: *BLRegionCore): *BLBoxI <cimport,nodecl> end
+global function blRegionClear(self: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionShrink(self: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionReserve(self: *BLRegionCore, n: csize): BLResult <cimport,nodecl> end
+global function blRegionAssignMove(self: *BLRegionCore, other: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionAssignWeak(self: *BLRegionCore, other: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionAssignDeep(self: *BLRegionCore, other: *BLRegionCore): BLResult <cimport,nodecl> end
+global function blRegionAssignBoxI(self: *BLRegionCore, src: *BLBoxI): BLResult <cimport,nodecl> end
+global function blRegionAssignBoxIArray(self: *BLRegionCore, data: *BLBoxI, n: csize): BLResult <cimport,nodecl> end
+global function blRegionAssignRectI(self: *BLRegionCore, rect: *BLRectI): BLResult <cimport,nodecl> end
+global function blRegionAssignRectIArray(self: *BLRegionCore, data: *BLRectI, n: csize): BLResult <cimport,nodecl> end
+global function blRegionCombine(self: *BLRegionCore, a: *BLRegionCore, b: *BLRegionCore, booleanOp: uint32): BLResult <cimport,nodecl> end
+global function blRegionCombineRB(self: *BLRegionCore, a: *BLRegionCore, b: *BLBoxI, booleanOp: uint32): BLResult <cimport,nodecl> end
+global function blRegionCombineBR(self: *BLRegionCore, a: *BLBoxI, b: *BLRegionCore, booleanOp: uint32): BLResult <cimport,nodecl> end
+global function blRegionCombineBB(self: *BLRegionCore, a: *BLBoxI, b: *BLBoxI, booleanOp: uint32): BLResult <cimport,nodecl> end
+global function blRegionTranslate(self: *BLRegionCore, r: *BLRegionCore, pt: *BLPointI): BLResult <cimport,nodecl> end
+global function blRegionTranslateAndClip(self: *BLRegionCore, r: *BLRegionCore, pt: *BLPointI, clipBox: *BLBoxI): BLResult <cimport,nodecl> end
+global function blRegionIntersectAndClip(self: *BLRegionCore, a: *BLRegionCore, b: *BLRegionCore, clipBox: *BLBoxI): BLResult <cimport,nodecl> end
+global function blRegionEquals(a: *BLRegionCore, b: *BLRegionCore): boolean <cimport,nodecl> end
+global function blRegionGetType(self: *BLRegionCore): uint32 <cimport,nodecl> end
+global function blRegionHitTest(self: *BLRegionCore, pt: *BLPointI): uint32 <cimport,nodecl> end
+global function blRegionHitTestBoxI(self: *BLRegionCore, box: *BLBoxI): uint32 <cimport,nodecl> end
+global function blRuntimeInit(): BLResult <cimport,nodecl> end
+global function blRuntimeShutdown(): BLResult <cimport,nodecl> end
+global function blRuntimeCleanup(cleanupFlags: uint32): BLResult <cimport,nodecl> end
+global function blRuntimeQueryInfo(infoType: uint32, infoOut: pointer): BLResult <cimport,nodecl> end
+global function blRuntimeMessageOut(msg: cstring): BLResult <cimport,nodecl> end
+global function blRuntimeMessageFmt(fmt: cstring, ...: cvarargs): BLResult <cimport,nodecl> end
+global function blRuntimeMessageVFmt(fmt: cstring, ap: cvalist): BLResult <cimport,nodecl> end
+global function blRuntimeAssertionFailure(file: cstring, line: cint, msg: cstring): void <cimport,nodecl> end
+global function blResultFromPosixError(e: cint): BLResult <cimport,nodecl> end
+global function blStringInit(self: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringInitWithData(self: *BLStringCore, str: cstring, size: csize): BLResult <cimport,nodecl> end
+global function blStringDestroy(self: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringReset(self: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringGetSize(self: *BLStringCore): csize <cimport,nodecl> end
+global function blStringGetCapacity(self: *BLStringCore): csize <cimport,nodecl> end
+global function blStringGetData(self: *BLStringCore): cstring <cimport,nodecl> end
+global function blStringClear(self: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringShrink(self: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringReserve(self: *BLStringCore, n: csize): BLResult <cimport,nodecl> end
+global function blStringResize(self: *BLStringCore, n: csize, fill: cchar): BLResult <cimport,nodecl> end
+global function blStringMakeMutable(self: *BLStringCore, dataOut: *cstring): BLResult <cimport,nodecl> end
+global function blStringModifyOp(self: *BLStringCore, op: uint32, n: csize, dataOut: *cstring): BLResult <cimport,nodecl> end
+global function blStringInsertOp(self: *BLStringCore, index: csize, n: csize, dataOut: *cstring): BLResult <cimport,nodecl> end
+global function blStringAssignMove(self: *BLStringCore, other: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringAssignWeak(self: *BLStringCore, other: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringAssignDeep(self: *BLStringCore, other: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringAssignData(self: *BLStringCore, str: cstring, n: csize): BLResult <cimport,nodecl> end
+global function blStringApplyOpChar(self: *BLStringCore, op: uint32, c: cchar, n: csize): BLResult <cimport,nodecl> end
+global function blStringApplyOpData(self: *BLStringCore, op: uint32, str: cstring, n: csize): BLResult <cimport,nodecl> end
+global function blStringApplyOpString(self: *BLStringCore, op: uint32, other: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringApplyOpFormat(self: *BLStringCore, op: uint32, fmt: cstring, ...: cvarargs): BLResult <cimport,nodecl> end
+global function blStringApplyOpFormatV(self: *BLStringCore, op: uint32, fmt: cstring, ap: cvalist): BLResult <cimport,nodecl> end
+global function blStringInsertChar(self: *BLStringCore, index: csize, c: cchar, n: csize): BLResult <cimport,nodecl> end
+global function blStringInsertData(self: *BLStringCore, index: csize, str: cstring, n: csize): BLResult <cimport,nodecl> end
+global function blStringInsertString(self: *BLStringCore, index: csize, other: *BLStringCore): BLResult <cimport,nodecl> end
+global function blStringRemoveRange(self: *BLStringCore, rStart: csize, rEnd: csize): BLResult <cimport,nodecl> end
+global function blStringEquals(self: *BLStringCore, other: *BLStringCore): boolean <cimport,nodecl> end
+global function blStringEqualsData(self: *BLStringCore, str: cstring, n: csize): boolean <cimport,nodecl> end
+global function blStringCompare(self: *BLStringCore, other: *BLStringCore): cint <cimport,nodecl> end
+global function blStringCompareData(self: *BLStringCore, str: cstring, n: csize): cint <cimport,nodecl> end
+global function blStrokeOptionsInit(self: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blStrokeOptionsInitMove(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blStrokeOptionsInitWeak(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blStrokeOptionsDestroy(self: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blStrokeOptionsReset(self: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blStrokeOptionsAssignMove(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blStrokeOptionsAssignWeak(self: *BLStrokeOptionsCore, other: *BLStrokeOptionsCore): BLResult <cimport,nodecl> end
+global function blStyleInit(self: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blStyleInitMove(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blStyleInitWeak(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blStyleInitRgba(self: *BLStyleCore, rgba: *BLRgba): BLResult <cimport,nodecl> end
+global function blStyleInitRgba32(self: *BLStyleCore, rgba32: uint32): BLResult <cimport,nodecl> end
+global function blStyleInitRgba64(self: *BLStyleCore, rgba64: uint64): BLResult <cimport,nodecl> end
+global function blStyleInitObject(self: *BLStyleCore, object: pointer): BLResult <cimport,nodecl> end
+global function blStyleDestroy(self: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blStyleReset(self: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blStyleAssignMove(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blStyleAssignWeak(self: *BLStyleCore, other: *BLStyleCore): BLResult <cimport,nodecl> end
+global function blStyleAssignRgba(self: *BLStyleCore, rgba: *BLRgba): BLResult <cimport,nodecl> end
+global function blStyleAssignRgba32(self: *BLStyleCore, rgba32: uint32): BLResult <cimport,nodecl> end
+global function blStyleAssignRgba64(self: *BLStyleCore, rgba64: uint64): BLResult <cimport,nodecl> end
+global function blStyleAssignObject(self: *BLStyleCore, object: pointer): BLResult <cimport,nodecl> end
+global function blStyleGetType(self: *BLStyleCore): uint32 <cimport,nodecl> end
+global function blStyleGetRgba(self: *BLStyleCore, rgbaOut: *BLRgba): BLResult <cimport,nodecl> end
+global function blStyleGetRgba32(self: *BLStyleCore, rgba32Out: *uint32): BLResult <cimport,nodecl> end
+global function blStyleGetRgba64(self: *BLStyleCore, rgba64Out: *uint64): BLResult <cimport,nodecl> end
+global function blStyleGetObject(self: *BLStyleCore, object: pointer): BLResult <cimport,nodecl> end
+global function blStyleEquals(a: *BLStyleCore, b: *BLStyleCore): boolean <cimport,nodecl> end
+global function blVariantInit(self: pointer): BLResult <cimport,nodecl> end
+global function blVariantInitMove(self: pointer, other: pointer): BLResult <cimport,nodecl> end
+global function blVariantInitWeak(self: pointer, other: pointer): BLResult <cimport,nodecl> end
+global function blVariantDestroy(self: pointer): BLResult <cimport,nodecl> end
+global function blVariantReset(self: pointer): BLResult <cimport,nodecl> end
+global function blVariantGetImplType(self: pointer): uint32 <cimport,nodecl> end
+global function blVariantAssignMove(self: pointer, other: pointer): BLResult <cimport,nodecl> end
+global function blVariantAssignWeak(self: pointer, other: pointer): BLResult <cimport,nodecl> end
+global function blVariantEquals(a: pointer, b: pointer): boolean <cimport,nodecl> end
+global BLImplType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_IMPL_TYPE_NULL = 0,
   BL_IMPL_TYPE_ARRAY_VAR = 1,
   BL_IMPL_TYPE_ARRAY_I8 = 2,
@@ -786,7 +786,7 @@ global BLImplType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_IMPL_TYPE_FONT_VARIATION_OPTIONS = 61,
   BL_IMPL_TYPE_COUNT = 64
 }
-global BLImplTraits: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLImplTraits: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_IMPL_TRAIT_MUTABLE = 1,
   BL_IMPL_TRAIT_IMMUTABLE = 2,
   BL_IMPL_TRAIT_EXTERNAL = 4,
@@ -808,7 +808,7 @@ BLVariantImpl = @record{
 BLVariantCore = @record{
   impl: *BLVariantImpl
 }
-global blNone: [64]BLVariantCore <cimport, nodecl>
+global blNone: [64]BLVariantCore <cimport,nodecl>
 BLArrayImpl = @record{
   capacity: csize,
   refCount: csize,
@@ -829,12 +829,12 @@ BLArrayImpl = @record{
 BLArrayCore = @record{
   impl: *BLArrayImpl
 }
-global BLGeometryDirection: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLGeometryDirection: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_GEOMETRY_DIRECTION_NONE = 0,
   BL_GEOMETRY_DIRECTION_CW = 1,
   BL_GEOMETRY_DIRECTION_CCW = 2
 }
-global BLGeometryType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLGeometryType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_GEOMETRY_TYPE_NONE = 0,
   BL_GEOMETRY_TYPE_BOXI = 1,
   BL_GEOMETRY_TYPE_BOXD = 2,
@@ -861,12 +861,12 @@ global BLGeometryType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_GEOMETRY_TYPE_COUNT = 23,
   BL_GEOMETRY_TYPE_SIMPLE_LAST = 12
 }
-global BLFillRule: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFillRule: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FILL_RULE_NON_ZERO = 0,
   BL_FILL_RULE_EVEN_ODD = 1,
   BL_FILL_RULE_COUNT = 2
 }
-global BLHitTest: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLHitTest: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_HIT_TEST_IN = 0,
   BL_HIT_TEST_PART = 1,
   BL_HIT_TEST_OUT = 2,
@@ -953,28 +953,28 @@ BLArc = @record{
   start: float64,
   sweep: float64
 }
-global BLGlyphPlacementType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLGlyphPlacementType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_GLYPH_PLACEMENT_TYPE_NONE = 0,
   BL_GLYPH_PLACEMENT_TYPE_ADVANCE_OFFSET = 1,
   BL_GLYPH_PLACEMENT_TYPE_DESIGN_UNITS = 2,
   BL_GLYPH_PLACEMENT_TYPE_USER_UNITS = 3,
   BL_GLYPH_PLACEMENT_TYPE_ABSOLUTE_UNITS = 4
 }
-global BLGlyphRunFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLGlyphRunFlags: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_GLYPH_RUN_FLAG_UCS4_CONTENT = 268435456,
   BL_GLYPH_RUN_FLAG_INVALID_TEXT = 536870912,
   BL_GLYPH_RUN_FLAG_UNDEFINED_GLYPHS = 1073741824,
   BL_GLYPH_RUN_FLAG_INVALID_FONT_DATA = 2147483648
 }
-global BLFontDataFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontDataFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_DATA_FLAG_COLLECTION = 1
 }
-global BLFontFaceType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontFaceType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_FACE_TYPE_NONE = 0,
   BL_FONT_FACE_TYPE_OPENTYPE = 1,
   BL_FONT_FACE_TYPE_COUNT = 2
 }
-global BLFontFaceFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLFontFaceFlags: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_FONT_FACE_FLAG_TYPOGRAPHIC_NAMES = 1,
   BL_FONT_FACE_FLAG_TYPOGRAPHIC_METRICS = 2,
   BL_FONT_FACE_FLAG_CHAR_TO_GLYPH_MAPPING = 4,
@@ -992,7 +992,7 @@ global BLFontFaceFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
   BL_FONT_FACE_FLAG_SYMBOL_FONT = 1073741824,
   BL_FONT_FACE_FLAG_LAST_RESORT_FONT = 2147483648
 }
-global BLFontFaceDiagFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontFaceDiagFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_FACE_DIAG_WRONG_NAME_DATA = 1,
   BL_FONT_FACE_DIAG_FIXED_NAME_DATA = 2,
   BL_FONT_FACE_DIAG_WRONG_KERN_DATA = 4,
@@ -1003,13 +1003,13 @@ global BLFontFaceDiagFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint
   BL_FONT_FACE_DIAG_WRONG_GPOS_DATA = 1024,
   BL_FONT_FACE_DIAG_WRONG_GSUB_DATA = 4096
 }
-global BLFontOutlineType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontOutlineType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_OUTLINE_TYPE_NONE = 0,
   BL_FONT_OUTLINE_TYPE_TRUETYPE = 1,
   BL_FONT_OUTLINE_TYPE_CFF = 2,
   BL_FONT_OUTLINE_TYPE_CFF2 = 3
 }
-global BLFontStretch: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontStretch: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_STRETCH_ULTRA_CONDENSED = 1,
   BL_FONT_STRETCH_EXTRA_CONDENSED = 2,
   BL_FONT_STRETCH_CONDENSED = 3,
@@ -1020,13 +1020,13 @@ global BLFontStretch: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_FONT_STRETCH_EXTRA_EXPANDED = 8,
   BL_FONT_STRETCH_ULTRA_EXPANDED = 9
 }
-global BLFontStyle: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontStyle: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_STYLE_NORMAL = 0,
   BL_FONT_STYLE_OBLIQUE = 1,
   BL_FONT_STYLE_ITALIC = 2,
   BL_FONT_STYLE_COUNT = 3
 }
-global BLFontWeight: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontWeight: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_WEIGHT_THIN = 100,
   BL_FONT_WEIGHT_EXTRA_LIGHT = 200,
   BL_FONT_WEIGHT_LIGHT = 300,
@@ -1039,7 +1039,7 @@ global BLFontWeight: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_FONT_WEIGHT_BLACK = 900,
   BL_FONT_WEIGHT_EXTRA_BLACK = 950
 }
-global BLFontStringId: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontStringId: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_STRING_COPYRIGHT_NOTICE = 0,
   BL_FONT_STRING_FAMILY_NAME = 1,
   BL_FONT_STRING_SUBFAMILY_NAME = 2,
@@ -1069,7 +1069,7 @@ global BLFontStringId: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_FONT_STRING_COMMON_COUNT = 26,
   BL_FONT_STRING_CUSTOM_START_INDEX = 255
 }
-global BLFontUnicodeCoverageIndex: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFontUnicodeCoverageIndex: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FONT_UC_INDEX_BASIC_LATIN = 0,
   BL_FONT_UC_INDEX_LATIN1_SUPPLEMENT = 1,
   BL_FONT_UC_INDEX_LATIN_EXTENDED_A = 2,
@@ -1199,12 +1199,12 @@ global BLFontUnicodeCoverageIndex: type <cimport, nodecl, using, ctypedef> = @en
   BL_FONT_UC_INDEX_INTERNAL_USAGE_126 = 126,
   BL_FONT_UC_INDEX_INTERNAL_USAGE_127 = 127
 }
-global BLTextDirection: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLTextDirection: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_TEXT_DIRECTION_LTR = 0,
   BL_TEXT_DIRECTION_RTL = 1,
   BL_TEXT_DIRECTION_COUNT = 2
 }
-global BLTextOrientation: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLTextOrientation: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_TEXT_ORIENTATION_HORIZONTAL = 0,
   BL_TEXT_ORIENTATION_VERTICAL = 1,
   BL_TEXT_ORIENTATION_COUNT = 2
@@ -1420,7 +1420,7 @@ BLGlyphBufferImpl = @record{
 BLGlyphBufferCore = @record{
   impl: *BLGlyphBufferImpl
 }
-global BLPathCmd: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLPathCmd: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_PATH_CMD_MOVE = 0,
   BL_PATH_CMD_ON = 1,
   BL_PATH_CMD_QUAD = 2,
@@ -1428,10 +1428,10 @@ global BLPathCmd: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_PATH_CMD_CLOSE = 4,
   BL_PATH_CMD_COUNT = 5
 }
-global BLPathCmdExtra: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLPathCmdExtra: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_PATH_CMD_PRESERVE = 4294967295
 }
-global BLPathFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLPathFlags: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_PATH_FLAG_EMPTY = 1,
   BL_PATH_FLAG_MULTIPLE = 2,
   BL_PATH_FLAG_QUADS = 4,
@@ -1439,12 +1439,12 @@ global BLPathFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
   BL_PATH_FLAG_INVALID = 1073741824,
   BL_PATH_FLAG_DIRTY = 2147483648
 }
-global BLPathReverseMode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLPathReverseMode: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_PATH_REVERSE_MODE_COMPLETE = 0,
   BL_PATH_REVERSE_MODE_SEPARATE = 1,
   BL_PATH_REVERSE_MODE_COUNT = 2
 }
-global BLStrokeJoin: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLStrokeJoin: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_STROKE_JOIN_MITER_CLIP = 0,
   BL_STROKE_JOIN_MITER_BEVEL = 1,
   BL_STROKE_JOIN_MITER_ROUND = 2,
@@ -1452,12 +1452,12 @@ global BLStrokeJoin: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_STROKE_JOIN_ROUND = 4,
   BL_STROKE_JOIN_COUNT = 5
 }
-global BLStrokeCapPosition: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLStrokeCapPosition: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_STROKE_CAP_POSITION_START = 0,
   BL_STROKE_CAP_POSITION_END = 1,
   BL_STROKE_CAP_POSITION_COUNT = 2
 }
-global BLStrokeCap: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLStrokeCap: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_STROKE_CAP_BUTT = 0,
   BL_STROKE_CAP_SQUARE = 1,
   BL_STROKE_CAP_ROUND = 2,
@@ -1466,17 +1466,17 @@ global BLStrokeCap: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_STROKE_CAP_TRIANGLE_REV = 5,
   BL_STROKE_CAP_COUNT = 6
 }
-global BLStrokeTransformOrder: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLStrokeTransformOrder: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_STROKE_TRANSFORM_ORDER_AFTER = 0,
   BL_STROKE_TRANSFORM_ORDER_BEFORE = 1,
   BL_STROKE_TRANSFORM_ORDER_COUNT = 2
 }
-global BLFlattenMode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFlattenMode: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FLATTEN_MODE_DEFAULT = 0,
   BL_FLATTEN_MODE_RECURSIVE = 1,
   BL_FLATTEN_MODE_COUNT = 2
 }
-global BLOffsetMode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLOffsetMode: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_OFFSET_MODE_DEFAULT = 0,
   BL_OFFSET_MODE_ITERATIVE = 1,
   BL_OFFSET_MODE_COUNT = 2
@@ -1489,7 +1489,7 @@ BLApproximationOptions = @record{
   simplifyTolerance: float64,
   offsetParameter: float64
 }
-global blDefaultApproximationOptions: BLApproximationOptions <cimport, nodecl>
+global blDefaultApproximationOptions: BLApproximationOptions <cimport,nodecl>
 BLStrokeOptionsCore = @record{
   __unnamed1: union{
     __unnamed1: record{
@@ -1611,7 +1611,7 @@ BLFontImpl = @record{
 BLFontCore = @record{
   impl: *BLFontImpl
 }
-global BLFormat: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFormat: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FORMAT_NONE = 0,
   BL_FORMAT_PRGB32 = 1,
   BL_FORMAT_XRGB32 = 2,
@@ -1619,7 +1619,7 @@ global BLFormat: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_FORMAT_COUNT = 4,
   BL_FORMAT_RESERVED_COUNT = 16
 }
-global BLFormatFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFormatFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FORMAT_FLAG_RGB = 1,
   BL_FORMAT_FLAG_ALPHA = 2,
   BL_FORMAT_FLAG_RGBA = 3,
@@ -1654,11 +1654,11 @@ BLFormatInfo = @record{
     palette: *BLRgba32
   }
 }
-global blFormatInfo: [16]BLFormatInfo <cimport, nodecl>
-global BLImageInfoFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global blFormatInfo: [16]BLFormatInfo <cimport,nodecl>
+global BLImageInfoFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_IMAGE_INFO_FLAG_PROGRESSIVE = 1
 }
-global BLImageScaleFilter: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLImageScaleFilter: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_IMAGE_SCALE_FILTER_NONE = 0,
   BL_IMAGE_SCALE_FILTER_NEAREST = 1,
   BL_IMAGE_SCALE_FILTER_BILINEAR = 2,
@@ -1676,7 +1676,7 @@ global BLImageScaleFilter: type <cimport, nodecl, using, ctypedef> = @enum(cint)
   BL_IMAGE_SCALE_FILTER_USER = 14,
   BL_IMAGE_SCALE_FILTER_COUNT = 15
 }
-global BLImageScaleUserFunc: type <cimport, nodecl> = @function(*float64, *float64, csize, pointer): BLResult
+global BLImageScaleUserFunc: type <cimport,nodecl> = @function(*float64, *float64, csize, pointer): BLResult
 BLImageData = @record{
   pixelData: pointer,
   stride: isize,
@@ -1721,8 +1721,8 @@ BLImageImpl = @record{
 BLImageCore = @record{
   impl: *BLImageImpl
 }
-global BLMapPointDArrayFunc: type <cimport, nodecl> = @function(pointer, *BLPoint, *BLPoint, csize): BLResult
-global BLMatrix2DType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLMapPointDArrayFunc: type <cimport,nodecl> = @function(pointer, *BLPoint, *BLPoint, csize): BLResult
+global BLMatrix2DType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_MATRIX2D_TYPE_IDENTITY = 0,
   BL_MATRIX2D_TYPE_TRANSLATE = 1,
   BL_MATRIX2D_TYPE_SCALE = 2,
@@ -1731,7 +1731,7 @@ global BLMatrix2DType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_MATRIX2D_TYPE_INVALID = 5,
   BL_MATRIX2D_TYPE_COUNT = 6
 }
-global BLMatrix2DValue: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLMatrix2DValue: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_MATRIX2D_VALUE_00 = 0,
   BL_MATRIX2D_VALUE_01 = 1,
   BL_MATRIX2D_VALUE_10 = 2,
@@ -1740,7 +1740,7 @@ global BLMatrix2DValue: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_MATRIX2D_VALUE_21 = 5,
   BL_MATRIX2D_VALUE_COUNT = 6
 }
-global BLMatrix2DOp: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLMatrix2DOp: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_MATRIX2D_OP_RESET = 0,
   BL_MATRIX2D_OP_ASSIGN = 1,
   BL_MATRIX2D_OP_TRANSLATE = 2,
@@ -1770,7 +1770,7 @@ BLMatrix2D = @record{
     }
   }
 }
-global blMatrix2DMapPointDArrayFuncs: [6]BLMapPointDArrayFunc <cimport, nodecl>
+global blMatrix2DMapPointDArrayFuncs: [6]BLMapPointDArrayFunc <cimport,nodecl>
 BLRgba32 = @record{
   __unnamed1: union{
     value: uint32,
@@ -1799,7 +1799,7 @@ BLRgba = @record{
   b: float32,
   a: float32
 }
-global BLRegionType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLRegionType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_REGION_TYPE_EMPTY = 0,
   BL_REGION_TYPE_RECT = 1,
   BL_REGION_TYPE_COMPLEX = 2,
@@ -1824,13 +1824,13 @@ BLRegionImpl = @record{
 BLRegionCore = @record{
   impl: *BLRegionImpl
 }
-global BLGradientType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLGradientType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_GRADIENT_TYPE_LINEAR = 0,
   BL_GRADIENT_TYPE_RADIAL = 1,
   BL_GRADIENT_TYPE_CONICAL = 2,
   BL_GRADIENT_TYPE_COUNT = 3
 }
-global BLGradientValue: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLGradientValue: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_GRADIENT_VALUE_COMMON_X0 = 0,
   BL_GRADIENT_VALUE_COMMON_Y0 = 1,
   BL_GRADIENT_VALUE_COMMON_X1 = 2,
@@ -1904,7 +1904,7 @@ BLPatternImpl = @record{
 BLPatternCore = @record{
   impl: *BLPatternImpl
 }
-global BLStyleType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLStyleType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_STYLE_TYPE_NONE = 0,
   BL_STYLE_TYPE_SOLID = 1,
   BL_STYLE_TYPE_PATTERN = 2,
@@ -1925,38 +1925,38 @@ BLStyleCore = @record{
     u64Data: [2]uint64
   }
 }
-global BLContextType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLContextType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_CONTEXT_TYPE_NONE = 0,
   BL_CONTEXT_TYPE_DUMMY = 1,
   BL_CONTEXT_TYPE_RASTER = 3,
   BL_CONTEXT_TYPE_COUNT = 4
 }
-global BLContextHint: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLContextHint: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_CONTEXT_HINT_RENDERING_QUALITY = 0,
   BL_CONTEXT_HINT_GRADIENT_QUALITY = 1,
   BL_CONTEXT_HINT_PATTERN_QUALITY = 2,
   BL_CONTEXT_HINT_COUNT = 8
 }
-global BLContextOpType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLContextOpType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_CONTEXT_OP_TYPE_FILL = 0,
   BL_CONTEXT_OP_TYPE_STROKE = 1,
   BL_CONTEXT_OP_TYPE_COUNT = 2
 }
-global BLContextFlushFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLContextFlushFlags: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_CONTEXT_FLUSH_SYNC = 2147483648
 }
-global BLContextCreateFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLContextCreateFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_CONTEXT_CREATE_FLAG_FALLBACK_TO_SYNC = 8,
   BL_CONTEXT_CREATE_FLAG_ISOLATED_THREAD_POOL = 16777216,
   BL_CONTEXT_CREATE_FLAG_ISOLATED_JIT_RUNTIME = 33554432,
   BL_CONTEXT_CREATE_FLAG_ISOLATED_JIT_LOGGING = 67108864,
   BL_CONTEXT_CREATE_FLAG_OVERRIDE_CPU_FEATURES = 134217728
 }
-global BLContextProperty: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLContextProperty: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_CONTEXT_PROPERTY_THREAD_COUNT = 0,
   BL_CONTEXT_PROPERTY_ACCUMULATED_ERROR_FLAGS = 10
 }
-global BLContextErrorFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLContextErrorFlags: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_CONTEXT_ERROR_FLAG_INVALID_VALUE = 1,
   BL_CONTEXT_ERROR_FLAG_INVALID_STATE = 2,
   BL_CONTEXT_ERROR_FLAG_INVALID_GEOMETRY = 4,
@@ -1966,13 +1966,13 @@ global BLContextErrorFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuin
   BL_CONTEXT_ERROR_FLAG_OUT_OF_MEMORY = 1073741824,
   BL_CONTEXT_ERROR_FLAG_UNKNOWN_ERROR = 2147483648
 }
-global BLClipMode: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLClipMode: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_CLIP_MODE_ALIGNED_RECT = 0,
   BL_CLIP_MODE_UNALIGNED_RECT = 1,
   BL_CLIP_MODE_MASK = 2,
   BL_CLIP_MODE_COUNT = 3
 }
-global BLCompOp: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLCompOp: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_COMP_OP_SRC_OVER = 0,
   BL_COMP_OP_SRC_COPY = 1,
   BL_COMP_OP_SRC_IN = 2,
@@ -2004,16 +2004,16 @@ global BLCompOp: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   BL_COMP_OP_EXCLUSION = 28,
   BL_COMP_OP_COUNT = 29
 }
-global BLGradientQuality: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLGradientQuality: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_GRADIENT_QUALITY_NEAREST = 0,
   BL_GRADIENT_QUALITY_COUNT = 1
 }
-global BLPatternQuality: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLPatternQuality: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_PATTERN_QUALITY_NEAREST = 0,
   BL_PATTERN_QUALITY_BILINEAR = 1,
   BL_PATTERN_QUALITY_COUNT = 2
 }
-global BLRenderingQuality: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLRenderingQuality: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_RENDERING_QUALITY_ANTIALIAS = 0,
   BL_RENDERING_QUALITY_COUNT = 1
 }
@@ -2125,7 +2125,7 @@ BLContextImpl = @record{
 BLContextCore = @record{
   impl: *BLContextImpl
 }
-global BLFileOpenFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLFileOpenFlags: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_FILE_OPEN_READ = 1,
   BL_FILE_OPEN_WRITE = 2,
   BL_FILE_OPEN_RW = 3,
@@ -2138,13 +2138,13 @@ global BLFileOpenFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
   BL_FILE_OPEN_CREATE_EXCLUSIVE = 1073741824,
   BL_FILE_OPEN_DELETE_EXCLUSIVE = 2147483648
 }
-global BLFileSeekType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFileSeekType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FILE_SEEK_SET = 0,
   BL_FILE_SEEK_CUR = 1,
   BL_FILE_SEEK_END = 2,
   BL_FILE_SEEK_COUNT = 3
 }
-global BLFileReadFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLFileReadFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_FILE_READ_MMAP_ENABLED = 1,
   BL_FILE_READ_MMAP_AVOID_SMALL = 2,
   BL_FILE_READ_MMAP_NO_FALLBACK = 8
@@ -2166,7 +2166,7 @@ BLFontManagerImpl = @record{
 BLFontManagerCore = @record{
   impl: *BLFontManagerImpl
 }
-global BLImageCodecFeatures: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLImageCodecFeatures: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_IMAGE_CODEC_FEATURE_READ = 1,
   BL_IMAGE_CODEC_FEATURE_WRITE = 2,
   BL_IMAGE_CODEC_FEATURE_LOSSLESS = 4,
@@ -2238,8 +2238,8 @@ BLImageEncoderImpl = @record{
 BLImageEncoderCore = @record{
   impl: *BLImageEncoderImpl
 }
-global BLPixelConverterFunc: type <cimport, nodecl> = @function(*BLPixelConverterCore, *uint8, isize, *uint8, isize, uint32, uint32, *BLPixelConverterOptions): BLResult
-global BLPixelConverterCreateFlags: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLPixelConverterFunc: type <cimport,nodecl> = @function(*BLPixelConverterCore, *uint8, isize, *uint8, isize, uint32, uint32, *BLPixelConverterOptions): BLResult
+global BLPixelConverterCreateFlags: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_PIXEL_CONVERTER_CREATE_FLAG_DONT_COPY_PALETTE = 1,
   BL_PIXEL_CONVERTER_CREATE_FLAG_ALTERABLE_PALETTE = 2,
   BL_PIXEL_CONVERTER_CREATE_FLAG_NO_MULTI_STEP = 4
@@ -2260,27 +2260,27 @@ BLPixelConverterCore = @record{
 BLRandom = @record{
   data: [2]uint64
 }
-global BLRuntimeLimits: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLRuntimeLimits: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_RUNTIME_MAX_IMAGE_SIZE = 65535,
   BL_RUNTIME_MAX_THREAD_COUNT = 32
 }
-global BLRuntimeInfoType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLRuntimeInfoType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_RUNTIME_INFO_TYPE_BUILD = 0,
   BL_RUNTIME_INFO_TYPE_SYSTEM = 1,
   BL_RUNTIME_INFO_TYPE_RESOURCE = 2,
   BL_RUNTIME_INFO_TYPE_COUNT = 3
 }
-global BLRuntimeBuildType: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLRuntimeBuildType: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_RUNTIME_BUILD_TYPE_DEBUG = 0,
   BL_RUNTIME_BUILD_TYPE_RELEASE = 1
 }
-global BLRuntimeCpuArch: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLRuntimeCpuArch: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_RUNTIME_CPU_ARCH_UNKNOWN = 0,
   BL_RUNTIME_CPU_ARCH_X86 = 1,
   BL_RUNTIME_CPU_ARCH_ARM = 2,
   BL_RUNTIME_CPU_ARCH_MIPS = 3
 }
-global BLRuntimeCpuFeatures: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global BLRuntimeCpuFeatures: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   BL_RUNTIME_CPU_FEATURE_X86_SSE2 = 1,
   BL_RUNTIME_CPU_FEATURE_X86_SSE3 = 2,
   BL_RUNTIME_CPU_FEATURE_X86_SSSE3 = 4,
@@ -2289,7 +2289,7 @@ global BLRuntimeCpuFeatures: type <cimport, nodecl, using, ctypedef> = @enum(cin
   BL_RUNTIME_CPU_FEATURE_X86_AVX = 32,
   BL_RUNTIME_CPU_FEATURE_X86_AVX2 = 64
 }
-global BLRuntimeCleanupFlags: type <cimport, nodecl, using, ctypedef> = @enum(cuint){
+global BLRuntimeCleanupFlags: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   BL_RUNTIME_CLEANUP_OBJECT_POOL = 1,
   BL_RUNTIME_CLEANUP_ZEROED_POOL = 2,
   BL_RUNTIME_CLEANUP_THREAD_POOL = 16,

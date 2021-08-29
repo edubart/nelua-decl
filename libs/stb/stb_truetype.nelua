@@ -5,12 +5,12 @@ if not STB_TRUETYPE_NO_IMPL then
 end
 cinclude 'stb_truetype.h'
 ]]
-global stbtt__buf: type <cimport, nodecl> = @record{
+global stbtt__buf: type <cimport,nodecl> = @record{
   data: *cuchar,
   cursor: cint,
   size: cint
 }
-global stbtt_bakedchar: type <cimport, nodecl> = @record{
+global stbtt_bakedchar: type <cimport,nodecl> = @record{
   x0: cushort,
   y0: cushort,
   x1: cushort,
@@ -19,8 +19,8 @@ global stbtt_bakedchar: type <cimport, nodecl> = @record{
   yoff: float32,
   xadvance: float32
 }
-global function stbtt_BakeFontBitmap(data: *cuchar, offset: cint, pixel_height: float32, pixels: *cuchar, pw: cint, ph: cint, first_char: cint, num_chars: cint, chardata: *stbtt_bakedchar): cint <cimport, nodecl> end
-global stbtt_aligned_quad: type <cimport, nodecl> = @record{
+global function stbtt_BakeFontBitmap(data: *cuchar, offset: cint, pixel_height: float32, pixels: *cuchar, pw: cint, ph: cint, first_char: cint, num_chars: cint, chardata: *stbtt_bakedchar): cint <cimport,nodecl> end
+global stbtt_aligned_quad: type <cimport,nodecl> = @record{
   x0: float32,
   y0: float32,
   s0: float32,
@@ -30,9 +30,9 @@ global stbtt_aligned_quad: type <cimport, nodecl> = @record{
   s1: float32,
   t1: float32
 }
-global function stbtt_GetBakedQuad(chardata: *stbtt_bakedchar, pw: cint, ph: cint, char_index: cint, xpos: *float32, ypos: *float32, q: *stbtt_aligned_quad, opengl_fillrule: cint) <cimport, nodecl> end
-global function stbtt_GetScaledFontVMetrics(fontdata: *cuchar, index: cint, size: float32, ascent: *float32, descent: *float32, lineGap: *float32) <cimport, nodecl> end
-global stbtt_packedchar: type <cimport, nodecl> = @record{
+global function stbtt_GetBakedQuad(chardata: *stbtt_bakedchar, pw: cint, ph: cint, char_index: cint, xpos: *float32, ypos: *float32, q: *stbtt_aligned_quad, opengl_fillrule: cint): void <cimport,nodecl> end
+global function stbtt_GetScaledFontVMetrics(fontdata: *cuchar, index: cint, size: float32, ascent: *float32, descent: *float32, lineGap: *float32): void <cimport,nodecl> end
+global stbtt_packedchar: type <cimport,nodecl> = @record{
   x0: cushort,
   y0: cushort,
   x1: cushort,
@@ -43,13 +43,13 @@ global stbtt_packedchar: type <cimport, nodecl> = @record{
   xoff2: float32,
   yoff2: float32
 }
-global stbtt_pack_context: type <cimport, nodecl, forwarddecl> = @record{}
-global stbtt_fontinfo: type <cimport, nodecl, forwarddecl> = @record{}
-global stbrp_rect: type <cimport, nodecl, forwarddecl> = @record{}
-global function stbtt_PackBegin(spc: *stbtt_pack_context, pixels: *cuchar, width: cint, height: cint, stride_in_bytes: cint, padding: cint, alloc_context: pointer): cint <cimport, nodecl> end
-global function stbtt_PackEnd(spc: *stbtt_pack_context) <cimport, nodecl> end
-global function stbtt_PackFontRange(spc: *stbtt_pack_context, fontdata: *cuchar, font_index: cint, font_size: float32, first_unicode_char_in_range: cint, num_chars_in_range: cint, chardata_for_range: *stbtt_packedchar): cint <cimport, nodecl> end
-global stbtt_pack_range: type <cimport, nodecl> = @record{
+global stbtt_pack_context: type <cimport,nodecl,forwarddecl> = @record{}
+global stbtt_fontinfo: type <cimport,nodecl,forwarddecl> = @record{}
+global stbrp_rect: type <cimport,nodecl,forwarddecl> = @record{}
+global function stbtt_PackBegin(spc: *stbtt_pack_context, pixels: *cuchar, width: cint, height: cint, stride_in_bytes: cint, padding: cint, alloc_context: pointer): cint <cimport,nodecl> end
+global function stbtt_PackEnd(spc: *stbtt_pack_context): void <cimport,nodecl> end
+global function stbtt_PackFontRange(spc: *stbtt_pack_context, fontdata: *cuchar, font_index: cint, font_size: float32, first_unicode_char_in_range: cint, num_chars_in_range: cint, chardata_for_range: *stbtt_packedchar): cint <cimport,nodecl> end
+global stbtt_pack_range: type <cimport,nodecl> = @record{
   font_size: float32,
   first_unicode_codepoint_in_range: cint,
   array_of_unicode_codepoints: *cint,
@@ -58,13 +58,13 @@ global stbtt_pack_range: type <cimport, nodecl> = @record{
   h_oversample: cuchar,
   v_oversample: cuchar
 }
-global function stbtt_PackFontRanges(spc: *stbtt_pack_context, fontdata: *cuchar, font_index: cint, ranges: *stbtt_pack_range, num_ranges: cint): cint <cimport, nodecl> end
-global function stbtt_PackSetOversampling(spc: *stbtt_pack_context, h_oversample: cuint, v_oversample: cuint) <cimport, nodecl> end
-global function stbtt_PackSetSkipMissingCodepoints(spc: *stbtt_pack_context, skip: cint) <cimport, nodecl> end
-global function stbtt_GetPackedQuad(chardata: *stbtt_packedchar, pw: cint, ph: cint, char_index: cint, xpos: *float32, ypos: *float32, q: *stbtt_aligned_quad, align_to_integer: cint) <cimport, nodecl> end
-global function stbtt_PackFontRangesGatherRects(spc: *stbtt_pack_context, info: *stbtt_fontinfo, ranges: *stbtt_pack_range, num_ranges: cint, rects: *stbrp_rect): cint <cimport, nodecl> end
-global function stbtt_PackFontRangesPackRects(spc: *stbtt_pack_context, rects: *stbrp_rect, num_rects: cint) <cimport, nodecl> end
-global function stbtt_PackFontRangesRenderIntoRects(spc: *stbtt_pack_context, info: *stbtt_fontinfo, ranges: *stbtt_pack_range, num_ranges: cint, rects: *stbrp_rect): cint <cimport, nodecl> end
+global function stbtt_PackFontRanges(spc: *stbtt_pack_context, fontdata: *cuchar, font_index: cint, ranges: *stbtt_pack_range, num_ranges: cint): cint <cimport,nodecl> end
+global function stbtt_PackSetOversampling(spc: *stbtt_pack_context, h_oversample: cuint, v_oversample: cuint): void <cimport,nodecl> end
+global function stbtt_PackSetSkipMissingCodepoints(spc: *stbtt_pack_context, skip: cint): void <cimport,nodecl> end
+global function stbtt_GetPackedQuad(chardata: *stbtt_packedchar, pw: cint, ph: cint, char_index: cint, xpos: *float32, ypos: *float32, q: *stbtt_aligned_quad, align_to_integer: cint): void <cimport,nodecl> end
+global function stbtt_PackFontRangesGatherRects(spc: *stbtt_pack_context, info: *stbtt_fontinfo, ranges: *stbtt_pack_range, num_ranges: cint, rects: *stbrp_rect): cint <cimport,nodecl> end
+global function stbtt_PackFontRangesPackRects(spc: *stbtt_pack_context, rects: *stbrp_rect, num_rects: cint): void <cimport,nodecl> end
+global function stbtt_PackFontRangesRenderIntoRects(spc: *stbtt_pack_context, info: *stbtt_fontinfo, ranges: *stbtt_pack_range, num_ranges: cint, rects: *stbrp_rect): cint <cimport,nodecl> end
 stbtt_pack_context = @record{
   user_allocator_context: pointer,
   pack_info: pointer,
@@ -78,8 +78,8 @@ stbtt_pack_context = @record{
   pixels: *cuchar,
   nodes: pointer
 }
-global function stbtt_GetNumberOfFonts(data: *cuchar): cint <cimport, nodecl> end
-global function stbtt_GetFontOffsetForIndex(data: *cuchar, index: cint): cint <cimport, nodecl> end
+global function stbtt_GetNumberOfFonts(data: *cuchar): cint <cimport,nodecl> end
+global function stbtt_GetFontOffsetForIndex(data: *cuchar, index: cint): cint <cimport,nodecl> end
 stbtt_fontinfo = @record{
   userdata: pointer,
   data: *cuchar,
@@ -102,31 +102,31 @@ stbtt_fontinfo = @record{
   fontdicts: stbtt__buf,
   fdselect: stbtt__buf
 }
-global function stbtt_InitFont(info: *stbtt_fontinfo, data: *cuchar, offset: cint): cint <cimport, nodecl> end
-global function stbtt_FindGlyphIndex(info: *stbtt_fontinfo, unicode_codepoint: cint): cint <cimport, nodecl> end
-global function stbtt_ScaleForPixelHeight(info: *stbtt_fontinfo, pixels: float32): float32 <cimport, nodecl> end
-global function stbtt_ScaleForMappingEmToPixels(info: *stbtt_fontinfo, pixels: float32): float32 <cimport, nodecl> end
-global function stbtt_GetFontVMetrics(info: *stbtt_fontinfo, ascent: *cint, descent: *cint, lineGap: *cint) <cimport, nodecl> end
-global function stbtt_GetFontVMetricsOS2(info: *stbtt_fontinfo, typoAscent: *cint, typoDescent: *cint, typoLineGap: *cint): cint <cimport, nodecl> end
-global function stbtt_GetFontBoundingBox(info: *stbtt_fontinfo, x0: *cint, y0: *cint, x1: *cint, y1: *cint) <cimport, nodecl> end
-global function stbtt_GetCodepointHMetrics(info: *stbtt_fontinfo, codepoint: cint, advanceWidth: *cint, leftSideBearing: *cint) <cimport, nodecl> end
-global function stbtt_GetCodepointKernAdvance(info: *stbtt_fontinfo, ch1: cint, ch2: cint): cint <cimport, nodecl> end
-global function stbtt_GetCodepointBox(info: *stbtt_fontinfo, codepoint: cint, x0: *cint, y0: *cint, x1: *cint, y1: *cint): cint <cimport, nodecl> end
-global function stbtt_GetGlyphHMetrics(info: *stbtt_fontinfo, glyph_index: cint, advanceWidth: *cint, leftSideBearing: *cint) <cimport, nodecl> end
-global function stbtt_GetGlyphKernAdvance(info: *stbtt_fontinfo, glyph1: cint, glyph2: cint): cint <cimport, nodecl> end
-global function stbtt_GetGlyphBox(info: *stbtt_fontinfo, glyph_index: cint, x0: *cint, y0: *cint, x1: *cint, y1: *cint): cint <cimport, nodecl> end
-global stbtt_kerningentry: type <cimport, nodecl> = @record{
+global function stbtt_InitFont(info: *stbtt_fontinfo, data: *cuchar, offset: cint): cint <cimport,nodecl> end
+global function stbtt_FindGlyphIndex(info: *stbtt_fontinfo, unicode_codepoint: cint): cint <cimport,nodecl> end
+global function stbtt_ScaleForPixelHeight(info: *stbtt_fontinfo, pixels: float32): float32 <cimport,nodecl> end
+global function stbtt_ScaleForMappingEmToPixels(info: *stbtt_fontinfo, pixels: float32): float32 <cimport,nodecl> end
+global function stbtt_GetFontVMetrics(info: *stbtt_fontinfo, ascent: *cint, descent: *cint, lineGap: *cint): void <cimport,nodecl> end
+global function stbtt_GetFontVMetricsOS2(info: *stbtt_fontinfo, typoAscent: *cint, typoDescent: *cint, typoLineGap: *cint): cint <cimport,nodecl> end
+global function stbtt_GetFontBoundingBox(info: *stbtt_fontinfo, x0: *cint, y0: *cint, x1: *cint, y1: *cint): void <cimport,nodecl> end
+global function stbtt_GetCodepointHMetrics(info: *stbtt_fontinfo, codepoint: cint, advanceWidth: *cint, leftSideBearing: *cint): void <cimport,nodecl> end
+global function stbtt_GetCodepointKernAdvance(info: *stbtt_fontinfo, ch1: cint, ch2: cint): cint <cimport,nodecl> end
+global function stbtt_GetCodepointBox(info: *stbtt_fontinfo, codepoint: cint, x0: *cint, y0: *cint, x1: *cint, y1: *cint): cint <cimport,nodecl> end
+global function stbtt_GetGlyphHMetrics(info: *stbtt_fontinfo, glyph_index: cint, advanceWidth: *cint, leftSideBearing: *cint): void <cimport,nodecl> end
+global function stbtt_GetGlyphKernAdvance(info: *stbtt_fontinfo, glyph1: cint, glyph2: cint): cint <cimport,nodecl> end
+global function stbtt_GetGlyphBox(info: *stbtt_fontinfo, glyph_index: cint, x0: *cint, y0: *cint, x1: *cint, y1: *cint): cint <cimport,nodecl> end
+global stbtt_kerningentry: type <cimport,nodecl> = @record{
   glyph1: cint,
   glyph2: cint,
   advance: cint
 }
-global function stbtt_GetKerningTableLength(info: *stbtt_fontinfo): cint <cimport, nodecl> end
-global function stbtt_GetKerningTable(info: *stbtt_fontinfo, table: *stbtt_kerningentry, table_length: cint): cint <cimport, nodecl> end
+global function stbtt_GetKerningTableLength(info: *stbtt_fontinfo): cint <cimport,nodecl> end
+global function stbtt_GetKerningTable(info: *stbtt_fontinfo, table: *stbtt_kerningentry, table_length: cint): cint <cimport,nodecl> end
 global STBTT_vmove: cint <comptime> = 1
 global STBTT_vline: cint <comptime> = 2
 global STBTT_vcurve: cint <comptime> = 3
 global STBTT_vcubic: cint <comptime> = 4
-global stbtt_vertex: type <cimport, nodecl> = @record{
+global stbtt_vertex: type <cimport,nodecl> = @record{
   x: cshort,
   y: cshort,
   cx: cshort,
@@ -136,41 +136,41 @@ global stbtt_vertex: type <cimport, nodecl> = @record{
   type: cuchar,
   padding: cuchar
 }
-global function stbtt_IsGlyphEmpty(info: *stbtt_fontinfo, glyph_index: cint): cint <cimport, nodecl> end
-global function stbtt_GetCodepointShape(info: *stbtt_fontinfo, unicode_codepoint: cint, vertices: **stbtt_vertex): cint <cimport, nodecl> end
-global function stbtt_GetGlyphShape(info: *stbtt_fontinfo, glyph_index: cint, vertices: **stbtt_vertex): cint <cimport, nodecl> end
-global function stbtt_FreeShape(info: *stbtt_fontinfo, vertices: *stbtt_vertex) <cimport, nodecl> end
-global function stbtt_FindSVGDoc(info: *stbtt_fontinfo, gl: cint): *cuchar <cimport, nodecl> end
-global function stbtt_GetCodepointSVG(info: *stbtt_fontinfo, unicode_codepoint: cint, svg: *cstring): cint <cimport, nodecl> end
-global function stbtt_GetGlyphSVG(info: *stbtt_fontinfo, gl: cint, svg: *cstring): cint <cimport, nodecl> end
-global function stbtt_FreeBitmap(bitmap: *cuchar, userdata: pointer) <cimport, nodecl> end
-global function stbtt_GetCodepointBitmap(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, codepoint: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport, nodecl> end
-global function stbtt_GetCodepointBitmapSubpixel(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, codepoint: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport, nodecl> end
-global function stbtt_MakeCodepointBitmap(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, codepoint: cint) <cimport, nodecl> end
-global function stbtt_MakeCodepointBitmapSubpixel(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, codepoint: cint) <cimport, nodecl> end
-global function stbtt_MakeCodepointBitmapSubpixelPrefilter(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, oversample_x: cint, oversample_y: cint, sub_x: *float32, sub_y: *float32, codepoint: cint) <cimport, nodecl> end
-global function stbtt_GetCodepointBitmapBox(font: *stbtt_fontinfo, codepoint: cint, scale_x: float32, scale_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint) <cimport, nodecl> end
-global function stbtt_GetCodepointBitmapBoxSubpixel(font: *stbtt_fontinfo, codepoint: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint) <cimport, nodecl> end
-global function stbtt_GetGlyphBitmap(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, glyph: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport, nodecl> end
-global function stbtt_GetGlyphBitmapSubpixel(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, glyph: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport, nodecl> end
-global function stbtt_MakeGlyphBitmap(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, glyph: cint) <cimport, nodecl> end
-global function stbtt_MakeGlyphBitmapSubpixel(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, glyph: cint) <cimport, nodecl> end
-global function stbtt_MakeGlyphBitmapSubpixelPrefilter(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, oversample_x: cint, oversample_y: cint, sub_x: *float32, sub_y: *float32, glyph: cint) <cimport, nodecl> end
-global function stbtt_GetGlyphBitmapBox(font: *stbtt_fontinfo, glyph: cint, scale_x: float32, scale_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint) <cimport, nodecl> end
-global function stbtt_GetGlyphBitmapBoxSubpixel(font: *stbtt_fontinfo, glyph: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint) <cimport, nodecl> end
-global stbtt__bitmap: type <cimport, nodecl> = @record{
+global function stbtt_IsGlyphEmpty(info: *stbtt_fontinfo, glyph_index: cint): cint <cimport,nodecl> end
+global function stbtt_GetCodepointShape(info: *stbtt_fontinfo, unicode_codepoint: cint, vertices: **stbtt_vertex): cint <cimport,nodecl> end
+global function stbtt_GetGlyphShape(info: *stbtt_fontinfo, glyph_index: cint, vertices: **stbtt_vertex): cint <cimport,nodecl> end
+global function stbtt_FreeShape(info: *stbtt_fontinfo, vertices: *stbtt_vertex): void <cimport,nodecl> end
+global function stbtt_FindSVGDoc(info: *stbtt_fontinfo, gl: cint): *cuchar <cimport,nodecl> end
+global function stbtt_GetCodepointSVG(info: *stbtt_fontinfo, unicode_codepoint: cint, svg: *cstring): cint <cimport,nodecl> end
+global function stbtt_GetGlyphSVG(info: *stbtt_fontinfo, gl: cint, svg: *cstring): cint <cimport,nodecl> end
+global function stbtt_FreeBitmap(bitmap: *cuchar, userdata: pointer): void <cimport,nodecl> end
+global function stbtt_GetCodepointBitmap(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, codepoint: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport,nodecl> end
+global function stbtt_GetCodepointBitmapSubpixel(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, codepoint: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport,nodecl> end
+global function stbtt_MakeCodepointBitmap(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, codepoint: cint): void <cimport,nodecl> end
+global function stbtt_MakeCodepointBitmapSubpixel(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, codepoint: cint): void <cimport,nodecl> end
+global function stbtt_MakeCodepointBitmapSubpixelPrefilter(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, oversample_x: cint, oversample_y: cint, sub_x: *float32, sub_y: *float32, codepoint: cint): void <cimport,nodecl> end
+global function stbtt_GetCodepointBitmapBox(font: *stbtt_fontinfo, codepoint: cint, scale_x: float32, scale_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint): void <cimport,nodecl> end
+global function stbtt_GetCodepointBitmapBoxSubpixel(font: *stbtt_fontinfo, codepoint: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint): void <cimport,nodecl> end
+global function stbtt_GetGlyphBitmap(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, glyph: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport,nodecl> end
+global function stbtt_GetGlyphBitmapSubpixel(info: *stbtt_fontinfo, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, glyph: cint, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport,nodecl> end
+global function stbtt_MakeGlyphBitmap(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, glyph: cint): void <cimport,nodecl> end
+global function stbtt_MakeGlyphBitmapSubpixel(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, glyph: cint): void <cimport,nodecl> end
+global function stbtt_MakeGlyphBitmapSubpixelPrefilter(info: *stbtt_fontinfo, output: *cuchar, out_w: cint, out_h: cint, out_stride: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, oversample_x: cint, oversample_y: cint, sub_x: *float32, sub_y: *float32, glyph: cint): void <cimport,nodecl> end
+global function stbtt_GetGlyphBitmapBox(font: *stbtt_fontinfo, glyph: cint, scale_x: float32, scale_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint): void <cimport,nodecl> end
+global function stbtt_GetGlyphBitmapBoxSubpixel(font: *stbtt_fontinfo, glyph: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, ix0: *cint, iy0: *cint, ix1: *cint, iy1: *cint): void <cimport,nodecl> end
+global stbtt__bitmap: type <cimport,nodecl> = @record{
   w: cint,
   h: cint,
   stride: cint,
   pixels: *cuchar
 }
-global function stbtt_Rasterize(result: *stbtt__bitmap, flatness_in_pixels: float32, vertices: *stbtt_vertex, num_verts: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, x_off: cint, y_off: cint, invert: cint, userdata: pointer) <cimport, nodecl> end
-global function stbtt_FreeSDF(bitmap: *cuchar, userdata: pointer) <cimport, nodecl> end
-global function stbtt_GetGlyphSDF(info: *stbtt_fontinfo, scale: float32, glyph: cint, padding: cint, onedge_value: cuchar, pixel_dist_scale: float32, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport, nodecl> end
-global function stbtt_GetCodepointSDF(info: *stbtt_fontinfo, scale: float32, codepoint: cint, padding: cint, onedge_value: cuchar, pixel_dist_scale: float32, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport, nodecl> end
-global function stbtt_FindMatchingFont(fontdata: *cuchar, name: cstring, flags: cint): cint <cimport, nodecl> end
-global function stbtt_CompareUTF8toUTF16_bigendian(s1: cstring, len1: cint, s2: cstring, len2: cint): cint <cimport, nodecl> end
-global function stbtt_GetFontNameString(font: *stbtt_fontinfo, length: *cint, platformID: cint, encodingID: cint, languageID: cint, nameID: cint): cstring <cimport, nodecl> end
+global function stbtt_Rasterize(result: *stbtt__bitmap, flatness_in_pixels: float32, vertices: *stbtt_vertex, num_verts: cint, scale_x: float32, scale_y: float32, shift_x: float32, shift_y: float32, x_off: cint, y_off: cint, invert: cint, userdata: pointer): void <cimport,nodecl> end
+global function stbtt_FreeSDF(bitmap: *cuchar, userdata: pointer): void <cimport,nodecl> end
+global function stbtt_GetGlyphSDF(info: *stbtt_fontinfo, scale: float32, glyph: cint, padding: cint, onedge_value: cuchar, pixel_dist_scale: float32, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport,nodecl> end
+global function stbtt_GetCodepointSDF(info: *stbtt_fontinfo, scale: float32, codepoint: cint, padding: cint, onedge_value: cuchar, pixel_dist_scale: float32, width: *cint, height: *cint, xoff: *cint, yoff: *cint): *cuchar <cimport,nodecl> end
+global function stbtt_FindMatchingFont(fontdata: *cuchar, name: cstring, flags: cint): cint <cimport,nodecl> end
+global function stbtt_CompareUTF8toUTF16_bigendian(s1: cstring, len1: cint, s2: cstring, len2: cint): cint <cimport,nodecl> end
+global function stbtt_GetFontNameString(font: *stbtt_fontinfo, length: *cint, platformID: cint, encodingID: cint, languageID: cint, nameID: cint): cstring <cimport,nodecl> end
 global STBTT_PLATFORM_ID_UNICODE: cint <comptime> = 0
 global STBTT_PLATFORM_ID_MAC: cint <comptime> = 1
 global STBTT_PLATFORM_ID_ISO: cint <comptime> = 2

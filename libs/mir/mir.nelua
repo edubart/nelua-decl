@@ -2,11 +2,11 @@
 cinclude 'c2mir.h'
 linklib 'mir'
 ]]
-global FILE: type <cimport, nodecl, forwarddecl> = @record{}
-global function mir_varr_assert_fail(op: cstring, var: cstring) <cimport, nodecl> end
-global function mir_varr_error(message: cstring) <cimport, nodecl> end
-global function mir_htab_error(message: cstring) <cimport, nodecl> end
-global MIR_error_type: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global FILE: type <cimport,nodecl,forwarddecl> = @record{}
+global function mir_varr_assert_fail(op: cstring, var: cstring): void <cimport,nodecl> end
+global function mir_varr_error(message: cstring): void <cimport,nodecl> end
+global function mir_htab_error(message: cstring): void <cimport,nodecl> end
+global MIR_error_type: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   MIR_no_error = 0,
   MIR_syntax_error = 1,
   MIR_binary_io_error = 2,
@@ -38,8 +38,8 @@ global MIR_error_type: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   MIR_parallel_error = 28
 }
 global MIR_error_type_t: type = @MIR_error_type
-global MIR_error_func_t: type <cimport, nodecl> = @function(MIR_error_type_t, cstring, cvarargs)
-global MIR_insn_code_t: type <cimport, nodecl, using> = @enum(cint){
+global MIR_error_func_t: type <cimport,nodecl> = @function(MIR_error_type_t, cstring, cvarargs): void
+global MIR_insn_code_t: type <cimport,nodecl,using> = @enum(cint){
   MIR_MOV = 0,
   MIR_FMOV = 1,
   MIR_DMOV = 2,
@@ -206,7 +206,7 @@ global MIR_insn_code_t: type <cimport, nodecl, using> = @enum(cint){
   MIR_INVALID_INSN = 163,
   MIR_INSN_BOUND = 164
 }
-global MIR_type_t: type <cimport, nodecl, using> = @enum(cint){
+global MIR_type_t: type <cimport,nodecl,using> = @enum(cint){
   MIR_T_I8 = 0,
   MIR_T_U8 = 1,
   MIR_T_I16 = 2,
@@ -224,28 +224,28 @@ global MIR_type_t: type <cimport, nodecl, using> = @enum(cint){
   MIR_T_UNDEF = 18,
   MIR_T_BOUND = 19
 }
-global function MIR_int_type_p(t: MIR_type_t): cint <cimport, nodecl> end
-global function MIR_fp_type_p(t: MIR_type_t): cint <cimport, nodecl> end
-global function MIR_blk_type_p(t: MIR_type_t): cint <cimport, nodecl> end
-global function MIR_all_blk_type_p(t: MIR_type_t): cint <cimport, nodecl> end
-global MIR_imm_t: type <cimport, nodecl> = @union{
+global function MIR_int_type_p(t: MIR_type_t): cint <cimport,nodecl> end
+global function MIR_fp_type_p(t: MIR_type_t): cint <cimport,nodecl> end
+global function MIR_blk_type_p(t: MIR_type_t): cint <cimport,nodecl> end
+global function MIR_all_blk_type_p(t: MIR_type_t): cint <cimport,nodecl> end
+global MIR_imm_t: type <cimport,nodecl> = @union{
   i: int64,
   u: uint64,
   f: float32,
   d: float64,
   ld: clongdouble
 }
-global MIR_mem_t: type <cimport, nodecl> = @record{
+global MIR_mem_t: type <cimport,nodecl> = @record{
   type: cuchar,
   scale: cuchar,
   base: cuint,
   index: cuint,
   disp: clong
 }
-global MIR_insn: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global MIR_insn: type <cimport,nodecl,forwarddecl,cincomplete,ctypedef> = @record{}
 global MIR_label_t: type = @*MIR_insn
 global MIR_name_t: type = @cstring
-global MIR_op_mode_t: type <cimport, nodecl, using> = @enum(cint){
+global MIR_op_mode_t: type <cimport,nodecl,using> = @enum(cint){
   MIR_OP_UNDEF = 0,
   MIR_OP_REG = 1,
   MIR_OP_HARD_REG = 2,
@@ -261,14 +261,14 @@ global MIR_op_mode_t: type <cimport, nodecl, using> = @enum(cint){
   MIR_OP_LABEL = 12,
   MIR_OP_BOUND = 13
 }
-global MIR_item: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global MIR_item: type <cimport,nodecl,forwarddecl,cincomplete,ctypedef> = @record{}
 global MIR_item_t: type = @*MIR_item
-global MIR_str: type <cimport, nodecl, ctypedef> = @record{
+global MIR_str: type <cimport,nodecl,ctypedef> = @record{
   len: csize,
   s: cstring
 }
 global MIR_str_t: type = @MIR_str
-global MIR_op_t: type <cimport, nodecl> = @record{
+global MIR_op_t: type <cimport,nodecl> = @record{
   data: pointer,
   mode: MIR_op_mode_t,
   value_mode: MIR_op_mode_t,
@@ -294,47 +294,47 @@ MIR_insn = @record{
   nops: cuint,
   ops: [1]MIR_op_t
 }
-global DLIST_MIR_insn_t: type <cimport, nodecl> = @record{
+global DLIST_MIR_insn_t: type <cimport,nodecl> = @record{
   head: MIR_insn_t,
   tail: MIR_insn_t
 }
-global function DLIST_MIR_insn_t_init(list: *DLIST_MIR_insn_t) <cimport, nodecl> end
-global function DLIST_MIR_insn_t_head(list: *DLIST_MIR_insn_t): MIR_insn_t <cimport, nodecl> end
-global function DLIST_MIR_insn_t_tail(list: *DLIST_MIR_insn_t): MIR_insn_t <cimport, nodecl> end
-global function DLIST_MIR_insn_t_prev(elem: MIR_insn_t): MIR_insn_t <cimport, nodecl> end
-global function DLIST_MIR_insn_t_next(elem: MIR_insn_t): MIR_insn_t <cimport, nodecl> end
-global function DLIST_MIR_insn_t_el(list: *DLIST_MIR_insn_t, n: cint): MIR_insn_t <cimport, nodecl> end
-global function DLIST_MIR_insn_t_prepend(list: *DLIST_MIR_insn_t, elem: MIR_insn_t) <cimport, nodecl> end
-global function DLIST_MIR_insn_t_append(list: *DLIST_MIR_insn_t, elem: MIR_insn_t) <cimport, nodecl> end
-global function DLIST_MIR_insn_t_insert_before(list: *DLIST_MIR_insn_t, before: MIR_insn_t, elem: MIR_insn_t) <cimport, nodecl> end
-global function DLIST_MIR_insn_t_insert_after(list: *DLIST_MIR_insn_t, after: MIR_insn_t, elem: MIR_insn_t) <cimport, nodecl> end
-global function DLIST_MIR_insn_t_remove(list: *DLIST_MIR_insn_t, elem: MIR_insn_t) <cimport, nodecl> end
-global function DLIST_MIR_insn_t_length(list: *DLIST_MIR_insn_t): csize <cimport, nodecl> end
-global MIR_var: type <cimport, nodecl, ctypedef> = @record{
+global function DLIST_MIR_insn_t_init(list: *DLIST_MIR_insn_t): void <cimport,nodecl> end
+global function DLIST_MIR_insn_t_head(list: *DLIST_MIR_insn_t): MIR_insn_t <cimport,nodecl> end
+global function DLIST_MIR_insn_t_tail(list: *DLIST_MIR_insn_t): MIR_insn_t <cimport,nodecl> end
+global function DLIST_MIR_insn_t_prev(elem: MIR_insn_t): MIR_insn_t <cimport,nodecl> end
+global function DLIST_MIR_insn_t_next(elem: MIR_insn_t): MIR_insn_t <cimport,nodecl> end
+global function DLIST_MIR_insn_t_el(list: *DLIST_MIR_insn_t, n: cint): MIR_insn_t <cimport,nodecl> end
+global function DLIST_MIR_insn_t_prepend(list: *DLIST_MIR_insn_t, elem: MIR_insn_t): void <cimport,nodecl> end
+global function DLIST_MIR_insn_t_append(list: *DLIST_MIR_insn_t, elem: MIR_insn_t): void <cimport,nodecl> end
+global function DLIST_MIR_insn_t_insert_before(list: *DLIST_MIR_insn_t, before: MIR_insn_t, elem: MIR_insn_t): void <cimport,nodecl> end
+global function DLIST_MIR_insn_t_insert_after(list: *DLIST_MIR_insn_t, after: MIR_insn_t, elem: MIR_insn_t): void <cimport,nodecl> end
+global function DLIST_MIR_insn_t_remove(list: *DLIST_MIR_insn_t, elem: MIR_insn_t): void <cimport,nodecl> end
+global function DLIST_MIR_insn_t_length(list: *DLIST_MIR_insn_t): csize <cimport,nodecl> end
+global MIR_var: type <cimport,nodecl,ctypedef> = @record{
   type: MIR_type_t,
   name: cstring,
   size: csize
 }
 global MIR_var_t: type = @MIR_var
-global VARR_MIR_var_t: type <cimport, nodecl> = @record{
+global VARR_MIR_var_t: type <cimport,nodecl> = @record{
   els_num: csize,
   size: csize,
   varr: *MIR_var_t
 }
-global function VARR_MIR_var_tcreate(varr: **VARR_MIR_var_t, size: csize) <cimport, nodecl> end
-global function VARR_MIR_var_tdestroy(varr: **VARR_MIR_var_t) <cimport, nodecl> end
-global function VARR_MIR_var_tlength(varr: *VARR_MIR_var_t): csize <cimport, nodecl> end
-global function VARR_MIR_var_taddr(varr: *VARR_MIR_var_t): *MIR_var_t <cimport, nodecl> end
-global function VARR_MIR_var_tlast(varr: *VARR_MIR_var_t): MIR_var_t <cimport, nodecl> end
-global function VARR_MIR_var_tget(varr: *VARR_MIR_var_t, ix: csize): MIR_var_t <cimport, nodecl> end
-global function VARR_MIR_var_tset(varr: *VARR_MIR_var_t, ix: csize, obj: MIR_var_t) <cimport, nodecl> end
-global function VARR_MIR_var_ttrunc(varr: *VARR_MIR_var_t, size: csize) <cimport, nodecl> end
-global function VARR_MIR_var_texpand(varr: *VARR_MIR_var_t, size: csize): cint <cimport, nodecl> end
-global function VARR_MIR_var_ttailor(varr: *VARR_MIR_var_t, size: csize) <cimport, nodecl> end
-global function VARR_MIR_var_tpush(varr: *VARR_MIR_var_t, obj: MIR_var_t) <cimport, nodecl> end
-global function VARR_MIR_var_tpush_arr(varr: *VARR_MIR_var_t, objs: *MIR_var_t, len: csize) <cimport, nodecl> end
-global function VARR_MIR_var_tpop(varr: *VARR_MIR_var_t): MIR_var_t <cimport, nodecl> end
-global MIR_func: type <cimport, nodecl, ctypedef> = @record{
+global function VARR_MIR_var_tcreate(varr: **VARR_MIR_var_t, size: csize): void <cimport,nodecl> end
+global function VARR_MIR_var_tdestroy(varr: **VARR_MIR_var_t): void <cimport,nodecl> end
+global function VARR_MIR_var_tlength(varr: *VARR_MIR_var_t): csize <cimport,nodecl> end
+global function VARR_MIR_var_taddr(varr: *VARR_MIR_var_t): *MIR_var_t <cimport,nodecl> end
+global function VARR_MIR_var_tlast(varr: *VARR_MIR_var_t): MIR_var_t <cimport,nodecl> end
+global function VARR_MIR_var_tget(varr: *VARR_MIR_var_t, ix: csize): MIR_var_t <cimport,nodecl> end
+global function VARR_MIR_var_tset(varr: *VARR_MIR_var_t, ix: csize, obj: MIR_var_t): void <cimport,nodecl> end
+global function VARR_MIR_var_ttrunc(varr: *VARR_MIR_var_t, size: csize): void <cimport,nodecl> end
+global function VARR_MIR_var_texpand(varr: *VARR_MIR_var_t, size: csize): cint <cimport,nodecl> end
+global function VARR_MIR_var_ttailor(varr: *VARR_MIR_var_t, size: csize): void <cimport,nodecl> end
+global function VARR_MIR_var_tpush(varr: *VARR_MIR_var_t, obj: MIR_var_t): void <cimport,nodecl> end
+global function VARR_MIR_var_tpush_arr(varr: *VARR_MIR_var_t, objs: *MIR_var_t, len: csize): void <cimport,nodecl> end
+global function VARR_MIR_var_tpop(varr: *VARR_MIR_var_t): MIR_var_t <cimport,nodecl> end
+global MIR_func: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
   insns: DLIST_MIR_insn_t,
   original_insns: DLIST_MIR_insn_t,
@@ -351,7 +351,7 @@ global MIR_func: type <cimport, nodecl, ctypedef> = @record{
   internal: pointer
 }
 global MIR_func_t: type = @*MIR_func
-global MIR_proto: type <cimport, nodecl, ctypedef> = @record{
+global MIR_proto: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
   nres: uint32,
   res_types: *MIR_type_t,
@@ -359,7 +359,7 @@ global MIR_proto: type <cimport, nodecl, ctypedef> = @record{
   args: *VARR_MIR_var_t
 }
 global MIR_proto_t: type = @*MIR_proto
-global MIR_data: type <cimport, nodecl, ctypedef> = @record{
+global MIR_data: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
   el_type: MIR_type_t,
   nel: csize,
@@ -369,27 +369,27 @@ global MIR_data: type <cimport, nodecl, ctypedef> = @record{
   }
 }
 global MIR_data_t: type = @*MIR_data
-global MIR_ref_data: type <cimport, nodecl, ctypedef> = @record{
+global MIR_ref_data: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
   ref_item: MIR_item_t,
   disp: int64,
   load_addr: pointer
 }
 global MIR_ref_data_t: type = @*MIR_ref_data
-global MIR_expr_data: type <cimport, nodecl, ctypedef> = @record{
+global MIR_expr_data: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
   expr_item: MIR_item_t,
   load_addr: pointer
 }
 global MIR_expr_data_t: type = @*MIR_expr_data
-global MIR_bss: type <cimport, nodecl, ctypedef> = @record{
+global MIR_bss: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
   len: uint64
 }
 global MIR_bss_t: type = @*MIR_bss
-global MIR_module: type <cimport, nodecl, forwarddecl, cincomplete, ctypedef> = @record{}
+global MIR_module: type <cimport,nodecl,forwarddecl,cincomplete,ctypedef> = @record{}
 global MIR_module_t: type = @*MIR_module
-global MIR_item_type_t: type <cimport, nodecl, using> = @enum(cint){
+global MIR_item_type_t: type <cimport,nodecl,using> = @enum(cint){
   MIR_func_item = 0,
   MIR_proto_item = 1,
   MIR_import_item = 2,
@@ -420,125 +420,125 @@ MIR_item = @record{
     bss: MIR_bss_t
   }
 }
-global DLIST_MIR_item_t: type <cimport, nodecl> = @record{
+global DLIST_MIR_item_t: type <cimport,nodecl> = @record{
   head: MIR_item_t,
   tail: MIR_item_t
 }
-global function DLIST_MIR_item_t_init(list: *DLIST_MIR_item_t) <cimport, nodecl> end
-global function DLIST_MIR_item_t_head(list: *DLIST_MIR_item_t): MIR_item_t <cimport, nodecl> end
-global function DLIST_MIR_item_t_tail(list: *DLIST_MIR_item_t): MIR_item_t <cimport, nodecl> end
-global function DLIST_MIR_item_t_prev(elem: MIR_item_t): MIR_item_t <cimport, nodecl> end
-global function DLIST_MIR_item_t_next(elem: MIR_item_t): MIR_item_t <cimport, nodecl> end
-global function DLIST_MIR_item_t_el(list: *DLIST_MIR_item_t, n: cint): MIR_item_t <cimport, nodecl> end
-global function DLIST_MIR_item_t_prepend(list: *DLIST_MIR_item_t, elem: MIR_item_t) <cimport, nodecl> end
-global function DLIST_MIR_item_t_append(list: *DLIST_MIR_item_t, elem: MIR_item_t) <cimport, nodecl> end
-global function DLIST_MIR_item_t_insert_before(list: *DLIST_MIR_item_t, before: MIR_item_t, elem: MIR_item_t) <cimport, nodecl> end
-global function DLIST_MIR_item_t_insert_after(list: *DLIST_MIR_item_t, after: MIR_item_t, elem: MIR_item_t) <cimport, nodecl> end
-global function DLIST_MIR_item_t_remove(list: *DLIST_MIR_item_t, elem: MIR_item_t) <cimport, nodecl> end
-global function DLIST_MIR_item_t_length(list: *DLIST_MIR_item_t): csize <cimport, nodecl> end
+global function DLIST_MIR_item_t_init(list: *DLIST_MIR_item_t): void <cimport,nodecl> end
+global function DLIST_MIR_item_t_head(list: *DLIST_MIR_item_t): MIR_item_t <cimport,nodecl> end
+global function DLIST_MIR_item_t_tail(list: *DLIST_MIR_item_t): MIR_item_t <cimport,nodecl> end
+global function DLIST_MIR_item_t_prev(elem: MIR_item_t): MIR_item_t <cimport,nodecl> end
+global function DLIST_MIR_item_t_next(elem: MIR_item_t): MIR_item_t <cimport,nodecl> end
+global function DLIST_MIR_item_t_el(list: *DLIST_MIR_item_t, n: cint): MIR_item_t <cimport,nodecl> end
+global function DLIST_MIR_item_t_prepend(list: *DLIST_MIR_item_t, elem: MIR_item_t): void <cimport,nodecl> end
+global function DLIST_MIR_item_t_append(list: *DLIST_MIR_item_t, elem: MIR_item_t): void <cimport,nodecl> end
+global function DLIST_MIR_item_t_insert_before(list: *DLIST_MIR_item_t, before: MIR_item_t, elem: MIR_item_t): void <cimport,nodecl> end
+global function DLIST_MIR_item_t_insert_after(list: *DLIST_MIR_item_t, after: MIR_item_t, elem: MIR_item_t): void <cimport,nodecl> end
+global function DLIST_MIR_item_t_remove(list: *DLIST_MIR_item_t, elem: MIR_item_t): void <cimport,nodecl> end
+global function DLIST_MIR_item_t_length(list: *DLIST_MIR_item_t): csize <cimport,nodecl> end
 MIR_module = @record{
   data: pointer,
   name: cstring,
   items: DLIST_MIR_item_t,
   last_temp_item_num: uint32
 }
-global DLIST_MIR_module_t: type <cimport, nodecl> = @record{
+global DLIST_MIR_module_t: type <cimport,nodecl> = @record{
   head: MIR_module_t,
   tail: MIR_module_t
 }
-global function DLIST_MIR_module_t_init(list: *DLIST_MIR_module_t) <cimport, nodecl> end
-global function DLIST_MIR_module_t_head(list: *DLIST_MIR_module_t): MIR_module_t <cimport, nodecl> end
-global function DLIST_MIR_module_t_tail(list: *DLIST_MIR_module_t): MIR_module_t <cimport, nodecl> end
-global function DLIST_MIR_module_t_prev(elem: MIR_module_t): MIR_module_t <cimport, nodecl> end
-global function DLIST_MIR_module_t_next(elem: MIR_module_t): MIR_module_t <cimport, nodecl> end
-global function DLIST_MIR_module_t_el(list: *DLIST_MIR_module_t, n: cint): MIR_module_t <cimport, nodecl> end
-global function DLIST_MIR_module_t_prepend(list: *DLIST_MIR_module_t, elem: MIR_module_t) <cimport, nodecl> end
-global function DLIST_MIR_module_t_append(list: *DLIST_MIR_module_t, elem: MIR_module_t) <cimport, nodecl> end
-global function DLIST_MIR_module_t_insert_before(list: *DLIST_MIR_module_t, before: MIR_module_t, elem: MIR_module_t) <cimport, nodecl> end
-global function DLIST_MIR_module_t_insert_after(list: *DLIST_MIR_module_t, after: MIR_module_t, elem: MIR_module_t) <cimport, nodecl> end
-global function DLIST_MIR_module_t_remove(list: *DLIST_MIR_module_t, elem: MIR_module_t) <cimport, nodecl> end
-global function DLIST_MIR_module_t_length(list: *DLIST_MIR_module_t): csize <cimport, nodecl> end
-global MIR_context: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global function DLIST_MIR_module_t_init(list: *DLIST_MIR_module_t): void <cimport,nodecl> end
+global function DLIST_MIR_module_t_head(list: *DLIST_MIR_module_t): MIR_module_t <cimport,nodecl> end
+global function DLIST_MIR_module_t_tail(list: *DLIST_MIR_module_t): MIR_module_t <cimport,nodecl> end
+global function DLIST_MIR_module_t_prev(elem: MIR_module_t): MIR_module_t <cimport,nodecl> end
+global function DLIST_MIR_module_t_next(elem: MIR_module_t): MIR_module_t <cimport,nodecl> end
+global function DLIST_MIR_module_t_el(list: *DLIST_MIR_module_t, n: cint): MIR_module_t <cimport,nodecl> end
+global function DLIST_MIR_module_t_prepend(list: *DLIST_MIR_module_t, elem: MIR_module_t): void <cimport,nodecl> end
+global function DLIST_MIR_module_t_append(list: *DLIST_MIR_module_t, elem: MIR_module_t): void <cimport,nodecl> end
+global function DLIST_MIR_module_t_insert_before(list: *DLIST_MIR_module_t, before: MIR_module_t, elem: MIR_module_t): void <cimport,nodecl> end
+global function DLIST_MIR_module_t_insert_after(list: *DLIST_MIR_module_t, after: MIR_module_t, elem: MIR_module_t): void <cimport,nodecl> end
+global function DLIST_MIR_module_t_remove(list: *DLIST_MIR_module_t, elem: MIR_module_t): void <cimport,nodecl> end
+global function DLIST_MIR_module_t_length(list: *DLIST_MIR_module_t): csize <cimport,nodecl> end
+global MIR_context: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 global MIR_context_t: type = @*MIR_context
-global function MIR_FP_branch_code_p(code: MIR_insn_code_t): cint <cimport, nodecl> end
-global function MIR_call_code_p(code: MIR_insn_code_t): cint <cimport, nodecl> end
-global function MIR_int_branch_code_p(code: MIR_insn_code_t): cint <cimport, nodecl> end
-global function MIR_branch_code_p(code: MIR_insn_code_t): cint <cimport, nodecl> end
-global function MIR_init(): MIR_context_t <cimport, nodecl> end
-global function MIR_finish(ctx: MIR_context_t) <cimport, nodecl> end
-global function MIR_new_module(ctx: MIR_context_t, name: cstring): MIR_module_t <cimport, nodecl> end
-global function MIR_get_module_list(ctx: MIR_context_t): *DLIST_MIR_module_t <cimport, nodecl> end
-global function MIR_new_import(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport, nodecl> end
-global function MIR_new_export(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport, nodecl> end
-global function MIR_new_forward(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport, nodecl> end
-global function MIR_new_bss(ctx: MIR_context_t, name: cstring, len: csize): MIR_item_t <cimport, nodecl> end
-global function MIR_new_data(ctx: MIR_context_t, name: cstring, el_type: MIR_type_t, nel: csize, els: pointer): MIR_item_t <cimport, nodecl> end
-global function MIR_new_string_data(ctx: MIR_context_t, name: cstring, str: MIR_str_t): MIR_item_t <cimport, nodecl> end
-global function MIR_new_ref_data(ctx: MIR_context_t, name: cstring, item: MIR_item_t, disp: int64): MIR_item_t <cimport, nodecl> end
-global function MIR_new_expr_data(ctx: MIR_context_t, name: cstring, expr_item: MIR_item_t): MIR_item_t <cimport, nodecl> end
-global function MIR_new_proto_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport, nodecl> end
-global function MIR_new_proto(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport, nodecl> end
-global function MIR_new_vararg_proto_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport, nodecl> end
-global function MIR_new_vararg_proto(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport, nodecl> end
-global function MIR_new_func_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport, nodecl> end
-global function MIR_new_func(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport, nodecl> end
-global function MIR_new_vararg_func_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport, nodecl> end
-global function MIR_new_vararg_func(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport, nodecl> end
-global function MIR_item_name(ctx: MIR_context_t, item: MIR_item_t): cstring <cimport, nodecl> end
-global function MIR_new_func_reg(ctx: MIR_context_t, func: MIR_func_t, type: MIR_type_t, name: cstring): cuint <cimport, nodecl> end
-global function MIR_finish_func(ctx: MIR_context_t) <cimport, nodecl> end
-global function MIR_finish_module(ctx: MIR_context_t) <cimport, nodecl> end
-global function MIR_get_error_func(ctx: MIR_context_t): MIR_error_func_t <cimport, nodecl> end
-global function MIR_set_error_func(ctx: MIR_context_t, func: MIR_error_func_t) <cimport, nodecl> end
-global function MIR_new_insn_arr(ctx: MIR_context_t, code: MIR_insn_code_t, nops: csize, ops: *MIR_op_t): MIR_insn_t <cimport, nodecl> end
-global function MIR_new_insn(ctx: MIR_context_t, code: MIR_insn_code_t, ...: cvarargs): MIR_insn_t <cimport, nodecl> end
-global function MIR_new_call_insn(ctx: MIR_context_t, nops: csize, ...: cvarargs): MIR_insn_t <cimport, nodecl> end
-global function MIR_new_ret_insn(ctx: MIR_context_t, nops: csize, ...: cvarargs): MIR_insn_t <cimport, nodecl> end
-global function MIR_copy_insn(ctx: MIR_context_t, insn: MIR_insn_t): MIR_insn_t <cimport, nodecl> end
-global function MIR_insn_name(ctx: MIR_context_t, code: MIR_insn_code_t): cstring <cimport, nodecl> end
-global function MIR_insn_nops(ctx: MIR_context_t, insn: MIR_insn_t): csize <cimport, nodecl> end
-global function MIR_insn_op_mode(ctx: MIR_context_t, insn: MIR_insn_t, nop: csize, out_p: *cint): MIR_op_mode_t <cimport, nodecl> end
-global function MIR_new_label(ctx: MIR_context_t): MIR_insn_t <cimport, nodecl> end
-global function MIR_reg(ctx: MIR_context_t, reg_name: cstring, func: MIR_func_t): cuint <cimport, nodecl> end
-global function MIR_reg_type(ctx: MIR_context_t, reg: cuint, func: MIR_func_t): MIR_type_t <cimport, nodecl> end
-global function MIR_reg_name(ctx: MIR_context_t, reg: cuint, func: MIR_func_t): cstring <cimport, nodecl> end
-global function MIR_new_reg_op(ctx: MIR_context_t, reg: cuint): MIR_op_t <cimport, nodecl> end
-global function MIR_new_int_op(ctx: MIR_context_t, v: int64): MIR_op_t <cimport, nodecl> end
-global function MIR_new_uint_op(ctx: MIR_context_t, v: uint64): MIR_op_t <cimport, nodecl> end
-global function MIR_new_float_op(ctx: MIR_context_t, v: float32): MIR_op_t <cimport, nodecl> end
-global function MIR_new_double_op(ctx: MIR_context_t, v: float64): MIR_op_t <cimport, nodecl> end
-global function MIR_new_ldouble_op(ctx: MIR_context_t, v: clongdouble): MIR_op_t <cimport, nodecl> end
-global function MIR_new_ref_op(ctx: MIR_context_t, item: MIR_item_t): MIR_op_t <cimport, nodecl> end
-global function MIR_new_str_op(ctx: MIR_context_t, str: MIR_str_t): MIR_op_t <cimport, nodecl> end
-global function MIR_new_mem_op(ctx: MIR_context_t, type: MIR_type_t, disp: clong, base: cuint, index: cuint, scale: cuchar): MIR_op_t <cimport, nodecl> end
-global function MIR_new_label_op(ctx: MIR_context_t, label: MIR_label_t): MIR_op_t <cimport, nodecl> end
-global function MIR_op_eq_p(ctx: MIR_context_t, op1: MIR_op_t, op2: MIR_op_t): cint <cimport, nodecl> end
-global function MIR_op_hash_step(ctx: MIR_context_t, h: cuint, op: MIR_op_t): cuint <cimport, nodecl> end
-global function MIR_append_insn(ctx: MIR_context_t, func: MIR_item_t, insn: MIR_insn_t) <cimport, nodecl> end
-global function MIR_prepend_insn(ctx: MIR_context_t, func: MIR_item_t, insn: MIR_insn_t) <cimport, nodecl> end
-global function MIR_insert_insn_after(ctx: MIR_context_t, func: MIR_item_t, after: MIR_insn_t, insn: MIR_insn_t) <cimport, nodecl> end
-global function MIR_insert_insn_before(ctx: MIR_context_t, func: MIR_item_t, before: MIR_insn_t, insn: MIR_insn_t) <cimport, nodecl> end
-global function MIR_remove_insn(ctx: MIR_context_t, func: MIR_item_t, insn: MIR_insn_t) <cimport, nodecl> end
-global function MIR_change_module_ctx(old_ctx: MIR_context_t, m: MIR_module_t, new_ctx: MIR_context_t) <cimport, nodecl> end
-global function MIR_reverse_branch_code(code: MIR_insn_code_t): MIR_insn_code_t <cimport, nodecl> end
-global function MIR_type_str(ctx: MIR_context_t, tp: MIR_type_t): cstring <cimport, nodecl> end
-global function MIR_output_op(ctx: MIR_context_t, f: *FILE, op: MIR_op_t, func: MIR_func_t) <cimport, nodecl> end
-global function MIR_output_insn(ctx: MIR_context_t, f: *FILE, insn: MIR_insn_t, func: MIR_func_t, newline_p: cint) <cimport, nodecl> end
-global function MIR_output_item(ctx: MIR_context_t, f: *FILE, item: MIR_item_t) <cimport, nodecl> end
-global function MIR_output_module(ctx: MIR_context_t, f: *FILE, module: MIR_module_t) <cimport, nodecl> end
-global function MIR_output(ctx: MIR_context_t, f: *FILE) <cimport, nodecl> end
-global function MIR_write(ctx: MIR_context_t, f: *FILE) <cimport, nodecl> end
-global function MIR_write_module(ctx: MIR_context_t, f: *FILE, module: MIR_module_t) <cimport, nodecl> end
-global function MIR_read(ctx: MIR_context_t, f: *FILE) <cimport, nodecl> end
-global function MIR_write_with_func(ctx: MIR_context_t, writer_func: function(MIR_context_t, uint8): cint) <cimport, nodecl> end
-global function MIR_write_module_with_func(ctx: MIR_context_t, writer_func: function(MIR_context_t, uint8): cint, module: MIR_module_t) <cimport, nodecl> end
-global function MIR_read_with_func(ctx: MIR_context_t, reader_func: function(MIR_context_t): cint) <cimport, nodecl> end
-global function MIR_scan_string(ctx: MIR_context_t, str: cstring) <cimport, nodecl> end
-global function MIR_get_global_item(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport, nodecl> end
-global function MIR_load_module(ctx: MIR_context_t, m: MIR_module_t) <cimport, nodecl> end
-global function MIR_load_external(ctx: MIR_context_t, name: cstring, addr: pointer) <cimport, nodecl> end
-global function MIR_link(ctx: MIR_context_t, set_interface: function(MIR_context_t, MIR_item_t), import_resolver: function(cstring): pointer) <cimport, nodecl> end
-global MIR_val_t: type <cimport, nodecl> = @union{
+global function MIR_FP_branch_code_p(code: MIR_insn_code_t): cint <cimport,nodecl> end
+global function MIR_call_code_p(code: MIR_insn_code_t): cint <cimport,nodecl> end
+global function MIR_int_branch_code_p(code: MIR_insn_code_t): cint <cimport,nodecl> end
+global function MIR_branch_code_p(code: MIR_insn_code_t): cint <cimport,nodecl> end
+global function MIR_init(): MIR_context_t <cimport,nodecl> end
+global function MIR_finish(ctx: MIR_context_t): void <cimport,nodecl> end
+global function MIR_new_module(ctx: MIR_context_t, name: cstring): MIR_module_t <cimport,nodecl> end
+global function MIR_get_module_list(ctx: MIR_context_t): *DLIST_MIR_module_t <cimport,nodecl> end
+global function MIR_new_import(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport,nodecl> end
+global function MIR_new_export(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport,nodecl> end
+global function MIR_new_forward(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport,nodecl> end
+global function MIR_new_bss(ctx: MIR_context_t, name: cstring, len: csize): MIR_item_t <cimport,nodecl> end
+global function MIR_new_data(ctx: MIR_context_t, name: cstring, el_type: MIR_type_t, nel: csize, els: pointer): MIR_item_t <cimport,nodecl> end
+global function MIR_new_string_data(ctx: MIR_context_t, name: cstring, str: MIR_str_t): MIR_item_t <cimport,nodecl> end
+global function MIR_new_ref_data(ctx: MIR_context_t, name: cstring, item: MIR_item_t, disp: int64): MIR_item_t <cimport,nodecl> end
+global function MIR_new_expr_data(ctx: MIR_context_t, name: cstring, expr_item: MIR_item_t): MIR_item_t <cimport,nodecl> end
+global function MIR_new_proto_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport,nodecl> end
+global function MIR_new_proto(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport,nodecl> end
+global function MIR_new_vararg_proto_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport,nodecl> end
+global function MIR_new_vararg_proto(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport,nodecl> end
+global function MIR_new_func_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport,nodecl> end
+global function MIR_new_func(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport,nodecl> end
+global function MIR_new_vararg_func_arr(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, vars: *MIR_var_t): MIR_item_t <cimport,nodecl> end
+global function MIR_new_vararg_func(ctx: MIR_context_t, name: cstring, nres: csize, res_types: *MIR_type_t, nargs: csize, ...: cvarargs): MIR_item_t <cimport,nodecl> end
+global function MIR_item_name(ctx: MIR_context_t, item: MIR_item_t): cstring <cimport,nodecl> end
+global function MIR_new_func_reg(ctx: MIR_context_t, func: MIR_func_t, type: MIR_type_t, name: cstring): cuint <cimport,nodecl> end
+global function MIR_finish_func(ctx: MIR_context_t): void <cimport,nodecl> end
+global function MIR_finish_module(ctx: MIR_context_t): void <cimport,nodecl> end
+global function MIR_get_error_func(ctx: MIR_context_t): MIR_error_func_t <cimport,nodecl> end
+global function MIR_set_error_func(ctx: MIR_context_t, func: MIR_error_func_t): void <cimport,nodecl> end
+global function MIR_new_insn_arr(ctx: MIR_context_t, code: MIR_insn_code_t, nops: csize, ops: *MIR_op_t): MIR_insn_t <cimport,nodecl> end
+global function MIR_new_insn(ctx: MIR_context_t, code: MIR_insn_code_t, ...: cvarargs): MIR_insn_t <cimport,nodecl> end
+global function MIR_new_call_insn(ctx: MIR_context_t, nops: csize, ...: cvarargs): MIR_insn_t <cimport,nodecl> end
+global function MIR_new_ret_insn(ctx: MIR_context_t, nops: csize, ...: cvarargs): MIR_insn_t <cimport,nodecl> end
+global function MIR_copy_insn(ctx: MIR_context_t, insn: MIR_insn_t): MIR_insn_t <cimport,nodecl> end
+global function MIR_insn_name(ctx: MIR_context_t, code: MIR_insn_code_t): cstring <cimport,nodecl> end
+global function MIR_insn_nops(ctx: MIR_context_t, insn: MIR_insn_t): csize <cimport,nodecl> end
+global function MIR_insn_op_mode(ctx: MIR_context_t, insn: MIR_insn_t, nop: csize, out_p: *cint): MIR_op_mode_t <cimport,nodecl> end
+global function MIR_new_label(ctx: MIR_context_t): MIR_insn_t <cimport,nodecl> end
+global function MIR_reg(ctx: MIR_context_t, reg_name: cstring, func: MIR_func_t): cuint <cimport,nodecl> end
+global function MIR_reg_type(ctx: MIR_context_t, reg: cuint, func: MIR_func_t): MIR_type_t <cimport,nodecl> end
+global function MIR_reg_name(ctx: MIR_context_t, reg: cuint, func: MIR_func_t): cstring <cimport,nodecl> end
+global function MIR_new_reg_op(ctx: MIR_context_t, reg: cuint): MIR_op_t <cimport,nodecl> end
+global function MIR_new_int_op(ctx: MIR_context_t, v: int64): MIR_op_t <cimport,nodecl> end
+global function MIR_new_uint_op(ctx: MIR_context_t, v: uint64): MIR_op_t <cimport,nodecl> end
+global function MIR_new_float_op(ctx: MIR_context_t, v: float32): MIR_op_t <cimport,nodecl> end
+global function MIR_new_double_op(ctx: MIR_context_t, v: float64): MIR_op_t <cimport,nodecl> end
+global function MIR_new_ldouble_op(ctx: MIR_context_t, v: clongdouble): MIR_op_t <cimport,nodecl> end
+global function MIR_new_ref_op(ctx: MIR_context_t, item: MIR_item_t): MIR_op_t <cimport,nodecl> end
+global function MIR_new_str_op(ctx: MIR_context_t, str: MIR_str_t): MIR_op_t <cimport,nodecl> end
+global function MIR_new_mem_op(ctx: MIR_context_t, type: MIR_type_t, disp: clong, base: cuint, index: cuint, scale: cuchar): MIR_op_t <cimport,nodecl> end
+global function MIR_new_label_op(ctx: MIR_context_t, label: MIR_label_t): MIR_op_t <cimport,nodecl> end
+global function MIR_op_eq_p(ctx: MIR_context_t, op1: MIR_op_t, op2: MIR_op_t): cint <cimport,nodecl> end
+global function MIR_op_hash_step(ctx: MIR_context_t, h: cuint, op: MIR_op_t): cuint <cimport,nodecl> end
+global function MIR_append_insn(ctx: MIR_context_t, func: MIR_item_t, insn: MIR_insn_t): void <cimport,nodecl> end
+global function MIR_prepend_insn(ctx: MIR_context_t, func: MIR_item_t, insn: MIR_insn_t): void <cimport,nodecl> end
+global function MIR_insert_insn_after(ctx: MIR_context_t, func: MIR_item_t, after: MIR_insn_t, insn: MIR_insn_t): void <cimport,nodecl> end
+global function MIR_insert_insn_before(ctx: MIR_context_t, func: MIR_item_t, before: MIR_insn_t, insn: MIR_insn_t): void <cimport,nodecl> end
+global function MIR_remove_insn(ctx: MIR_context_t, func: MIR_item_t, insn: MIR_insn_t): void <cimport,nodecl> end
+global function MIR_change_module_ctx(old_ctx: MIR_context_t, m: MIR_module_t, new_ctx: MIR_context_t): void <cimport,nodecl> end
+global function MIR_reverse_branch_code(code: MIR_insn_code_t): MIR_insn_code_t <cimport,nodecl> end
+global function MIR_type_str(ctx: MIR_context_t, tp: MIR_type_t): cstring <cimport,nodecl> end
+global function MIR_output_op(ctx: MIR_context_t, f: *FILE, op: MIR_op_t, func: MIR_func_t): void <cimport,nodecl> end
+global function MIR_output_insn(ctx: MIR_context_t, f: *FILE, insn: MIR_insn_t, func: MIR_func_t, newline_p: cint): void <cimport,nodecl> end
+global function MIR_output_item(ctx: MIR_context_t, f: *FILE, item: MIR_item_t): void <cimport,nodecl> end
+global function MIR_output_module(ctx: MIR_context_t, f: *FILE, module: MIR_module_t): void <cimport,nodecl> end
+global function MIR_output(ctx: MIR_context_t, f: *FILE): void <cimport,nodecl> end
+global function MIR_write(ctx: MIR_context_t, f: *FILE): void <cimport,nodecl> end
+global function MIR_write_module(ctx: MIR_context_t, f: *FILE, module: MIR_module_t): void <cimport,nodecl> end
+global function MIR_read(ctx: MIR_context_t, f: *FILE): void <cimport,nodecl> end
+global function MIR_write_with_func(ctx: MIR_context_t, writer_func: function(MIR_context_t, uint8): cint): void <cimport,nodecl> end
+global function MIR_write_module_with_func(ctx: MIR_context_t, writer_func: function(MIR_context_t, uint8): cint, module: MIR_module_t): void <cimport,nodecl> end
+global function MIR_read_with_func(ctx: MIR_context_t, reader_func: function(MIR_context_t): cint): void <cimport,nodecl> end
+global function MIR_scan_string(ctx: MIR_context_t, str: cstring): void <cimport,nodecl> end
+global function MIR_get_global_item(ctx: MIR_context_t, name: cstring): MIR_item_t <cimport,nodecl> end
+global function MIR_load_module(ctx: MIR_context_t, m: MIR_module_t): void <cimport,nodecl> end
+global function MIR_load_external(ctx: MIR_context_t, name: cstring, addr: pointer): void <cimport,nodecl> end
+global function MIR_link(ctx: MIR_context_t, set_interface: function(MIR_context_t, MIR_item_t): void, import_resolver: function(cstring): pointer): void <cimport,nodecl> end
+global MIR_val_t: type <cimport,nodecl> = @union{
   ic: MIR_insn_code_t,
   a: pointer,
   i: int64,
@@ -547,21 +547,21 @@ global MIR_val_t: type <cimport, nodecl> = @union{
   d: float64,
   ld: clongdouble
 }
-global function MIR_interp(ctx: MIR_context_t, func_item: MIR_item_t, results: *MIR_val_t, nargs: csize, ...: cvarargs) <cimport, nodecl> end
-global function MIR_interp_arr(ctx: MIR_context_t, func_item: MIR_item_t, results: *MIR_val_t, nargs: csize, vals: *MIR_val_t) <cimport, nodecl> end
-global function MIR_interp_arr_varg(ctx: MIR_context_t, func_item: MIR_item_t, results: *MIR_val_t, nargs: csize, vals: *MIR_val_t, va: cvalist) <cimport, nodecl> end
-global function MIR_set_interp_interface(ctx: MIR_context_t, func_item: MIR_item_t) <cimport, nodecl> end
-global MIR_code_reloc: type <cimport, nodecl, ctypedef> = @record{
+global function MIR_interp(ctx: MIR_context_t, func_item: MIR_item_t, results: *MIR_val_t, nargs: csize, ...: cvarargs): void <cimport,nodecl> end
+global function MIR_interp_arr(ctx: MIR_context_t, func_item: MIR_item_t, results: *MIR_val_t, nargs: csize, vals: *MIR_val_t): void <cimport,nodecl> end
+global function MIR_interp_arr_varg(ctx: MIR_context_t, func_item: MIR_item_t, results: *MIR_val_t, nargs: csize, vals: *MIR_val_t, va: cvalist): void <cimport,nodecl> end
+global function MIR_set_interp_interface(ctx: MIR_context_t, func_item: MIR_item_t): void <cimport,nodecl> end
+global MIR_code_reloc: type <cimport,nodecl,ctypedef> = @record{
   offset: csize,
   value: pointer
 }
 global MIR_code_reloc_t: type = @MIR_code_reloc
-global c2mir_macro_command: type <cimport, nodecl, ctypedef> = @record{
+global c2mir_macro_command: type <cimport,nodecl,ctypedef> = @record{
   def_p: cint,
   name: cstring,
   def: cstring
 }
-global c2mir_options: type <cimport, nodecl, ctypedef> = @record{
+global c2mir_options: type <cimport,nodecl,ctypedef> = @record{
   message_file: *FILE,
   debug_p: cint,
   verbose_p: cint,
@@ -580,7 +580,7 @@ global c2mir_options: type <cimport, nodecl, ctypedef> = @record{
   macro_commands: *c2mir_macro_command,
   include_dirs: *cstring
 }
-global function c2mir_init(ctx: MIR_context_t) <cimport, nodecl> end
-global function c2mir_finish(ctx: MIR_context_t) <cimport, nodecl> end
-global function c2mir_compile(ctx: MIR_context_t, ops: *c2mir_options, getc_func: function(pointer): cint, getc_data: pointer, source_name: cstring, output_file: *FILE): cint <cimport, nodecl> end
+global function c2mir_init(ctx: MIR_context_t): void <cimport,nodecl> end
+global function c2mir_finish(ctx: MIR_context_t): void <cimport,nodecl> end
+global function c2mir_compile(ctx: MIR_context_t, ops: *c2mir_options, getc_func: function(pointer): cint, getc_data: pointer, source_name: cstring, output_file: *FILE): cint <cimport,nodecl> end
 global function MIR_init(): MIR_context_t <cimport, nodecl> end

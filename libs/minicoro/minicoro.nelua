@@ -5,13 +5,13 @@ if not MINICORO_NO_IMPL then
 end
 cinclude 'minicoro.h'
 ]]
-global mco_state: type <cimport, nodecl, using> = @enum(cint){
+global mco_state: type <cimport,nodecl,using> = @enum(cint){
   MCO_DEAD = 0,
   MCO_NORMAL = 1,
   MCO_RUNNING = 2,
   MCO_SUSPENDED = 3
 }
-global mco_result: type <cimport, nodecl, using> = @enum(cint){
+global mco_result: type <cimport,nodecl,using> = @enum(cint){
   MCO_SUCCESS = 0,
   MCO_GENERIC_ERROR = 1,
   MCO_INVALID_POINTER = 2,
@@ -26,15 +26,15 @@ global mco_result: type <cimport, nodecl, using> = @enum(cint){
   MCO_INVALID_OPERATION = 11,
   MCO_STACK_OVERFLOW = 12
 }
-global mco_coro: type <cimport, nodecl, forwarddecl> = @record{}
+global mco_coro: type <cimport,nodecl,forwarddecl> = @record{}
 mco_coro = @record{
   context: pointer,
   state: mco_state,
-  func: function(*mco_coro),
+  func: function(*mco_coro): void,
   prev_co: *mco_coro,
   user_data: pointer,
   allocator_data: pointer,
-  free_cb: function(pointer, pointer),
+  free_cb: function(pointer, pointer): void,
   stack_base: pointer,
   stack_size: csize,
   storage: *cuchar,
@@ -45,29 +45,29 @@ mco_coro = @record{
   tsan_fiber: pointer,
   magic_number: csize
 }
-global mco_desc: type <cimport, nodecl> = @record{
-  func: function(*mco_coro),
+global mco_desc: type <cimport,nodecl> = @record{
+  func: function(*mco_coro): void,
   user_data: pointer,
   malloc_cb: function(csize, pointer): pointer,
-  free_cb: function(pointer, pointer),
+  free_cb: function(pointer, pointer): void,
   allocator_data: pointer,
   storage_size: csize,
   coro_size: csize,
   stack_size: csize
 }
-global function mco_desc_init(func: function(*mco_coro), stack_size: csize): mco_desc <cimport, nodecl> end
-global function mco_init(co: *mco_coro, desc: *mco_desc): mco_result <cimport, nodecl> end
-global function mco_uninit(co: *mco_coro): mco_result <cimport, nodecl> end
-global function mco_create(out_co: **mco_coro, desc: *mco_desc): mco_result <cimport, nodecl> end
-global function mco_destroy(co: *mco_coro): mco_result <cimport, nodecl> end
-global function mco_resume(co: *mco_coro): mco_result <cimport, nodecl> end
-global function mco_yield(co: *mco_coro): mco_result <cimport, nodecl> end
-global function mco_status(co: *mco_coro): mco_state <cimport, nodecl> end
-global function mco_get_user_data(co: *mco_coro): pointer <cimport, nodecl> end
-global function mco_push(co: *mco_coro, src: pointer, len: csize): mco_result <cimport, nodecl> end
-global function mco_pop(co: *mco_coro, dest: pointer, len: csize): mco_result <cimport, nodecl> end
-global function mco_peek(co: *mco_coro, dest: pointer, len: csize): mco_result <cimport, nodecl> end
-global function mco_get_bytes_stored(co: *mco_coro): csize <cimport, nodecl> end
-global function mco_get_storage_size(co: *mco_coro): csize <cimport, nodecl> end
-global function mco_running(): *mco_coro <cimport, nodecl> end
-global function mco_result_description(res: mco_result): cstring <cimport, nodecl> end
+global function mco_desc_init(func: function(*mco_coro): void, stack_size: csize): mco_desc <cimport,nodecl> end
+global function mco_init(co: *mco_coro, desc: *mco_desc): mco_result <cimport,nodecl> end
+global function mco_uninit(co: *mco_coro): mco_result <cimport,nodecl> end
+global function mco_create(out_co: **mco_coro, desc: *mco_desc): mco_result <cimport,nodecl> end
+global function mco_destroy(co: *mco_coro): mco_result <cimport,nodecl> end
+global function mco_resume(co: *mco_coro): mco_result <cimport,nodecl> end
+global function mco_yield(co: *mco_coro): mco_result <cimport,nodecl> end
+global function mco_status(co: *mco_coro): mco_state <cimport,nodecl> end
+global function mco_get_user_data(co: *mco_coro): pointer <cimport,nodecl> end
+global function mco_push(co: *mco_coro, src: pointer, len: csize): mco_result <cimport,nodecl> end
+global function mco_pop(co: *mco_coro, dest: pointer, len: csize): mco_result <cimport,nodecl> end
+global function mco_peek(co: *mco_coro, dest: pointer, len: csize): mco_result <cimport,nodecl> end
+global function mco_get_bytes_stored(co: *mco_coro): csize <cimport,nodecl> end
+global function mco_get_storage_size(co: *mco_coro): csize <cimport,nodecl> end
+global function mco_running(): *mco_coro <cimport,nodecl> end
+global function mco_result_description(res: mco_result): cstring <cimport,nodecl> end

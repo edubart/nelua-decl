@@ -205,7 +205,7 @@ local function visit_fields(node)
       end
       visit(fieldtype)
       if #annotations > 0 then
-        emitter:add(' <'..table.concat(annotations, ', ')..'>')
+        emitter:add(' <'..table.concat(annotations, ',')..'>')
       end
       if not fieldnode:chain() then -- last field
         emitter:add_ln()
@@ -321,10 +321,8 @@ function nldecl.function_type(node)
   end
   emitter:add(')')
   local retnode = node:type()
-  if retnode:code() ~= 'void_type' then
-    emitter:add(': ')
-    visit(retnode)
-  end
+  emitter:add(': ')
+  visit(retnode)
 end
 
 function nldecl.function_decl(node)
@@ -354,11 +352,9 @@ function nldecl.function_decl(node)
   end
   emitter:add(')')
   local retnode = node:type():type()
-  if retnode:code() ~= 'void_type' then
-    emitter:add(': ')
-    visit(retnode)
-  end
-  emitter:add_ln(' <cimport, nodecl> end')
+  emitter:add(': ')
+  visit(retnode)
+  emitter:add_ln(' <cimport,nodecl> end')
 end
 
 function nldecl.var_decl(node)
@@ -369,7 +365,7 @@ function nldecl.var_decl(node)
   local vartype = node:type()
   emitter:add('global '..varname..': ')
   visit(vartype)
-  emitter:add_ln(' <cimport, nodecl>')
+  emitter:add_ln(' <cimport,nodecl>')
 end
 
 local function visit_type_def(typename, type, is_typedef)
@@ -397,8 +393,7 @@ local function visit_type_def(typename, type, is_typedef)
     emitter:add('global '..typename..': type ')
     if (not is_pointer or is_function) and not is_scalar then
       -- not a pointer to a function
-      local annotations = {'cimport'}
-      table.insert(annotations, 'nodecl')
+      local annotations = {'cimport','nodecl'}
       if forwarddecl then -- declaration without definition
         table.insert(annotations, 'forwarddecl')
         nldecl.predeclared_names[typename] = true
@@ -417,19 +412,19 @@ local function visit_type_def(typename, type, is_typedef)
         end
         if is_prefixed and not is_typedef and not nldecl.declared_typedefs_names[typename] then
           if typealias then
-            table.insert(annotations, "ctypedef '"..typealias.."'")
+            table.insert(annotations, "ctypedef'"..typealias.."'")
           else
             table.insert(annotations, 'ctypedef')
           end
         end
-        return '<'..table.concat(annotations,', ')..'> '
+        return '<'..table.concat(annotations,',')..'> '
       end)
     end
   end
 
   local decl = true
   if nldecl.opaque_names[typename] then
-    emitter:add('<cimport, nodecl, cincomplete> = @record{}')
+    emitter:add('<cimport,nodecl,cincomplete> = @record{}')
   else
     emitter:add('= @')
     visit(type, decl)
@@ -595,7 +590,7 @@ local function process_macros()
         comptime_macros[name] = parsedvalue
         emitter:add_ln('global '..name..': '..foundnltype..' <comptime> = '..parsedvalue)
       else
-        emitter:add_ln('global '..name..': '..foundnltype..' <cimport, nodecl, const>')
+        emitter:add_ln('global '..name..': '..foundnltype..' <cimport,nodecl,const>')
       end
     end
   end

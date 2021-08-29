@@ -5,23 +5,23 @@ if ccinfo.is_linux then
   linklib 'dl'
 end
 ]]
-global function dlopen(file: cstring, mode: cint): pointer <cimport, nodecl> end
-global function dlclose(handle: pointer): cint <cimport, nodecl> end
-global function dlsym(handle: pointer, name: cstring): pointer <cimport, nodecl> end
-global function dlmopen(nsid: clong, file: cstring, mode: cint): pointer <cimport, nodecl> end
-global function dlvsym(handle: pointer, name: cstring, version: cstring): pointer <cimport, nodecl> end
-global function dlerror(): cstring <cimport, nodecl> end
-global Dl_info: type <cimport, nodecl> = @record{
+global function dlopen(file: cstring, mode: cint): pointer <cimport,nodecl> end
+global function dlclose(handle: pointer): cint <cimport,nodecl> end
+global function dlsym(handle: pointer, name: cstring): pointer <cimport,nodecl> end
+global function dlmopen(nsid: clong, file: cstring, mode: cint): pointer <cimport,nodecl> end
+global function dlvsym(handle: pointer, name: cstring, version: cstring): pointer <cimport,nodecl> end
+global function dlerror(): cstring <cimport,nodecl> end
+global Dl_info: type <cimport,nodecl> = @record{
   dli_fname: cstring,
   dli_fbase: pointer,
   dli_sname: cstring,
   dli_saddr: pointer
 }
-global function dladdr(address: pointer, info: *Dl_info): cint <cimport, nodecl> end
-global function dladdr1(address: pointer, info: *Dl_info, extra_info: *pointer, flags: cint): cint <cimport, nodecl> end
+global function dladdr(address: pointer, info: *Dl_info): cint <cimport,nodecl> end
+global function dladdr1(address: pointer, info: *Dl_info, extra_info: *pointer, flags: cint): cint <cimport,nodecl> end
 global RTLD_DL_SYMENT: cint <comptime> = 1
 global RTLD_DL_LINKMAP: cint <comptime> = 2
-global function dlinfo(handle: pointer, request: cint, arg: pointer): cint <cimport, nodecl> end
+global function dlinfo(handle: pointer, request: cint, arg: pointer): cint <cimport,nodecl> end
 global RTLD_DI_LMID: cint <comptime> = 1
 global RTLD_DI_LINKMAP: cint <comptime> = 2
 global RTLD_DI_CONFIGADDR: cint <comptime> = 3
@@ -33,11 +33,11 @@ global RTLD_DI_PROFILEOUT: cint <comptime> = 8
 global RTLD_DI_TLS_MODID: cint <comptime> = 9
 global RTLD_DI_TLS_DATA: cint <comptime> = 10
 global RTLD_DI_MAX: cint <comptime> = 10
-global Dl_serpath: type <cimport, nodecl> = @record{
+global Dl_serpath: type <cimport,nodecl> = @record{
   dls_name: cstring,
   dls_flags: cuint
 }
-global Dl_serinfo: type <cimport, nodecl> = @record{
+global Dl_serinfo: type <cimport,nodecl> = @record{
   dls_size: csize,
   dls_cnt: cuint,
   __unnamed1: union{
@@ -53,5 +53,5 @@ global RTLD_DEEPBIND: cint <comptime> = 0x00008
 global RTLD_GLOBAL: cint <comptime> = 0x00100
 global RTLD_LOCAL: cint <comptime> = 0
 global RTLD_NODELETE: cint <comptime> = 0x01000
-global RTLD_NEXT: pointer <cimport, nodecl, const>
-global RTLD_DEFAULT: pointer <cimport, nodecl, const>
+global RTLD_NEXT: pointer <cimport,nodecl,const>
+global RTLD_DEFAULT: pointer <cimport,nodecl,const>

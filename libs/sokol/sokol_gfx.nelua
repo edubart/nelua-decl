@@ -16,35 +16,35 @@ else
   linklib 'GL'
 end
 ]]
-global sg_buffer: type <cimport, nodecl> = @record{
+global sg_buffer: type <cimport,nodecl> = @record{
   id: uint32
 }
-global sg_image: type <cimport, nodecl> = @record{
+global sg_image: type <cimport,nodecl> = @record{
   id: uint32
 }
-global sg_shader: type <cimport, nodecl> = @record{
+global sg_shader: type <cimport,nodecl> = @record{
   id: uint32
 }
-global sg_pipeline: type <cimport, nodecl> = @record{
+global sg_pipeline: type <cimport,nodecl> = @record{
   id: uint32
 }
-global sg_pass: type <cimport, nodecl> = @record{
+global sg_pass: type <cimport,nodecl> = @record{
   id: uint32
 }
-global sg_context: type <cimport, nodecl> = @record{
+global sg_context: type <cimport,nodecl> = @record{
   id: uint32
 }
-global sg_range: type <cimport, nodecl> = @record{
+global sg_range: type <cimport,nodecl> = @record{
   ptr: pointer,
   size: csize
 }
-global sg_color: type <cimport, nodecl> = @record{
+global sg_color: type <cimport,nodecl> = @record{
   r: float32,
   g: float32,
   b: float32,
   a: float32
 }
-global sg_backend: type <cimport, nodecl, using> = @enum(cint){
+global sg_backend: type <cimport,nodecl,using> = @enum(cint){
   SG_BACKEND_GLCORE33 = 0,
   SG_BACKEND_GLES2 = 1,
   SG_BACKEND_GLES3 = 2,
@@ -55,7 +55,7 @@ global sg_backend: type <cimport, nodecl, using> = @enum(cint){
   SG_BACKEND_WGPU = 7,
   SG_BACKEND_DUMMY = 8
 }
-global sg_pixel_format: type <cimport, nodecl, using> = @enum(cint){
+global sg_pixel_format: type <cimport,nodecl,using> = @enum(cint){
   _SG_PIXELFORMAT_DEFAULT = 0,
   SG_PIXELFORMAT_NONE = 1,
   SG_PIXELFORMAT_R8 = 2,
@@ -121,7 +121,7 @@ global sg_pixel_format: type <cimport, nodecl, using> = @enum(cint){
   _SG_PIXELFORMAT_NUM = 62,
   _SG_PIXELFORMAT_FORCE_U32 = 2147483647
 }
-global sg_pixelformat_info: type <cimport, nodecl> = @record{
+global sg_pixelformat_info: type <cimport,nodecl> = @record{
   sample: boolean,
   filter: boolean,
   render: boolean,
@@ -129,7 +129,7 @@ global sg_pixelformat_info: type <cimport, nodecl> = @record{
   msaa: boolean,
   depth: boolean
 }
-global sg_features: type <cimport, nodecl> = @record{
+global sg_features: type <cimport,nodecl> = @record{
   instancing: boolean,
   origin_top_left: boolean,
   multiple_render_targets: boolean,
@@ -140,7 +140,7 @@ global sg_features: type <cimport, nodecl> = @record{
   mrt_independent_blend_state: boolean,
   mrt_independent_write_mask: boolean
 }
-global sg_limits: type <cimport, nodecl> = @record{
+global sg_limits: type <cimport,nodecl> = @record{
   max_image_size_2d: cint,
   max_image_size_cube: cint,
   max_image_size_3d: cint,
@@ -149,7 +149,7 @@ global sg_limits: type <cimport, nodecl> = @record{
   max_vertex_attrs: cint,
   gl_max_vertex_uniform_vectors: cint
 }
-global sg_resource_state: type <cimport, nodecl, using> = @enum(cint){
+global sg_resource_state: type <cimport,nodecl,using> = @enum(cint){
   SG_RESOURCESTATE_INITIAL = 0,
   SG_RESOURCESTATE_ALLOC = 1,
   SG_RESOURCESTATE_VALID = 2,
@@ -157,7 +157,7 @@ global sg_resource_state: type <cimport, nodecl, using> = @enum(cint){
   SG_RESOURCESTATE_INVALID = 4,
   _SG_RESOURCESTATE_FORCE_U32 = 2147483647
 }
-global sg_usage: type <cimport, nodecl, using> = @enum(cint){
+global sg_usage: type <cimport,nodecl,using> = @enum(cint){
   _SG_USAGE_DEFAULT = 0,
   SG_USAGE_IMMUTABLE = 1,
   SG_USAGE_DYNAMIC = 2,
@@ -165,14 +165,14 @@ global sg_usage: type <cimport, nodecl, using> = @enum(cint){
   _SG_USAGE_NUM = 4,
   _SG_USAGE_FORCE_U32 = 2147483647
 }
-global sg_buffer_type: type <cimport, nodecl, using> = @enum(cint){
+global sg_buffer_type: type <cimport,nodecl,using> = @enum(cint){
   _SG_BUFFERTYPE_DEFAULT = 0,
   SG_BUFFERTYPE_VERTEXBUFFER = 1,
   SG_BUFFERTYPE_INDEXBUFFER = 2,
   _SG_BUFFERTYPE_NUM = 3,
   _SG_BUFFERTYPE_FORCE_U32 = 2147483647
 }
-global sg_index_type: type <cimport, nodecl, using> = @enum(cint){
+global sg_index_type: type <cimport,nodecl,using> = @enum(cint){
   _SG_INDEXTYPE_DEFAULT = 0,
   SG_INDEXTYPE_NONE = 1,
   SG_INDEXTYPE_UINT16 = 2,
@@ -180,7 +180,7 @@ global sg_index_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_INDEXTYPE_NUM = 4,
   _SG_INDEXTYPE_FORCE_U32 = 2147483647
 }
-global sg_image_type: type <cimport, nodecl, using> = @enum(cint){
+global sg_image_type: type <cimport,nodecl,using> = @enum(cint){
   _SG_IMAGETYPE_DEFAULT = 0,
   SG_IMAGETYPE_2D = 1,
   SG_IMAGETYPE_CUBE = 2,
@@ -189,13 +189,13 @@ global sg_image_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_IMAGETYPE_NUM = 5,
   _SG_IMAGETYPE_FORCE_U32 = 2147483647
 }
-global sg_sampler_type: type <cimport, nodecl, using> = @enum(cint){
+global sg_sampler_type: type <cimport,nodecl,using> = @enum(cint){
   _SG_SAMPLERTYPE_DEFAULT = 0,
   SG_SAMPLERTYPE_FLOAT = 1,
   SG_SAMPLERTYPE_SINT = 2,
   SG_SAMPLERTYPE_UINT = 3
 }
-global sg_cube_face: type <cimport, nodecl, using> = @enum(cint){
+global sg_cube_face: type <cimport,nodecl,using> = @enum(cint){
   SG_CUBEFACE_POS_X = 0,
   SG_CUBEFACE_NEG_X = 1,
   SG_CUBEFACE_POS_Y = 2,
@@ -205,12 +205,12 @@ global sg_cube_face: type <cimport, nodecl, using> = @enum(cint){
   SG_CUBEFACE_NUM = 6,
   _SG_CUBEFACE_FORCE_U32 = 2147483647
 }
-global sg_shader_stage: type <cimport, nodecl, using> = @enum(cint){
+global sg_shader_stage: type <cimport,nodecl,using> = @enum(cint){
   SG_SHADERSTAGE_VS = 0,
   SG_SHADERSTAGE_FS = 1,
   _SG_SHADERSTAGE_FORCE_U32 = 2147483647
 }
-global sg_primitive_type: type <cimport, nodecl, using> = @enum(cint){
+global sg_primitive_type: type <cimport,nodecl,using> = @enum(cint){
   _SG_PRIMITIVETYPE_DEFAULT = 0,
   SG_PRIMITIVETYPE_POINTS = 1,
   SG_PRIMITIVETYPE_LINES = 2,
@@ -220,7 +220,7 @@ global sg_primitive_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_PRIMITIVETYPE_NUM = 6,
   _SG_PRIMITIVETYPE_FORCE_U32 = 2147483647
 }
-global sg_filter: type <cimport, nodecl, using> = @enum(cint){
+global sg_filter: type <cimport,nodecl,using> = @enum(cint){
   _SG_FILTER_DEFAULT = 0,
   SG_FILTER_NEAREST = 1,
   SG_FILTER_LINEAR = 2,
@@ -231,7 +231,7 @@ global sg_filter: type <cimport, nodecl, using> = @enum(cint){
   _SG_FILTER_NUM = 7,
   _SG_FILTER_FORCE_U32 = 2147483647
 }
-global sg_wrap: type <cimport, nodecl, using> = @enum(cint){
+global sg_wrap: type <cimport,nodecl,using> = @enum(cint){
   _SG_WRAP_DEFAULT = 0,
   SG_WRAP_REPEAT = 1,
   SG_WRAP_CLAMP_TO_EDGE = 2,
@@ -240,7 +240,7 @@ global sg_wrap: type <cimport, nodecl, using> = @enum(cint){
   _SG_WRAP_NUM = 5,
   _SG_WRAP_FORCE_U32 = 2147483647
 }
-global sg_border_color: type <cimport, nodecl, using> = @enum(cint){
+global sg_border_color: type <cimport,nodecl,using> = @enum(cint){
   _SG_BORDERCOLOR_DEFAULT = 0,
   SG_BORDERCOLOR_TRANSPARENT_BLACK = 1,
   SG_BORDERCOLOR_OPAQUE_BLACK = 2,
@@ -248,7 +248,7 @@ global sg_border_color: type <cimport, nodecl, using> = @enum(cint){
   _SG_BORDERCOLOR_NUM = 4,
   _SG_BORDERCOLOR_FORCE_U32 = 2147483647
 }
-global sg_vertex_format: type <cimport, nodecl, using> = @enum(cint){
+global sg_vertex_format: type <cimport,nodecl,using> = @enum(cint){
   SG_VERTEXFORMAT_INVALID = 0,
   SG_VERTEXFORMAT_FLOAT = 1,
   SG_VERTEXFORMAT_FLOAT2 = 2,
@@ -268,14 +268,14 @@ global sg_vertex_format: type <cimport, nodecl, using> = @enum(cint){
   _SG_VERTEXFORMAT_NUM = 16,
   _SG_VERTEXFORMAT_FORCE_U32 = 2147483647
 }
-global sg_vertex_step: type <cimport, nodecl, using> = @enum(cint){
+global sg_vertex_step: type <cimport,nodecl,using> = @enum(cint){
   _SG_VERTEXSTEP_DEFAULT = 0,
   SG_VERTEXSTEP_PER_VERTEX = 1,
   SG_VERTEXSTEP_PER_INSTANCE = 2,
   _SG_VERTEXSTEP_NUM = 3,
   _SG_VERTEXSTEP_FORCE_U32 = 2147483647
 }
-global sg_uniform_type: type <cimport, nodecl, using> = @enum(cint){
+global sg_uniform_type: type <cimport,nodecl,using> = @enum(cint){
   SG_UNIFORMTYPE_INVALID = 0,
   SG_UNIFORMTYPE_FLOAT = 1,
   SG_UNIFORMTYPE_FLOAT2 = 2,
@@ -285,7 +285,7 @@ global sg_uniform_type: type <cimport, nodecl, using> = @enum(cint){
   _SG_UNIFORMTYPE_NUM = 6,
   _SG_UNIFORMTYPE_FORCE_U32 = 2147483647
 }
-global sg_cull_mode: type <cimport, nodecl, using> = @enum(cint){
+global sg_cull_mode: type <cimport,nodecl,using> = @enum(cint){
   _SG_CULLMODE_DEFAULT = 0,
   SG_CULLMODE_NONE = 1,
   SG_CULLMODE_FRONT = 2,
@@ -293,14 +293,14 @@ global sg_cull_mode: type <cimport, nodecl, using> = @enum(cint){
   _SG_CULLMODE_NUM = 4,
   _SG_CULLMODE_FORCE_U32 = 2147483647
 }
-global sg_face_winding: type <cimport, nodecl, using> = @enum(cint){
+global sg_face_winding: type <cimport,nodecl,using> = @enum(cint){
   _SG_FACEWINDING_DEFAULT = 0,
   SG_FACEWINDING_CCW = 1,
   SG_FACEWINDING_CW = 2,
   _SG_FACEWINDING_NUM = 3,
   _SG_FACEWINDING_FORCE_U32 = 2147483647
 }
-global sg_compare_func: type <cimport, nodecl, using> = @enum(cint){
+global sg_compare_func: type <cimport,nodecl,using> = @enum(cint){
   _SG_COMPAREFUNC_DEFAULT = 0,
   SG_COMPAREFUNC_NEVER = 1,
   SG_COMPAREFUNC_LESS = 2,
@@ -313,7 +313,7 @@ global sg_compare_func: type <cimport, nodecl, using> = @enum(cint){
   _SG_COMPAREFUNC_NUM = 9,
   _SG_COMPAREFUNC_FORCE_U32 = 2147483647
 }
-global sg_stencil_op: type <cimport, nodecl, using> = @enum(cint){
+global sg_stencil_op: type <cimport,nodecl,using> = @enum(cint){
   _SG_STENCILOP_DEFAULT = 0,
   SG_STENCILOP_KEEP = 1,
   SG_STENCILOP_ZERO = 2,
@@ -326,7 +326,7 @@ global sg_stencil_op: type <cimport, nodecl, using> = @enum(cint){
   _SG_STENCILOP_NUM = 9,
   _SG_STENCILOP_FORCE_U32 = 2147483647
 }
-global sg_blend_factor: type <cimport, nodecl, using> = @enum(cint){
+global sg_blend_factor: type <cimport,nodecl,using> = @enum(cint){
   _SG_BLENDFACTOR_DEFAULT = 0,
   SG_BLENDFACTOR_ZERO = 1,
   SG_BLENDFACTOR_ONE = 2,
@@ -346,7 +346,7 @@ global sg_blend_factor: type <cimport, nodecl, using> = @enum(cint){
   _SG_BLENDFACTOR_NUM = 16,
   _SG_BLENDFACTOR_FORCE_U32 = 2147483647
 }
-global sg_blend_op: type <cimport, nodecl, using> = @enum(cint){
+global sg_blend_op: type <cimport,nodecl,using> = @enum(cint){
   _SG_BLENDOP_DEFAULT = 0,
   SG_BLENDOP_ADD = 1,
   SG_BLENDOP_SUBTRACT = 2,
@@ -354,7 +354,7 @@ global sg_blend_op: type <cimport, nodecl, using> = @enum(cint){
   _SG_BLENDOP_NUM = 4,
   _SG_BLENDOP_FORCE_U32 = 2147483647
 }
-global sg_color_mask: type <cimport, nodecl, using> = @enum(cint){
+global sg_color_mask: type <cimport,nodecl,using> = @enum(cint){
   _SG_COLORMASK_DEFAULT = 0,
   SG_COLORMASK_NONE = 16,
   SG_COLORMASK_R = 1,
@@ -374,7 +374,7 @@ global sg_color_mask: type <cimport, nodecl, using> = @enum(cint){
   SG_COLORMASK_RGBA = 15,
   _SG_COLORMASK_FORCE_U32 = 2147483647
 }
-global sg_action: type <cimport, nodecl, using> = @enum(cint){
+global sg_action: type <cimport,nodecl,using> = @enum(cint){
   _SG_ACTION_DEFAULT = 0,
   SG_ACTION_CLEAR = 1,
   SG_ACTION_LOAD = 2,
@@ -382,26 +382,26 @@ global sg_action: type <cimport, nodecl, using> = @enum(cint){
   _SG_ACTION_NUM = 4,
   _SG_ACTION_FORCE_U32 = 2147483647
 }
-global sg_color_attachment_action: type <cimport, nodecl> = @record{
+global sg_color_attachment_action: type <cimport,nodecl> = @record{
   action: sg_action,
   value: sg_color
 }
-global sg_depth_attachment_action: type <cimport, nodecl> = @record{
+global sg_depth_attachment_action: type <cimport,nodecl> = @record{
   action: sg_action,
   value: float32
 }
-global sg_stencil_attachment_action: type <cimport, nodecl> = @record{
+global sg_stencil_attachment_action: type <cimport,nodecl> = @record{
   action: sg_action,
   value: uint8
 }
-global sg_pass_action: type <cimport, nodecl> = @record{
+global sg_pass_action: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   colors: [4]sg_color_attachment_action,
   depth: sg_depth_attachment_action,
   stencil: sg_stencil_attachment_action,
   _end_canary: uint32
 }
-global sg_bindings: type <cimport, nodecl> = @record{
+global sg_bindings: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   vertex_buffers: [8]sg_buffer,
   vertex_buffer_offsets: [8]cint,
@@ -411,7 +411,7 @@ global sg_bindings: type <cimport, nodecl> = @record{
   fs_images: [12]sg_image,
   _end_canary: uint32
 }
-global sg_buffer_desc: type <cimport, nodecl> = @record{
+global sg_buffer_desc: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   size: csize,
   type: sg_buffer_type,
@@ -424,10 +424,10 @@ global sg_buffer_desc: type <cimport, nodecl> = @record{
   wgpu_buffer: pointer,
   _end_canary: uint32
 }
-global sg_image_data: type <cimport, nodecl> = @record{
+global sg_image_data: type <cimport,nodecl> = @record{
   subimage: [6][16]sg_range
 }
-global sg_image_desc: type <cimport, nodecl> = @record{
+global sg_image_desc: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   type: sg_image_type,
   render_target: boolean,
@@ -457,26 +457,26 @@ global sg_image_desc: type <cimport, nodecl> = @record{
   wgpu_texture: pointer,
   _end_canary: uint32
 }
-global sg_shader_attr_desc: type <cimport, nodecl> = @record{
+global sg_shader_attr_desc: type <cimport,nodecl> = @record{
   name: cstring,
   sem_name: cstring,
   sem_index: cint
 }
-global sg_shader_uniform_desc: type <cimport, nodecl> = @record{
+global sg_shader_uniform_desc: type <cimport,nodecl> = @record{
   name: cstring,
   type: sg_uniform_type,
   array_count: cint
 }
-global sg_shader_uniform_block_desc: type <cimport, nodecl> = @record{
+global sg_shader_uniform_block_desc: type <cimport,nodecl> = @record{
   size: csize,
   uniforms: [16]sg_shader_uniform_desc
 }
-global sg_shader_image_desc: type <cimport, nodecl> = @record{
+global sg_shader_image_desc: type <cimport,nodecl> = @record{
   name: cstring,
   image_type: sg_image_type,
   sampler_type: sg_sampler_type
 }
-global sg_shader_stage_desc: type <cimport, nodecl> = @record{
+global sg_shader_stage_desc: type <cimport,nodecl> = @record{
   source: cstring,
   bytecode: sg_range,
   entry: cstring,
@@ -484,7 +484,7 @@ global sg_shader_stage_desc: type <cimport, nodecl> = @record{
   uniform_blocks: [4]sg_shader_uniform_block_desc,
   images: [12]sg_shader_image_desc
 }
-global sg_shader_desc: type <cimport, nodecl> = @record{
+global sg_shader_desc: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   attrs: [16]sg_shader_attr_desc,
   vs: sg_shader_stage_desc,
@@ -492,27 +492,27 @@ global sg_shader_desc: type <cimport, nodecl> = @record{
   label: cstring,
   _end_canary: uint32
 }
-global sg_buffer_layout_desc: type <cimport, nodecl> = @record{
+global sg_buffer_layout_desc: type <cimport,nodecl> = @record{
   stride: cint,
   step_func: sg_vertex_step,
   step_rate: cint
 }
-global sg_vertex_attr_desc: type <cimport, nodecl> = @record{
+global sg_vertex_attr_desc: type <cimport,nodecl> = @record{
   buffer_index: cint,
   offset: cint,
   format: sg_vertex_format
 }
-global sg_layout_desc: type <cimport, nodecl> = @record{
+global sg_layout_desc: type <cimport,nodecl> = @record{
   buffers: [8]sg_buffer_layout_desc,
   attrs: [16]sg_vertex_attr_desc
 }
-global sg_stencil_face_state: type <cimport, nodecl> = @record{
+global sg_stencil_face_state: type <cimport,nodecl> = @record{
   compare: sg_compare_func,
   fail_op: sg_stencil_op,
   depth_fail_op: sg_stencil_op,
   pass_op: sg_stencil_op
 }
-global sg_stencil_state: type <cimport, nodecl> = @record{
+global sg_stencil_state: type <cimport,nodecl> = @record{
   enabled: boolean,
   front: sg_stencil_face_state,
   back: sg_stencil_face_state,
@@ -520,7 +520,7 @@ global sg_stencil_state: type <cimport, nodecl> = @record{
   write_mask: uint8,
   ref: uint8
 }
-global sg_depth_state: type <cimport, nodecl> = @record{
+global sg_depth_state: type <cimport,nodecl> = @record{
   pixel_format: sg_pixel_format,
   compare: sg_compare_func,
   write_enabled: boolean,
@@ -528,7 +528,7 @@ global sg_depth_state: type <cimport, nodecl> = @record{
   bias_slope_scale: float32,
   bias_clamp: float32
 }
-global sg_blend_state: type <cimport, nodecl> = @record{
+global sg_blend_state: type <cimport,nodecl> = @record{
   enabled: boolean,
   src_factor_rgb: sg_blend_factor,
   dst_factor_rgb: sg_blend_factor,
@@ -537,12 +537,12 @@ global sg_blend_state: type <cimport, nodecl> = @record{
   dst_factor_alpha: sg_blend_factor,
   op_alpha: sg_blend_op
 }
-global sg_color_state: type <cimport, nodecl> = @record{
+global sg_color_state: type <cimport,nodecl> = @record{
   pixel_format: sg_pixel_format,
   write_mask: sg_color_mask,
   blend: sg_blend_state
 }
-global sg_pipeline_desc: type <cimport, nodecl> = @record{
+global sg_pipeline_desc: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   shader: sg_shader,
   layout: sg_layout_desc,
@@ -560,87 +560,87 @@ global sg_pipeline_desc: type <cimport, nodecl> = @record{
   label: cstring,
   _end_canary: uint32
 }
-global sg_pass_attachment_desc: type <cimport, nodecl> = @record{
+global sg_pass_attachment_desc: type <cimport,nodecl> = @record{
   image: sg_image,
   mip_level: cint,
   slice: cint
 }
-global sg_pass_desc: type <cimport, nodecl> = @record{
+global sg_pass_desc: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   color_attachments: [4]sg_pass_attachment_desc,
   depth_stencil_attachment: sg_pass_attachment_desc,
   label: cstring,
   _end_canary: uint32
 }
-global sg_trace_hooks: type <cimport, nodecl> = @record{
+global sg_trace_hooks: type <cimport,nodecl> = @record{
   user_data: pointer,
-  reset_state_cache: function(pointer),
-  make_buffer: function(*sg_buffer_desc, sg_buffer, pointer),
-  make_image: function(*sg_image_desc, sg_image, pointer),
-  make_shader: function(*sg_shader_desc, sg_shader, pointer),
-  make_pipeline: function(*sg_pipeline_desc, sg_pipeline, pointer),
-  make_pass: function(*sg_pass_desc, sg_pass, pointer),
-  destroy_buffer: function(sg_buffer, pointer),
-  destroy_image: function(sg_image, pointer),
-  destroy_shader: function(sg_shader, pointer),
-  destroy_pipeline: function(sg_pipeline, pointer),
-  destroy_pass: function(sg_pass, pointer),
-  update_buffer: function(sg_buffer, *sg_range, pointer),
-  update_image: function(sg_image, *sg_image_data, pointer),
-  append_buffer: function(sg_buffer, *sg_range, cint, pointer),
-  begin_default_pass: function(*sg_pass_action, cint, cint, pointer),
-  begin_pass: function(sg_pass, *sg_pass_action, pointer),
-  apply_viewport: function(cint, cint, cint, cint, boolean, pointer),
-  apply_scissor_rect: function(cint, cint, cint, cint, boolean, pointer),
-  apply_pipeline: function(sg_pipeline, pointer),
-  apply_bindings: function(*sg_bindings, pointer),
-  apply_uniforms: function(sg_shader_stage, cint, *sg_range, pointer),
-  draw: function(cint, cint, cint, pointer),
-  end_pass: function(pointer),
-  commit: function(pointer),
-  alloc_buffer: function(sg_buffer, pointer),
-  alloc_image: function(sg_image, pointer),
-  alloc_shader: function(sg_shader, pointer),
-  alloc_pipeline: function(sg_pipeline, pointer),
-  alloc_pass: function(sg_pass, pointer),
-  dealloc_buffer: function(sg_buffer, pointer),
-  dealloc_image: function(sg_image, pointer),
-  dealloc_shader: function(sg_shader, pointer),
-  dealloc_pipeline: function(sg_pipeline, pointer),
-  dealloc_pass: function(sg_pass, pointer),
-  init_buffer: function(sg_buffer, *sg_buffer_desc, pointer),
-  init_image: function(sg_image, *sg_image_desc, pointer),
-  init_shader: function(sg_shader, *sg_shader_desc, pointer),
-  init_pipeline: function(sg_pipeline, *sg_pipeline_desc, pointer),
-  init_pass: function(sg_pass, *sg_pass_desc, pointer),
-  uninit_buffer: function(sg_buffer, pointer),
-  uninit_image: function(sg_image, pointer),
-  uninit_shader: function(sg_shader, pointer),
-  uninit_pipeline: function(sg_pipeline, pointer),
-  uninit_pass: function(sg_pass, pointer),
-  fail_buffer: function(sg_buffer, pointer),
-  fail_image: function(sg_image, pointer),
-  fail_shader: function(sg_shader, pointer),
-  fail_pipeline: function(sg_pipeline, pointer),
-  fail_pass: function(sg_pass, pointer),
-  push_debug_group: function(cstring, pointer),
-  pop_debug_group: function(pointer),
-  err_buffer_pool_exhausted: function(pointer),
-  err_image_pool_exhausted: function(pointer),
-  err_shader_pool_exhausted: function(pointer),
-  err_pipeline_pool_exhausted: function(pointer),
-  err_pass_pool_exhausted: function(pointer),
-  err_context_mismatch: function(pointer),
-  err_pass_invalid: function(pointer),
-  err_draw_invalid: function(pointer),
-  err_bindings_invalid: function(pointer)
+  reset_state_cache: function(pointer): void,
+  make_buffer: function(*sg_buffer_desc, sg_buffer, pointer): void,
+  make_image: function(*sg_image_desc, sg_image, pointer): void,
+  make_shader: function(*sg_shader_desc, sg_shader, pointer): void,
+  make_pipeline: function(*sg_pipeline_desc, sg_pipeline, pointer): void,
+  make_pass: function(*sg_pass_desc, sg_pass, pointer): void,
+  destroy_buffer: function(sg_buffer, pointer): void,
+  destroy_image: function(sg_image, pointer): void,
+  destroy_shader: function(sg_shader, pointer): void,
+  destroy_pipeline: function(sg_pipeline, pointer): void,
+  destroy_pass: function(sg_pass, pointer): void,
+  update_buffer: function(sg_buffer, *sg_range, pointer): void,
+  update_image: function(sg_image, *sg_image_data, pointer): void,
+  append_buffer: function(sg_buffer, *sg_range, cint, pointer): void,
+  begin_default_pass: function(*sg_pass_action, cint, cint, pointer): void,
+  begin_pass: function(sg_pass, *sg_pass_action, pointer): void,
+  apply_viewport: function(cint, cint, cint, cint, boolean, pointer): void,
+  apply_scissor_rect: function(cint, cint, cint, cint, boolean, pointer): void,
+  apply_pipeline: function(sg_pipeline, pointer): void,
+  apply_bindings: function(*sg_bindings, pointer): void,
+  apply_uniforms: function(sg_shader_stage, cint, *sg_range, pointer): void,
+  draw: function(cint, cint, cint, pointer): void,
+  end_pass: function(pointer): void,
+  commit: function(pointer): void,
+  alloc_buffer: function(sg_buffer, pointer): void,
+  alloc_image: function(sg_image, pointer): void,
+  alloc_shader: function(sg_shader, pointer): void,
+  alloc_pipeline: function(sg_pipeline, pointer): void,
+  alloc_pass: function(sg_pass, pointer): void,
+  dealloc_buffer: function(sg_buffer, pointer): void,
+  dealloc_image: function(sg_image, pointer): void,
+  dealloc_shader: function(sg_shader, pointer): void,
+  dealloc_pipeline: function(sg_pipeline, pointer): void,
+  dealloc_pass: function(sg_pass, pointer): void,
+  init_buffer: function(sg_buffer, *sg_buffer_desc, pointer): void,
+  init_image: function(sg_image, *sg_image_desc, pointer): void,
+  init_shader: function(sg_shader, *sg_shader_desc, pointer): void,
+  init_pipeline: function(sg_pipeline, *sg_pipeline_desc, pointer): void,
+  init_pass: function(sg_pass, *sg_pass_desc, pointer): void,
+  uninit_buffer: function(sg_buffer, pointer): void,
+  uninit_image: function(sg_image, pointer): void,
+  uninit_shader: function(sg_shader, pointer): void,
+  uninit_pipeline: function(sg_pipeline, pointer): void,
+  uninit_pass: function(sg_pass, pointer): void,
+  fail_buffer: function(sg_buffer, pointer): void,
+  fail_image: function(sg_image, pointer): void,
+  fail_shader: function(sg_shader, pointer): void,
+  fail_pipeline: function(sg_pipeline, pointer): void,
+  fail_pass: function(sg_pass, pointer): void,
+  push_debug_group: function(cstring, pointer): void,
+  pop_debug_group: function(pointer): void,
+  err_buffer_pool_exhausted: function(pointer): void,
+  err_image_pool_exhausted: function(pointer): void,
+  err_shader_pool_exhausted: function(pointer): void,
+  err_pipeline_pool_exhausted: function(pointer): void,
+  err_pass_pool_exhausted: function(pointer): void,
+  err_context_mismatch: function(pointer): void,
+  err_pass_invalid: function(pointer): void,
+  err_draw_invalid: function(pointer): void,
+  err_bindings_invalid: function(pointer): void
 }
-global sg_slot_info: type <cimport, nodecl> = @record{
+global sg_slot_info: type <cimport,nodecl> = @record{
   state: sg_resource_state,
   res_id: uint32,
   ctx_id: uint32
 }
-global sg_buffer_info: type <cimport, nodecl> = @record{
+global sg_buffer_info: type <cimport,nodecl> = @record{
   slot: sg_slot_info,
   update_frame_index: uint32,
   append_frame_index: uint32,
@@ -649,7 +649,7 @@ global sg_buffer_info: type <cimport, nodecl> = @record{
   num_slots: cint,
   active_slot: cint
 }
-global sg_image_info: type <cimport, nodecl> = @record{
+global sg_image_info: type <cimport,nodecl> = @record{
   slot: sg_slot_info,
   upd_frame_index: uint32,
   num_slots: cint,
@@ -657,19 +657,19 @@ global sg_image_info: type <cimport, nodecl> = @record{
   width: cint,
   height: cint
 }
-global sg_shader_info: type <cimport, nodecl> = @record{
+global sg_shader_info: type <cimport,nodecl> = @record{
   slot: sg_slot_info
 }
-global sg_pipeline_info: type <cimport, nodecl> = @record{
+global sg_pipeline_info: type <cimport,nodecl> = @record{
   slot: sg_slot_info
 }
-global sg_pass_info: type <cimport, nodecl> = @record{
+global sg_pass_info: type <cimport,nodecl> = @record{
   slot: sg_slot_info
 }
-global sg_gl_context_desc: type <cimport, nodecl> = @record{
+global sg_gl_context_desc: type <cimport,nodecl> = @record{
   force_gles2: boolean
 }
-global sg_metal_context_desc: type <cimport, nodecl> = @record{
+global sg_metal_context_desc: type <cimport,nodecl> = @record{
   device: pointer,
   renderpass_descriptor_cb: function(): pointer,
   renderpass_descriptor_userdata_cb: function(pointer): pointer,
@@ -677,7 +677,7 @@ global sg_metal_context_desc: type <cimport, nodecl> = @record{
   drawable_userdata_cb: function(pointer): pointer,
   user_data: pointer
 }
-global sg_d3d11_context_desc: type <cimport, nodecl> = @record{
+global sg_d3d11_context_desc: type <cimport,nodecl> = @record{
   device: pointer,
   device_context: pointer,
   render_target_view_cb: function(): pointer,
@@ -686,7 +686,7 @@ global sg_d3d11_context_desc: type <cimport, nodecl> = @record{
   depth_stencil_view_userdata_cb: function(pointer): pointer,
   user_data: pointer
 }
-global sg_wgpu_context_desc: type <cimport, nodecl> = @record{
+global sg_wgpu_context_desc: type <cimport,nodecl> = @record{
   device: pointer,
   render_view_cb: function(): pointer,
   render_view_userdata_cb: function(pointer): pointer,
@@ -696,7 +696,7 @@ global sg_wgpu_context_desc: type <cimport, nodecl> = @record{
   depth_stencil_view_userdata_cb: function(pointer): pointer,
   user_data: pointer
 }
-global sg_context_desc: type <cimport, nodecl> = @record{
+global sg_context_desc: type <cimport,nodecl> = @record{
   color_format: sg_pixel_format,
   depth_format: sg_pixel_format,
   sample_count: cint,
@@ -705,7 +705,7 @@ global sg_context_desc: type <cimport, nodecl> = @record{
   d3d11: sg_d3d11_context_desc,
   wgpu: sg_wgpu_context_desc
 }
-global sg_desc: type <cimport, nodecl> = @record{
+global sg_desc: type <cimport,nodecl> = @record{
   _start_canary: uint32,
   buffer_pool_size: cint,
   image_pool_size: cint,
@@ -719,88 +719,88 @@ global sg_desc: type <cimport, nodecl> = @record{
   context: sg_context_desc,
   _end_canary: uint32
 }
-global function sg_setup(desc: *sg_desc) <cimport, nodecl> end
-global function sg_shutdown() <cimport, nodecl> end
-global function sg_isvalid(): boolean <cimport, nodecl> end
-global function sg_reset_state_cache() <cimport, nodecl> end
-global function sg_install_trace_hooks(trace_hooks: *sg_trace_hooks): sg_trace_hooks <cimport, nodecl> end
-global function sg_push_debug_group(name: cstring) <cimport, nodecl> end
-global function sg_pop_debug_group() <cimport, nodecl> end
-global function sg_make_buffer(desc: *sg_buffer_desc): sg_buffer <cimport, nodecl> end
-global function sg_make_image(desc: *sg_image_desc): sg_image <cimport, nodecl> end
-global function sg_make_shader(desc: *sg_shader_desc): sg_shader <cimport, nodecl> end
-global function sg_make_pipeline(desc: *sg_pipeline_desc): sg_pipeline <cimport, nodecl> end
-global function sg_make_pass(desc: *sg_pass_desc): sg_pass <cimport, nodecl> end
-global function sg_destroy_buffer(buf: sg_buffer) <cimport, nodecl> end
-global function sg_destroy_image(img: sg_image) <cimport, nodecl> end
-global function sg_destroy_shader(shd: sg_shader) <cimport, nodecl> end
-global function sg_destroy_pipeline(pip: sg_pipeline) <cimport, nodecl> end
-global function sg_destroy_pass(pass: sg_pass) <cimport, nodecl> end
-global function sg_update_buffer(buf: sg_buffer, data: *sg_range) <cimport, nodecl> end
-global function sg_update_image(img: sg_image, data: *sg_image_data) <cimport, nodecl> end
-global function sg_append_buffer(buf: sg_buffer, data: *sg_range): cint <cimport, nodecl> end
-global function sg_query_buffer_overflow(buf: sg_buffer): boolean <cimport, nodecl> end
-global function sg_begin_default_pass(pass_action: *sg_pass_action, width: cint, height: cint) <cimport, nodecl> end
-global function sg_begin_default_passf(pass_action: *sg_pass_action, width: float32, height: float32) <cimport, nodecl> end
-global function sg_begin_pass(pass: sg_pass, pass_action: *sg_pass_action) <cimport, nodecl> end
-global function sg_apply_viewport(x: cint, y: cint, width: cint, height: cint, origin_top_left: boolean) <cimport, nodecl> end
-global function sg_apply_viewportf(x: float32, y: float32, width: float32, height: float32, origin_top_left: boolean) <cimport, nodecl> end
-global function sg_apply_scissor_rect(x: cint, y: cint, width: cint, height: cint, origin_top_left: boolean) <cimport, nodecl> end
-global function sg_apply_scissor_rectf(x: float32, y: float32, width: float32, height: float32, origin_top_left: boolean) <cimport, nodecl> end
-global function sg_apply_pipeline(pip: sg_pipeline) <cimport, nodecl> end
-global function sg_apply_bindings(bindings: *sg_bindings) <cimport, nodecl> end
-global function sg_apply_uniforms(stage: sg_shader_stage, ub_index: cint, data: *sg_range) <cimport, nodecl> end
-global function sg_draw(base_element: cint, num_elements: cint, num_instances: cint) <cimport, nodecl> end
-global function sg_end_pass() <cimport, nodecl> end
-global function sg_commit() <cimport, nodecl> end
-global function sg_query_desc(): sg_desc <cimport, nodecl> end
-global function sg_query_backend(): sg_backend <cimport, nodecl> end
-global function sg_query_features(): sg_features <cimport, nodecl> end
-global function sg_query_limits(): sg_limits <cimport, nodecl> end
-global function sg_query_pixelformat(fmt: sg_pixel_format): sg_pixelformat_info <cimport, nodecl> end
-global function sg_query_buffer_state(buf: sg_buffer): sg_resource_state <cimport, nodecl> end
-global function sg_query_image_state(img: sg_image): sg_resource_state <cimport, nodecl> end
-global function sg_query_shader_state(shd: sg_shader): sg_resource_state <cimport, nodecl> end
-global function sg_query_pipeline_state(pip: sg_pipeline): sg_resource_state <cimport, nodecl> end
-global function sg_query_pass_state(pass: sg_pass): sg_resource_state <cimport, nodecl> end
-global function sg_query_buffer_info(buf: sg_buffer): sg_buffer_info <cimport, nodecl> end
-global function sg_query_image_info(img: sg_image): sg_image_info <cimport, nodecl> end
-global function sg_query_shader_info(shd: sg_shader): sg_shader_info <cimport, nodecl> end
-global function sg_query_pipeline_info(pip: sg_pipeline): sg_pipeline_info <cimport, nodecl> end
-global function sg_query_pass_info(pass: sg_pass): sg_pass_info <cimport, nodecl> end
-global function sg_query_buffer_defaults(desc: *sg_buffer_desc): sg_buffer_desc <cimport, nodecl> end
-global function sg_query_image_defaults(desc: *sg_image_desc): sg_image_desc <cimport, nodecl> end
-global function sg_query_shader_defaults(desc: *sg_shader_desc): sg_shader_desc <cimport, nodecl> end
-global function sg_query_pipeline_defaults(desc: *sg_pipeline_desc): sg_pipeline_desc <cimport, nodecl> end
-global function sg_query_pass_defaults(desc: *sg_pass_desc): sg_pass_desc <cimport, nodecl> end
-global function sg_alloc_buffer(): sg_buffer <cimport, nodecl> end
-global function sg_alloc_image(): sg_image <cimport, nodecl> end
-global function sg_alloc_shader(): sg_shader <cimport, nodecl> end
-global function sg_alloc_pipeline(): sg_pipeline <cimport, nodecl> end
-global function sg_alloc_pass(): sg_pass <cimport, nodecl> end
-global function sg_dealloc_buffer(buf_id: sg_buffer) <cimport, nodecl> end
-global function sg_dealloc_image(img_id: sg_image) <cimport, nodecl> end
-global function sg_dealloc_shader(shd_id: sg_shader) <cimport, nodecl> end
-global function sg_dealloc_pipeline(pip_id: sg_pipeline) <cimport, nodecl> end
-global function sg_dealloc_pass(pass_id: sg_pass) <cimport, nodecl> end
-global function sg_init_buffer(buf_id: sg_buffer, desc: *sg_buffer_desc) <cimport, nodecl> end
-global function sg_init_image(img_id: sg_image, desc: *sg_image_desc) <cimport, nodecl> end
-global function sg_init_shader(shd_id: sg_shader, desc: *sg_shader_desc) <cimport, nodecl> end
-global function sg_init_pipeline(pip_id: sg_pipeline, desc: *sg_pipeline_desc) <cimport, nodecl> end
-global function sg_init_pass(pass_id: sg_pass, desc: *sg_pass_desc) <cimport, nodecl> end
-global function sg_uninit_buffer(buf_id: sg_buffer): boolean <cimport, nodecl> end
-global function sg_uninit_image(img_id: sg_image): boolean <cimport, nodecl> end
-global function sg_uninit_shader(shd_id: sg_shader): boolean <cimport, nodecl> end
-global function sg_uninit_pipeline(pip_id: sg_pipeline): boolean <cimport, nodecl> end
-global function sg_uninit_pass(pass_id: sg_pass): boolean <cimport, nodecl> end
-global function sg_fail_buffer(buf_id: sg_buffer) <cimport, nodecl> end
-global function sg_fail_image(img_id: sg_image) <cimport, nodecl> end
-global function sg_fail_shader(shd_id: sg_shader) <cimport, nodecl> end
-global function sg_fail_pipeline(pip_id: sg_pipeline) <cimport, nodecl> end
-global function sg_fail_pass(pass_id: sg_pass) <cimport, nodecl> end
-global function sg_setup_context(): sg_context <cimport, nodecl> end
-global function sg_activate_context(ctx_id: sg_context) <cimport, nodecl> end
-global function sg_discard_context(ctx_id: sg_context) <cimport, nodecl> end
-global function sg_d3d11_device(): pointer <cimport, nodecl> end
-global function sg_mtl_device(): pointer <cimport, nodecl> end
-global function sg_mtl_render_command_encoder(): pointer <cimport, nodecl> end
+global function sg_setup(desc: *sg_desc): void <cimport,nodecl> end
+global function sg_shutdown(): void <cimport,nodecl> end
+global function sg_isvalid(): boolean <cimport,nodecl> end
+global function sg_reset_state_cache(): void <cimport,nodecl> end
+global function sg_install_trace_hooks(trace_hooks: *sg_trace_hooks): sg_trace_hooks <cimport,nodecl> end
+global function sg_push_debug_group(name: cstring): void <cimport,nodecl> end
+global function sg_pop_debug_group(): void <cimport,nodecl> end
+global function sg_make_buffer(desc: *sg_buffer_desc): sg_buffer <cimport,nodecl> end
+global function sg_make_image(desc: *sg_image_desc): sg_image <cimport,nodecl> end
+global function sg_make_shader(desc: *sg_shader_desc): sg_shader <cimport,nodecl> end
+global function sg_make_pipeline(desc: *sg_pipeline_desc): sg_pipeline <cimport,nodecl> end
+global function sg_make_pass(desc: *sg_pass_desc): sg_pass <cimport,nodecl> end
+global function sg_destroy_buffer(buf: sg_buffer): void <cimport,nodecl> end
+global function sg_destroy_image(img: sg_image): void <cimport,nodecl> end
+global function sg_destroy_shader(shd: sg_shader): void <cimport,nodecl> end
+global function sg_destroy_pipeline(pip: sg_pipeline): void <cimport,nodecl> end
+global function sg_destroy_pass(pass: sg_pass): void <cimport,nodecl> end
+global function sg_update_buffer(buf: sg_buffer, data: *sg_range): void <cimport,nodecl> end
+global function sg_update_image(img: sg_image, data: *sg_image_data): void <cimport,nodecl> end
+global function sg_append_buffer(buf: sg_buffer, data: *sg_range): cint <cimport,nodecl> end
+global function sg_query_buffer_overflow(buf: sg_buffer): boolean <cimport,nodecl> end
+global function sg_begin_default_pass(pass_action: *sg_pass_action, width: cint, height: cint): void <cimport,nodecl> end
+global function sg_begin_default_passf(pass_action: *sg_pass_action, width: float32, height: float32): void <cimport,nodecl> end
+global function sg_begin_pass(pass: sg_pass, pass_action: *sg_pass_action): void <cimport,nodecl> end
+global function sg_apply_viewport(x: cint, y: cint, width: cint, height: cint, origin_top_left: boolean): void <cimport,nodecl> end
+global function sg_apply_viewportf(x: float32, y: float32, width: float32, height: float32, origin_top_left: boolean): void <cimport,nodecl> end
+global function sg_apply_scissor_rect(x: cint, y: cint, width: cint, height: cint, origin_top_left: boolean): void <cimport,nodecl> end
+global function sg_apply_scissor_rectf(x: float32, y: float32, width: float32, height: float32, origin_top_left: boolean): void <cimport,nodecl> end
+global function sg_apply_pipeline(pip: sg_pipeline): void <cimport,nodecl> end
+global function sg_apply_bindings(bindings: *sg_bindings): void <cimport,nodecl> end
+global function sg_apply_uniforms(stage: sg_shader_stage, ub_index: cint, data: *sg_range): void <cimport,nodecl> end
+global function sg_draw(base_element: cint, num_elements: cint, num_instances: cint): void <cimport,nodecl> end
+global function sg_end_pass(): void <cimport,nodecl> end
+global function sg_commit(): void <cimport,nodecl> end
+global function sg_query_desc(): sg_desc <cimport,nodecl> end
+global function sg_query_backend(): sg_backend <cimport,nodecl> end
+global function sg_query_features(): sg_features <cimport,nodecl> end
+global function sg_query_limits(): sg_limits <cimport,nodecl> end
+global function sg_query_pixelformat(fmt: sg_pixel_format): sg_pixelformat_info <cimport,nodecl> end
+global function sg_query_buffer_state(buf: sg_buffer): sg_resource_state <cimport,nodecl> end
+global function sg_query_image_state(img: sg_image): sg_resource_state <cimport,nodecl> end
+global function sg_query_shader_state(shd: sg_shader): sg_resource_state <cimport,nodecl> end
+global function sg_query_pipeline_state(pip: sg_pipeline): sg_resource_state <cimport,nodecl> end
+global function sg_query_pass_state(pass: sg_pass): sg_resource_state <cimport,nodecl> end
+global function sg_query_buffer_info(buf: sg_buffer): sg_buffer_info <cimport,nodecl> end
+global function sg_query_image_info(img: sg_image): sg_image_info <cimport,nodecl> end
+global function sg_query_shader_info(shd: sg_shader): sg_shader_info <cimport,nodecl> end
+global function sg_query_pipeline_info(pip: sg_pipeline): sg_pipeline_info <cimport,nodecl> end
+global function sg_query_pass_info(pass: sg_pass): sg_pass_info <cimport,nodecl> end
+global function sg_query_buffer_defaults(desc: *sg_buffer_desc): sg_buffer_desc <cimport,nodecl> end
+global function sg_query_image_defaults(desc: *sg_image_desc): sg_image_desc <cimport,nodecl> end
+global function sg_query_shader_defaults(desc: *sg_shader_desc): sg_shader_desc <cimport,nodecl> end
+global function sg_query_pipeline_defaults(desc: *sg_pipeline_desc): sg_pipeline_desc <cimport,nodecl> end
+global function sg_query_pass_defaults(desc: *sg_pass_desc): sg_pass_desc <cimport,nodecl> end
+global function sg_alloc_buffer(): sg_buffer <cimport,nodecl> end
+global function sg_alloc_image(): sg_image <cimport,nodecl> end
+global function sg_alloc_shader(): sg_shader <cimport,nodecl> end
+global function sg_alloc_pipeline(): sg_pipeline <cimport,nodecl> end
+global function sg_alloc_pass(): sg_pass <cimport,nodecl> end
+global function sg_dealloc_buffer(buf_id: sg_buffer): void <cimport,nodecl> end
+global function sg_dealloc_image(img_id: sg_image): void <cimport,nodecl> end
+global function sg_dealloc_shader(shd_id: sg_shader): void <cimport,nodecl> end
+global function sg_dealloc_pipeline(pip_id: sg_pipeline): void <cimport,nodecl> end
+global function sg_dealloc_pass(pass_id: sg_pass): void <cimport,nodecl> end
+global function sg_init_buffer(buf_id: sg_buffer, desc: *sg_buffer_desc): void <cimport,nodecl> end
+global function sg_init_image(img_id: sg_image, desc: *sg_image_desc): void <cimport,nodecl> end
+global function sg_init_shader(shd_id: sg_shader, desc: *sg_shader_desc): void <cimport,nodecl> end
+global function sg_init_pipeline(pip_id: sg_pipeline, desc: *sg_pipeline_desc): void <cimport,nodecl> end
+global function sg_init_pass(pass_id: sg_pass, desc: *sg_pass_desc): void <cimport,nodecl> end
+global function sg_uninit_buffer(buf_id: sg_buffer): boolean <cimport,nodecl> end
+global function sg_uninit_image(img_id: sg_image): boolean <cimport,nodecl> end
+global function sg_uninit_shader(shd_id: sg_shader): boolean <cimport,nodecl> end
+global function sg_uninit_pipeline(pip_id: sg_pipeline): boolean <cimport,nodecl> end
+global function sg_uninit_pass(pass_id: sg_pass): boolean <cimport,nodecl> end
+global function sg_fail_buffer(buf_id: sg_buffer): void <cimport,nodecl> end
+global function sg_fail_image(img_id: sg_image): void <cimport,nodecl> end
+global function sg_fail_shader(shd_id: sg_shader): void <cimport,nodecl> end
+global function sg_fail_pipeline(pip_id: sg_pipeline): void <cimport,nodecl> end
+global function sg_fail_pass(pass_id: sg_pass): void <cimport,nodecl> end
+global function sg_setup_context(): sg_context <cimport,nodecl> end
+global function sg_activate_context(ctx_id: sg_context): void <cimport,nodecl> end
+global function sg_discard_context(ctx_id: sg_context): void <cimport,nodecl> end
+global function sg_d3d11_device(): pointer <cimport,nodecl> end
+global function sg_mtl_device(): pointer <cimport,nodecl> end
+global function sg_mtl_render_command_encoder(): pointer <cimport,nodecl> end

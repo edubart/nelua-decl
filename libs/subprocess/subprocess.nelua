@@ -1,23 +1,23 @@
 ## cinclude 'subprocess.h'
-global FILE: type <cimport, nodecl, forwarddecl> = @record{}
-global subprocess_s: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global subprocess_option_e: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global FILE: type <cimport,nodecl,forwarddecl> = @record{}
+global subprocess_s: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global subprocess_option_e: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   subprocess_option_combined_stdout_stderr = 1,
   subprocess_option_inherit_environment = 2,
   subprocess_option_enable_async = 4,
   subprocess_option_no_window = 8
 }
-global function subprocess_create(command_line: *cstring, options: cint, out_process: *subprocess_s): cint <cimport, nodecl> end
-global function subprocess_create_ex(command_line: *cstring, options: cint, environment: *cstring, out_process: *subprocess_s): cint <cimport, nodecl> end
-global function subprocess_stdin(process: *subprocess_s): *FILE <cimport, nodecl> end
-global function subprocess_stdout(process: *subprocess_s): *FILE <cimport, nodecl> end
-global function subprocess_stderr(process: *subprocess_s): *FILE <cimport, nodecl> end
-global function subprocess_join(process: *subprocess_s, out_return_code: *cint): cint <cimport, nodecl> end
-global function subprocess_destroy(process: *subprocess_s): cint <cimport, nodecl> end
-global function subprocess_terminate(process: *subprocess_s): cint <cimport, nodecl> end
-global function subprocess_read_stdout(process: *subprocess_s, buffer: cstring, size: cuint): cuint <cimport, nodecl> end
-global function subprocess_read_stderr(process: *subprocess_s, buffer: cstring, size: cuint): cuint <cimport, nodecl> end
-global function subprocess_alive(process: *subprocess_s): cint <cimport, nodecl> end
+global function subprocess_create(command_line: *cstring, options: cint, out_process: *subprocess_s): cint <cimport,nodecl> end
+global function subprocess_create_ex(command_line: *cstring, options: cint, environment: *cstring, out_process: *subprocess_s): cint <cimport,nodecl> end
+global function subprocess_stdin(process: *subprocess_s): *FILE <cimport,nodecl> end
+global function subprocess_stdout(process: *subprocess_s): *FILE <cimport,nodecl> end
+global function subprocess_stderr(process: *subprocess_s): *FILE <cimport,nodecl> end
+global function subprocess_join(process: *subprocess_s, out_return_code: *cint): cint <cimport,nodecl> end
+global function subprocess_destroy(process: *subprocess_s): cint <cimport,nodecl> end
+global function subprocess_terminate(process: *subprocess_s): cint <cimport,nodecl> end
+global function subprocess_read_stdout(process: *subprocess_s, buffer: cstring, size: cuint): cuint <cimport,nodecl> end
+global function subprocess_read_stderr(process: *subprocess_s, buffer: cstring, size: cuint): cuint <cimport,nodecl> end
+global function subprocess_alive(process: *subprocess_s): cint <cimport,nodecl> end
 subprocess_s = @record{
   stdin_file: *FILE,
   stdout_file: *FILE,

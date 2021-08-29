@@ -5,21 +5,21 @@ if not SOKOL_ARGS_NO_IMPL then
 end
 cinclude 'sokol_args.h'
 ]]
-global sargs_desc: type <cimport, nodecl> = @record{
+global sargs_desc: type <cimport,nodecl> = @record{
   argc: cint,
   argv: *cstring,
   max_args: cint,
   buf_size: cint
 }
-global function sargs_setup(desc: *sargs_desc) <cimport, nodecl> end
-global function sargs_shutdown() <cimport, nodecl> end
-global function sargs_isvalid(): boolean <cimport, nodecl> end
-global function sargs_exists(key: cstring): boolean <cimport, nodecl> end
-global function sargs_value(key: cstring): cstring <cimport, nodecl> end
-global function sargs_value_def(key: cstring, def: cstring): cstring <cimport, nodecl> end
-global function sargs_equals(key: cstring, val: cstring): boolean <cimport, nodecl> end
-global function sargs_boolean(key: cstring): boolean <cimport, nodecl> end
-global function sargs_find(key: cstring): cint <cimport, nodecl> end
-global function sargs_num_args(): cint <cimport, nodecl> end
-global function sargs_key_at(index: cint): cstring <cimport, nodecl> end
-global function sargs_value_at(index: cint): cstring <cimport, nodecl> end
+global function sargs_setup(desc: *sargs_desc): void <cimport,nodecl> end
+global function sargs_shutdown(): void <cimport,nodecl> end
+global function sargs_isvalid(): boolean <cimport,nodecl> end
+global function sargs_exists(key: cstring): boolean <cimport,nodecl> end
+global function sargs_value(key: cstring): cstring <cimport,nodecl> end
+global function sargs_value_def(key: cstring, def: cstring): cstring <cimport,nodecl> end
+global function sargs_equals(key: cstring, val: cstring): boolean <cimport,nodecl> end
+global function sargs_boolean(key: cstring): boolean <cimport,nodecl> end
+global function sargs_find(key: cstring): cint <cimport,nodecl> end
+global function sargs_num_args(): cint <cimport,nodecl> end
+global function sargs_key_at(index: cint): cstring <cimport,nodecl> end
+global function sargs_value_at(index: cint): cstring <cimport,nodecl> end

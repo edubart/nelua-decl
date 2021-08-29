@@ -4,13 +4,13 @@ if STB_VORBIS_NO_IMPL then
 end
 cinclude 'stb_vorbis.h'
 ]]
-global FILE: type <cimport, nodecl, forwarddecl> = @record{}
-global stb_vorbis_alloc: type <cimport, nodecl> = @record{
+global FILE: type <cimport,nodecl,forwarddecl> = @record{}
+global stb_vorbis_alloc: type <cimport,nodecl> = @record{
   alloc_buffer: cstring,
   alloc_buffer_length_in_bytes: cint
 }
-global stb_vorbis: type <cimport, nodecl, forwarddecl> = @record{}
-global stb_vorbis_info: type <cimport, nodecl> = @record{
+global stb_vorbis: type <cimport,nodecl,forwarddecl> = @record{}
+global stb_vorbis_info: type <cimport,nodecl> = @record{
   sample_rate: cuint,
   channels: cint,
   setup_memory_required: cuint,
@@ -18,35 +18,35 @@ global stb_vorbis_info: type <cimport, nodecl> = @record{
   temp_memory_required: cuint,
   max_frame_size: cint
 }
-global stb_vorbis_comment: type <cimport, nodecl> = @record{
+global stb_vorbis_comment: type <cimport,nodecl> = @record{
   vendor: cstring,
   comment_list_length: cint,
   comment_list: *cstring
 }
-global function stb_vorbis_get_info(f: *stb_vorbis): stb_vorbis_info <cimport, nodecl> end
-global function stb_vorbis_get_comment(f: *stb_vorbis): stb_vorbis_comment <cimport, nodecl> end
-global function stb_vorbis_get_error(f: *stb_vorbis): cint <cimport, nodecl> end
-global function stb_vorbis_close(f: *stb_vorbis) <cimport, nodecl> end
-global function stb_vorbis_get_sample_offset(f: *stb_vorbis): cint <cimport, nodecl> end
-global function stb_vorbis_get_file_offset(f: *stb_vorbis): cuint <cimport, nodecl> end
-global function stb_vorbis_open_pushdata(datablock: *cuchar, datablock_length_in_bytes: cint, datablock_memory_consumed_in_bytes: *cint, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport, nodecl> end
-global function stb_vorbis_decode_frame_pushdata(f: *stb_vorbis, datablock: *cuchar, datablock_length_in_bytes: cint, channels: *cint, output: ***float32, samples: *cint): cint <cimport, nodecl> end
-global function stb_vorbis_flush_pushdata(f: *stb_vorbis) <cimport, nodecl> end
-global function stb_vorbis_decode_filename(filename: cstring, channels: *cint, sample_rate: *cint, output: **cshort): cint <cimport, nodecl> end
-global function stb_vorbis_decode_memory(mem: *cuchar, len: cint, channels: *cint, sample_rate: *cint, output: **cshort): cint <cimport, nodecl> end
-global function stb_vorbis_open_memory(data: *cuchar, len: cint, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport, nodecl> end
-global function stb_vorbis_open_filename(filename: cstring, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport, nodecl> end
-global function stb_vorbis_open_file(f: *FILE, close_handle_on_close: cint, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport, nodecl> end
-global function stb_vorbis_open_file_section(f: *FILE, close_handle_on_close: cint, error: *cint, alloc_buffer: *stb_vorbis_alloc, len: cuint): *stb_vorbis <cimport, nodecl> end
-global function stb_vorbis_seek_frame(f: *stb_vorbis, sample_number: cuint): cint <cimport, nodecl> end
-global function stb_vorbis_seek(f: *stb_vorbis, sample_number: cuint): cint <cimport, nodecl> end
-global function stb_vorbis_seek_start(f: *stb_vorbis): cint <cimport, nodecl> end
-global function stb_vorbis_stream_length_in_samples(f: *stb_vorbis): cuint <cimport, nodecl> end
-global function stb_vorbis_stream_length_in_seconds(f: *stb_vorbis): float32 <cimport, nodecl> end
-global function stb_vorbis_get_frame_float(f: *stb_vorbis, channels: *cint, output: ***float32): cint <cimport, nodecl> end
-global function stb_vorbis_get_frame_short_interleaved(f: *stb_vorbis, num_c: cint, buffer: *cshort, num_shorts: cint): cint <cimport, nodecl> end
-global function stb_vorbis_get_frame_short(f: *stb_vorbis, num_c: cint, buffer: **cshort, num_samples: cint): cint <cimport, nodecl> end
-global function stb_vorbis_get_samples_float_interleaved(f: *stb_vorbis, channels: cint, buffer: *float32, num_floats: cint): cint <cimport, nodecl> end
-global function stb_vorbis_get_samples_float(f: *stb_vorbis, channels: cint, buffer: **float32, num_samples: cint): cint <cimport, nodecl> end
-global function stb_vorbis_get_samples_short_interleaved(f: *stb_vorbis, channels: cint, buffer: *cshort, num_shorts: cint): cint <cimport, nodecl> end
-global function stb_vorbis_get_samples_short(f: *stb_vorbis, channels: cint, buffer: **cshort, num_samples: cint): cint <cimport, nodecl> end
+global function stb_vorbis_get_info(f: *stb_vorbis): stb_vorbis_info <cimport,nodecl> end
+global function stb_vorbis_get_comment(f: *stb_vorbis): stb_vorbis_comment <cimport,nodecl> end
+global function stb_vorbis_get_error(f: *stb_vorbis): cint <cimport,nodecl> end
+global function stb_vorbis_close(f: *stb_vorbis): void <cimport,nodecl> end
+global function stb_vorbis_get_sample_offset(f: *stb_vorbis): cint <cimport,nodecl> end
+global function stb_vorbis_get_file_offset(f: *stb_vorbis): cuint <cimport,nodecl> end
+global function stb_vorbis_open_pushdata(datablock: *cuchar, datablock_length_in_bytes: cint, datablock_memory_consumed_in_bytes: *cint, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport,nodecl> end
+global function stb_vorbis_decode_frame_pushdata(f: *stb_vorbis, datablock: *cuchar, datablock_length_in_bytes: cint, channels: *cint, output: ***float32, samples: *cint): cint <cimport,nodecl> end
+global function stb_vorbis_flush_pushdata(f: *stb_vorbis): void <cimport,nodecl> end
+global function stb_vorbis_decode_filename(filename: cstring, channels: *cint, sample_rate: *cint, output: **cshort): cint <cimport,nodecl> end
+global function stb_vorbis_decode_memory(mem: *cuchar, len: cint, channels: *cint, sample_rate: *cint, output: **cshort): cint <cimport,nodecl> end
+global function stb_vorbis_open_memory(data: *cuchar, len: cint, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport,nodecl> end
+global function stb_vorbis_open_filename(filename: cstring, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport,nodecl> end
+global function stb_vorbis_open_file(f: *FILE, close_handle_on_close: cint, error: *cint, alloc_buffer: *stb_vorbis_alloc): *stb_vorbis <cimport,nodecl> end
+global function stb_vorbis_open_file_section(f: *FILE, close_handle_on_close: cint, error: *cint, alloc_buffer: *stb_vorbis_alloc, len: cuint): *stb_vorbis <cimport,nodecl> end
+global function stb_vorbis_seek_frame(f: *stb_vorbis, sample_number: cuint): cint <cimport,nodecl> end
+global function stb_vorbis_seek(f: *stb_vorbis, sample_number: cuint): cint <cimport,nodecl> end
+global function stb_vorbis_seek_start(f: *stb_vorbis): cint <cimport,nodecl> end
+global function stb_vorbis_stream_length_in_samples(f: *stb_vorbis): cuint <cimport,nodecl> end
+global function stb_vorbis_stream_length_in_seconds(f: *stb_vorbis): float32 <cimport,nodecl> end
+global function stb_vorbis_get_frame_float(f: *stb_vorbis, channels: *cint, output: ***float32): cint <cimport,nodecl> end
+global function stb_vorbis_get_frame_short_interleaved(f: *stb_vorbis, num_c: cint, buffer: *cshort, num_shorts: cint): cint <cimport,nodecl> end
+global function stb_vorbis_get_frame_short(f: *stb_vorbis, num_c: cint, buffer: **cshort, num_samples: cint): cint <cimport,nodecl> end
+global function stb_vorbis_get_samples_float_interleaved(f: *stb_vorbis, channels: cint, buffer: *float32, num_floats: cint): cint <cimport,nodecl> end
+global function stb_vorbis_get_samples_float(f: *stb_vorbis, channels: cint, buffer: **float32, num_samples: cint): cint <cimport,nodecl> end
+global function stb_vorbis_get_samples_short_interleaved(f: *stb_vorbis, channels: cint, buffer: *cshort, num_shorts: cint): cint <cimport,nodecl> end
+global function stb_vorbis_get_samples_short(f: *stb_vorbis, channels: cint, buffer: **cshort, num_samples: cint): cint <cimport,nodecl> end

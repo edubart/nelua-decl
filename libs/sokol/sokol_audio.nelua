@@ -11,23 +11,23 @@ elseif ccinfo.is_linux then
   cflags '-pthread'
 end
 ]]
-global saudio_desc: type <cimport, nodecl> = @record{
+global saudio_desc: type <cimport,nodecl> = @record{
   sample_rate: cint,
   num_channels: cint,
   buffer_frames: cint,
   packet_frames: cint,
   num_packets: cint,
-  stream_cb: function(*float32, cint, cint),
-  stream_userdata_cb: function(*float32, cint, cint, pointer),
+  stream_cb: function(*float32, cint, cint): void,
+  stream_userdata_cb: function(*float32, cint, cint, pointer): void,
   user_data: pointer
 }
-global function saudio_setup(desc: *saudio_desc) <cimport, nodecl> end
-global function saudio_shutdown() <cimport, nodecl> end
-global function saudio_isvalid(): boolean <cimport, nodecl> end
-global function saudio_userdata(): pointer <cimport, nodecl> end
-global function saudio_query_desc(): saudio_desc <cimport, nodecl> end
-global function saudio_sample_rate(): cint <cimport, nodecl> end
-global function saudio_buffer_frames(): cint <cimport, nodecl> end
-global function saudio_channels(): cint <cimport, nodecl> end
-global function saudio_expect(): cint <cimport, nodecl> end
-global function saudio_push(frames: *float32, num_frames: cint): cint <cimport, nodecl> end
+global function saudio_setup(desc: *saudio_desc): void <cimport,nodecl> end
+global function saudio_shutdown(): void <cimport,nodecl> end
+global function saudio_isvalid(): boolean <cimport,nodecl> end
+global function saudio_userdata(): pointer <cimport,nodecl> end
+global function saudio_query_desc(): saudio_desc <cimport,nodecl> end
+global function saudio_sample_rate(): cint <cimport,nodecl> end
+global function saudio_buffer_frames(): cint <cimport,nodecl> end
+global function saudio_channels(): cint <cimport,nodecl> end
+global function saudio_expect(): cint <cimport,nodecl> end
+global function saudio_push(frames: *float32, num_frames: cint): cint <cimport,nodecl> end

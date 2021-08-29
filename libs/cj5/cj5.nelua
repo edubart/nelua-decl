@@ -5,7 +5,7 @@ if not CJ5_NO_IMPL then
 end
 cinclude 'cj5.h'
 ]]
-global cj5_token_type: type <cimport, nodecl, using> = @enum(cint){
+global cj5_token_type: type <cimport,nodecl,using> = @enum(cint){
   CJ5_TOKEN_OBJECT = 0,
   CJ5_TOKEN_ARRAY = 1,
   CJ5_TOKEN_NUMBER = 2,
@@ -13,19 +13,19 @@ global cj5_token_type: type <cimport, nodecl, using> = @enum(cint){
   CJ5_TOKEN_BOOL = 4,
   CJ5_TOKEN_NULL = 5
 }
-global cj5_token_number_type: type <cimport, nodecl, using> = @enum(cint){
+global cj5_token_number_type: type <cimport,nodecl,using> = @enum(cint){
   CJ5_TOKEN_NUMBER_UNKNOWN = 0,
   CJ5_TOKEN_NUMBER_FLOAT = 1,
   CJ5_TOKEN_NUMBER_INT = 2,
   CJ5_TOKEN_NUMBER_HEX = 3
 }
-global cj5_error_code: type <cimport, nodecl, using> = @enum(cint){
+global cj5_error_code: type <cimport,nodecl,using> = @enum(cint){
   CJ5_ERROR_NONE = 0,
   CJ5_ERROR_INVALID = 1,
   CJ5_ERROR_INCOMPLETE = 2,
   CJ5_ERROR_OVERFLOW = 3
 }
-global cj5_token: type <cimport, nodecl> = @record{
+global cj5_token: type <cimport,nodecl> = @record{
   type: cj5_token_type,
   __unnamed1: union{
     num_type: cj5_token_number_type,
@@ -36,7 +36,7 @@ global cj5_token: type <cimport, nodecl> = @record{
   size: cint,
   parent_id: cint
 }
-global cj5_result: type <cimport, nodecl> = @record{
+global cj5_result: type <cimport,nodecl> = @record{
   error: cj5_error_code,
   error_line: cint,
   error_col: cint,
@@ -44,35 +44,35 @@ global cj5_result: type <cimport, nodecl> = @record{
   tokens: *cj5_token,
   json5: cstring
 }
-global function cj5_parse(json5: cstring, len: cint, tokens: *cj5_token, max_tokens: cint): cj5_result <cimport, nodecl> end
-global function cj5_seek(r: *cj5_result, parent_id: cint, key: cstring): cint <cimport, nodecl> end
-global function cj5_seek_hash(r: *cj5_result, parent_id: cint, key_hash: uint32): cint <cimport, nodecl> end
-global function cj5_seek_recursive(r: *cj5_result, parent_id: cint, key: cstring): cint <cimport, nodecl> end
-global function cj5_get_string(r: *cj5_result, id: cint, str: cstring, max_str: cint): cstring <cimport, nodecl> end
-global function cj5_get_double(r: *cj5_result, id: cint): float64 <cimport, nodecl> end
-global function cj5_get_float(r: *cj5_result, id: cint): float32 <cimport, nodecl> end
-global function cj5_get_int(r: *cj5_result, id: cint): cint <cimport, nodecl> end
-global function cj5_get_uint(r: *cj5_result, id: cint): uint32 <cimport, nodecl> end
-global function cj5_get_uint64(r: *cj5_result, id: cint): uint64 <cimport, nodecl> end
-global function cj5_get_int64(r: *cj5_result, id: cint): int64 <cimport, nodecl> end
-global function cj5_get_bool(r: *cj5_result, id: cint): boolean <cimport, nodecl> end
-global function cj5_seekget_double(r: *cj5_result, parent_id: cint, key: cstring, def_val: float64): float64 <cimport, nodecl> end
-global function cj5_seekget_float(r: *cj5_result, parent_id: cint, key: cstring, def_val: float32): float32 <cimport, nodecl> end
-global function cj5_seekget_array_int16(r: *cj5_result, parent_id: cint, key: cstring, values: *int16, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_uint16(r: *cj5_result, parent_id: cint, key: cstring, values: *uint16, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_int(r: *cj5_result, parent_id: cint, key: cstring, def_val: cint): cint <cimport, nodecl> end
-global function cj5_seekget_uint(r: *cj5_result, parent_id: cint, key: cstring, def_val: uint32): uint32 <cimport, nodecl> end
-global function cj5_seekget_uint64(r: *cj5_result, parent_id: cint, key: cstring, def_val: uint64): uint64 <cimport, nodecl> end
-global function cj5_seekget_int64(r: *cj5_result, parent_id: cint, key: cstring, def_val: int64): int64 <cimport, nodecl> end
-global function cj5_seekget_bool(r: *cj5_result, parent_id: cint, key: cstring, def_val: boolean): boolean <cimport, nodecl> end
-global function cj5_seekget_string(r: *cj5_result, parent_id: cint, key: cstring, str: cstring, max_str: cint, def_val: cstring): cstring <cimport, nodecl> end
-global function cj5_seekget_array_double(r: *cj5_result, parent_id: cint, key: cstring, values: *float64, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_float(r: *cj5_result, parent_id: cint, key: cstring, values: *float32, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_int(r: *cj5_result, parent_id: cint, key: cstring, values: *cint, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_uint(r: *cj5_result, parent_id: cint, key: cstring, values: *uint32, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_uint64(r: *cj5_result, parent_id: cint, key: cstring, values: *uint64, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_int64(r: *cj5_result, parent_id: cint, key: cstring, values: *int64, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_bool(r: *cj5_result, parent_id: cint, key: cstring, values: *boolean, max_values: cint): cint <cimport, nodecl> end
-global function cj5_seekget_array_string(r: *cj5_result, parent_id: cint, key: cstring, strs: *cstring, max_str: cint, max_values: cint): cint <cimport, nodecl> end
-global function cj5_get_array_elem(r: *cj5_result, id: cint, index: cint): cint <cimport, nodecl> end
-global function cj5_get_array_elem_incremental(r: *cj5_result, id: cint, index: cint, prev_elem: cint): cint <cimport, nodecl> end
+global function cj5_parse(json5: cstring, len: cint, tokens: *cj5_token, max_tokens: cint): cj5_result <cimport,nodecl> end
+global function cj5_seek(r: *cj5_result, parent_id: cint, key: cstring): cint <cimport,nodecl> end
+global function cj5_seek_hash(r: *cj5_result, parent_id: cint, key_hash: uint32): cint <cimport,nodecl> end
+global function cj5_seek_recursive(r: *cj5_result, parent_id: cint, key: cstring): cint <cimport,nodecl> end
+global function cj5_get_string(r: *cj5_result, id: cint, str: cstring, max_str: cint): cstring <cimport,nodecl> end
+global function cj5_get_double(r: *cj5_result, id: cint): float64 <cimport,nodecl> end
+global function cj5_get_float(r: *cj5_result, id: cint): float32 <cimport,nodecl> end
+global function cj5_get_int(r: *cj5_result, id: cint): cint <cimport,nodecl> end
+global function cj5_get_uint(r: *cj5_result, id: cint): uint32 <cimport,nodecl> end
+global function cj5_get_uint64(r: *cj5_result, id: cint): uint64 <cimport,nodecl> end
+global function cj5_get_int64(r: *cj5_result, id: cint): int64 <cimport,nodecl> end
+global function cj5_get_bool(r: *cj5_result, id: cint): boolean <cimport,nodecl> end
+global function cj5_seekget_double(r: *cj5_result, parent_id: cint, key: cstring, def_val: float64): float64 <cimport,nodecl> end
+global function cj5_seekget_float(r: *cj5_result, parent_id: cint, key: cstring, def_val: float32): float32 <cimport,nodecl> end
+global function cj5_seekget_array_int16(r: *cj5_result, parent_id: cint, key: cstring, values: *int16, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_uint16(r: *cj5_result, parent_id: cint, key: cstring, values: *uint16, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_int(r: *cj5_result, parent_id: cint, key: cstring, def_val: cint): cint <cimport,nodecl> end
+global function cj5_seekget_uint(r: *cj5_result, parent_id: cint, key: cstring, def_val: uint32): uint32 <cimport,nodecl> end
+global function cj5_seekget_uint64(r: *cj5_result, parent_id: cint, key: cstring, def_val: uint64): uint64 <cimport,nodecl> end
+global function cj5_seekget_int64(r: *cj5_result, parent_id: cint, key: cstring, def_val: int64): int64 <cimport,nodecl> end
+global function cj5_seekget_bool(r: *cj5_result, parent_id: cint, key: cstring, def_val: boolean): boolean <cimport,nodecl> end
+global function cj5_seekget_string(r: *cj5_result, parent_id: cint, key: cstring, str: cstring, max_str: cint, def_val: cstring): cstring <cimport,nodecl> end
+global function cj5_seekget_array_double(r: *cj5_result, parent_id: cint, key: cstring, values: *float64, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_float(r: *cj5_result, parent_id: cint, key: cstring, values: *float32, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_int(r: *cj5_result, parent_id: cint, key: cstring, values: *cint, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_uint(r: *cj5_result, parent_id: cint, key: cstring, values: *uint32, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_uint64(r: *cj5_result, parent_id: cint, key: cstring, values: *uint64, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_int64(r: *cj5_result, parent_id: cint, key: cstring, values: *int64, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_bool(r: *cj5_result, parent_id: cint, key: cstring, values: *boolean, max_values: cint): cint <cimport,nodecl> end
+global function cj5_seekget_array_string(r: *cj5_result, parent_id: cint, key: cstring, strs: *cstring, max_str: cint, max_values: cint): cint <cimport,nodecl> end
+global function cj5_get_array_elem(r: *cj5_result, id: cint, index: cint): cint <cimport,nodecl> end
+global function cj5_get_array_elem_incremental(r: *cj5_result, id: cint, index: cint, prev_elem: cint): cint <cimport,nodecl> end

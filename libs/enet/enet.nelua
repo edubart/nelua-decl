@@ -8,46 +8,46 @@ if ccinfo.is_windows then
   linklib 'winmm'
 end
 ]]
-global in6_addr: type <cimport, nodecl, ctypedef> = @record{
+global in6_addr: type <cimport,nodecl,ctypedef> = @record{
   __in6_u: union{
     __u6_addr8: [16]uint8,
     __u6_addr16: [8]uint16,
     __u6_addr32: [4]uint32
   }
 }
-global ENetBuffer: type <cimport, nodecl> = @record{
+global ENetBuffer: type <cimport,nodecl> = @record{
   data: pointer,
   dataLength: csize
 }
-global ENetSocketSet: type <cimport, nodecl> = @record{
+global ENetSocketSet: type <cimport,nodecl> = @record{
   __fds_bits: [16]clong
 }
-global ENetPacket: type <cimport, nodecl, forwarddecl> = @record{}
-global ENetCallbacks: type <cimport, nodecl> = @record{
+global ENetPacket: type <cimport,nodecl,forwarddecl> = @record{}
+global ENetCallbacks: type <cimport,nodecl> = @record{
   malloc: function(csize): pointer,
-  free: function(pointer),
-  no_memory: function(),
+  free: function(pointer): void,
+  no_memory: function(): void,
   packet_create: function(pointer, csize, uint32): *ENetPacket,
-  packet_destroy: function(*ENetPacket)
+  packet_destroy: function(*ENetPacket): void
 }
-global function enet_malloc(a1: csize): pointer <cimport, nodecl> end
-global function enet_free(a1: pointer) <cimport, nodecl> end
-global function enet_packet_create(a1: pointer, a2: csize, a3: uint32): *ENetPacket <cimport, nodecl> end
-global function enet_packet_copy(a1: *ENetPacket): *ENetPacket <cimport, nodecl> end
-global function enet_packet_destroy(a1: *ENetPacket) <cimport, nodecl> end
-global ENetListNode: type <cimport, nodecl> = @record{
+global function enet_malloc(a1: csize): pointer <cimport,nodecl> end
+global function enet_free(a1: pointer): void <cimport,nodecl> end
+global function enet_packet_create(a1: pointer, a2: csize, a3: uint32): *ENetPacket <cimport,nodecl> end
+global function enet_packet_copy(a1: *ENetPacket): *ENetPacket <cimport,nodecl> end
+global function enet_packet_destroy(a1: *ENetPacket): void <cimport,nodecl> end
+global ENetListNode: type <cimport,nodecl> = @record{
   next: *ENetListNode,
   previous: *ENetListNode
 }
 global ENetListIterator: type = @*ENetListNode
-global ENetList: type <cimport, nodecl> = @record{
+global ENetList: type <cimport,nodecl> = @record{
   sentinel: ENetListNode
 }
-global function enet_list_insert(a1: ENetListIterator, a2: pointer): ENetListIterator <cimport, nodecl> end
-global function enet_list_move(a1: ENetListIterator, a2: pointer, a3: pointer): ENetListIterator <cimport, nodecl> end
-global function enet_list_remove(a1: ENetListIterator): pointer <cimport, nodecl> end
-global function enet_list_clear(a1: *ENetList) <cimport, nodecl> end
-global function enet_list_size(a1: *ENetList): csize <cimport, nodecl> end
+global function enet_list_insert(a1: ENetListIterator, a2: pointer): ENetListIterator <cimport,nodecl> end
+global function enet_list_move(a1: ENetListIterator, a2: pointer, a3: pointer): ENetListIterator <cimport,nodecl> end
+global function enet_list_remove(a1: ENetListIterator): pointer <cimport,nodecl> end
+global function enet_list_clear(a1: *ENetList): void <cimport,nodecl> end
+global function enet_list_size(a1: *ENetList): csize <cimport,nodecl> end
 global ENET_PROTOCOL_MINIMUM_MTU: cint <comptime> = 576
 global ENET_PROTOCOL_MAXIMUM_MTU: cint <comptime> = 4096
 global ENET_PROTOCOL_MAXIMUM_PACKET_COMMANDS: cint <comptime> = 32
@@ -57,7 +57,7 @@ global ENET_PROTOCOL_MINIMUM_CHANNEL_COUNT: cint <comptime> = 1
 global ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT: cint <comptime> = 255
 global ENET_PROTOCOL_MAXIMUM_PEER_ID: cint <comptime> = 4095
 global ENET_PROTOCOL_MAXIMUM_FRAGMENT_COUNT: cint <comptime> = 1048576
-global ENetProtocolCommand: type <cimport, nodecl, using> = @enum(cint){
+global ENetProtocolCommand: type <cimport,nodecl,using> = @enum(cint){
   ENET_PROTOCOL_COMMAND_NONE = 0,
   ENET_PROTOCOL_COMMAND_ACKNOWLEDGE = 1,
   ENET_PROTOCOL_COMMAND_CONNECT = 2,
@@ -74,7 +74,7 @@ global ENetProtocolCommand: type <cimport, nodecl, using> = @enum(cint){
   ENET_PROTOCOL_COMMAND_COUNT = 13,
   ENET_PROTOCOL_COMMAND_MASK = 15
 }
-global ENetProtocolFlag: type <cimport, nodecl, using> = @enum(cint){
+global ENetProtocolFlag: type <cimport,nodecl,using> = @enum(cint){
   ENET_PROTOCOL_COMMAND_FLAG_ACKNOWLEDGE = 128,
   ENET_PROTOCOL_COMMAND_FLAG_UNSEQUENCED = 64,
   ENET_PROTOCOL_HEADER_FLAG_COMPRESSED = 16384,
@@ -83,21 +83,21 @@ global ENetProtocolFlag: type <cimport, nodecl, using> = @enum(cint){
   ENET_PROTOCOL_HEADER_SESSION_MASK = 12288,
   ENET_PROTOCOL_HEADER_SESSION_SHIFT = 12
 }
-global ENetProtocolHeader: type <cimport, nodecl> = @record{
+global ENetProtocolHeader: type <cimport,nodecl> = @record{
   peerID: uint16,
   sentTime: uint16
 }
-global ENetProtocolCommandHeader: type <cimport, nodecl> = @record{
+global ENetProtocolCommandHeader: type <cimport,nodecl> = @record{
   command: uint8,
   channelID: uint8,
   reliableSequenceNumber: uint16
 }
-global ENetProtocolAcknowledge: type <cimport, nodecl> = @record{
+global ENetProtocolAcknowledge: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   receivedReliableSequenceNumber: uint16,
   receivedSentTime: uint16
 }
-global ENetProtocolConnect: type <cimport, nodecl> = @record{
+global ENetProtocolConnect: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   outgoingPeerID: uint16,
   incomingSessionID: uint8,
@@ -113,7 +113,7 @@ global ENetProtocolConnect: type <cimport, nodecl> = @record{
   connectID: uint32,
   data: uint32
 }
-global ENetProtocolVerifyConnect: type <cimport, nodecl> = @record{
+global ENetProtocolVerifyConnect: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   outgoingPeerID: uint16,
   incomingSessionID: uint8,
@@ -128,39 +128,39 @@ global ENetProtocolVerifyConnect: type <cimport, nodecl> = @record{
   packetThrottleDeceleration: uint32,
   connectID: uint32
 }
-global ENetProtocolBandwidthLimit: type <cimport, nodecl> = @record{
+global ENetProtocolBandwidthLimit: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   incomingBandwidth: uint32,
   outgoingBandwidth: uint32
 }
-global ENetProtocolThrottleConfigure: type <cimport, nodecl> = @record{
+global ENetProtocolThrottleConfigure: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   packetThrottleInterval: uint32,
   packetThrottleAcceleration: uint32,
   packetThrottleDeceleration: uint32
 }
-global ENetProtocolDisconnect: type <cimport, nodecl> = @record{
+global ENetProtocolDisconnect: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   data: uint32
 }
-global ENetProtocolPing: type <cimport, nodecl> = @record{
+global ENetProtocolPing: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader
 }
-global ENetProtocolSendReliable: type <cimport, nodecl> = @record{
+global ENetProtocolSendReliable: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   dataLength: uint16
 }
-global ENetProtocolSendUnreliable: type <cimport, nodecl> = @record{
+global ENetProtocolSendUnreliable: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   unreliableSequenceNumber: uint16,
   dataLength: uint16
 }
-global ENetProtocolSendUnsequenced: type <cimport, nodecl> = @record{
+global ENetProtocolSendUnsequenced: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   unsequencedGroup: uint16,
   dataLength: uint16
 }
-global ENetProtocolSendFragment: type <cimport, nodecl> = @record{
+global ENetProtocolSendFragment: type <cimport,nodecl> = @record{
   header: ENetProtocolCommandHeader,
   startSequenceNumber: uint16,
   dataLength: uint16,
@@ -169,7 +169,7 @@ global ENetProtocolSendFragment: type <cimport, nodecl> = @record{
   totalLength: uint32,
   fragmentOffset: uint32
 }
-global ENetProtocol: type <cimport, nodecl> = @union{
+global ENetProtocol: type <cimport,nodecl> = @union{
   header: ENetProtocolCommandHeader,
   acknowledge: ENetProtocolAcknowledge,
   connect: ENetProtocolConnect,
@@ -183,17 +183,17 @@ global ENetProtocol: type <cimport, nodecl> = @union{
   bandwidthLimit: ENetProtocolBandwidthLimit,
   throttleConfigure: ENetProtocolThrottleConfigure
 }
-global ENetSocketType: type <cimport, nodecl, using> = @enum(cint){
+global ENetSocketType: type <cimport,nodecl,using> = @enum(cint){
   ENET_SOCKET_TYPE_STREAM = 1,
   ENET_SOCKET_TYPE_DATAGRAM = 2
 }
-global ENetSocketWait: type <cimport, nodecl, using> = @enum(cint){
+global ENetSocketWait: type <cimport,nodecl,using> = @enum(cint){
   ENET_SOCKET_WAIT_NONE = 0,
   ENET_SOCKET_WAIT_SEND = 1,
   ENET_SOCKET_WAIT_RECEIVE = 2,
   ENET_SOCKET_WAIT_INTERRUPT = 4
 }
-global ENetSocketOption: type <cimport, nodecl, using> = @enum(cint){
+global ENetSocketOption: type <cimport,nodecl,using> = @enum(cint){
   ENET_SOCKOPT_NONBLOCK = 1,
   ENET_SOCKOPT_BROADCAST = 2,
   ENET_SOCKOPT_RCVBUF = 3,
@@ -205,24 +205,24 @@ global ENetSocketOption: type <cimport, nodecl, using> = @enum(cint){
   ENET_SOCKOPT_NODELAY = 9,
   ENET_SOCKOPT_IPV6_V6ONLY = 10
 }
-global ENetSocketShutdown: type <cimport, nodecl, using> = @enum(cint){
+global ENetSocketShutdown: type <cimport,nodecl,using> = @enum(cint){
   ENET_SOCKET_SHUTDOWN_READ = 0,
   ENET_SOCKET_SHUTDOWN_WRITE = 1,
   ENET_SOCKET_SHUTDOWN_READ_WRITE = 2
 }
-global ENetAddress: type <cimport, nodecl> = @record{
+global ENetAddress: type <cimport,nodecl> = @record{
   host: in6_addr,
   port: uint16,
   sin6_scope_id: uint16
 }
-global ENetPacketFlag: type <cimport, nodecl, using> = @enum(cint){
+global ENetPacketFlag: type <cimport,nodecl,using> = @enum(cint){
   ENET_PACKET_FLAG_RELIABLE = 1,
   ENET_PACKET_FLAG_UNSEQUENCED = 2,
   ENET_PACKET_FLAG_NO_ALLOCATE = 4,
   ENET_PACKET_FLAG_UNRELIABLE_FRAGMENT = 8,
   ENET_PACKET_FLAG_SENT = 256
 }
-global ENetPacketFreeCallback: type <cimport, nodecl> = @function(pointer)
+global ENetPacketFreeCallback: type <cimport,nodecl> = @function(pointer): void
 ENetPacket = @record{
   referenceCount: csize,
   flags: uint32,
@@ -231,12 +231,12 @@ ENetPacket = @record{
   freeCallback: ENetPacketFreeCallback,
   userData: pointer
 }
-global ENetAcknowledgement: type <cimport, nodecl> = @record{
+global ENetAcknowledgement: type <cimport,nodecl> = @record{
   acknowledgementList: ENetListNode,
   sentTime: uint32,
   command: ENetProtocol
 }
-global ENetOutgoingCommand: type <cimport, nodecl> = @record{
+global ENetOutgoingCommand: type <cimport,nodecl> = @record{
   outgoingCommandList: ENetListNode,
   reliableSequenceNumber: uint16,
   unreliableSequenceNumber: uint16,
@@ -249,7 +249,7 @@ global ENetOutgoingCommand: type <cimport, nodecl> = @record{
   command: ENetProtocol,
   packet: *ENetPacket
 }
-global ENetIncomingCommand: type <cimport, nodecl> = @record{
+global ENetIncomingCommand: type <cimport,nodecl> = @record{
   incomingCommandList: ENetListNode,
   reliableSequenceNumber: uint16,
   unreliableSequenceNumber: uint16,
@@ -259,7 +259,7 @@ global ENetIncomingCommand: type <cimport, nodecl> = @record{
   fragments: *uint32,
   packet: *ENetPacket
 }
-global ENetPeerState: type <cimport, nodecl, using> = @enum(cint){
+global ENetPeerState: type <cimport,nodecl,using> = @enum(cint){
   ENET_PEER_STATE_DISCONNECTED = 0,
   ENET_PEER_STATE_CONNECTING = 1,
   ENET_PEER_STATE_ACKNOWLEDGING_CONNECT = 2,
@@ -297,7 +297,7 @@ global ENET_PEER_FREE_UNSEQUENCED_WINDOWS: cint <comptime> = 32
 global ENET_PEER_RELIABLE_WINDOWS: cint <comptime> = 16
 global ENET_PEER_RELIABLE_WINDOW_SIZE: cint <comptime> = 4096
 global ENET_PEER_FREE_RELIABLE_WINDOWS: cint <comptime> = 8
-global ENetChannel: type <cimport, nodecl> = @record{
+global ENetChannel: type <cimport,nodecl> = @record{
   outgoingReliableSequenceNumber: uint16,
   outgoingUnreliableSequenceNumber: uint16,
   usedReliableWindows: uint16,
@@ -307,8 +307,8 @@ global ENetChannel: type <cimport, nodecl> = @record{
   incomingReliableCommands: ENetList,
   incomingUnreliableCommands: ENetList
 }
-global _ENetHost: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global ENetPeer: type <cimport, nodecl> = @record{
+global _ENetHost: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global ENetPeer: type <cimport,nodecl> = @record{
   dispatchList: ENetListNode,
   host: *_ENetHost,
   outgoingPeerID: uint16,
@@ -374,14 +374,14 @@ global ENetPeer: type <cimport, nodecl> = @record{
   eventData: uint32,
   totalWaitingData: csize
 }
-global ENetCompressor: type <cimport, nodecl> = @record{
+global ENetCompressor: type <cimport,nodecl> = @record{
   context: pointer,
   compress: function(pointer, *ENetBuffer, csize, csize, *uint8, csize): csize,
   decompress: function(pointer, *uint8, csize, *uint8, csize): csize,
-  destroy: function(pointer)
+  destroy: function(pointer): void
 }
-global ENetChecksumCallback: type <cimport, nodecl> = @function(*ENetBuffer, csize): uint32
-global ENetInterceptCallback: type <cimport, nodecl> = @function(*_ENetHost, pointer): cint
+global ENetChecksumCallback: type <cimport,nodecl> = @function(*ENetBuffer, csize): uint32
+global ENetInterceptCallback: type <cimport,nodecl> = @function(*_ENetHost, pointer): cint
 _ENetHost = @record{
   socket: cint,
   address: ENetAddress,
@@ -421,107 +421,107 @@ _ENetHost = @record{
   maximumWaitingData: csize
 }
 global ENetHost: type = @_ENetHost
-global ENetEventType: type <cimport, nodecl, using> = @enum(cint){
+global ENetEventType: type <cimport,nodecl,using> = @enum(cint){
   ENET_EVENT_TYPE_NONE = 0,
   ENET_EVENT_TYPE_CONNECT = 1,
   ENET_EVENT_TYPE_DISCONNECT = 2,
   ENET_EVENT_TYPE_RECEIVE = 3,
   ENET_EVENT_TYPE_DISCONNECT_TIMEOUT = 4
 }
-global ENetEvent: type <cimport, nodecl> = @record{
+global ENetEvent: type <cimport,nodecl> = @record{
   type: ENetEventType,
   peer: *ENetPeer,
   channelID: uint8,
   data: uint32,
   packet: *ENetPacket
 }
-global function enet_initialize(): cint <cimport, nodecl> end
-global function enet_initialize_with_callbacks(version: cuint, inits: *ENetCallbacks): cint <cimport, nodecl> end
-global function enet_deinitialize() <cimport, nodecl> end
-global function enet_linked_version(): cuint <cimport, nodecl> end
-global function enet_time_get(): uint32 <cimport, nodecl> end
-global function enet_socket_create(a1: ENetSocketType): cint <cimport, nodecl> end
-global function enet_socket_bind(a1: cint, a2: *ENetAddress): cint <cimport, nodecl> end
-global function enet_socket_get_address(a1: cint, a2: *ENetAddress): cint <cimport, nodecl> end
-global function enet_socket_listen(a1: cint, a2: cint): cint <cimport, nodecl> end
-global function enet_socket_accept(a1: cint, a2: *ENetAddress): cint <cimport, nodecl> end
-global function enet_socket_connect(a1: cint, a2: *ENetAddress): cint <cimport, nodecl> end
-global function enet_socket_send(a1: cint, a2: *ENetAddress, a3: *ENetBuffer, a4: csize): cint <cimport, nodecl> end
-global function enet_socket_receive(a1: cint, a2: *ENetAddress, a3: *ENetBuffer, a4: csize): cint <cimport, nodecl> end
-global function enet_socket_wait(a1: cint, a2: *uint32, a3: uint64): cint <cimport, nodecl> end
-global function enet_socket_set_option(a1: cint, a2: ENetSocketOption, a3: cint): cint <cimport, nodecl> end
-global function enet_socket_get_option(a1: cint, a2: ENetSocketOption, a3: *cint): cint <cimport, nodecl> end
-global function enet_socket_shutdown(a1: cint, a2: ENetSocketShutdown): cint <cimport, nodecl> end
-global function enet_socket_destroy(a1: cint) <cimport, nodecl> end
-global function enet_socketset_select(a1: cint, a2: *ENetSocketSet, a3: *ENetSocketSet, a4: uint32): cint <cimport, nodecl> end
-global function enet_address_set_host_ip_old(address: *ENetAddress, hostName: cstring): cint <cimport, nodecl> end
-global function enet_address_set_host_old(address: *ENetAddress, hostName: cstring): cint <cimport, nodecl> end
-global function enet_address_get_host_ip_old(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport, nodecl> end
-global function enet_address_get_host_old(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport, nodecl> end
-global function enet_address_set_host_ip_new(address: *ENetAddress, hostName: cstring): cint <cimport, nodecl> end
-global function enet_address_set_host_new(address: *ENetAddress, hostName: cstring): cint <cimport, nodecl> end
-global function enet_address_get_host_ip_new(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport, nodecl> end
-global function enet_address_get_host_new(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport, nodecl> end
-global function enet_host_get_peers_count(a1: *ENetHost): uint32 <cimport, nodecl> end
-global function enet_host_get_packets_sent(a1: *ENetHost): uint32 <cimport, nodecl> end
-global function enet_host_get_packets_received(a1: *ENetHost): uint32 <cimport, nodecl> end
-global function enet_host_get_bytes_sent(a1: *ENetHost): uint32 <cimport, nodecl> end
-global function enet_host_get_bytes_received(a1: *ENetHost): uint32 <cimport, nodecl> end
-global function enet_host_get_received_data(a1: *ENetHost, data: **uint8): uint32 <cimport, nodecl> end
-global function enet_host_get_mtu(a1: *ENetHost): uint32 <cimport, nodecl> end
-global function enet_peer_get_id(a1: *ENetPeer): uint32 <cimport, nodecl> end
-global function enet_peer_get_ip(a1: *ENetPeer, ip: cstring, ipLength: csize): uint32 <cimport, nodecl> end
-global function enet_peer_get_port(a1: *ENetPeer): uint16 <cimport, nodecl> end
-global function enet_peer_get_rtt(a1: *ENetPeer): uint32 <cimport, nodecl> end
-global function enet_peer_get_packets_sent(a1: *ENetPeer): uint64 <cimport, nodecl> end
-global function enet_peer_get_packets_lost(a1: *ENetPeer): uint32 <cimport, nodecl> end
-global function enet_peer_get_bytes_sent(a1: *ENetPeer): uint64 <cimport, nodecl> end
-global function enet_peer_get_bytes_received(a1: *ENetPeer): uint64 <cimport, nodecl> end
-global function enet_peer_get_state(a1: *ENetPeer): ENetPeerState <cimport, nodecl> end
-global function enet_peer_get_data(a1: *ENetPeer): pointer <cimport, nodecl> end
-global function enet_peer_set_data(a1: *ENetPeer, a2: pointer) <cimport, nodecl> end
-global function enet_packet_get_data(a1: *ENetPacket): pointer <cimport, nodecl> end
-global function enet_packet_get_length(a1: *ENetPacket): uint32 <cimport, nodecl> end
-global function enet_packet_set_free_callback(a1: *ENetPacket, a2: pointer) <cimport, nodecl> end
-global function enet_packet_create_offset(a1: pointer, a2: csize, a3: csize, a4: uint32): *ENetPacket <cimport, nodecl> end
-global function enet_crc32(a1: *ENetBuffer, a2: csize): uint32 <cimport, nodecl> end
-global function enet_host_create(a1: *ENetAddress, a2: csize, a3: csize, a4: uint32, a5: uint32): *ENetHost <cimport, nodecl> end
-global function enet_host_destroy(a1: *ENetHost) <cimport, nodecl> end
-global function enet_host_connect(a1: *ENetHost, a2: *ENetAddress, a3: csize, a4: uint32): *ENetPeer <cimport, nodecl> end
-global function enet_host_check_events(a1: *ENetHost, a2: *ENetEvent): cint <cimport, nodecl> end
-global function enet_host_service(a1: *ENetHost, a2: *ENetEvent, a3: uint32): cint <cimport, nodecl> end
-global function enet_host_send_raw(a1: *ENetHost, a2: *ENetAddress, a3: *uint8, a4: csize): cint <cimport, nodecl> end
-global function enet_host_send_raw_ex(host: *ENetHost, address: *ENetAddress, data: *uint8, skipBytes: csize, bytesToSend: csize): cint <cimport, nodecl> end
-global function enet_host_set_intercept(a1: *ENetHost, a2: ENetInterceptCallback) <cimport, nodecl> end
-global function enet_host_flush(a1: *ENetHost) <cimport, nodecl> end
-global function enet_host_broadcast(a1: *ENetHost, a2: uint8, a3: *ENetPacket) <cimport, nodecl> end
-global function enet_host_compress(a1: *ENetHost, a2: *ENetCompressor) <cimport, nodecl> end
-global function enet_host_channel_limit(a1: *ENetHost, a2: csize) <cimport, nodecl> end
-global function enet_host_bandwidth_limit(a1: *ENetHost, a2: uint32, a3: uint32) <cimport, nodecl> end
-global function enet_host_bandwidth_throttle(a1: *ENetHost) <cimport, nodecl> end
-global function enet_host_random_seed(): uint64 <cimport, nodecl> end
-global function enet_peer_send(a1: *ENetPeer, a2: uint8, a3: *ENetPacket): cint <cimport, nodecl> end
-global function enet_peer_receive(a1: *ENetPeer, channelID: *uint8): *ENetPacket <cimport, nodecl> end
-global function enet_peer_ping(a1: *ENetPeer) <cimport, nodecl> end
-global function enet_peer_ping_interval(a1: *ENetPeer, a2: uint32) <cimport, nodecl> end
-global function enet_peer_timeout(a1: *ENetPeer, a2: uint32, a3: uint32, a4: uint32) <cimport, nodecl> end
-global function enet_peer_reset(a1: *ENetPeer) <cimport, nodecl> end
-global function enet_peer_disconnect(a1: *ENetPeer, a2: uint32) <cimport, nodecl> end
-global function enet_peer_disconnect_now(a1: *ENetPeer, a2: uint32) <cimport, nodecl> end
-global function enet_peer_disconnect_later(a1: *ENetPeer, a2: uint32) <cimport, nodecl> end
-global function enet_peer_throttle_configure(a1: *ENetPeer, a2: uint32, a3: uint32, a4: uint32) <cimport, nodecl> end
-global function enet_peer_throttle(a1: *ENetPeer, a2: uint32): cint <cimport, nodecl> end
-global function enet_peer_reset_queues(a1: *ENetPeer) <cimport, nodecl> end
-global function enet_peer_setup_outgoing_command(a1: *ENetPeer, a2: *ENetOutgoingCommand) <cimport, nodecl> end
-global function enet_peer_queue_outgoing_command(a1: *ENetPeer, a2: *ENetProtocol, a3: *ENetPacket, a4: uint32, a5: uint16): *ENetOutgoingCommand <cimport, nodecl> end
-global function enet_peer_queue_incoming_command(a1: *ENetPeer, a2: *ENetProtocol, a3: pointer, a4: csize, a5: uint32, a6: uint32): *ENetIncomingCommand <cimport, nodecl> end
-global function enet_peer_queue_acknowledgement(a1: *ENetPeer, a2: *ENetProtocol, a3: uint16): *ENetAcknowledgement <cimport, nodecl> end
-global function enet_peer_dispatch_incoming_unreliable_commands(a1: *ENetPeer, a2: *ENetChannel) <cimport, nodecl> end
-global function enet_peer_dispatch_incoming_reliable_commands(a1: *ENetPeer, a2: *ENetChannel) <cimport, nodecl> end
-global function enet_peer_on_connect(a1: *ENetPeer) <cimport, nodecl> end
-global function enet_peer_on_disconnect(a1: *ENetPeer) <cimport, nodecl> end
-global function enet_protocol_command_size(a1: uint8): csize <cimport, nodecl> end
-global ENET_HOST_ANY: in6_addr <cimport, nodecl, const>
+global function enet_initialize(): cint <cimport,nodecl> end
+global function enet_initialize_with_callbacks(version: cuint, inits: *ENetCallbacks): cint <cimport,nodecl> end
+global function enet_deinitialize(): void <cimport,nodecl> end
+global function enet_linked_version(): cuint <cimport,nodecl> end
+global function enet_time_get(): uint32 <cimport,nodecl> end
+global function enet_socket_create(a1: ENetSocketType): cint <cimport,nodecl> end
+global function enet_socket_bind(a1: cint, a2: *ENetAddress): cint <cimport,nodecl> end
+global function enet_socket_get_address(a1: cint, a2: *ENetAddress): cint <cimport,nodecl> end
+global function enet_socket_listen(a1: cint, a2: cint): cint <cimport,nodecl> end
+global function enet_socket_accept(a1: cint, a2: *ENetAddress): cint <cimport,nodecl> end
+global function enet_socket_connect(a1: cint, a2: *ENetAddress): cint <cimport,nodecl> end
+global function enet_socket_send(a1: cint, a2: *ENetAddress, a3: *ENetBuffer, a4: csize): cint <cimport,nodecl> end
+global function enet_socket_receive(a1: cint, a2: *ENetAddress, a3: *ENetBuffer, a4: csize): cint <cimport,nodecl> end
+global function enet_socket_wait(a1: cint, a2: *uint32, a3: uint64): cint <cimport,nodecl> end
+global function enet_socket_set_option(a1: cint, a2: ENetSocketOption, a3: cint): cint <cimport,nodecl> end
+global function enet_socket_get_option(a1: cint, a2: ENetSocketOption, a3: *cint): cint <cimport,nodecl> end
+global function enet_socket_shutdown(a1: cint, a2: ENetSocketShutdown): cint <cimport,nodecl> end
+global function enet_socket_destroy(a1: cint): void <cimport,nodecl> end
+global function enet_socketset_select(a1: cint, a2: *ENetSocketSet, a3: *ENetSocketSet, a4: uint32): cint <cimport,nodecl> end
+global function enet_address_set_host_ip_old(address: *ENetAddress, hostName: cstring): cint <cimport,nodecl> end
+global function enet_address_set_host_old(address: *ENetAddress, hostName: cstring): cint <cimport,nodecl> end
+global function enet_address_get_host_ip_old(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport,nodecl> end
+global function enet_address_get_host_old(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport,nodecl> end
+global function enet_address_set_host_ip_new(address: *ENetAddress, hostName: cstring): cint <cimport,nodecl> end
+global function enet_address_set_host_new(address: *ENetAddress, hostName: cstring): cint <cimport,nodecl> end
+global function enet_address_get_host_ip_new(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport,nodecl> end
+global function enet_address_get_host_new(address: *ENetAddress, hostName: cstring, nameLength: csize): cint <cimport,nodecl> end
+global function enet_host_get_peers_count(a1: *ENetHost): uint32 <cimport,nodecl> end
+global function enet_host_get_packets_sent(a1: *ENetHost): uint32 <cimport,nodecl> end
+global function enet_host_get_packets_received(a1: *ENetHost): uint32 <cimport,nodecl> end
+global function enet_host_get_bytes_sent(a1: *ENetHost): uint32 <cimport,nodecl> end
+global function enet_host_get_bytes_received(a1: *ENetHost): uint32 <cimport,nodecl> end
+global function enet_host_get_received_data(a1: *ENetHost, data: **uint8): uint32 <cimport,nodecl> end
+global function enet_host_get_mtu(a1: *ENetHost): uint32 <cimport,nodecl> end
+global function enet_peer_get_id(a1: *ENetPeer): uint32 <cimport,nodecl> end
+global function enet_peer_get_ip(a1: *ENetPeer, ip: cstring, ipLength: csize): uint32 <cimport,nodecl> end
+global function enet_peer_get_port(a1: *ENetPeer): uint16 <cimport,nodecl> end
+global function enet_peer_get_rtt(a1: *ENetPeer): uint32 <cimport,nodecl> end
+global function enet_peer_get_packets_sent(a1: *ENetPeer): uint64 <cimport,nodecl> end
+global function enet_peer_get_packets_lost(a1: *ENetPeer): uint32 <cimport,nodecl> end
+global function enet_peer_get_bytes_sent(a1: *ENetPeer): uint64 <cimport,nodecl> end
+global function enet_peer_get_bytes_received(a1: *ENetPeer): uint64 <cimport,nodecl> end
+global function enet_peer_get_state(a1: *ENetPeer): ENetPeerState <cimport,nodecl> end
+global function enet_peer_get_data(a1: *ENetPeer): pointer <cimport,nodecl> end
+global function enet_peer_set_data(a1: *ENetPeer, a2: pointer): void <cimport,nodecl> end
+global function enet_packet_get_data(a1: *ENetPacket): pointer <cimport,nodecl> end
+global function enet_packet_get_length(a1: *ENetPacket): uint32 <cimport,nodecl> end
+global function enet_packet_set_free_callback(a1: *ENetPacket, a2: pointer): void <cimport,nodecl> end
+global function enet_packet_create_offset(a1: pointer, a2: csize, a3: csize, a4: uint32): *ENetPacket <cimport,nodecl> end
+global function enet_crc32(a1: *ENetBuffer, a2: csize): uint32 <cimport,nodecl> end
+global function enet_host_create(a1: *ENetAddress, a2: csize, a3: csize, a4: uint32, a5: uint32): *ENetHost <cimport,nodecl> end
+global function enet_host_destroy(a1: *ENetHost): void <cimport,nodecl> end
+global function enet_host_connect(a1: *ENetHost, a2: *ENetAddress, a3: csize, a4: uint32): *ENetPeer <cimport,nodecl> end
+global function enet_host_check_events(a1: *ENetHost, a2: *ENetEvent): cint <cimport,nodecl> end
+global function enet_host_service(a1: *ENetHost, a2: *ENetEvent, a3: uint32): cint <cimport,nodecl> end
+global function enet_host_send_raw(a1: *ENetHost, a2: *ENetAddress, a3: *uint8, a4: csize): cint <cimport,nodecl> end
+global function enet_host_send_raw_ex(host: *ENetHost, address: *ENetAddress, data: *uint8, skipBytes: csize, bytesToSend: csize): cint <cimport,nodecl> end
+global function enet_host_set_intercept(a1: *ENetHost, a2: ENetInterceptCallback): void <cimport,nodecl> end
+global function enet_host_flush(a1: *ENetHost): void <cimport,nodecl> end
+global function enet_host_broadcast(a1: *ENetHost, a2: uint8, a3: *ENetPacket): void <cimport,nodecl> end
+global function enet_host_compress(a1: *ENetHost, a2: *ENetCompressor): void <cimport,nodecl> end
+global function enet_host_channel_limit(a1: *ENetHost, a2: csize): void <cimport,nodecl> end
+global function enet_host_bandwidth_limit(a1: *ENetHost, a2: uint32, a3: uint32): void <cimport,nodecl> end
+global function enet_host_bandwidth_throttle(a1: *ENetHost): void <cimport,nodecl> end
+global function enet_host_random_seed(): uint64 <cimport,nodecl> end
+global function enet_peer_send(a1: *ENetPeer, a2: uint8, a3: *ENetPacket): cint <cimport,nodecl> end
+global function enet_peer_receive(a1: *ENetPeer, channelID: *uint8): *ENetPacket <cimport,nodecl> end
+global function enet_peer_ping(a1: *ENetPeer): void <cimport,nodecl> end
+global function enet_peer_ping_interval(a1: *ENetPeer, a2: uint32): void <cimport,nodecl> end
+global function enet_peer_timeout(a1: *ENetPeer, a2: uint32, a3: uint32, a4: uint32): void <cimport,nodecl> end
+global function enet_peer_reset(a1: *ENetPeer): void <cimport,nodecl> end
+global function enet_peer_disconnect(a1: *ENetPeer, a2: uint32): void <cimport,nodecl> end
+global function enet_peer_disconnect_now(a1: *ENetPeer, a2: uint32): void <cimport,nodecl> end
+global function enet_peer_disconnect_later(a1: *ENetPeer, a2: uint32): void <cimport,nodecl> end
+global function enet_peer_throttle_configure(a1: *ENetPeer, a2: uint32, a3: uint32, a4: uint32): void <cimport,nodecl> end
+global function enet_peer_throttle(a1: *ENetPeer, a2: uint32): cint <cimport,nodecl> end
+global function enet_peer_reset_queues(a1: *ENetPeer): void <cimport,nodecl> end
+global function enet_peer_setup_outgoing_command(a1: *ENetPeer, a2: *ENetOutgoingCommand): void <cimport,nodecl> end
+global function enet_peer_queue_outgoing_command(a1: *ENetPeer, a2: *ENetProtocol, a3: *ENetPacket, a4: uint32, a5: uint16): *ENetOutgoingCommand <cimport,nodecl> end
+global function enet_peer_queue_incoming_command(a1: *ENetPeer, a2: *ENetProtocol, a3: pointer, a4: csize, a5: uint32, a6: uint32): *ENetIncomingCommand <cimport,nodecl> end
+global function enet_peer_queue_acknowledgement(a1: *ENetPeer, a2: *ENetProtocol, a3: uint16): *ENetAcknowledgement <cimport,nodecl> end
+global function enet_peer_dispatch_incoming_unreliable_commands(a1: *ENetPeer, a2: *ENetChannel): void <cimport,nodecl> end
+global function enet_peer_dispatch_incoming_reliable_commands(a1: *ENetPeer, a2: *ENetChannel): void <cimport,nodecl> end
+global function enet_peer_on_connect(a1: *ENetPeer): void <cimport,nodecl> end
+global function enet_peer_on_disconnect(a1: *ENetPeer): void <cimport,nodecl> end
+global function enet_protocol_command_size(a1: uint8): csize <cimport,nodecl> end
+global ENET_HOST_ANY: in6_addr <cimport,nodecl,const>
 global ENET_HOST_BROADCAST: uint32 <comptime> = 0xffffffff
 global ENET_PORT_ANY: uint16 <comptime> = 0
 global enet_v4_anyaddr: in6_addr <cimport, nodecl, const>

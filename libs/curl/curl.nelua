@@ -3,14 +3,14 @@ linklib 'curl'
 cinclude '<curl/curl.h>'
 ]]
 global CURL = @void
-global fd_set: type <cimport, nodecl> = @record{
+global fd_set: type <cimport,nodecl> = @record{
   __fds_bits: [16]clong
 }
-global sockaddr: type <cimport, nodecl, ctypedef> = @record{
+global sockaddr: type <cimport,nodecl,ctypedef> = @record{
   sa_family: cushort,
   sa_data: [14]cchar
 }
-global curl_sslbackend: type <cimport, nodecl, using> = @enum(cint){
+global curl_sslbackend: type <cimport,nodecl,using> = @enum(cint){
   CURLSSLBACKEND_NONE = 0,
   CURLSSLBACKEND_OPENSSL = 1,
   CURLSSLBACKEND_GNUTLS = 2,
@@ -27,8 +27,8 @@ global curl_sslbackend: type <cimport, nodecl, using> = @enum(cint){
   CURLSSLBACKEND_BEARSSL = 13,
   CURLSSLBACKEND_RUSTLS = 14
 }
-global curl_httppost: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global curl_slist: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global curl_httppost: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global curl_slist: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 curl_httppost = @record{
   next: *curl_httppost,
   name: cstring,
@@ -45,11 +45,11 @@ curl_httppost = @record{
   userp: pointer,
   contentlen: clong
 }
-global curl_progress_callback: type <cimport, nodecl> = @function(pointer, float64, float64, float64, float64): cint
-global curl_xferinfo_callback: type <cimport, nodecl> = @function(pointer, clong, clong, clong, clong): cint
-global curl_write_callback: type <cimport, nodecl> = @function(cstring, csize, csize, pointer): csize
-global curl_resolver_start_callback: type <cimport, nodecl> = @function(pointer, pointer, pointer): cint
-global curlfiletype: type <cimport, nodecl, using> = @enum(cint){
+global curl_progress_callback: type <cimport,nodecl> = @function(pointer, float64, float64, float64, float64): cint
+global curl_xferinfo_callback: type <cimport,nodecl> = @function(pointer, clong, clong, clong, clong): cint
+global curl_write_callback: type <cimport,nodecl> = @function(cstring, csize, csize, pointer): csize
+global curl_resolver_start_callback: type <cimport,nodecl> = @function(pointer, pointer, pointer): cint
+global curlfiletype: type <cimport,nodecl,using> = @enum(cint){
   CURLFILETYPE_FILE = 0,
   CURLFILETYPE_DIRECTORY = 1,
   CURLFILETYPE_SYMLINK = 2,
@@ -60,7 +60,7 @@ global curlfiletype: type <cimport, nodecl, using> = @enum(cint){
   CURLFILETYPE_DOOR = 7,
   CURLFILETYPE_UNKNOWN = 8
 }
-global curl_fileinfo: type <cimport, nodecl, ctypedef> = @record{
+global curl_fileinfo: type <cimport,nodecl,ctypedef> = @record{
   filename: cstring,
   filetype: curlfiletype,
   time: ctime_t,
@@ -81,45 +81,45 @@ global curl_fileinfo: type <cimport, nodecl, ctypedef> = @record{
   b_size: csize,
   b_used: csize
 }
-global curl_chunk_bgn_callback: type <cimport, nodecl> = @function(pointer, pointer, cint): clong
-global curl_chunk_end_callback: type <cimport, nodecl> = @function(pointer): clong
-global curl_fnmatch_callback: type <cimport, nodecl> = @function(pointer, cstring, cstring): cint
-global curl_seek_callback: type <cimport, nodecl> = @function(pointer, clong, cint): cint
-global curl_read_callback: type <cimport, nodecl> = @function(cstring, csize, csize, pointer): csize
-global curl_trailer_callback: type <cimport, nodecl> = @function(**curl_slist, pointer): cint
-global curlsocktype: type <cimport, nodecl, using> = @enum(cint){
+global curl_chunk_bgn_callback: type <cimport,nodecl> = @function(pointer, pointer, cint): clong
+global curl_chunk_end_callback: type <cimport,nodecl> = @function(pointer): clong
+global curl_fnmatch_callback: type <cimport,nodecl> = @function(pointer, cstring, cstring): cint
+global curl_seek_callback: type <cimport,nodecl> = @function(pointer, clong, cint): cint
+global curl_read_callback: type <cimport,nodecl> = @function(cstring, csize, csize, pointer): csize
+global curl_trailer_callback: type <cimport,nodecl> = @function(**curl_slist, pointer): cint
+global curlsocktype: type <cimport,nodecl,using> = @enum(cint){
   CURLSOCKTYPE_IPCXN = 0,
   CURLSOCKTYPE_ACCEPT = 1,
   CURLSOCKTYPE_LAST = 2
 }
-global curl_sockopt_callback: type <cimport, nodecl> = @function(pointer, cint, curlsocktype): cint
-global curl_sockaddr: type <cimport, nodecl, ctypedef> = @record{
+global curl_sockopt_callback: type <cimport,nodecl> = @function(pointer, cint, curlsocktype): cint
+global curl_sockaddr: type <cimport,nodecl,ctypedef> = @record{
   family: cint,
   socktype: cint,
   protocol: cint,
   addrlen: cuint,
   addr: sockaddr
 }
-global curl_opensocket_callback: type <cimport, nodecl> = @function(pointer, curlsocktype, *curl_sockaddr): cint
-global curl_closesocket_callback: type <cimport, nodecl> = @function(pointer, cint): cint
-global curlioerr: type <cimport, nodecl, using> = @enum(cint){
+global curl_opensocket_callback: type <cimport,nodecl> = @function(pointer, curlsocktype, *curl_sockaddr): cint
+global curl_closesocket_callback: type <cimport,nodecl> = @function(pointer, cint): cint
+global curlioerr: type <cimport,nodecl,using> = @enum(cint){
   CURLIOE_OK = 0,
   CURLIOE_UNKNOWNCMD = 1,
   CURLIOE_FAILRESTART = 2,
   CURLIOE_LAST = 3
 }
-global curliocmd: type <cimport, nodecl, using> = @enum(cint){
+global curliocmd: type <cimport,nodecl,using> = @enum(cint){
   CURLIOCMD_NOP = 0,
   CURLIOCMD_RESTARTREAD = 1,
   CURLIOCMD_LAST = 2
 }
-global curl_ioctl_callback: type <cimport, nodecl> = @function(pointer, cint, pointer): curlioerr
-global curl_malloc_callback: type <cimport, nodecl> = @function(csize): pointer
-global curl_free_callback: type <cimport, nodecl> = @function(pointer)
-global curl_realloc_callback: type <cimport, nodecl> = @function(pointer, csize): pointer
-global curl_strdup_callback: type <cimport, nodecl> = @function(cstring): cstring
-global curl_calloc_callback: type <cimport, nodecl> = @function(csize, csize): pointer
-global curl_infotype: type <cimport, nodecl, using> = @enum(cint){
+global curl_ioctl_callback: type <cimport,nodecl> = @function(pointer, cint, pointer): curlioerr
+global curl_malloc_callback: type <cimport,nodecl> = @function(csize): pointer
+global curl_free_callback: type <cimport,nodecl> = @function(pointer): void
+global curl_realloc_callback: type <cimport,nodecl> = @function(pointer, csize): pointer
+global curl_strdup_callback: type <cimport,nodecl> = @function(cstring): cstring
+global curl_calloc_callback: type <cimport,nodecl> = @function(csize, csize): pointer
+global curl_infotype: type <cimport,nodecl,using> = @enum(cint){
   CURLINFO_TEXT = 0,
   CURLINFO_HEADER_IN = 1,
   CURLINFO_HEADER_OUT = 2,
@@ -129,8 +129,8 @@ global curl_infotype: type <cimport, nodecl, using> = @enum(cint){
   CURLINFO_SSL_DATA_OUT = 6,
   CURLINFO_END = 7
 }
-global curl_debug_callback: type <cimport, nodecl> = @function(pointer, curl_infotype, cstring, csize, pointer): cint
-global CURLcode: type <cimport, nodecl, using> = @enum(cint){
+global curl_debug_callback: type <cimport,nodecl> = @function(pointer, curl_infotype, cstring, csize, pointer): cint
+global CURLcode: type <cimport,nodecl,using> = @enum(cint){
   CURLE_OK = 0,
   CURLE_UNSUPPORTED_PROTOCOL = 1,
   CURLE_FAILED_INIT = 2,
@@ -232,7 +232,7 @@ global CURLcode: type <cimport, nodecl, using> = @enum(cint){
   CURLE_SSL_CLIENTCERT = 98,
   CURL_LAST = 99
 }
-global CURLproxycode: type <cimport, nodecl, using> = @enum(cint){
+global CURLproxycode: type <cimport,nodecl,using> = @enum(cint){
   CURLPX_OK = 0,
   CURLPX_BAD_ADDRESS_TYPE = 1,
   CURLPX_BAD_VERSION = 2,
@@ -269,9 +269,9 @@ global CURLproxycode: type <cimport, nodecl, using> = @enum(cint){
   CURLPX_USER_REJECTED = 33,
   CURLPX_LAST = 34
 }
-global curl_conv_callback: type <cimport, nodecl> = @function(cstring, csize): CURLcode
-global curl_ssl_ctx_callback: type <cimport, nodecl> = @function(pointer, pointer, pointer): CURLcode
-global curl_proxytype: type <cimport, nodecl, using> = @enum(cint){
+global curl_conv_callback: type <cimport,nodecl> = @function(cstring, csize): CURLcode
+global curl_ssl_ctx_callback: type <cimport,nodecl> = @function(pointer, pointer, pointer): CURLcode
+global curl_proxytype: type <cimport,nodecl,using> = @enum(cint){
   CURLPROXY_HTTP = 0,
   CURLPROXY_HTTP_1_0 = 1,
   CURLPROXY_HTTPS = 2,
@@ -280,7 +280,7 @@ global curl_proxytype: type <cimport, nodecl, using> = @enum(cint){
   CURLPROXY_SOCKS4A = 6,
   CURLPROXY_SOCKS5_HOSTNAME = 7
 }
-global curl_khtype: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global curl_khtype: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   CURLKHTYPE_UNKNOWN = 0,
   CURLKHTYPE_RSA1 = 1,
   CURLKHTYPE_RSA = 2,
@@ -288,12 +288,12 @@ global curl_khtype: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   CURLKHTYPE_ECDSA = 4,
   CURLKHTYPE_ED25519 = 5
 }
-global curl_khkey: type <cimport, nodecl, ctypedef> = @record{
+global curl_khkey: type <cimport,nodecl,ctypedef> = @record{
   key: cstring,
   len: csize,
   keytype: curl_khtype
 }
-global curl_khstat: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global curl_khstat: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   CURLKHSTAT_FINE_ADD_TO_FILE = 0,
   CURLKHSTAT_FINE = 1,
   CURLKHSTAT_REJECT = 2,
@@ -301,63 +301,63 @@ global curl_khstat: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   CURLKHSTAT_FINE_REPLACE = 4,
   CURLKHSTAT_LAST = 5
 }
-global curl_khmatch: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global curl_khmatch: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   CURLKHMATCH_OK = 0,
   CURLKHMATCH_MISMATCH = 1,
   CURLKHMATCH_MISSING = 2,
   CURLKHMATCH_LAST = 3
 }
-global curl_sshkeycallback: type <cimport, nodecl> = @function(pointer, *curl_khkey, *curl_khkey, curl_khmatch, pointer): cint
-global curl_usessl: type <cimport, nodecl, using> = @enum(cint){
+global curl_sshkeycallback: type <cimport,nodecl> = @function(pointer, *curl_khkey, *curl_khkey, curl_khmatch, pointer): cint
+global curl_usessl: type <cimport,nodecl,using> = @enum(cint){
   CURLUSESSL_NONE = 0,
   CURLUSESSL_TRY = 1,
   CURLUSESSL_CONTROL = 2,
   CURLUSESSL_ALL = 3,
   CURLUSESSL_LAST = 4
 }
-global curl_ftpccc: type <cimport, nodecl, using> = @enum(cint){
+global curl_ftpccc: type <cimport,nodecl,using> = @enum(cint){
   CURLFTPSSL_CCC_NONE = 0,
   CURLFTPSSL_CCC_PASSIVE = 1,
   CURLFTPSSL_CCC_ACTIVE = 2,
   CURLFTPSSL_CCC_LAST = 3
 }
-global curl_ftpauth: type <cimport, nodecl, using> = @enum(cint){
+global curl_ftpauth: type <cimport,nodecl,using> = @enum(cint){
   CURLFTPAUTH_DEFAULT = 0,
   CURLFTPAUTH_SSL = 1,
   CURLFTPAUTH_TLS = 2,
   CURLFTPAUTH_LAST = 3
 }
-global curl_ftpcreatedir: type <cimport, nodecl, using> = @enum(cint){
+global curl_ftpcreatedir: type <cimport,nodecl,using> = @enum(cint){
   CURLFTP_CREATE_DIR_NONE = 0,
   CURLFTP_CREATE_DIR = 1,
   CURLFTP_CREATE_DIR_RETRY = 2,
   CURLFTP_CREATE_DIR_LAST = 3
 }
-global curl_ftpmethod: type <cimport, nodecl, using> = @enum(cint){
+global curl_ftpmethod: type <cimport,nodecl,using> = @enum(cint){
   CURLFTPMETHOD_DEFAULT = 0,
   CURLFTPMETHOD_MULTICWD = 1,
   CURLFTPMETHOD_NOCWD = 2,
   CURLFTPMETHOD_SINGLECWD = 3,
   CURLFTPMETHOD_LAST = 4
 }
-global curl_hstsentry: type <cimport, nodecl, cincomplete, ctypedef> = @record{
+global curl_hstsentry: type <cimport,nodecl,cincomplete,ctypedef> = @record{
   name: cstring,
   namelen: csize,
   includeSubDomains: cuint,
   expire: [18]cchar
 }
-global curl_index: type <cimport, nodecl, ctypedef> = @record{
+global curl_index: type <cimport,nodecl,ctypedef> = @record{
   index: csize,
   total: csize
 }
-global CURLSTScode: type <cimport, nodecl, using> = @enum(cint){
+global CURLSTScode: type <cimport,nodecl,using> = @enum(cint){
   CURLSTS_OK = 0,
   CURLSTS_DONE = 1,
   CURLSTS_FAIL = 2
 }
-global curl_hstsread_callback: type <cimport, nodecl> = @function(pointer, *curl_hstsentry, pointer): CURLSTScode
-global curl_hstswrite_callback: type <cimport, nodecl> = @function(pointer, *curl_hstsentry, *curl_index, pointer): CURLSTScode
-global CURLoption: type <cimport, nodecl, using> = @enum(cint){
+global curl_hstsread_callback: type <cimport,nodecl> = @function(pointer, *curl_hstsentry, pointer): CURLSTScode
+global curl_hstswrite_callback: type <cimport,nodecl> = @function(pointer, *curl_hstsentry, *curl_index, pointer): CURLSTScode
+global CURLoption: type <cimport,nodecl,using> = @enum(cint){
   CURLOPT_WRITEDATA = 10001,
   CURLOPT_URL = 10002,
   CURLOPT_PORT = 3,
@@ -673,7 +673,7 @@ global CURL_RTSPREQ_SET_PARAMETER: cint <comptime> = 9
 global CURL_RTSPREQ_RECORD: cint <comptime> = 10
 global CURL_RTSPREQ_RECEIVE: cint <comptime> = 11
 global CURL_RTSPREQ_LAST: cint <comptime> = 12
-global CURL_NETRC_OPTION: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global CURL_NETRC_OPTION: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   CURL_NETRC_IGNORED = 0,
   CURL_NETRC_OPTIONAL = 1,
   CURL_NETRC_REQUIRED = 2,
@@ -695,35 +695,35 @@ global CURL_SSLVERSION_MAX_TLSv1_1: cint <comptime> = 327680
 global CURL_SSLVERSION_MAX_TLSv1_2: cint <comptime> = 393216
 global CURL_SSLVERSION_MAX_TLSv1_3: cint <comptime> = 458752
 global CURL_SSLVERSION_MAX_LAST: cint <comptime> = 524288
-global CURL_TLSAUTH: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global CURL_TLSAUTH: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   CURL_TLSAUTH_NONE = 0,
   CURL_TLSAUTH_SRP = 1,
   CURL_TLSAUTH_LAST = 2
 }
-global curl_TimeCond: type <cimport, nodecl, using> = @enum(cint){
+global curl_TimeCond: type <cimport,nodecl,using> = @enum(cint){
   CURL_TIMECOND_NONE = 0,
   CURL_TIMECOND_IFMODSINCE = 1,
   CURL_TIMECOND_IFUNMODSINCE = 2,
   CURL_TIMECOND_LASTMOD = 3,
   CURL_TIMECOND_LAST = 4
 }
-global function curl_strequal(s1: cstring, s2: cstring): cint <cimport, nodecl> end
-global function curl_strnequal(s1: cstring, s2: cstring, n: csize): cint <cimport, nodecl> end
-global curl_mime: type <cimport, nodecl, forwarddecl> = @record{}
-global curl_mimepart: type <cimport, nodecl, forwarddecl> = @record{}
-global function curl_mime_init(easy: pointer): *curl_mime <cimport, nodecl> end
-global function curl_mime_free(mime: *curl_mime) <cimport, nodecl> end
-global function curl_mime_addpart(mime: *curl_mime): *curl_mimepart <cimport, nodecl> end
-global function curl_mime_name(part: *curl_mimepart, name: cstring): CURLcode <cimport, nodecl> end
-global function curl_mime_filename(part: *curl_mimepart, filename: cstring): CURLcode <cimport, nodecl> end
-global function curl_mime_type(part: *curl_mimepart, mimetype: cstring): CURLcode <cimport, nodecl> end
-global function curl_mime_encoder(part: *curl_mimepart, encoding: cstring): CURLcode <cimport, nodecl> end
-global function curl_mime_data(part: *curl_mimepart, data: cstring, datasize: csize): CURLcode <cimport, nodecl> end
-global function curl_mime_filedata(part: *curl_mimepart, filename: cstring): CURLcode <cimport, nodecl> end
-global function curl_mime_data_cb(part: *curl_mimepart, datasize: clong, readfunc: curl_read_callback, seekfunc: curl_seek_callback, freefunc: curl_free_callback, arg: pointer): CURLcode <cimport, nodecl> end
-global function curl_mime_subparts(part: *curl_mimepart, subparts: *curl_mime): CURLcode <cimport, nodecl> end
-global function curl_mime_headers(part: *curl_mimepart, headers: *curl_slist, take_ownership: cint): CURLcode <cimport, nodecl> end
-global CURLformoption: type <cimport, nodecl, using> = @enum(cint){
+global function curl_strequal(s1: cstring, s2: cstring): cint <cimport,nodecl> end
+global function curl_strnequal(s1: cstring, s2: cstring, n: csize): cint <cimport,nodecl> end
+global curl_mime: type <cimport,nodecl,forwarddecl> = @record{}
+global curl_mimepart: type <cimport,nodecl,forwarddecl> = @record{}
+global function curl_mime_init(easy: pointer): *curl_mime <cimport,nodecl> end
+global function curl_mime_free(mime: *curl_mime): void <cimport,nodecl> end
+global function curl_mime_addpart(mime: *curl_mime): *curl_mimepart <cimport,nodecl> end
+global function curl_mime_name(part: *curl_mimepart, name: cstring): CURLcode <cimport,nodecl> end
+global function curl_mime_filename(part: *curl_mimepart, filename: cstring): CURLcode <cimport,nodecl> end
+global function curl_mime_type(part: *curl_mimepart, mimetype: cstring): CURLcode <cimport,nodecl> end
+global function curl_mime_encoder(part: *curl_mimepart, encoding: cstring): CURLcode <cimport,nodecl> end
+global function curl_mime_data(part: *curl_mimepart, data: cstring, datasize: csize): CURLcode <cimport,nodecl> end
+global function curl_mime_filedata(part: *curl_mimepart, filename: cstring): CURLcode <cimport,nodecl> end
+global function curl_mime_data_cb(part: *curl_mimepart, datasize: clong, readfunc: curl_read_callback, seekfunc: curl_seek_callback, freefunc: curl_free_callback, arg: pointer): CURLcode <cimport,nodecl> end
+global function curl_mime_subparts(part: *curl_mimepart, subparts: *curl_mime): CURLcode <cimport,nodecl> end
+global function curl_mime_headers(part: *curl_mimepart, headers: *curl_slist, take_ownership: cint): CURLcode <cimport,nodecl> end
+global CURLformoption: type <cimport,nodecl,using> = @enum(cint){
   CURLFORM_NOTHING = 0,
   CURLFORM_COPYNAME = 1,
   CURLFORM_PTRNAME = 2,
@@ -747,11 +747,11 @@ global CURLformoption: type <cimport, nodecl, using> = @enum(cint){
   CURLFORM_CONTENTLEN = 20,
   CURLFORM_LASTENTRY = 21
 }
-global curl_forms: type <cimport, nodecl, ctypedef> = @record{
+global curl_forms: type <cimport,nodecl,ctypedef> = @record{
   option: CURLformoption,
   value: cstring
 }
-global CURLFORMcode: type <cimport, nodecl, using> = @enum(cint){
+global CURLFORMcode: type <cimport,nodecl,using> = @enum(cint){
   CURL_FORMADD_OK = 0,
   CURL_FORMADD_MEMORY = 1,
   CURL_FORMADD_OPTION_TWICE = 2,
@@ -762,47 +762,47 @@ global CURLFORMcode: type <cimport, nodecl, using> = @enum(cint){
   CURL_FORMADD_DISABLED = 7,
   CURL_FORMADD_LAST = 8
 }
-global function curl_formadd(httppost: **curl_httppost, last_post: **curl_httppost, ...: cvarargs): CURLFORMcode <cimport, nodecl> end
-global curl_formget_callback: type <cimport, nodecl> = @function(pointer, cstring, csize): csize
-global function curl_formget(form: *curl_httppost, arg: pointer, append: curl_formget_callback): cint <cimport, nodecl> end
-global function curl_formfree(form: *curl_httppost) <cimport, nodecl> end
-global function curl_getenv(variable: cstring): cstring <cimport, nodecl> end
-global function curl_version(): cstring <cimport, nodecl> end
-global function curl_easy_escape(handle: pointer, string: cstring, length: cint): cstring <cimport, nodecl> end
-global function curl_escape(string: cstring, length: cint): cstring <cimport, nodecl> end
-global function curl_easy_unescape(handle: pointer, string: cstring, length: cint, outlength: *cint): cstring <cimport, nodecl> end
-global function curl_unescape(string: cstring, length: cint): cstring <cimport, nodecl> end
-global function curl_free(p: pointer) <cimport, nodecl> end
-global function curl_global_init(flags: clong): CURLcode <cimport, nodecl> end
-global function curl_global_init_mem(flags: clong, m: curl_malloc_callback, f: curl_free_callback, r: curl_realloc_callback, s: curl_strdup_callback, c: curl_calloc_callback): CURLcode <cimport, nodecl> end
-global function curl_global_cleanup() <cimport, nodecl> end
+global function curl_formadd(httppost: **curl_httppost, last_post: **curl_httppost, ...: cvarargs): CURLFORMcode <cimport,nodecl> end
+global curl_formget_callback: type <cimport,nodecl> = @function(pointer, cstring, csize): csize
+global function curl_formget(form: *curl_httppost, arg: pointer, append: curl_formget_callback): cint <cimport,nodecl> end
+global function curl_formfree(form: *curl_httppost): void <cimport,nodecl> end
+global function curl_getenv(variable: cstring): cstring <cimport,nodecl> end
+global function curl_version(): cstring <cimport,nodecl> end
+global function curl_easy_escape(handle: pointer, string: cstring, length: cint): cstring <cimport,nodecl> end
+global function curl_escape(string: cstring, length: cint): cstring <cimport,nodecl> end
+global function curl_easy_unescape(handle: pointer, string: cstring, length: cint, outlength: *cint): cstring <cimport,nodecl> end
+global function curl_unescape(string: cstring, length: cint): cstring <cimport,nodecl> end
+global function curl_free(p: pointer): void <cimport,nodecl> end
+global function curl_global_init(flags: clong): CURLcode <cimport,nodecl> end
+global function curl_global_init_mem(flags: clong, m: curl_malloc_callback, f: curl_free_callback, r: curl_realloc_callback, s: curl_strdup_callback, c: curl_calloc_callback): CURLcode <cimport,nodecl> end
+global function curl_global_cleanup(): void <cimport,nodecl> end
 curl_slist = @record{
   data: cstring,
   next: *curl_slist
 }
-global curl_ssl_backend: type <cimport, nodecl> = @record{
+global curl_ssl_backend: type <cimport,nodecl> = @record{
   id: curl_sslbackend,
   name: cstring
 }
-global CURLsslset: type <cimport, nodecl, using> = @enum(cint){
+global CURLsslset: type <cimport,nodecl,using> = @enum(cint){
   CURLSSLSET_OK = 0,
   CURLSSLSET_UNKNOWN_BACKEND = 1,
   CURLSSLSET_TOO_LATE = 2,
   CURLSSLSET_NO_BACKENDS = 3
 }
-global function curl_global_sslset(id: curl_sslbackend, name: cstring, avail: ***curl_ssl_backend): CURLsslset <cimport, nodecl> end
-global function curl_slist_append(a1: *curl_slist, a2: cstring): *curl_slist <cimport, nodecl> end
-global function curl_slist_free_all(a1: *curl_slist) <cimport, nodecl> end
-global function curl_getdate(p: cstring, unused: *ctime_t): ctime_t <cimport, nodecl> end
-global curl_certinfo: type <cimport, nodecl, ctypedef> = @record{
+global function curl_global_sslset(id: curl_sslbackend, name: cstring, avail: ***curl_ssl_backend): CURLsslset <cimport,nodecl> end
+global function curl_slist_append(a1: *curl_slist, a2: cstring): *curl_slist <cimport,nodecl> end
+global function curl_slist_free_all(a1: *curl_slist): void <cimport,nodecl> end
+global function curl_getdate(p: cstring, unused: *ctime_t): ctime_t <cimport,nodecl> end
+global curl_certinfo: type <cimport,nodecl,ctypedef> = @record{
   num_of_certs: cint,
   certinfo: **curl_slist
 }
-global curl_tlssessioninfo: type <cimport, nodecl, ctypedef> = @record{
+global curl_tlssessioninfo: type <cimport,nodecl,ctypedef> = @record{
   backend: curl_sslbackend,
   internals: pointer
 }
-global CURLINFO: type <cimport, nodecl, using> = @enum(cint){
+global CURLINFO: type <cimport,nodecl,using> = @enum(cint){
   CURLINFO_NONE = 0,
   CURLINFO_EFFECTIVE_URL = 1048577,
   CURLINFO_RESPONSE_CODE = 2097154,
@@ -873,7 +873,7 @@ global CURLINFO: type <cimport, nodecl, using> = @enum(cint){
   CURLINFO_REFERER = 1048636,
   CURLINFO_LASTONE = 60
 }
-global curl_closepolicy: type <cimport, nodecl, using> = @enum(cint){
+global curl_closepolicy: type <cimport,nodecl,using> = @enum(cint){
   CURLCLOSEPOLICY_NONE = 0,
   CURLCLOSEPOLICY_OLDEST = 1,
   CURLCLOSEPOLICY_LEAST_RECENTLY_USED = 2,
@@ -882,7 +882,7 @@ global curl_closepolicy: type <cimport, nodecl, using> = @enum(cint){
   CURLCLOSEPOLICY_CALLBACK = 5,
   CURLCLOSEPOLICY_LAST = 6
 }
-global curl_lock_data: type <cimport, nodecl, using> = @enum(cint){
+global curl_lock_data: type <cimport,nodecl,using> = @enum(cint){
   CURL_LOCK_DATA_NONE = 0,
   CURL_LOCK_DATA_SHARE = 1,
   CURL_LOCK_DATA_COOKIE = 2,
@@ -892,15 +892,15 @@ global curl_lock_data: type <cimport, nodecl, using> = @enum(cint){
   CURL_LOCK_DATA_PSL = 6,
   CURL_LOCK_DATA_LAST = 7
 }
-global curl_lock_access: type <cimport, nodecl, using> = @enum(cint){
+global curl_lock_access: type <cimport,nodecl,using> = @enum(cint){
   CURL_LOCK_ACCESS_NONE = 0,
   CURL_LOCK_ACCESS_SHARED = 1,
   CURL_LOCK_ACCESS_SINGLE = 2,
   CURL_LOCK_ACCESS_LAST = 3
 }
-global curl_lock_function: type <cimport, nodecl> = @function(pointer, curl_lock_data, curl_lock_access, pointer)
-global curl_unlock_function: type <cimport, nodecl> = @function(pointer, curl_lock_data, pointer)
-global CURLSHcode: type <cimport, nodecl, using> = @enum(cint){
+global curl_lock_function: type <cimport,nodecl> = @function(pointer, curl_lock_data, curl_lock_access, pointer): void
+global curl_unlock_function: type <cimport,nodecl> = @function(pointer, curl_lock_data, pointer): void
+global CURLSHcode: type <cimport,nodecl,using> = @enum(cint){
   CURLSHE_OK = 0,
   CURLSHE_BAD_OPTION = 1,
   CURLSHE_IN_USE = 2,
@@ -909,7 +909,7 @@ global CURLSHcode: type <cimport, nodecl, using> = @enum(cint){
   CURLSHE_NOT_BUILT_IN = 5,
   CURLSHE_LAST = 6
 }
-global CURLSHoption: type <cimport, nodecl, using> = @enum(cint){
+global CURLSHoption: type <cimport,nodecl,using> = @enum(cint){
   CURLSHOPT_NONE = 0,
   CURLSHOPT_SHARE = 1,
   CURLSHOPT_UNSHARE = 2,
@@ -918,10 +918,10 @@ global CURLSHoption: type <cimport, nodecl, using> = @enum(cint){
   CURLSHOPT_USERDATA = 5,
   CURLSHOPT_LAST = 6
 }
-global function curl_share_init(): pointer <cimport, nodecl> end
-global function curl_share_setopt(a1: pointer, option: CURLSHoption, ...: cvarargs): CURLSHcode <cimport, nodecl> end
-global function curl_share_cleanup(a1: pointer): CURLSHcode <cimport, nodecl> end
-global CURLversion: type <cimport, nodecl, using> = @enum(cint){
+global function curl_share_init(): pointer <cimport,nodecl> end
+global function curl_share_setopt(a1: pointer, option: CURLSHoption, ...: cvarargs): CURLSHcode <cimport,nodecl> end
+global function curl_share_cleanup(a1: pointer): CURLSHcode <cimport,nodecl> end
+global CURLversion: type <cimport,nodecl,using> = @enum(cint){
   CURLVERSION_FIRST = 0,
   CURLVERSION_SECOND = 1,
   CURLVERSION_THIRD = 2,
@@ -934,7 +934,7 @@ global CURLversion: type <cimport, nodecl, using> = @enum(cint){
   CURLVERSION_TENTH = 9,
   CURLVERSION_LAST = 10
 }
-global curl_version_info_data: type <cimport, nodecl> = @record{
+global curl_version_info_data: type <cimport,nodecl> = @record{
   age: CURLversion,
   version: cstring,
   version_num: cuint,
@@ -961,26 +961,26 @@ global curl_version_info_data: type <cimport, nodecl> = @record{
   hyper_version: cstring,
   gsasl_version: cstring
 }
-global function curl_version_info(a1: CURLversion): *curl_version_info_data <cimport, nodecl> end
-global function curl_easy_strerror(a1: CURLcode): cstring <cimport, nodecl> end
-global function curl_share_strerror(a1: CURLSHcode): cstring <cimport, nodecl> end
-global function curl_easy_pause(handle: pointer, bitmask: cint): CURLcode <cimport, nodecl> end
-global curl_blob: type <cimport, nodecl, ctypedef> = @record{
+global function curl_version_info(a1: CURLversion): *curl_version_info_data <cimport,nodecl> end
+global function curl_easy_strerror(a1: CURLcode): cstring <cimport,nodecl> end
+global function curl_share_strerror(a1: CURLSHcode): cstring <cimport,nodecl> end
+global function curl_easy_pause(handle: pointer, bitmask: cint): CURLcode <cimport,nodecl> end
+global curl_blob: type <cimport,nodecl,ctypedef> = @record{
   data: pointer,
   len: csize,
   flags: cuint
 }
-global function curl_easy_init(): pointer <cimport, nodecl> end
-global function curl_easy_setopt(curl: pointer, option: CURLoption, ...: cvarargs): CURLcode <cimport, nodecl> end
-global function curl_easy_perform(curl: pointer): CURLcode <cimport, nodecl> end
-global function curl_easy_cleanup(curl: pointer) <cimport, nodecl> end
-global function curl_easy_getinfo(curl: pointer, info: CURLINFO, ...: cvarargs): CURLcode <cimport, nodecl> end
-global function curl_easy_duphandle(curl: pointer): pointer <cimport, nodecl> end
-global function curl_easy_reset(curl: pointer) <cimport, nodecl> end
-global function curl_easy_recv(curl: pointer, buffer: pointer, buflen: csize, n: *csize): CURLcode <cimport, nodecl> end
-global function curl_easy_send(curl: pointer, buffer: pointer, buflen: csize, n: *csize): CURLcode <cimport, nodecl> end
-global function curl_easy_upkeep(curl: pointer): CURLcode <cimport, nodecl> end
-global CURLMcode: type <cimport, nodecl, using> = @enum(cint){
+global function curl_easy_init(): pointer <cimport,nodecl> end
+global function curl_easy_setopt(curl: pointer, option: CURLoption, ...: cvarargs): CURLcode <cimport,nodecl> end
+global function curl_easy_perform(curl: pointer): CURLcode <cimport,nodecl> end
+global function curl_easy_cleanup(curl: pointer): void <cimport,nodecl> end
+global function curl_easy_getinfo(curl: pointer, info: CURLINFO, ...: cvarargs): CURLcode <cimport,nodecl> end
+global function curl_easy_duphandle(curl: pointer): pointer <cimport,nodecl> end
+global function curl_easy_reset(curl: pointer): void <cimport,nodecl> end
+global function curl_easy_recv(curl: pointer, buffer: pointer, buflen: csize, n: *csize): CURLcode <cimport,nodecl> end
+global function curl_easy_send(curl: pointer, buffer: pointer, buflen: csize, n: *csize): CURLcode <cimport,nodecl> end
+global function curl_easy_upkeep(curl: pointer): CURLcode <cimport,nodecl> end
+global CURLMcode: type <cimport,nodecl,using> = @enum(cint){
   CURLM_CALL_MULTI_PERFORM = -1,
   CURLM_OK = 0,
   CURLM_BAD_HANDLE = 1,
@@ -995,12 +995,12 @@ global CURLMcode: type <cimport, nodecl, using> = @enum(cint){
   CURLM_BAD_FUNCTION_ARGUMENT = 10,
   CURLM_LAST = 11
 }
-global CURLMSG: type <cimport, nodecl, using> = @enum(cint){
+global CURLMSG: type <cimport,nodecl,using> = @enum(cint){
   CURLMSG_NONE = 0,
   CURLMSG_DONE = 1,
   CURLMSG_LAST = 2
 }
-global CURLMsg: type <cimport, nodecl> = @record{
+global CURLMsg: type <cimport,nodecl> = @record{
   msg: CURLMSG,
   easy_handle: pointer,
   data: union{
@@ -1008,29 +1008,29 @@ global CURLMsg: type <cimport, nodecl> = @record{
     result: CURLcode
   }
 }
-global curl_waitfd: type <cimport, nodecl, ctypedef> = @record{
+global curl_waitfd: type <cimport,nodecl,ctypedef> = @record{
   fd: cint,
   events: cshort,
   revents: cshort
 }
-global function curl_multi_init(): pointer <cimport, nodecl> end
-global function curl_multi_add_handle(multi_handle: pointer, curl_handle: pointer): CURLMcode <cimport, nodecl> end
-global function curl_multi_remove_handle(multi_handle: pointer, curl_handle: pointer): CURLMcode <cimport, nodecl> end
-global function curl_multi_fdset(multi_handle: pointer, read_fd_set: *fd_set, write_fd_set: *fd_set, exc_fd_set: *fd_set, max_fd: *cint): CURLMcode <cimport, nodecl> end
-global function curl_multi_wait(multi_handle: pointer, extra_fds: *curl_waitfd, extra_nfds: cuint, timeout_ms: cint, ret: *cint): CURLMcode <cimport, nodecl> end
-global function curl_multi_poll(multi_handle: pointer, extra_fds: *curl_waitfd, extra_nfds: cuint, timeout_ms: cint, ret: *cint): CURLMcode <cimport, nodecl> end
-global function curl_multi_wakeup(multi_handle: pointer): CURLMcode <cimport, nodecl> end
-global function curl_multi_perform(multi_handle: pointer, running_handles: *cint): CURLMcode <cimport, nodecl> end
-global function curl_multi_cleanup(multi_handle: pointer): CURLMcode <cimport, nodecl> end
-global function curl_multi_info_read(multi_handle: pointer, msgs_in_queue: *cint): *CURLMsg <cimport, nodecl> end
-global function curl_multi_strerror(a1: CURLMcode): cstring <cimport, nodecl> end
-global curl_socket_callback: type <cimport, nodecl> = @function(pointer, cint, cint, pointer, pointer): cint
-global curl_multi_timer_callback: type <cimport, nodecl> = @function(pointer, clong, pointer): cint
-global function curl_multi_socket(multi_handle: pointer, s: cint, running_handles: *cint): CURLMcode <cimport, nodecl> end
-global function curl_multi_socket_action(multi_handle: pointer, s: cint, ev_bitmask: cint, running_handles: *cint): CURLMcode <cimport, nodecl> end
-global function curl_multi_socket_all(multi_handle: pointer, running_handles: *cint): CURLMcode <cimport, nodecl> end
-global function curl_multi_timeout(multi_handle: pointer, milliseconds: *clong): CURLMcode <cimport, nodecl> end
-global CURLMoption: type <cimport, nodecl, using> = @enum(cint){
+global function curl_multi_init(): pointer <cimport,nodecl> end
+global function curl_multi_add_handle(multi_handle: pointer, curl_handle: pointer): CURLMcode <cimport,nodecl> end
+global function curl_multi_remove_handle(multi_handle: pointer, curl_handle: pointer): CURLMcode <cimport,nodecl> end
+global function curl_multi_fdset(multi_handle: pointer, read_fd_set: *fd_set, write_fd_set: *fd_set, exc_fd_set: *fd_set, max_fd: *cint): CURLMcode <cimport,nodecl> end
+global function curl_multi_wait(multi_handle: pointer, extra_fds: *curl_waitfd, extra_nfds: cuint, timeout_ms: cint, ret: *cint): CURLMcode <cimport,nodecl> end
+global function curl_multi_poll(multi_handle: pointer, extra_fds: *curl_waitfd, extra_nfds: cuint, timeout_ms: cint, ret: *cint): CURLMcode <cimport,nodecl> end
+global function curl_multi_wakeup(multi_handle: pointer): CURLMcode <cimport,nodecl> end
+global function curl_multi_perform(multi_handle: pointer, running_handles: *cint): CURLMcode <cimport,nodecl> end
+global function curl_multi_cleanup(multi_handle: pointer): CURLMcode <cimport,nodecl> end
+global function curl_multi_info_read(multi_handle: pointer, msgs_in_queue: *cint): *CURLMsg <cimport,nodecl> end
+global function curl_multi_strerror(a1: CURLMcode): cstring <cimport,nodecl> end
+global curl_socket_callback: type <cimport,nodecl> = @function(pointer, cint, cint, pointer, pointer): cint
+global curl_multi_timer_callback: type <cimport,nodecl> = @function(pointer, clong, pointer): cint
+global function curl_multi_socket(multi_handle: pointer, s: cint, running_handles: *cint): CURLMcode <cimport,nodecl> end
+global function curl_multi_socket_action(multi_handle: pointer, s: cint, ev_bitmask: cint, running_handles: *cint): CURLMcode <cimport,nodecl> end
+global function curl_multi_socket_all(multi_handle: pointer, running_handles: *cint): CURLMcode <cimport,nodecl> end
+global function curl_multi_timeout(multi_handle: pointer, milliseconds: *clong): CURLMcode <cimport,nodecl> end
+global CURLMoption: type <cimport,nodecl,using> = @enum(cint){
   CURLMOPT_SOCKETFUNCTION = 20001,
   CURLMOPT_SOCKETDATA = 10002,
   CURLMOPT_PIPELINING = 3,
@@ -1049,13 +1049,13 @@ global CURLMoption: type <cimport, nodecl, using> = @enum(cint){
   CURLMOPT_MAX_CONCURRENT_STREAMS = 16,
   CURLMOPT_LASTENTRY = 17
 }
-global function curl_multi_setopt(multi_handle: pointer, option: CURLMoption, ...: cvarargs): CURLMcode <cimport, nodecl> end
-global function curl_multi_assign(multi_handle: pointer, sockfd: cint, sockp: pointer): CURLMcode <cimport, nodecl> end
-global curl_pushheaders: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global function curl_pushheader_bynum(h: *curl_pushheaders, num: csize): cstring <cimport, nodecl> end
-global function curl_pushheader_byname(h: *curl_pushheaders, name: cstring): cstring <cimport, nodecl> end
-global curl_push_callback: type <cimport, nodecl> = @function(pointer, pointer, csize, *curl_pushheaders, pointer): cint
-global CURLUcode: type <cimport, nodecl, using> = @enum(cint){
+global function curl_multi_setopt(multi_handle: pointer, option: CURLMoption, ...: cvarargs): CURLMcode <cimport,nodecl> end
+global function curl_multi_assign(multi_handle: pointer, sockfd: cint, sockp: pointer): CURLMcode <cimport,nodecl> end
+global curl_pushheaders: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global function curl_pushheader_bynum(h: *curl_pushheaders, num: csize): cstring <cimport,nodecl> end
+global function curl_pushheader_byname(h: *curl_pushheaders, name: cstring): cstring <cimport,nodecl> end
+global curl_push_callback: type <cimport,nodecl> = @function(pointer, pointer, csize, *curl_pushheaders, pointer): cint
+global CURLUcode: type <cimport,nodecl,using> = @enum(cint){
   CURLUE_OK = 0,
   CURLUE_BAD_HANDLE = 1,
   CURLUE_BAD_PARTPOINTER = 2,
@@ -1075,7 +1075,7 @@ global CURLUcode: type <cimport, nodecl, using> = @enum(cint){
   CURLUE_NO_QUERY = 16,
   CURLUE_NO_FRAGMENT = 17
 }
-global CURLUPart: type <cimport, nodecl, using> = @enum(cint){
+global CURLUPart: type <cimport,nodecl,using> = @enum(cint){
   CURLUPART_URL = 0,
   CURLUPART_SCHEME = 1,
   CURLUPART_USER = 2,
@@ -1088,13 +1088,13 @@ global CURLUPart: type <cimport, nodecl, using> = @enum(cint){
   CURLUPART_FRAGMENT = 9,
   CURLUPART_ZONEID = 10
 }
-global CURLU: type <cimport, nodecl, forwarddecl> = @record{}
-global function curl_url(): *CURLU <cimport, nodecl> end
-global function curl_url_cleanup(handle: *CURLU) <cimport, nodecl> end
-global function curl_url_dup(In: *CURLU): *CURLU <cimport, nodecl> end
-global function curl_url_get(handle: *CURLU, what: CURLUPart, part: *cstring, flags: cuint): CURLUcode <cimport, nodecl> end
-global function curl_url_set(handle: *CURLU, what: CURLUPart, part: cstring, flags: cuint): CURLUcode <cimport, nodecl> end
-global curl_easytype: type <cimport, nodecl, using> = @enum(cint){
+global CURLU: type <cimport,nodecl,forwarddecl> = @record{}
+global function curl_url(): *CURLU <cimport,nodecl> end
+global function curl_url_cleanup(handle: *CURLU): void <cimport,nodecl> end
+global function curl_url_dup(In: *CURLU): *CURLU <cimport,nodecl> end
+global function curl_url_get(handle: *CURLU, what: CURLUPart, part: *cstring, flags: cuint): CURLUcode <cimport,nodecl> end
+global function curl_url_set(handle: *CURLU, what: CURLUPart, part: cstring, flags: cuint): CURLUcode <cimport,nodecl> end
+global curl_easytype: type <cimport,nodecl,using> = @enum(cint){
   CURLOT_LONG = 0,
   CURLOT_VALUES = 1,
   CURLOT_OFF_T = 2,
@@ -1105,12 +1105,12 @@ global curl_easytype: type <cimport, nodecl, using> = @enum(cint){
   CURLOT_BLOB = 7,
   CURLOT_FUNCTION = 8
 }
-global curl_easyoption: type <cimport, nodecl, ctypedef> = @record{
+global curl_easyoption: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
   id: CURLoption,
   type: curl_easytype,
   flags: cuint
 }
-global function curl_easy_option_by_name(name: cstring): *curl_easyoption <cimport, nodecl> end
-global function curl_easy_option_by_id(id: CURLoption): *curl_easyoption <cimport, nodecl> end
-global function curl_easy_option_next(prev: *curl_easyoption): *curl_easyoption <cimport, nodecl> end
+global function curl_easy_option_by_name(name: cstring): *curl_easyoption <cimport,nodecl> end
+global function curl_easy_option_by_id(id: CURLoption): *curl_easyoption <cimport,nodecl> end
+global function curl_easy_option_next(prev: *curl_easyoption): *curl_easyoption <cimport,nodecl> end

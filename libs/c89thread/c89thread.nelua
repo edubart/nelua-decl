@@ -8,7 +8,7 @@ if ccinfo.is_linux then
 end
 ]]
 global c89thread_handle: type = @pointer
-global timespec: type <cimport, nodecl, ctypedef> = @record{
+global timespec: type <cimport,nodecl,ctypedef> = @record{
   tv_sec: ctime_t,
   tv_nsec: clong
 }
@@ -18,64 +18,64 @@ global c89thrd_nomem: cint <comptime> = -2
 global c89thrd_timedout: cint <comptime> = -3
 global c89thrd_busy: cint <comptime> = -4
 global c89thrd_error: cint <comptime> = -5
-global c89thread_allocation_type: type <cimport, nodecl, using> = @enum(cint){
+global c89thread_allocation_type: type <cimport,nodecl,using> = @enum(cint){
   c89thread_allocation_type_general = 0
 }
-global c89thread_allocation_callbacks: type <cimport, nodecl> = @record{
+global c89thread_allocation_callbacks: type <cimport,nodecl> = @record{
   pUserData: pointer,
   onMalloc: function(csize, c89thread_allocation_type, pointer): pointer,
-  onFree: function(pointer, c89thread_allocation_type, pointer)
+  onFree: function(pointer, c89thread_allocation_type, pointer): void
 }
-global function c89thread_set_allocation_callbacks(pCallbacks: *c89thread_allocation_callbacks) <cimport, nodecl> end
-global function c89thread_malloc(sz: csize, type: c89thread_allocation_type, pCallbacks: *c89thread_allocation_callbacks): pointer <cimport, nodecl> end
-global function c89thread_free(p: pointer, type: c89thread_allocation_type, pCallbacks: *c89thread_allocation_callbacks) <cimport, nodecl> end
-global c89thrd_t: type <cimport, nodecl, cincomplete> = @record{}
-global c89thrd_start_t: type <cimport, nodecl> = @function(pointer): cint
-global function c89thrd_create_ex(thr: *c89thrd_t, func: c89thrd_start_t, arg: pointer, pAllocationCallbacks: *c89thread_allocation_callbacks): cint <cimport, nodecl> end
-global function c89thrd_create(thr: *c89thrd_t, func: c89thrd_start_t, arg: pointer): cint <cimport, nodecl> end
-global function c89thrd_equal(lhs: c89thrd_t, rhs: c89thrd_t): cint <cimport, nodecl> end
-global function c89thrd_current(): c89thrd_t <cimport, nodecl> end
-global function c89thrd_sleep(duration: *timespec, remaining: *timespec): cint <cimport, nodecl> end
-global function c89thrd_yield() <cimport, nodecl> end
-global function c89thrd_exit(res: cint) <cimport, nodecl> end
-global function c89thrd_detach(thr: c89thrd_t): cint <cimport, nodecl> end
-global function c89thrd_join(thr: c89thrd_t, res: *cint): cint <cimport, nodecl> end
-global c89mtx_t: type <cimport, nodecl, cincomplete> = @record{}
+global function c89thread_set_allocation_callbacks(pCallbacks: *c89thread_allocation_callbacks): void <cimport,nodecl> end
+global function c89thread_malloc(sz: csize, type: c89thread_allocation_type, pCallbacks: *c89thread_allocation_callbacks): pointer <cimport,nodecl> end
+global function c89thread_free(p: pointer, type: c89thread_allocation_type, pCallbacks: *c89thread_allocation_callbacks): void <cimport,nodecl> end
+global c89thrd_t: type <cimport,nodecl,cincomplete> = @record{}
+global c89thrd_start_t: type <cimport,nodecl> = @function(pointer): cint
+global function c89thrd_create_ex(thr: *c89thrd_t, func: c89thrd_start_t, arg: pointer, pAllocationCallbacks: *c89thread_allocation_callbacks): cint <cimport,nodecl> end
+global function c89thrd_create(thr: *c89thrd_t, func: c89thrd_start_t, arg: pointer): cint <cimport,nodecl> end
+global function c89thrd_equal(lhs: c89thrd_t, rhs: c89thrd_t): cint <cimport,nodecl> end
+global function c89thrd_current(): c89thrd_t <cimport,nodecl> end
+global function c89thrd_sleep(duration: *timespec, remaining: *timespec): cint <cimport,nodecl> end
+global function c89thrd_yield(): void <cimport,nodecl> end
+global function c89thrd_exit(res: cint): void <cimport,nodecl> end
+global function c89thrd_detach(thr: c89thrd_t): cint <cimport,nodecl> end
+global function c89thrd_join(thr: c89thrd_t, res: *cint): cint <cimport,nodecl> end
+global c89mtx_t: type <cimport,nodecl,cincomplete> = @record{}
 global c89mtx_plain: cint <comptime> = 0
 global c89mtx_timed: cint <comptime> = 1
 global c89mtx_recursive: cint <comptime> = 2
-global function c89mtx_init(mutex: *c89mtx_t, type: cint): cint <cimport, nodecl> end
-global function c89mtx_destroy(mutex: *c89mtx_t) <cimport, nodecl> end
-global function c89mtx_lock(mutex: *c89mtx_t): cint <cimport, nodecl> end
-global function c89mtx_timedlock(mutex: *c89mtx_t, time_point: *timespec): cint <cimport, nodecl> end
-global function c89mtx_trylock(mutex: *c89mtx_t): cint <cimport, nodecl> end
-global function c89mtx_unlock(mutex: *c89mtx_t): cint <cimport, nodecl> end
-global c89cnd_t: type <cimport, nodecl, cincomplete> = @record{}
-global function c89cnd_init(cnd: *c89cnd_t): cint <cimport, nodecl> end
-global function c89cnd_destroy(cnd: *c89cnd_t) <cimport, nodecl> end
-global function c89cnd_signal(cnd: *c89cnd_t): cint <cimport, nodecl> end
-global function c89cnd_broadcast(cnd: *c89cnd_t): cint <cimport, nodecl> end
-global function c89cnd_wait(cnd: *c89cnd_t, mtx: *c89mtx_t): cint <cimport, nodecl> end
-global function c89cnd_timedwait(cnd: *c89cnd_t, mtx: *c89mtx_t, time_point: *timespec): cint <cimport, nodecl> end
-global c89sem_t: type <cimport, nodecl, cincomplete> = @record{}
-global function c89sem_init(sem: *c89sem_t, value: cint, valueMax: cint): cint <cimport, nodecl> end
-global function c89sem_destroy(sem: *c89sem_t) <cimport, nodecl> end
-global function c89sem_wait(sem: *c89sem_t): cint <cimport, nodecl> end
-global function c89sem_timedwait(sem: *c89sem_t, time_point: *timespec): cint <cimport, nodecl> end
-global function c89sem_post(sem: *c89sem_t): cint <cimport, nodecl> end
-global c89evnt_t: type <cimport, nodecl, cincomplete> = @record{}
-global function c89evnt_init(evnt: *c89evnt_t): cint <cimport, nodecl> end
-global function c89evnt_destroy(evnt: *c89evnt_t) <cimport, nodecl> end
-global function c89evnt_wait(evnt: *c89evnt_t): cint <cimport, nodecl> end
-global function c89evnt_timedwait(evnt: *c89evnt_t, time_point: *timespec): cint <cimport, nodecl> end
-global function c89evnt_signal(evnt: *c89evnt_t): cint <cimport, nodecl> end
-global function c89timespec_get(ts: *timespec, base: cint): cint <cimport, nodecl> end
-global function c89timespec_now(): timespec <cimport, nodecl> end
-global function c89timespec_nanoseconds(nanoseconds: ctime_t): timespec <cimport, nodecl> end
-global function c89timespec_milliseconds(milliseconds: ctime_t): timespec <cimport, nodecl> end
-global function c89timespec_seconds(seconds: ctime_t): timespec <cimport, nodecl> end
-global function c89timespec_diff(lhs: timespec, rhs: timespec): timespec <cimport, nodecl> end
-global function c89timespec_add(tsA: timespec, tsB: timespec): timespec <cimport, nodecl> end
-global function c89timespec_cmp(tsA: timespec, tsB: timespec): cint <cimport, nodecl> end
-global function c89thrd_sleep_timespec(ts: timespec): cint <cimport, nodecl> end
-global function c89thrd_sleep_milliseconds(milliseconds: cint): cint <cimport, nodecl> end
+global function c89mtx_init(mutex: *c89mtx_t, type: cint): cint <cimport,nodecl> end
+global function c89mtx_destroy(mutex: *c89mtx_t): void <cimport,nodecl> end
+global function c89mtx_lock(mutex: *c89mtx_t): cint <cimport,nodecl> end
+global function c89mtx_timedlock(mutex: *c89mtx_t, time_point: *timespec): cint <cimport,nodecl> end
+global function c89mtx_trylock(mutex: *c89mtx_t): cint <cimport,nodecl> end
+global function c89mtx_unlock(mutex: *c89mtx_t): cint <cimport,nodecl> end
+global c89cnd_t: type <cimport,nodecl,cincomplete> = @record{}
+global function c89cnd_init(cnd: *c89cnd_t): cint <cimport,nodecl> end
+global function c89cnd_destroy(cnd: *c89cnd_t): void <cimport,nodecl> end
+global function c89cnd_signal(cnd: *c89cnd_t): cint <cimport,nodecl> end
+global function c89cnd_broadcast(cnd: *c89cnd_t): cint <cimport,nodecl> end
+global function c89cnd_wait(cnd: *c89cnd_t, mtx: *c89mtx_t): cint <cimport,nodecl> end
+global function c89cnd_timedwait(cnd: *c89cnd_t, mtx: *c89mtx_t, time_point: *timespec): cint <cimport,nodecl> end
+global c89sem_t: type <cimport,nodecl,cincomplete> = @record{}
+global function c89sem_init(sem: *c89sem_t, value: cint, valueMax: cint): cint <cimport,nodecl> end
+global function c89sem_destroy(sem: *c89sem_t): void <cimport,nodecl> end
+global function c89sem_wait(sem: *c89sem_t): cint <cimport,nodecl> end
+global function c89sem_timedwait(sem: *c89sem_t, time_point: *timespec): cint <cimport,nodecl> end
+global function c89sem_post(sem: *c89sem_t): cint <cimport,nodecl> end
+global c89evnt_t: type <cimport,nodecl,cincomplete> = @record{}
+global function c89evnt_init(evnt: *c89evnt_t): cint <cimport,nodecl> end
+global function c89evnt_destroy(evnt: *c89evnt_t): void <cimport,nodecl> end
+global function c89evnt_wait(evnt: *c89evnt_t): cint <cimport,nodecl> end
+global function c89evnt_timedwait(evnt: *c89evnt_t, time_point: *timespec): cint <cimport,nodecl> end
+global function c89evnt_signal(evnt: *c89evnt_t): cint <cimport,nodecl> end
+global function c89timespec_get(ts: *timespec, base: cint): cint <cimport,nodecl> end
+global function c89timespec_now(): timespec <cimport,nodecl> end
+global function c89timespec_nanoseconds(nanoseconds: ctime_t): timespec <cimport,nodecl> end
+global function c89timespec_milliseconds(milliseconds: ctime_t): timespec <cimport,nodecl> end
+global function c89timespec_seconds(seconds: ctime_t): timespec <cimport,nodecl> end
+global function c89timespec_diff(lhs: timespec, rhs: timespec): timespec <cimport,nodecl> end
+global function c89timespec_add(tsA: timespec, tsB: timespec): timespec <cimport,nodecl> end
+global function c89timespec_cmp(tsA: timespec, tsB: timespec): cint <cimport,nodecl> end
+global function c89thrd_sleep_timespec(ts: timespec): cint <cimport,nodecl> end
+global function c89thrd_sleep_milliseconds(milliseconds: cint): cint <cimport,nodecl> end

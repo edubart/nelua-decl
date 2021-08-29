@@ -1,9 +1,9 @@
 ## cinclude '<sys/stat.h>'
-global timespec: type <cimport, nodecl, ctypedef> = @record{
+global timespec: type <cimport,nodecl,ctypedef> = @record{
   tv_sec: ctime_t,
   tv_nsec: clong
 }
-global stat_t: type <cimport, nodecl, ctypedef 'stat'> = @record{
+global stat_t: type <cimport,nodecl,ctypedef'stat'> = @record{
   st_dev: culong,
   st_ino: culong,
   st_nlink: culong,
@@ -20,48 +20,48 @@ global stat_t: type <cimport, nodecl, ctypedef 'stat'> = @record{
   st_ctim: timespec,
   __glibc_reserved: [3]clong
 }
-global function stat(file: cstring, buf: *stat_t): cint <cimport, nodecl> end
-global function fstat(fd: cint, buf: *stat_t): cint <cimport, nodecl> end
-global function fstatat(fd: cint, file: cstring, buf: *stat_t, flag: cint): cint <cimport, nodecl> end
-global function lstat(file: cstring, buf: *stat_t): cint <cimport, nodecl> end
-global function chmod(file: cstring, mode: cuint): cint <cimport, nodecl> end
-global function fchmod(fd: cint, mode: cuint): cint <cimport, nodecl> end
-global function fchmodat(fd: cint, file: cstring, mode: cuint, flag: cint): cint <cimport, nodecl> end
-global function umask(mask: cuint): cuint <cimport, nodecl> end
-global function mkdir(path: cstring, mode: cuint): cint <cimport, nodecl> end
-global function mkdirat(fd: cint, path: cstring, mode: cuint): cint <cimport, nodecl> end
-global function mknod(path: cstring, mode: cuint, dev: culong): cint <cimport, nodecl> end
-global function mknodat(fd: cint, path: cstring, mode: cuint, dev: culong): cint <cimport, nodecl> end
-global function mkfifo(path: cstring, mode: cuint): cint <cimport, nodecl> end
-global function mkfifoat(fd: cint, path: cstring, mode: cuint): cint <cimport, nodecl> end
-global function utimensat(fd: cint, path: cstring, times: *timespec, flags: cint): cint <cimport, nodecl> end
-global function futimens(fd: cint, times: *timespec): cint <cimport, nodecl> end
-global S_IFMT: cuint <cimport, nodecl, const>
-global S_IFDIR: cuint <cimport, nodecl, const>
-global S_IFCHR: cuint <cimport, nodecl, const>
-global S_IFBLK: cuint <cimport, nodecl, const>
-global S_IFREG: cuint <cimport, nodecl, const>
-global S_IFIFO: cuint <cimport, nodecl, const>
-global S_IFLNK: cuint <cimport, nodecl, const>
-global S_IFSOCK: cuint <cimport, nodecl, const>
-global S_ISUID: cuint <cimport, nodecl, const>
-global S_ISGID: cuint <cimport, nodecl, const>
-global S_ISVTX: cuint <cimport, nodecl, const>
-global S_IRUSR: cuint <cimport, nodecl, const>
-global S_IWUSR: cuint <cimport, nodecl, const>
-global S_IXUSR: cuint <cimport, nodecl, const>
-global S_IRWXU: cuint <cimport, nodecl, const>
-global S_IREAD: cuint <cimport, nodecl, const>
-global S_IWRITE: cuint <cimport, nodecl, const>
-global S_IEXEC: cuint <cimport, nodecl, const>
-global S_IRGRP: cuint <cimport, nodecl, const>
-global S_IWGRP: cuint <cimport, nodecl, const>
-global S_IXGRP: cuint <cimport, nodecl, const>
-global S_IRWXG: cuint <cimport, nodecl, const>
-global S_IROTH: cuint <cimport, nodecl, const>
-global S_IWOTH: cuint <cimport, nodecl, const>
-global S_IXOTH: cuint <cimport, nodecl, const>
-global S_IRWXO: cuint <cimport, nodecl, const>
+global function stat(file: cstring, buf: *stat_t): cint <cimport,nodecl> end
+global function fstat(fd: cint, buf: *stat_t): cint <cimport,nodecl> end
+global function fstatat(fd: cint, file: cstring, buf: *stat_t, flag: cint): cint <cimport,nodecl> end
+global function lstat(file: cstring, buf: *stat_t): cint <cimport,nodecl> end
+global function chmod(file: cstring, mode: cuint): cint <cimport,nodecl> end
+global function fchmod(fd: cint, mode: cuint): cint <cimport,nodecl> end
+global function fchmodat(fd: cint, file: cstring, mode: cuint, flag: cint): cint <cimport,nodecl> end
+global function umask(mask: cuint): cuint <cimport,nodecl> end
+global function mkdir(path: cstring, mode: cuint): cint <cimport,nodecl> end
+global function mkdirat(fd: cint, path: cstring, mode: cuint): cint <cimport,nodecl> end
+global function mknod(path: cstring, mode: cuint, dev: culong): cint <cimport,nodecl> end
+global function mknodat(fd: cint, path: cstring, mode: cuint, dev: culong): cint <cimport,nodecl> end
+global function mkfifo(path: cstring, mode: cuint): cint <cimport,nodecl> end
+global function mkfifoat(fd: cint, path: cstring, mode: cuint): cint <cimport,nodecl> end
+global function utimensat(fd: cint, path: cstring, times: *timespec, flags: cint): cint <cimport,nodecl> end
+global function futimens(fd: cint, times: *timespec): cint <cimport,nodecl> end
+global S_IFMT: cuint <cimport,nodecl,const>
+global S_IFDIR: cuint <cimport,nodecl,const>
+global S_IFCHR: cuint <cimport,nodecl,const>
+global S_IFBLK: cuint <cimport,nodecl,const>
+global S_IFREG: cuint <cimport,nodecl,const>
+global S_IFIFO: cuint <cimport,nodecl,const>
+global S_IFLNK: cuint <cimport,nodecl,const>
+global S_IFSOCK: cuint <cimport,nodecl,const>
+global S_ISUID: cuint <cimport,nodecl,const>
+global S_ISGID: cuint <cimport,nodecl,const>
+global S_ISVTX: cuint <cimport,nodecl,const>
+global S_IRUSR: cuint <cimport,nodecl,const>
+global S_IWUSR: cuint <cimport,nodecl,const>
+global S_IXUSR: cuint <cimport,nodecl,const>
+global S_IRWXU: cuint <cimport,nodecl,const>
+global S_IREAD: cuint <cimport,nodecl,const>
+global S_IWRITE: cuint <cimport,nodecl,const>
+global S_IEXEC: cuint <cimport,nodecl,const>
+global S_IRGRP: cuint <cimport,nodecl,const>
+global S_IWGRP: cuint <cimport,nodecl,const>
+global S_IXGRP: cuint <cimport,nodecl,const>
+global S_IRWXG: cuint <cimport,nodecl,const>
+global S_IROTH: cuint <cimport,nodecl,const>
+global S_IWOTH: cuint <cimport,nodecl,const>
+global S_IXOTH: cuint <cimport,nodecl,const>
+global S_IRWXO: cuint <cimport,nodecl,const>
 global S_BLKSIZE: cuint <comptime> = 512
 global function S_ISFIFO(mode: cuint): boolean <cimport, nodecl> end
 global function S_ISCHR(mode: cuint): boolean <cimport, nodecl> end

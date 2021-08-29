@@ -5,13 +5,13 @@ if ccinfo.is_linux then
   cflags '-pthread'
 end
 ]]
-global function cpMessage(condition: cstring, file: cstring, line: cint, isError: cint, isHardError: cint, message: cstring, ...: cvarargs) <cimport, nodecl> end
+global function cpMessage(condition: cstring, file: cstring, line: cint, isError: cint, isHardError: cint, message: cstring, ...: cvarargs): void <cimport,nodecl> end
 global cpDataPointer: type = @pointer
-global cpVect: type <cimport, nodecl> = @record{
+global cpVect: type <cimport,nodecl> = @record{
   x: float64,
   y: float64
 }
-global cpTransform: type <cimport, nodecl> = @record{
+global cpTransform: type <cimport,nodecl> = @record{
   a: float64,
   b: float64,
   c: float64,
@@ -19,114 +19,114 @@ global cpTransform: type <cimport, nodecl> = @record{
   tx: float64,
   ty: float64
 }
-global cpMat2x2: type <cimport, nodecl> = @record{
+global cpMat2x2: type <cimport,nodecl> = @record{
   a: float64,
   b: float64,
   c: float64,
   d: float64
 }
-global cpArray: type <cimport, nodecl, forwarddecl> = @record{}
-global cpHashSet: type <cimport, nodecl, forwarddecl> = @record{}
-global cpBody: type <cimport, nodecl, forwarddecl> = @record{}
-global cpShape: type <cimport, nodecl, forwarddecl> = @record{}
-global cpCircleShape: type <cimport, nodecl, forwarddecl> = @record{}
-global cpSegmentShape: type <cimport, nodecl, forwarddecl> = @record{}
-global cpPolyShape: type <cimport, nodecl, forwarddecl> = @record{}
-global cpConstraint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpPinJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpSlideJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpPivotJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpGrooveJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpDampedSpring: type <cimport, nodecl, forwarddecl> = @record{}
-global cpDampedRotarySpring: type <cimport, nodecl, forwarddecl> = @record{}
-global cpRotaryLimitJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpRatchetJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpGearJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpSimpleMotorJoint: type <cimport, nodecl, forwarddecl> = @record{}
-global cpCollisionHandler: type <cimport, nodecl, forwarddecl> = @record{}
-global cpContactPointSet: type <cimport, nodecl, forwarddecl> = @record{}
-global cpArbiter: type <cimport, nodecl, forwarddecl> = @record{}
-global cpSpace: type <cimport, nodecl, forwarddecl> = @record{}
-global function cpMat2x2New(a: float64, b: float64, c: float64, d: float64): cpMat2x2 <cimport, nodecl> end
-global function cpMat2x2Transform(m: cpMat2x2, v: cpVect): cpVect <cimport, nodecl> end
-global cpBB: type <cimport, nodecl> = @record{
+global cpArray: type <cimport,nodecl,forwarddecl> = @record{}
+global cpHashSet: type <cimport,nodecl,forwarddecl> = @record{}
+global cpBody: type <cimport,nodecl,forwarddecl> = @record{}
+global cpShape: type <cimport,nodecl,forwarddecl> = @record{}
+global cpCircleShape: type <cimport,nodecl,forwarddecl> = @record{}
+global cpSegmentShape: type <cimport,nodecl,forwarddecl> = @record{}
+global cpPolyShape: type <cimport,nodecl,forwarddecl> = @record{}
+global cpConstraint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpPinJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpSlideJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpPivotJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpGrooveJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpDampedSpring: type <cimport,nodecl,forwarddecl> = @record{}
+global cpDampedRotarySpring: type <cimport,nodecl,forwarddecl> = @record{}
+global cpRotaryLimitJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpRatchetJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpGearJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpSimpleMotorJoint: type <cimport,nodecl,forwarddecl> = @record{}
+global cpCollisionHandler: type <cimport,nodecl,forwarddecl> = @record{}
+global cpContactPointSet: type <cimport,nodecl,forwarddecl> = @record{}
+global cpArbiter: type <cimport,nodecl,forwarddecl> = @record{}
+global cpSpace: type <cimport,nodecl,forwarddecl> = @record{}
+global function cpMat2x2New(a: float64, b: float64, c: float64, d: float64): cpMat2x2 <cimport,nodecl> end
+global function cpMat2x2Transform(m: cpMat2x2, v: cpVect): cpVect <cimport,nodecl> end
+global cpBB: type <cimport,nodecl> = @record{
   l: float64,
   b: float64,
   r: float64,
   t: float64
 }
-global function cpBBNew(l: float64, b: float64, r: float64, t: float64): cpBB <cimport, nodecl> end
-global function cpBBNewForExtents(c: cpVect, hw: float64, hh: float64): cpBB <cimport, nodecl> end
-global function cpBBNewForCircle(p: cpVect, r: float64): cpBB <cimport, nodecl> end
-global function cpBBIntersects(a: cpBB, b: cpBB): cuchar <cimport, nodecl> end
-global function cpBBContainsBB(bb: cpBB, other: cpBB): cuchar <cimport, nodecl> end
-global function cpBBContainsVect(bb: cpBB, v: cpVect): cuchar <cimport, nodecl> end
-global function cpBBMerge(a: cpBB, b: cpBB): cpBB <cimport, nodecl> end
-global function cpBBExpand(bb: cpBB, v: cpVect): cpBB <cimport, nodecl> end
-global function cpBBCenter(bb: cpBB): cpVect <cimport, nodecl> end
-global function cpBBArea(bb: cpBB): float64 <cimport, nodecl> end
-global function cpBBMergedArea(a: cpBB, b: cpBB): float64 <cimport, nodecl> end
-global function cpBBSegmentQuery(bb: cpBB, a: cpVect, b: cpVect): float64 <cimport, nodecl> end
-global function cpBBIntersectsSegment(bb: cpBB, a: cpVect, b: cpVect): cuchar <cimport, nodecl> end
-global function cpBBClampVect(bb: cpBB, v: cpVect): cpVect <cimport, nodecl> end
-global function cpBBWrapVect(bb: cpBB, v: cpVect): cpVect <cimport, nodecl> end
-global function cpBBOffset(bb: cpBB, v: cpVect): cpBB <cimport, nodecl> end
-global function cpTransformNew(a: float64, b: float64, c: float64, d: float64, tx: float64, ty: float64): cpTransform <cimport, nodecl> end
-global function cpTransformNewTranspose(a: float64, c: float64, tx: float64, b: float64, d: float64, ty: float64): cpTransform <cimport, nodecl> end
-global function cpTransformInverse(t: cpTransform): cpTransform <cimport, nodecl> end
-global function cpTransformMult(t1: cpTransform, t2: cpTransform): cpTransform <cimport, nodecl> end
-global function cpTransformPoint(t: cpTransform, p: cpVect): cpVect <cimport, nodecl> end
-global function cpTransformVect(t: cpTransform, v: cpVect): cpVect <cimport, nodecl> end
-global function cpTransformbBB(t: cpTransform, bb: cpBB): cpBB <cimport, nodecl> end
-global function cpTransformTranslate(translate: cpVect): cpTransform <cimport, nodecl> end
-global function cpTransformScale(scaleX: float64, scaleY: float64): cpTransform <cimport, nodecl> end
-global function cpTransformRotate(radians: float64): cpTransform <cimport, nodecl> end
-global function cpTransformRigid(translate: cpVect, radians: float64): cpTransform <cimport, nodecl> end
-global function cpTransformRigidInverse(t: cpTransform): cpTransform <cimport, nodecl> end
-global function cpTransformWrap(outer: cpTransform, inner: cpTransform): cpTransform <cimport, nodecl> end
-global function cpTransformWrapInverse(outer: cpTransform, inner: cpTransform): cpTransform <cimport, nodecl> end
-global function cpTransformOrtho(bb: cpBB): cpTransform <cimport, nodecl> end
-global function cpTransformBoneScale(v0: cpVect, v1: cpVect): cpTransform <cimport, nodecl> end
-global function cpTransformAxialScale(axis: cpVect, pivot: cpVect, scale: float64): cpTransform <cimport, nodecl> end
-global cpSpatialIndexBBFunc: type <cimport, nodecl> = @function(pointer): cpBB
-global cpSpatialIndexIteratorFunc: type <cimport, nodecl> = @function(pointer, pointer)
-global cpSpatialIndexQueryFunc: type <cimport, nodecl> = @function(pointer, pointer, cuint, pointer): cuint
-global cpSpatialIndexSegmentQueryFunc: type <cimport, nodecl> = @function(pointer, pointer, pointer): float64
-global cpSpatialIndexClass: type <cimport, nodecl, forwarddecl> = @record{}
-global cpSpatialIndex: type <cimport, nodecl, forwarddecl> = @record{}
+global function cpBBNew(l: float64, b: float64, r: float64, t: float64): cpBB <cimport,nodecl> end
+global function cpBBNewForExtents(c: cpVect, hw: float64, hh: float64): cpBB <cimport,nodecl> end
+global function cpBBNewForCircle(p: cpVect, r: float64): cpBB <cimport,nodecl> end
+global function cpBBIntersects(a: cpBB, b: cpBB): cuchar <cimport,nodecl> end
+global function cpBBContainsBB(bb: cpBB, other: cpBB): cuchar <cimport,nodecl> end
+global function cpBBContainsVect(bb: cpBB, v: cpVect): cuchar <cimport,nodecl> end
+global function cpBBMerge(a: cpBB, b: cpBB): cpBB <cimport,nodecl> end
+global function cpBBExpand(bb: cpBB, v: cpVect): cpBB <cimport,nodecl> end
+global function cpBBCenter(bb: cpBB): cpVect <cimport,nodecl> end
+global function cpBBArea(bb: cpBB): float64 <cimport,nodecl> end
+global function cpBBMergedArea(a: cpBB, b: cpBB): float64 <cimport,nodecl> end
+global function cpBBSegmentQuery(bb: cpBB, a: cpVect, b: cpVect): float64 <cimport,nodecl> end
+global function cpBBIntersectsSegment(bb: cpBB, a: cpVect, b: cpVect): cuchar <cimport,nodecl> end
+global function cpBBClampVect(bb: cpBB, v: cpVect): cpVect <cimport,nodecl> end
+global function cpBBWrapVect(bb: cpBB, v: cpVect): cpVect <cimport,nodecl> end
+global function cpBBOffset(bb: cpBB, v: cpVect): cpBB <cimport,nodecl> end
+global function cpTransformNew(a: float64, b: float64, c: float64, d: float64, tx: float64, ty: float64): cpTransform <cimport,nodecl> end
+global function cpTransformNewTranspose(a: float64, c: float64, tx: float64, b: float64, d: float64, ty: float64): cpTransform <cimport,nodecl> end
+global function cpTransformInverse(t: cpTransform): cpTransform <cimport,nodecl> end
+global function cpTransformMult(t1: cpTransform, t2: cpTransform): cpTransform <cimport,nodecl> end
+global function cpTransformPoint(t: cpTransform, p: cpVect): cpVect <cimport,nodecl> end
+global function cpTransformVect(t: cpTransform, v: cpVect): cpVect <cimport,nodecl> end
+global function cpTransformbBB(t: cpTransform, bb: cpBB): cpBB <cimport,nodecl> end
+global function cpTransformTranslate(translate: cpVect): cpTransform <cimport,nodecl> end
+global function cpTransformScale(scaleX: float64, scaleY: float64): cpTransform <cimport,nodecl> end
+global function cpTransformRotate(radians: float64): cpTransform <cimport,nodecl> end
+global function cpTransformRigid(translate: cpVect, radians: float64): cpTransform <cimport,nodecl> end
+global function cpTransformRigidInverse(t: cpTransform): cpTransform <cimport,nodecl> end
+global function cpTransformWrap(outer: cpTransform, inner: cpTransform): cpTransform <cimport,nodecl> end
+global function cpTransformWrapInverse(outer: cpTransform, inner: cpTransform): cpTransform <cimport,nodecl> end
+global function cpTransformOrtho(bb: cpBB): cpTransform <cimport,nodecl> end
+global function cpTransformBoneScale(v0: cpVect, v1: cpVect): cpTransform <cimport,nodecl> end
+global function cpTransformAxialScale(axis: cpVect, pivot: cpVect, scale: float64): cpTransform <cimport,nodecl> end
+global cpSpatialIndexBBFunc: type <cimport,nodecl> = @function(pointer): cpBB
+global cpSpatialIndexIteratorFunc: type <cimport,nodecl> = @function(pointer, pointer): void
+global cpSpatialIndexQueryFunc: type <cimport,nodecl> = @function(pointer, pointer, cuint, pointer): cuint
+global cpSpatialIndexSegmentQueryFunc: type <cimport,nodecl> = @function(pointer, pointer, pointer): float64
+global cpSpatialIndexClass: type <cimport,nodecl,forwarddecl> = @record{}
+global cpSpatialIndex: type <cimport,nodecl,forwarddecl> = @record{}
 cpSpatialIndex = @record{
   klass: *cpSpatialIndexClass,
   bbfunc: cpSpatialIndexBBFunc,
   staticIndex: *cpSpatialIndex,
   dynamicIndex: *cpSpatialIndex
 }
-global cpSpaceHash: type <cimport, nodecl, forwarddecl> = @record{}
-global function cpSpaceHashAlloc(): *cpSpaceHash <cimport, nodecl> end
-global function cpSpaceHashInit(hash: *cpSpaceHash, celldim: float64, numcells: cint, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport, nodecl> end
-global function cpSpaceHashNew(celldim: float64, cells: cint, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport, nodecl> end
-global function cpSpaceHashResize(hash: *cpSpaceHash, celldim: float64, numcells: cint) <cimport, nodecl> end
-global cpBBTree: type <cimport, nodecl, forwarddecl> = @record{}
-global function cpBBTreeAlloc(): *cpBBTree <cimport, nodecl> end
-global function cpBBTreeInit(tree: *cpBBTree, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport, nodecl> end
-global function cpBBTreeNew(bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport, nodecl> end
-global function cpBBTreeOptimize(index: *cpSpatialIndex) <cimport, nodecl> end
-global cpBBTreeVelocityFunc: type <cimport, nodecl> = @function(pointer): cpVect
-global function cpBBTreeSetVelocityFunc(index: *cpSpatialIndex, func: cpBBTreeVelocityFunc) <cimport, nodecl> end
-global cpSweep1D: type <cimport, nodecl, forwarddecl> = @record{}
-global function cpSweep1DAlloc(): *cpSweep1D <cimport, nodecl> end
-global function cpSweep1DInit(sweep: *cpSweep1D, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport, nodecl> end
-global function cpSweep1DNew(bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport, nodecl> end
-global cpSpatialIndexDestroyImpl: type <cimport, nodecl> = @function(*cpSpatialIndex)
-global cpSpatialIndexCountImpl: type <cimport, nodecl> = @function(*cpSpatialIndex): cint
-global cpSpatialIndexEachImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, cpSpatialIndexIteratorFunc, pointer)
-global cpSpatialIndexContainsImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, pointer, culong): cuchar
-global cpSpatialIndexInsertImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, pointer, culong)
-global cpSpatialIndexRemoveImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, pointer, culong)
-global cpSpatialIndexReindexImpl: type <cimport, nodecl> = @function(*cpSpatialIndex)
-global cpSpatialIndexReindexObjectImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, pointer, culong)
-global cpSpatialIndexReindexQueryImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, cpSpatialIndexQueryFunc, pointer)
-global cpSpatialIndexQueryImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, pointer, cpBB, cpSpatialIndexQueryFunc, pointer)
-global cpSpatialIndexSegmentQueryImpl: type <cimport, nodecl> = @function(*cpSpatialIndex, pointer, cpVect, cpVect, float64, cpSpatialIndexSegmentQueryFunc, pointer)
+global cpSpaceHash: type <cimport,nodecl,forwarddecl> = @record{}
+global function cpSpaceHashAlloc(): *cpSpaceHash <cimport,nodecl> end
+global function cpSpaceHashInit(hash: *cpSpaceHash, celldim: float64, numcells: cint, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport,nodecl> end
+global function cpSpaceHashNew(celldim: float64, cells: cint, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport,nodecl> end
+global function cpSpaceHashResize(hash: *cpSpaceHash, celldim: float64, numcells: cint): void <cimport,nodecl> end
+global cpBBTree: type <cimport,nodecl,forwarddecl> = @record{}
+global function cpBBTreeAlloc(): *cpBBTree <cimport,nodecl> end
+global function cpBBTreeInit(tree: *cpBBTree, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport,nodecl> end
+global function cpBBTreeNew(bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport,nodecl> end
+global function cpBBTreeOptimize(index: *cpSpatialIndex): void <cimport,nodecl> end
+global cpBBTreeVelocityFunc: type <cimport,nodecl> = @function(pointer): cpVect
+global function cpBBTreeSetVelocityFunc(index: *cpSpatialIndex, func: cpBBTreeVelocityFunc): void <cimport,nodecl> end
+global cpSweep1D: type <cimport,nodecl,forwarddecl> = @record{}
+global function cpSweep1DAlloc(): *cpSweep1D <cimport,nodecl> end
+global function cpSweep1DInit(sweep: *cpSweep1D, bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport,nodecl> end
+global function cpSweep1DNew(bbfunc: cpSpatialIndexBBFunc, staticIndex: *cpSpatialIndex): *cpSpatialIndex <cimport,nodecl> end
+global cpSpatialIndexDestroyImpl: type <cimport,nodecl> = @function(*cpSpatialIndex): void
+global cpSpatialIndexCountImpl: type <cimport,nodecl> = @function(*cpSpatialIndex): cint
+global cpSpatialIndexEachImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, cpSpatialIndexIteratorFunc, pointer): void
+global cpSpatialIndexContainsImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, pointer, culong): cuchar
+global cpSpatialIndexInsertImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, pointer, culong): void
+global cpSpatialIndexRemoveImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, pointer, culong): void
+global cpSpatialIndexReindexImpl: type <cimport,nodecl> = @function(*cpSpatialIndex): void
+global cpSpatialIndexReindexObjectImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, pointer, culong): void
+global cpSpatialIndexReindexQueryImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, cpSpatialIndexQueryFunc, pointer): void
+global cpSpatialIndexQueryImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, pointer, cpBB, cpSpatialIndexQueryFunc, pointer): void
+global cpSpatialIndexSegmentQueryImpl: type <cimport,nodecl> = @function(*cpSpatialIndex, pointer, cpVect, cpVect, float64, cpSpatialIndexSegmentQueryFunc, pointer): void
 cpSpatialIndexClass = @record{
   destroy: cpSpatialIndexDestroyImpl,
   count: cpSpatialIndexCountImpl,
@@ -140,32 +140,32 @@ cpSpatialIndexClass = @record{
   query: cpSpatialIndexQueryImpl,
   segmentQuery: cpSpatialIndexSegmentQueryImpl
 }
-global function cpSpatialIndexFree(index: *cpSpatialIndex) <cimport, nodecl> end
-global function cpSpatialIndexCollideStatic(dynamicIndex: *cpSpatialIndex, staticIndex: *cpSpatialIndex, func: cpSpatialIndexQueryFunc, data: pointer) <cimport, nodecl> end
-global function cpSpatialIndexDestroy(index: *cpSpatialIndex) <cimport, nodecl> end
-global function cpSpatialIndexCount(index: *cpSpatialIndex): cint <cimport, nodecl> end
-global function cpSpatialIndexEach(index: *cpSpatialIndex, func: cpSpatialIndexIteratorFunc, data: pointer) <cimport, nodecl> end
-global function cpSpatialIndexContains(index: *cpSpatialIndex, obj: pointer, hashid: culong): cuchar <cimport, nodecl> end
-global function cpSpatialIndexInsert(index: *cpSpatialIndex, obj: pointer, hashid: culong) <cimport, nodecl> end
-global function cpSpatialIndexRemove(index: *cpSpatialIndex, obj: pointer, hashid: culong) <cimport, nodecl> end
-global function cpSpatialIndexReindex(index: *cpSpatialIndex) <cimport, nodecl> end
-global function cpSpatialIndexReindexObject(index: *cpSpatialIndex, obj: pointer, hashid: culong) <cimport, nodecl> end
-global function cpSpatialIndexQuery(index: *cpSpatialIndex, obj: pointer, bb: cpBB, func: cpSpatialIndexQueryFunc, data: pointer) <cimport, nodecl> end
-global function cpSpatialIndexSegmentQuery(index: *cpSpatialIndex, obj: pointer, a: cpVect, b: cpVect, t_exit: float64, func: cpSpatialIndexSegmentQueryFunc, data: pointer) <cimport, nodecl> end
-global function cpSpatialIndexReindexQuery(index: *cpSpatialIndex, func: cpSpatialIndexQueryFunc, data: pointer) <cimport, nodecl> end
-global function cpArbiterGetRestitution(arb: *cpArbiter): float64 <cimport, nodecl> end
-global function cpArbiterSetRestitution(arb: *cpArbiter, restitution: float64) <cimport, nodecl> end
-global function cpArbiterGetFriction(arb: *cpArbiter): float64 <cimport, nodecl> end
-global function cpArbiterSetFriction(arb: *cpArbiter, friction: float64) <cimport, nodecl> end
-global function cpArbiterGetSurfaceVelocity(arb: *cpArbiter): cpVect <cimport, nodecl> end
-global function cpArbiterSetSurfaceVelocity(arb: *cpArbiter, vr: cpVect) <cimport, nodecl> end
-global function cpArbiterGetUserData(arb: *cpArbiter): cpDataPointer <cimport, nodecl> end
-global function cpArbiterSetUserData(arb: *cpArbiter, userData: cpDataPointer) <cimport, nodecl> end
-global function cpArbiterTotalImpulse(arb: *cpArbiter): cpVect <cimport, nodecl> end
-global function cpArbiterTotalKE(arb: *cpArbiter): float64 <cimport, nodecl> end
-global function cpArbiterIgnore(arb: *cpArbiter): cuchar <cimport, nodecl> end
-global function cpArbiterGetShapes(arb: *cpArbiter, a: **cpShape, b: **cpShape) <cimport, nodecl> end
-global function cpArbiterGetBodies(arb: *cpArbiter, a: **cpBody, b: **cpBody) <cimport, nodecl> end
+global function cpSpatialIndexFree(index: *cpSpatialIndex): void <cimport,nodecl> end
+global function cpSpatialIndexCollideStatic(dynamicIndex: *cpSpatialIndex, staticIndex: *cpSpatialIndex, func: cpSpatialIndexQueryFunc, data: pointer): void <cimport,nodecl> end
+global function cpSpatialIndexDestroy(index: *cpSpatialIndex): void <cimport,nodecl> end
+global function cpSpatialIndexCount(index: *cpSpatialIndex): cint <cimport,nodecl> end
+global function cpSpatialIndexEach(index: *cpSpatialIndex, func: cpSpatialIndexIteratorFunc, data: pointer): void <cimport,nodecl> end
+global function cpSpatialIndexContains(index: *cpSpatialIndex, obj: pointer, hashid: culong): cuchar <cimport,nodecl> end
+global function cpSpatialIndexInsert(index: *cpSpatialIndex, obj: pointer, hashid: culong): void <cimport,nodecl> end
+global function cpSpatialIndexRemove(index: *cpSpatialIndex, obj: pointer, hashid: culong): void <cimport,nodecl> end
+global function cpSpatialIndexReindex(index: *cpSpatialIndex): void <cimport,nodecl> end
+global function cpSpatialIndexReindexObject(index: *cpSpatialIndex, obj: pointer, hashid: culong): void <cimport,nodecl> end
+global function cpSpatialIndexQuery(index: *cpSpatialIndex, obj: pointer, bb: cpBB, func: cpSpatialIndexQueryFunc, data: pointer): void <cimport,nodecl> end
+global function cpSpatialIndexSegmentQuery(index: *cpSpatialIndex, obj: pointer, a: cpVect, b: cpVect, t_exit: float64, func: cpSpatialIndexSegmentQueryFunc, data: pointer): void <cimport,nodecl> end
+global function cpSpatialIndexReindexQuery(index: *cpSpatialIndex, func: cpSpatialIndexQueryFunc, data: pointer): void <cimport,nodecl> end
+global function cpArbiterGetRestitution(arb: *cpArbiter): float64 <cimport,nodecl> end
+global function cpArbiterSetRestitution(arb: *cpArbiter, restitution: float64): void <cimport,nodecl> end
+global function cpArbiterGetFriction(arb: *cpArbiter): float64 <cimport,nodecl> end
+global function cpArbiterSetFriction(arb: *cpArbiter, friction: float64): void <cimport,nodecl> end
+global function cpArbiterGetSurfaceVelocity(arb: *cpArbiter): cpVect <cimport,nodecl> end
+global function cpArbiterSetSurfaceVelocity(arb: *cpArbiter, vr: cpVect): void <cimport,nodecl> end
+global function cpArbiterGetUserData(arb: *cpArbiter): cpDataPointer <cimport,nodecl> end
+global function cpArbiterSetUserData(arb: *cpArbiter, userData: cpDataPointer): void <cimport,nodecl> end
+global function cpArbiterTotalImpulse(arb: *cpArbiter): cpVect <cimport,nodecl> end
+global function cpArbiterTotalKE(arb: *cpArbiter): float64 <cimport,nodecl> end
+global function cpArbiterIgnore(arb: *cpArbiter): cuchar <cimport,nodecl> end
+global function cpArbiterGetShapes(arb: *cpArbiter, a: **cpShape, b: **cpShape): void <cimport,nodecl> end
+global function cpArbiterGetBodies(arb: *cpArbiter, a: **cpBody, b: **cpBody): void <cimport,nodecl> end
 cpContactPointSet = @record{
   count: cint,
   normal: cpVect,
@@ -175,290 +175,290 @@ cpContactPointSet = @record{
     distance: float64
   }
 }
-global function cpArbiterGetContactPointSet(arb: *cpArbiter): cpContactPointSet <cimport, nodecl> end
-global function cpArbiterSetContactPointSet(arb: *cpArbiter, set: *cpContactPointSet) <cimport, nodecl> end
-global function cpArbiterIsFirstContact(arb: *cpArbiter): cuchar <cimport, nodecl> end
-global function cpArbiterIsRemoval(arb: *cpArbiter): cuchar <cimport, nodecl> end
-global function cpArbiterGetCount(arb: *cpArbiter): cint <cimport, nodecl> end
-global function cpArbiterGetNormal(arb: *cpArbiter): cpVect <cimport, nodecl> end
-global function cpArbiterGetPointA(arb: *cpArbiter, i: cint): cpVect <cimport, nodecl> end
-global function cpArbiterGetPointB(arb: *cpArbiter, i: cint): cpVect <cimport, nodecl> end
-global function cpArbiterGetDepth(arb: *cpArbiter, i: cint): float64 <cimport, nodecl> end
-global function cpArbiterCallWildcardBeginA(arb: *cpArbiter, space: *cpSpace): cuchar <cimport, nodecl> end
-global function cpArbiterCallWildcardBeginB(arb: *cpArbiter, space: *cpSpace): cuchar <cimport, nodecl> end
-global function cpArbiterCallWildcardPreSolveA(arb: *cpArbiter, space: *cpSpace): cuchar <cimport, nodecl> end
-global function cpArbiterCallWildcardPreSolveB(arb: *cpArbiter, space: *cpSpace): cuchar <cimport, nodecl> end
-global function cpArbiterCallWildcardPostSolveA(arb: *cpArbiter, space: *cpSpace) <cimport, nodecl> end
-global function cpArbiterCallWildcardPostSolveB(arb: *cpArbiter, space: *cpSpace) <cimport, nodecl> end
-global function cpArbiterCallWildcardSeparateA(arb: *cpArbiter, space: *cpSpace) <cimport, nodecl> end
-global function cpArbiterCallWildcardSeparateB(arb: *cpArbiter, space: *cpSpace) <cimport, nodecl> end
-global cpBodyType: type <cimport, nodecl, using> = @enum(cint){
+global function cpArbiterGetContactPointSet(arb: *cpArbiter): cpContactPointSet <cimport,nodecl> end
+global function cpArbiterSetContactPointSet(arb: *cpArbiter, set: *cpContactPointSet): void <cimport,nodecl> end
+global function cpArbiterIsFirstContact(arb: *cpArbiter): cuchar <cimport,nodecl> end
+global function cpArbiterIsRemoval(arb: *cpArbiter): cuchar <cimport,nodecl> end
+global function cpArbiterGetCount(arb: *cpArbiter): cint <cimport,nodecl> end
+global function cpArbiterGetNormal(arb: *cpArbiter): cpVect <cimport,nodecl> end
+global function cpArbiterGetPointA(arb: *cpArbiter, i: cint): cpVect <cimport,nodecl> end
+global function cpArbiterGetPointB(arb: *cpArbiter, i: cint): cpVect <cimport,nodecl> end
+global function cpArbiterGetDepth(arb: *cpArbiter, i: cint): float64 <cimport,nodecl> end
+global function cpArbiterCallWildcardBeginA(arb: *cpArbiter, space: *cpSpace): cuchar <cimport,nodecl> end
+global function cpArbiterCallWildcardBeginB(arb: *cpArbiter, space: *cpSpace): cuchar <cimport,nodecl> end
+global function cpArbiterCallWildcardPreSolveA(arb: *cpArbiter, space: *cpSpace): cuchar <cimport,nodecl> end
+global function cpArbiterCallWildcardPreSolveB(arb: *cpArbiter, space: *cpSpace): cuchar <cimport,nodecl> end
+global function cpArbiterCallWildcardPostSolveA(arb: *cpArbiter, space: *cpSpace): void <cimport,nodecl> end
+global function cpArbiterCallWildcardPostSolveB(arb: *cpArbiter, space: *cpSpace): void <cimport,nodecl> end
+global function cpArbiterCallWildcardSeparateA(arb: *cpArbiter, space: *cpSpace): void <cimport,nodecl> end
+global function cpArbiterCallWildcardSeparateB(arb: *cpArbiter, space: *cpSpace): void <cimport,nodecl> end
+global cpBodyType: type <cimport,nodecl,using> = @enum(cint){
   CP_BODY_TYPE_DYNAMIC = 0,
   CP_BODY_TYPE_KINEMATIC = 1,
   CP_BODY_TYPE_STATIC = 2
 }
-global cpBodyVelocityFunc: type <cimport, nodecl> = @function(*cpBody, cpVect, float64, float64)
-global cpBodyPositionFunc: type <cimport, nodecl> = @function(*cpBody, float64)
-global function cpBodyAlloc(): *cpBody <cimport, nodecl> end
-global function cpBodyInit(body: *cpBody, mass: float64, moment: float64): *cpBody <cimport, nodecl> end
-global function cpBodyNew(mass: float64, moment: float64): *cpBody <cimport, nodecl> end
-global function cpBodyNewKinematic(): *cpBody <cimport, nodecl> end
-global function cpBodyNewStatic(): *cpBody <cimport, nodecl> end
-global function cpBodyDestroy(body: *cpBody) <cimport, nodecl> end
-global function cpBodyFree(body: *cpBody) <cimport, nodecl> end
-global function cpBodyActivate(body: *cpBody) <cimport, nodecl> end
-global function cpBodyActivateStatic(body: *cpBody, filter: *cpShape) <cimport, nodecl> end
-global function cpBodySleep(body: *cpBody) <cimport, nodecl> end
-global function cpBodySleepWithGroup(body: *cpBody, group: *cpBody) <cimport, nodecl> end
-global function cpBodyIsSleeping(body: *cpBody): cuchar <cimport, nodecl> end
-global function cpBodyGetType(body: *cpBody): cpBodyType <cimport, nodecl> end
-global function cpBodySetType(body: *cpBody, type: cpBodyType) <cimport, nodecl> end
-global function cpBodyGetSpace(body: *cpBody): *cpSpace <cimport, nodecl> end
-global function cpBodyGetMass(body: *cpBody): float64 <cimport, nodecl> end
-global function cpBodySetMass(body: *cpBody, m: float64) <cimport, nodecl> end
-global function cpBodyGetMoment(body: *cpBody): float64 <cimport, nodecl> end
-global function cpBodySetMoment(body: *cpBody, i: float64) <cimport, nodecl> end
-global function cpBodyGetPosition(body: *cpBody): cpVect <cimport, nodecl> end
-global function cpBodySetPosition(body: *cpBody, pos: cpVect) <cimport, nodecl> end
-global function cpBodyGetCenterOfGravity(body: *cpBody): cpVect <cimport, nodecl> end
-global function cpBodySetCenterOfGravity(body: *cpBody, cog: cpVect) <cimport, nodecl> end
-global function cpBodyGetVelocity(body: *cpBody): cpVect <cimport, nodecl> end
-global function cpBodySetVelocity(body: *cpBody, velocity: cpVect) <cimport, nodecl> end
-global function cpBodyGetForce(body: *cpBody): cpVect <cimport, nodecl> end
-global function cpBodySetForce(body: *cpBody, force: cpVect) <cimport, nodecl> end
-global function cpBodyGetAngle(body: *cpBody): float64 <cimport, nodecl> end
-global function cpBodySetAngle(body: *cpBody, a: float64) <cimport, nodecl> end
-global function cpBodyGetAngularVelocity(body: *cpBody): float64 <cimport, nodecl> end
-global function cpBodySetAngularVelocity(body: *cpBody, angularVelocity: float64) <cimport, nodecl> end
-global function cpBodyGetTorque(body: *cpBody): float64 <cimport, nodecl> end
-global function cpBodySetTorque(body: *cpBody, torque: float64) <cimport, nodecl> end
-global function cpBodyGetRotation(body: *cpBody): cpVect <cimport, nodecl> end
-global function cpBodyGetUserData(body: *cpBody): cpDataPointer <cimport, nodecl> end
-global function cpBodySetUserData(body: *cpBody, userData: cpDataPointer) <cimport, nodecl> end
-global function cpBodySetVelocityUpdateFunc(body: *cpBody, velocityFunc: cpBodyVelocityFunc) <cimport, nodecl> end
-global function cpBodySetPositionUpdateFunc(body: *cpBody, positionFunc: cpBodyPositionFunc) <cimport, nodecl> end
-global function cpBodyUpdateVelocity(body: *cpBody, gravity: cpVect, damping: float64, dt: float64) <cimport, nodecl> end
-global function cpBodyUpdatePosition(body: *cpBody, dt: float64) <cimport, nodecl> end
-global function cpBodyLocalToWorld(body: *cpBody, point: cpVect): cpVect <cimport, nodecl> end
-global function cpBodyWorldToLocal(body: *cpBody, point: cpVect): cpVect <cimport, nodecl> end
-global function cpBodyApplyForceAtWorldPoint(body: *cpBody, force: cpVect, point: cpVect) <cimport, nodecl> end
-global function cpBodyApplyForceAtLocalPoint(body: *cpBody, force: cpVect, point: cpVect) <cimport, nodecl> end
-global function cpBodyApplyImpulseAtWorldPoint(body: *cpBody, impulse: cpVect, point: cpVect) <cimport, nodecl> end
-global function cpBodyApplyImpulseAtLocalPoint(body: *cpBody, impulse: cpVect, point: cpVect) <cimport, nodecl> end
-global function cpBodyGetVelocityAtWorldPoint(body: *cpBody, point: cpVect): cpVect <cimport, nodecl> end
-global function cpBodyGetVelocityAtLocalPoint(body: *cpBody, point: cpVect): cpVect <cimport, nodecl> end
-global function cpBodyKineticEnergy(body: *cpBody): float64 <cimport, nodecl> end
-global cpBodyShapeIteratorFunc: type <cimport, nodecl> = @function(*cpBody, *cpShape, pointer)
-global function cpBodyEachShape(body: *cpBody, func: cpBodyShapeIteratorFunc, data: pointer) <cimport, nodecl> end
-global cpBodyConstraintIteratorFunc: type <cimport, nodecl> = @function(*cpBody, *cpConstraint, pointer)
-global function cpBodyEachConstraint(body: *cpBody, func: cpBodyConstraintIteratorFunc, data: pointer) <cimport, nodecl> end
-global cpBodyArbiterIteratorFunc: type <cimport, nodecl> = @function(*cpBody, *cpArbiter, pointer)
-global function cpBodyEachArbiter(body: *cpBody, func: cpBodyArbiterIteratorFunc, data: pointer) <cimport, nodecl> end
-global cpPointQueryInfo: type <cimport, nodecl> = @record{
+global cpBodyVelocityFunc: type <cimport,nodecl> = @function(*cpBody, cpVect, float64, float64): void
+global cpBodyPositionFunc: type <cimport,nodecl> = @function(*cpBody, float64): void
+global function cpBodyAlloc(): *cpBody <cimport,nodecl> end
+global function cpBodyInit(body: *cpBody, mass: float64, moment: float64): *cpBody <cimport,nodecl> end
+global function cpBodyNew(mass: float64, moment: float64): *cpBody <cimport,nodecl> end
+global function cpBodyNewKinematic(): *cpBody <cimport,nodecl> end
+global function cpBodyNewStatic(): *cpBody <cimport,nodecl> end
+global function cpBodyDestroy(body: *cpBody): void <cimport,nodecl> end
+global function cpBodyFree(body: *cpBody): void <cimport,nodecl> end
+global function cpBodyActivate(body: *cpBody): void <cimport,nodecl> end
+global function cpBodyActivateStatic(body: *cpBody, filter: *cpShape): void <cimport,nodecl> end
+global function cpBodySleep(body: *cpBody): void <cimport,nodecl> end
+global function cpBodySleepWithGroup(body: *cpBody, group: *cpBody): void <cimport,nodecl> end
+global function cpBodyIsSleeping(body: *cpBody): cuchar <cimport,nodecl> end
+global function cpBodyGetType(body: *cpBody): cpBodyType <cimport,nodecl> end
+global function cpBodySetType(body: *cpBody, type: cpBodyType): void <cimport,nodecl> end
+global function cpBodyGetSpace(body: *cpBody): *cpSpace <cimport,nodecl> end
+global function cpBodyGetMass(body: *cpBody): float64 <cimport,nodecl> end
+global function cpBodySetMass(body: *cpBody, m: float64): void <cimport,nodecl> end
+global function cpBodyGetMoment(body: *cpBody): float64 <cimport,nodecl> end
+global function cpBodySetMoment(body: *cpBody, i: float64): void <cimport,nodecl> end
+global function cpBodyGetPosition(body: *cpBody): cpVect <cimport,nodecl> end
+global function cpBodySetPosition(body: *cpBody, pos: cpVect): void <cimport,nodecl> end
+global function cpBodyGetCenterOfGravity(body: *cpBody): cpVect <cimport,nodecl> end
+global function cpBodySetCenterOfGravity(body: *cpBody, cog: cpVect): void <cimport,nodecl> end
+global function cpBodyGetVelocity(body: *cpBody): cpVect <cimport,nodecl> end
+global function cpBodySetVelocity(body: *cpBody, velocity: cpVect): void <cimport,nodecl> end
+global function cpBodyGetForce(body: *cpBody): cpVect <cimport,nodecl> end
+global function cpBodySetForce(body: *cpBody, force: cpVect): void <cimport,nodecl> end
+global function cpBodyGetAngle(body: *cpBody): float64 <cimport,nodecl> end
+global function cpBodySetAngle(body: *cpBody, a: float64): void <cimport,nodecl> end
+global function cpBodyGetAngularVelocity(body: *cpBody): float64 <cimport,nodecl> end
+global function cpBodySetAngularVelocity(body: *cpBody, angularVelocity: float64): void <cimport,nodecl> end
+global function cpBodyGetTorque(body: *cpBody): float64 <cimport,nodecl> end
+global function cpBodySetTorque(body: *cpBody, torque: float64): void <cimport,nodecl> end
+global function cpBodyGetRotation(body: *cpBody): cpVect <cimport,nodecl> end
+global function cpBodyGetUserData(body: *cpBody): cpDataPointer <cimport,nodecl> end
+global function cpBodySetUserData(body: *cpBody, userData: cpDataPointer): void <cimport,nodecl> end
+global function cpBodySetVelocityUpdateFunc(body: *cpBody, velocityFunc: cpBodyVelocityFunc): void <cimport,nodecl> end
+global function cpBodySetPositionUpdateFunc(body: *cpBody, positionFunc: cpBodyPositionFunc): void <cimport,nodecl> end
+global function cpBodyUpdateVelocity(body: *cpBody, gravity: cpVect, damping: float64, dt: float64): void <cimport,nodecl> end
+global function cpBodyUpdatePosition(body: *cpBody, dt: float64): void <cimport,nodecl> end
+global function cpBodyLocalToWorld(body: *cpBody, point: cpVect): cpVect <cimport,nodecl> end
+global function cpBodyWorldToLocal(body: *cpBody, point: cpVect): cpVect <cimport,nodecl> end
+global function cpBodyApplyForceAtWorldPoint(body: *cpBody, force: cpVect, point: cpVect): void <cimport,nodecl> end
+global function cpBodyApplyForceAtLocalPoint(body: *cpBody, force: cpVect, point: cpVect): void <cimport,nodecl> end
+global function cpBodyApplyImpulseAtWorldPoint(body: *cpBody, impulse: cpVect, point: cpVect): void <cimport,nodecl> end
+global function cpBodyApplyImpulseAtLocalPoint(body: *cpBody, impulse: cpVect, point: cpVect): void <cimport,nodecl> end
+global function cpBodyGetVelocityAtWorldPoint(body: *cpBody, point: cpVect): cpVect <cimport,nodecl> end
+global function cpBodyGetVelocityAtLocalPoint(body: *cpBody, point: cpVect): cpVect <cimport,nodecl> end
+global function cpBodyKineticEnergy(body: *cpBody): float64 <cimport,nodecl> end
+global cpBodyShapeIteratorFunc: type <cimport,nodecl> = @function(*cpBody, *cpShape, pointer): void
+global function cpBodyEachShape(body: *cpBody, func: cpBodyShapeIteratorFunc, data: pointer): void <cimport,nodecl> end
+global cpBodyConstraintIteratorFunc: type <cimport,nodecl> = @function(*cpBody, *cpConstraint, pointer): void
+global function cpBodyEachConstraint(body: *cpBody, func: cpBodyConstraintIteratorFunc, data: pointer): void <cimport,nodecl> end
+global cpBodyArbiterIteratorFunc: type <cimport,nodecl> = @function(*cpBody, *cpArbiter, pointer): void
+global function cpBodyEachArbiter(body: *cpBody, func: cpBodyArbiterIteratorFunc, data: pointer): void <cimport,nodecl> end
+global cpPointQueryInfo: type <cimport,nodecl> = @record{
   shape: *cpShape,
   point: cpVect,
   distance: float64,
   gradient: cpVect
 }
-global cpSegmentQueryInfo: type <cimport, nodecl> = @record{
+global cpSegmentQueryInfo: type <cimport,nodecl> = @record{
   shape: *cpShape,
   point: cpVect,
   normal: cpVect,
   alpha: float64
 }
-global cpShapeFilter: type <cimport, nodecl> = @record{
+global cpShapeFilter: type <cimport,nodecl> = @record{
   group: culong,
   categories: cuint,
   mask: cuint
 }
-global function cpShapeFilterNew(group: culong, categories: cuint, mask: cuint): cpShapeFilter <cimport, nodecl> end
-global function cpShapeDestroy(shape: *cpShape) <cimport, nodecl> end
-global function cpShapeFree(shape: *cpShape) <cimport, nodecl> end
-global function cpShapeCacheBB(shape: *cpShape): cpBB <cimport, nodecl> end
-global function cpShapeUpdate(shape: *cpShape, transform: cpTransform): cpBB <cimport, nodecl> end
-global function cpShapePointQuery(shape: *cpShape, p: cpVect, out: *cpPointQueryInfo): float64 <cimport, nodecl> end
-global function cpShapeSegmentQuery(shape: *cpShape, a: cpVect, b: cpVect, radius: float64, info: *cpSegmentQueryInfo): cuchar <cimport, nodecl> end
-global function cpShapesCollide(a: *cpShape, b: *cpShape): cpContactPointSet <cimport, nodecl> end
-global function cpShapeGetSpace(shape: *cpShape): *cpSpace <cimport, nodecl> end
-global function cpShapeGetBody(shape: *cpShape): *cpBody <cimport, nodecl> end
-global function cpShapeSetBody(shape: *cpShape, body: *cpBody) <cimport, nodecl> end
-global function cpShapeGetMass(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpShapeSetMass(shape: *cpShape, mass: float64) <cimport, nodecl> end
-global function cpShapeGetDensity(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpShapeSetDensity(shape: *cpShape, density: float64) <cimport, nodecl> end
-global function cpShapeGetMoment(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpShapeGetArea(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpShapeGetCenterOfGravity(shape: *cpShape): cpVect <cimport, nodecl> end
-global function cpShapeGetBB(shape: *cpShape): cpBB <cimport, nodecl> end
-global function cpShapeGetSensor(shape: *cpShape): cuchar <cimport, nodecl> end
-global function cpShapeSetSensor(shape: *cpShape, sensor: cuchar) <cimport, nodecl> end
-global function cpShapeGetElasticity(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpShapeSetElasticity(shape: *cpShape, elasticity: float64) <cimport, nodecl> end
-global function cpShapeGetFriction(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpShapeSetFriction(shape: *cpShape, friction: float64) <cimport, nodecl> end
-global function cpShapeGetSurfaceVelocity(shape: *cpShape): cpVect <cimport, nodecl> end
-global function cpShapeSetSurfaceVelocity(shape: *cpShape, surfaceVelocity: cpVect) <cimport, nodecl> end
-global function cpShapeGetUserData(shape: *cpShape): cpDataPointer <cimport, nodecl> end
-global function cpShapeSetUserData(shape: *cpShape, userData: cpDataPointer) <cimport, nodecl> end
-global function cpShapeGetCollisionType(shape: *cpShape): culong <cimport, nodecl> end
-global function cpShapeSetCollisionType(shape: *cpShape, collisionType: culong) <cimport, nodecl> end
-global function cpShapeGetFilter(shape: *cpShape): cpShapeFilter <cimport, nodecl> end
-global function cpShapeSetFilter(shape: *cpShape, filter: cpShapeFilter) <cimport, nodecl> end
-global function cpCircleShapeAlloc(): *cpCircleShape <cimport, nodecl> end
-global function cpCircleShapeInit(circle: *cpCircleShape, body: *cpBody, radius: float64, offset: cpVect): *cpCircleShape <cimport, nodecl> end
-global function cpCircleShapeNew(body: *cpBody, radius: float64, offset: cpVect): *cpShape <cimport, nodecl> end
-global function cpCircleShapeGetOffset(shape: *cpShape): cpVect <cimport, nodecl> end
-global function cpCircleShapeGetRadius(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpSegmentShapeAlloc(): *cpSegmentShape <cimport, nodecl> end
-global function cpSegmentShapeInit(seg: *cpSegmentShape, body: *cpBody, a: cpVect, b: cpVect, radius: float64): *cpSegmentShape <cimport, nodecl> end
-global function cpSegmentShapeNew(body: *cpBody, a: cpVect, b: cpVect, radius: float64): *cpShape <cimport, nodecl> end
-global function cpSegmentShapeSetNeighbors(shape: *cpShape, prev: cpVect, next: cpVect) <cimport, nodecl> end
-global function cpSegmentShapeGetA(shape: *cpShape): cpVect <cimport, nodecl> end
-global function cpSegmentShapeGetB(shape: *cpShape): cpVect <cimport, nodecl> end
-global function cpSegmentShapeGetNormal(shape: *cpShape): cpVect <cimport, nodecl> end
-global function cpSegmentShapeGetRadius(shape: *cpShape): float64 <cimport, nodecl> end
-global function cpPolyShapeAlloc(): *cpPolyShape <cimport, nodecl> end
-global function cpPolyShapeInit(poly: *cpPolyShape, body: *cpBody, count: cint, verts: *cpVect, transform: cpTransform, radius: float64): *cpPolyShape <cimport, nodecl> end
-global function cpPolyShapeInitRaw(poly: *cpPolyShape, body: *cpBody, count: cint, verts: *cpVect, radius: float64): *cpPolyShape <cimport, nodecl> end
-global function cpPolyShapeNew(body: *cpBody, count: cint, verts: *cpVect, transform: cpTransform, radius: float64): *cpShape <cimport, nodecl> end
-global function cpPolyShapeNewRaw(body: *cpBody, count: cint, verts: *cpVect, radius: float64): *cpShape <cimport, nodecl> end
-global function cpBoxShapeInit(poly: *cpPolyShape, body: *cpBody, width: float64, height: float64, radius: float64): *cpPolyShape <cimport, nodecl> end
-global function cpBoxShapeInit2(poly: *cpPolyShape, body: *cpBody, box: cpBB, radius: float64): *cpPolyShape <cimport, nodecl> end
-global function cpBoxShapeNew(body: *cpBody, width: float64, height: float64, radius: float64): *cpShape <cimport, nodecl> end
-global function cpBoxShapeNew2(body: *cpBody, box: cpBB, radius: float64): *cpShape <cimport, nodecl> end
-global function cpPolyShapeGetCount(shape: *cpShape): cint <cimport, nodecl> end
-global function cpPolyShapeGetVert(shape: *cpShape, index: cint): cpVect <cimport, nodecl> end
-global function cpPolyShapeGetRadius(shape: *cpShape): float64 <cimport, nodecl> end
-global cpConstraintPreSolveFunc: type <cimport, nodecl> = @function(*cpConstraint, *cpSpace)
-global cpConstraintPostSolveFunc: type <cimport, nodecl> = @function(*cpConstraint, *cpSpace)
-global function cpConstraintDestroy(constraint: *cpConstraint) <cimport, nodecl> end
-global function cpConstraintFree(constraint: *cpConstraint) <cimport, nodecl> end
-global function cpConstraintGetSpace(constraint: *cpConstraint): *cpSpace <cimport, nodecl> end
-global function cpConstraintGetBodyA(constraint: *cpConstraint): *cpBody <cimport, nodecl> end
-global function cpConstraintGetBodyB(constraint: *cpConstraint): *cpBody <cimport, nodecl> end
-global function cpConstraintGetMaxForce(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpConstraintSetMaxForce(constraint: *cpConstraint, maxForce: float64) <cimport, nodecl> end
-global function cpConstraintGetErrorBias(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpConstraintSetErrorBias(constraint: *cpConstraint, errorBias: float64) <cimport, nodecl> end
-global function cpConstraintGetMaxBias(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpConstraintSetMaxBias(constraint: *cpConstraint, maxBias: float64) <cimport, nodecl> end
-global function cpConstraintGetCollideBodies(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpConstraintSetCollideBodies(constraint: *cpConstraint, collideBodies: cuchar) <cimport, nodecl> end
-global function cpConstraintGetPreSolveFunc(constraint: *cpConstraint): cpConstraintPreSolveFunc <cimport, nodecl> end
-global function cpConstraintSetPreSolveFunc(constraint: *cpConstraint, preSolveFunc: cpConstraintPreSolveFunc) <cimport, nodecl> end
-global function cpConstraintGetPostSolveFunc(constraint: *cpConstraint): cpConstraintPostSolveFunc <cimport, nodecl> end
-global function cpConstraintSetPostSolveFunc(constraint: *cpConstraint, postSolveFunc: cpConstraintPostSolveFunc) <cimport, nodecl> end
-global function cpConstraintGetUserData(constraint: *cpConstraint): cpDataPointer <cimport, nodecl> end
-global function cpConstraintSetUserData(constraint: *cpConstraint, userData: cpDataPointer) <cimport, nodecl> end
-global function cpConstraintGetImpulse(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpConstraintIsPinJoint(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpPinJointAlloc(): *cpPinJoint <cimport, nodecl> end
-global function cpPinJointInit(joint: *cpPinJoint, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpPinJoint <cimport, nodecl> end
-global function cpPinJointNew(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpConstraint <cimport, nodecl> end
-global function cpPinJointGetAnchorA(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpPinJointSetAnchorA(constraint: *cpConstraint, anchorA: cpVect) <cimport, nodecl> end
-global function cpPinJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpPinJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect) <cimport, nodecl> end
-global function cpPinJointGetDist(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpPinJointSetDist(constraint: *cpConstraint, dist: float64) <cimport, nodecl> end
-global function cpConstraintIsSlideJoint(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpSlideJointAlloc(): *cpSlideJoint <cimport, nodecl> end
-global function cpSlideJointInit(joint: *cpSlideJoint, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, min: float64, max: float64): *cpSlideJoint <cimport, nodecl> end
-global function cpSlideJointNew(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, min: float64, max: float64): *cpConstraint <cimport, nodecl> end
-global function cpSlideJointGetAnchorA(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpSlideJointSetAnchorA(constraint: *cpConstraint, anchorA: cpVect) <cimport, nodecl> end
-global function cpSlideJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpSlideJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect) <cimport, nodecl> end
-global function cpSlideJointGetMin(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpSlideJointSetMin(constraint: *cpConstraint, min: float64) <cimport, nodecl> end
-global function cpSlideJointGetMax(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpSlideJointSetMax(constraint: *cpConstraint, max: float64) <cimport, nodecl> end
-global function cpConstraintIsPivotJoint(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpPivotJointAlloc(): *cpPivotJoint <cimport, nodecl> end
-global function cpPivotJointInit(joint: *cpPivotJoint, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpPivotJoint <cimport, nodecl> end
-global function cpPivotJointNew(a: *cpBody, b: *cpBody, pivot: cpVect): *cpConstraint <cimport, nodecl> end
-global function cpPivotJointNew2(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpConstraint <cimport, nodecl> end
-global function cpPivotJointGetAnchorA(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpPivotJointSetAnchorA(constraint: *cpConstraint, anchorA: cpVect) <cimport, nodecl> end
-global function cpPivotJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpPivotJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect) <cimport, nodecl> end
-global function cpConstraintIsGrooveJoint(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpGrooveJointAlloc(): *cpGrooveJoint <cimport, nodecl> end
-global function cpGrooveJointInit(joint: *cpGrooveJoint, a: *cpBody, b: *cpBody, groove_a: cpVect, groove_b: cpVect, anchorB: cpVect): *cpGrooveJoint <cimport, nodecl> end
-global function cpGrooveJointNew(a: *cpBody, b: *cpBody, groove_a: cpVect, groove_b: cpVect, anchorB: cpVect): *cpConstraint <cimport, nodecl> end
-global function cpGrooveJointGetGrooveA(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpGrooveJointSetGrooveA(constraint: *cpConstraint, grooveA: cpVect) <cimport, nodecl> end
-global function cpGrooveJointGetGrooveB(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpGrooveJointSetGrooveB(constraint: *cpConstraint, grooveB: cpVect) <cimport, nodecl> end
-global function cpGrooveJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpGrooveJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect) <cimport, nodecl> end
-global function cpConstraintIsDampedSpring(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global cpDampedSpringForceFunc: type <cimport, nodecl> = @function(*cpConstraint, float64): float64
-global function cpDampedSpringAlloc(): *cpDampedSpring <cimport, nodecl> end
-global function cpDampedSpringInit(joint: *cpDampedSpring, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, restLength: float64, stiffness: float64, damping: float64): *cpDampedSpring <cimport, nodecl> end
-global function cpDampedSpringNew(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, restLength: float64, stiffness: float64, damping: float64): *cpConstraint <cimport, nodecl> end
-global function cpDampedSpringGetAnchorA(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpDampedSpringSetAnchorA(constraint: *cpConstraint, anchorA: cpVect) <cimport, nodecl> end
-global function cpDampedSpringGetAnchorB(constraint: *cpConstraint): cpVect <cimport, nodecl> end
-global function cpDampedSpringSetAnchorB(constraint: *cpConstraint, anchorB: cpVect) <cimport, nodecl> end
-global function cpDampedSpringGetRestLength(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpDampedSpringSetRestLength(constraint: *cpConstraint, restLength: float64) <cimport, nodecl> end
-global function cpDampedSpringGetStiffness(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpDampedSpringSetStiffness(constraint: *cpConstraint, stiffness: float64) <cimport, nodecl> end
-global function cpDampedSpringGetDamping(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpDampedSpringSetDamping(constraint: *cpConstraint, damping: float64) <cimport, nodecl> end
-global function cpDampedSpringGetSpringForceFunc(constraint: *cpConstraint): cpDampedSpringForceFunc <cimport, nodecl> end
-global function cpDampedSpringSetSpringForceFunc(constraint: *cpConstraint, springForceFunc: cpDampedSpringForceFunc) <cimport, nodecl> end
-global function cpConstraintIsDampedRotarySpring(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global cpDampedRotarySpringTorqueFunc: type <cimport, nodecl> = @function(*cpConstraint, float64): float64
-global function cpDampedRotarySpringAlloc(): *cpDampedRotarySpring <cimport, nodecl> end
-global function cpDampedRotarySpringInit(joint: *cpDampedRotarySpring, a: *cpBody, b: *cpBody, restAngle: float64, stiffness: float64, damping: float64): *cpDampedRotarySpring <cimport, nodecl> end
-global function cpDampedRotarySpringNew(a: *cpBody, b: *cpBody, restAngle: float64, stiffness: float64, damping: float64): *cpConstraint <cimport, nodecl> end
-global function cpDampedRotarySpringGetRestAngle(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpDampedRotarySpringSetRestAngle(constraint: *cpConstraint, restAngle: float64) <cimport, nodecl> end
-global function cpDampedRotarySpringGetStiffness(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpDampedRotarySpringSetStiffness(constraint: *cpConstraint, stiffness: float64) <cimport, nodecl> end
-global function cpDampedRotarySpringGetDamping(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpDampedRotarySpringSetDamping(constraint: *cpConstraint, damping: float64) <cimport, nodecl> end
-global function cpDampedRotarySpringGetSpringTorqueFunc(constraint: *cpConstraint): cpDampedRotarySpringTorqueFunc <cimport, nodecl> end
-global function cpDampedRotarySpringSetSpringTorqueFunc(constraint: *cpConstraint, springTorqueFunc: cpDampedRotarySpringTorqueFunc) <cimport, nodecl> end
-global function cpConstraintIsRotaryLimitJoint(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpRotaryLimitJointAlloc(): *cpRotaryLimitJoint <cimport, nodecl> end
-global function cpRotaryLimitJointInit(joint: *cpRotaryLimitJoint, a: *cpBody, b: *cpBody, min: float64, max: float64): *cpRotaryLimitJoint <cimport, nodecl> end
-global function cpRotaryLimitJointNew(a: *cpBody, b: *cpBody, min: float64, max: float64): *cpConstraint <cimport, nodecl> end
-global function cpRotaryLimitJointGetMin(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpRotaryLimitJointSetMin(constraint: *cpConstraint, min: float64) <cimport, nodecl> end
-global function cpRotaryLimitJointGetMax(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpRotaryLimitJointSetMax(constraint: *cpConstraint, max: float64) <cimport, nodecl> end
-global function cpConstraintIsRatchetJoint(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpRatchetJointAlloc(): *cpRatchetJoint <cimport, nodecl> end
-global function cpRatchetJointInit(joint: *cpRatchetJoint, a: *cpBody, b: *cpBody, phase: float64, ratchet: float64): *cpRatchetJoint <cimport, nodecl> end
-global function cpRatchetJointNew(a: *cpBody, b: *cpBody, phase: float64, ratchet: float64): *cpConstraint <cimport, nodecl> end
-global function cpRatchetJointGetAngle(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpRatchetJointSetAngle(constraint: *cpConstraint, angle: float64) <cimport, nodecl> end
-global function cpRatchetJointGetPhase(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpRatchetJointSetPhase(constraint: *cpConstraint, phase: float64) <cimport, nodecl> end
-global function cpRatchetJointGetRatchet(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpRatchetJointSetRatchet(constraint: *cpConstraint, ratchet: float64) <cimport, nodecl> end
-global function cpConstraintIsGearJoint(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpGearJointAlloc(): *cpGearJoint <cimport, nodecl> end
-global function cpGearJointInit(joint: *cpGearJoint, a: *cpBody, b: *cpBody, phase: float64, ratio: float64): *cpGearJoint <cimport, nodecl> end
-global function cpGearJointNew(a: *cpBody, b: *cpBody, phase: float64, ratio: float64): *cpConstraint <cimport, nodecl> end
-global function cpGearJointGetPhase(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpGearJointSetPhase(constraint: *cpConstraint, phase: float64) <cimport, nodecl> end
-global function cpGearJointGetRatio(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpGearJointSetRatio(constraint: *cpConstraint, ratio: float64) <cimport, nodecl> end
-global cpSimpleMotor: type <cimport, nodecl, forwarddecl> = @record{}
-global function cpConstraintIsSimpleMotor(constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global function cpSimpleMotorAlloc(): *cpSimpleMotor <cimport, nodecl> end
-global function cpSimpleMotorInit(joint: *cpSimpleMotor, a: *cpBody, b: *cpBody, rate: float64): *cpSimpleMotor <cimport, nodecl> end
-global function cpSimpleMotorNew(a: *cpBody, b: *cpBody, rate: float64): *cpConstraint <cimport, nodecl> end
-global function cpSimpleMotorGetRate(constraint: *cpConstraint): float64 <cimport, nodecl> end
-global function cpSimpleMotorSetRate(constraint: *cpConstraint, rate: float64) <cimport, nodecl> end
-global cpCollisionBeginFunc: type <cimport, nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer): cuchar
-global cpCollisionPreSolveFunc: type <cimport, nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer): cuchar
-global cpCollisionPostSolveFunc: type <cimport, nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer)
-global cpCollisionSeparateFunc: type <cimport, nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer)
+global function cpShapeFilterNew(group: culong, categories: cuint, mask: cuint): cpShapeFilter <cimport,nodecl> end
+global function cpShapeDestroy(shape: *cpShape): void <cimport,nodecl> end
+global function cpShapeFree(shape: *cpShape): void <cimport,nodecl> end
+global function cpShapeCacheBB(shape: *cpShape): cpBB <cimport,nodecl> end
+global function cpShapeUpdate(shape: *cpShape, transform: cpTransform): cpBB <cimport,nodecl> end
+global function cpShapePointQuery(shape: *cpShape, p: cpVect, out: *cpPointQueryInfo): float64 <cimport,nodecl> end
+global function cpShapeSegmentQuery(shape: *cpShape, a: cpVect, b: cpVect, radius: float64, info: *cpSegmentQueryInfo): cuchar <cimport,nodecl> end
+global function cpShapesCollide(a: *cpShape, b: *cpShape): cpContactPointSet <cimport,nodecl> end
+global function cpShapeGetSpace(shape: *cpShape): *cpSpace <cimport,nodecl> end
+global function cpShapeGetBody(shape: *cpShape): *cpBody <cimport,nodecl> end
+global function cpShapeSetBody(shape: *cpShape, body: *cpBody): void <cimport,nodecl> end
+global function cpShapeGetMass(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpShapeSetMass(shape: *cpShape, mass: float64): void <cimport,nodecl> end
+global function cpShapeGetDensity(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpShapeSetDensity(shape: *cpShape, density: float64): void <cimport,nodecl> end
+global function cpShapeGetMoment(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpShapeGetArea(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpShapeGetCenterOfGravity(shape: *cpShape): cpVect <cimport,nodecl> end
+global function cpShapeGetBB(shape: *cpShape): cpBB <cimport,nodecl> end
+global function cpShapeGetSensor(shape: *cpShape): cuchar <cimport,nodecl> end
+global function cpShapeSetSensor(shape: *cpShape, sensor: cuchar): void <cimport,nodecl> end
+global function cpShapeGetElasticity(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpShapeSetElasticity(shape: *cpShape, elasticity: float64): void <cimport,nodecl> end
+global function cpShapeGetFriction(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpShapeSetFriction(shape: *cpShape, friction: float64): void <cimport,nodecl> end
+global function cpShapeGetSurfaceVelocity(shape: *cpShape): cpVect <cimport,nodecl> end
+global function cpShapeSetSurfaceVelocity(shape: *cpShape, surfaceVelocity: cpVect): void <cimport,nodecl> end
+global function cpShapeGetUserData(shape: *cpShape): cpDataPointer <cimport,nodecl> end
+global function cpShapeSetUserData(shape: *cpShape, userData: cpDataPointer): void <cimport,nodecl> end
+global function cpShapeGetCollisionType(shape: *cpShape): culong <cimport,nodecl> end
+global function cpShapeSetCollisionType(shape: *cpShape, collisionType: culong): void <cimport,nodecl> end
+global function cpShapeGetFilter(shape: *cpShape): cpShapeFilter <cimport,nodecl> end
+global function cpShapeSetFilter(shape: *cpShape, filter: cpShapeFilter): void <cimport,nodecl> end
+global function cpCircleShapeAlloc(): *cpCircleShape <cimport,nodecl> end
+global function cpCircleShapeInit(circle: *cpCircleShape, body: *cpBody, radius: float64, offset: cpVect): *cpCircleShape <cimport,nodecl> end
+global function cpCircleShapeNew(body: *cpBody, radius: float64, offset: cpVect): *cpShape <cimport,nodecl> end
+global function cpCircleShapeGetOffset(shape: *cpShape): cpVect <cimport,nodecl> end
+global function cpCircleShapeGetRadius(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpSegmentShapeAlloc(): *cpSegmentShape <cimport,nodecl> end
+global function cpSegmentShapeInit(seg: *cpSegmentShape, body: *cpBody, a: cpVect, b: cpVect, radius: float64): *cpSegmentShape <cimport,nodecl> end
+global function cpSegmentShapeNew(body: *cpBody, a: cpVect, b: cpVect, radius: float64): *cpShape <cimport,nodecl> end
+global function cpSegmentShapeSetNeighbors(shape: *cpShape, prev: cpVect, next: cpVect): void <cimport,nodecl> end
+global function cpSegmentShapeGetA(shape: *cpShape): cpVect <cimport,nodecl> end
+global function cpSegmentShapeGetB(shape: *cpShape): cpVect <cimport,nodecl> end
+global function cpSegmentShapeGetNormal(shape: *cpShape): cpVect <cimport,nodecl> end
+global function cpSegmentShapeGetRadius(shape: *cpShape): float64 <cimport,nodecl> end
+global function cpPolyShapeAlloc(): *cpPolyShape <cimport,nodecl> end
+global function cpPolyShapeInit(poly: *cpPolyShape, body: *cpBody, count: cint, verts: *cpVect, transform: cpTransform, radius: float64): *cpPolyShape <cimport,nodecl> end
+global function cpPolyShapeInitRaw(poly: *cpPolyShape, body: *cpBody, count: cint, verts: *cpVect, radius: float64): *cpPolyShape <cimport,nodecl> end
+global function cpPolyShapeNew(body: *cpBody, count: cint, verts: *cpVect, transform: cpTransform, radius: float64): *cpShape <cimport,nodecl> end
+global function cpPolyShapeNewRaw(body: *cpBody, count: cint, verts: *cpVect, radius: float64): *cpShape <cimport,nodecl> end
+global function cpBoxShapeInit(poly: *cpPolyShape, body: *cpBody, width: float64, height: float64, radius: float64): *cpPolyShape <cimport,nodecl> end
+global function cpBoxShapeInit2(poly: *cpPolyShape, body: *cpBody, box: cpBB, radius: float64): *cpPolyShape <cimport,nodecl> end
+global function cpBoxShapeNew(body: *cpBody, width: float64, height: float64, radius: float64): *cpShape <cimport,nodecl> end
+global function cpBoxShapeNew2(body: *cpBody, box: cpBB, radius: float64): *cpShape <cimport,nodecl> end
+global function cpPolyShapeGetCount(shape: *cpShape): cint <cimport,nodecl> end
+global function cpPolyShapeGetVert(shape: *cpShape, index: cint): cpVect <cimport,nodecl> end
+global function cpPolyShapeGetRadius(shape: *cpShape): float64 <cimport,nodecl> end
+global cpConstraintPreSolveFunc: type <cimport,nodecl> = @function(*cpConstraint, *cpSpace): void
+global cpConstraintPostSolveFunc: type <cimport,nodecl> = @function(*cpConstraint, *cpSpace): void
+global function cpConstraintDestroy(constraint: *cpConstraint): void <cimport,nodecl> end
+global function cpConstraintFree(constraint: *cpConstraint): void <cimport,nodecl> end
+global function cpConstraintGetSpace(constraint: *cpConstraint): *cpSpace <cimport,nodecl> end
+global function cpConstraintGetBodyA(constraint: *cpConstraint): *cpBody <cimport,nodecl> end
+global function cpConstraintGetBodyB(constraint: *cpConstraint): *cpBody <cimport,nodecl> end
+global function cpConstraintGetMaxForce(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpConstraintSetMaxForce(constraint: *cpConstraint, maxForce: float64): void <cimport,nodecl> end
+global function cpConstraintGetErrorBias(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpConstraintSetErrorBias(constraint: *cpConstraint, errorBias: float64): void <cimport,nodecl> end
+global function cpConstraintGetMaxBias(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpConstraintSetMaxBias(constraint: *cpConstraint, maxBias: float64): void <cimport,nodecl> end
+global function cpConstraintGetCollideBodies(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpConstraintSetCollideBodies(constraint: *cpConstraint, collideBodies: cuchar): void <cimport,nodecl> end
+global function cpConstraintGetPreSolveFunc(constraint: *cpConstraint): cpConstraintPreSolveFunc <cimport,nodecl> end
+global function cpConstraintSetPreSolveFunc(constraint: *cpConstraint, preSolveFunc: cpConstraintPreSolveFunc): void <cimport,nodecl> end
+global function cpConstraintGetPostSolveFunc(constraint: *cpConstraint): cpConstraintPostSolveFunc <cimport,nodecl> end
+global function cpConstraintSetPostSolveFunc(constraint: *cpConstraint, postSolveFunc: cpConstraintPostSolveFunc): void <cimport,nodecl> end
+global function cpConstraintGetUserData(constraint: *cpConstraint): cpDataPointer <cimport,nodecl> end
+global function cpConstraintSetUserData(constraint: *cpConstraint, userData: cpDataPointer): void <cimport,nodecl> end
+global function cpConstraintGetImpulse(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpConstraintIsPinJoint(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpPinJointAlloc(): *cpPinJoint <cimport,nodecl> end
+global function cpPinJointInit(joint: *cpPinJoint, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpPinJoint <cimport,nodecl> end
+global function cpPinJointNew(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpConstraint <cimport,nodecl> end
+global function cpPinJointGetAnchorA(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpPinJointSetAnchorA(constraint: *cpConstraint, anchorA: cpVect): void <cimport,nodecl> end
+global function cpPinJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpPinJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect): void <cimport,nodecl> end
+global function cpPinJointGetDist(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpPinJointSetDist(constraint: *cpConstraint, dist: float64): void <cimport,nodecl> end
+global function cpConstraintIsSlideJoint(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpSlideJointAlloc(): *cpSlideJoint <cimport,nodecl> end
+global function cpSlideJointInit(joint: *cpSlideJoint, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, min: float64, max: float64): *cpSlideJoint <cimport,nodecl> end
+global function cpSlideJointNew(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, min: float64, max: float64): *cpConstraint <cimport,nodecl> end
+global function cpSlideJointGetAnchorA(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpSlideJointSetAnchorA(constraint: *cpConstraint, anchorA: cpVect): void <cimport,nodecl> end
+global function cpSlideJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpSlideJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect): void <cimport,nodecl> end
+global function cpSlideJointGetMin(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpSlideJointSetMin(constraint: *cpConstraint, min: float64): void <cimport,nodecl> end
+global function cpSlideJointGetMax(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpSlideJointSetMax(constraint: *cpConstraint, max: float64): void <cimport,nodecl> end
+global function cpConstraintIsPivotJoint(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpPivotJointAlloc(): *cpPivotJoint <cimport,nodecl> end
+global function cpPivotJointInit(joint: *cpPivotJoint, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpPivotJoint <cimport,nodecl> end
+global function cpPivotJointNew(a: *cpBody, b: *cpBody, pivot: cpVect): *cpConstraint <cimport,nodecl> end
+global function cpPivotJointNew2(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect): *cpConstraint <cimport,nodecl> end
+global function cpPivotJointGetAnchorA(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpPivotJointSetAnchorA(constraint: *cpConstraint, anchorA: cpVect): void <cimport,nodecl> end
+global function cpPivotJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpPivotJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect): void <cimport,nodecl> end
+global function cpConstraintIsGrooveJoint(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpGrooveJointAlloc(): *cpGrooveJoint <cimport,nodecl> end
+global function cpGrooveJointInit(joint: *cpGrooveJoint, a: *cpBody, b: *cpBody, groove_a: cpVect, groove_b: cpVect, anchorB: cpVect): *cpGrooveJoint <cimport,nodecl> end
+global function cpGrooveJointNew(a: *cpBody, b: *cpBody, groove_a: cpVect, groove_b: cpVect, anchorB: cpVect): *cpConstraint <cimport,nodecl> end
+global function cpGrooveJointGetGrooveA(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpGrooveJointSetGrooveA(constraint: *cpConstraint, grooveA: cpVect): void <cimport,nodecl> end
+global function cpGrooveJointGetGrooveB(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpGrooveJointSetGrooveB(constraint: *cpConstraint, grooveB: cpVect): void <cimport,nodecl> end
+global function cpGrooveJointGetAnchorB(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpGrooveJointSetAnchorB(constraint: *cpConstraint, anchorB: cpVect): void <cimport,nodecl> end
+global function cpConstraintIsDampedSpring(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global cpDampedSpringForceFunc: type <cimport,nodecl> = @function(*cpConstraint, float64): float64
+global function cpDampedSpringAlloc(): *cpDampedSpring <cimport,nodecl> end
+global function cpDampedSpringInit(joint: *cpDampedSpring, a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, restLength: float64, stiffness: float64, damping: float64): *cpDampedSpring <cimport,nodecl> end
+global function cpDampedSpringNew(a: *cpBody, b: *cpBody, anchorA: cpVect, anchorB: cpVect, restLength: float64, stiffness: float64, damping: float64): *cpConstraint <cimport,nodecl> end
+global function cpDampedSpringGetAnchorA(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpDampedSpringSetAnchorA(constraint: *cpConstraint, anchorA: cpVect): void <cimport,nodecl> end
+global function cpDampedSpringGetAnchorB(constraint: *cpConstraint): cpVect <cimport,nodecl> end
+global function cpDampedSpringSetAnchorB(constraint: *cpConstraint, anchorB: cpVect): void <cimport,nodecl> end
+global function cpDampedSpringGetRestLength(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpDampedSpringSetRestLength(constraint: *cpConstraint, restLength: float64): void <cimport,nodecl> end
+global function cpDampedSpringGetStiffness(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpDampedSpringSetStiffness(constraint: *cpConstraint, stiffness: float64): void <cimport,nodecl> end
+global function cpDampedSpringGetDamping(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpDampedSpringSetDamping(constraint: *cpConstraint, damping: float64): void <cimport,nodecl> end
+global function cpDampedSpringGetSpringForceFunc(constraint: *cpConstraint): cpDampedSpringForceFunc <cimport,nodecl> end
+global function cpDampedSpringSetSpringForceFunc(constraint: *cpConstraint, springForceFunc: cpDampedSpringForceFunc): void <cimport,nodecl> end
+global function cpConstraintIsDampedRotarySpring(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global cpDampedRotarySpringTorqueFunc: type <cimport,nodecl> = @function(*cpConstraint, float64): float64
+global function cpDampedRotarySpringAlloc(): *cpDampedRotarySpring <cimport,nodecl> end
+global function cpDampedRotarySpringInit(joint: *cpDampedRotarySpring, a: *cpBody, b: *cpBody, restAngle: float64, stiffness: float64, damping: float64): *cpDampedRotarySpring <cimport,nodecl> end
+global function cpDampedRotarySpringNew(a: *cpBody, b: *cpBody, restAngle: float64, stiffness: float64, damping: float64): *cpConstraint <cimport,nodecl> end
+global function cpDampedRotarySpringGetRestAngle(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpDampedRotarySpringSetRestAngle(constraint: *cpConstraint, restAngle: float64): void <cimport,nodecl> end
+global function cpDampedRotarySpringGetStiffness(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpDampedRotarySpringSetStiffness(constraint: *cpConstraint, stiffness: float64): void <cimport,nodecl> end
+global function cpDampedRotarySpringGetDamping(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpDampedRotarySpringSetDamping(constraint: *cpConstraint, damping: float64): void <cimport,nodecl> end
+global function cpDampedRotarySpringGetSpringTorqueFunc(constraint: *cpConstraint): cpDampedRotarySpringTorqueFunc <cimport,nodecl> end
+global function cpDampedRotarySpringSetSpringTorqueFunc(constraint: *cpConstraint, springTorqueFunc: cpDampedRotarySpringTorqueFunc): void <cimport,nodecl> end
+global function cpConstraintIsRotaryLimitJoint(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpRotaryLimitJointAlloc(): *cpRotaryLimitJoint <cimport,nodecl> end
+global function cpRotaryLimitJointInit(joint: *cpRotaryLimitJoint, a: *cpBody, b: *cpBody, min: float64, max: float64): *cpRotaryLimitJoint <cimport,nodecl> end
+global function cpRotaryLimitJointNew(a: *cpBody, b: *cpBody, min: float64, max: float64): *cpConstraint <cimport,nodecl> end
+global function cpRotaryLimitJointGetMin(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpRotaryLimitJointSetMin(constraint: *cpConstraint, min: float64): void <cimport,nodecl> end
+global function cpRotaryLimitJointGetMax(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpRotaryLimitJointSetMax(constraint: *cpConstraint, max: float64): void <cimport,nodecl> end
+global function cpConstraintIsRatchetJoint(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpRatchetJointAlloc(): *cpRatchetJoint <cimport,nodecl> end
+global function cpRatchetJointInit(joint: *cpRatchetJoint, a: *cpBody, b: *cpBody, phase: float64, ratchet: float64): *cpRatchetJoint <cimport,nodecl> end
+global function cpRatchetJointNew(a: *cpBody, b: *cpBody, phase: float64, ratchet: float64): *cpConstraint <cimport,nodecl> end
+global function cpRatchetJointGetAngle(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpRatchetJointSetAngle(constraint: *cpConstraint, angle: float64): void <cimport,nodecl> end
+global function cpRatchetJointGetPhase(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpRatchetJointSetPhase(constraint: *cpConstraint, phase: float64): void <cimport,nodecl> end
+global function cpRatchetJointGetRatchet(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpRatchetJointSetRatchet(constraint: *cpConstraint, ratchet: float64): void <cimport,nodecl> end
+global function cpConstraintIsGearJoint(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpGearJointAlloc(): *cpGearJoint <cimport,nodecl> end
+global function cpGearJointInit(joint: *cpGearJoint, a: *cpBody, b: *cpBody, phase: float64, ratio: float64): *cpGearJoint <cimport,nodecl> end
+global function cpGearJointNew(a: *cpBody, b: *cpBody, phase: float64, ratio: float64): *cpConstraint <cimport,nodecl> end
+global function cpGearJointGetPhase(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpGearJointSetPhase(constraint: *cpConstraint, phase: float64): void <cimport,nodecl> end
+global function cpGearJointGetRatio(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpGearJointSetRatio(constraint: *cpConstraint, ratio: float64): void <cimport,nodecl> end
+global cpSimpleMotor: type <cimport,nodecl,forwarddecl> = @record{}
+global function cpConstraintIsSimpleMotor(constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global function cpSimpleMotorAlloc(): *cpSimpleMotor <cimport,nodecl> end
+global function cpSimpleMotorInit(joint: *cpSimpleMotor, a: *cpBody, b: *cpBody, rate: float64): *cpSimpleMotor <cimport,nodecl> end
+global function cpSimpleMotorNew(a: *cpBody, b: *cpBody, rate: float64): *cpConstraint <cimport,nodecl> end
+global function cpSimpleMotorGetRate(constraint: *cpConstraint): float64 <cimport,nodecl> end
+global function cpSimpleMotorSetRate(constraint: *cpConstraint, rate: float64): void <cimport,nodecl> end
+global cpCollisionBeginFunc: type <cimport,nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer): cuchar
+global cpCollisionPreSolveFunc: type <cimport,nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer): cuchar
+global cpCollisionPostSolveFunc: type <cimport,nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer): void
+global cpCollisionSeparateFunc: type <cimport,nodecl> = @function(*cpArbiter, *cpSpace, cpDataPointer): void
 cpCollisionHandler = @record{
   typeA: culong,
   typeB: culong,
@@ -468,85 +468,85 @@ cpCollisionHandler = @record{
   separateFunc: cpCollisionSeparateFunc,
   userData: cpDataPointer
 }
-global function cpSpaceAlloc(): *cpSpace <cimport, nodecl> end
-global function cpSpaceInit(space: *cpSpace): *cpSpace <cimport, nodecl> end
-global function cpSpaceNew(): *cpSpace <cimport, nodecl> end
-global function cpSpaceDestroy(space: *cpSpace) <cimport, nodecl> end
-global function cpSpaceFree(space: *cpSpace) <cimport, nodecl> end
-global function cpSpaceGetIterations(space: *cpSpace): cint <cimport, nodecl> end
-global function cpSpaceSetIterations(space: *cpSpace, iterations: cint) <cimport, nodecl> end
-global function cpSpaceGetGravity(space: *cpSpace): cpVect <cimport, nodecl> end
-global function cpSpaceSetGravity(space: *cpSpace, gravity: cpVect) <cimport, nodecl> end
-global function cpSpaceGetDamping(space: *cpSpace): float64 <cimport, nodecl> end
-global function cpSpaceSetDamping(space: *cpSpace, damping: float64) <cimport, nodecl> end
-global function cpSpaceGetIdleSpeedThreshold(space: *cpSpace): float64 <cimport, nodecl> end
-global function cpSpaceSetIdleSpeedThreshold(space: *cpSpace, idleSpeedThreshold: float64) <cimport, nodecl> end
-global function cpSpaceGetSleepTimeThreshold(space: *cpSpace): float64 <cimport, nodecl> end
-global function cpSpaceSetSleepTimeThreshold(space: *cpSpace, sleepTimeThreshold: float64) <cimport, nodecl> end
-global function cpSpaceGetCollisionSlop(space: *cpSpace): float64 <cimport, nodecl> end
-global function cpSpaceSetCollisionSlop(space: *cpSpace, collisionSlop: float64) <cimport, nodecl> end
-global function cpSpaceGetCollisionBias(space: *cpSpace): float64 <cimport, nodecl> end
-global function cpSpaceSetCollisionBias(space: *cpSpace, collisionBias: float64) <cimport, nodecl> end
-global function cpSpaceGetCollisionPersistence(space: *cpSpace): cuint <cimport, nodecl> end
-global function cpSpaceSetCollisionPersistence(space: *cpSpace, collisionPersistence: cuint) <cimport, nodecl> end
-global function cpSpaceGetUserData(space: *cpSpace): cpDataPointer <cimport, nodecl> end
-global function cpSpaceSetUserData(space: *cpSpace, userData: cpDataPointer) <cimport, nodecl> end
-global function cpSpaceGetStaticBody(space: *cpSpace): *cpBody <cimport, nodecl> end
-global function cpSpaceGetCurrentTimeStep(space: *cpSpace): float64 <cimport, nodecl> end
-global function cpSpaceIsLocked(space: *cpSpace): cuchar <cimport, nodecl> end
-global function cpSpaceAddDefaultCollisionHandler(space: *cpSpace): *cpCollisionHandler <cimport, nodecl> end
-global function cpSpaceAddCollisionHandler(space: *cpSpace, a: culong, b: culong): *cpCollisionHandler <cimport, nodecl> end
-global function cpSpaceAddWildcardHandler(space: *cpSpace, type: culong): *cpCollisionHandler <cimport, nodecl> end
-global function cpSpaceAddShape(space: *cpSpace, shape: *cpShape): *cpShape <cimport, nodecl> end
-global function cpSpaceAddBody(space: *cpSpace, body: *cpBody): *cpBody <cimport, nodecl> end
-global function cpSpaceAddConstraint(space: *cpSpace, constraint: *cpConstraint): *cpConstraint <cimport, nodecl> end
-global function cpSpaceRemoveShape(space: *cpSpace, shape: *cpShape) <cimport, nodecl> end
-global function cpSpaceRemoveBody(space: *cpSpace, body: *cpBody) <cimport, nodecl> end
-global function cpSpaceRemoveConstraint(space: *cpSpace, constraint: *cpConstraint) <cimport, nodecl> end
-global function cpSpaceContainsShape(space: *cpSpace, shape: *cpShape): cuchar <cimport, nodecl> end
-global function cpSpaceContainsBody(space: *cpSpace, body: *cpBody): cuchar <cimport, nodecl> end
-global function cpSpaceContainsConstraint(space: *cpSpace, constraint: *cpConstraint): cuchar <cimport, nodecl> end
-global cpPostStepFunc: type <cimport, nodecl> = @function(*cpSpace, pointer, pointer)
-global function cpSpaceAddPostStepCallback(space: *cpSpace, func: cpPostStepFunc, key: pointer, data: pointer): cuchar <cimport, nodecl> end
-global cpSpacePointQueryFunc: type <cimport, nodecl> = @function(*cpShape, cpVect, float64, cpVect, pointer)
-global function cpSpacePointQuery(space: *cpSpace, point: cpVect, maxDistance: float64, filter: cpShapeFilter, func: cpSpacePointQueryFunc, data: pointer) <cimport, nodecl> end
-global function cpSpacePointQueryNearest(space: *cpSpace, point: cpVect, maxDistance: float64, filter: cpShapeFilter, out: *cpPointQueryInfo): *cpShape <cimport, nodecl> end
-global cpSpaceSegmentQueryFunc: type <cimport, nodecl> = @function(*cpShape, cpVect, cpVect, float64, pointer)
-global function cpSpaceSegmentQuery(space: *cpSpace, start: cpVect, End: cpVect, radius: float64, filter: cpShapeFilter, func: cpSpaceSegmentQueryFunc, data: pointer) <cimport, nodecl> end
-global function cpSpaceSegmentQueryFirst(space: *cpSpace, start: cpVect, End: cpVect, radius: float64, filter: cpShapeFilter, out: *cpSegmentQueryInfo): *cpShape <cimport, nodecl> end
-global cpSpaceBBQueryFunc: type <cimport, nodecl> = @function(*cpShape, pointer)
-global function cpSpaceBBQuery(space: *cpSpace, bb: cpBB, filter: cpShapeFilter, func: cpSpaceBBQueryFunc, data: pointer) <cimport, nodecl> end
-global cpSpaceShapeQueryFunc: type <cimport, nodecl> = @function(*cpShape, *cpContactPointSet, pointer)
-global function cpSpaceShapeQuery(space: *cpSpace, shape: *cpShape, func: cpSpaceShapeQueryFunc, data: pointer): cuchar <cimport, nodecl> end
-global cpSpaceBodyIteratorFunc: type <cimport, nodecl> = @function(*cpBody, pointer)
-global function cpSpaceEachBody(space: *cpSpace, func: cpSpaceBodyIteratorFunc, data: pointer) <cimport, nodecl> end
-global cpSpaceShapeIteratorFunc: type <cimport, nodecl> = @function(*cpShape, pointer)
-global function cpSpaceEachShape(space: *cpSpace, func: cpSpaceShapeIteratorFunc, data: pointer) <cimport, nodecl> end
-global cpSpaceConstraintIteratorFunc: type <cimport, nodecl> = @function(*cpConstraint, pointer)
-global function cpSpaceEachConstraint(space: *cpSpace, func: cpSpaceConstraintIteratorFunc, data: pointer) <cimport, nodecl> end
-global function cpSpaceReindexStatic(space: *cpSpace) <cimport, nodecl> end
-global function cpSpaceReindexShape(space: *cpSpace, shape: *cpShape) <cimport, nodecl> end
-global function cpSpaceReindexShapesForBody(space: *cpSpace, body: *cpBody) <cimport, nodecl> end
-global function cpSpaceUseSpatialHash(space: *cpSpace, dim: float64, count: cint) <cimport, nodecl> end
-global function cpSpaceStep(space: *cpSpace, dt: float64) <cimport, nodecl> end
-global cpSpaceDebugColor: type <cimport, nodecl> = @record{
+global function cpSpaceAlloc(): *cpSpace <cimport,nodecl> end
+global function cpSpaceInit(space: *cpSpace): *cpSpace <cimport,nodecl> end
+global function cpSpaceNew(): *cpSpace <cimport,nodecl> end
+global function cpSpaceDestroy(space: *cpSpace): void <cimport,nodecl> end
+global function cpSpaceFree(space: *cpSpace): void <cimport,nodecl> end
+global function cpSpaceGetIterations(space: *cpSpace): cint <cimport,nodecl> end
+global function cpSpaceSetIterations(space: *cpSpace, iterations: cint): void <cimport,nodecl> end
+global function cpSpaceGetGravity(space: *cpSpace): cpVect <cimport,nodecl> end
+global function cpSpaceSetGravity(space: *cpSpace, gravity: cpVect): void <cimport,nodecl> end
+global function cpSpaceGetDamping(space: *cpSpace): float64 <cimport,nodecl> end
+global function cpSpaceSetDamping(space: *cpSpace, damping: float64): void <cimport,nodecl> end
+global function cpSpaceGetIdleSpeedThreshold(space: *cpSpace): float64 <cimport,nodecl> end
+global function cpSpaceSetIdleSpeedThreshold(space: *cpSpace, idleSpeedThreshold: float64): void <cimport,nodecl> end
+global function cpSpaceGetSleepTimeThreshold(space: *cpSpace): float64 <cimport,nodecl> end
+global function cpSpaceSetSleepTimeThreshold(space: *cpSpace, sleepTimeThreshold: float64): void <cimport,nodecl> end
+global function cpSpaceGetCollisionSlop(space: *cpSpace): float64 <cimport,nodecl> end
+global function cpSpaceSetCollisionSlop(space: *cpSpace, collisionSlop: float64): void <cimport,nodecl> end
+global function cpSpaceGetCollisionBias(space: *cpSpace): float64 <cimport,nodecl> end
+global function cpSpaceSetCollisionBias(space: *cpSpace, collisionBias: float64): void <cimport,nodecl> end
+global function cpSpaceGetCollisionPersistence(space: *cpSpace): cuint <cimport,nodecl> end
+global function cpSpaceSetCollisionPersistence(space: *cpSpace, collisionPersistence: cuint): void <cimport,nodecl> end
+global function cpSpaceGetUserData(space: *cpSpace): cpDataPointer <cimport,nodecl> end
+global function cpSpaceSetUserData(space: *cpSpace, userData: cpDataPointer): void <cimport,nodecl> end
+global function cpSpaceGetStaticBody(space: *cpSpace): *cpBody <cimport,nodecl> end
+global function cpSpaceGetCurrentTimeStep(space: *cpSpace): float64 <cimport,nodecl> end
+global function cpSpaceIsLocked(space: *cpSpace): cuchar <cimport,nodecl> end
+global function cpSpaceAddDefaultCollisionHandler(space: *cpSpace): *cpCollisionHandler <cimport,nodecl> end
+global function cpSpaceAddCollisionHandler(space: *cpSpace, a: culong, b: culong): *cpCollisionHandler <cimport,nodecl> end
+global function cpSpaceAddWildcardHandler(space: *cpSpace, type: culong): *cpCollisionHandler <cimport,nodecl> end
+global function cpSpaceAddShape(space: *cpSpace, shape: *cpShape): *cpShape <cimport,nodecl> end
+global function cpSpaceAddBody(space: *cpSpace, body: *cpBody): *cpBody <cimport,nodecl> end
+global function cpSpaceAddConstraint(space: *cpSpace, constraint: *cpConstraint): *cpConstraint <cimport,nodecl> end
+global function cpSpaceRemoveShape(space: *cpSpace, shape: *cpShape): void <cimport,nodecl> end
+global function cpSpaceRemoveBody(space: *cpSpace, body: *cpBody): void <cimport,nodecl> end
+global function cpSpaceRemoveConstraint(space: *cpSpace, constraint: *cpConstraint): void <cimport,nodecl> end
+global function cpSpaceContainsShape(space: *cpSpace, shape: *cpShape): cuchar <cimport,nodecl> end
+global function cpSpaceContainsBody(space: *cpSpace, body: *cpBody): cuchar <cimport,nodecl> end
+global function cpSpaceContainsConstraint(space: *cpSpace, constraint: *cpConstraint): cuchar <cimport,nodecl> end
+global cpPostStepFunc: type <cimport,nodecl> = @function(*cpSpace, pointer, pointer): void
+global function cpSpaceAddPostStepCallback(space: *cpSpace, func: cpPostStepFunc, key: pointer, data: pointer): cuchar <cimport,nodecl> end
+global cpSpacePointQueryFunc: type <cimport,nodecl> = @function(*cpShape, cpVect, float64, cpVect, pointer): void
+global function cpSpacePointQuery(space: *cpSpace, point: cpVect, maxDistance: float64, filter: cpShapeFilter, func: cpSpacePointQueryFunc, data: pointer): void <cimport,nodecl> end
+global function cpSpacePointQueryNearest(space: *cpSpace, point: cpVect, maxDistance: float64, filter: cpShapeFilter, out: *cpPointQueryInfo): *cpShape <cimport,nodecl> end
+global cpSpaceSegmentQueryFunc: type <cimport,nodecl> = @function(*cpShape, cpVect, cpVect, float64, pointer): void
+global function cpSpaceSegmentQuery(space: *cpSpace, start: cpVect, End: cpVect, radius: float64, filter: cpShapeFilter, func: cpSpaceSegmentQueryFunc, data: pointer): void <cimport,nodecl> end
+global function cpSpaceSegmentQueryFirst(space: *cpSpace, start: cpVect, End: cpVect, radius: float64, filter: cpShapeFilter, out: *cpSegmentQueryInfo): *cpShape <cimport,nodecl> end
+global cpSpaceBBQueryFunc: type <cimport,nodecl> = @function(*cpShape, pointer): void
+global function cpSpaceBBQuery(space: *cpSpace, bb: cpBB, filter: cpShapeFilter, func: cpSpaceBBQueryFunc, data: pointer): void <cimport,nodecl> end
+global cpSpaceShapeQueryFunc: type <cimport,nodecl> = @function(*cpShape, *cpContactPointSet, pointer): void
+global function cpSpaceShapeQuery(space: *cpSpace, shape: *cpShape, func: cpSpaceShapeQueryFunc, data: pointer): cuchar <cimport,nodecl> end
+global cpSpaceBodyIteratorFunc: type <cimport,nodecl> = @function(*cpBody, pointer): void
+global function cpSpaceEachBody(space: *cpSpace, func: cpSpaceBodyIteratorFunc, data: pointer): void <cimport,nodecl> end
+global cpSpaceShapeIteratorFunc: type <cimport,nodecl> = @function(*cpShape, pointer): void
+global function cpSpaceEachShape(space: *cpSpace, func: cpSpaceShapeIteratorFunc, data: pointer): void <cimport,nodecl> end
+global cpSpaceConstraintIteratorFunc: type <cimport,nodecl> = @function(*cpConstraint, pointer): void
+global function cpSpaceEachConstraint(space: *cpSpace, func: cpSpaceConstraintIteratorFunc, data: pointer): void <cimport,nodecl> end
+global function cpSpaceReindexStatic(space: *cpSpace): void <cimport,nodecl> end
+global function cpSpaceReindexShape(space: *cpSpace, shape: *cpShape): void <cimport,nodecl> end
+global function cpSpaceReindexShapesForBody(space: *cpSpace, body: *cpBody): void <cimport,nodecl> end
+global function cpSpaceUseSpatialHash(space: *cpSpace, dim: float64, count: cint): void <cimport,nodecl> end
+global function cpSpaceStep(space: *cpSpace, dt: float64): void <cimport,nodecl> end
+global cpSpaceDebugColor: type <cimport,nodecl> = @record{
   r: float32,
   g: float32,
   b: float32,
   a: float32
 }
-global cpSpaceDebugDrawCircleImpl: type <cimport, nodecl> = @function(cpVect, float64, float64, cpSpaceDebugColor, cpSpaceDebugColor, cpDataPointer)
-global cpSpaceDebugDrawSegmentImpl: type <cimport, nodecl> = @function(cpVect, cpVect, cpSpaceDebugColor, cpDataPointer)
-global cpSpaceDebugDrawFatSegmentImpl: type <cimport, nodecl> = @function(cpVect, cpVect, float64, cpSpaceDebugColor, cpSpaceDebugColor, cpDataPointer)
-global cpSpaceDebugDrawPolygonImpl: type <cimport, nodecl> = @function(cint, *cpVect, float64, cpSpaceDebugColor, cpSpaceDebugColor, cpDataPointer)
-global cpSpaceDebugDrawDotImpl: type <cimport, nodecl> = @function(float64, cpVect, cpSpaceDebugColor, cpDataPointer)
-global cpSpaceDebugDrawColorForShapeImpl: type <cimport, nodecl> = @function(*cpShape, cpDataPointer): cpSpaceDebugColor
-global cpSpaceDebugDrawFlags: type <cimport, nodecl, using> = @enum(cint){
+global cpSpaceDebugDrawCircleImpl: type <cimport,nodecl> = @function(cpVect, float64, float64, cpSpaceDebugColor, cpSpaceDebugColor, cpDataPointer): void
+global cpSpaceDebugDrawSegmentImpl: type <cimport,nodecl> = @function(cpVect, cpVect, cpSpaceDebugColor, cpDataPointer): void
+global cpSpaceDebugDrawFatSegmentImpl: type <cimport,nodecl> = @function(cpVect, cpVect, float64, cpSpaceDebugColor, cpSpaceDebugColor, cpDataPointer): void
+global cpSpaceDebugDrawPolygonImpl: type <cimport,nodecl> = @function(cint, *cpVect, float64, cpSpaceDebugColor, cpSpaceDebugColor, cpDataPointer): void
+global cpSpaceDebugDrawDotImpl: type <cimport,nodecl> = @function(float64, cpVect, cpSpaceDebugColor, cpDataPointer): void
+global cpSpaceDebugDrawColorForShapeImpl: type <cimport,nodecl> = @function(*cpShape, cpDataPointer): cpSpaceDebugColor
+global cpSpaceDebugDrawFlags: type <cimport,nodecl,using> = @enum(cint){
   CP_SPACE_DEBUG_DRAW_SHAPES = 1,
   CP_SPACE_DEBUG_DRAW_CONSTRAINTS = 2,
   CP_SPACE_DEBUG_DRAW_COLLISION_POINTS = 4
 }
-global cpSpaceDebugDrawOptions: type <cimport, nodecl> = @record{
+global cpSpaceDebugDrawOptions: type <cimport,nodecl> = @record{
   drawCircle: cpSpaceDebugDrawCircleImpl,
   drawSegment: cpSpaceDebugDrawSegmentImpl,
   drawFatSegment: cpSpaceDebugDrawFatSegmentImpl,
@@ -559,16 +559,16 @@ global cpSpaceDebugDrawOptions: type <cimport, nodecl> = @record{
   collisionPointColor: cpSpaceDebugColor,
   data: cpDataPointer
 }
-global function cpSpaceDebugDraw(space: *cpSpace, options: *cpSpaceDebugDrawOptions) <cimport, nodecl> end
-global cpVersionString: cstring <cimport, nodecl>
-global function cpMomentForCircle(m: float64, r1: float64, r2: float64, offset: cpVect): float64 <cimport, nodecl> end
-global function cpAreaForCircle(r1: float64, r2: float64): float64 <cimport, nodecl> end
-global function cpMomentForSegment(m: float64, a: cpVect, b: cpVect, radius: float64): float64 <cimport, nodecl> end
-global function cpAreaForSegment(a: cpVect, b: cpVect, radius: float64): float64 <cimport, nodecl> end
-global function cpMomentForPoly(m: float64, count: cint, verts: *cpVect, offset: cpVect, radius: float64): float64 <cimport, nodecl> end
-global function cpAreaForPoly(count: cint, verts: *cpVect, radius: float64): float64 <cimport, nodecl> end
-global function cpCentroidForPoly(count: cint, verts: *cpVect): cpVect <cimport, nodecl> end
-global function cpMomentForBox(m: float64, width: float64, height: float64): float64 <cimport, nodecl> end
-global function cpMomentForBox2(m: float64, box: cpBB): float64 <cimport, nodecl> end
-global function cpConvexHull(count: cint, verts: *cpVect, result: *cpVect, first: *cint, tol: float64): cint <cimport, nodecl> end
-global function cpClosetPointOnSegment(p: cpVect, a: cpVect, b: cpVect): cpVect <cimport, nodecl> end
+global function cpSpaceDebugDraw(space: *cpSpace, options: *cpSpaceDebugDrawOptions): void <cimport,nodecl> end
+global cpVersionString: cstring <cimport,nodecl>
+global function cpMomentForCircle(m: float64, r1: float64, r2: float64, offset: cpVect): float64 <cimport,nodecl> end
+global function cpAreaForCircle(r1: float64, r2: float64): float64 <cimport,nodecl> end
+global function cpMomentForSegment(m: float64, a: cpVect, b: cpVect, radius: float64): float64 <cimport,nodecl> end
+global function cpAreaForSegment(a: cpVect, b: cpVect, radius: float64): float64 <cimport,nodecl> end
+global function cpMomentForPoly(m: float64, count: cint, verts: *cpVect, offset: cpVect, radius: float64): float64 <cimport,nodecl> end
+global function cpAreaForPoly(count: cint, verts: *cpVect, radius: float64): float64 <cimport,nodecl> end
+global function cpCentroidForPoly(count: cint, verts: *cpVect): cpVect <cimport,nodecl> end
+global function cpMomentForBox(m: float64, width: float64, height: float64): float64 <cimport,nodecl> end
+global function cpMomentForBox2(m: float64, box: cpBB): float64 <cimport,nodecl> end
+global function cpConvexHull(count: cint, verts: *cpVect, result: *cpVect, first: *cint, tol: float64): cint <cimport,nodecl> end
+global function cpClosetPointOnSegment(p: cpVect, a: cpVect, b: cpVect): cpVect <cimport,nodecl> end

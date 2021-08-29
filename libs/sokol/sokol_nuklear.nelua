@@ -5,7 +5,7 @@ if not SOKOL_NUKLEAR_NO_IMPL then
 end
 cinclude 'sokol_nuklear.h'
 ]]
-global snk_desc_t: type <cimport, nodecl> = @record{
+global snk_desc_t: type <cimport,nodecl> = @record{
   max_vertices: cint,
   color_format: sg_pixel_format,
   depth_format: sg_pixel_format,
@@ -13,9 +13,9 @@ global snk_desc_t: type <cimport, nodecl> = @record{
   dpi_scale: float32,
   no_default_font: boolean
 }
-global function snk_setup(desc: *snk_desc_t) <cimport, nodecl> end
-global function snk_new_frame(): *NK_context <cimport, nodecl> end
-global function snk_render(width: cint, height: cint) <cimport, nodecl> end
-global function snk_handle_event(ev: *sapp_event) <cimport, nodecl> end
-global function snk_edit_string(ctx: *NK_context, flags: cuint, memory: cstring, len: *cint, max: cint, filter: function(*NK_text_edit, cuint): cint): cuint <cimport, nodecl> end
-global function snk_shutdown() <cimport, nodecl> end
+global function snk_setup(desc: *snk_desc_t): void <cimport,nodecl> end
+global function snk_new_frame(): *NK_context <cimport,nodecl> end
+global function snk_render(width: cint, height: cint): void <cimport,nodecl> end
+global function snk_handle_event(ev: *sapp_event): void <cimport,nodecl> end
+global function snk_edit_string(ctx: *NK_context, flags: cuint, memory: cstring, len: *cint, max: cint, filter: function(*NK_text_edit, cuint): cint): cuint <cimport,nodecl> end
+global function snk_shutdown(): void <cimport,nodecl> end

@@ -4,12 +4,12 @@ if not MINIFS_NO_IMPL then
 end
 cinclude 'minifs.h'
 ]]
-global mfs_stat_info: type <cimport, nodecl, forwarddecl> = @record{}
+global mfs_stat_info: type <cimport,nodecl,forwarddecl> = @record{}
 global mfs_handle: type = @pointer
 global mfs_ptr: type = @pointer
-global mfs_proc: type <cimport, nodecl> = @function()
-global FILE: type <cimport, nodecl, forwarddecl> = @record{}
-global mfs_file_info: type <cimport, nodecl, cincomplete> = @record{
+global mfs_proc: type <cimport,nodecl> = @function(): void
+global FILE: type <cimport,nodecl,forwarddecl> = @record{}
+global mfs_file_info: type <cimport,nodecl,cincomplete> = @record{
   pFileName: [256]cchar,
   sizeInBytes: uint64,
   lastModifiedTime: uint64,
@@ -17,86 +17,86 @@ global mfs_file_info: type <cimport, nodecl, cincomplete> = @record{
   isDirectory: cuint,
   isReadOnly: cuint
 }
-global function mfs_fopen(ppFile: **FILE, pFilePath: cstring, pOpenMode: cstring): cint <cimport, nodecl> end
-global function mfs_wfopen(ppFile: **FILE, pFilePath: *cint, pOpenMode: *cint): cint <cimport, nodecl> end
-global function mfs_fclose(pFile: *FILE): cint <cimport, nodecl> end
-global function mfs_fread(pFile: *FILE, pData: pointer, sizeInBytes: csize, pBytesRead: *csize): cint <cimport, nodecl> end
-global function mfs_fwrite(pFile: *FILE, pData: pointer, sizeInBytes: csize, pBytesWritten: *csize): cint <cimport, nodecl> end
-global function mfs_fseek(pFile: *FILE, offset: int64, origin: cint): cint <cimport, nodecl> end
-global function mfs_ftell(pFile: *FILE): int64 <cimport, nodecl> end
-global function mfs_fstat(pFile: *FILE, info: *mfs_stat_info): cint <cimport, nodecl> end
-global function mfs_open_and_read_file(pFilePath: cstring, pFileSizeOut: *csize, ppFileData: *pointer): cint <cimport, nodecl> end
-global function mfs_open_and_read_text_file(pFilePath: cstring, pFileSizeOut: *csize, ppFileData: *cstring): cint <cimport, nodecl> end
-global function mfs_open_and_write_file(pFilePath: cstring, fileSize: csize, pFileData: pointer): cint <cimport, nodecl> end
-global function mfs_set_current_directory(pDirectoryPath: cstring): cint <cimport, nodecl> end
-global function mfs_get_current_directory(pDirectoryPath: cstring, directoryPathSizeInBytes: csize): cint <cimport, nodecl> end
-global function mfs_mkdir(pDirectory: cstring, recursive: cuint): cint <cimport, nodecl> end
-global function mfs_is_directory(pPath: cstring): cuint <cimport, nodecl> end
-global function mfs_file_exists(pFilePath: cstring): cuint <cimport, nodecl> end
-global function mfs_copy_file(pSrcFilePath: cstring, pDstFilePath: cstring, failIfExists: cuint): cint <cimport, nodecl> end
-global function mfs_move_file(pSrcFilePath: cstring, pDstFilePath: cstring, failIfExists: cuint): cint <cimport, nodecl> end
-global function mfs_delete_file(pFilePath: cstring): cint <cimport, nodecl> end
-global function mfs_get_file_info(pFilePath: cstring, pFileInfo: *mfs_file_info): cint <cimport, nodecl> end
-global mfs_iterator: type <cimport, nodecl> = @record{
+global function mfs_fopen(ppFile: **FILE, pFilePath: cstring, pOpenMode: cstring): cint <cimport,nodecl> end
+global function mfs_wfopen(ppFile: **FILE, pFilePath: *cint, pOpenMode: *cint): cint <cimport,nodecl> end
+global function mfs_fclose(pFile: *FILE): cint <cimport,nodecl> end
+global function mfs_fread(pFile: *FILE, pData: pointer, sizeInBytes: csize, pBytesRead: *csize): cint <cimport,nodecl> end
+global function mfs_fwrite(pFile: *FILE, pData: pointer, sizeInBytes: csize, pBytesWritten: *csize): cint <cimport,nodecl> end
+global function mfs_fseek(pFile: *FILE, offset: int64, origin: cint): cint <cimport,nodecl> end
+global function mfs_ftell(pFile: *FILE): int64 <cimport,nodecl> end
+global function mfs_fstat(pFile: *FILE, info: *mfs_stat_info): cint <cimport,nodecl> end
+global function mfs_open_and_read_file(pFilePath: cstring, pFileSizeOut: *csize, ppFileData: *pointer): cint <cimport,nodecl> end
+global function mfs_open_and_read_text_file(pFilePath: cstring, pFileSizeOut: *csize, ppFileData: *cstring): cint <cimport,nodecl> end
+global function mfs_open_and_write_file(pFilePath: cstring, fileSize: csize, pFileData: pointer): cint <cimport,nodecl> end
+global function mfs_set_current_directory(pDirectoryPath: cstring): cint <cimport,nodecl> end
+global function mfs_get_current_directory(pDirectoryPath: cstring, directoryPathSizeInBytes: csize): cint <cimport,nodecl> end
+global function mfs_mkdir(pDirectory: cstring, recursive: cuint): cint <cimport,nodecl> end
+global function mfs_is_directory(pPath: cstring): cuint <cimport,nodecl> end
+global function mfs_file_exists(pFilePath: cstring): cuint <cimport,nodecl> end
+global function mfs_copy_file(pSrcFilePath: cstring, pDstFilePath: cstring, failIfExists: cuint): cint <cimport,nodecl> end
+global function mfs_move_file(pSrcFilePath: cstring, pDstFilePath: cstring, failIfExists: cuint): cint <cimport,nodecl> end
+global function mfs_delete_file(pFilePath: cstring): cint <cimport,nodecl> end
+global function mfs_get_file_info(pFilePath: cstring, pFileInfo: *mfs_file_info): cint <cimport,nodecl> end
+global mfs_iterator: type <cimport,nodecl> = @record{
   posix: record{
     dir: pointer,
     pPath: cstring
   }
 }
-global function mfs_iterator_init(pDirectoryPath: cstring, pIterator: *mfs_iterator): cint <cimport, nodecl> end
-global function mfs_iterator_uninit(pIterator: *mfs_iterator) <cimport, nodecl> end
-global function mfs_iterator_next(pIterator: *mfs_iterator, pFileInfo: *mfs_file_info): cint <cimport, nodecl> end
-global mfs_path_segment: type <cimport, nodecl> = @record{
+global function mfs_iterator_init(pDirectoryPath: cstring, pIterator: *mfs_iterator): cint <cimport,nodecl> end
+global function mfs_iterator_uninit(pIterator: *mfs_iterator): void <cimport,nodecl> end
+global function mfs_iterator_next(pIterator: *mfs_iterator, pFileInfo: *mfs_file_info): cint <cimport,nodecl> end
+global mfs_path_segment: type <cimport,nodecl> = @record{
   offset: csize,
   length: csize
 }
-global function mfs_path_segments_equal(s0Path: cstring, s0: mfs_path_segment, s1Path: cstring, s1: mfs_path_segment): cuint <cimport, nodecl> end
-global mfs_path_iterator: type <cimport, nodecl> = @record{
+global function mfs_path_segments_equal(s0Path: cstring, s0: mfs_path_segment, s1Path: cstring, s1: mfs_path_segment): cuint <cimport,nodecl> end
+global mfs_path_iterator: type <cimport,nodecl> = @record{
   path: cstring,
   segment: mfs_path_segment
 }
-global function mfs_path_first_segment(path: cstring, pIterator: *mfs_path_iterator): cint <cimport, nodecl> end
-global function mfs_path_last_segment(path: cstring, pIterator: *mfs_path_iterator): cint <cimport, nodecl> end
-global function mfs_path_next_segment(pIterator: *mfs_path_iterator): cint <cimport, nodecl> end
-global function mfs_path_prev_segment(pIterator: *mfs_path_iterator): cint <cimport, nodecl> end
-global function mfs_path_at_start(iterator: mfs_path_iterator): cuint <cimport, nodecl> end
-global function mfs_path_at_end(iterator: mfs_path_iterator): cuint <cimport, nodecl> end
-global function mfs_path_iterators_equal(i0: mfs_path_iterator, i1: mfs_path_iterator): cuint <cimport, nodecl> end
-global function mfs_path_is_root(path: cstring): cuint <cimport, nodecl> end
-global function mfs_path_is_root_segment(path: cstring, segment: mfs_path_segment): cuint <cimport, nodecl> end
-global function mfs_path_is_unix_style_root(path: cstring): cuint <cimport, nodecl> end
-global function mfs_path_is_unix_style_root_segment(path: cstring, segment: mfs_path_segment): cuint <cimport, nodecl> end
-global function mfs_path_is_win32_style_root(path: cstring): cuint <cimport, nodecl> end
-global function mfs_path_is_win32_style_root_segment(path: cstring, segment: mfs_path_segment): cuint <cimport, nodecl> end
-global function mfs_path_copy(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_to_forward_slashes(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_to_back_slashes(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_is_descendant(descendantAbsolutePath: cstring, parentAbsolutePath: cstring): cuint <cimport, nodecl> end
-global function mfs_path_is_child(childAbsolutePath: cstring, parentAbsolutePath: cstring): cuint <cimport, nodecl> end
-global function mfs_path_file_name(path: cstring): cstring <cimport, nodecl> end
-global function mfs_path_extension(path: cstring): cstring <cimport, nodecl> end
-global function mfs_path_has_extension(path: cstring): cuint <cimport, nodecl> end
-global function mfs_path_equal(path1: cstring, path2: cstring): cuint <cimport, nodecl> end
-global function mfs_path_extension_equal(path: cstring, extension: cstring): cuint <cimport, nodecl> end
-global function mfs_path_is_relative(path: cstring): cuint <cimport, nodecl> end
-global function mfs_path_is_absolute(path: cstring): cuint <cimport, nodecl> end
-global function mfs_path_base_path(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_file_name_without_extension(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_append(dst: cstring, dstSizeInBytes: csize, base: cstring, other: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_append_iterator(dst: cstring, dstSizeInBytes: csize, base: cstring, iterator: mfs_path_iterator, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_append_extension(dst: cstring, dstSizeInBytes: csize, base: cstring, extension: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_clean(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_append_and_clean(dst: cstring, dstSizeInBytes: csize, base: cstring, other: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_remove_extension(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_remove_extension_in_place(path: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_remove_file_name(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_remove_file_name_in_place(path: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_to_relative(dst: cstring, dstSizeInBytes: csize, absolutePathToMakeRelative: cstring, absolutePathToMakeRelativeTo: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_path_to_absolute(dst: cstring, dstSizeInBytes: csize, relativePathToMakeAbsolute: cstring, basePath: cstring, pDstLenOut: *csize): cint <cimport, nodecl> end
-global function mfs_free(p: pointer) <cimport, nodecl> end
+global function mfs_path_first_segment(path: cstring, pIterator: *mfs_path_iterator): cint <cimport,nodecl> end
+global function mfs_path_last_segment(path: cstring, pIterator: *mfs_path_iterator): cint <cimport,nodecl> end
+global function mfs_path_next_segment(pIterator: *mfs_path_iterator): cint <cimport,nodecl> end
+global function mfs_path_prev_segment(pIterator: *mfs_path_iterator): cint <cimport,nodecl> end
+global function mfs_path_at_start(iterator: mfs_path_iterator): cuint <cimport,nodecl> end
+global function mfs_path_at_end(iterator: mfs_path_iterator): cuint <cimport,nodecl> end
+global function mfs_path_iterators_equal(i0: mfs_path_iterator, i1: mfs_path_iterator): cuint <cimport,nodecl> end
+global function mfs_path_is_root(path: cstring): cuint <cimport,nodecl> end
+global function mfs_path_is_root_segment(path: cstring, segment: mfs_path_segment): cuint <cimport,nodecl> end
+global function mfs_path_is_unix_style_root(path: cstring): cuint <cimport,nodecl> end
+global function mfs_path_is_unix_style_root_segment(path: cstring, segment: mfs_path_segment): cuint <cimport,nodecl> end
+global function mfs_path_is_win32_style_root(path: cstring): cuint <cimport,nodecl> end
+global function mfs_path_is_win32_style_root_segment(path: cstring, segment: mfs_path_segment): cuint <cimport,nodecl> end
+global function mfs_path_copy(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_to_forward_slashes(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_to_back_slashes(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_is_descendant(descendantAbsolutePath: cstring, parentAbsolutePath: cstring): cuint <cimport,nodecl> end
+global function mfs_path_is_child(childAbsolutePath: cstring, parentAbsolutePath: cstring): cuint <cimport,nodecl> end
+global function mfs_path_file_name(path: cstring): cstring <cimport,nodecl> end
+global function mfs_path_extension(path: cstring): cstring <cimport,nodecl> end
+global function mfs_path_has_extension(path: cstring): cuint <cimport,nodecl> end
+global function mfs_path_equal(path1: cstring, path2: cstring): cuint <cimport,nodecl> end
+global function mfs_path_extension_equal(path: cstring, extension: cstring): cuint <cimport,nodecl> end
+global function mfs_path_is_relative(path: cstring): cuint <cimport,nodecl> end
+global function mfs_path_is_absolute(path: cstring): cuint <cimport,nodecl> end
+global function mfs_path_base_path(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_file_name_without_extension(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_append(dst: cstring, dstSizeInBytes: csize, base: cstring, other: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_append_iterator(dst: cstring, dstSizeInBytes: csize, base: cstring, iterator: mfs_path_iterator, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_append_extension(dst: cstring, dstSizeInBytes: csize, base: cstring, extension: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_clean(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_append_and_clean(dst: cstring, dstSizeInBytes: csize, base: cstring, other: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_remove_extension(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_remove_extension_in_place(path: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_remove_file_name(dst: cstring, dstSizeInBytes: csize, src: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_remove_file_name_in_place(path: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_to_relative(dst: cstring, dstSizeInBytes: csize, absolutePathToMakeRelative: cstring, absolutePathToMakeRelativeTo: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_path_to_absolute(dst: cstring, dstSizeInBytes: csize, relativePathToMakeAbsolute: cstring, basePath: cstring, pDstLenOut: *csize): cint <cimport,nodecl> end
+global function mfs_free(p: pointer): void <cimport,nodecl> end
 global MFS_TRUE: cint <comptime> = 1
 global MFS_FALSE: cint <comptime> = 0
-global MFS_SIZE_MAX: cint <cimport, nodecl, const>
+global MFS_SIZE_MAX: cint <cimport,nodecl,const>
 global MFS_SUCCESS: cint <comptime> = 0
 global MFS_ERROR: cint <comptime> = -1
 global MFS_INVALID_ARGS: cint <comptime> = -2

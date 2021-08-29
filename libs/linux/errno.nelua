@@ -1,7 +1,7 @@
 ## cinclude '<errno.h>'
 global errno: cint <cimport, nodecl>
-global program_invocation_name: cstring <cimport, nodecl>
-global program_invocation_short_name: cstring <cimport, nodecl>
+global program_invocation_name: cstring <cimport,nodecl>
+global program_invocation_short_name: cstring <cimport,nodecl>
 global EPERM: cint <comptime> = 1
 global ENOENT: cint <comptime> = 2
 global ESRCH: cint <comptime> = 3

@@ -26,7 +26,7 @@ global SAPP_MAX_TOUCHPOINTS: cint <comptime> = 8
 global SAPP_MAX_MOUSEBUTTONS: cint <comptime> = 3
 global SAPP_MAX_KEYCODES: cint <comptime> = 512
 global SAPP_MAX_ICONIMAGES: cint <comptime> = 8
-global sapp_event_type: type <cimport, nodecl, using> = @enum(cint){
+global sapp_event_type: type <cimport,nodecl,using> = @enum(cint){
   SAPP_EVENTTYPE_INVALID = 0,
   SAPP_EVENTTYPE_KEY_DOWN = 1,
   SAPP_EVENTTYPE_KEY_UP = 2,
@@ -53,7 +53,7 @@ global sapp_event_type: type <cimport, nodecl, using> = @enum(cint){
   _SAPP_EVENTTYPE_NUM = 23,
   _SAPP_EVENTTYPE_FORCE_U32 = 2147483647
 }
-global sapp_keycode: type <cimport, nodecl, using> = @enum(cint){
+global sapp_keycode: type <cimport,nodecl,using> = @enum(cint){
   SAPP_KEYCODE_INVALID = 0,
   SAPP_KEYCODE_SPACE = 32,
   SAPP_KEYCODE_APOSTROPHE = 39,
@@ -176,13 +176,13 @@ global sapp_keycode: type <cimport, nodecl, using> = @enum(cint){
   SAPP_KEYCODE_RIGHT_SUPER = 347,
   SAPP_KEYCODE_MENU = 348
 }
-global sapp_touchpoint: type <cimport, nodecl> = @record{
+global sapp_touchpoint: type <cimport,nodecl> = @record{
   identifier: usize,
   pos_x: float32,
   pos_y: float32,
   changed: boolean
 }
-global sapp_mousebutton: type <cimport, nodecl, using> = @enum(cint){
+global sapp_mousebutton: type <cimport,nodecl,using> = @enum(cint){
   SAPP_MOUSEBUTTON_LEFT = 0,
   SAPP_MOUSEBUTTON_RIGHT = 1,
   SAPP_MOUSEBUTTON_MIDDLE = 2,
@@ -195,7 +195,7 @@ global SAPP_MODIFIER_SUPER: cint <comptime> = 8
 global SAPP_MODIFIER_LMB: cint <comptime> = 256
 global SAPP_MODIFIER_RMB: cint <comptime> = 512
 global SAPP_MODIFIER_MMB: cint <comptime> = 1024
-global sapp_event: type <cimport, nodecl> = @record{
+global sapp_event: type <cimport,nodecl> = @record{
   frame_count: uint64,
   type: sapp_event_type,
   key_code: sapp_keycode,
@@ -216,31 +216,31 @@ global sapp_event: type <cimport, nodecl> = @record{
   framebuffer_width: cint,
   framebuffer_height: cint
 }
-global sapp_range: type <cimport, nodecl> = @record{
+global sapp_range: type <cimport,nodecl> = @record{
   ptr: pointer,
   size: csize
 }
-global sapp_image_desc: type <cimport, nodecl> = @record{
+global sapp_image_desc: type <cimport,nodecl> = @record{
   width: cint,
   height: cint,
   pixels: sapp_range
 }
-global sapp_icon_desc: type <cimport, nodecl> = @record{
+global sapp_icon_desc: type <cimport,nodecl> = @record{
   sokol_default: boolean,
   images: [8]sapp_image_desc
 }
-global sapp_desc: type <cimport, nodecl> = @record{
-  init_cb: function(),
-  frame_cb: function(),
-  cleanup_cb: function(),
-  event_cb: function(*sapp_event),
-  fail_cb: function(cstring),
+global sapp_desc: type <cimport,nodecl> = @record{
+  init_cb: function(): void,
+  frame_cb: function(): void,
+  cleanup_cb: function(): void,
+  event_cb: function(*sapp_event): void,
+  fail_cb: function(cstring): void,
   user_data: pointer,
-  init_userdata_cb: function(pointer),
-  frame_userdata_cb: function(pointer),
-  cleanup_userdata_cb: function(pointer),
-  event_userdata_cb: function(*sapp_event, pointer),
-  fail_userdata_cb: function(cstring, pointer),
+  init_userdata_cb: function(pointer): void,
+  frame_userdata_cb: function(pointer): void,
+  cleanup_userdata_cb: function(pointer): void,
+  event_userdata_cb: function(*sapp_event, pointer): void,
+  fail_userdata_cb: function(cstring, pointer): void,
   width: cint,
   height: cint,
   sample_count: cint,
@@ -267,12 +267,12 @@ global sapp_desc: type <cimport, nodecl> = @record{
   html5_ask_leave_site: boolean,
   ios_keyboard_resizes_canvas: boolean
 }
-global sapp_html5_fetch_error: type <cimport, nodecl, using> = @enum(cint){
+global sapp_html5_fetch_error: type <cimport,nodecl,using> = @enum(cint){
   SAPP_HTML5_FETCH_ERROR_NO_ERROR = 0,
   SAPP_HTML5_FETCH_ERROR_BUFFER_TOO_SMALL = 1,
   SAPP_HTML5_FETCH_ERROR_OTHER = 2
 }
-global sapp_html5_fetch_response: type <cimport, nodecl> = @record{
+global sapp_html5_fetch_response: type <cimport,nodecl> = @record{
   succeeded: boolean,
   error_code: sapp_html5_fetch_error,
   file_index: cint,
@@ -281,62 +281,62 @@ global sapp_html5_fetch_response: type <cimport, nodecl> = @record{
   buffer_size: uint32,
   user_data: pointer
 }
-global sapp_html5_fetch_request: type <cimport, nodecl> = @record{
+global sapp_html5_fetch_request: type <cimport,nodecl> = @record{
   dropped_file_index: cint,
-  callback: function(*sapp_html5_fetch_response),
+  callback: function(*sapp_html5_fetch_response): void,
   buffer_ptr: pointer,
   buffer_size: uint32,
   user_data: pointer
 }
-global function sapp_isvalid(): boolean <cimport, nodecl> end
-global function sapp_width(): cint <cimport, nodecl> end
-global function sapp_widthf(): float32 <cimport, nodecl> end
-global function sapp_height(): cint <cimport, nodecl> end
-global function sapp_heightf(): float32 <cimport, nodecl> end
-global function sapp_color_format(): cint <cimport, nodecl> end
-global function sapp_depth_format(): cint <cimport, nodecl> end
-global function sapp_sample_count(): cint <cimport, nodecl> end
-global function sapp_high_dpi(): boolean <cimport, nodecl> end
-global function sapp_dpi_scale(): float32 <cimport, nodecl> end
-global function sapp_show_keyboard(show: boolean) <cimport, nodecl> end
-global function sapp_keyboard_shown(): boolean <cimport, nodecl> end
-global function sapp_is_fullscreen(): boolean <cimport, nodecl> end
-global function sapp_toggle_fullscreen() <cimport, nodecl> end
-global function sapp_show_mouse(show: boolean) <cimport, nodecl> end
-global function sapp_mouse_shown(): boolean <cimport, nodecl> end
-global function sapp_lock_mouse(lock: boolean) <cimport, nodecl> end
-global function sapp_mouse_locked(): boolean <cimport, nodecl> end
-global function sapp_userdata(): pointer <cimport, nodecl> end
-global function sapp_query_desc(): sapp_desc <cimport, nodecl> end
-global function sapp_request_quit() <cimport, nodecl> end
-global function sapp_cancel_quit() <cimport, nodecl> end
-global function sapp_quit() <cimport, nodecl> end
-global function sapp_consume_event() <cimport, nodecl> end
-global function sapp_frame_count(): uint64 <cimport, nodecl> end
-global function sapp_set_clipboard_string(str: cstring) <cimport, nodecl> end
-global function sapp_get_clipboard_string(): cstring <cimport, nodecl> end
-global function sapp_set_window_title(str: cstring) <cimport, nodecl> end
-global function sapp_set_icon(icon_desc: *sapp_icon_desc) <cimport, nodecl> end
-global function sapp_get_num_dropped_files(): cint <cimport, nodecl> end
-global function sapp_get_dropped_file_path(index: cint): cstring <cimport, nodecl> end
-global function sapp_run(desc: *sapp_desc) <cimport, nodecl> end
-global function sapp_gles2(): boolean <cimport, nodecl> end
-global function sapp_html5_ask_leave_site(ask: boolean) <cimport, nodecl> end
-global function sapp_html5_get_dropped_file_size(index: cint): uint32 <cimport, nodecl> end
-global function sapp_html5_fetch_dropped_file(request: *sapp_html5_fetch_request) <cimport, nodecl> end
-global function sapp_metal_get_device(): pointer <cimport, nodecl> end
-global function sapp_metal_get_renderpass_descriptor(): pointer <cimport, nodecl> end
-global function sapp_metal_get_drawable(): pointer <cimport, nodecl> end
-global function sapp_macos_get_window(): pointer <cimport, nodecl> end
-global function sapp_ios_get_window(): pointer <cimport, nodecl> end
-global function sapp_d3d11_get_device(): pointer <cimport, nodecl> end
-global function sapp_d3d11_get_device_context(): pointer <cimport, nodecl> end
-global function sapp_d3d11_get_swap_chain(): pointer <cimport, nodecl> end
-global function sapp_d3d11_get_render_target_view(): pointer <cimport, nodecl> end
-global function sapp_d3d11_get_depth_stencil_view(): pointer <cimport, nodecl> end
-global function sapp_win32_get_hwnd(): pointer <cimport, nodecl> end
-global function sapp_wgpu_get_device(): pointer <cimport, nodecl> end
-global function sapp_wgpu_get_render_view(): pointer <cimport, nodecl> end
-global function sapp_wgpu_get_resolve_view(): pointer <cimport, nodecl> end
-global function sapp_wgpu_get_depth_stencil_view(): pointer <cimport, nodecl> end
-global function sapp_android_get_native_activity(): pointer <cimport, nodecl> end
+global function sapp_isvalid(): boolean <cimport,nodecl> end
+global function sapp_width(): cint <cimport,nodecl> end
+global function sapp_widthf(): float32 <cimport,nodecl> end
+global function sapp_height(): cint <cimport,nodecl> end
+global function sapp_heightf(): float32 <cimport,nodecl> end
+global function sapp_color_format(): cint <cimport,nodecl> end
+global function sapp_depth_format(): cint <cimport,nodecl> end
+global function sapp_sample_count(): cint <cimport,nodecl> end
+global function sapp_high_dpi(): boolean <cimport,nodecl> end
+global function sapp_dpi_scale(): float32 <cimport,nodecl> end
+global function sapp_show_keyboard(show: boolean): void <cimport,nodecl> end
+global function sapp_keyboard_shown(): boolean <cimport,nodecl> end
+global function sapp_is_fullscreen(): boolean <cimport,nodecl> end
+global function sapp_toggle_fullscreen(): void <cimport,nodecl> end
+global function sapp_show_mouse(show: boolean): void <cimport,nodecl> end
+global function sapp_mouse_shown(): boolean <cimport,nodecl> end
+global function sapp_lock_mouse(lock: boolean): void <cimport,nodecl> end
+global function sapp_mouse_locked(): boolean <cimport,nodecl> end
+global function sapp_userdata(): pointer <cimport,nodecl> end
+global function sapp_query_desc(): sapp_desc <cimport,nodecl> end
+global function sapp_request_quit(): void <cimport,nodecl> end
+global function sapp_cancel_quit(): void <cimport,nodecl> end
+global function sapp_quit(): void <cimport,nodecl> end
+global function sapp_consume_event(): void <cimport,nodecl> end
+global function sapp_frame_count(): uint64 <cimport,nodecl> end
+global function sapp_set_clipboard_string(str: cstring): void <cimport,nodecl> end
+global function sapp_get_clipboard_string(): cstring <cimport,nodecl> end
+global function sapp_set_window_title(str: cstring): void <cimport,nodecl> end
+global function sapp_set_icon(icon_desc: *sapp_icon_desc): void <cimport,nodecl> end
+global function sapp_get_num_dropped_files(): cint <cimport,nodecl> end
+global function sapp_get_dropped_file_path(index: cint): cstring <cimport,nodecl> end
+global function sapp_run(desc: *sapp_desc): void <cimport,nodecl> end
+global function sapp_gles2(): boolean <cimport,nodecl> end
+global function sapp_html5_ask_leave_site(ask: boolean): void <cimport,nodecl> end
+global function sapp_html5_get_dropped_file_size(index: cint): uint32 <cimport,nodecl> end
+global function sapp_html5_fetch_dropped_file(request: *sapp_html5_fetch_request): void <cimport,nodecl> end
+global function sapp_metal_get_device(): pointer <cimport,nodecl> end
+global function sapp_metal_get_renderpass_descriptor(): pointer <cimport,nodecl> end
+global function sapp_metal_get_drawable(): pointer <cimport,nodecl> end
+global function sapp_macos_get_window(): pointer <cimport,nodecl> end
+global function sapp_ios_get_window(): pointer <cimport,nodecl> end
+global function sapp_d3d11_get_device(): pointer <cimport,nodecl> end
+global function sapp_d3d11_get_device_context(): pointer <cimport,nodecl> end
+global function sapp_d3d11_get_swap_chain(): pointer <cimport,nodecl> end
+global function sapp_d3d11_get_render_target_view(): pointer <cimport,nodecl> end
+global function sapp_d3d11_get_depth_stencil_view(): pointer <cimport,nodecl> end
+global function sapp_win32_get_hwnd(): pointer <cimport,nodecl> end
+global function sapp_wgpu_get_device(): pointer <cimport,nodecl> end
+global function sapp_wgpu_get_render_view(): pointer <cimport,nodecl> end
+global function sapp_wgpu_get_resolve_view(): pointer <cimport,nodecl> end
+global function sapp_wgpu_get_depth_stencil_view(): pointer <cimport,nodecl> end
+global function sapp_android_get_native_activity(): pointer <cimport,nodecl> end

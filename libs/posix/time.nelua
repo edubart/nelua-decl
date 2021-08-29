@@ -1,5 +1,5 @@
 ## cinclude '<time.h>'
-global tm: type <cimport, nodecl, ctypedef> = @record{
+global tm: type <cimport,nodecl,ctypedef> = @record{
   tm_sec: cint,
   tm_min: cint,
   tm_hour: cint,
@@ -12,18 +12,18 @@ global tm: type <cimport, nodecl, ctypedef> = @record{
   __tm_gmtoff: clong,
   __tm_zone: cstring
 }
-global timespec: type <cimport, nodecl, ctypedef> = @record{
+global timespec: type <cimport,nodecl,ctypedef> = @record{
   tv_sec: ctime_t,
   tv_nsec: clong
 }
 global timer_t: type = @pointer
-global itimerspec: type <cimport, nodecl, ctypedef> = @record{
+global itimerspec: type <cimport,nodecl,ctypedef> = @record{
   it_interval: timespec,
   it_value: timespec
 }
-global sigevent: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global __locale_data: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
-global __locale_struct: type <cimport, nodecl, ctypedef> = @record{
+global sigevent: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global __locale_data: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global __locale_struct: type <cimport,nodecl,ctypedef> = @record{
   __locales: [13]*__locale_data,
   __ctype_b: *cushort,
   __ctype_tolower: *cint,
@@ -31,40 +31,40 @@ global __locale_struct: type <cimport, nodecl, ctypedef> = @record{
   __names: [13]cstring
 }
 global locale_t: type = @*__locale_struct
-global function clock(): cclock_t <cimport, nodecl> end
-global function time(timer: *ctime_t): ctime_t <cimport, nodecl> end
-global function difftime(time1: ctime_t, time0: ctime_t): float64 <cimport, nodecl> end
-global function mktime(tp: *tm): ctime_t <cimport, nodecl> end
-global function strftime(s: cstring, maxsize: csize, format: cstring, tp: *tm): csize <cimport, nodecl> end
-global function strptime(s: cstring, fmt: cstring, tp: *tm): cstring <cimport, nodecl> end
-global function strftime_l(s: cstring, maxsize: csize, format: cstring, tp: *tm, loc: locale_t): csize <cimport, nodecl> end
-global function gmtime(timer: *ctime_t): *tm <cimport, nodecl> end
-global function localtime(timer: *ctime_t): *tm <cimport, nodecl> end
-global function gmtime_r(timer: *ctime_t, tp: *tm): *tm <cimport, nodecl> end
-global function localtime_r(timer: *ctime_t, tp: *tm): *tm <cimport, nodecl> end
-global function asctime(tp: *tm): cstring <cimport, nodecl> end
-global function ctime(timer: *ctime_t): cstring <cimport, nodecl> end
-global function asctime_r(tp: *tm, buf: cstring): cstring <cimport, nodecl> end
-global function ctime_r(timer: *ctime_t, buf: cstring): cstring <cimport, nodecl> end
-global tzname: [2]cstring <cimport, nodecl>
-global function tzset() <cimport, nodecl> end
-global daylight: cint <cimport, nodecl>
-global timezone: clong <cimport, nodecl>
-global function nanosleep(requested_time: *timespec, remaining: *timespec): cint <cimport, nodecl> end
-global function clock_getres(clock_id: cint, res: *timespec): cint <cimport, nodecl> end
-global function clock_gettime(clock_id: cint, tp: *timespec): cint <cimport, nodecl> end
-global function clock_settime(clock_id: cint, tp: *timespec): cint <cimport, nodecl> end
-global function clock_nanosleep(clock_id: cint, flags: cint, req: *timespec, rem: *timespec): cint <cimport, nodecl> end
-global function clock_getcpuclockid(pid: cint, clock_id: *cint): cint <cimport, nodecl> end
-global function timer_create(clock_id: cint, evp: *sigevent, timerid: *timer_t): cint <cimport, nodecl> end
-global function timer_delete(timerid: timer_t): cint <cimport, nodecl> end
-global function timer_settime(timerid: timer_t, flags: cint, value: *itimerspec, ovalue: *itimerspec): cint <cimport, nodecl> end
-global function timer_gettime(timerid: timer_t, value: *itimerspec): cint <cimport, nodecl> end
-global function timer_getoverrun(timerid: timer_t): cint <cimport, nodecl> end
-global function timespec_get(ts: *timespec, base: cint): cint <cimport, nodecl> end
-global getdate_err: cint <cimport, nodecl>
-global function getdate(string: cstring): *tm <cimport, nodecl> end
-global CLOCKS_PER_SEC: clong <cimport, nodecl, const>
+global function clock(): cclock_t <cimport,nodecl> end
+global function time(timer: *ctime_t): ctime_t <cimport,nodecl> end
+global function difftime(time1: ctime_t, time0: ctime_t): float64 <cimport,nodecl> end
+global function mktime(tp: *tm): ctime_t <cimport,nodecl> end
+global function strftime(s: cstring, maxsize: csize, format: cstring, tp: *tm): csize <cimport,nodecl> end
+global function strptime(s: cstring, fmt: cstring, tp: *tm): cstring <cimport,nodecl> end
+global function strftime_l(s: cstring, maxsize: csize, format: cstring, tp: *tm, loc: locale_t): csize <cimport,nodecl> end
+global function gmtime(timer: *ctime_t): *tm <cimport,nodecl> end
+global function localtime(timer: *ctime_t): *tm <cimport,nodecl> end
+global function gmtime_r(timer: *ctime_t, tp: *tm): *tm <cimport,nodecl> end
+global function localtime_r(timer: *ctime_t, tp: *tm): *tm <cimport,nodecl> end
+global function asctime(tp: *tm): cstring <cimport,nodecl> end
+global function ctime(timer: *ctime_t): cstring <cimport,nodecl> end
+global function asctime_r(tp: *tm, buf: cstring): cstring <cimport,nodecl> end
+global function ctime_r(timer: *ctime_t, buf: cstring): cstring <cimport,nodecl> end
+global tzname: [2]cstring <cimport,nodecl>
+global function tzset(): void <cimport,nodecl> end
+global daylight: cint <cimport,nodecl>
+global timezone: clong <cimport,nodecl>
+global function nanosleep(requested_time: *timespec, remaining: *timespec): cint <cimport,nodecl> end
+global function clock_getres(clock_id: cint, res: *timespec): cint <cimport,nodecl> end
+global function clock_gettime(clock_id: cint, tp: *timespec): cint <cimport,nodecl> end
+global function clock_settime(clock_id: cint, tp: *timespec): cint <cimport,nodecl> end
+global function clock_nanosleep(clock_id: cint, flags: cint, req: *timespec, rem: *timespec): cint <cimport,nodecl> end
+global function clock_getcpuclockid(pid: cint, clock_id: *cint): cint <cimport,nodecl> end
+global function timer_create(clock_id: cint, evp: *sigevent, timerid: *timer_t): cint <cimport,nodecl> end
+global function timer_delete(timerid: timer_t): cint <cimport,nodecl> end
+global function timer_settime(timerid: timer_t, flags: cint, value: *itimerspec, ovalue: *itimerspec): cint <cimport,nodecl> end
+global function timer_gettime(timerid: timer_t, value: *itimerspec): cint <cimport,nodecl> end
+global function timer_getoverrun(timerid: timer_t): cint <cimport,nodecl> end
+global function timespec_get(ts: *timespec, base: cint): cint <cimport,nodecl> end
+global getdate_err: cint <cimport,nodecl>
+global function getdate(string: cstring): *tm <cimport,nodecl> end
+global CLOCKS_PER_SEC: clong <cimport,nodecl,const>
 global CLOCK_REALTIME: cint <comptime> = 0
 global CLOCK_MONOTONIC: cint <comptime> = 1
 global CLOCK_PROCESS_CPUTIME_ID: cint <comptime> = 2

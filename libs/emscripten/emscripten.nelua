@@ -1,79 +1,79 @@
 ##[[
 cinclude '<emscripten.h>'
 ]]
-global function emscripten_asm_const_int(code: cstring, arg_sigs: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function emscripten_asm_const_double(code: cstring, arg_sigs: cstring, ...: cvarargs): float64 <cimport, nodecl> end
-global function emscripten_asm_const_int_sync_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs): cint <cimport, nodecl> end
-global function emscripten_asm_const_double_sync_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs): float64 <cimport, nodecl> end
-global function emscripten_asm_const_async_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs) <cimport, nodecl> end
-global function emscripten_async_wget(url: cstring, file: cstring, onload: function(cstring), onerror: function(cstring)) <cimport, nodecl> end
-global function emscripten_async_wget_data(url: cstring, arg: pointer, onload: function(pointer, pointer, cint), onerror: function(pointer)) <cimport, nodecl> end
-global function emscripten_async_wget2(url: cstring, file: cstring, requesttype: cstring, param: cstring, arg: pointer, onload: function(cuint, pointer, cstring), onerror: function(cuint, pointer, cint), onprogress: function(cuint, pointer, cint)): cint <cimport, nodecl> end
-global function emscripten_async_wget2_data(url: cstring, requesttype: cstring, param: cstring, arg: pointer, free: cint, onload: function(cuint, pointer, pointer, cuint), onerror: function(cuint, pointer, cint, cstring), onprogress: function(cuint, pointer, cint, cint)): cint <cimport, nodecl> end
-global function emscripten_async_wget2_abort(handle: cint) <cimport, nodecl> end
-global function emscripten_wget(url: cstring, file: cstring) <cimport, nodecl> end
-global function emscripten_wget_data(url: cstring, pbuffer: *pointer, pnum: *cint, perror: *cint) <cimport, nodecl> end
-global function emscripten_run_script(script: cstring) <cimport, nodecl> end
-global function emscripten_run_script_int(script: cstring): cint <cimport, nodecl> end
-global function emscripten_run_script_string(script: cstring): cstring <cimport, nodecl> end
-global function emscripten_async_run_script(script: cstring, millis: cint) <cimport, nodecl> end
-global function emscripten_async_load_script(script: cstring, onload: function(), onerror: function()) <cimport, nodecl> end
-global function emscripten_set_main_loop(func: function(), fps: cint, simulate_infinite_loop: cint) <cimport, nodecl> end
-global function emscripten_set_main_loop_timing(mode: cint, value: cint): cint <cimport, nodecl> end
-global function emscripten_get_main_loop_timing(mode: *cint, value: *cint) <cimport, nodecl> end
-global function emscripten_set_main_loop_arg(func: function(pointer), arg: pointer, fps: cint, simulate_infinite_loop: cint) <cimport, nodecl> end
-global function emscripten_pause_main_loop() <cimport, nodecl> end
-global function emscripten_resume_main_loop() <cimport, nodecl> end
-global function emscripten_cancel_main_loop() <cimport, nodecl> end
-global function emscripten_set_socket_error_callback(userData: pointer, callback: function(cint, cint, cstring, pointer)) <cimport, nodecl> end
-global function emscripten_set_socket_open_callback(userData: pointer, callback: function(cint, pointer)) <cimport, nodecl> end
-global function emscripten_set_socket_listen_callback(userData: pointer, callback: function(cint, pointer)) <cimport, nodecl> end
-global function emscripten_set_socket_connection_callback(userData: pointer, callback: function(cint, pointer)) <cimport, nodecl> end
-global function emscripten_set_socket_message_callback(userData: pointer, callback: function(cint, pointer)) <cimport, nodecl> end
-global function emscripten_set_socket_close_callback(userData: pointer, callback: function(cint, pointer)) <cimport, nodecl> end
-global function emscripten_set_main_loop_expected_blockers(num: cint) <cimport, nodecl> end
-global function emscripten_async_call(func: function(pointer), arg: pointer, millis: cint) <cimport, nodecl> end
-global function emscripten_exit_with_live_runtime() <cimport, nodecl> end
-global function emscripten_force_exit(status: cint) <cimport, nodecl> end
-global function emscripten_get_device_pixel_ratio(): float64 <cimport, nodecl> end
-global function emscripten_get_window_title(): cstring <cimport, nodecl> end
-global function emscripten_set_window_title(a1: cstring) <cimport, nodecl> end
-global function emscripten_get_screen_size(width: *cint, height: *cint) <cimport, nodecl> end
-global function emscripten_hide_mouse() <cimport, nodecl> end
-global function emscripten_get_now(): float64 <cimport, nodecl> end
-global function emscripten_random(): float32 <cimport, nodecl> end
-global function emscripten_idb_async_load(db_name: cstring, file_id: cstring, arg: pointer, onload: function(pointer, pointer, cint), onerror: function(pointer)) <cimport, nodecl> end
-global function emscripten_idb_async_store(db_name: cstring, file_id: cstring, ptr: pointer, num: cint, arg: pointer, onstore: function(pointer), onerror: function(pointer)) <cimport, nodecl> end
-global function emscripten_idb_async_delete(db_name: cstring, file_id: cstring, arg: pointer, ondelete: function(pointer), onerror: function(pointer)) <cimport, nodecl> end
-global function emscripten_idb_async_exists(db_name: cstring, file_id: cstring, arg: pointer, oncheck: function(pointer, cint), onerror: function(pointer)) <cimport, nodecl> end
-global function emscripten_idb_load(db_name: cstring, file_id: cstring, pbuffer: *pointer, pnum: *cint, perror: *cint) <cimport, nodecl> end
-global function emscripten_idb_store(db_name: cstring, file_id: cstring, buffer: pointer, num: cint, perror: *cint) <cimport, nodecl> end
-global function emscripten_idb_delete(db_name: cstring, file_id: cstring, perror: *cint) <cimport, nodecl> end
-global function emscripten_idb_exists(db_name: cstring, file_id: cstring, pexists: *cint, perror: *cint) <cimport, nodecl> end
-global function emscripten_idb_load_blob(db_name: cstring, file_id: cstring, pblob: *cint, perror: *cint) <cimport, nodecl> end
-global function emscripten_idb_store_blob(db_name: cstring, file_id: cstring, buffer: pointer, num: cint, perror: *cint) <cimport, nodecl> end
-global function emscripten_idb_read_from_blob(blob: cint, start: cint, num: cint, buffer: pointer) <cimport, nodecl> end
-global function emscripten_idb_free_blob(blob: cint) <cimport, nodecl> end
-global function emscripten_run_preload_plugins(file: cstring, onload: function(cstring), onerror: function(cstring)): cint <cimport, nodecl> end
-global function emscripten_run_preload_plugins_data(data: cstring, size: cint, suffix: cstring, arg: pointer, onload: function(pointer, cstring), onerror: function(pointer)) <cimport, nodecl> end
-global function emscripten_lazy_load_code() <cimport, nodecl> end
-global function emscripten_create_worker(url: cstring): cint <cimport, nodecl> end
-global function emscripten_destroy_worker(worker: cint) <cimport, nodecl> end
-global function emscripten_call_worker(worker: cint, funcname: cstring, data: cstring, size: cint, callback: function(cstring, cint, pointer), arg: pointer) <cimport, nodecl> end
-global function emscripten_worker_respond(data: cstring, size: cint) <cimport, nodecl> end
-global function emscripten_worker_respond_provisionally(data: cstring, size: cint) <cimport, nodecl> end
-global function emscripten_get_worker_queue_size(worker: cint): cint <cimport, nodecl> end
-global function emscripten_get_compiler_setting(name: cstring): cint <cimport, nodecl> end
-global function emscripten_has_asyncify(): cint <cimport, nodecl> end
-global function emscripten_debugger() <cimport, nodecl> end
-global FILE: type <cimport, nodecl, forwarddecl> = @record{}
-global function emscripten_get_preloaded_image_data(path: cstring, w: *cint, h: *cint): cstring <cimport, nodecl> end
-global function emscripten_get_preloaded_image_data_from_FILE(file: *FILE, w: *cint, h: *cint): cstring <cimport, nodecl> end
-global function emscripten_log(flags: cint, format: cstring, ...: cvarargs) <cimport, nodecl> end
-global function emscripten_get_callstack(flags: cint, out: cstring, maxbytes: cint): cint <cimport, nodecl> end
-global function emscripten_print_double(x: float64, to: cstring, max: cint): cint <cimport, nodecl> end
-global function emscripten_scan_registers(func: function(pointer, pointer)) <cimport, nodecl> end
-global function emscripten_scan_stack(func: function(pointer, pointer)) <cimport, nodecl> end
-global function emscripten_dlopen(filename: cstring, flags: cint, user_data: pointer, onsuccess: function(pointer, pointer), onerror: function(pointer)) <cimport, nodecl> end
-global function emscripten_sleep(ms: cuint) <cimport, nodecl> end
-global function emscripten_sleep_with_yield(ms: cuint) <cimport, nodecl> end
+global function emscripten_asm_const_int(code: cstring, arg_sigs: cstring, ...: cvarargs): cint <cimport,nodecl> end
+global function emscripten_asm_const_double(code: cstring, arg_sigs: cstring, ...: cvarargs): float64 <cimport,nodecl> end
+global function emscripten_asm_const_int_sync_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs): cint <cimport,nodecl> end
+global function emscripten_asm_const_double_sync_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs): float64 <cimport,nodecl> end
+global function emscripten_asm_const_async_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs): void <cimport,nodecl> end
+global function emscripten_async_wget(url: cstring, file: cstring, onload: function(cstring): void, onerror: function(cstring): void): void <cimport,nodecl> end
+global function emscripten_async_wget_data(url: cstring, arg: pointer, onload: function(pointer, pointer, cint): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_async_wget2(url: cstring, file: cstring, requesttype: cstring, param: cstring, arg: pointer, onload: function(cuint, pointer, cstring): void, onerror: function(cuint, pointer, cint): void, onprogress: function(cuint, pointer, cint): void): cint <cimport,nodecl> end
+global function emscripten_async_wget2_data(url: cstring, requesttype: cstring, param: cstring, arg: pointer, free: cint, onload: function(cuint, pointer, pointer, cuint): void, onerror: function(cuint, pointer, cint, cstring): void, onprogress: function(cuint, pointer, cint, cint): void): cint <cimport,nodecl> end
+global function emscripten_async_wget2_abort(handle: cint): void <cimport,nodecl> end
+global function emscripten_wget(url: cstring, file: cstring): void <cimport,nodecl> end
+global function emscripten_wget_data(url: cstring, pbuffer: *pointer, pnum: *cint, perror: *cint): void <cimport,nodecl> end
+global function emscripten_run_script(script: cstring): void <cimport,nodecl> end
+global function emscripten_run_script_int(script: cstring): cint <cimport,nodecl> end
+global function emscripten_run_script_string(script: cstring): cstring <cimport,nodecl> end
+global function emscripten_async_run_script(script: cstring, millis: cint): void <cimport,nodecl> end
+global function emscripten_async_load_script(script: cstring, onload: function(): void, onerror: function(): void): void <cimport,nodecl> end
+global function emscripten_set_main_loop(func: function(): void, fps: cint, simulate_infinite_loop: cint): void <cimport,nodecl> end
+global function emscripten_set_main_loop_timing(mode: cint, value: cint): cint <cimport,nodecl> end
+global function emscripten_get_main_loop_timing(mode: *cint, value: *cint): void <cimport,nodecl> end
+global function emscripten_set_main_loop_arg(func: function(pointer): void, arg: pointer, fps: cint, simulate_infinite_loop: cint): void <cimport,nodecl> end
+global function emscripten_pause_main_loop(): void <cimport,nodecl> end
+global function emscripten_resume_main_loop(): void <cimport,nodecl> end
+global function emscripten_cancel_main_loop(): void <cimport,nodecl> end
+global function emscripten_set_socket_error_callback(userData: pointer, callback: function(cint, cint, cstring, pointer): void): void <cimport,nodecl> end
+global function emscripten_set_socket_open_callback(userData: pointer, callback: function(cint, pointer): void): void <cimport,nodecl> end
+global function emscripten_set_socket_listen_callback(userData: pointer, callback: function(cint, pointer): void): void <cimport,nodecl> end
+global function emscripten_set_socket_connection_callback(userData: pointer, callback: function(cint, pointer): void): void <cimport,nodecl> end
+global function emscripten_set_socket_message_callback(userData: pointer, callback: function(cint, pointer): void): void <cimport,nodecl> end
+global function emscripten_set_socket_close_callback(userData: pointer, callback: function(cint, pointer): void): void <cimport,nodecl> end
+global function emscripten_set_main_loop_expected_blockers(num: cint): void <cimport,nodecl> end
+global function emscripten_async_call(func: function(pointer): void, arg: pointer, millis: cint): void <cimport,nodecl> end
+global function emscripten_exit_with_live_runtime(): void <cimport,nodecl> end
+global function emscripten_force_exit(status: cint): void <cimport,nodecl> end
+global function emscripten_get_device_pixel_ratio(): float64 <cimport,nodecl> end
+global function emscripten_get_window_title(): cstring <cimport,nodecl> end
+global function emscripten_set_window_title(a1: cstring): void <cimport,nodecl> end
+global function emscripten_get_screen_size(width: *cint, height: *cint): void <cimport,nodecl> end
+global function emscripten_hide_mouse(): void <cimport,nodecl> end
+global function emscripten_get_now(): float64 <cimport,nodecl> end
+global function emscripten_random(): float32 <cimport,nodecl> end
+global function emscripten_idb_async_load(db_name: cstring, file_id: cstring, arg: pointer, onload: function(pointer, pointer, cint): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_idb_async_store(db_name: cstring, file_id: cstring, ptr: pointer, num: cint, arg: pointer, onstore: function(pointer): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_idb_async_delete(db_name: cstring, file_id: cstring, arg: pointer, ondelete: function(pointer): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_idb_async_exists(db_name: cstring, file_id: cstring, arg: pointer, oncheck: function(pointer, cint): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_idb_load(db_name: cstring, file_id: cstring, pbuffer: *pointer, pnum: *cint, perror: *cint): void <cimport,nodecl> end
+global function emscripten_idb_store(db_name: cstring, file_id: cstring, buffer: pointer, num: cint, perror: *cint): void <cimport,nodecl> end
+global function emscripten_idb_delete(db_name: cstring, file_id: cstring, perror: *cint): void <cimport,nodecl> end
+global function emscripten_idb_exists(db_name: cstring, file_id: cstring, pexists: *cint, perror: *cint): void <cimport,nodecl> end
+global function emscripten_idb_load_blob(db_name: cstring, file_id: cstring, pblob: *cint, perror: *cint): void <cimport,nodecl> end
+global function emscripten_idb_store_blob(db_name: cstring, file_id: cstring, buffer: pointer, num: cint, perror: *cint): void <cimport,nodecl> end
+global function emscripten_idb_read_from_blob(blob: cint, start: cint, num: cint, buffer: pointer): void <cimport,nodecl> end
+global function emscripten_idb_free_blob(blob: cint): void <cimport,nodecl> end
+global function emscripten_run_preload_plugins(file: cstring, onload: function(cstring): void, onerror: function(cstring): void): cint <cimport,nodecl> end
+global function emscripten_run_preload_plugins_data(data: cstring, size: cint, suffix: cstring, arg: pointer, onload: function(pointer, cstring): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_lazy_load_code(): void <cimport,nodecl> end
+global function emscripten_create_worker(url: cstring): cint <cimport,nodecl> end
+global function emscripten_destroy_worker(worker: cint): void <cimport,nodecl> end
+global function emscripten_call_worker(worker: cint, funcname: cstring, data: cstring, size: cint, callback: function(cstring, cint, pointer): void, arg: pointer): void <cimport,nodecl> end
+global function emscripten_worker_respond(data: cstring, size: cint): void <cimport,nodecl> end
+global function emscripten_worker_respond_provisionally(data: cstring, size: cint): void <cimport,nodecl> end
+global function emscripten_get_worker_queue_size(worker: cint): cint <cimport,nodecl> end
+global function emscripten_get_compiler_setting(name: cstring): cint <cimport,nodecl> end
+global function emscripten_has_asyncify(): cint <cimport,nodecl> end
+global function emscripten_debugger(): void <cimport,nodecl> end
+global FILE: type <cimport,nodecl,forwarddecl> = @record{}
+global function emscripten_get_preloaded_image_data(path: cstring, w: *cint, h: *cint): cstring <cimport,nodecl> end
+global function emscripten_get_preloaded_image_data_from_FILE(file: *FILE, w: *cint, h: *cint): cstring <cimport,nodecl> end
+global function emscripten_log(flags: cint, format: cstring, ...: cvarargs): void <cimport,nodecl> end
+global function emscripten_get_callstack(flags: cint, out: cstring, maxbytes: cint): cint <cimport,nodecl> end
+global function emscripten_print_double(x: float64, to: cstring, max: cint): cint <cimport,nodecl> end
+global function emscripten_scan_registers(func: function(pointer, pointer): void): void <cimport,nodecl> end
+global function emscripten_scan_stack(func: function(pointer, pointer): void): void <cimport,nodecl> end
+global function emscripten_dlopen(filename: cstring, flags: cint, user_data: pointer, onsuccess: function(pointer, pointer): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_sleep(ms: cuint): void <cimport,nodecl> end
+global function emscripten_sleep_with_yield(ms: cuint): void <cimport,nodecl> end

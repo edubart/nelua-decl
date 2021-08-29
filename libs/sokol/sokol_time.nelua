@@ -30,13 +30,13 @@ SOKOL_TIME_API_DECL void stm_sleep(uint64_t ms){
 ]==]
 ]]
 global function stm_sleep(ms: uint64): float64 <cimport, nodecl> end
-global function stm_setup() <cimport, nodecl> end
-global function stm_now(): uint64 <cimport, nodecl> end
-global function stm_diff(new_ticks: uint64, old_ticks: uint64): uint64 <cimport, nodecl> end
-global function stm_since(start_ticks: uint64): uint64 <cimport, nodecl> end
-global function stm_laptime(last_time: *uint64): uint64 <cimport, nodecl> end
-global function stm_round_to_common_refresh_rate(frame_ticks: uint64): uint64 <cimport, nodecl> end
-global function stm_sec(ticks: uint64): float64 <cimport, nodecl> end
-global function stm_ms(ticks: uint64): float64 <cimport, nodecl> end
-global function stm_us(ticks: uint64): float64 <cimport, nodecl> end
-global function stm_ns(ticks: uint64): float64 <cimport, nodecl> end
+global function stm_setup(): void <cimport,nodecl> end
+global function stm_now(): uint64 <cimport,nodecl> end
+global function stm_diff(new_ticks: uint64, old_ticks: uint64): uint64 <cimport,nodecl> end
+global function stm_since(start_ticks: uint64): uint64 <cimport,nodecl> end
+global function stm_laptime(last_time: *uint64): uint64 <cimport,nodecl> end
+global function stm_round_to_common_refresh_rate(frame_ticks: uint64): uint64 <cimport,nodecl> end
+global function stm_sec(ticks: uint64): float64 <cimport,nodecl> end
+global function stm_ms(ticks: uint64): float64 <cimport,nodecl> end
+global function stm_us(ticks: uint64): float64 <cimport,nodecl> end
+global function stm_ns(ticks: uint64): float64 <cimport,nodecl> end

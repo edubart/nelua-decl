@@ -1,9 +1,9 @@
 ## cinclude '<sys/wait.h>'
-global __sigval_t: type <cimport, nodecl> = @union{
+global __sigval_t: type <cimport,nodecl> = @union{
   sival_int: cint,
   sival_ptr: pointer
 }
-global siginfo_t: type <cimport, nodecl> = @record{
+global siginfo_t: type <cimport,nodecl> = @record{
   si_signo: cint,
   si_errno: cint,
   si_code: cint,
@@ -53,11 +53,11 @@ global siginfo_t: type <cimport, nodecl> = @record{
     }
   }
 }
-global idtype_t: type <cimport, nodecl, using> = @enum(cint){
+global idtype_t: type <cimport,nodecl,using> = @enum(cint){
   P_ALL = 0,
   P_PID = 1,
   P_PGID = 2
 }
-global function wait(stat_loc: *cint): cint <cimport, nodecl> end
-global function waitpid(pid: cint, stat_loc: *cint, options: cint): cint <cimport, nodecl> end
-global function waitid(idtype: idtype_t, id: cuint, infop: *siginfo_t, options: cint): cint <cimport, nodecl> end
+global function wait(stat_loc: *cint): cint <cimport,nodecl> end
+global function waitpid(pid: cint, stat_loc: *cint, options: cint): cint <cimport,nodecl> end
+global function waitid(idtype: idtype_t, id: cuint, infop: *siginfo_t, options: cint): cint <cimport,nodecl> end

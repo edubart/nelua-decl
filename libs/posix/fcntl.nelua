@@ -1,17 +1,17 @@
 ## cinclude '<fcntl.h>'
-global flock: type <cimport, nodecl, ctypedef> = @record{
+global flock: type <cimport,nodecl,ctypedef> = @record{
   l_type: cshort,
   l_whence: cshort,
   l_start: clong,
   l_len: clong,
   l_pid: cint
 }
-global function fcntl(fd: cint, cmd: cint, ...: cvarargs): cint <cimport, nodecl> end
-global function open(file: cstring, oflag: cint, ...: cvarargs): cint <cimport, nodecl> end
-global function openat(fd: cint, file: cstring, oflag: cint, ...: cvarargs): cint <cimport, nodecl> end
-global function creat(file: cstring, mode: cuint): cint <cimport, nodecl> end
-global function posix_fadvise(fd: cint, offset: clong, len: clong, advise: cint): cint <cimport, nodecl> end
-global function posix_fallocate(fd: cint, offset: clong, len: clong): cint <cimport, nodecl> end
+global function fcntl(fd: cint, cmd: cint, ...: cvarargs): cint <cimport,nodecl> end
+global function open(file: cstring, oflag: cint, ...: cvarargs): cint <cimport,nodecl> end
+global function openat(fd: cint, file: cstring, oflag: cint, ...: cvarargs): cint <cimport,nodecl> end
+global function creat(file: cstring, mode: cuint): cint <cimport,nodecl> end
+global function posix_fadvise(fd: cint, offset: clong, len: clong, advise: cint): cint <cimport,nodecl> end
+global function posix_fallocate(fd: cint, offset: clong, len: clong): cint <cimport,nodecl> end
 global F_GETLK64: cint <comptime> = 5
 global F_SETLK64: cint <comptime> = 6
 global F_SETLKW64: cint <comptime> = 7
@@ -32,18 +32,18 @@ global O_ASYNC: cint <comptime> = 8192
 global F_GETLK: cint <comptime> = 5
 global F_SETLK: cint <comptime> = 6
 global F_SETLKW: cint <comptime> = 7
-global O_DIRECTORY: cint <cimport, nodecl, const>
-global O_NOFOLLOW: cint <cimport, nodecl, const>
-global O_CLOEXEC: cint <cimport, nodecl, const>
-global O_DSYNC: cint <cimport, nodecl, const>
+global O_DIRECTORY: cint <cimport,nodecl,const>
+global O_NOFOLLOW: cint <cimport,nodecl,const>
+global O_CLOEXEC: cint <cimport,nodecl,const>
+global O_DSYNC: cint <cimport,nodecl,const>
 global O_RSYNC: cint <comptime> = O_SYNC
 global F_DUPFD: cint <comptime> = 0
 global F_GETFD: cint <comptime> = 1
 global F_SETFD: cint <comptime> = 2
 global F_GETFL: cint <comptime> = 3
 global F_SETFL: cint <comptime> = 4
-global F_SETOWN: cint <cimport, nodecl, const>
-global F_GETOWN: cint <cimport, nodecl, const>
+global F_SETOWN: cint <cimport,nodecl,const>
+global F_GETOWN: cint <cimport,nodecl,const>
 global F_DUPFD_CLOEXEC: cint <comptime> = 1030
 global FD_CLOEXEC: cint <comptime> = 1
 global F_RDLCK: cint <comptime> = 0
@@ -55,8 +55,8 @@ global POSIX_FADV_NORMAL: cint <comptime> = 0
 global POSIX_FADV_RANDOM: cint <comptime> = 1
 global POSIX_FADV_SEQUENTIAL: cint <comptime> = 2
 global POSIX_FADV_WILLNEED: cint <comptime> = 3
-global POSIX_FADV_DONTNEED: cint <cimport, nodecl, const>
-global POSIX_FADV_NOREUSE: cint <cimport, nodecl, const>
+global POSIX_FADV_DONTNEED: cint <cimport,nodecl,const>
+global POSIX_FADV_NOREUSE: cint <cimport,nodecl,const>
 global F_OK: cint <comptime> = 0
 global AT_FDCWD: cint <comptime> = -100
 global AT_SYMLINK_NOFOLLOW: cint <comptime> = 0x100

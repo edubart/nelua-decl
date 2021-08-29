@@ -1,120 +1,120 @@
 ## cinclude '<pthread.h>'
 ## cflags '-pthread'
-global timespec: type <cimport, nodecl, ctypedef> = @record{
+global timespec: type <cimport,nodecl,ctypedef> = @record{
   tv_sec: ctime_t,
   tv_nsec: clong
 }
-global sched_param: type <cimport, nodecl, ctypedef> = @record{
+global sched_param: type <cimport,nodecl,ctypedef> = @record{
   sched_priority: cint
 }
-global pthread_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_mutexattr_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_condattr_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_key_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_attr_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_mutex_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_cond_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_rwlock_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_rwlockattr_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_barrier_t: type <cimport, nodecl, cincomplete> = @record{}
-global pthread_barrierattr_t: type <cimport, nodecl, cincomplete> = @record{}
-global function pthread_create(newthread: *pthread_t, attr: *pthread_attr_t, start_routine: function(pointer): pointer, arg: pointer): cint <cimport, nodecl> end
-global function pthread_exit(retval: pointer) <cimport, nodecl> end
-global function pthread_join(th: pthread_t, thread_return: *pointer): cint <cimport, nodecl> end
-global function pthread_detach(th: pthread_t): cint <cimport, nodecl> end
-global function pthread_self(): pthread_t <cimport, nodecl> end
-global function pthread_equal(thread1: pthread_t, thread2: pthread_t): cint <cimport, nodecl> end
-global function pthread_attr_init(attr: *pthread_attr_t): cint <cimport, nodecl> end
-global function pthread_attr_destroy(attr: *pthread_attr_t): cint <cimport, nodecl> end
-global function pthread_attr_getdetachstate(attr: *pthread_attr_t, detachstate: *cint): cint <cimport, nodecl> end
-global function pthread_attr_setdetachstate(attr: *pthread_attr_t, detachstate: cint): cint <cimport, nodecl> end
-global function pthread_attr_getguardsize(attr: *pthread_attr_t, guardsize: *csize): cint <cimport, nodecl> end
-global function pthread_attr_setguardsize(attr: *pthread_attr_t, guardsize: csize): cint <cimport, nodecl> end
-global function pthread_attr_getschedparam(attr: *pthread_attr_t, param: *sched_param): cint <cimport, nodecl> end
-global function pthread_attr_setschedparam(attr: *pthread_attr_t, param: *sched_param): cint <cimport, nodecl> end
-global function pthread_attr_getschedpolicy(attr: *pthread_attr_t, policy: *cint): cint <cimport, nodecl> end
-global function pthread_attr_setschedpolicy(attr: *pthread_attr_t, policy: cint): cint <cimport, nodecl> end
-global function pthread_attr_getinheritsched(attr: *pthread_attr_t, inherit: *cint): cint <cimport, nodecl> end
-global function pthread_attr_setinheritsched(attr: *pthread_attr_t, inherit: cint): cint <cimport, nodecl> end
-global function pthread_attr_getscope(attr: *pthread_attr_t, scope: *cint): cint <cimport, nodecl> end
-global function pthread_attr_setscope(attr: *pthread_attr_t, scope: cint): cint <cimport, nodecl> end
-global function pthread_attr_getstackaddr(attr: *pthread_attr_t, stackaddr: *pointer): cint <cimport, nodecl> end
-global function pthread_attr_setstackaddr(attr: *pthread_attr_t, stackaddr: pointer): cint <cimport, nodecl> end
-global function pthread_attr_getstacksize(attr: *pthread_attr_t, stacksize: *csize): cint <cimport, nodecl> end
-global function pthread_attr_setstacksize(attr: *pthread_attr_t, stacksize: csize): cint <cimport, nodecl> end
-global function pthread_attr_getstack(attr: *pthread_attr_t, stackaddr: *pointer, stacksize: *csize): cint <cimport, nodecl> end
-global function pthread_attr_setstack(attr: *pthread_attr_t, stackaddr: pointer, stacksize: csize): cint <cimport, nodecl> end
-global function pthread_setschedparam(target_thread: pthread_t, policy: cint, param: *sched_param): cint <cimport, nodecl> end
-global function pthread_getschedparam(target_thread: pthread_t, policy: *cint, param: *sched_param): cint <cimport, nodecl> end
-global function pthread_setschedprio(target_thread: pthread_t, prio: cint): cint <cimport, nodecl> end
-global function pthread_once(once_control: *cint, init_routine: function()): cint <cimport, nodecl> end
-global function pthread_setcancelstate(state: cint, oldstate: *cint): cint <cimport, nodecl> end
-global function pthread_setcanceltype(type: cint, oldtype: *cint): cint <cimport, nodecl> end
-global function pthread_cancel(th: pthread_t): cint <cimport, nodecl> end
-global function pthread_testcancel() <cimport, nodecl> end
-global function pthread_mutex_init(mutex: *pthread_mutex_t, mutexattr: *pthread_mutexattr_t): cint <cimport, nodecl> end
-global function pthread_mutex_destroy(mutex: *pthread_mutex_t): cint <cimport, nodecl> end
-global function pthread_mutex_trylock(mutex: *pthread_mutex_t): cint <cimport, nodecl> end
-global function pthread_mutex_lock(mutex: *pthread_mutex_t): cint <cimport, nodecl> end
-global function pthread_mutex_timedlock(mutex: *pthread_mutex_t, abstime: *timespec): cint <cimport, nodecl> end
-global function pthread_mutex_unlock(mutex: *pthread_mutex_t): cint <cimport, nodecl> end
-global function pthread_mutex_getprioceiling(mutex: *pthread_mutex_t, prioceiling: *cint): cint <cimport, nodecl> end
-global function pthread_mutex_setprioceiling(mutex: *pthread_mutex_t, prioceiling: cint, old_ceiling: *cint): cint <cimport, nodecl> end
-global function pthread_mutex_consistent(mutex: *pthread_mutex_t): cint <cimport, nodecl> end
-global function pthread_mutexattr_init(attr: *pthread_mutexattr_t): cint <cimport, nodecl> end
-global function pthread_mutexattr_destroy(attr: *pthread_mutexattr_t): cint <cimport, nodecl> end
-global function pthread_mutexattr_getpshared(attr: *pthread_mutexattr_t, pshared: *cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_setpshared(attr: *pthread_mutexattr_t, pshared: cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_gettype(attr: *pthread_mutexattr_t, kind: *cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_settype(attr: *pthread_mutexattr_t, kind: cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_getprotocol(attr: *pthread_mutexattr_t, protocol: *cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_setprotocol(attr: *pthread_mutexattr_t, protocol: cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_getprioceiling(attr: *pthread_mutexattr_t, prioceiling: *cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_setprioceiling(attr: *pthread_mutexattr_t, prioceiling: cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_getrobust(attr: *pthread_mutexattr_t, robustness: *cint): cint <cimport, nodecl> end
-global function pthread_mutexattr_setrobust(attr: *pthread_mutexattr_t, robustness: cint): cint <cimport, nodecl> end
-global function pthread_rwlock_init(rwlock: *pthread_rwlock_t, attr: *pthread_rwlockattr_t): cint <cimport, nodecl> end
-global function pthread_rwlock_destroy(rwlock: *pthread_rwlock_t): cint <cimport, nodecl> end
-global function pthread_rwlock_rdlock(rwlock: *pthread_rwlock_t): cint <cimport, nodecl> end
-global function pthread_rwlock_tryrdlock(rwlock: *pthread_rwlock_t): cint <cimport, nodecl> end
-global function pthread_rwlock_timedrdlock(rwlock: *pthread_rwlock_t, abstime: *timespec): cint <cimport, nodecl> end
-global function pthread_rwlock_wrlock(rwlock: *pthread_rwlock_t): cint <cimport, nodecl> end
-global function pthread_rwlock_trywrlock(rwlock: *pthread_rwlock_t): cint <cimport, nodecl> end
-global function pthread_rwlock_timedwrlock(rwlock: *pthread_rwlock_t, abstime: *timespec): cint <cimport, nodecl> end
-global function pthread_rwlock_unlock(rwlock: *pthread_rwlock_t): cint <cimport, nodecl> end
-global function pthread_rwlockattr_init(attr: *pthread_rwlockattr_t): cint <cimport, nodecl> end
-global function pthread_rwlockattr_destroy(attr: *pthread_rwlockattr_t): cint <cimport, nodecl> end
-global function pthread_rwlockattr_getpshared(attr: *pthread_rwlockattr_t, pshared: *cint): cint <cimport, nodecl> end
-global function pthread_rwlockattr_setpshared(attr: *pthread_rwlockattr_t, pshared: cint): cint <cimport, nodecl> end
-global function pthread_rwlockattr_getkind_np(attr: *pthread_rwlockattr_t, pref: *cint): cint <cimport, nodecl> end
-global function pthread_rwlockattr_setkind_np(attr: *pthread_rwlockattr_t, pref: cint): cint <cimport, nodecl> end
-global function pthread_cond_init(cond: *pthread_cond_t, cond_attr: *pthread_condattr_t): cint <cimport, nodecl> end
-global function pthread_cond_destroy(cond: *pthread_cond_t): cint <cimport, nodecl> end
-global function pthread_cond_signal(cond: *pthread_cond_t): cint <cimport, nodecl> end
-global function pthread_cond_broadcast(cond: *pthread_cond_t): cint <cimport, nodecl> end
-global function pthread_cond_wait(cond: *pthread_cond_t, mutex: *pthread_mutex_t): cint <cimport, nodecl> end
-global function pthread_cond_timedwait(cond: *pthread_cond_t, mutex: *pthread_mutex_t, abstime: *timespec): cint <cimport, nodecl> end
-global function pthread_condattr_init(attr: *pthread_condattr_t): cint <cimport, nodecl> end
-global function pthread_condattr_destroy(attr: *pthread_condattr_t): cint <cimport, nodecl> end
-global function pthread_condattr_getpshared(attr: *pthread_condattr_t, pshared: *cint): cint <cimport, nodecl> end
-global function pthread_condattr_setpshared(attr: *pthread_condattr_t, pshared: cint): cint <cimport, nodecl> end
-global function pthread_condattr_getclock(attr: *pthread_condattr_t, clock_id: *cint): cint <cimport, nodecl> end
-global function pthread_condattr_setclock(attr: *pthread_condattr_t, clock_id: cint): cint <cimport, nodecl> end
-global function pthread_spin_init(lock: *cint, pshared: cint): cint <cimport, nodecl> end
-global function pthread_spin_destroy(lock: *cint): cint <cimport, nodecl> end
-global function pthread_spin_lock(lock: *cint): cint <cimport, nodecl> end
-global function pthread_spin_trylock(lock: *cint): cint <cimport, nodecl> end
-global function pthread_spin_unlock(lock: *cint): cint <cimport, nodecl> end
-global function pthread_barrier_init(barrier: *pthread_barrier_t, attr: *pthread_barrierattr_t, count: cuint): cint <cimport, nodecl> end
-global function pthread_barrier_destroy(barrier: *pthread_barrier_t): cint <cimport, nodecl> end
-global function pthread_barrier_wait(barrier: *pthread_barrier_t): cint <cimport, nodecl> end
-global function pthread_barrierattr_init(attr: *pthread_barrierattr_t): cint <cimport, nodecl> end
-global function pthread_barrierattr_destroy(attr: *pthread_barrierattr_t): cint <cimport, nodecl> end
-global function pthread_barrierattr_getpshared(attr: *pthread_barrierattr_t, pshared: *cint): cint <cimport, nodecl> end
-global function pthread_barrierattr_setpshared(attr: *pthread_barrierattr_t, pshared: cint): cint <cimport, nodecl> end
-global function pthread_key_create(key: *pthread_key_t, destr_function: function(pointer)): cint <cimport, nodecl> end
-global function pthread_key_delete(key: pthread_key_t): cint <cimport, nodecl> end
-global function pthread_getspecific(key: pthread_key_t): pointer <cimport, nodecl> end
-global function pthread_setspecific(key: pthread_key_t, pointer: pointer): cint <cimport, nodecl> end
-global function pthread_getcpuclockid(thread_id: pthread_t, clock_id: *cint): cint <cimport, nodecl> end
-global function pthread_atfork(prepare: function(), parent: function(), child: function()): cint <cimport, nodecl> end
+global pthread_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_mutexattr_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_condattr_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_key_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_attr_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_mutex_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_cond_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_rwlock_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_rwlockattr_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_barrier_t: type <cimport,nodecl,cincomplete> = @record{}
+global pthread_barrierattr_t: type <cimport,nodecl,cincomplete> = @record{}
+global function pthread_create(newthread: *pthread_t, attr: *pthread_attr_t, start_routine: function(pointer): pointer, arg: pointer): cint <cimport,nodecl> end
+global function pthread_exit(retval: pointer): void <cimport,nodecl> end
+global function pthread_join(th: pthread_t, thread_return: *pointer): cint <cimport,nodecl> end
+global function pthread_detach(th: pthread_t): cint <cimport,nodecl> end
+global function pthread_self(): pthread_t <cimport,nodecl> end
+global function pthread_equal(thread1: pthread_t, thread2: pthread_t): cint <cimport,nodecl> end
+global function pthread_attr_init(attr: *pthread_attr_t): cint <cimport,nodecl> end
+global function pthread_attr_destroy(attr: *pthread_attr_t): cint <cimport,nodecl> end
+global function pthread_attr_getdetachstate(attr: *pthread_attr_t, detachstate: *cint): cint <cimport,nodecl> end
+global function pthread_attr_setdetachstate(attr: *pthread_attr_t, detachstate: cint): cint <cimport,nodecl> end
+global function pthread_attr_getguardsize(attr: *pthread_attr_t, guardsize: *csize): cint <cimport,nodecl> end
+global function pthread_attr_setguardsize(attr: *pthread_attr_t, guardsize: csize): cint <cimport,nodecl> end
+global function pthread_attr_getschedparam(attr: *pthread_attr_t, param: *sched_param): cint <cimport,nodecl> end
+global function pthread_attr_setschedparam(attr: *pthread_attr_t, param: *sched_param): cint <cimport,nodecl> end
+global function pthread_attr_getschedpolicy(attr: *pthread_attr_t, policy: *cint): cint <cimport,nodecl> end
+global function pthread_attr_setschedpolicy(attr: *pthread_attr_t, policy: cint): cint <cimport,nodecl> end
+global function pthread_attr_getinheritsched(attr: *pthread_attr_t, inherit: *cint): cint <cimport,nodecl> end
+global function pthread_attr_setinheritsched(attr: *pthread_attr_t, inherit: cint): cint <cimport,nodecl> end
+global function pthread_attr_getscope(attr: *pthread_attr_t, scope: *cint): cint <cimport,nodecl> end
+global function pthread_attr_setscope(attr: *pthread_attr_t, scope: cint): cint <cimport,nodecl> end
+global function pthread_attr_getstackaddr(attr: *pthread_attr_t, stackaddr: *pointer): cint <cimport,nodecl> end
+global function pthread_attr_setstackaddr(attr: *pthread_attr_t, stackaddr: pointer): cint <cimport,nodecl> end
+global function pthread_attr_getstacksize(attr: *pthread_attr_t, stacksize: *csize): cint <cimport,nodecl> end
+global function pthread_attr_setstacksize(attr: *pthread_attr_t, stacksize: csize): cint <cimport,nodecl> end
+global function pthread_attr_getstack(attr: *pthread_attr_t, stackaddr: *pointer, stacksize: *csize): cint <cimport,nodecl> end
+global function pthread_attr_setstack(attr: *pthread_attr_t, stackaddr: pointer, stacksize: csize): cint <cimport,nodecl> end
+global function pthread_setschedparam(target_thread: pthread_t, policy: cint, param: *sched_param): cint <cimport,nodecl> end
+global function pthread_getschedparam(target_thread: pthread_t, policy: *cint, param: *sched_param): cint <cimport,nodecl> end
+global function pthread_setschedprio(target_thread: pthread_t, prio: cint): cint <cimport,nodecl> end
+global function pthread_once(once_control: *cint, init_routine: function(): void): cint <cimport,nodecl> end
+global function pthread_setcancelstate(state: cint, oldstate: *cint): cint <cimport,nodecl> end
+global function pthread_setcanceltype(type: cint, oldtype: *cint): cint <cimport,nodecl> end
+global function pthread_cancel(th: pthread_t): cint <cimport,nodecl> end
+global function pthread_testcancel(): void <cimport,nodecl> end
+global function pthread_mutex_init(mutex: *pthread_mutex_t, mutexattr: *pthread_mutexattr_t): cint <cimport,nodecl> end
+global function pthread_mutex_destroy(mutex: *pthread_mutex_t): cint <cimport,nodecl> end
+global function pthread_mutex_trylock(mutex: *pthread_mutex_t): cint <cimport,nodecl> end
+global function pthread_mutex_lock(mutex: *pthread_mutex_t): cint <cimport,nodecl> end
+global function pthread_mutex_timedlock(mutex: *pthread_mutex_t, abstime: *timespec): cint <cimport,nodecl> end
+global function pthread_mutex_unlock(mutex: *pthread_mutex_t): cint <cimport,nodecl> end
+global function pthread_mutex_getprioceiling(mutex: *pthread_mutex_t, prioceiling: *cint): cint <cimport,nodecl> end
+global function pthread_mutex_setprioceiling(mutex: *pthread_mutex_t, prioceiling: cint, old_ceiling: *cint): cint <cimport,nodecl> end
+global function pthread_mutex_consistent(mutex: *pthread_mutex_t): cint <cimport,nodecl> end
+global function pthread_mutexattr_init(attr: *pthread_mutexattr_t): cint <cimport,nodecl> end
+global function pthread_mutexattr_destroy(attr: *pthread_mutexattr_t): cint <cimport,nodecl> end
+global function pthread_mutexattr_getpshared(attr: *pthread_mutexattr_t, pshared: *cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_setpshared(attr: *pthread_mutexattr_t, pshared: cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_gettype(attr: *pthread_mutexattr_t, kind: *cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_settype(attr: *pthread_mutexattr_t, kind: cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_getprotocol(attr: *pthread_mutexattr_t, protocol: *cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_setprotocol(attr: *pthread_mutexattr_t, protocol: cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_getprioceiling(attr: *pthread_mutexattr_t, prioceiling: *cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_setprioceiling(attr: *pthread_mutexattr_t, prioceiling: cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_getrobust(attr: *pthread_mutexattr_t, robustness: *cint): cint <cimport,nodecl> end
+global function pthread_mutexattr_setrobust(attr: *pthread_mutexattr_t, robustness: cint): cint <cimport,nodecl> end
+global function pthread_rwlock_init(rwlock: *pthread_rwlock_t, attr: *pthread_rwlockattr_t): cint <cimport,nodecl> end
+global function pthread_rwlock_destroy(rwlock: *pthread_rwlock_t): cint <cimport,nodecl> end
+global function pthread_rwlock_rdlock(rwlock: *pthread_rwlock_t): cint <cimport,nodecl> end
+global function pthread_rwlock_tryrdlock(rwlock: *pthread_rwlock_t): cint <cimport,nodecl> end
+global function pthread_rwlock_timedrdlock(rwlock: *pthread_rwlock_t, abstime: *timespec): cint <cimport,nodecl> end
+global function pthread_rwlock_wrlock(rwlock: *pthread_rwlock_t): cint <cimport,nodecl> end
+global function pthread_rwlock_trywrlock(rwlock: *pthread_rwlock_t): cint <cimport,nodecl> end
+global function pthread_rwlock_timedwrlock(rwlock: *pthread_rwlock_t, abstime: *timespec): cint <cimport,nodecl> end
+global function pthread_rwlock_unlock(rwlock: *pthread_rwlock_t): cint <cimport,nodecl> end
+global function pthread_rwlockattr_init(attr: *pthread_rwlockattr_t): cint <cimport,nodecl> end
+global function pthread_rwlockattr_destroy(attr: *pthread_rwlockattr_t): cint <cimport,nodecl> end
+global function pthread_rwlockattr_getpshared(attr: *pthread_rwlockattr_t, pshared: *cint): cint <cimport,nodecl> end
+global function pthread_rwlockattr_setpshared(attr: *pthread_rwlockattr_t, pshared: cint): cint <cimport,nodecl> end
+global function pthread_rwlockattr_getkind_np(attr: *pthread_rwlockattr_t, pref: *cint): cint <cimport,nodecl> end
+global function pthread_rwlockattr_setkind_np(attr: *pthread_rwlockattr_t, pref: cint): cint <cimport,nodecl> end
+global function pthread_cond_init(cond: *pthread_cond_t, cond_attr: *pthread_condattr_t): cint <cimport,nodecl> end
+global function pthread_cond_destroy(cond: *pthread_cond_t): cint <cimport,nodecl> end
+global function pthread_cond_signal(cond: *pthread_cond_t): cint <cimport,nodecl> end
+global function pthread_cond_broadcast(cond: *pthread_cond_t): cint <cimport,nodecl> end
+global function pthread_cond_wait(cond: *pthread_cond_t, mutex: *pthread_mutex_t): cint <cimport,nodecl> end
+global function pthread_cond_timedwait(cond: *pthread_cond_t, mutex: *pthread_mutex_t, abstime: *timespec): cint <cimport,nodecl> end
+global function pthread_condattr_init(attr: *pthread_condattr_t): cint <cimport,nodecl> end
+global function pthread_condattr_destroy(attr: *pthread_condattr_t): cint <cimport,nodecl> end
+global function pthread_condattr_getpshared(attr: *pthread_condattr_t, pshared: *cint): cint <cimport,nodecl> end
+global function pthread_condattr_setpshared(attr: *pthread_condattr_t, pshared: cint): cint <cimport,nodecl> end
+global function pthread_condattr_getclock(attr: *pthread_condattr_t, clock_id: *cint): cint <cimport,nodecl> end
+global function pthread_condattr_setclock(attr: *pthread_condattr_t, clock_id: cint): cint <cimport,nodecl> end
+global function pthread_spin_init(lock: *cint, pshared: cint): cint <cimport,nodecl> end
+global function pthread_spin_destroy(lock: *cint): cint <cimport,nodecl> end
+global function pthread_spin_lock(lock: *cint): cint <cimport,nodecl> end
+global function pthread_spin_trylock(lock: *cint): cint <cimport,nodecl> end
+global function pthread_spin_unlock(lock: *cint): cint <cimport,nodecl> end
+global function pthread_barrier_init(barrier: *pthread_barrier_t, attr: *pthread_barrierattr_t, count: cuint): cint <cimport,nodecl> end
+global function pthread_barrier_destroy(barrier: *pthread_barrier_t): cint <cimport,nodecl> end
+global function pthread_barrier_wait(barrier: *pthread_barrier_t): cint <cimport,nodecl> end
+global function pthread_barrierattr_init(attr: *pthread_barrierattr_t): cint <cimport,nodecl> end
+global function pthread_barrierattr_destroy(attr: *pthread_barrierattr_t): cint <cimport,nodecl> end
+global function pthread_barrierattr_getpshared(attr: *pthread_barrierattr_t, pshared: *cint): cint <cimport,nodecl> end
+global function pthread_barrierattr_setpshared(attr: *pthread_barrierattr_t, pshared: cint): cint <cimport,nodecl> end
+global function pthread_key_create(key: *pthread_key_t, destr_function: function(pointer): void): cint <cimport,nodecl> end
+global function pthread_key_delete(key: pthread_key_t): cint <cimport,nodecl> end
+global function pthread_getspecific(key: pthread_key_t): pointer <cimport,nodecl> end
+global function pthread_setspecific(key: pthread_key_t, pointer: pointer): cint <cimport,nodecl> end
+global function pthread_getcpuclockid(thread_id: pthread_t, clock_id: *cint): cint <cimport,nodecl> end
+global function pthread_atfork(prepare: function(): void, parent: function(): void, child: function(): void): cint <cimport,nodecl> end

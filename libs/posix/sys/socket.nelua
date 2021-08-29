@@ -5,28 +5,28 @@ cinclude '<netinet/tcp.h>'
 cinclude '<net/if.h>'
 cinclude '<netdb.h>'
 ]]
-global iovec: type <cimport, nodecl, ctypedef> = @record{
+global iovec: type <cimport,nodecl,ctypedef> = @record{
   iov_base: pointer,
   iov_len: csize
 }
-global __fsid_t: type <cimport, nodecl> = @record{
+global __fsid_t: type <cimport,nodecl> = @record{
   __val: [2]cint
 }
 global __timer_t: type = @pointer
 global __caddr_t: type = @cstring
 global timer_t: type = @pointer
-global __pthread_internal_list: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global __pthread_internal_list: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 __pthread_internal_list = @record{
   __prev: *__pthread_internal_list,
   __next: *__pthread_internal_list
 }
 global __pthread_list_t: type = @__pthread_internal_list
-global __pthread_internal_slist: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global __pthread_internal_slist: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 __pthread_internal_slist = @record{
   __next: *__pthread_internal_slist
 }
 global __pthread_slist_t: type = @__pthread_internal_slist
-global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
+global __pthread_mutex_s: type <cimport,nodecl,ctypedef> = @record{
   __lock: cint,
   __count: cuint,
   __owner: cint,
@@ -36,7 +36,7 @@ global __pthread_mutex_s: type <cimport, nodecl, ctypedef> = @record{
   __elision: cshort,
   __list: __pthread_list_t
 }
-global __pthread_rwlock_arch_t: type <cimport, nodecl, ctypedef> = @record{
+global __pthread_rwlock_arch_t: type <cimport,nodecl,ctypedef> = @record{
   __readers: cuint,
   __writers: cuint,
   __wrphase_futex: cuint,
@@ -50,7 +50,7 @@ global __pthread_rwlock_arch_t: type <cimport, nodecl, ctypedef> = @record{
   __pad2: culong,
   __flags: cuint
 }
-global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
+global __pthread_cond_s: type <cimport,nodecl,ctypedef> = @record{
   __unnamed1: union{
     __wseq: culonglong,
     __wseq32: record{
@@ -71,10 +71,10 @@ global __pthread_cond_s: type <cimport, nodecl, ctypedef> = @record{
   __wrefs: cuint,
   __g_signals: [2]cuint
 }
-global __once_flag: type <cimport, nodecl> = @record{
+global __once_flag: type <cimport,nodecl> = @record{
   __data: cint
 }
-global __socket_type: type <cimport, nodecl, using, ctypedef> = @enum(cint){
+global __socket_type: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   SOCK_STREAM = 1,
   SOCK_DGRAM = 2,
   SOCK_RAW = 3,
@@ -85,11 +85,11 @@ global __socket_type: type <cimport, nodecl, using, ctypedef> = @enum(cint){
   SOCK_CLOEXEC = 524288,
   SOCK_NONBLOCK = 2048
 }
-global sockaddr: type <cimport, nodecl, ctypedef> = @record{
+global sockaddr: type <cimport,nodecl,ctypedef> = @record{
   sa_family: cushort,
   sa_data: [14]cchar
 }
-global sockaddr_storage: type <cimport, nodecl, ctypedef> = @record{
+global sockaddr_storage: type <cimport,nodecl,ctypedef> = @record{
   ss_family: cushort,
   __ss_padding: [118]cchar,
   __ss_align: culong
@@ -115,7 +115,7 @@ global MSG_BATCH: cint <comptime> = 262144
 global MSG_ZEROCOPY: cint <comptime> = 67108864
 global MSG_FASTOPEN: cint <comptime> = 536870912
 global MSG_CMSG_CLOEXEC: cint <comptime> = 1073741824
-global msghdr: type <cimport, nodecl, ctypedef> = @record{
+global msghdr: type <cimport,nodecl,ctypedef> = @record{
   msg_name: pointer,
   msg_namelen: cuint,
   msg_iov: *iovec,
@@ -124,40 +124,40 @@ global msghdr: type <cimport, nodecl, ctypedef> = @record{
   msg_controllen: csize,
   msg_flags: cint
 }
-global cmsghdr: type <cimport, nodecl, ctypedef> = @record{
+global cmsghdr: type <cimport,nodecl,ctypedef> = @record{
   cmsg_len: csize,
   cmsg_level: cint,
   cmsg_type: cint,
   __cmsg_data: [0]cuchar
 }
-global function __cmsg_nxthdr(mhdr: *msghdr, cmsg: *cmsghdr): *cmsghdr <cimport, nodecl> end
+global function __cmsg_nxthdr(mhdr: *msghdr, cmsg: *cmsghdr): *cmsghdr <cimport,nodecl> end
 global SCM_RIGHTS: cint <comptime> = 1
-global linger: type <cimport, nodecl, ctypedef> = @record{
+global linger: type <cimport,nodecl,ctypedef> = @record{
   l_onoff: cint,
   l_linger: cint
 }
 global SHUT_RD: cint <comptime> = 0
 global SHUT_WR: cint <comptime> = 1
 global SHUT_RDWR: cint <comptime> = 2
-global function socket(domain: cint, type: cint, protocol: cint): cint <cimport, nodecl> end
-global function socketpair(domain: cint, type: cint, protocol: cint, fds: *cint): cint <cimport, nodecl> end
-global function bind(fd: cint, addr: *sockaddr, len: cuint): cint <cimport, nodecl> end
-global function getsockname(fd: cint, addr: *sockaddr, len: *cuint): cint <cimport, nodecl> end
-global function connect(fd: cint, addr: *sockaddr, len: cuint): cint <cimport, nodecl> end
-global function getpeername(fd: cint, addr: *sockaddr, len: *cuint): cint <cimport, nodecl> end
-global function send(fd: cint, buf: pointer, n: csize, flags: cint): clong <cimport, nodecl> end
-global function recv(fd: cint, buf: pointer, n: csize, flags: cint): clong <cimport, nodecl> end
-global function sendto(fd: cint, buf: pointer, n: csize, flags: cint, addr: *sockaddr, addr_len: cuint): clong <cimport, nodecl> end
-global function recvfrom(fd: cint, buf: pointer, n: csize, flags: cint, addr: *sockaddr, addr_len: *cuint): clong <cimport, nodecl> end
-global function sendmsg(fd: cint, message: *msghdr, flags: cint): clong <cimport, nodecl> end
-global function recvmsg(fd: cint, message: *msghdr, flags: cint): clong <cimport, nodecl> end
-global function getsockopt(fd: cint, level: cint, optname: cint, optval: pointer, optlen: *cuint): cint <cimport, nodecl> end
-global function setsockopt(fd: cint, level: cint, optname: cint, optval: pointer, optlen: cuint): cint <cimport, nodecl> end
-global function listen(fd: cint, n: cint): cint <cimport, nodecl> end
-global function accept(fd: cint, addr: *sockaddr, addr_len: *cuint): cint <cimport, nodecl> end
-global function shutdown(fd: cint, how: cint): cint <cimport, nodecl> end
-global function sockatmark(fd: cint): cint <cimport, nodecl> end
-global in_addr: type <cimport, nodecl, ctypedef> = @record{
+global function socket(domain: cint, type: cint, protocol: cint): cint <cimport,nodecl> end
+global function socketpair(domain: cint, type: cint, protocol: cint, fds: *cint): cint <cimport,nodecl> end
+global function bind(fd: cint, addr: *sockaddr, len: cuint): cint <cimport,nodecl> end
+global function getsockname(fd: cint, addr: *sockaddr, len: *cuint): cint <cimport,nodecl> end
+global function connect(fd: cint, addr: *sockaddr, len: cuint): cint <cimport,nodecl> end
+global function getpeername(fd: cint, addr: *sockaddr, len: *cuint): cint <cimport,nodecl> end
+global function send(fd: cint, buf: pointer, n: csize, flags: cint): clong <cimport,nodecl> end
+global function recv(fd: cint, buf: pointer, n: csize, flags: cint): clong <cimport,nodecl> end
+global function sendto(fd: cint, buf: pointer, n: csize, flags: cint, addr: *sockaddr, addr_len: cuint): clong <cimport,nodecl> end
+global function recvfrom(fd: cint, buf: pointer, n: csize, flags: cint, addr: *sockaddr, addr_len: *cuint): clong <cimport,nodecl> end
+global function sendmsg(fd: cint, message: *msghdr, flags: cint): clong <cimport,nodecl> end
+global function recvmsg(fd: cint, message: *msghdr, flags: cint): clong <cimport,nodecl> end
+global function getsockopt(fd: cint, level: cint, optname: cint, optval: pointer, optlen: *cuint): cint <cimport,nodecl> end
+global function setsockopt(fd: cint, level: cint, optname: cint, optval: pointer, optlen: cuint): cint <cimport,nodecl> end
+global function listen(fd: cint, n: cint): cint <cimport,nodecl> end
+global function accept(fd: cint, addr: *sockaddr, addr_len: *cuint): cint <cimport,nodecl> end
+global function shutdown(fd: cint, how: cint): cint <cimport,nodecl> end
+global function sockatmark(fd: cint): cint <cimport,nodecl> end
+global in_addr: type <cimport,nodecl,ctypedef> = @record{
   s_addr: cuint
 }
 global IPPROTO_IP: cint <comptime> = 0
@@ -221,94 +221,94 @@ global IPPORT_WHOSERVER: cint <comptime> = 513
 global IPPORT_ROUTESERVER: cint <comptime> = 520
 global IPPORT_RESERVED: cint <comptime> = 1024
 global IPPORT_USERRESERVED: cint <comptime> = 5000
-global in6_addr: type <cimport, nodecl, ctypedef> = @record{
+global in6_addr: type <cimport,nodecl,ctypedef> = @record{
   __in6_u: union{
     __u6_addr8: [16]uint8,
     __u6_addr16: [8]uint16,
     __u6_addr32: [4]uint32
   }
 }
-global in6addr_any: in6_addr <cimport, nodecl>
-global in6addr_loopback: in6_addr <cimport, nodecl>
-global sockaddr_in: type <cimport, nodecl, ctypedef> = @record{
+global in6addr_any: in6_addr <cimport,nodecl>
+global in6addr_loopback: in6_addr <cimport,nodecl>
+global sockaddr_in: type <cimport,nodecl,ctypedef> = @record{
   sin_family: cushort,
   sin_port: cushort,
   sin_addr: in_addr,
   sin_zero: [8]cuchar
 }
-global sockaddr_in6: type <cimport, nodecl, ctypedef> = @record{
+global sockaddr_in6: type <cimport,nodecl,ctypedef> = @record{
   sin6_family: cushort,
   sin6_port: cushort,
   sin6_flowinfo: uint32,
   sin6_addr: in6_addr,
   sin6_scope_id: uint32
 }
-global ipv6_mreq: type <cimport, nodecl, ctypedef> = @record{
+global ipv6_mreq: type <cimport,nodecl,ctypedef> = @record{
   ipv6mr_multiaddr: in6_addr,
   ipv6mr_interface: cuint
 }
-global function ntohl(netlong: uint32): uint32 <cimport, nodecl> end
-global function ntohs(netshort: uint16): uint16 <cimport, nodecl> end
-global function htonl(hostlong: uint32): uint32 <cimport, nodecl> end
-global function htons(hostshort: uint16): uint16 <cimport, nodecl> end
-global function __bswap_16(bsx: uint16): uint16 <cimport, nodecl> end
-global function __bswap_32(bsx: uint32): uint32 <cimport, nodecl> end
-global function __bswap_64(bsx: uint64): uint64 <cimport, nodecl> end
-global function __uint16_identity(x: uint16): uint16 <cimport, nodecl> end
-global function __uint32_identity(x: uint32): uint32 <cimport, nodecl> end
-global function __uint64_identity(x: uint64): uint64 <cimport, nodecl> end
-global if_nameindex: type <cimport, nodecl, ctypedef> = @record{
+global function ntohl(netlong: uint32): uint32 <cimport,nodecl> end
+global function ntohs(netshort: uint16): uint16 <cimport,nodecl> end
+global function htonl(hostlong: uint32): uint32 <cimport,nodecl> end
+global function htons(hostshort: uint16): uint16 <cimport,nodecl> end
+global function __bswap_16(bsx: uint16): uint16 <cimport,nodecl> end
+global function __bswap_32(bsx: uint32): uint32 <cimport,nodecl> end
+global function __bswap_64(bsx: uint64): uint64 <cimport,nodecl> end
+global function __uint16_identity(x: uint16): uint16 <cimport,nodecl> end
+global function __uint32_identity(x: uint32): uint32 <cimport,nodecl> end
+global function __uint64_identity(x: uint64): uint64 <cimport,nodecl> end
+global if_nameindex: type <cimport,nodecl,ctypedef> = @record{
   if_index: cuint,
   if_name: cstring
 }
-global function if_nametoindex(ifname: cstring): cuint <cimport, nodecl> end
-global function if_indextoname(ifindex: cuint, ifname: cstring): cstring <cimport, nodecl> end
-global function if_freenameindex(ptr: *if_nameindex) <cimport, nodecl> end
-global netent: type <cimport, nodecl, ctypedef> = @record{
+global function if_nametoindex(ifname: cstring): cuint <cimport,nodecl> end
+global function if_indextoname(ifindex: cuint, ifname: cstring): cstring <cimport,nodecl> end
+global function if_freenameindex(ptr: *if_nameindex): void <cimport,nodecl> end
+global netent: type <cimport,nodecl,ctypedef> = @record{
   n_name: cstring,
   n_aliases: *cstring,
   n_addrtype: cint,
   n_net: uint32
 }
-global hostent: type <cimport, nodecl, ctypedef> = @record{
+global hostent: type <cimport,nodecl,ctypedef> = @record{
   h_name: cstring,
   h_aliases: *cstring,
   h_addrtype: cint,
   h_length: cint,
   h_addr_list: *cstring
 }
-global function sethostent(stay_open: cint) <cimport, nodecl> end
-global function endhostent() <cimport, nodecl> end
-global function gethostent(): *hostent <cimport, nodecl> end
-global function gethostbyaddr(addr: pointer, len: cuint, type: cint): *hostent <cimport, nodecl> end
-global function gethostbyname(name: cstring): *hostent <cimport, nodecl> end
-global function setnetent(stay_open: cint) <cimport, nodecl> end
-global function endnetent() <cimport, nodecl> end
-global function getnetent(): *netent <cimport, nodecl> end
-global function getnetbyaddr(net: uint32, type: cint): *netent <cimport, nodecl> end
-global function getnetbyname(name: cstring): *netent <cimport, nodecl> end
-global servent: type <cimport, nodecl, ctypedef> = @record{
+global function sethostent(stay_open: cint): void <cimport,nodecl> end
+global function endhostent(): void <cimport,nodecl> end
+global function gethostent(): *hostent <cimport,nodecl> end
+global function gethostbyaddr(addr: pointer, len: cuint, type: cint): *hostent <cimport,nodecl> end
+global function gethostbyname(name: cstring): *hostent <cimport,nodecl> end
+global function setnetent(stay_open: cint): void <cimport,nodecl> end
+global function endnetent(): void <cimport,nodecl> end
+global function getnetent(): *netent <cimport,nodecl> end
+global function getnetbyaddr(net: uint32, type: cint): *netent <cimport,nodecl> end
+global function getnetbyname(name: cstring): *netent <cimport,nodecl> end
+global servent: type <cimport,nodecl,ctypedef> = @record{
   s_name: cstring,
   s_aliases: *cstring,
   s_port: cint,
   s_proto: cstring
 }
-global function setservent(stay_open: cint) <cimport, nodecl> end
-global function endservent() <cimport, nodecl> end
-global function getservent(): *servent <cimport, nodecl> end
-global function getservbyname(name: cstring, proto: cstring): *servent <cimport, nodecl> end
-global function getservbyport(port: cint, proto: cstring): *servent <cimport, nodecl> end
-global protoent: type <cimport, nodecl, ctypedef> = @record{
+global function setservent(stay_open: cint): void <cimport,nodecl> end
+global function endservent(): void <cimport,nodecl> end
+global function getservent(): *servent <cimport,nodecl> end
+global function getservbyname(name: cstring, proto: cstring): *servent <cimport,nodecl> end
+global function getservbyport(port: cint, proto: cstring): *servent <cimport,nodecl> end
+global protoent: type <cimport,nodecl,ctypedef> = @record{
   p_name: cstring,
   p_aliases: *cstring,
   p_proto: cint
 }
-global function setprotoent(stay_open: cint) <cimport, nodecl> end
-global function endprotoent() <cimport, nodecl> end
-global function getprotoent(): *protoent <cimport, nodecl> end
-global function getprotobyname(name: cstring): *protoent <cimport, nodecl> end
-global function getprotobynumber(proto: cint): *protoent <cimport, nodecl> end
-global addrinfo: type <cimport, nodecl, forwarddecl, ctypedef> = @record{}
+global function setprotoent(stay_open: cint): void <cimport,nodecl> end
+global function endprotoent(): void <cimport,nodecl> end
+global function getprotoent(): *protoent <cimport,nodecl> end
+global function getprotobyname(name: cstring): *protoent <cimport,nodecl> end
+global function getprotobynumber(proto: cint): *protoent <cimport,nodecl> end
+global addrinfo: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 addrinfo = @record{
   ai_flags: cint,
   ai_family: cint,
@@ -319,76 +319,76 @@ addrinfo = @record{
   ai_canonname: cstring,
   ai_next: *addrinfo
 }
-global function getaddrinfo(name: cstring, service: cstring, req: *addrinfo, pai: **addrinfo): cint <cimport, nodecl> end
-global function freeaddrinfo(ai: *addrinfo) <cimport, nodecl> end
-global function gai_strerror(ecode: cint): cstring <cimport, nodecl> end
-global function getnameinfo(sa: *sockaddr, salen: cuint, host: cstring, hostlen: cuint, serv: cstring, servlen: cuint, flags: cint): cint <cimport, nodecl> end
-global function inet_addr(cp: cstring): cuint <cimport, nodecl> end
-global function inet_lnaof(In: in_addr): cuint <cimport, nodecl> end
-global function inet_makeaddr(net: cuint, host: cuint): in_addr <cimport, nodecl> end
-global function inet_netof(In: in_addr): cuint <cimport, nodecl> end
-global function inet_network(cp: cstring): cuint <cimport, nodecl> end
-global function inet_ntoa(In: in_addr): cstring <cimport, nodecl> end
-global function inet_pton(af: cint, cp: cstring, buf: pointer): cint <cimport, nodecl> end
-global function inet_ntop(af: cint, cp: pointer, buf: cstring, len: cuint): cstring <cimport, nodecl> end
-global SOCK_STREAM: cint <cimport, nodecl, const>
-global SOCK_DGRAM: cint <cimport, nodecl, const>
-global SOCK_RAW: cint <cimport, nodecl, const>
-global SOCK_RDM: cint <cimport, nodecl, const>
-global SOCK_SEQPACKET: cint <cimport, nodecl, const>
-global SOCK_DCCP: cint <cimport, nodecl, const>
-global SOCK_PACKET: cint <cimport, nodecl, const>
-global SOCK_CLOEXEC: cint <cimport, nodecl, const>
-global SOCK_NONBLOCK: cint <cimport, nodecl, const>
-global AF_UNSPEC: cint <cimport, nodecl, const>
-global AF_LOCAL: cint <cimport, nodecl, const>
-global AF_UNIX: cint <cimport, nodecl, const>
-global AF_FILE: cint <cimport, nodecl, const>
-global AF_INET: cint <cimport, nodecl, const>
-global AF_AX25: cint <cimport, nodecl, const>
-global AF_IPX: cint <cimport, nodecl, const>
-global AF_APPLETALK: cint <cimport, nodecl, const>
-global AF_NETROM: cint <cimport, nodecl, const>
-global AF_BRIDGE: cint <cimport, nodecl, const>
-global AF_ATMPVC: cint <cimport, nodecl, const>
-global AF_X25: cint <cimport, nodecl, const>
-global AF_INET6: cint <cimport, nodecl, const>
-global AF_ROSE: cint <cimport, nodecl, const>
-global AF_DECnet: cint <cimport, nodecl, const>
-global AF_NETBEUI: cint <cimport, nodecl, const>
-global AF_SECURITY: cint <cimport, nodecl, const>
-global AF_KEY: cint <cimport, nodecl, const>
-global AF_NETLINK: cint <cimport, nodecl, const>
-global AF_ROUTE: cint <cimport, nodecl, const>
-global AF_PACKET: cint <cimport, nodecl, const>
-global AF_ASH: cint <cimport, nodecl, const>
-global AF_ECONET: cint <cimport, nodecl, const>
-global AF_ATMSVC: cint <cimport, nodecl, const>
-global AF_RDS: cint <cimport, nodecl, const>
-global AF_SNA: cint <cimport, nodecl, const>
-global AF_IRDA: cint <cimport, nodecl, const>
-global AF_PPPOX: cint <cimport, nodecl, const>
-global AF_WANPIPE: cint <cimport, nodecl, const>
-global AF_LLC: cint <cimport, nodecl, const>
-global AF_IB: cint <cimport, nodecl, const>
-global AF_MPLS: cint <cimport, nodecl, const>
-global AF_CAN: cint <cimport, nodecl, const>
-global AF_TIPC: cint <cimport, nodecl, const>
-global AF_BLUETOOTH: cint <cimport, nodecl, const>
-global AF_IUCV: cint <cimport, nodecl, const>
-global AF_RXRPC: cint <cimport, nodecl, const>
-global AF_ISDN: cint <cimport, nodecl, const>
-global AF_PHONET: cint <cimport, nodecl, const>
-global AF_IEEE802154: cint <cimport, nodecl, const>
-global AF_CAIF: cint <cimport, nodecl, const>
-global AF_ALG: cint <cimport, nodecl, const>
-global AF_NFC: cint <cimport, nodecl, const>
-global AF_VSOCK: cint <cimport, nodecl, const>
-global AF_KCM: cint <cimport, nodecl, const>
-global AF_QIPCRTR: cint <cimport, nodecl, const>
-global AF_SMC: cint <cimport, nodecl, const>
-global AF_XDP: cint <cimport, nodecl, const>
-global AF_MAX: cint <cimport, nodecl, const>
+global function getaddrinfo(name: cstring, service: cstring, req: *addrinfo, pai: **addrinfo): cint <cimport,nodecl> end
+global function freeaddrinfo(ai: *addrinfo): void <cimport,nodecl> end
+global function gai_strerror(ecode: cint): cstring <cimport,nodecl> end
+global function getnameinfo(sa: *sockaddr, salen: cuint, host: cstring, hostlen: cuint, serv: cstring, servlen: cuint, flags: cint): cint <cimport,nodecl> end
+global function inet_addr(cp: cstring): cuint <cimport,nodecl> end
+global function inet_lnaof(In: in_addr): cuint <cimport,nodecl> end
+global function inet_makeaddr(net: cuint, host: cuint): in_addr <cimport,nodecl> end
+global function inet_netof(In: in_addr): cuint <cimport,nodecl> end
+global function inet_network(cp: cstring): cuint <cimport,nodecl> end
+global function inet_ntoa(In: in_addr): cstring <cimport,nodecl> end
+global function inet_pton(af: cint, cp: cstring, buf: pointer): cint <cimport,nodecl> end
+global function inet_ntop(af: cint, cp: pointer, buf: cstring, len: cuint): cstring <cimport,nodecl> end
+global SOCK_STREAM: cint <cimport,nodecl,const>
+global SOCK_DGRAM: cint <cimport,nodecl,const>
+global SOCK_RAW: cint <cimport,nodecl,const>
+global SOCK_RDM: cint <cimport,nodecl,const>
+global SOCK_SEQPACKET: cint <cimport,nodecl,const>
+global SOCK_DCCP: cint <cimport,nodecl,const>
+global SOCK_PACKET: cint <cimport,nodecl,const>
+global SOCK_CLOEXEC: cint <cimport,nodecl,const>
+global SOCK_NONBLOCK: cint <cimport,nodecl,const>
+global AF_UNSPEC: cint <cimport,nodecl,const>
+global AF_LOCAL: cint <cimport,nodecl,const>
+global AF_UNIX: cint <cimport,nodecl,const>
+global AF_FILE: cint <cimport,nodecl,const>
+global AF_INET: cint <cimport,nodecl,const>
+global AF_AX25: cint <cimport,nodecl,const>
+global AF_IPX: cint <cimport,nodecl,const>
+global AF_APPLETALK: cint <cimport,nodecl,const>
+global AF_NETROM: cint <cimport,nodecl,const>
+global AF_BRIDGE: cint <cimport,nodecl,const>
+global AF_ATMPVC: cint <cimport,nodecl,const>
+global AF_X25: cint <cimport,nodecl,const>
+global AF_INET6: cint <cimport,nodecl,const>
+global AF_ROSE: cint <cimport,nodecl,const>
+global AF_DECnet: cint <cimport,nodecl,const>
+global AF_NETBEUI: cint <cimport,nodecl,const>
+global AF_SECURITY: cint <cimport,nodecl,const>
+global AF_KEY: cint <cimport,nodecl,const>
+global AF_NETLINK: cint <cimport,nodecl,const>
+global AF_ROUTE: cint <cimport,nodecl,const>
+global AF_PACKET: cint <cimport,nodecl,const>
+global AF_ASH: cint <cimport,nodecl,const>
+global AF_ECONET: cint <cimport,nodecl,const>
+global AF_ATMSVC: cint <cimport,nodecl,const>
+global AF_RDS: cint <cimport,nodecl,const>
+global AF_SNA: cint <cimport,nodecl,const>
+global AF_IRDA: cint <cimport,nodecl,const>
+global AF_PPPOX: cint <cimport,nodecl,const>
+global AF_WANPIPE: cint <cimport,nodecl,const>
+global AF_LLC: cint <cimport,nodecl,const>
+global AF_IB: cint <cimport,nodecl,const>
+global AF_MPLS: cint <cimport,nodecl,const>
+global AF_CAN: cint <cimport,nodecl,const>
+global AF_TIPC: cint <cimport,nodecl,const>
+global AF_BLUETOOTH: cint <cimport,nodecl,const>
+global AF_IUCV: cint <cimport,nodecl,const>
+global AF_RXRPC: cint <cimport,nodecl,const>
+global AF_ISDN: cint <cimport,nodecl,const>
+global AF_PHONET: cint <cimport,nodecl,const>
+global AF_IEEE802154: cint <cimport,nodecl,const>
+global AF_CAIF: cint <cimport,nodecl,const>
+global AF_ALG: cint <cimport,nodecl,const>
+global AF_NFC: cint <cimport,nodecl,const>
+global AF_VSOCK: cint <cimport,nodecl,const>
+global AF_KCM: cint <cimport,nodecl,const>
+global AF_QIPCRTR: cint <cimport,nodecl,const>
+global AF_SMC: cint <cimport,nodecl,const>
+global AF_XDP: cint <cimport,nodecl,const>
+global AF_MAX: cint <cimport,nodecl,const>
 global SO_DEBUG: cint <comptime> = 1
 global SO_REUSEADDR: cint <comptime> = 2
 global SO_TYPE: cint <comptime> = 3
@@ -469,7 +469,7 @@ global IP_HDRINCL: cint <comptime> = 3
 global IP_TOS: cint <comptime> = 1
 global IP_TTL: cint <comptime> = 2
 global IP_RECVOPTS: cint <comptime> = 6
-global IP_RECVRETOPTS: cint <cimport, nodecl, const>
+global IP_RECVRETOPTS: cint <cimport,nodecl,const>
 global IP_RETOPTS: cint <comptime> = 7
 global IP_MULTICAST_IF: cint <comptime> = 32
 global IP_MULTICAST_TTL: cint <comptime> = 33
