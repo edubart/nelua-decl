@@ -27,7 +27,7 @@ global epoll_data: type <cimport,nodecl,ctypedef> = @union{
   u64: uint64
 }
 global epoll_data_t: type = @epoll_data
-global epoll_event: type <cimport,nodecl,ctypedef> = @record{
+global epoll_event: type <cimport,nodecl,packed,ctypedef> = @record{
   events: uint32,
   data: epoll_data_t
 }

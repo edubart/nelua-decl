@@ -406,6 +406,9 @@ local function visit_type_def(typename, type, is_typedef)
       if is_enum then
         table.insert(annotations, 'using')
       end
+      if type:packed() then
+        table.insert(annotations, 'packed')
+      end
       emitter:add(function()
         if nldecl.incomplete_types[type] then
           table.insert(annotations, 'cincomplete')

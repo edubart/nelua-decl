@@ -83,21 +83,21 @@ global ENetProtocolFlag: type <cimport,nodecl,using> = @enum(cint){
   ENET_PROTOCOL_HEADER_SESSION_MASK = 12288,
   ENET_PROTOCOL_HEADER_SESSION_SHIFT = 12
 }
-global ENetProtocolHeader: type <cimport,nodecl> = @record{
+global ENetProtocolHeader: type <cimport,nodecl,packed> = @record{
   peerID: uint16,
   sentTime: uint16
 }
-global ENetProtocolCommandHeader: type <cimport,nodecl> = @record{
+global ENetProtocolCommandHeader: type <cimport,nodecl,packed> = @record{
   command: uint8,
   channelID: uint8,
   reliableSequenceNumber: uint16
 }
-global ENetProtocolAcknowledge: type <cimport,nodecl> = @record{
+global ENetProtocolAcknowledge: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   receivedReliableSequenceNumber: uint16,
   receivedSentTime: uint16
 }
-global ENetProtocolConnect: type <cimport,nodecl> = @record{
+global ENetProtocolConnect: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   outgoingPeerID: uint16,
   incomingSessionID: uint8,
@@ -113,7 +113,7 @@ global ENetProtocolConnect: type <cimport,nodecl> = @record{
   connectID: uint32,
   data: uint32
 }
-global ENetProtocolVerifyConnect: type <cimport,nodecl> = @record{
+global ENetProtocolVerifyConnect: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   outgoingPeerID: uint16,
   incomingSessionID: uint8,
@@ -128,39 +128,39 @@ global ENetProtocolVerifyConnect: type <cimport,nodecl> = @record{
   packetThrottleDeceleration: uint32,
   connectID: uint32
 }
-global ENetProtocolBandwidthLimit: type <cimport,nodecl> = @record{
+global ENetProtocolBandwidthLimit: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   incomingBandwidth: uint32,
   outgoingBandwidth: uint32
 }
-global ENetProtocolThrottleConfigure: type <cimport,nodecl> = @record{
+global ENetProtocolThrottleConfigure: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   packetThrottleInterval: uint32,
   packetThrottleAcceleration: uint32,
   packetThrottleDeceleration: uint32
 }
-global ENetProtocolDisconnect: type <cimport,nodecl> = @record{
+global ENetProtocolDisconnect: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   data: uint32
 }
-global ENetProtocolPing: type <cimport,nodecl> = @record{
+global ENetProtocolPing: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader
 }
-global ENetProtocolSendReliable: type <cimport,nodecl> = @record{
+global ENetProtocolSendReliable: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   dataLength: uint16
 }
-global ENetProtocolSendUnreliable: type <cimport,nodecl> = @record{
+global ENetProtocolSendUnreliable: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   unreliableSequenceNumber: uint16,
   dataLength: uint16
 }
-global ENetProtocolSendUnsequenced: type <cimport,nodecl> = @record{
+global ENetProtocolSendUnsequenced: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   unsequencedGroup: uint16,
   dataLength: uint16
 }
-global ENetProtocolSendFragment: type <cimport,nodecl> = @record{
+global ENetProtocolSendFragment: type <cimport,nodecl,packed> = @record{
   header: ENetProtocolCommandHeader,
   startSequenceNumber: uint16,
   dataLength: uint16,
@@ -169,7 +169,7 @@ global ENetProtocolSendFragment: type <cimport,nodecl> = @record{
   totalLength: uint32,
   fragmentOffset: uint32
 }
-global ENetProtocol: type <cimport,nodecl> = @union{
+global ENetProtocol: type <cimport,nodecl,packed> = @union{
   header: ENetProtocolCommandHeader,
   acknowledge: ENetProtocolAcknowledge,
   connect: ENetProtocolConnect,
