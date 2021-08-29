@@ -409,6 +409,9 @@ local function visit_type_def(typename, type, is_typedef)
       if type:packed() then
         table.insert(annotations, 'packed')
       end
+      if type:user_align() then
+        table.insert(annotations, 'align('..type:align_unit()..')')
+      end
       emitter:add(function()
         if nldecl.incomplete_types[type] then
           table.insert(annotations, 'cincomplete')
