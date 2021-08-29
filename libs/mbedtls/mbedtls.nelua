@@ -1820,6 +1820,7 @@ global function mbedtls_platform_setup(ctx: *mbedtls_platform_context): cint <ci
 global function mbedtls_platform_teardown(ctx: *mbedtls_platform_context): void <cimport,nodecl> end
 global mbedtls_f_rng_t: type <cimport,nodecl> = @function(pointer, *cuchar, csize): cint
 global mbedtls_psa_drbg_context_t: type = @mbedtls_ctr_drbg_context
+global mbedtls_psa_get_random: function(pointer, *cuchar, csize): cint <cimport,nodecl>
 global mbedtls_psa_random_state: *mbedtls_psa_drbg_context_t <cimport,nodecl>
 global mbedtls_ripemd160_context: type <cimport,nodecl> = @record{
   total: [2]uint32,

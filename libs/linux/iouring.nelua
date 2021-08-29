@@ -111,12 +111,12 @@ global io_uring_params: type <cimport,nodecl,cincomplete,ctypedef> = @record{
   wq_fd: cuint,
   resv: [3]cuint,
 }
-global io_uring_files_update: type <cimport,nodecl,align(8),ctypedef> = @record{
+global io_uring_files_update: type <cimport,nodecl,aligned(8),ctypedef> = @record{
   offset: cuint,
   resv: cuint,
   fds: culonglong
 }
-global io_uring_rsrc_update: type <cimport,nodecl,align(8),ctypedef> = @record{
+global io_uring_rsrc_update: type <cimport,nodecl,aligned(8),ctypedef> = @record{
   offset: cuint,
   resv: cuint,
   data: culonglong

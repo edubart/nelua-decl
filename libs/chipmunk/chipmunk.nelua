@@ -71,6 +71,7 @@ global function cpBBIntersectsSegment(bb: cpBB, a: cpVect, b: cpVect): cuchar <c
 global function cpBBClampVect(bb: cpBB, v: cpVect): cpVect <cimport,nodecl> end
 global function cpBBWrapVect(bb: cpBB, v: cpVect): cpVect <cimport,nodecl> end
 global function cpBBOffset(bb: cpBB, v: cpVect): cpBB <cimport,nodecl> end
+global cpTransformIdentity: cpTransform <cimport,nodecl>
 global function cpTransformNew(a: float64, b: float64, c: float64, d: float64, tx: float64, ty: float64): cpTransform <cimport,nodecl> end
 global function cpTransformNewTranspose(a: float64, c: float64, tx: float64, b: float64, d: float64, ty: float64): cpTransform <cimport,nodecl> end
 global function cpTransformInverse(t: cpTransform): cpTransform <cimport,nodecl> end
@@ -271,6 +272,8 @@ global cpShapeFilter: type <cimport,nodecl> = @record{
   categories: cuint,
   mask: cuint
 }
+global CP_SHAPE_FILTER_ALL: cpShapeFilter <cimport,nodecl>
+global CP_SHAPE_FILTER_NONE: cpShapeFilter <cimport,nodecl>
 global function cpShapeFilterNew(group: culong, categories: cuint, mask: cuint): cpShapeFilter <cimport,nodecl> end
 global function cpShapeDestroy(shape: *cpShape): void <cimport,nodecl> end
 global function cpShapeFree(shape: *cpShape): void <cimport,nodecl> end

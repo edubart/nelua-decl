@@ -22,6 +22,12 @@ global ENetBuffer: type <cimport,nodecl> = @record{
 global ENetSocketSet: type <cimport,nodecl> = @record{
   __fds_bits: [16]clong
 }
+global enet_v4_anyaddr: in6_addr <cimport,nodecl>
+global enet_v4_noaddr: in6_addr <cimport,nodecl>
+global enet_v4_localhost: in6_addr <cimport,nodecl>
+global enet_v6_anyaddr: in6_addr <cimport,nodecl>
+global enet_v6_noaddr: in6_addr <cimport,nodecl>
+global enet_v6_localhost: in6_addr <cimport,nodecl>
 global ENetPacket: type <cimport,nodecl,forwarddecl> = @record{}
 global ENetCallbacks: type <cimport,nodecl> = @record{
   malloc: function(csize): pointer,

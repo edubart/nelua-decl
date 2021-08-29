@@ -358,7 +358,6 @@ function nldecl.function_decl(node)
 end
 
 function nldecl.var_decl(node)
-  if not node:external() then return end
   local varname = gccutils.get_id(node)
   if not nldecl.can_decl(varname) then return end
   nldecl.declared_names[varname] = true
@@ -410,7 +409,7 @@ local function visit_type_def(typename, type, is_typedef)
         table.insert(annotations, 'packed')
       end
       if type:user_align() then
-        table.insert(annotations, 'align('..type:align_unit()..')')
+        table.insert(annotations, 'aligned('..type:align_unit()..')')
       end
       emitter:add(function()
         if nldecl.incomplete_types[type] then

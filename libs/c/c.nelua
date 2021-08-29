@@ -632,7 +632,7 @@ global function signal(sig: cint, handler: __sighandler_t): __sighandler_t <cimp
 global function raise(sig: cint): cint <cimport,nodecl> end
 global function __libc_current_sigrtmin(): cint <cimport,nodecl> end
 global function __libc_current_sigrtmax(): cint <cimport,nodecl> end
-global max_align_t: type <cimport,nodecl,align(16)> = @record{
+global max_align_t: type <cimport,nodecl,aligned(16)> = @record{
   __max_align_ll: clonglong,
   __max_align_ld: clongdouble
 }
