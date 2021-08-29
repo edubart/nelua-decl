@@ -34,6 +34,7 @@ generate:
 	$(MKC) libs/posix generate
 	$(MKC) libs/linux generate
 	$(MKC) libs/x11 generate
+	$(MKC) libs/emscripten generate
 
 download:
 	$(MKC) libs/blend2d download
@@ -69,6 +70,7 @@ download:
 	$(MKC) libs/posix download
 	$(MKC) libs/linux download
 	$(MKC) libs/x11 download
+	$(MKC) libs/emscripten download
 
 test:
 	$(MKC) libs/blend2d test
@@ -104,5 +106,6 @@ test:
 	$(MKC) libs/posix test
 	$(MKC) libs/linux test
 	$(MKC) libs/x11 test
+	$(MKC) libs/emscripten test
 
 	echo "All tests OK!"
