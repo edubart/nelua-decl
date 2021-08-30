@@ -27,6 +27,7 @@ generate:
 	$(MKC) libs/nuklear generate
 	$(MKC) libs/mbedtls generate
 	$(MKC) libs/mir generate
+	$(MKC) libs/lexbor generate
 
 	$(MKC) libs/c generate
 	$(MKC) libs/dl generate
@@ -63,6 +64,7 @@ download:
 	$(MKC) libs/nuklear download
 	$(MKC) libs/mbedtls download
 	$(MKC) libs/mir download
+	$(MKC) libs/lexbor download
 
 	$(MKC) libs/c download
 	$(MKC) libs/dl download
@@ -99,6 +101,7 @@ test:
 	$(MKC) libs/nuklear test
 	$(MKC) libs/mbedtls test
 	$(MKC) libs/mir test
+	$(MKC) libs/lexbor test
 
 	$(MKC) libs/c test
 	$(MKC) libs/dl test

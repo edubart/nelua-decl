@@ -1,0 +1,21 @@
+require 'lexbor'
+
+local html = "<div>Work fine!</div>"
+
+local document = lxb_html_document_create()
+if not document then
+  error 'failed to create HTML document'
+end
+
+local status = lxb_html_document_parse(document, html, #html)
+if status ~= LXB_STATUS_OK then
+  error 'failed to parse HTML'
+end
+
+local tag_name = (@cstring)(lxb_dom_element_qualified_name((@*lxb_dom_element_t)(document.body), nilptr))
+
+print("Element tag name:", tag_name)
+
+lxb_html_document_destroy(document)
+
+print 'lexbor OK!'

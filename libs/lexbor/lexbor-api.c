@@ -1,0 +1,9 @@
+#include <lexbor/core/core.h>
+#include <lexbor/html/html.h>
+#include <lexbor/dom/dom.h>
+#include <lexbor/css/css.h>
+#include <lexbor/encoding/encoding.h>
+#include <lexbor/selectors/selectors.h>
+#include <lexbor/tag/tag.h>
+#include <lexbor/ns/ns.h>
+#include <lexbor/utils/utils.h>
