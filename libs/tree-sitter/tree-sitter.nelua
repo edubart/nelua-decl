@@ -1,0 +1,176 @@
+global TSLanguage: type <cimport,nodecl,forwarddecl> = @record{}
+global TSParser: type <cimport,nodecl,forwarddecl> = @record{}
+global TSTree: type <cimport,nodecl,forwarddecl> = @record{}
+global TSQuery: type <cimport,nodecl,forwarddecl> = @record{}
+global TSQueryCursor: type <cimport,nodecl,forwarddecl> = @record{}
+global TSInputEncoding: type <cimport,nodecl,using> = @enum(cint){
+  TSInputEncodingUTF8 = 0,
+  TSInputEncodingUTF16 = 1
+}
+global TSSymbolType: type <cimport,nodecl,using> = @enum(cint){
+  TSSymbolTypeRegular = 0,
+  TSSymbolTypeAnonymous = 1,
+  TSSymbolTypeAuxiliary = 2
+}
+global TSPoint: type <cimport,nodecl> = @record{
+  row: uint32,
+  column: uint32
+}
+global TSRange: type <cimport,nodecl> = @record{
+  start_point: TSPoint,
+  end_point: TSPoint,
+  start_byte: uint32,
+  end_byte: uint32
+}
+global TSInput: type <cimport,nodecl> = @record{
+  payload: pointer,
+  read: function(pointer, uint32, TSPoint, *uint32): cstring,
+  encoding: TSInputEncoding
+}
+global TSLogType: type <cimport,nodecl,using> = @enum(cint){
+  TSLogTypeParse = 0,
+  TSLogTypeLex = 1
+}
+global TSLogger: type <cimport,nodecl> = @record{
+  payload: pointer,
+  log: function(pointer, TSLogType, cstring): void
+}
+global TSInputEdit: type <cimport,nodecl> = @record{
+  start_byte: uint32,
+  old_end_byte: uint32,
+  new_end_byte: uint32,
+  start_point: TSPoint,
+  old_end_point: TSPoint,
+  new_end_point: TSPoint
+}
+global TSNode: type <cimport,nodecl> = @record{
+  context: [4]uint32,
+  id: pointer,
+  tree: *TSTree
+}
+global TSTreeCursor: type <cimport,nodecl> = @record{
+  tree: pointer,
+  id: pointer,
+  context: [2]uint32
+}
+global TSQueryCapture: type <cimport,nodecl> = @record{
+  node: TSNode,
+  index: uint32
+}
+global TSQueryMatch: type <cimport,nodecl> = @record{
+  id: uint32,
+  pattern_index: uint16,
+  capture_count: uint16,
+  captures: *TSQueryCapture
+}
+global TSQueryPredicateStepType: type <cimport,nodecl,using> = @enum(cint){
+  TSQueryPredicateStepTypeDone = 0,
+  TSQueryPredicateStepTypeCapture = 1,
+  TSQueryPredicateStepTypeString = 2
+}
+global TSQueryPredicateStep: type <cimport,nodecl> = @record{
+  type: TSQueryPredicateStepType,
+  value_id: uint32
+}
+global TSQueryError: type <cimport,nodecl,using> = @enum(cint){
+  TSQueryErrorNone = 0,
+  TSQueryErrorSyntax = 1,
+  TSQueryErrorNodeType = 2,
+  TSQueryErrorField = 3,
+  TSQueryErrorCapture = 4,
+  TSQueryErrorStructure = 5
+}
+global TSFieldMapEntry: type <cimport,nodecl> = @record{
+  field_id: cushort,
+  child_index: uint8,
+  inherited: boolean
+}
+global TSFieldMapSlice: type <cimport,nodecl> = @record{
+  index: uint16,
+  length: uint16
+}
+global TSSymbolMetadata: type <cimport,nodecl> = @record{
+  visible: boolean,
+  named: boolean,
+  supertype: boolean
+}
+global TSLexer: type <cimport,nodecl,forwarddecl> = @record{}
+TSLexer = @record{
+  lookahead: int32,
+  result_symbol: cushort,
+  advance: function(*TSLexer, boolean): void,
+  mark_end: function(*TSLexer): void,
+  get_column: function(*TSLexer): uint32,
+  is_at_included_range_start: function(*TSLexer): boolean,
+  eof: function(*TSLexer): boolean
+}
+global TSParseActionType: type <cimport,nodecl,using> = @enum(cint){
+  TSParseActionTypeShift = 0,
+  TSParseActionTypeReduce = 1,
+  TSParseActionTypeAccept = 2,
+  TSParseActionTypeRecover = 3
+}
+global TSParseAction: type <cimport,nodecl> = @union{
+  shift: record{
+    type: uint8,
+    state: cushort,
+    extra: boolean,
+    repetition: boolean
+  },
+  reduce: record{
+    type: uint8,
+    child_count: uint8,
+    symbol: cushort,
+    dynamic_precedence: int16,
+    production_id: uint16
+  },
+  type: uint8
+}
+global TSLexMode: type <cimport,nodecl> = @record{
+  lex_state: uint16,
+  external_lex_state: uint16
+}
+global TSParseActionEntry: type <cimport,nodecl> = @union{
+  action: TSParseAction,
+  entry: record{
+    count: uint8,
+    reusable: boolean
+  }
+}
+TSLanguage = @record{
+  version: uint32,
+  symbol_count: uint32,
+  alias_count: uint32,
+  token_count: uint32,
+  external_token_count: uint32,
+  state_count: uint32,
+  large_state_count: uint32,
+  production_id_count: uint32,
+  field_count: uint32,
+  max_alias_sequence_length: uint16,
+  parse_table: *uint16,
+  small_parse_table: *uint16,
+  small_parse_table_map: *uint32,
+  parse_actions: *TSParseActionEntry,
+  symbol_names: *cstring,
+  field_names: *cstring,
+  field_map_slices: *TSFieldMapSlice,
+  field_map_entries: *TSFieldMapEntry,
+  symbol_metadata: *TSSymbolMetadata,
+  public_symbol_map: *cushort,
+  alias_map: *uint16,
+  alias_sequences: *cushort,
+  lex_modes: *TSLexMode,
+  lex_fn: function(*TSLexer, cushort): boolean,
+  keyword_lex_fn: function(*TSLexer, cushort): boolean,
+  keyword_capture_token: cushort,
+  external_scanner: record{
+    states: *boolean,
+    symbol_map: *cushort,
+    create: function(): pointer,
+    destroy: function(pointer): void,
+    scan: function(pointer, *TSLexer, *boolean): boolean,
+    serialize: function(pointer, cstring): cuint,
+    deserialize: function(pointer, cstring, cuint): void
+  }
+}
