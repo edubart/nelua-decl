@@ -80,6 +80,8 @@ and multi-protocol networking library)
     - [mir.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/mir/mir.nelua) (A lightweight JIT compiler and C11 JIT compiler/interpreter based on MIR)
 * [Lexbor](http://lexbor.com/)
     - [lexbor.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/lexbor/lexbor.nelua) (HTML/CSS/DOM parser/engine)
+* [tree-sitter](https://tree-sitter.github.io/tree-sitter/)
+    - [tree-sitter.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/tree-sitter/tree-sitter.nelua) (A parser generator tool and an incremental parsing library)
 
 Plus the following platform specific libraries:
 * dl

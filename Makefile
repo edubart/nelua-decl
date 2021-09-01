@@ -28,6 +28,7 @@ generate:
 	$(MKC) libs/mbedtls generate
 	$(MKC) libs/mir generate
 	$(MKC) libs/lexbor generate
+	$(MKC) libs/tree-sitter generate
 
 	$(MKC) libs/c generate
 	$(MKC) libs/dl generate
@@ -65,6 +66,7 @@ download:
 	$(MKC) libs/mbedtls download
 	$(MKC) libs/mir download
 	$(MKC) libs/lexbor download
+	$(MKC) libs/tree-sitter download
 
 	$(MKC) libs/c download
 	$(MKC) libs/dl download
@@ -102,6 +104,7 @@ test:
 	$(MKC) libs/mbedtls test
 	$(MKC) libs/mir test
 	$(MKC) libs/lexbor test
+	$(MKC) libs/tree-sitter test
 
 	$(MKC) libs/c test
 	$(MKC) libs/dl test

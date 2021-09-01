@@ -1,0 +1,5 @@
+require 'tree-sitter'
+
+local parser = ts_parser_new()
+
+ts_parser_delete(parser)

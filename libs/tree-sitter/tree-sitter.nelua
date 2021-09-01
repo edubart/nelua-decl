@@ -1,0 +1,282 @@
+##[[
+cinclude 'tree_sitter/api.h'
+cinclude 'tree_sitter/parser.h'
+linklib 'tree-sitter'
+]]
+global FILE: type <cimport,nodecl,forwarddecl> = @record{}
+global TSLanguage: type <cimport,nodecl,forwarddecl> = @record{}
+global TSParser: type <cimport,nodecl,forwarddecl> = @record{}
+global TSTree: type <cimport,nodecl,forwarddecl> = @record{}
+global TSQuery: type <cimport,nodecl,forwarddecl> = @record{}
+global TSQueryCursor: type <cimport,nodecl,forwarddecl> = @record{}
+global TSInputEncoding: type <cimport,nodecl,using> = @enum(cint){
+  TSInputEncodingUTF8 = 0,
+  TSInputEncodingUTF16 = 1
+}
+global TSSymbolType: type <cimport,nodecl,using> = @enum(cint){
+  TSSymbolTypeRegular = 0,
+  TSSymbolTypeAnonymous = 1,
+  TSSymbolTypeAuxiliary = 2
+}
+global TSPoint: type <cimport,nodecl> = @record{
+  row: uint32,
+  column: uint32
+}
+global TSRange: type <cimport,nodecl> = @record{
+  start_point: TSPoint,
+  end_point: TSPoint,
+  start_byte: uint32,
+  end_byte: uint32
+}
+global TSInput: type <cimport,nodecl> = @record{
+  payload: pointer,
+  read: function(pointer, uint32, TSPoint, *uint32): cstring,
+  encoding: TSInputEncoding
+}
+global TSLogType: type <cimport,nodecl,using> = @enum(cint){
+  TSLogTypeParse = 0,
+  TSLogTypeLex = 1
+}
+global TSLogger: type <cimport,nodecl> = @record{
+  payload: pointer,
+  log: function(pointer, TSLogType, cstring): void
+}
+global TSInputEdit: type <cimport,nodecl> = @record{
+  start_byte: uint32,
+  old_end_byte: uint32,
+  new_end_byte: uint32,
+  start_point: TSPoint,
+  old_end_point: TSPoint,
+  new_end_point: TSPoint
+}
+global TSNode: type <cimport,nodecl> = @record{
+  context: [4]uint32,
+  id: pointer,
+  tree: *TSTree
+}
+global TSTreeCursor: type <cimport,nodecl> = @record{
+  tree: pointer,
+  id: pointer,
+  context: [2]uint32
+}
+global TSQueryCapture: type <cimport,nodecl> = @record{
+  node: TSNode,
+  index: uint32
+}
+global TSQueryMatch: type <cimport,nodecl> = @record{
+  id: uint32,
+  pattern_index: uint16,
+  capture_count: uint16,
+  captures: *TSQueryCapture
+}
+global TSQueryPredicateStepType: type <cimport,nodecl,using> = @enum(cint){
+  TSQueryPredicateStepTypeDone = 0,
+  TSQueryPredicateStepTypeCapture = 1,
+  TSQueryPredicateStepTypeString = 2
+}
+global TSQueryPredicateStep: type <cimport,nodecl> = @record{
+  type: TSQueryPredicateStepType,
+  value_id: uint32
+}
+global TSQueryError: type <cimport,nodecl,using> = @enum(cint){
+  TSQueryErrorNone = 0,
+  TSQueryErrorSyntax = 1,
+  TSQueryErrorNodeType = 2,
+  TSQueryErrorField = 3,
+  TSQueryErrorCapture = 4,
+  TSQueryErrorStructure = 5
+}
+global function ts_parser_new(): *TSParser <cimport,nodecl> end
+global function ts_parser_delete(parser: *TSParser): void <cimport,nodecl> end
+global function ts_parser_set_language(self: *TSParser, language: *TSLanguage): boolean <cimport,nodecl> end
+global function ts_parser_language(self: *TSParser): *TSLanguage <cimport,nodecl> end
+global function ts_parser_set_included_ranges(self: *TSParser, ranges: *TSRange, length: uint32): boolean <cimport,nodecl> end
+global function ts_parser_included_ranges(self: *TSParser, length: *uint32): *TSRange <cimport,nodecl> end
+global function ts_parser_parse(self: *TSParser, old_tree: *TSTree, input: TSInput): *TSTree <cimport,nodecl> end
+global function ts_parser_parse_string(self: *TSParser, old_tree: *TSTree, string: cstring, length: uint32): *TSTree <cimport,nodecl> end
+global function ts_parser_parse_string_encoding(self: *TSParser, old_tree: *TSTree, string: cstring, length: uint32, encoding: TSInputEncoding): *TSTree <cimport,nodecl> end
+global function ts_parser_reset(self: *TSParser): void <cimport,nodecl> end
+global function ts_parser_set_timeout_micros(self: *TSParser, timeout: uint64): void <cimport,nodecl> end
+global function ts_parser_timeout_micros(self: *TSParser): uint64 <cimport,nodecl> end
+global function ts_parser_set_cancellation_flag(self: *TSParser, flag: *csize): void <cimport,nodecl> end
+global function ts_parser_cancellation_flag(self: *TSParser): *csize <cimport,nodecl> end
+global function ts_parser_set_logger(self: *TSParser, logger: TSLogger): void <cimport,nodecl> end
+global function ts_parser_logger(self: *TSParser): TSLogger <cimport,nodecl> end
+global function ts_parser_print_dot_graphs(self: *TSParser, file: cint): void <cimport,nodecl> end
+global function ts_tree_copy(self: *TSTree): *TSTree <cimport,nodecl> end
+global function ts_tree_delete(self: *TSTree): void <cimport,nodecl> end
+global function ts_tree_root_node(self: *TSTree): TSNode <cimport,nodecl> end
+global function ts_tree_language(a1: *TSTree): *TSLanguage <cimport,nodecl> end
+global function ts_tree_edit(self: *TSTree, edit: *TSInputEdit): void <cimport,nodecl> end
+global function ts_tree_get_changed_ranges(old_tree: *TSTree, new_tree: *TSTree, length: *uint32): *TSRange <cimport,nodecl> end
+global function ts_tree_print_dot_graph(a1: *TSTree, a2: *FILE): void <cimport,nodecl> end
+global function ts_node_type(a1: TSNode): cstring <cimport,nodecl> end
+global function ts_node_symbol(a1: TSNode): cushort <cimport,nodecl> end
+global function ts_node_start_byte(a1: TSNode): uint32 <cimport,nodecl> end
+global function ts_node_start_point(a1: TSNode): TSPoint <cimport,nodecl> end
+global function ts_node_end_byte(a1: TSNode): uint32 <cimport,nodecl> end
+global function ts_node_end_point(a1: TSNode): TSPoint <cimport,nodecl> end
+global function ts_node_string(a1: TSNode): cstring <cimport,nodecl> end
+global function ts_node_is_null(a1: TSNode): boolean <cimport,nodecl> end
+global function ts_node_is_named(a1: TSNode): boolean <cimport,nodecl> end
+global function ts_node_is_missing(a1: TSNode): boolean <cimport,nodecl> end
+global function ts_node_is_extra(a1: TSNode): boolean <cimport,nodecl> end
+global function ts_node_has_changes(a1: TSNode): boolean <cimport,nodecl> end
+global function ts_node_has_error(a1: TSNode): boolean <cimport,nodecl> end
+global function ts_node_parent(a1: TSNode): TSNode <cimport,nodecl> end
+global function ts_node_child(a1: TSNode, a2: uint32): TSNode <cimport,nodecl> end
+global function ts_node_field_name_for_child(a1: TSNode, a2: uint32): cstring <cimport,nodecl> end
+global function ts_node_child_count(a1: TSNode): uint32 <cimport,nodecl> end
+global function ts_node_named_child(a1: TSNode, a2: uint32): TSNode <cimport,nodecl> end
+global function ts_node_named_child_count(a1: TSNode): uint32 <cimport,nodecl> end
+global function ts_node_child_by_field_name(self: TSNode, field_name: cstring, field_name_length: uint32): TSNode <cimport,nodecl> end
+global function ts_node_child_by_field_id(a1: TSNode, a2: cushort): TSNode <cimport,nodecl> end
+global function ts_node_next_sibling(a1: TSNode): TSNode <cimport,nodecl> end
+global function ts_node_prev_sibling(a1: TSNode): TSNode <cimport,nodecl> end
+global function ts_node_next_named_sibling(a1: TSNode): TSNode <cimport,nodecl> end
+global function ts_node_prev_named_sibling(a1: TSNode): TSNode <cimport,nodecl> end
+global function ts_node_first_child_for_byte(a1: TSNode, a2: uint32): TSNode <cimport,nodecl> end
+global function ts_node_first_named_child_for_byte(a1: TSNode, a2: uint32): TSNode <cimport,nodecl> end
+global function ts_node_descendant_for_byte_range(a1: TSNode, a2: uint32, a3: uint32): TSNode <cimport,nodecl> end
+global function ts_node_descendant_for_point_range(a1: TSNode, a2: TSPoint, a3: TSPoint): TSNode <cimport,nodecl> end
+global function ts_node_named_descendant_for_byte_range(a1: TSNode, a2: uint32, a3: uint32): TSNode <cimport,nodecl> end
+global function ts_node_named_descendant_for_point_range(a1: TSNode, a2: TSPoint, a3: TSPoint): TSNode <cimport,nodecl> end
+global function ts_node_edit(a1: *TSNode, a2: *TSInputEdit): void <cimport,nodecl> end
+global function ts_node_eq(a1: TSNode, a2: TSNode): boolean <cimport,nodecl> end
+global function ts_tree_cursor_new(a1: TSNode): TSTreeCursor <cimport,nodecl> end
+global function ts_tree_cursor_delete(a1: *TSTreeCursor): void <cimport,nodecl> end
+global function ts_tree_cursor_reset(a1: *TSTreeCursor, a2: TSNode): void <cimport,nodecl> end
+global function ts_tree_cursor_current_node(a1: *TSTreeCursor): TSNode <cimport,nodecl> end
+global function ts_tree_cursor_current_field_name(a1: *TSTreeCursor): cstring <cimport,nodecl> end
+global function ts_tree_cursor_current_field_id(a1: *TSTreeCursor): cushort <cimport,nodecl> end
+global function ts_tree_cursor_goto_parent(a1: *TSTreeCursor): boolean <cimport,nodecl> end
+global function ts_tree_cursor_goto_next_sibling(a1: *TSTreeCursor): boolean <cimport,nodecl> end
+global function ts_tree_cursor_goto_first_child(a1: *TSTreeCursor): boolean <cimport,nodecl> end
+global function ts_tree_cursor_goto_first_child_for_byte(a1: *TSTreeCursor, a2: uint32): int64 <cimport,nodecl> end
+global function ts_tree_cursor_goto_first_child_for_point(a1: *TSTreeCursor, a2: TSPoint): int64 <cimport,nodecl> end
+global function ts_tree_cursor_copy(a1: *TSTreeCursor): TSTreeCursor <cimport,nodecl> end
+global function ts_query_new(language: *TSLanguage, source: cstring, source_len: uint32, error_offset: *uint32, error_type: *TSQueryError): *TSQuery <cimport,nodecl> end
+global function ts_query_delete(a1: *TSQuery): void <cimport,nodecl> end
+global function ts_query_pattern_count(a1: *TSQuery): uint32 <cimport,nodecl> end
+global function ts_query_capture_count(a1: *TSQuery): uint32 <cimport,nodecl> end
+global function ts_query_string_count(a1: *TSQuery): uint32 <cimport,nodecl> end
+global function ts_query_start_byte_for_pattern(a1: *TSQuery, a2: uint32): uint32 <cimport,nodecl> end
+global function ts_query_predicates_for_pattern(self: *TSQuery, pattern_index: uint32, length: *uint32): *TSQueryPredicateStep <cimport,nodecl> end
+global function ts_query_step_is_definite(self: *TSQuery, byte_offset: uint32): boolean <cimport,nodecl> end
+global function ts_query_capture_name_for_id(a1: *TSQuery, id: uint32, length: *uint32): cstring <cimport,nodecl> end
+global function ts_query_string_value_for_id(a1: *TSQuery, id: uint32, length: *uint32): cstring <cimport,nodecl> end
+global function ts_query_disable_capture(a1: *TSQuery, a2: cstring, a3: uint32): void <cimport,nodecl> end
+global function ts_query_disable_pattern(a1: *TSQuery, a2: uint32): void <cimport,nodecl> end
+global function ts_query_cursor_new(): *TSQueryCursor <cimport,nodecl> end
+global function ts_query_cursor_delete(a1: *TSQueryCursor): void <cimport,nodecl> end
+global function ts_query_cursor_exec(a1: *TSQueryCursor, a2: *TSQuery, a3: TSNode): void <cimport,nodecl> end
+global function ts_query_cursor_did_exceed_match_limit(a1: *TSQueryCursor): boolean <cimport,nodecl> end
+global function ts_query_cursor_match_limit(a1: *TSQueryCursor): uint32 <cimport,nodecl> end
+global function ts_query_cursor_set_match_limit(a1: *TSQueryCursor, a2: uint32): void <cimport,nodecl> end
+global function ts_query_cursor_set_byte_range(a1: *TSQueryCursor, a2: uint32, a3: uint32): void <cimport,nodecl> end
+global function ts_query_cursor_set_point_range(a1: *TSQueryCursor, a2: TSPoint, a3: TSPoint): void <cimport,nodecl> end
+global function ts_query_cursor_next_match(a1: *TSQueryCursor, match: *TSQueryMatch): boolean <cimport,nodecl> end
+global function ts_query_cursor_remove_match(a1: *TSQueryCursor, id: uint32): void <cimport,nodecl> end
+global function ts_query_cursor_next_capture(a1: *TSQueryCursor, match: *TSQueryMatch, capture_index: *uint32): boolean <cimport,nodecl> end
+global function ts_language_symbol_count(a1: *TSLanguage): uint32 <cimport,nodecl> end
+global function ts_language_symbol_name(a1: *TSLanguage, a2: cushort): cstring <cimport,nodecl> end
+global function ts_language_symbol_for_name(self: *TSLanguage, string: cstring, length: uint32, is_named: boolean): cushort <cimport,nodecl> end
+global function ts_language_field_count(a1: *TSLanguage): uint32 <cimport,nodecl> end
+global function ts_language_field_name_for_id(a1: *TSLanguage, a2: cushort): cstring <cimport,nodecl> end
+global function ts_language_field_id_for_name(a1: *TSLanguage, a2: cstring, a3: uint32): cushort <cimport,nodecl> end
+global function ts_language_symbol_type(a1: *TSLanguage, a2: cushort): TSSymbolType <cimport,nodecl> end
+global function ts_language_version(a1: *TSLanguage): uint32 <cimport,nodecl> end
+global TSFieldMapEntry: type <cimport,nodecl> = @record{
+  field_id: cushort,
+  child_index: uint8,
+  inherited: boolean
+}
+global TSFieldMapSlice: type <cimport,nodecl> = @record{
+  index: uint16,
+  length: uint16
+}
+global TSSymbolMetadata: type <cimport,nodecl> = @record{
+  visible: boolean,
+  named: boolean,
+  supertype: boolean
+}
+global TSLexer: type <cimport,nodecl,forwarddecl> = @record{}
+TSLexer = @record{
+  lookahead: int32,
+  result_symbol: cushort,
+  advance: function(*TSLexer, boolean): void,
+  mark_end: function(*TSLexer): void,
+  get_column: function(*TSLexer): uint32,
+  is_at_included_range_start: function(*TSLexer): boolean,
+  eof: function(*TSLexer): boolean
+}
+global TSParseActionType: type <cimport,nodecl,using> = @enum(cint){
+  TSParseActionTypeShift = 0,
+  TSParseActionTypeReduce = 1,
+  TSParseActionTypeAccept = 2,
+  TSParseActionTypeRecover = 3
+}
+global TSParseAction: type <cimport,nodecl> = @union{
+  shift: record{
+    type: uint8,
+    state: cushort,
+    extra: boolean,
+    repetition: boolean
+  },
+  reduce: record{
+    type: uint8,
+    child_count: uint8,
+    symbol: cushort,
+    dynamic_precedence: int16,
+    production_id: uint16
+  },
+  type: uint8
+}
+global TSLexMode: type <cimport,nodecl> = @record{
+  lex_state: uint16,
+  external_lex_state: uint16
+}
+global TSParseActionEntry: type <cimport,nodecl> = @union{
+  action: TSParseAction,
+  entry: record{
+    count: uint8,
+    reusable: boolean
+  }
+}
+TSLanguage = @record{
+  version: uint32,
+  symbol_count: uint32,
+  alias_count: uint32,
+  token_count: uint32,
+  external_token_count: uint32,
+  state_count: uint32,
+  large_state_count: uint32,
+  production_id_count: uint32,
+  field_count: uint32,
+  max_alias_sequence_length: uint16,
+  parse_table: *uint16,
+  small_parse_table: *uint16,
+  small_parse_table_map: *uint32,
+  parse_actions: *TSParseActionEntry,
+  symbol_names: *cstring,
+  field_names: *cstring,
+  field_map_slices: *TSFieldMapSlice,
+  field_map_entries: *TSFieldMapEntry,
+  symbol_metadata: *TSSymbolMetadata,
+  public_symbol_map: *cushort,
+  alias_map: *uint16,
+  alias_sequences: *cushort,
+  lex_modes: *TSLexMode,
+  lex_fn: function(*TSLexer, cushort): boolean,
+  keyword_lex_fn: function(*TSLexer, cushort): boolean,
+  keyword_capture_token: cushort,
+  external_scanner: record{
+    states: *boolean,
+    symbol_map: *cushort,
+    create: function(): pointer,
+    destroy: function(pointer): void,
+    scan: function(pointer, *TSLexer, *boolean): boolean,
+    serialize: function(pointer, cstring): cuint,
+    deserialize: function(pointer, cstring, cuint): void
+  }
+}
