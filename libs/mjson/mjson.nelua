@@ -1,0 +1,87 @@
+##[[
+cinclude 'mjson.h'
+if not MONGOOSE_NO_IMPL then
+  cinclude 'mjson.c'
+end
+]]
+global mjson_cb_t: type <cimport,nodecl> = @function(cint, cstring, cint, cint, pointer): cint
+global function mjson_find(s: cstring, len: cint, jp: cstring, a4: *cstring, a5: *cint): cint <cimport,nodecl> end
+global function mjson_get_number(s: cstring, len: cint, path: cstring, v: *float64): cint <cimport,nodecl> end
+global function mjson_get_bool(s: cstring, len: cint, path: cstring, v: *cint): cint <cimport,nodecl> end
+global function mjson_get_string(s: cstring, len: cint, path: cstring, to: cstring, n: cint): cint <cimport,nodecl> end
+global function mjson_get_hex(s: cstring, len: cint, path: cstring, to: cstring, n: cint): cint <cimport,nodecl> end
+global function mjson_next(s: cstring, n: cint, off: cint, koff: *cint, klen: *cint, voff: *cint, vlen: *cint, vtype: *cint): cint <cimport,nodecl> end
+global function mjson_get_base64(s: cstring, len: cint, path: cstring, to: cstring, n: cint): cint <cimport,nodecl> end
+global function mjson_base64_dec(src: cstring, n: cint, dst: cstring, dlen: cint): cint <cimport,nodecl> end
+global mjson_print_fn_t: type <cimport,nodecl> = @function(cstring, cint, pointer): cint
+global mjson_vprint_fn_t: type <cimport,nodecl> = @function(mjson_print_fn_t, pointer, *cvalist): cint
+global mjson_fixedbuf: type <cimport,nodecl,ctypedef> = @record{
+  ptr: cstring,
+  size: cint,
+  len: cint
+}
+global function mjson_printf(a1: mjson_print_fn_t, a2: pointer, fmt: cstring, ...: cvarargs): cint <cimport,nodecl> end
+global function mjson_vprintf(a1: mjson_print_fn_t, a2: pointer, fmt: cstring, ap: *cvalist): cint <cimport,nodecl> end
+global function mjson_print_str(a1: mjson_print_fn_t, a2: pointer, s: cstring, len: cint): cint <cimport,nodecl> end
+global function mjson_print_int(a1: mjson_print_fn_t, a2: pointer, value: cint, is_signed: cint): cint <cimport,nodecl> end
+global function mjson_print_long(a1: mjson_print_fn_t, a2: pointer, value: clong, is_signed: cint): cint <cimport,nodecl> end
+global function mjson_print_buf(fn: mjson_print_fn_t, a2: pointer, buf: cstring, len: cint): cint <cimport,nodecl> end
+global function mjson_print_dbl(fn: mjson_print_fn_t, a2: pointer, a3: float64, width: cint): cint <cimport,nodecl> end
+global function mjson_print_null(ptr: cstring, len: cint, userdata: pointer): cint <cimport,nodecl> end
+global function mjson_print_fixed_buf(ptr: cstring, len: cint, userdata: pointer): cint <cimport,nodecl> end
+global function mjson_print_dynamic_buf(ptr: cstring, len: cint, userdata: pointer): cint <cimport,nodecl> end
+global function mjson_snprintf(buf: cstring, len: csize, fmt: cstring, ...: cvarargs): cint <cimport,nodecl> end
+global function mjson_aprintf(fmt: cstring, ...: cvarargs): cstring <cimport,nodecl> end
+global function mjson_pretty(a1: cstring, a2: cint, a3: cstring, a4: mjson_print_fn_t, a5: pointer): cint <cimport,nodecl> end
+global function mjson_merge(a1: cstring, a2: cint, a3: cstring, a4: cint, a5: mjson_print_fn_t, a6: pointer): cint <cimport,nodecl> end
+global function jsonrpc_init(a1: mjson_print_fn_t, userdata: pointer): void <cimport,nodecl> end
+global function mjson_globmatch(s1: cstring, n1: cint, s2: cstring, n2: cint): cint <cimport,nodecl> end
+global jsonrpc_ctx: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global jsonrpc_request: type <cimport,nodecl,ctypedef> = @record{
+  ctx: *jsonrpc_ctx,
+  frame: cstring,
+  frame_len: cint,
+  params: cstring,
+  params_len: cint,
+  id: cstring,
+  id_len: cint,
+  method: cstring,
+  method_len: cint,
+  fn: mjson_print_fn_t,
+  fndata: pointer,
+  userdata: pointer
+}
+global jsonrpc_method: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+jsonrpc_method = @record{
+  method: cstring,
+  method_sz: cint,
+  cb: function(*jsonrpc_request): void,
+  next: *jsonrpc_method
+}
+jsonrpc_ctx = @record{
+  methods: *jsonrpc_method,
+  response_cb: mjson_print_fn_t,
+  response_cb_data: pointer
+}
+global function jsonrpc_ctx_init(ctx: *jsonrpc_ctx, a2: mjson_print_fn_t, a3: pointer): void <cimport,nodecl> end
+global function jsonrpc_return_error(r: *jsonrpc_request, code: cint, message: cstring, data_fmt: cstring, ...: cvarargs): void <cimport,nodecl> end
+global function jsonrpc_return_success(r: *jsonrpc_request, result_fmt: cstring, ...: cvarargs): void <cimport,nodecl> end
+global function jsonrpc_ctx_process(ctx: *jsonrpc_ctx, req: cstring, req_sz: cint, fn: mjson_print_fn_t, fndata: pointer, userdata: pointer): void <cimport,nodecl> end
+global jsonrpc_default_context: jsonrpc_ctx <cimport,nodecl>
+global function jsonrpc_list(r: *jsonrpc_request): void <cimport,nodecl> end
+global MJSON_ERROR_INVALID_INPUT: cint <comptime> = -1
+global MJSON_ERROR_TOO_DEEP: cint <comptime> = -2
+global MJSON_TOK_INVALID: cint <comptime> = 0
+global MJSON_TOK_KEY: cint <comptime> = 1
+global MJSON_TOK_STRING: cint <comptime> = 11
+global MJSON_TOK_NUMBER: cint <comptime> = 12
+global MJSON_TOK_TRUE: cint <comptime> = 13
+global MJSON_TOK_FALSE: cint <comptime> = 14
+global MJSON_TOK_NULL: cint <comptime> = 15
+global MJSON_TOK_ARRAY: cint <comptime> = 91
+global MJSON_TOK_OBJECT: cint <comptime> = 123
+global MJSON_MAX_DEPTH: cint <comptime> = 20
+global JSONRPC_ERROR_INVALID: cint <comptime> = -32700
+global JSONRPC_ERROR_NOT_FOUND: cint <comptime> = -32601
+global JSONRPC_ERROR_BAD_PARAMS: cint <comptime> = -32602
+global JSONRPC_ERROR_INTERNAL: cint <comptime> = -32603

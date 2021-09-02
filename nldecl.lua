@@ -145,6 +145,8 @@ function nldecl.pointer_type(node, decl)
     local subnodecode = subnode:code()
     if subnodeid == '__va_list_tag' then
       emitter:add('cvalist')
+    elseif subnodeid == 'va_list' then
+      emitter:add('*cvalist')
     elseif subnodecode == 'integer_type' and gccutils.get_id(subnode:canonical()) == 'char' then
       emitter:add('cstring')
     elseif subnodecode == 'void_type' then

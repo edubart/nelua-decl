@@ -1,0 +1,23 @@
+require 'mjson'
+
+local s = [[{"a":1,"b":[2,false]}]]
+
+local val: cdouble
+if mjson_get_number(s, #s, "$.a", &val) ~= 0 then
+  print("a", val)
+end
+
+local buf: cstring, len: cint
+if mjson_find(s, #s, "$.b", &buf, &len) ~= 0 then
+  local s: string = string{data=buf,size=len}
+  assert(s == "[2,false]")
+  print(s)
+end
+
+local v: cint
+if mjson_get_bool(s, #s, "$.b[1]", &v) ~= 0 then
+  assert(v == 0)
+  print("boolean", v ~= 0)
+end
+
+print 'mjson OK!'
