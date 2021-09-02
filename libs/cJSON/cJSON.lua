@@ -7,8 +7,8 @@ nldecl.include_names = {
 
 nldecl.include_macros = {
   cint = {
-    '^cJSON_',
-    '^CJSON_',
+    ['^cJSON_'] = false,
+    ['^CJSON_'] = false,
   },
 }
 
@@ -19,4 +19,9 @@ if not CJSON_NO_IMPL then
   cinclude 'cJSON.c'
 end
 ]]
+]=]
+
+nldecl.append_code = [=[
+global function cJSON_SetIntValue(object: *cJSON, number: cint): float64 <cimport,nodecl> end
+global function cJSON_SetNumberValue(object: *cJSON, number: float64): float64 <cimport,nodecl> end
 ]=]

@@ -1,7 +1,31 @@
 require 'cJSON'
 
-local s = [[{"a":1,"b":[2,false]}]]
-local json: *cJSON = cJSON_Parse(s)
-cJSON_Delete(json)
+local function test_parse()
+  local s = [[{
+    "name": "John",
+    "age": 20
+  }]]
+
+  local json: *cJSON = cJSON_Parse(s)
+  if not json then
+    error(cJSON_GetErrorPtr())
+  end
+
+  local name_json: *cJSON = cJSON_GetObjectItemCaseSensitive(json, "name")
+  assert(cJSON_IsString(name_json) ~= 0)
+  local name: cstring = cJSON_GetStringValue(name_json)
+  assert(name == 'John')
+  print('name', name)
+
+  local age_json: *cJSON = cJSON_GetObjectItemCaseSensitive(json, "age")
+  assert(cJSON_IsNumber(age_json) ~= 0)
+  local age: float64 = cJSON_GetNumberValue(age_json)
+  assert(age == 20)
+  print('age', age)
+
+  cJSON_Delete(json)
+end
+
+test_parse()
 
 print 'cJSON OK!'

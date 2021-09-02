@@ -69,19 +69,22 @@ global function jsonrpc_return_success(r: *jsonrpc_request, result_fmt: cstring,
 global function jsonrpc_ctx_process(ctx: *jsonrpc_ctx, req: cstring, req_sz: cint, fn: mjson_print_fn_t, fndata: pointer, userdata: pointer): void <cimport,nodecl> end
 global jsonrpc_default_context: jsonrpc_ctx <cimport,nodecl>
 global function jsonrpc_list(r: *jsonrpc_request): void <cimport,nodecl> end
-global MJSON_ERROR_INVALID_INPUT: cint <comptime> = -1
-global MJSON_ERROR_TOO_DEEP: cint <comptime> = -2
-global MJSON_TOK_INVALID: cint <comptime> = 0
-global MJSON_TOK_KEY: cint <comptime> = 1
-global MJSON_TOK_STRING: cint <comptime> = 11
-global MJSON_TOK_NUMBER: cint <comptime> = 12
-global MJSON_TOK_TRUE: cint <comptime> = 13
-global MJSON_TOK_FALSE: cint <comptime> = 14
-global MJSON_TOK_NULL: cint <comptime> = 15
-global MJSON_TOK_ARRAY: cint <comptime> = 91
-global MJSON_TOK_OBJECT: cint <comptime> = 123
-global MJSON_MAX_DEPTH: cint <comptime> = 20
-global JSONRPC_ERROR_INVALID: cint <comptime> = -32700
-global JSONRPC_ERROR_NOT_FOUND: cint <comptime> = -32601
-global JSONRPC_ERROR_BAD_PARAMS: cint <comptime> = -32602
-global JSONRPC_ERROR_INTERNAL: cint <comptime> = -32603
+global MJSON_ERROR_INVALID_INPUT: cint <cimport,nodecl,const>
+global MJSON_ERROR_TOO_DEEP: cint <cimport,nodecl,const>
+global MJSON_TOK_INVALID: cint <cimport,nodecl,const>
+global MJSON_TOK_KEY: cint <cimport,nodecl,const>
+global MJSON_TOK_STRING: cint <cimport,nodecl,const>
+global MJSON_TOK_NUMBER: cint <cimport,nodecl,const>
+global MJSON_TOK_TRUE: cint <cimport,nodecl,const>
+global MJSON_TOK_FALSE: cint <cimport,nodecl,const>
+global MJSON_TOK_NULL: cint <cimport,nodecl,const>
+global MJSON_TOK_ARRAY: cint <cimport,nodecl,const>
+global MJSON_TOK_OBJECT: cint <cimport,nodecl,const>
+global MJSON_MAX_DEPTH: cint <cimport,nodecl,const>
+global JSONRPC_ERROR_INVALID: cint <cimport,nodecl,const>
+global JSONRPC_ERROR_NOT_FOUND: cint <cimport,nodecl,const>
+global JSONRPC_ERROR_BAD_PARAMS: cint <cimport,nodecl,const>
+global JSONRPC_ERROR_INTERNAL: cint <cimport,nodecl,const>
+global function jsonrpc_ctx_export(ctx: *jsonrpc_ctx, req: cstring, fn: function(*jsonrpc_request): void): void <cimport,nodecl> end
+global function jsonrpc_export(req: cstring, fn: function(*jsonrpc_request): void): void <cimport,nodecl> end
+global function jsonrpc_process(req: cstring, req_sz: cint, fn: mjson_print_fn_t, fndata: pointer, userdata: pointer): void <cimport,nodecl> end

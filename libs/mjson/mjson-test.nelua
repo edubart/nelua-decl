@@ -1,23 +1,77 @@
 require 'mjson'
+require 'C.stdlib'
+require 'io'
 
-local s = [[{"a":1,"b":[2,false]}]]
+local function test_parse()
+  print '== testing parse'
+  local s = [[{"a":1,"b":[2,false]}]]
 
-local val: cdouble
-if mjson_get_number(s, #s, "$.a", &val) ~= 0 then
-  print("a", val)
+  local val: cdouble
+  if mjson_get_number(s, #s, "$.a", &val) ~= 0 then
+    print("a", val)
+  end
+
+  local buf: cstring, len: cint
+  if mjson_find(s, #s, "$.b", &buf, &len) ~= 0 then
+    local s: string = string{data=buf,size=len}
+    assert(s == "[2,false]")
+    print(s)
+  end
+
+  local v: cint
+  if mjson_get_bool(s, #s, "$.b[1]", &v) ~= 0 then
+    assert(v == 0)
+    print("boolean", v ~= 0)
+  end
 end
 
-local buf: cstring, len: cint
-if mjson_find(s, #s, "$.b", &buf, &len) ~= 0 then
-  local s: string = string{data=buf,size=len}
-  assert(s == "[2,false]")
+local function test_emit()
+  print '== testing emit'
+  -- Print into a statically allocated buffer
+  local buf: [100]cchar
+  mjson_snprintf(&buf, #buf, "{%Q:%d}", "a", 123)
+  print(&buf) -- {"a":123}
+
+  -- Print into a dynamically allocated string
+  local s: cstring = mjson_aprintf("{%Q:%g}", "a", 3.1415)
   print(s)
+  C.free(s)
 end
 
-local v: cint
-if mjson_get_bool(s, #s, "$.b[1]", &v) ~= 0 then
-  assert(v == 0)
-  print("boolean", v ~= 0)
+local function test_jsonrpc()
+  print '== testing jsonrpc'
+
+  -- A custom RPC handler. Many handlers can be registered.
+  local function foo(r: *jsonrpc_request)
+    local x: cdouble
+    mjson_get_number(r.params, r.params_len, "$[1]", &x)
+    jsonrpc_return_success(r, "{%Q:%g,%Q:%Q}", "x", x, "ud", r.userdata)
+  end
+
+  -- Sender function receives a reply frame and must forward it to the peer.
+  local function sender(frame: cstring, frame_len: cint , privdata: pointer): cint
+    io.write(string{data=frame,size=frame_len}) -- Print the JSON-RPC reply to stdout
+    return frame_len
+  end
+
+  jsonrpc_init(nilptr, nilptr)
+
+  -- Call rpc.list
+  local request1: cstring = [[{"id": 1, "method": "rpc.list"}]]
+  jsonrpc_process(request1, #request1, sender, nilptr, nilptr)
+
+  -- Call non-existent method
+  local request2: cstring = [[{"id": 1, "method": "foo"}]]
+  jsonrpc_process(request2, #request2, sender, nilptr, nilptr)
+
+  -- Register our own function
+  local request3: cstring = [[{"id": 2, "method": "foo","params":[0,1.23]}]]
+  jsonrpc_export("foo", foo)
+  jsonrpc_process(request3, #request3, sender, nilptr, (@pointer)("hi"_cstring))
 end
+
+test_parse()
+test_emit()
+test_jsonrpc()
 
 print 'mjson OK!'

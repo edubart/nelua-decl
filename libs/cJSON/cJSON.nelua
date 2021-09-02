@@ -97,10 +97,10 @@ global function cJSON_SetNumberHelper(object: *cJSON, number: float64): float64 
 global function cJSON_SetValuestring(object: *cJSON, valuestring: cstring): cstring <cimport,nodecl> end
 global function cJSON_malloc(size: csize): pointer <cimport,nodecl> end
 global function cJSON_free(object: pointer): void <cimport,nodecl> end
-global CJSON_VERSION_MAJOR: cint <comptime> = 1
-global CJSON_VERSION_MINOR: cint <comptime> = 7
-global CJSON_VERSION_PATCH: cint <comptime> = 15
-global cJSON_Invalid: cint <comptime> = 0
+global CJSON_VERSION_MAJOR: cint <cimport,nodecl,const>
+global CJSON_VERSION_MINOR: cint <cimport,nodecl,const>
+global CJSON_VERSION_PATCH: cint <cimport,nodecl,const>
+global cJSON_Invalid: cint <cimport,nodecl,const>
 global cJSON_False: cint <cimport,nodecl,const>
 global cJSON_True: cint <cimport,nodecl,const>
 global cJSON_NULL: cint <cimport,nodecl,const>
@@ -109,6 +109,8 @@ global cJSON_String: cint <cimport,nodecl,const>
 global cJSON_Array: cint <cimport,nodecl,const>
 global cJSON_Object: cint <cimport,nodecl,const>
 global cJSON_Raw: cint <cimport,nodecl,const>
-global cJSON_IsReference: cint <comptime> = 256
-global cJSON_StringIsConst: cint <comptime> = 512
-global CJSON_NESTING_LIMIT: cint <comptime> = 1000
+global cJSON_IsReference: cint <cimport,nodecl,const>
+global cJSON_StringIsConst: cint <cimport,nodecl,const>
+global CJSON_NESTING_LIMIT: cint <cimport,nodecl,const>
+global function cJSON_SetIntValue(object: *cJSON, number: cint): float64 <cimport,nodecl> end
+global function cJSON_SetNumberValue(object: *cJSON, number: float64): float64 <cimport,nodecl> end
