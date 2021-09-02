@@ -1,0 +1,7 @@
+require 'cJSON'
+
+local s = [[{"a":1,"b":[2,false]}]]
+local json: *cJSON = cJSON_Parse(s)
+cJSON_Delete(json)
+
+print 'cJSON OK!'

@@ -19,7 +19,7 @@ nldecl.include_macros = {
 nldecl.prepend_code = [=[
 ##[[
 cinclude 'mjson.h'
-if not MONGOOSE_NO_IMPL then
+if not MJSON_NO_IMPL then
   cinclude 'mjson.c'
 end
 ]]

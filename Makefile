@@ -23,6 +23,7 @@ generate:
 	$(MKC) libs/mongoose generate
 	$(MKC) libs/subprocess generate
 	$(MKC) libs/mjson generate
+	$(MKC) libs/cJSON generate
 	$(MKC) libs/sqlite3 generate
 	$(MKC) libs/nuklear generate
 	$(MKC) libs/mbedtls generate
@@ -61,6 +62,7 @@ download:
 	$(MKC) libs/mongoose download
 	$(MKC) libs/subprocess download
 	$(MKC) libs/mjson download
+	$(MKC) libs/cJSON download
 	$(MKC) libs/sqlite3 download
 	$(MKC) libs/nuklear download
 	$(MKC) libs/mbedtls download
@@ -99,6 +101,7 @@ test:
 	$(MKC) libs/mongoose test
 	$(MKC) libs/subprocess test
 	$(MKC) libs/mjson test
+	$(MKC) libs/cJSON test
 	$(MKC) libs/sqlite3 test
 	$(MKC) libs/nuklear test
 	$(MKC) libs/mbedtls test

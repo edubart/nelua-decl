@@ -1,0 +1,114 @@
+##[[
+cinclude 'cJSON.h'
+if not CJSON_NO_IMPL then
+  cinclude 'cJSON.c'
+end
+]]
+global cJSON: type <cimport,nodecl,forwarddecl> = @record{}
+cJSON = @record{
+  next: *cJSON,
+  prev: *cJSON,
+  child: *cJSON,
+  type: cint,
+  valuestring: cstring,
+  valueint: cint,
+  valuedouble: float64,
+  string: cstring
+}
+global cJSON_Hooks: type <cimport,nodecl> = @record{
+  malloc_fn: function(csize): pointer,
+  free_fn: function(pointer): void
+}
+global function cJSON_Version(): cstring <cimport,nodecl> end
+global function cJSON_InitHooks(hooks: *cJSON_Hooks): void <cimport,nodecl> end
+global function cJSON_Parse(value: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_ParseWithLength(value: cstring, buffer_length: csize): *cJSON <cimport,nodecl> end
+global function cJSON_ParseWithOpts(value: cstring, return_parse_end: *cstring, require_null_terminated: cint): *cJSON <cimport,nodecl> end
+global function cJSON_ParseWithLengthOpts(value: cstring, buffer_length: csize, return_parse_end: *cstring, require_null_terminated: cint): *cJSON <cimport,nodecl> end
+global function cJSON_Print(item: *cJSON): cstring <cimport,nodecl> end
+global function cJSON_PrintUnformatted(item: *cJSON): cstring <cimport,nodecl> end
+global function cJSON_PrintBuffered(item: *cJSON, prebuffer: cint, fmt: cint): cstring <cimport,nodecl> end
+global function cJSON_PrintPreallocated(item: *cJSON, buffer: cstring, length: cint, format: cint): cint <cimport,nodecl> end
+global function cJSON_Delete(item: *cJSON): void <cimport,nodecl> end
+global function cJSON_GetArraySize(array: *cJSON): cint <cimport,nodecl> end
+global function cJSON_GetArrayItem(array: *cJSON, index: cint): *cJSON <cimport,nodecl> end
+global function cJSON_GetObjectItem(object: *cJSON, string: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_GetObjectItemCaseSensitive(object: *cJSON, string: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_HasObjectItem(object: *cJSON, string: cstring): cint <cimport,nodecl> end
+global function cJSON_GetErrorPtr(): cstring <cimport,nodecl> end
+global function cJSON_GetStringValue(item: *cJSON): cstring <cimport,nodecl> end
+global function cJSON_GetNumberValue(item: *cJSON): float64 <cimport,nodecl> end
+global function cJSON_IsInvalid(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsFalse(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsTrue(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsBool(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsNull(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsNumber(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsString(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsArray(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsObject(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_IsRaw(item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_CreateNull(): *cJSON <cimport,nodecl> end
+global function cJSON_CreateTrue(): *cJSON <cimport,nodecl> end
+global function cJSON_CreateFalse(): *cJSON <cimport,nodecl> end
+global function cJSON_CreateBool(boolean: cint): *cJSON <cimport,nodecl> end
+global function cJSON_CreateNumber(num: float64): *cJSON <cimport,nodecl> end
+global function cJSON_CreateString(string: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_CreateRaw(raw: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_CreateArray(): *cJSON <cimport,nodecl> end
+global function cJSON_CreateObject(): *cJSON <cimport,nodecl> end
+global function cJSON_CreateStringReference(string: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_CreateObjectReference(child: *cJSON): *cJSON <cimport,nodecl> end
+global function cJSON_CreateArrayReference(child: *cJSON): *cJSON <cimport,nodecl> end
+global function cJSON_CreateIntArray(numbers: *cint, count: cint): *cJSON <cimport,nodecl> end
+global function cJSON_CreateFloatArray(numbers: *float32, count: cint): *cJSON <cimport,nodecl> end
+global function cJSON_CreateDoubleArray(numbers: *float64, count: cint): *cJSON <cimport,nodecl> end
+global function cJSON_CreateStringArray(strings: *cstring, count: cint): *cJSON <cimport,nodecl> end
+global function cJSON_AddItemToArray(array: *cJSON, item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_AddItemToObject(object: *cJSON, string: cstring, item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_AddItemToObjectCS(object: *cJSON, string: cstring, item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_AddItemReferenceToArray(array: *cJSON, item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_AddItemReferenceToObject(object: *cJSON, string: cstring, item: *cJSON): cint <cimport,nodecl> end
+global function cJSON_DetachItemViaPointer(parent: *cJSON, item: *cJSON): *cJSON <cimport,nodecl> end
+global function cJSON_DetachItemFromArray(array: *cJSON, which: cint): *cJSON <cimport,nodecl> end
+global function cJSON_DeleteItemFromArray(array: *cJSON, which: cint): void <cimport,nodecl> end
+global function cJSON_DetachItemFromObject(object: *cJSON, string: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_DetachItemFromObjectCaseSensitive(object: *cJSON, string: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_DeleteItemFromObject(object: *cJSON, string: cstring): void <cimport,nodecl> end
+global function cJSON_DeleteItemFromObjectCaseSensitive(object: *cJSON, string: cstring): void <cimport,nodecl> end
+global function cJSON_InsertItemInArray(array: *cJSON, which: cint, newitem: *cJSON): cint <cimport,nodecl> end
+global function cJSON_ReplaceItemViaPointer(parent: *cJSON, item: *cJSON, replacement: *cJSON): cint <cimport,nodecl> end
+global function cJSON_ReplaceItemInArray(array: *cJSON, which: cint, newitem: *cJSON): cint <cimport,nodecl> end
+global function cJSON_ReplaceItemInObject(object: *cJSON, string: cstring, newitem: *cJSON): cint <cimport,nodecl> end
+global function cJSON_ReplaceItemInObjectCaseSensitive(object: *cJSON, string: cstring, newitem: *cJSON): cint <cimport,nodecl> end
+global function cJSON_Duplicate(item: *cJSON, recurse: cint): *cJSON <cimport,nodecl> end
+global function cJSON_Compare(a: *cJSON, b: *cJSON, case_sensitive: cint): cint <cimport,nodecl> end
+global function cJSON_Minify(json: cstring): void <cimport,nodecl> end
+global function cJSON_AddNullToObject(object: *cJSON, name: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_AddTrueToObject(object: *cJSON, name: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_AddFalseToObject(object: *cJSON, name: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_AddBoolToObject(object: *cJSON, name: cstring, boolean: cint): *cJSON <cimport,nodecl> end
+global function cJSON_AddNumberToObject(object: *cJSON, name: cstring, number: float64): *cJSON <cimport,nodecl> end
+global function cJSON_AddStringToObject(object: *cJSON, name: cstring, string: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_AddRawToObject(object: *cJSON, name: cstring, raw: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_AddObjectToObject(object: *cJSON, name: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_AddArrayToObject(object: *cJSON, name: cstring): *cJSON <cimport,nodecl> end
+global function cJSON_SetNumberHelper(object: *cJSON, number: float64): float64 <cimport,nodecl> end
+global function cJSON_SetValuestring(object: *cJSON, valuestring: cstring): cstring <cimport,nodecl> end
+global function cJSON_malloc(size: csize): pointer <cimport,nodecl> end
+global function cJSON_free(object: pointer): void <cimport,nodecl> end
+global CJSON_VERSION_MAJOR: cint <comptime> = 1
+global CJSON_VERSION_MINOR: cint <comptime> = 7
+global CJSON_VERSION_PATCH: cint <comptime> = 15
+global cJSON_Invalid: cint <comptime> = 0
+global cJSON_False: cint <cimport,nodecl,const>
+global cJSON_True: cint <cimport,nodecl,const>
+global cJSON_NULL: cint <cimport,nodecl,const>
+global cJSON_Number: cint <cimport,nodecl,const>
+global cJSON_String: cint <cimport,nodecl,const>
+global cJSON_Array: cint <cimport,nodecl,const>
+global cJSON_Object: cint <cimport,nodecl,const>
+global cJSON_Raw: cint <cimport,nodecl,const>
+global cJSON_IsReference: cint <comptime> = 256
+global cJSON_StringIsConst: cint <comptime> = 512
+global CJSON_NESTING_LIMIT: cint <comptime> = 1000
