@@ -1,0 +1,43 @@
+##[[
+if not STB_IMAGE_RESIZE_NO_IMPL then
+  cdefine 'STB_IMAGE_RESIZE_STATIC'
+  cdefine 'STB_IMAGE_RESIZE_IMPLEMENTATION'
+end
+cinclude 'stb_image_resize.h'
+]]
+global function stbir_resize_uint8(input_pixels: *cuchar, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: *cuchar, output_w: cint, output_h: cint, output_stride_in_bytes: cint, num_channels: cint): cint <cimport,nodecl> end
+global function stbir_resize_float(input_pixels: *float32, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: *float32, output_w: cint, output_h: cint, output_stride_in_bytes: cint, num_channels: cint): cint <cimport,nodecl> end
+global function stbir_resize_uint8_srgb(input_pixels: *cuchar, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: *cuchar, output_w: cint, output_h: cint, output_stride_in_bytes: cint, num_channels: cint, alpha_channel: cint, flags: cint): cint <cimport,nodecl> end
+global stbir_edge: type <cimport,nodecl,using> = @enum(cint){
+  STBIR_EDGE_CLAMP = 1,
+  STBIR_EDGE_REFLECT = 2,
+  STBIR_EDGE_WRAP = 3,
+  STBIR_EDGE_ZERO = 4
+}
+global function stbir_resize_uint8_srgb_edgemode(input_pixels: *cuchar, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: *cuchar, output_w: cint, output_h: cint, output_stride_in_bytes: cint, num_channels: cint, alpha_channel: cint, flags: cint, edge_wrap_mode: stbir_edge): cint <cimport,nodecl> end
+global stbir_filter: type <cimport,nodecl,using> = @enum(cint){
+  STBIR_FILTER_DEFAULT = 0,
+  STBIR_FILTER_BOX = 1,
+  STBIR_FILTER_TRIANGLE = 2,
+  STBIR_FILTER_CUBICBSPLINE = 3,
+  STBIR_FILTER_CATMULLROM = 4,
+  STBIR_FILTER_MITCHELL = 5
+}
+global stbir_colorspace: type <cimport,nodecl,using> = @enum(cint){
+  STBIR_COLORSPACE_LINEAR = 0,
+  STBIR_COLORSPACE_SRGB = 1,
+  STBIR_MAX_COLORSPACES = 2
+}
+global function stbir_resize_uint8_generic(input_pixels: *cuchar, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: *cuchar, output_w: cint, output_h: cint, output_stride_in_bytes: cint, num_channels: cint, alpha_channel: cint, flags: cint, edge_wrap_mode: stbir_edge, filter: stbir_filter, space: stbir_colorspace, alloc_context: pointer): cint <cimport,nodecl> end
+global function stbir_resize_uint16_generic(input_pixels: *uint16, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: *uint16, output_w: cint, output_h: cint, output_stride_in_bytes: cint, num_channels: cint, alpha_channel: cint, flags: cint, edge_wrap_mode: stbir_edge, filter: stbir_filter, space: stbir_colorspace, alloc_context: pointer): cint <cimport,nodecl> end
+global function stbir_resize_float_generic(input_pixels: *float32, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: *float32, output_w: cint, output_h: cint, output_stride_in_bytes: cint, num_channels: cint, alpha_channel: cint, flags: cint, edge_wrap_mode: stbir_edge, filter: stbir_filter, space: stbir_colorspace, alloc_context: pointer): cint <cimport,nodecl> end
+global stbir_datatype: type <cimport,nodecl,using> = @enum(cint){
+  STBIR_TYPE_UINT8 = 0,
+  STBIR_TYPE_UINT16 = 1,
+  STBIR_TYPE_UINT32 = 2,
+  STBIR_TYPE_FLOAT = 3,
+  STBIR_MAX_TYPES = 4
+}
+global function stbir_resize(input_pixels: pointer, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: pointer, output_w: cint, output_h: cint, output_stride_in_bytes: cint, datatype: stbir_datatype, num_channels: cint, alpha_channel: cint, flags: cint, edge_mode_horizontal: stbir_edge, edge_mode_vertical: stbir_edge, filter_horizontal: stbir_filter, filter_vertical: stbir_filter, space: stbir_colorspace, alloc_context: pointer): cint <cimport,nodecl> end
+global function stbir_resize_subpixel(input_pixels: pointer, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: pointer, output_w: cint, output_h: cint, output_stride_in_bytes: cint, datatype: stbir_datatype, num_channels: cint, alpha_channel: cint, flags: cint, edge_mode_horizontal: stbir_edge, edge_mode_vertical: stbir_edge, filter_horizontal: stbir_filter, filter_vertical: stbir_filter, space: stbir_colorspace, alloc_context: pointer, x_scale: float32, y_scale: float32, x_offset: float32, y_offset: float32): cint <cimport,nodecl> end
+global function stbir_resize_region(input_pixels: pointer, input_w: cint, input_h: cint, input_stride_in_bytes: cint, output_pixels: pointer, output_w: cint, output_h: cint, output_stride_in_bytes: cint, datatype: stbir_datatype, num_channels: cint, alpha_channel: cint, flags: cint, edge_mode_horizontal: stbir_edge, edge_mode_vertical: stbir_edge, filter_horizontal: stbir_filter, filter_vertical: stbir_filter, space: stbir_colorspace, alloc_context: pointer, s0: float32, t0: float32, s1: float32, t1: float32): cint <cimport,nodecl> end

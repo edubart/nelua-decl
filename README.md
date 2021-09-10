@@ -34,6 +34,7 @@ The following cross-platform libraries bindings are ready and generated as examp
 * [STB](https://github.com/nothings/stb)
     - [stb_image.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_image.nelua) (Read images)
     - [stb_image_write.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_image_write.nelua) (Write images)
+    - [stb_image_resize.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_image_resize.nelua) (Resize images)
     - [stb_truetype.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_truetype.nelua) (Read TTF font files)
     - [stb_vorbis.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/stb/stb_vorbis.nelua) (Read OGG sound files)
 * [Sokol](https://floooh.github.io/sokol-html5/index.html)

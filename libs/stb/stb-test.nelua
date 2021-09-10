@@ -1,5 +1,6 @@
 require 'stb_image'
 require 'stb_image_write'
+require 'stb_image_resize'
 require 'stb_truetype'
 require 'stb_vorbis'
 require 'C.stdio'
