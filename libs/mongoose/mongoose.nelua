@@ -78,7 +78,6 @@ global MG_FS_WRITE: cint <comptime> = 2
 global MG_FS_DIR: cint <comptime> = 4
 global mg_fd: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 global mg_fs: type <cimport,nodecl,ctypedef> = @record{
-  realpath: function(cstring, cstring): cstring,
   stat: function(cstring, *csize, *ctime_t): cint,
   list: function(cstring, function(cstring, pointer): void, pointer): void,
   open: function(cstring, cint): *mg_fd,
