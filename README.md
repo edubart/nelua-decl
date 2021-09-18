@@ -101,11 +101,13 @@ Plus the following platform specific libraries:
     - [time.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/posix/time.nelua) (Date and time)
     - [sys/stat.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/posix/sys/stat.nelua) (File attributes)
     - And some other POSIX APIs, check [the directory](https://github.com/edubart/nelua-decl/blob/main/libs/posix/)
-* linux
+* Linux
     - [inotify.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/inotify.nelua) (Linux filesystem watcher)
     - [epoll.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/epoll.nelua) (Linux I/O event notification facility)
     - [iouring.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/linux/iouring.nelua) (Linux newest IO interface)
-* emscripten
+* Windows
+    - [windows.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/windows/windows.nelua) (Windows APIs)
+* Emscripten
     - [emscripten.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/emscripten/emscripten.nelua) (Emscripten APIs)
 * X11
     - [x11.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/x11/x11.nelua) (X11 Window APIs)

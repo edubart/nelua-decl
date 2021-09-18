@@ -1,0 +1,5 @@
+require 'windows'
+
+print('command line', GetCommandLineA())
+
+print 'windows OK!'
