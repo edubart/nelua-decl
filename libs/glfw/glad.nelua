@@ -1,0 +1,2909 @@
+##[[
+cinclude 'glad.h'
+cfile 'glad.c'
+if ccinfo.is_linux then
+  linklib 'dl'
+end
+]]
+global gladGLversionStruct: type <cimport,nodecl,ctypedef> = @record{
+  major: cint,
+  minor: cint
+}
+global function gladLoadGL(): cint <cimport,nodecl> end
+global function gladLoadGLLoader(a1: function(cstring): pointer): cint <cimport,nodecl> end
+global __GLsync: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global GLsync: type = @*__GLsync
+global GLAD_GL_VERSION_1_0: cint <cimport,nodecl>
+global glCullFace: function(cuint): void <cimport,nodecl>
+global glFrontFace: function(cuint): void <cimport,nodecl>
+global glHint: function(cuint, cuint): void <cimport,nodecl>
+global glLineWidth: function(float32): void <cimport,nodecl>
+global glPointSize: function(float32): void <cimport,nodecl>
+global glPolygonMode: function(cuint, cuint): void <cimport,nodecl>
+global glScissor: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glTexParameterf: function(cuint, cuint, float32): void <cimport,nodecl>
+global glTexParameterfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glTexParameteri: function(cuint, cuint, cint): void <cimport,nodecl>
+global glTexParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glTexImage1D: function(cuint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glTexImage2D: function(cuint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glDrawBuffer: function(cuint): void <cimport,nodecl>
+global glClear: function(cuint): void <cimport,nodecl>
+global glClearColor: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glClearStencil: function(cint): void <cimport,nodecl>
+global glClearDepth: function(float64): void <cimport,nodecl>
+global glStencilMask: function(cuint): void <cimport,nodecl>
+global glColorMask: function(cuchar, cuchar, cuchar, cuchar): void <cimport,nodecl>
+global glDepthMask: function(cuchar): void <cimport,nodecl>
+global glDisable: function(cuint): void <cimport,nodecl>
+global glEnable: function(cuint): void <cimport,nodecl>
+global glFinish: function(): void <cimport,nodecl>
+global glFlush: function(): void <cimport,nodecl>
+global glBlendFunc: function(cuint, cuint): void <cimport,nodecl>
+global glLogicOp: function(cuint): void <cimport,nodecl>
+global glStencilFunc: function(cuint, cint, cuint): void <cimport,nodecl>
+global glStencilOp: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glDepthFunc: function(cuint): void <cimport,nodecl>
+global glPixelStoref: function(cuint, float32): void <cimport,nodecl>
+global glPixelStorei: function(cuint, cint): void <cimport,nodecl>
+global glReadBuffer: function(cuint): void <cimport,nodecl>
+global glReadPixels: function(cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glGetBooleanv: function(cuint, *cuchar): void <cimport,nodecl>
+global glGetDoublev: function(cuint, *float64): void <cimport,nodecl>
+global glGetError: function(): cuint <cimport,nodecl>
+global glGetFloatv: function(cuint, *float32): void <cimport,nodecl>
+global glGetIntegerv: function(cuint, *cint): void <cimport,nodecl>
+global glGetString: function(cuint): *cuchar <cimport,nodecl>
+global glGetTexImage: function(cuint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glGetTexParameterfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetTexParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetTexLevelParameterfv: function(cuint, cint, cuint, *float32): void <cimport,nodecl>
+global glGetTexLevelParameteriv: function(cuint, cint, cuint, *cint): void <cimport,nodecl>
+global glIsEnabled: function(cuint): cuchar <cimport,nodecl>
+global glDepthRange: function(float64, float64): void <cimport,nodecl>
+global glViewport: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glNewList: function(cuint, cuint): void <cimport,nodecl>
+global glEndList: function(): void <cimport,nodecl>
+global glCallList: function(cuint): void <cimport,nodecl>
+global glCallLists: function(cint, cuint, pointer): void <cimport,nodecl>
+global glDeleteLists: function(cuint, cint): void <cimport,nodecl>
+global glGenLists: function(cint): cuint <cimport,nodecl>
+global glListBase: function(cuint): void <cimport,nodecl>
+global glBegin: function(cuint): void <cimport,nodecl>
+global glBitmap: function(cint, cint, float32, float32, float32, float32, *cuchar): void <cimport,nodecl>
+global glColor3b: function(cschar, cschar, cschar): void <cimport,nodecl>
+global glColor3bv: function(*cschar): void <cimport,nodecl>
+global glColor3d: function(float64, float64, float64): void <cimport,nodecl>
+global glColor3dv: function(*float64): void <cimport,nodecl>
+global glColor3f: function(float32, float32, float32): void <cimport,nodecl>
+global glColor3fv: function(*float32): void <cimport,nodecl>
+global glColor3i: function(cint, cint, cint): void <cimport,nodecl>
+global glColor3iv: function(*cint): void <cimport,nodecl>
+global glColor3s: function(cshort, cshort, cshort): void <cimport,nodecl>
+global glColor3sv: function(*cshort): void <cimport,nodecl>
+global glColor3ub: function(cuchar, cuchar, cuchar): void <cimport,nodecl>
+global glColor3ubv: function(*cuchar): void <cimport,nodecl>
+global glColor3ui: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glColor3uiv: function(*cuint): void <cimport,nodecl>
+global glColor3us: function(cushort, cushort, cushort): void <cimport,nodecl>
+global glColor3usv: function(*cushort): void <cimport,nodecl>
+global glColor4b: function(cschar, cschar, cschar, cschar): void <cimport,nodecl>
+global glColor4bv: function(*cschar): void <cimport,nodecl>
+global glColor4d: function(float64, float64, float64, float64): void <cimport,nodecl>
+global glColor4dv: function(*float64): void <cimport,nodecl>
+global glColor4f: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glColor4fv: function(*float32): void <cimport,nodecl>
+global glColor4i: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glColor4iv: function(*cint): void <cimport,nodecl>
+global glColor4s: function(cshort, cshort, cshort, cshort): void <cimport,nodecl>
+global glColor4sv: function(*cshort): void <cimport,nodecl>
+global glColor4ub: function(cuchar, cuchar, cuchar, cuchar): void <cimport,nodecl>
+global glColor4ubv: function(*cuchar): void <cimport,nodecl>
+global glColor4ui: function(cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glColor4uiv: function(*cuint): void <cimport,nodecl>
+global glColor4us: function(cushort, cushort, cushort, cushort): void <cimport,nodecl>
+global glColor4usv: function(*cushort): void <cimport,nodecl>
+global glEdgeFlag: function(cuchar): void <cimport,nodecl>
+global glEdgeFlagv: function(*cuchar): void <cimport,nodecl>
+global glEnd: function(): void <cimport,nodecl>
+global glIndexd: function(float64): void <cimport,nodecl>
+global glIndexdv: function(*float64): void <cimport,nodecl>
+global glIndexf: function(float32): void <cimport,nodecl>
+global glIndexfv: function(*float32): void <cimport,nodecl>
+global glIndexi: function(cint): void <cimport,nodecl>
+global glIndexiv: function(*cint): void <cimport,nodecl>
+global glIndexs: function(cshort): void <cimport,nodecl>
+global glIndexsv: function(*cshort): void <cimport,nodecl>
+global glNormal3b: function(cschar, cschar, cschar): void <cimport,nodecl>
+global glNormal3bv: function(*cschar): void <cimport,nodecl>
+global glNormal3d: function(float64, float64, float64): void <cimport,nodecl>
+global glNormal3dv: function(*float64): void <cimport,nodecl>
+global glNormal3f: function(float32, float32, float32): void <cimport,nodecl>
+global glNormal3fv: function(*float32): void <cimport,nodecl>
+global glNormal3i: function(cint, cint, cint): void <cimport,nodecl>
+global glNormal3iv: function(*cint): void <cimport,nodecl>
+global glNormal3s: function(cshort, cshort, cshort): void <cimport,nodecl>
+global glNormal3sv: function(*cshort): void <cimport,nodecl>
+global glRasterPos2d: function(float64, float64): void <cimport,nodecl>
+global glRasterPos2dv: function(*float64): void <cimport,nodecl>
+global glRasterPos2f: function(float32, float32): void <cimport,nodecl>
+global glRasterPos2fv: function(*float32): void <cimport,nodecl>
+global glRasterPos2i: function(cint, cint): void <cimport,nodecl>
+global glRasterPos2iv: function(*cint): void <cimport,nodecl>
+global glRasterPos2s: function(cshort, cshort): void <cimport,nodecl>
+global glRasterPos2sv: function(*cshort): void <cimport,nodecl>
+global glRasterPos3d: function(float64, float64, float64): void <cimport,nodecl>
+global glRasterPos3dv: function(*float64): void <cimport,nodecl>
+global glRasterPos3f: function(float32, float32, float32): void <cimport,nodecl>
+global glRasterPos3fv: function(*float32): void <cimport,nodecl>
+global glRasterPos3i: function(cint, cint, cint): void <cimport,nodecl>
+global glRasterPos3iv: function(*cint): void <cimport,nodecl>
+global glRasterPos3s: function(cshort, cshort, cshort): void <cimport,nodecl>
+global glRasterPos3sv: function(*cshort): void <cimport,nodecl>
+global glRasterPos4d: function(float64, float64, float64, float64): void <cimport,nodecl>
+global glRasterPos4dv: function(*float64): void <cimport,nodecl>
+global glRasterPos4f: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glRasterPos4fv: function(*float32): void <cimport,nodecl>
+global glRasterPos4i: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glRasterPos4iv: function(*cint): void <cimport,nodecl>
+global glRasterPos4s: function(cshort, cshort, cshort, cshort): void <cimport,nodecl>
+global glRasterPos4sv: function(*cshort): void <cimport,nodecl>
+global glRectd: function(float64, float64, float64, float64): void <cimport,nodecl>
+global glRectdv: function(*float64, *float64): void <cimport,nodecl>
+global glRectf: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glRectfv: function(*float32, *float32): void <cimport,nodecl>
+global glRecti: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glRectiv: function(*cint, *cint): void <cimport,nodecl>
+global glRects: function(cshort, cshort, cshort, cshort): void <cimport,nodecl>
+global glRectsv: function(*cshort, *cshort): void <cimport,nodecl>
+global glTexCoord1d: function(float64): void <cimport,nodecl>
+global glTexCoord1dv: function(*float64): void <cimport,nodecl>
+global glTexCoord1f: function(float32): void <cimport,nodecl>
+global glTexCoord1fv: function(*float32): void <cimport,nodecl>
+global glTexCoord1i: function(cint): void <cimport,nodecl>
+global glTexCoord1iv: function(*cint): void <cimport,nodecl>
+global glTexCoord1s: function(cshort): void <cimport,nodecl>
+global glTexCoord1sv: function(*cshort): void <cimport,nodecl>
+global glTexCoord2d: function(float64, float64): void <cimport,nodecl>
+global glTexCoord2dv: function(*float64): void <cimport,nodecl>
+global glTexCoord2f: function(float32, float32): void <cimport,nodecl>
+global glTexCoord2fv: function(*float32): void <cimport,nodecl>
+global glTexCoord2i: function(cint, cint): void <cimport,nodecl>
+global glTexCoord2iv: function(*cint): void <cimport,nodecl>
+global glTexCoord2s: function(cshort, cshort): void <cimport,nodecl>
+global glTexCoord2sv: function(*cshort): void <cimport,nodecl>
+global glTexCoord3d: function(float64, float64, float64): void <cimport,nodecl>
+global glTexCoord3dv: function(*float64): void <cimport,nodecl>
+global glTexCoord3f: function(float32, float32, float32): void <cimport,nodecl>
+global glTexCoord3fv: function(*float32): void <cimport,nodecl>
+global glTexCoord3i: function(cint, cint, cint): void <cimport,nodecl>
+global glTexCoord3iv: function(*cint): void <cimport,nodecl>
+global glTexCoord3s: function(cshort, cshort, cshort): void <cimport,nodecl>
+global glTexCoord3sv: function(*cshort): void <cimport,nodecl>
+global glTexCoord4d: function(float64, float64, float64, float64): void <cimport,nodecl>
+global glTexCoord4dv: function(*float64): void <cimport,nodecl>
+global glTexCoord4f: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glTexCoord4fv: function(*float32): void <cimport,nodecl>
+global glTexCoord4i: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glTexCoord4iv: function(*cint): void <cimport,nodecl>
+global glTexCoord4s: function(cshort, cshort, cshort, cshort): void <cimport,nodecl>
+global glTexCoord4sv: function(*cshort): void <cimport,nodecl>
+global glVertex2d: function(float64, float64): void <cimport,nodecl>
+global glVertex2dv: function(*float64): void <cimport,nodecl>
+global glVertex2f: function(float32, float32): void <cimport,nodecl>
+global glVertex2fv: function(*float32): void <cimport,nodecl>
+global glVertex2i: function(cint, cint): void <cimport,nodecl>
+global glVertex2iv: function(*cint): void <cimport,nodecl>
+global glVertex2s: function(cshort, cshort): void <cimport,nodecl>
+global glVertex2sv: function(*cshort): void <cimport,nodecl>
+global glVertex3d: function(float64, float64, float64): void <cimport,nodecl>
+global glVertex3dv: function(*float64): void <cimport,nodecl>
+global glVertex3f: function(float32, float32, float32): void <cimport,nodecl>
+global glVertex3fv: function(*float32): void <cimport,nodecl>
+global glVertex3i: function(cint, cint, cint): void <cimport,nodecl>
+global glVertex3iv: function(*cint): void <cimport,nodecl>
+global glVertex3s: function(cshort, cshort, cshort): void <cimport,nodecl>
+global glVertex3sv: function(*cshort): void <cimport,nodecl>
+global glVertex4d: function(float64, float64, float64, float64): void <cimport,nodecl>
+global glVertex4dv: function(*float64): void <cimport,nodecl>
+global glVertex4f: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glVertex4fv: function(*float32): void <cimport,nodecl>
+global glVertex4i: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glVertex4iv: function(*cint): void <cimport,nodecl>
+global glVertex4s: function(cshort, cshort, cshort, cshort): void <cimport,nodecl>
+global glVertex4sv: function(*cshort): void <cimport,nodecl>
+global glClipPlane: function(cuint, *float64): void <cimport,nodecl>
+global glColorMaterial: function(cuint, cuint): void <cimport,nodecl>
+global glFogf: function(cuint, float32): void <cimport,nodecl>
+global glFogfv: function(cuint, *float32): void <cimport,nodecl>
+global glFogi: function(cuint, cint): void <cimport,nodecl>
+global glFogiv: function(cuint, *cint): void <cimport,nodecl>
+global glLightf: function(cuint, cuint, float32): void <cimport,nodecl>
+global glLightfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glLighti: function(cuint, cuint, cint): void <cimport,nodecl>
+global glLightiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glLightModelf: function(cuint, float32): void <cimport,nodecl>
+global glLightModelfv: function(cuint, *float32): void <cimport,nodecl>
+global glLightModeli: function(cuint, cint): void <cimport,nodecl>
+global glLightModeliv: function(cuint, *cint): void <cimport,nodecl>
+global glLineStipple: function(cint, cushort): void <cimport,nodecl>
+global glMaterialf: function(cuint, cuint, float32): void <cimport,nodecl>
+global glMaterialfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glMateriali: function(cuint, cuint, cint): void <cimport,nodecl>
+global glMaterialiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glPolygonStipple: function(*cuchar): void <cimport,nodecl>
+global glShadeModel: function(cuint): void <cimport,nodecl>
+global glTexEnvf: function(cuint, cuint, float32): void <cimport,nodecl>
+global glTexEnvfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glTexEnvi: function(cuint, cuint, cint): void <cimport,nodecl>
+global glTexEnviv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glTexGend: function(cuint, cuint, float64): void <cimport,nodecl>
+global glTexGendv: function(cuint, cuint, *float64): void <cimport,nodecl>
+global glTexGenf: function(cuint, cuint, float32): void <cimport,nodecl>
+global glTexGenfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glTexGeni: function(cuint, cuint, cint): void <cimport,nodecl>
+global glTexGeniv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glFeedbackBuffer: function(cint, cuint, *float32): void <cimport,nodecl>
+global glSelectBuffer: function(cint, *cuint): void <cimport,nodecl>
+global glRenderMode: function(cuint): cint <cimport,nodecl>
+global glInitNames: function(): void <cimport,nodecl>
+global glLoadName: function(cuint): void <cimport,nodecl>
+global glPassThrough: function(float32): void <cimport,nodecl>
+global glPopName: function(): void <cimport,nodecl>
+global glPushName: function(cuint): void <cimport,nodecl>
+global glClearAccum: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glClearIndex: function(float32): void <cimport,nodecl>
+global glIndexMask: function(cuint): void <cimport,nodecl>
+global glAccum: function(cuint, float32): void <cimport,nodecl>
+global glPopAttrib: function(): void <cimport,nodecl>
+global glPushAttrib: function(cuint): void <cimport,nodecl>
+global glMap1d: function(cuint, float64, float64, cint, cint, *float64): void <cimport,nodecl>
+global glMap1f: function(cuint, float32, float32, cint, cint, *float32): void <cimport,nodecl>
+global glMap2d: function(cuint, float64, float64, cint, cint, float64, float64, cint, cint, *float64): void <cimport,nodecl>
+global glMap2f: function(cuint, float32, float32, cint, cint, float32, float32, cint, cint, *float32): void <cimport,nodecl>
+global glMapGrid1d: function(cint, float64, float64): void <cimport,nodecl>
+global glMapGrid1f: function(cint, float32, float32): void <cimport,nodecl>
+global glMapGrid2d: function(cint, float64, float64, cint, float64, float64): void <cimport,nodecl>
+global glMapGrid2f: function(cint, float32, float32, cint, float32, float32): void <cimport,nodecl>
+global glEvalCoord1d: function(float64): void <cimport,nodecl>
+global glEvalCoord1dv: function(*float64): void <cimport,nodecl>
+global glEvalCoord1f: function(float32): void <cimport,nodecl>
+global glEvalCoord1fv: function(*float32): void <cimport,nodecl>
+global glEvalCoord2d: function(float64, float64): void <cimport,nodecl>
+global glEvalCoord2dv: function(*float64): void <cimport,nodecl>
+global glEvalCoord2f: function(float32, float32): void <cimport,nodecl>
+global glEvalCoord2fv: function(*float32): void <cimport,nodecl>
+global glEvalMesh1: function(cuint, cint, cint): void <cimport,nodecl>
+global glEvalPoint1: function(cint): void <cimport,nodecl>
+global glEvalMesh2: function(cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glEvalPoint2: function(cint, cint): void <cimport,nodecl>
+global glAlphaFunc: function(cuint, float32): void <cimport,nodecl>
+global glPixelZoom: function(float32, float32): void <cimport,nodecl>
+global glPixelTransferf: function(cuint, float32): void <cimport,nodecl>
+global glPixelTransferi: function(cuint, cint): void <cimport,nodecl>
+global glPixelMapfv: function(cuint, cint, *float32): void <cimport,nodecl>
+global glPixelMapuiv: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glPixelMapusv: function(cuint, cint, *cushort): void <cimport,nodecl>
+global glCopyPixels: function(cint, cint, cint, cint, cuint): void <cimport,nodecl>
+global glDrawPixels: function(cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glGetClipPlane: function(cuint, *float64): void <cimport,nodecl>
+global glGetLightfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetLightiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetMapdv: function(cuint, cuint, *float64): void <cimport,nodecl>
+global glGetMapfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetMapiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetMaterialfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetMaterialiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetPixelMapfv: function(cuint, *float32): void <cimport,nodecl>
+global glGetPixelMapuiv: function(cuint, *cuint): void <cimport,nodecl>
+global glGetPixelMapusv: function(cuint, *cushort): void <cimport,nodecl>
+global glGetPolygonStipple: function(*cuchar): void <cimport,nodecl>
+global glGetTexEnvfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetTexEnviv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetTexGendv: function(cuint, cuint, *float64): void <cimport,nodecl>
+global glGetTexGenfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetTexGeniv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glIsList: function(cuint): cuchar <cimport,nodecl>
+global glFrustum: function(float64, float64, float64, float64, float64, float64): void <cimport,nodecl>
+global glLoadIdentity: function(): void <cimport,nodecl>
+global glLoadMatrixf: function(*float32): void <cimport,nodecl>
+global glLoadMatrixd: function(*float64): void <cimport,nodecl>
+global glMatrixMode: function(cuint): void <cimport,nodecl>
+global glMultMatrixf: function(*float32): void <cimport,nodecl>
+global glMultMatrixd: function(*float64): void <cimport,nodecl>
+global glOrtho: function(float64, float64, float64, float64, float64, float64): void <cimport,nodecl>
+global glPopMatrix: function(): void <cimport,nodecl>
+global glPushMatrix: function(): void <cimport,nodecl>
+global glRotated: function(float64, float64, float64, float64): void <cimport,nodecl>
+global glRotatef: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glScaled: function(float64, float64, float64): void <cimport,nodecl>
+global glScalef: function(float32, float32, float32): void <cimport,nodecl>
+global glTranslated: function(float64, float64, float64): void <cimport,nodecl>
+global glTranslatef: function(float32, float32, float32): void <cimport,nodecl>
+global GLAD_GL_VERSION_1_1: cint <cimport,nodecl>
+global glDrawArrays: function(cuint, cint, cint): void <cimport,nodecl>
+global glDrawElements: function(cuint, cint, cuint, pointer): void <cimport,nodecl>
+global glGetPointerv: function(cuint, *pointer): void <cimport,nodecl>
+global glPolygonOffset: function(float32, float32): void <cimport,nodecl>
+global glCopyTexImage1D: function(cuint, cint, cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glCopyTexImage2D: function(cuint, cint, cuint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glCopyTexSubImage1D: function(cuint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glCopyTexSubImage2D: function(cuint, cint, cint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glTexSubImage1D: function(cuint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glTexSubImage2D: function(cuint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glBindTexture: function(cuint, cuint): void <cimport,nodecl>
+global glDeleteTextures: function(cint, *cuint): void <cimport,nodecl>
+global glGenTextures: function(cint, *cuint): void <cimport,nodecl>
+global glIsTexture: function(cuint): cuchar <cimport,nodecl>
+global glArrayElement: function(cint): void <cimport,nodecl>
+global glColorPointer: function(cint, cuint, cint, pointer): void <cimport,nodecl>
+global glDisableClientState: function(cuint): void <cimport,nodecl>
+global glEdgeFlagPointer: function(cint, pointer): void <cimport,nodecl>
+global glEnableClientState: function(cuint): void <cimport,nodecl>
+global glIndexPointer: function(cuint, cint, pointer): void <cimport,nodecl>
+global glInterleavedArrays: function(cuint, cint, pointer): void <cimport,nodecl>
+global glNormalPointer: function(cuint, cint, pointer): void <cimport,nodecl>
+global glTexCoordPointer: function(cint, cuint, cint, pointer): void <cimport,nodecl>
+global glVertexPointer: function(cint, cuint, cint, pointer): void <cimport,nodecl>
+global glAreTexturesResident: function(cint, *cuint, *cuchar): cuchar <cimport,nodecl>
+global glPrioritizeTextures: function(cint, *cuint, *float32): void <cimport,nodecl>
+global glIndexub: function(cuchar): void <cimport,nodecl>
+global glIndexubv: function(*cuchar): void <cimport,nodecl>
+global glPopClientAttrib: function(): void <cimport,nodecl>
+global glPushClientAttrib: function(cuint): void <cimport,nodecl>
+global GLAD_GL_VERSION_1_2: cint <cimport,nodecl>
+global glDrawRangeElements: function(cuint, cuint, cuint, cint, cuint, pointer): void <cimport,nodecl>
+global glTexImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glTexSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glCopyTexSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global GLAD_GL_VERSION_1_3: cint <cimport,nodecl>
+global glActiveTexture: function(cuint): void <cimport,nodecl>
+global glSampleCoverage: function(float32, cuchar): void <cimport,nodecl>
+global glCompressedTexImage3D: function(cuint, cint, cuint, cint, cint, cint, cint, cint, pointer): void <cimport,nodecl>
+global glCompressedTexImage2D: function(cuint, cint, cuint, cint, cint, cint, cint, pointer): void <cimport,nodecl>
+global glCompressedTexImage1D: function(cuint, cint, cuint, cint, cint, cint, pointer): void <cimport,nodecl>
+global glCompressedTexSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glCompressedTexSubImage2D: function(cuint, cint, cint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glCompressedTexSubImage1D: function(cuint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetCompressedTexImage: function(cuint, cint, pointer): void <cimport,nodecl>
+global glClientActiveTexture: function(cuint): void <cimport,nodecl>
+global glMultiTexCoord1d: function(cuint, float64): void <cimport,nodecl>
+global glMultiTexCoord1dv: function(cuint, *float64): void <cimport,nodecl>
+global glMultiTexCoord1f: function(cuint, float32): void <cimport,nodecl>
+global glMultiTexCoord1fv: function(cuint, *float32): void <cimport,nodecl>
+global glMultiTexCoord1i: function(cuint, cint): void <cimport,nodecl>
+global glMultiTexCoord1iv: function(cuint, *cint): void <cimport,nodecl>
+global glMultiTexCoord1s: function(cuint, cshort): void <cimport,nodecl>
+global glMultiTexCoord1sv: function(cuint, *cshort): void <cimport,nodecl>
+global glMultiTexCoord2d: function(cuint, float64, float64): void <cimport,nodecl>
+global glMultiTexCoord2dv: function(cuint, *float64): void <cimport,nodecl>
+global glMultiTexCoord2f: function(cuint, float32, float32): void <cimport,nodecl>
+global glMultiTexCoord2fv: function(cuint, *float32): void <cimport,nodecl>
+global glMultiTexCoord2i: function(cuint, cint, cint): void <cimport,nodecl>
+global glMultiTexCoord2iv: function(cuint, *cint): void <cimport,nodecl>
+global glMultiTexCoord2s: function(cuint, cshort, cshort): void <cimport,nodecl>
+global glMultiTexCoord2sv: function(cuint, *cshort): void <cimport,nodecl>
+global glMultiTexCoord3d: function(cuint, float64, float64, float64): void <cimport,nodecl>
+global glMultiTexCoord3dv: function(cuint, *float64): void <cimport,nodecl>
+global glMultiTexCoord3f: function(cuint, float32, float32, float32): void <cimport,nodecl>
+global glMultiTexCoord3fv: function(cuint, *float32): void <cimport,nodecl>
+global glMultiTexCoord3i: function(cuint, cint, cint, cint): void <cimport,nodecl>
+global glMultiTexCoord3iv: function(cuint, *cint): void <cimport,nodecl>
+global glMultiTexCoord3s: function(cuint, cshort, cshort, cshort): void <cimport,nodecl>
+global glMultiTexCoord3sv: function(cuint, *cshort): void <cimport,nodecl>
+global glMultiTexCoord4d: function(cuint, float64, float64, float64, float64): void <cimport,nodecl>
+global glMultiTexCoord4dv: function(cuint, *float64): void <cimport,nodecl>
+global glMultiTexCoord4f: function(cuint, float32, float32, float32, float32): void <cimport,nodecl>
+global glMultiTexCoord4fv: function(cuint, *float32): void <cimport,nodecl>
+global glMultiTexCoord4i: function(cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glMultiTexCoord4iv: function(cuint, *cint): void <cimport,nodecl>
+global glMultiTexCoord4s: function(cuint, cshort, cshort, cshort, cshort): void <cimport,nodecl>
+global glMultiTexCoord4sv: function(cuint, *cshort): void <cimport,nodecl>
+global glLoadTransposeMatrixf: function(*float32): void <cimport,nodecl>
+global glLoadTransposeMatrixd: function(*float64): void <cimport,nodecl>
+global glMultTransposeMatrixf: function(*float32): void <cimport,nodecl>
+global glMultTransposeMatrixd: function(*float64): void <cimport,nodecl>
+global GLAD_GL_VERSION_1_4: cint <cimport,nodecl>
+global glBlendFuncSeparate: function(cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glMultiDrawArrays: function(cuint, *cint, *cint, cint): void <cimport,nodecl>
+global glMultiDrawElements: function(cuint, *cint, cuint, *pointer, cint): void <cimport,nodecl>
+global glPointParameterf: function(cuint, float32): void <cimport,nodecl>
+global glPointParameterfv: function(cuint, *float32): void <cimport,nodecl>
+global glPointParameteri: function(cuint, cint): void <cimport,nodecl>
+global glPointParameteriv: function(cuint, *cint): void <cimport,nodecl>
+global glFogCoordf: function(float32): void <cimport,nodecl>
+global glFogCoordfv: function(*float32): void <cimport,nodecl>
+global glFogCoordd: function(float64): void <cimport,nodecl>
+global glFogCoorddv: function(*float64): void <cimport,nodecl>
+global glFogCoordPointer: function(cuint, cint, pointer): void <cimport,nodecl>
+global glSecondaryColor3b: function(cschar, cschar, cschar): void <cimport,nodecl>
+global glSecondaryColor3bv: function(*cschar): void <cimport,nodecl>
+global glSecondaryColor3d: function(float64, float64, float64): void <cimport,nodecl>
+global glSecondaryColor3dv: function(*float64): void <cimport,nodecl>
+global glSecondaryColor3f: function(float32, float32, float32): void <cimport,nodecl>
+global glSecondaryColor3fv: function(*float32): void <cimport,nodecl>
+global glSecondaryColor3i: function(cint, cint, cint): void <cimport,nodecl>
+global glSecondaryColor3iv: function(*cint): void <cimport,nodecl>
+global glSecondaryColor3s: function(cshort, cshort, cshort): void <cimport,nodecl>
+global glSecondaryColor3sv: function(*cshort): void <cimport,nodecl>
+global glSecondaryColor3ub: function(cuchar, cuchar, cuchar): void <cimport,nodecl>
+global glSecondaryColor3ubv: function(*cuchar): void <cimport,nodecl>
+global glSecondaryColor3ui: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glSecondaryColor3uiv: function(*cuint): void <cimport,nodecl>
+global glSecondaryColor3us: function(cushort, cushort, cushort): void <cimport,nodecl>
+global glSecondaryColor3usv: function(*cushort): void <cimport,nodecl>
+global glSecondaryColorPointer: function(cint, cuint, cint, pointer): void <cimport,nodecl>
+global glWindowPos2d: function(float64, float64): void <cimport,nodecl>
+global glWindowPos2dv: function(*float64): void <cimport,nodecl>
+global glWindowPos2f: function(float32, float32): void <cimport,nodecl>
+global glWindowPos2fv: function(*float32): void <cimport,nodecl>
+global glWindowPos2i: function(cint, cint): void <cimport,nodecl>
+global glWindowPos2iv: function(*cint): void <cimport,nodecl>
+global glWindowPos2s: function(cshort, cshort): void <cimport,nodecl>
+global glWindowPos2sv: function(*cshort): void <cimport,nodecl>
+global glWindowPos3d: function(float64, float64, float64): void <cimport,nodecl>
+global glWindowPos3dv: function(*float64): void <cimport,nodecl>
+global glWindowPos3f: function(float32, float32, float32): void <cimport,nodecl>
+global glWindowPos3fv: function(*float32): void <cimport,nodecl>
+global glWindowPos3i: function(cint, cint, cint): void <cimport,nodecl>
+global glWindowPos3iv: function(*cint): void <cimport,nodecl>
+global glWindowPos3s: function(cshort, cshort, cshort): void <cimport,nodecl>
+global glWindowPos3sv: function(*cshort): void <cimport,nodecl>
+global glBlendColor: function(float32, float32, float32, float32): void <cimport,nodecl>
+global glBlendEquation: function(cuint): void <cimport,nodecl>
+global GLAD_GL_VERSION_1_5: cint <cimport,nodecl>
+global glGenQueries: function(cint, *cuint): void <cimport,nodecl>
+global glDeleteQueries: function(cint, *cuint): void <cimport,nodecl>
+global glIsQuery: function(cuint): cuchar <cimport,nodecl>
+global glBeginQuery: function(cuint, cuint): void <cimport,nodecl>
+global glEndQuery: function(cuint): void <cimport,nodecl>
+global glGetQueryiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetQueryObjectiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetQueryObjectuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glBindBuffer: function(cuint, cuint): void <cimport,nodecl>
+global glDeleteBuffers: function(cint, *cuint): void <cimport,nodecl>
+global glGenBuffers: function(cint, *cuint): void <cimport,nodecl>
+global glIsBuffer: function(cuint): cuchar <cimport,nodecl>
+global glBufferData: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
+global glBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glGetBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glMapBuffer: function(cuint, cuint): pointer <cimport,nodecl>
+global glUnmapBuffer: function(cuint): cuchar <cimport,nodecl>
+global glGetBufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetBufferPointerv: function(cuint, cuint, *pointer): void <cimport,nodecl>
+global GLAD_GL_VERSION_2_0: cint <cimport,nodecl>
+global glBlendEquationSeparate: function(cuint, cuint): void <cimport,nodecl>
+global glDrawBuffers: function(cint, *cuint): void <cimport,nodecl>
+global glStencilOpSeparate: function(cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glStencilFuncSeparate: function(cuint, cuint, cint, cuint): void <cimport,nodecl>
+global glStencilMaskSeparate: function(cuint, cuint): void <cimport,nodecl>
+global glAttachShader: function(cuint, cuint): void <cimport,nodecl>
+global glBindAttribLocation: function(cuint, cuint, cstring): void <cimport,nodecl>
+global glCompileShader: function(cuint): void <cimport,nodecl>
+global glCreateProgram: function(): cuint <cimport,nodecl>
+global glCreateShader: function(cuint): cuint <cimport,nodecl>
+global glDeleteProgram: function(cuint): void <cimport,nodecl>
+global glDeleteShader: function(cuint): void <cimport,nodecl>
+global glDetachShader: function(cuint, cuint): void <cimport,nodecl>
+global glDisableVertexAttribArray: function(cuint): void <cimport,nodecl>
+global glEnableVertexAttribArray: function(cuint): void <cimport,nodecl>
+global glGetActiveAttrib: function(cuint, cuint, cint, *cint, *cint, *cuint, cstring): void <cimport,nodecl>
+global glGetActiveUniform: function(cuint, cuint, cint, *cint, *cint, *cuint, cstring): void <cimport,nodecl>
+global glGetAttachedShaders: function(cuint, cint, *cint, *cuint): void <cimport,nodecl>
+global glGetAttribLocation: function(cuint, cstring): cint <cimport,nodecl>
+global glGetProgramiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetProgramInfoLog: function(cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glGetShaderiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetShaderInfoLog: function(cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glGetShaderSource: function(cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glGetUniformLocation: function(cuint, cstring): cint <cimport,nodecl>
+global glGetUniformfv: function(cuint, cint, *float32): void <cimport,nodecl>
+global glGetUniformiv: function(cuint, cint, *cint): void <cimport,nodecl>
+global glGetVertexAttribdv: function(cuint, cuint, *float64): void <cimport,nodecl>
+global glGetVertexAttribfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetVertexAttribiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetVertexAttribPointerv: function(cuint, cuint, *pointer): void <cimport,nodecl>
+global glIsProgram: function(cuint): cuchar <cimport,nodecl>
+global glIsShader: function(cuint): cuchar <cimport,nodecl>
+global glLinkProgram: function(cuint): void <cimport,nodecl>
+global glShaderSource: function(cuint, cint, *cstring, *cint): void <cimport,nodecl>
+global glUseProgram: function(cuint): void <cimport,nodecl>
+global glUniform1f: function(cint, float32): void <cimport,nodecl>
+global glUniform2f: function(cint, float32, float32): void <cimport,nodecl>
+global glUniform3f: function(cint, float32, float32, float32): void <cimport,nodecl>
+global glUniform4f: function(cint, float32, float32, float32, float32): void <cimport,nodecl>
+global glUniform1i: function(cint, cint): void <cimport,nodecl>
+global glUniform2i: function(cint, cint, cint): void <cimport,nodecl>
+global glUniform3i: function(cint, cint, cint, cint): void <cimport,nodecl>
+global glUniform4i: function(cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glUniform1fv: function(cint, cint, *float32): void <cimport,nodecl>
+global glUniform2fv: function(cint, cint, *float32): void <cimport,nodecl>
+global glUniform3fv: function(cint, cint, *float32): void <cimport,nodecl>
+global glUniform4fv: function(cint, cint, *float32): void <cimport,nodecl>
+global glUniform1iv: function(cint, cint, *cint): void <cimport,nodecl>
+global glUniform2iv: function(cint, cint, *cint): void <cimport,nodecl>
+global glUniform3iv: function(cint, cint, *cint): void <cimport,nodecl>
+global glUniform4iv: function(cint, cint, *cint): void <cimport,nodecl>
+global glUniformMatrix2fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glUniformMatrix3fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glUniformMatrix4fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glValidateProgram: function(cuint): void <cimport,nodecl>
+global glVertexAttrib1d: function(cuint, float64): void <cimport,nodecl>
+global glVertexAttrib1dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttrib1f: function(cuint, float32): void <cimport,nodecl>
+global glVertexAttrib1fv: function(cuint, *float32): void <cimport,nodecl>
+global glVertexAttrib1s: function(cuint, cshort): void <cimport,nodecl>
+global glVertexAttrib1sv: function(cuint, *cshort): void <cimport,nodecl>
+global glVertexAttrib2d: function(cuint, float64, float64): void <cimport,nodecl>
+global glVertexAttrib2dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttrib2f: function(cuint, float32, float32): void <cimport,nodecl>
+global glVertexAttrib2fv: function(cuint, *float32): void <cimport,nodecl>
+global glVertexAttrib2s: function(cuint, cshort, cshort): void <cimport,nodecl>
+global glVertexAttrib2sv: function(cuint, *cshort): void <cimport,nodecl>
+global glVertexAttrib3d: function(cuint, float64, float64, float64): void <cimport,nodecl>
+global glVertexAttrib3dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttrib3f: function(cuint, float32, float32, float32): void <cimport,nodecl>
+global glVertexAttrib3fv: function(cuint, *float32): void <cimport,nodecl>
+global glVertexAttrib3s: function(cuint, cshort, cshort, cshort): void <cimport,nodecl>
+global glVertexAttrib3sv: function(cuint, *cshort): void <cimport,nodecl>
+global glVertexAttrib4Nbv: function(cuint, *cschar): void <cimport,nodecl>
+global glVertexAttrib4Niv: function(cuint, *cint): void <cimport,nodecl>
+global glVertexAttrib4Nsv: function(cuint, *cshort): void <cimport,nodecl>
+global glVertexAttrib4Nub: function(cuint, cuchar, cuchar, cuchar, cuchar): void <cimport,nodecl>
+global glVertexAttrib4Nubv: function(cuint, *cuchar): void <cimport,nodecl>
+global glVertexAttrib4Nuiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexAttrib4Nusv: function(cuint, *cushort): void <cimport,nodecl>
+global glVertexAttrib4bv: function(cuint, *cschar): void <cimport,nodecl>
+global glVertexAttrib4d: function(cuint, float64, float64, float64, float64): void <cimport,nodecl>
+global glVertexAttrib4dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttrib4f: function(cuint, float32, float32, float32, float32): void <cimport,nodecl>
+global glVertexAttrib4fv: function(cuint, *float32): void <cimport,nodecl>
+global glVertexAttrib4iv: function(cuint, *cint): void <cimport,nodecl>
+global glVertexAttrib4s: function(cuint, cshort, cshort, cshort, cshort): void <cimport,nodecl>
+global glVertexAttrib4sv: function(cuint, *cshort): void <cimport,nodecl>
+global glVertexAttrib4ubv: function(cuint, *cuchar): void <cimport,nodecl>
+global glVertexAttrib4uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexAttrib4usv: function(cuint, *cushort): void <cimport,nodecl>
+global glVertexAttribPointer: function(cuint, cint, cuint, cuchar, cint, pointer): void <cimport,nodecl>
+global GLAD_GL_VERSION_2_1: cint <cimport,nodecl>
+global glUniformMatrix2x3fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glUniformMatrix3x2fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glUniformMatrix2x4fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glUniformMatrix4x2fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glUniformMatrix3x4fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glUniformMatrix4x3fv: function(cint, cint, cuchar, *float32): void <cimport,nodecl>
+global GLAD_GL_VERSION_3_0: cint <cimport,nodecl>
+global glColorMaski: function(cuint, cuchar, cuchar, cuchar, cuchar): void <cimport,nodecl>
+global glGetBooleani_v: function(cuint, cuint, *cuchar): void <cimport,nodecl>
+global glGetIntegeri_v: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glEnablei: function(cuint, cuint): void <cimport,nodecl>
+global glDisablei: function(cuint, cuint): void <cimport,nodecl>
+global glIsEnabledi: function(cuint, cuint): cuchar <cimport,nodecl>
+global glBeginTransformFeedback: function(cuint): void <cimport,nodecl>
+global glEndTransformFeedback: function(): void <cimport,nodecl>
+global glBindBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glBindBufferBase: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glTransformFeedbackVaryings: function(cuint, cint, *cstring, cuint): void <cimport,nodecl>
+global glGetTransformFeedbackVarying: function(cuint, cuint, cint, *cint, *cint, *cuint, cstring): void <cimport,nodecl>
+global glClampColor: function(cuint, cuint): void <cimport,nodecl>
+global glBeginConditionalRender: function(cuint, cuint): void <cimport,nodecl>
+global glEndConditionalRender: function(): void <cimport,nodecl>
+global glVertexAttribIPointer: function(cuint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetVertexAttribIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetVertexAttribIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glVertexAttribI1i: function(cuint, cint): void <cimport,nodecl>
+global glVertexAttribI2i: function(cuint, cint, cint): void <cimport,nodecl>
+global glVertexAttribI3i: function(cuint, cint, cint, cint): void <cimport,nodecl>
+global glVertexAttribI4i: function(cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glVertexAttribI1ui: function(cuint, cuint): void <cimport,nodecl>
+global glVertexAttribI2ui: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glVertexAttribI3ui: function(cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glVertexAttribI4ui: function(cuint, cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glVertexAttribI1iv: function(cuint, *cint): void <cimport,nodecl>
+global glVertexAttribI2iv: function(cuint, *cint): void <cimport,nodecl>
+global glVertexAttribI3iv: function(cuint, *cint): void <cimport,nodecl>
+global glVertexAttribI4iv: function(cuint, *cint): void <cimport,nodecl>
+global glVertexAttribI1uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexAttribI2uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexAttribI3uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexAttribI4uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexAttribI4bv: function(cuint, *cschar): void <cimport,nodecl>
+global glVertexAttribI4sv: function(cuint, *cshort): void <cimport,nodecl>
+global glVertexAttribI4ubv: function(cuint, *cuchar): void <cimport,nodecl>
+global glVertexAttribI4usv: function(cuint, *cushort): void <cimport,nodecl>
+global glGetUniformuiv: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glBindFragDataLocation: function(cuint, cuint, cstring): void <cimport,nodecl>
+global glGetFragDataLocation: function(cuint, cstring): cint <cimport,nodecl>
+global glUniform1ui: function(cint, cuint): void <cimport,nodecl>
+global glUniform2ui: function(cint, cuint, cuint): void <cimport,nodecl>
+global glUniform3ui: function(cint, cuint, cuint, cuint): void <cimport,nodecl>
+global glUniform4ui: function(cint, cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glUniform1uiv: function(cint, cint, *cuint): void <cimport,nodecl>
+global glUniform2uiv: function(cint, cint, *cuint): void <cimport,nodecl>
+global glUniform3uiv: function(cint, cint, *cuint): void <cimport,nodecl>
+global glUniform4uiv: function(cint, cint, *cuint): void <cimport,nodecl>
+global glTexParameterIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glTexParameterIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glGetTexParameterIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetTexParameterIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glClearBufferiv: function(cuint, cint, *cint): void <cimport,nodecl>
+global glClearBufferuiv: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glClearBufferfv: function(cuint, cint, *float32): void <cimport,nodecl>
+global glClearBufferfi: function(cuint, cint, float32, cint): void <cimport,nodecl>
+global glGetStringi: function(cuint, cuint): *cuchar <cimport,nodecl>
+global glIsRenderbuffer: function(cuint): cuchar <cimport,nodecl>
+global glBindRenderbuffer: function(cuint, cuint): void <cimport,nodecl>
+global glDeleteRenderbuffers: function(cint, *cuint): void <cimport,nodecl>
+global glGenRenderbuffers: function(cint, *cuint): void <cimport,nodecl>
+global glRenderbufferStorage: function(cuint, cuint, cint, cint): void <cimport,nodecl>
+global glGetRenderbufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glIsFramebuffer: function(cuint): cuchar <cimport,nodecl>
+global glBindFramebuffer: function(cuint, cuint): void <cimport,nodecl>
+global glDeleteFramebuffers: function(cint, *cuint): void <cimport,nodecl>
+global glGenFramebuffers: function(cint, *cuint): void <cimport,nodecl>
+global glCheckFramebufferStatus: function(cuint): cuint <cimport,nodecl>
+global glFramebufferTexture1D: function(cuint, cuint, cuint, cuint, cint): void <cimport,nodecl>
+global glFramebufferTexture2D: function(cuint, cuint, cuint, cuint, cint): void <cimport,nodecl>
+global glFramebufferTexture3D: function(cuint, cuint, cuint, cuint, cint, cint): void <cimport,nodecl>
+global glFramebufferRenderbuffer: function(cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glGetFramebufferAttachmentParameteriv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glGenerateMipmap: function(cuint): void <cimport,nodecl>
+global glBlitFramebuffer: function(cint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint): void <cimport,nodecl>
+global glRenderbufferStorageMultisample: function(cuint, cint, cuint, cint, cint): void <cimport,nodecl>
+global glFramebufferTextureLayer: function(cuint, cuint, cuint, cint, cint): void <cimport,nodecl>
+global glMapBufferRange: function(cuint, isize, clong, cuint): pointer <cimport,nodecl>
+global glFlushMappedBufferRange: function(cuint, isize, clong): void <cimport,nodecl>
+global glBindVertexArray: function(cuint): void <cimport,nodecl>
+global glDeleteVertexArrays: function(cint, *cuint): void <cimport,nodecl>
+global glGenVertexArrays: function(cint, *cuint): void <cimport,nodecl>
+global glIsVertexArray: function(cuint): cuchar <cimport,nodecl>
+global GLAD_GL_VERSION_3_1: cint <cimport,nodecl>
+global glDrawArraysInstanced: function(cuint, cint, cint, cint): void <cimport,nodecl>
+global glDrawElementsInstanced: function(cuint, cint, cuint, pointer, cint): void <cimport,nodecl>
+global glTexBuffer: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glPrimitiveRestartIndex: function(cuint): void <cimport,nodecl>
+global glCopyBufferSubData: function(cuint, cuint, isize, isize, clong): void <cimport,nodecl>
+global glGetUniformIndices: function(cuint, cint, *cstring, *cuint): void <cimport,nodecl>
+global glGetActiveUniformsiv: function(cuint, cint, *cuint, cuint, *cint): void <cimport,nodecl>
+global glGetActiveUniformName: function(cuint, cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glGetUniformBlockIndex: function(cuint, cstring): cuint <cimport,nodecl>
+global glGetActiveUniformBlockiv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glGetActiveUniformBlockName: function(cuint, cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glUniformBlockBinding: function(cuint, cuint, cuint): void <cimport,nodecl>
+global GLAD_GL_VERSION_3_2: cint <cimport,nodecl>
+global glDrawElementsBaseVertex: function(cuint, cint, cuint, pointer, cint): void <cimport,nodecl>
+global glDrawRangeElementsBaseVertex: function(cuint, cuint, cuint, cint, cuint, pointer, cint): void <cimport,nodecl>
+global glDrawElementsInstancedBaseVertex: function(cuint, cint, cuint, pointer, cint, cint): void <cimport,nodecl>
+global glMultiDrawElementsBaseVertex: function(cuint, *cint, cuint, *pointer, cint, *cint): void <cimport,nodecl>
+global glProvokingVertex: function(cuint): void <cimport,nodecl>
+global glFenceSync: function(cuint, cuint): GLsync <cimport,nodecl>
+global glIsSync: function(GLsync): cuchar <cimport,nodecl>
+global glDeleteSync: function(GLsync): void <cimport,nodecl>
+global glClientWaitSync: function(GLsync, cuint, uint64): cuint <cimport,nodecl>
+global glWaitSync: function(GLsync, cuint, uint64): void <cimport,nodecl>
+global glGetInteger64v: function(cuint, *int64): void <cimport,nodecl>
+global glGetSynciv: function(GLsync, cuint, cint, *cint, *cint): void <cimport,nodecl>
+global glGetInteger64i_v: function(cuint, cuint, *int64): void <cimport,nodecl>
+global glGetBufferParameteri64v: function(cuint, cuint, *int64): void <cimport,nodecl>
+global glFramebufferTexture: function(cuint, cuint, cuint, cint): void <cimport,nodecl>
+global glTexImage2DMultisample: function(cuint, cint, cuint, cint, cint, cuchar): void <cimport,nodecl>
+global glTexImage3DMultisample: function(cuint, cint, cuint, cint, cint, cint, cuchar): void <cimport,nodecl>
+global glGetMultisamplefv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glSampleMaski: function(cuint, cuint): void <cimport,nodecl>
+global GLAD_GL_VERSION_3_3: cint <cimport,nodecl>
+global glBindFragDataLocationIndexed: function(cuint, cuint, cuint, cstring): void <cimport,nodecl>
+global glGetFragDataIndex: function(cuint, cstring): cint <cimport,nodecl>
+global glGenSamplers: function(cint, *cuint): void <cimport,nodecl>
+global glDeleteSamplers: function(cint, *cuint): void <cimport,nodecl>
+global glIsSampler: function(cuint): cuchar <cimport,nodecl>
+global glBindSampler: function(cuint, cuint): void <cimport,nodecl>
+global glSamplerParameteri: function(cuint, cuint, cint): void <cimport,nodecl>
+global glSamplerParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glSamplerParameterf: function(cuint, cuint, float32): void <cimport,nodecl>
+global glSamplerParameterfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glSamplerParameterIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glSamplerParameterIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glGetSamplerParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetSamplerParameterIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetSamplerParameterfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetSamplerParameterIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glQueryCounter: function(cuint, cuint): void <cimport,nodecl>
+global glGetQueryObjecti64v: function(cuint, cuint, *int64): void <cimport,nodecl>
+global glGetQueryObjectui64v: function(cuint, cuint, *uint64): void <cimport,nodecl>
+global glVertexAttribDivisor: function(cuint, cuint): void <cimport,nodecl>
+global glVertexAttribP1ui: function(cuint, cuint, cuchar, cuint): void <cimport,nodecl>
+global glVertexAttribP1uiv: function(cuint, cuint, cuchar, *cuint): void <cimport,nodecl>
+global glVertexAttribP2ui: function(cuint, cuint, cuchar, cuint): void <cimport,nodecl>
+global glVertexAttribP2uiv: function(cuint, cuint, cuchar, *cuint): void <cimport,nodecl>
+global glVertexAttribP3ui: function(cuint, cuint, cuchar, cuint): void <cimport,nodecl>
+global glVertexAttribP3uiv: function(cuint, cuint, cuchar, *cuint): void <cimport,nodecl>
+global glVertexAttribP4ui: function(cuint, cuint, cuchar, cuint): void <cimport,nodecl>
+global glVertexAttribP4uiv: function(cuint, cuint, cuchar, *cuint): void <cimport,nodecl>
+global glVertexP2ui: function(cuint, cuint): void <cimport,nodecl>
+global glVertexP2uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexP3ui: function(cuint, cuint): void <cimport,nodecl>
+global glVertexP3uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glVertexP4ui: function(cuint, cuint): void <cimport,nodecl>
+global glVertexP4uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glTexCoordP1ui: function(cuint, cuint): void <cimport,nodecl>
+global glTexCoordP1uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glTexCoordP2ui: function(cuint, cuint): void <cimport,nodecl>
+global glTexCoordP2uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glTexCoordP3ui: function(cuint, cuint): void <cimport,nodecl>
+global glTexCoordP3uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glTexCoordP4ui: function(cuint, cuint): void <cimport,nodecl>
+global glTexCoordP4uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glMultiTexCoordP1ui: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glMultiTexCoordP1uiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glMultiTexCoordP2ui: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glMultiTexCoordP2uiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glMultiTexCoordP3ui: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glMultiTexCoordP3uiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glMultiTexCoordP4ui: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glMultiTexCoordP4uiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glNormalP3ui: function(cuint, cuint): void <cimport,nodecl>
+global glNormalP3uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glColorP3ui: function(cuint, cuint): void <cimport,nodecl>
+global glColorP3uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glColorP4ui: function(cuint, cuint): void <cimport,nodecl>
+global glColorP4uiv: function(cuint, *cuint): void <cimport,nodecl>
+global glSecondaryColorP3ui: function(cuint, cuint): void <cimport,nodecl>
+global glSecondaryColorP3uiv: function(cuint, *cuint): void <cimport,nodecl>
+global GLAD_GL_VERSION_4_0: cint <cimport,nodecl>
+global glMinSampleShading: function(float32): void <cimport,nodecl>
+global glBlendEquationi: function(cuint, cuint): void <cimport,nodecl>
+global glBlendEquationSeparatei: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glBlendFunci: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glBlendFuncSeparatei: function(cuint, cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glDrawArraysIndirect: function(cuint, pointer): void <cimport,nodecl>
+global glDrawElementsIndirect: function(cuint, cuint, pointer): void <cimport,nodecl>
+global glUniform1d: function(cint, float64): void <cimport,nodecl>
+global glUniform2d: function(cint, float64, float64): void <cimport,nodecl>
+global glUniform3d: function(cint, float64, float64, float64): void <cimport,nodecl>
+global glUniform4d: function(cint, float64, float64, float64, float64): void <cimport,nodecl>
+global glUniform1dv: function(cint, cint, *float64): void <cimport,nodecl>
+global glUniform2dv: function(cint, cint, *float64): void <cimport,nodecl>
+global glUniform3dv: function(cint, cint, *float64): void <cimport,nodecl>
+global glUniform4dv: function(cint, cint, *float64): void <cimport,nodecl>
+global glUniformMatrix2dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix3dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix4dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix2x3dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix2x4dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix3x2dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix3x4dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix4x2dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glUniformMatrix4x3dv: function(cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glGetUniformdv: function(cuint, cint, *float64): void <cimport,nodecl>
+global glGetSubroutineUniformLocation: function(cuint, cuint, cstring): cint <cimport,nodecl>
+global glGetSubroutineIndex: function(cuint, cuint, cstring): cuint <cimport,nodecl>
+global glGetActiveSubroutineUniformiv: function(cuint, cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glGetActiveSubroutineUniformName: function(cuint, cuint, cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glGetActiveSubroutineName: function(cuint, cuint, cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glUniformSubroutinesuiv: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glGetUniformSubroutineuiv: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glGetProgramStageiv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glPatchParameteri: function(cuint, cint): void <cimport,nodecl>
+global glPatchParameterfv: function(cuint, *float32): void <cimport,nodecl>
+global glBindTransformFeedback: function(cuint, cuint): void <cimport,nodecl>
+global glDeleteTransformFeedbacks: function(cint, *cuint): void <cimport,nodecl>
+global glGenTransformFeedbacks: function(cint, *cuint): void <cimport,nodecl>
+global glIsTransformFeedback: function(cuint): cuchar <cimport,nodecl>
+global glPauseTransformFeedback: function(): void <cimport,nodecl>
+global glResumeTransformFeedback: function(): void <cimport,nodecl>
+global glDrawTransformFeedback: function(cuint, cuint): void <cimport,nodecl>
+global glDrawTransformFeedbackStream: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glBeginQueryIndexed: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glEndQueryIndexed: function(cuint, cuint): void <cimport,nodecl>
+global glGetQueryIndexediv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global GLAD_GL_VERSION_4_1: cint <cimport,nodecl>
+global glReleaseShaderCompiler: function(): void <cimport,nodecl>
+global glShaderBinary: function(cint, *cuint, cuint, pointer, cint): void <cimport,nodecl>
+global glGetShaderPrecisionFormat: function(cuint, cuint, *cint, *cint): void <cimport,nodecl>
+global glDepthRangef: function(float32, float32): void <cimport,nodecl>
+global glClearDepthf: function(float32): void <cimport,nodecl>
+global glGetProgramBinary: function(cuint, cint, *cint, *cuint, pointer): void <cimport,nodecl>
+global glProgramBinary: function(cuint, cuint, pointer, cint): void <cimport,nodecl>
+global glProgramParameteri: function(cuint, cuint, cint): void <cimport,nodecl>
+global glUseProgramStages: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glActiveShaderProgram: function(cuint, cuint): void <cimport,nodecl>
+global glCreateShaderProgramv: function(cuint, cint, *cstring): cuint <cimport,nodecl>
+global glBindProgramPipeline: function(cuint): void <cimport,nodecl>
+global glDeleteProgramPipelines: function(cint, *cuint): void <cimport,nodecl>
+global glGenProgramPipelines: function(cint, *cuint): void <cimport,nodecl>
+global glIsProgramPipeline: function(cuint): cuchar <cimport,nodecl>
+global glGetProgramPipelineiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glProgramUniform1i: function(cuint, cint, cint): void <cimport,nodecl>
+global glProgramUniform1iv: function(cuint, cint, cint, *cint): void <cimport,nodecl>
+global glProgramUniform1f: function(cuint, cint, float32): void <cimport,nodecl>
+global glProgramUniform1fv: function(cuint, cint, cint, *float32): void <cimport,nodecl>
+global glProgramUniform1d: function(cuint, cint, float64): void <cimport,nodecl>
+global glProgramUniform1dv: function(cuint, cint, cint, *float64): void <cimport,nodecl>
+global glProgramUniform1ui: function(cuint, cint, cuint): void <cimport,nodecl>
+global glProgramUniform1uiv: function(cuint, cint, cint, *cuint): void <cimport,nodecl>
+global glProgramUniform2i: function(cuint, cint, cint, cint): void <cimport,nodecl>
+global glProgramUniform2iv: function(cuint, cint, cint, *cint): void <cimport,nodecl>
+global glProgramUniform2f: function(cuint, cint, float32, float32): void <cimport,nodecl>
+global glProgramUniform2fv: function(cuint, cint, cint, *float32): void <cimport,nodecl>
+global glProgramUniform2d: function(cuint, cint, float64, float64): void <cimport,nodecl>
+global glProgramUniform2dv: function(cuint, cint, cint, *float64): void <cimport,nodecl>
+global glProgramUniform2ui: function(cuint, cint, cuint, cuint): void <cimport,nodecl>
+global glProgramUniform2uiv: function(cuint, cint, cint, *cuint): void <cimport,nodecl>
+global glProgramUniform3i: function(cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glProgramUniform3iv: function(cuint, cint, cint, *cint): void <cimport,nodecl>
+global glProgramUniform3f: function(cuint, cint, float32, float32, float32): void <cimport,nodecl>
+global glProgramUniform3fv: function(cuint, cint, cint, *float32): void <cimport,nodecl>
+global glProgramUniform3d: function(cuint, cint, float64, float64, float64): void <cimport,nodecl>
+global glProgramUniform3dv: function(cuint, cint, cint, *float64): void <cimport,nodecl>
+global glProgramUniform3ui: function(cuint, cint, cuint, cuint, cuint): void <cimport,nodecl>
+global glProgramUniform3uiv: function(cuint, cint, cint, *cuint): void <cimport,nodecl>
+global glProgramUniform4i: function(cuint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glProgramUniform4iv: function(cuint, cint, cint, *cint): void <cimport,nodecl>
+global glProgramUniform4f: function(cuint, cint, float32, float32, float32, float32): void <cimport,nodecl>
+global glProgramUniform4fv: function(cuint, cint, cint, *float32): void <cimport,nodecl>
+global glProgramUniform4d: function(cuint, cint, float64, float64, float64, float64): void <cimport,nodecl>
+global glProgramUniform4dv: function(cuint, cint, cint, *float64): void <cimport,nodecl>
+global glProgramUniform4ui: function(cuint, cint, cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glProgramUniform4uiv: function(cuint, cint, cint, *cuint): void <cimport,nodecl>
+global glProgramUniformMatrix2fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix3fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix4fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix2dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix3dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix4dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix2x3fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix3x2fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix2x4fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix4x2fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix3x4fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix4x3fv: function(cuint, cint, cint, cuchar, *float32): void <cimport,nodecl>
+global glProgramUniformMatrix2x3dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix3x2dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix2x4dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix4x2dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix3x4dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glProgramUniformMatrix4x3dv: function(cuint, cint, cint, cuchar, *float64): void <cimport,nodecl>
+global glValidateProgramPipeline: function(cuint): void <cimport,nodecl>
+global glGetProgramPipelineInfoLog: function(cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glVertexAttribL1d: function(cuint, float64): void <cimport,nodecl>
+global glVertexAttribL2d: function(cuint, float64, float64): void <cimport,nodecl>
+global glVertexAttribL3d: function(cuint, float64, float64, float64): void <cimport,nodecl>
+global glVertexAttribL4d: function(cuint, float64, float64, float64, float64): void <cimport,nodecl>
+global glVertexAttribL1dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttribL2dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttribL3dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttribL4dv: function(cuint, *float64): void <cimport,nodecl>
+global glVertexAttribLPointer: function(cuint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetVertexAttribLdv: function(cuint, cuint, *float64): void <cimport,nodecl>
+global glViewportArrayv: function(cuint, cint, *float32): void <cimport,nodecl>
+global glViewportIndexedf: function(cuint, float32, float32, float32, float32): void <cimport,nodecl>
+global glViewportIndexedfv: function(cuint, *float32): void <cimport,nodecl>
+global glScissorArrayv: function(cuint, cint, *cint): void <cimport,nodecl>
+global glScissorIndexed: function(cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glScissorIndexedv: function(cuint, *cint): void <cimport,nodecl>
+global glDepthRangeArrayv: function(cuint, cint, *float64): void <cimport,nodecl>
+global glDepthRangeIndexed: function(cuint, float64, float64): void <cimport,nodecl>
+global glGetFloati_v: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetDoublei_v: function(cuint, cuint, *float64): void <cimport,nodecl>
+global GLAD_GL_VERSION_4_2: cint <cimport,nodecl>
+global glDrawArraysInstancedBaseInstance: function(cuint, cint, cint, cint, cuint): void <cimport,nodecl>
+global glDrawElementsInstancedBaseInstance: function(cuint, cint, cuint, pointer, cint, cuint): void <cimport,nodecl>
+global glDrawElementsInstancedBaseVertexBaseInstance: function(cuint, cint, cuint, pointer, cint, cint, cuint): void <cimport,nodecl>
+global glGetInternalformativ: function(cuint, cuint, cuint, cint, *cint): void <cimport,nodecl>
+global glGetActiveAtomicCounterBufferiv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glBindImageTexture: function(cuint, cuint, cint, cuchar, cint, cuint, cuint): void <cimport,nodecl>
+global glMemoryBarrier: function(cuint): void <cimport,nodecl>
+global glTexStorage1D: function(cuint, cint, cuint, cint): void <cimport,nodecl>
+global glTexStorage2D: function(cuint, cint, cuint, cint, cint): void <cimport,nodecl>
+global glTexStorage3D: function(cuint, cint, cuint, cint, cint, cint): void <cimport,nodecl>
+global glDrawTransformFeedbackInstanced: function(cuint, cuint, cint): void <cimport,nodecl>
+global glDrawTransformFeedbackStreamInstanced: function(cuint, cuint, cuint, cint): void <cimport,nodecl>
+global GLAD_GL_VERSION_4_3: cint <cimport,nodecl>
+global glClearBufferData: function(cuint, cuint, cuint, cuint, pointer): void <cimport,nodecl>
+global glClearBufferSubData: function(cuint, cuint, isize, clong, cuint, cuint, pointer): void <cimport,nodecl>
+global glDispatchCompute: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glDispatchComputeIndirect: function(isize): void <cimport,nodecl>
+global glCopyImageSubData: function(cuint, cuint, cint, cint, cint, cint, cuint, cuint, cint, cint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glFramebufferParameteri: function(cuint, cuint, cint): void <cimport,nodecl>
+global glGetFramebufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetInternalformati64v: function(cuint, cuint, cuint, cint, *int64): void <cimport,nodecl>
+global glInvalidateTexSubImage: function(cuint, cint, cint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glInvalidateTexImage: function(cuint, cint): void <cimport,nodecl>
+global glInvalidateBufferSubData: function(cuint, isize, clong): void <cimport,nodecl>
+global glInvalidateBufferData: function(cuint): void <cimport,nodecl>
+global glInvalidateFramebuffer: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glInvalidateSubFramebuffer: function(cuint, cint, *cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glMultiDrawArraysIndirect: function(cuint, pointer, cint, cint): void <cimport,nodecl>
+global glMultiDrawElementsIndirect: function(cuint, cuint, pointer, cint, cint): void <cimport,nodecl>
+global glGetProgramInterfaceiv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glGetProgramResourceIndex: function(cuint, cuint, cstring): cuint <cimport,nodecl>
+global glGetProgramResourceName: function(cuint, cuint, cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glGetProgramResourceiv: function(cuint, cuint, cuint, cint, *cuint, cint, *cint, *cint): void <cimport,nodecl>
+global glGetProgramResourceLocation: function(cuint, cuint, cstring): cint <cimport,nodecl>
+global glGetProgramResourceLocationIndex: function(cuint, cuint, cstring): cint <cimport,nodecl>
+global glShaderStorageBlockBinding: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glTexBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glTexStorage2DMultisample: function(cuint, cint, cuint, cint, cint, cuchar): void <cimport,nodecl>
+global glTexStorage3DMultisample: function(cuint, cint, cuint, cint, cint, cint, cuchar): void <cimport,nodecl>
+global glTextureView: function(cuint, cuint, cuint, cuint, cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glBindVertexBuffer: function(cuint, cuint, isize, cint): void <cimport,nodecl>
+global glVertexAttribFormat: function(cuint, cint, cuint, cuchar, cuint): void <cimport,nodecl>
+global glVertexAttribIFormat: function(cuint, cint, cuint, cuint): void <cimport,nodecl>
+global glVertexAttribLFormat: function(cuint, cint, cuint, cuint): void <cimport,nodecl>
+global glVertexAttribBinding: function(cuint, cuint): void <cimport,nodecl>
+global glVertexBindingDivisor: function(cuint, cuint): void <cimport,nodecl>
+global glDebugMessageControl: function(cuint, cuint, cuint, cint, *cuint, cuchar): void <cimport,nodecl>
+global glDebugMessageInsert: function(cuint, cuint, cuint, cuint, cint, cstring): void <cimport,nodecl>
+global glDebugMessageCallback: function(function(cuint, cuint, cuint, cuint, cint, cstring, pointer): void, pointer): void <cimport,nodecl>
+global glGetDebugMessageLog: function(cuint, cint, *cuint, *cuint, *cuint, *cuint, *cint, cstring): cuint <cimport,nodecl>
+global glPushDebugGroup: function(cuint, cuint, cint, cstring): void <cimport,nodecl>
+global glPopDebugGroup: function(): void <cimport,nodecl>
+global glObjectLabel: function(cuint, cuint, cint, cstring): void <cimport,nodecl>
+global glGetObjectLabel: function(cuint, cuint, cint, *cint, cstring): void <cimport,nodecl>
+global glObjectPtrLabel: function(pointer, cint, cstring): void <cimport,nodecl>
+global glGetObjectPtrLabel: function(pointer, cint, *cint, cstring): void <cimport,nodecl>
+global GLAD_GL_VERSION_4_4: cint <cimport,nodecl>
+global glBufferStorage: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
+global glClearTexImage: function(cuint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glClearTexSubImage: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glBindBuffersBase: function(cuint, cuint, cint, *cuint): void <cimport,nodecl>
+global glBindBuffersRange: function(cuint, cuint, cint, *cuint, *isize, *clong): void <cimport,nodecl>
+global glBindTextures: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glBindSamplers: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glBindImageTextures: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glBindVertexBuffers: function(cuint, cint, *cuint, *isize, *cint): void <cimport,nodecl>
+global GLAD_GL_VERSION_4_5: cint <cimport,nodecl>
+global glClipControl: function(cuint, cuint): void <cimport,nodecl>
+global glCreateTransformFeedbacks: function(cint, *cuint): void <cimport,nodecl>
+global glTransformFeedbackBufferBase: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glTransformFeedbackBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glGetTransformFeedbackiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetTransformFeedbacki_v: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glGetTransformFeedbacki64_v: function(cuint, cuint, cuint, *int64): void <cimport,nodecl>
+global glCreateBuffers: function(cint, *cuint): void <cimport,nodecl>
+global glNamedBufferStorage: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
+global glNamedBufferData: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
+global glNamedBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glCopyNamedBufferSubData: function(cuint, cuint, isize, isize, clong): void <cimport,nodecl>
+global glClearNamedBufferData: function(cuint, cuint, cuint, cuint, pointer): void <cimport,nodecl>
+global glClearNamedBufferSubData: function(cuint, cuint, isize, clong, cuint, cuint, pointer): void <cimport,nodecl>
+global glMapNamedBuffer: function(cuint, cuint): pointer <cimport,nodecl>
+global glMapNamedBufferRange: function(cuint, isize, clong, cuint): pointer <cimport,nodecl>
+global glUnmapNamedBuffer: function(cuint): cuchar <cimport,nodecl>
+global glFlushMappedNamedBufferRange: function(cuint, isize, clong): void <cimport,nodecl>
+global glGetNamedBufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetNamedBufferParameteri64v: function(cuint, cuint, *int64): void <cimport,nodecl>
+global glGetNamedBufferPointerv: function(cuint, cuint, *pointer): void <cimport,nodecl>
+global glGetNamedBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glCreateFramebuffers: function(cint, *cuint): void <cimport,nodecl>
+global glNamedFramebufferRenderbuffer: function(cuint, cuint, cuint, cuint): void <cimport,nodecl>
+global glNamedFramebufferParameteri: function(cuint, cuint, cint): void <cimport,nodecl>
+global glNamedFramebufferTexture: function(cuint, cuint, cuint, cint): void <cimport,nodecl>
+global glNamedFramebufferTextureLayer: function(cuint, cuint, cuint, cint, cint): void <cimport,nodecl>
+global glNamedFramebufferDrawBuffer: function(cuint, cuint): void <cimport,nodecl>
+global glNamedFramebufferDrawBuffers: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glNamedFramebufferReadBuffer: function(cuint, cuint): void <cimport,nodecl>
+global glInvalidateNamedFramebufferData: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glInvalidateNamedFramebufferSubData: function(cuint, cint, *cuint, cint, cint, cint, cint): void <cimport,nodecl>
+global glClearNamedFramebufferiv: function(cuint, cuint, cint, *cint): void <cimport,nodecl>
+global glClearNamedFramebufferuiv: function(cuint, cuint, cint, *cuint): void <cimport,nodecl>
+global glClearNamedFramebufferfv: function(cuint, cuint, cint, *float32): void <cimport,nodecl>
+global glClearNamedFramebufferfi: function(cuint, cuint, cint, float32, cint): void <cimport,nodecl>
+global glBlitNamedFramebuffer: function(cuint, cuint, cint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint): void <cimport,nodecl>
+global glCheckNamedFramebufferStatus: function(cuint, cuint): cuint <cimport,nodecl>
+global glGetNamedFramebufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetNamedFramebufferAttachmentParameteriv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glCreateRenderbuffers: function(cint, *cuint): void <cimport,nodecl>
+global glNamedRenderbufferStorage: function(cuint, cuint, cint, cint): void <cimport,nodecl>
+global glNamedRenderbufferStorageMultisample: function(cuint, cint, cuint, cint, cint): void <cimport,nodecl>
+global glGetNamedRenderbufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glCreateTextures: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glTextureBuffer: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glTextureBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glTextureStorage1D: function(cuint, cint, cuint, cint): void <cimport,nodecl>
+global glTextureStorage2D: function(cuint, cint, cuint, cint, cint): void <cimport,nodecl>
+global glTextureStorage3D: function(cuint, cint, cuint, cint, cint, cint): void <cimport,nodecl>
+global glTextureStorage2DMultisample: function(cuint, cint, cuint, cint, cint, cuchar): void <cimport,nodecl>
+global glTextureStorage3DMultisample: function(cuint, cint, cuint, cint, cint, cint, cuchar): void <cimport,nodecl>
+global glTextureSubImage1D: function(cuint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glTextureSubImage2D: function(cuint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glTextureSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
+global glCompressedTextureSubImage1D: function(cuint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glCompressedTextureSubImage2D: function(cuint, cint, cint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glCompressedTextureSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
+global glCopyTextureSubImage1D: function(cuint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glCopyTextureSubImage2D: function(cuint, cint, cint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glCopyTextureSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cint): void <cimport,nodecl>
+global glTextureParameterf: function(cuint, cuint, float32): void <cimport,nodecl>
+global glTextureParameterfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glTextureParameteri: function(cuint, cuint, cint): void <cimport,nodecl>
+global glTextureParameterIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glTextureParameterIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glTextureParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGenerateTextureMipmap: function(cuint): void <cimport,nodecl>
+global glBindTextureUnit: function(cuint, cuint): void <cimport,nodecl>
+global glGetTextureImage: function(cuint, cint, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetCompressedTextureImage: function(cuint, cint, cint, pointer): void <cimport,nodecl>
+global glGetTextureLevelParameterfv: function(cuint, cint, cuint, *float32): void <cimport,nodecl>
+global glGetTextureLevelParameteriv: function(cuint, cint, cuint, *cint): void <cimport,nodecl>
+global glGetTextureParameterfv: function(cuint, cuint, *float32): void <cimport,nodecl>
+global glGetTextureParameterIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetTextureParameterIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
+global glGetTextureParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glCreateVertexArrays: function(cint, *cuint): void <cimport,nodecl>
+global glDisableVertexArrayAttrib: function(cuint, cuint): void <cimport,nodecl>
+global glEnableVertexArrayAttrib: function(cuint, cuint): void <cimport,nodecl>
+global glVertexArrayElementBuffer: function(cuint, cuint): void <cimport,nodecl>
+global glVertexArrayVertexBuffer: function(cuint, cuint, cuint, isize, cint): void <cimport,nodecl>
+global glVertexArrayVertexBuffers: function(cuint, cuint, cint, *cuint, *isize, *cint): void <cimport,nodecl>
+global glVertexArrayAttribBinding: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glVertexArrayAttribFormat: function(cuint, cuint, cint, cuint, cuchar, cuint): void <cimport,nodecl>
+global glVertexArrayAttribIFormat: function(cuint, cuint, cint, cuint, cuint): void <cimport,nodecl>
+global glVertexArrayAttribLFormat: function(cuint, cuint, cint, cuint, cuint): void <cimport,nodecl>
+global glVertexArrayBindingDivisor: function(cuint, cuint, cuint): void <cimport,nodecl>
+global glGetVertexArrayiv: function(cuint, cuint, *cint): void <cimport,nodecl>
+global glGetVertexArrayIndexediv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
+global glGetVertexArrayIndexed64iv: function(cuint, cuint, cuint, *int64): void <cimport,nodecl>
+global glCreateSamplers: function(cint, *cuint): void <cimport,nodecl>
+global glCreateProgramPipelines: function(cint, *cuint): void <cimport,nodecl>
+global glCreateQueries: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glGetQueryBufferObjecti64v: function(cuint, cuint, cuint, isize): void <cimport,nodecl>
+global glGetQueryBufferObjectiv: function(cuint, cuint, cuint, isize): void <cimport,nodecl>
+global glGetQueryBufferObjectui64v: function(cuint, cuint, cuint, isize): void <cimport,nodecl>
+global glGetQueryBufferObjectuiv: function(cuint, cuint, cuint, isize): void <cimport,nodecl>
+global glMemoryBarrierByRegion: function(cuint): void <cimport,nodecl>
+global glGetTextureSubImage: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetCompressedTextureSubImage: function(cuint, cint, cint, cint, cint, cint, cint, cint, cint, pointer): void <cimport,nodecl>
+global glGetGraphicsResetStatus: function(): cuint <cimport,nodecl>
+global glGetnCompressedTexImage: function(cuint, cint, cint, pointer): void <cimport,nodecl>
+global glGetnTexImage: function(cuint, cint, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetnUniformdv: function(cuint, cint, cint, *float64): void <cimport,nodecl>
+global glGetnUniformfv: function(cuint, cint, cint, *float32): void <cimport,nodecl>
+global glGetnUniformiv: function(cuint, cint, cint, *cint): void <cimport,nodecl>
+global glGetnUniformuiv: function(cuint, cint, cint, *cuint): void <cimport,nodecl>
+global glReadnPixels: function(cint, cint, cint, cint, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetnMapdv: function(cuint, cuint, cint, *float64): void <cimport,nodecl>
+global glGetnMapfv: function(cuint, cuint, cint, *float32): void <cimport,nodecl>
+global glGetnMapiv: function(cuint, cuint, cint, *cint): void <cimport,nodecl>
+global glGetnPixelMapfv: function(cuint, cint, *float32): void <cimport,nodecl>
+global glGetnPixelMapuiv: function(cuint, cint, *cuint): void <cimport,nodecl>
+global glGetnPixelMapusv: function(cuint, cint, *cushort): void <cimport,nodecl>
+global glGetnPolygonStipple: function(cint, *cuchar): void <cimport,nodecl>
+global glGetnColorTable: function(cuint, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetnConvolutionFilter: function(cuint, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetnSeparableFilter: function(cuint, cuint, cuint, cint, pointer, cint, pointer, pointer): void <cimport,nodecl>
+global glGetnHistogram: function(cuint, cuchar, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glGetnMinmax: function(cuint, cuchar, cuint, cuint, cint, pointer): void <cimport,nodecl>
+global glTextureBarrier: function(): void <cimport,nodecl>
+global GLAD_GL_VERSION_4_6: cint <cimport,nodecl>
+global glSpecializeShader: function(cuint, cstring, cuint, *cuint, *cuint): void <cimport,nodecl>
+global glMultiDrawArraysIndirectCount: function(cuint, pointer, isize, cint, cint): void <cimport,nodecl>
+global glMultiDrawElementsIndirectCount: function(cuint, cuint, pointer, isize, cint, cint): void <cimport,nodecl>
+global glPolygonOffsetClamp: function(float32, float32, float32): void <cimport,nodecl>
+global GL_DEPTH_BUFFER_BIT: cuint <comptime> = 0x00000100
+global GL_STENCIL_BUFFER_BIT: cuint <comptime> = 0x00000400
+global GL_COLOR_BUFFER_BIT: cuint <comptime> = 0x00004000
+global GL_FALSE: cuint <comptime> = 0
+global GL_TRUE: cuint <comptime> = 1
+global GL_POINTS: cuint <comptime> = 0x0000
+global GL_LINES: cuint <comptime> = 0x0001
+global GL_LINE_LOOP: cuint <comptime> = 0x0002
+global GL_LINE_STRIP: cuint <comptime> = 0x0003
+global GL_TRIANGLES: cuint <comptime> = 0x0004
+global GL_TRIANGLE_STRIP: cuint <comptime> = 0x0005
+global GL_TRIANGLE_FAN: cuint <comptime> = 0x0006
+global GL_QUADS: cuint <comptime> = 0x0007
+global GL_NEVER: cuint <comptime> = 0x0200
+global GL_LESS: cuint <comptime> = 0x0201
+global GL_EQUAL: cuint <comptime> = 0x0202
+global GL_LEQUAL: cuint <comptime> = 0x0203
+global GL_GREATER: cuint <comptime> = 0x0204
+global GL_NOTEQUAL: cuint <comptime> = 0x0205
+global GL_GEQUAL: cuint <comptime> = 0x0206
+global GL_ALWAYS: cuint <comptime> = 0x0207
+global GL_ZERO: cuint <comptime> = 0
+global GL_ONE: cuint <comptime> = 1
+global GL_SRC_COLOR: cuint <comptime> = 0x0300
+global GL_ONE_MINUS_SRC_COLOR: cuint <comptime> = 0x0301
+global GL_SRC_ALPHA: cuint <comptime> = 0x0302
+global GL_ONE_MINUS_SRC_ALPHA: cuint <comptime> = 0x0303
+global GL_DST_ALPHA: cuint <comptime> = 0x0304
+global GL_ONE_MINUS_DST_ALPHA: cuint <comptime> = 0x0305
+global GL_DST_COLOR: cuint <comptime> = 0x0306
+global GL_ONE_MINUS_DST_COLOR: cuint <comptime> = 0x0307
+global GL_SRC_ALPHA_SATURATE: cuint <comptime> = 0x0308
+global GL_NONE: cuint <comptime> = 0
+global GL_FRONT_LEFT: cuint <comptime> = 0x0400
+global GL_FRONT_RIGHT: cuint <comptime> = 0x0401
+global GL_BACK_LEFT: cuint <comptime> = 0x0402
+global GL_BACK_RIGHT: cuint <comptime> = 0x0403
+global GL_FRONT: cuint <comptime> = 0x0404
+global GL_BACK: cuint <comptime> = 0x0405
+global GL_LEFT: cuint <comptime> = 0x0406
+global GL_RIGHT: cuint <comptime> = 0x0407
+global GL_FRONT_AND_BACK: cuint <comptime> = 0x0408
+global GL_NO_ERROR: cuint <comptime> = 0
+global GL_INVALID_ENUM: cuint <comptime> = 0x0500
+global GL_INVALID_VALUE: cuint <comptime> = 0x0501
+global GL_INVALID_OPERATION: cuint <comptime> = 0x0502
+global GL_OUT_OF_MEMORY: cuint <comptime> = 0x0505
+global GL_CW: cuint <comptime> = 0x0900
+global GL_CCW: cuint <comptime> = 0x0901
+global GL_POINT_SIZE: cuint <comptime> = 0x0b11
+global GL_POINT_SIZE_RANGE: cuint <comptime> = 0x0b12
+global GL_POINT_SIZE_GRANULARITY: cuint <comptime> = 0x0b13
+global GL_LINE_SMOOTH: cuint <comptime> = 0x0b20
+global GL_LINE_WIDTH: cuint <comptime> = 0x0b21
+global GL_LINE_WIDTH_RANGE: cuint <comptime> = 0x0b22
+global GL_LINE_WIDTH_GRANULARITY: cuint <comptime> = 0x0b23
+global GL_POLYGON_MODE: cuint <comptime> = 0x0b40
+global GL_POLYGON_SMOOTH: cuint <comptime> = 0x0b41
+global GL_CULL_FACE: cuint <comptime> = 0x0b44
+global GL_CULL_FACE_MODE: cuint <comptime> = 0x0b45
+global GL_FRONT_FACE: cuint <comptime> = 0x0b46
+global GL_DEPTH_RANGE: cuint <comptime> = 0x0b70
+global GL_DEPTH_TEST: cuint <comptime> = 0x0b71
+global GL_DEPTH_WRITEMASK: cuint <comptime> = 0x0b72
+global GL_DEPTH_CLEAR_VALUE: cuint <comptime> = 0x0b73
+global GL_DEPTH_FUNC: cuint <comptime> = 0x0b74
+global GL_STENCIL_TEST: cuint <comptime> = 0x0b90
+global GL_STENCIL_CLEAR_VALUE: cuint <comptime> = 0x0b91
+global GL_STENCIL_FUNC: cuint <comptime> = 0x0b92
+global GL_STENCIL_VALUE_MASK: cuint <comptime> = 0x0b93
+global GL_STENCIL_FAIL: cuint <comptime> = 0x0b94
+global GL_STENCIL_PASS_DEPTH_FAIL: cuint <comptime> = 0x0b95
+global GL_STENCIL_PASS_DEPTH_PASS: cuint <comptime> = 0x0b96
+global GL_STENCIL_REF: cuint <comptime> = 0x0b97
+global GL_STENCIL_WRITEMASK: cuint <comptime> = 0x0b98
+global GL_VIEWPORT: cuint <comptime> = 0x0ba2
+global GL_DITHER: cuint <comptime> = 0x0bd0
+global GL_BLEND_DST: cuint <comptime> = 0x0be0
+global GL_BLEND_SRC: cuint <comptime> = 0x0be1
+global GL_BLEND: cuint <comptime> = 0x0be2
+global GL_LOGIC_OP_MODE: cuint <comptime> = 0x0bf0
+global GL_DRAW_BUFFER: cuint <comptime> = 0x0c01
+global GL_READ_BUFFER: cuint <comptime> = 0x0c02
+global GL_SCISSOR_BOX: cuint <comptime> = 0x0c10
+global GL_SCISSOR_TEST: cuint <comptime> = 0x0c11
+global GL_COLOR_CLEAR_VALUE: cuint <comptime> = 0x0c22
+global GL_COLOR_WRITEMASK: cuint <comptime> = 0x0c23
+global GL_DOUBLEBUFFER: cuint <comptime> = 0x0c32
+global GL_STEREO: cuint <comptime> = 0x0c33
+global GL_LINE_SMOOTH_HINT: cuint <comptime> = 0x0c52
+global GL_POLYGON_SMOOTH_HINT: cuint <comptime> = 0x0c53
+global GL_UNPACK_SWAP_BYTES: cuint <comptime> = 0x0cf0
+global GL_UNPACK_LSB_FIRST: cuint <comptime> = 0x0cf1
+global GL_UNPACK_ROW_LENGTH: cuint <comptime> = 0x0cf2
+global GL_UNPACK_SKIP_ROWS: cuint <comptime> = 0x0cf3
+global GL_UNPACK_SKIP_PIXELS: cuint <comptime> = 0x0cf4
+global GL_UNPACK_ALIGNMENT: cuint <comptime> = 0x0cf5
+global GL_PACK_SWAP_BYTES: cuint <comptime> = 0x0d00
+global GL_PACK_LSB_FIRST: cuint <comptime> = 0x0d01
+global GL_PACK_ROW_LENGTH: cuint <comptime> = 0x0d02
+global GL_PACK_SKIP_ROWS: cuint <comptime> = 0x0d03
+global GL_PACK_SKIP_PIXELS: cuint <comptime> = 0x0d04
+global GL_PACK_ALIGNMENT: cuint <comptime> = 0x0d05
+global GL_MAX_TEXTURE_SIZE: cuint <comptime> = 0x0d33
+global GL_MAX_VIEWPORT_DIMS: cuint <comptime> = 0x0d3a
+global GL_SUBPIXEL_BITS: cuint <comptime> = 0x0d50
+global GL_TEXTURE_1D: cuint <comptime> = 0x0de0
+global GL_TEXTURE_2D: cuint <comptime> = 0x0de1
+global GL_TEXTURE_WIDTH: cuint <comptime> = 0x1000
+global GL_TEXTURE_HEIGHT: cuint <comptime> = 0x1001
+global GL_TEXTURE_BORDER_COLOR: cuint <comptime> = 0x1004
+global GL_DONT_CARE: cuint <comptime> = 0x1100
+global GL_FASTEST: cuint <comptime> = 0x1101
+global GL_NICEST: cuint <comptime> = 0x1102
+global GL_BYTE: cuint <comptime> = 0x1400
+global GL_UNSIGNED_BYTE: cuint <comptime> = 0x1401
+global GL_SHORT: cuint <comptime> = 0x1402
+global GL_UNSIGNED_SHORT: cuint <comptime> = 0x1403
+global GL_INT: cuint <comptime> = 0x1404
+global GL_UNSIGNED_INT: cuint <comptime> = 0x1405
+global GL_FLOAT: cuint <comptime> = 0x1406
+global GL_STACK_OVERFLOW: cuint <comptime> = 0x0503
+global GL_STACK_UNDERFLOW: cuint <comptime> = 0x0504
+global GL_CLEAR: cuint <comptime> = 0x1500
+global GL_AND: cuint <comptime> = 0x1501
+global GL_AND_REVERSE: cuint <comptime> = 0x1502
+global GL_COPY: cuint <comptime> = 0x1503
+global GL_AND_INVERTED: cuint <comptime> = 0x1504
+global GL_NOOP: cuint <comptime> = 0x1505
+global GL_XOR: cuint <comptime> = 0x1506
+global GL_OR: cuint <comptime> = 0x1507
+global GL_NOR: cuint <comptime> = 0x1508
+global GL_EQUIV: cuint <comptime> = 0x1509
+global GL_INVERT: cuint <comptime> = 0x150a
+global GL_OR_REVERSE: cuint <comptime> = 0x150b
+global GL_COPY_INVERTED: cuint <comptime> = 0x150c
+global GL_OR_INVERTED: cuint <comptime> = 0x150d
+global GL_NAND: cuint <comptime> = 0x150e
+global GL_SET: cuint <comptime> = 0x150f
+global GL_TEXTURE: cuint <comptime> = 0x1702
+global GL_COLOR: cuint <comptime> = 0x1800
+global GL_DEPTH: cuint <comptime> = 0x1801
+global GL_STENCIL: cuint <comptime> = 0x1802
+global GL_STENCIL_INDEX: cuint <comptime> = 0x1901
+global GL_DEPTH_COMPONENT: cuint <comptime> = 0x1902
+global GL_RED: cuint <comptime> = 0x1903
+global GL_GREEN: cuint <comptime> = 0x1904
+global GL_BLUE: cuint <comptime> = 0x1905
+global GL_ALPHA: cuint <comptime> = 0x1906
+global GL_RGB: cuint <comptime> = 0x1907
+global GL_RGBA: cuint <comptime> = 0x1908
+global GL_POINT: cuint <comptime> = 0x1b00
+global GL_LINE: cuint <comptime> = 0x1b01
+global GL_FILL: cuint <comptime> = 0x1b02
+global GL_KEEP: cuint <comptime> = 0x1e00
+global GL_REPLACE: cuint <comptime> = 0x1e01
+global GL_INCR: cuint <comptime> = 0x1e02
+global GL_DECR: cuint <comptime> = 0x1e03
+global GL_VENDOR: cuint <comptime> = 0x1f00
+global GL_RENDERER: cuint <comptime> = 0x1f01
+global GL_VERSION: cuint <comptime> = 0x1f02
+global GL_EXTENSIONS: cuint <comptime> = 0x1f03
+global GL_NEAREST: cuint <comptime> = 0x2600
+global GL_LINEAR: cuint <comptime> = 0x2601
+global GL_NEAREST_MIPMAP_NEAREST: cuint <comptime> = 0x2700
+global GL_LINEAR_MIPMAP_NEAREST: cuint <comptime> = 0x2701
+global GL_NEAREST_MIPMAP_LINEAR: cuint <comptime> = 0x2702
+global GL_LINEAR_MIPMAP_LINEAR: cuint <comptime> = 0x2703
+global GL_TEXTURE_MAG_FILTER: cuint <comptime> = 0x2800
+global GL_TEXTURE_MIN_FILTER: cuint <comptime> = 0x2801
+global GL_TEXTURE_WRAP_S: cuint <comptime> = 0x2802
+global GL_TEXTURE_WRAP_T: cuint <comptime> = 0x2803
+global GL_REPEAT: cuint <comptime> = 0x2901
+global GL_CURRENT_BIT: cuint <comptime> = 0x00000001
+global GL_POINT_BIT: cuint <comptime> = 0x00000002
+global GL_LINE_BIT: cuint <comptime> = 0x00000004
+global GL_POLYGON_BIT: cuint <comptime> = 0x00000008
+global GL_POLYGON_STIPPLE_BIT: cuint <comptime> = 0x00000010
+global GL_PIXEL_MODE_BIT: cuint <comptime> = 0x00000020
+global GL_LIGHTING_BIT: cuint <comptime> = 0x00000040
+global GL_FOG_BIT: cuint <comptime> = 0x00000080
+global GL_ACCUM_BUFFER_BIT: cuint <comptime> = 0x00000200
+global GL_VIEWPORT_BIT: cuint <comptime> = 0x00000800
+global GL_TRANSFORM_BIT: cuint <comptime> = 0x00001000
+global GL_ENABLE_BIT: cuint <comptime> = 0x00002000
+global GL_HINT_BIT: cuint <comptime> = 0x00008000
+global GL_EVAL_BIT: cuint <comptime> = 0x00010000
+global GL_LIST_BIT: cuint <comptime> = 0x00020000
+global GL_TEXTURE_BIT: cuint <comptime> = 0x00040000
+global GL_SCISSOR_BIT: cuint <comptime> = 0x00080000
+global GL_ALL_ATTRIB_BITS: cuint <comptime> = 0xffffffff
+global GL_QUAD_STRIP: cuint <comptime> = 0x0008
+global GL_POLYGON: cuint <comptime> = 0x0009
+global GL_ACCUM: cuint <comptime> = 0x0100
+global GL_LOAD: cuint <comptime> = 0x0101
+global GL_RETURN: cuint <comptime> = 0x0102
+global GL_MULT: cuint <comptime> = 0x0103
+global GL_ADD: cuint <comptime> = 0x0104
+global GL_AUX0: cuint <comptime> = 0x0409
+global GL_AUX1: cuint <comptime> = 0x040a
+global GL_AUX2: cuint <comptime> = 0x040b
+global GL_AUX3: cuint <comptime> = 0x040c
+global GL_2D: cuint <comptime> = 0x0600
+global GL_3D: cuint <comptime> = 0x0601
+global GL_3D_COLOR: cuint <comptime> = 0x0602
+global GL_3D_COLOR_TEXTURE: cuint <comptime> = 0x0603
+global GL_4D_COLOR_TEXTURE: cuint <comptime> = 0x0604
+global GL_PASS_THROUGH_TOKEN: cuint <comptime> = 0x0700
+global GL_POINT_TOKEN: cuint <comptime> = 0x0701
+global GL_LINE_TOKEN: cuint <comptime> = 0x0702
+global GL_POLYGON_TOKEN: cuint <comptime> = 0x0703
+global GL_BITMAP_TOKEN: cuint <comptime> = 0x0704
+global GL_DRAW_PIXEL_TOKEN: cuint <comptime> = 0x0705
+global GL_COPY_PIXEL_TOKEN: cuint <comptime> = 0x0706
+global GL_LINE_RESET_TOKEN: cuint <comptime> = 0x0707
+global GL_EXP: cuint <comptime> = 0x0800
+global GL_EXP2: cuint <comptime> = 0x0801
+global GL_COEFF: cuint <comptime> = 0x0a00
+global GL_ORDER: cuint <comptime> = 0x0a01
+global GL_DOMAIN: cuint <comptime> = 0x0a02
+global GL_PIXEL_MAP_I_TO_I: cuint <comptime> = 0x0c70
+global GL_PIXEL_MAP_S_TO_S: cuint <comptime> = 0x0c71
+global GL_PIXEL_MAP_I_TO_R: cuint <comptime> = 0x0c72
+global GL_PIXEL_MAP_I_TO_G: cuint <comptime> = 0x0c73
+global GL_PIXEL_MAP_I_TO_B: cuint <comptime> = 0x0c74
+global GL_PIXEL_MAP_I_TO_A: cuint <comptime> = 0x0c75
+global GL_PIXEL_MAP_R_TO_R: cuint <comptime> = 0x0c76
+global GL_PIXEL_MAP_G_TO_G: cuint <comptime> = 0x0c77
+global GL_PIXEL_MAP_B_TO_B: cuint <comptime> = 0x0c78
+global GL_PIXEL_MAP_A_TO_A: cuint <comptime> = 0x0c79
+global GL_CURRENT_COLOR: cuint <comptime> = 0x0b00
+global GL_CURRENT_INDEX: cuint <comptime> = 0x0b01
+global GL_CURRENT_NORMAL: cuint <comptime> = 0x0b02
+global GL_CURRENT_TEXTURE_COORDS: cuint <comptime> = 0x0b03
+global GL_CURRENT_RASTER_COLOR: cuint <comptime> = 0x0b04
+global GL_CURRENT_RASTER_INDEX: cuint <comptime> = 0x0b05
+global GL_CURRENT_RASTER_TEXTURE_COORDS: cuint <comptime> = 0x0b06
+global GL_CURRENT_RASTER_POSITION: cuint <comptime> = 0x0b07
+global GL_CURRENT_RASTER_POSITION_VALID: cuint <comptime> = 0x0b08
+global GL_CURRENT_RASTER_DISTANCE: cuint <comptime> = 0x0b09
+global GL_POINT_SMOOTH: cuint <comptime> = 0x0b10
+global GL_LINE_STIPPLE: cuint <comptime> = 0x0b24
+global GL_LINE_STIPPLE_PATTERN: cuint <comptime> = 0x0b25
+global GL_LINE_STIPPLE_REPEAT: cuint <comptime> = 0x0b26
+global GL_LIST_MODE: cuint <comptime> = 0x0b30
+global GL_MAX_LIST_NESTING: cuint <comptime> = 0x0b31
+global GL_LIST_BASE: cuint <comptime> = 0x0b32
+global GL_LIST_INDEX: cuint <comptime> = 0x0b33
+global GL_POLYGON_STIPPLE: cuint <comptime> = 0x0b42
+global GL_EDGE_FLAG: cuint <comptime> = 0x0b43
+global GL_LIGHTING: cuint <comptime> = 0x0b50
+global GL_LIGHT_MODEL_LOCAL_VIEWER: cuint <comptime> = 0x0b51
+global GL_LIGHT_MODEL_TWO_SIDE: cuint <comptime> = 0x0b52
+global GL_LIGHT_MODEL_AMBIENT: cuint <comptime> = 0x0b53
+global GL_SHADE_MODEL: cuint <comptime> = 0x0b54
+global GL_COLOR_MATERIAL_FACE: cuint <comptime> = 0x0b55
+global GL_COLOR_MATERIAL_PARAMETER: cuint <comptime> = 0x0b56
+global GL_COLOR_MATERIAL: cuint <comptime> = 0x0b57
+global GL_FOG: cuint <comptime> = 0x0b60
+global GL_FOG_INDEX: cuint <comptime> = 0x0b61
+global GL_FOG_DENSITY: cuint <comptime> = 0x0b62
+global GL_FOG_START: cuint <comptime> = 0x0b63
+global GL_FOG_END: cuint <comptime> = 0x0b64
+global GL_FOG_MODE: cuint <comptime> = 0x0b65
+global GL_FOG_COLOR: cuint <comptime> = 0x0b66
+global GL_ACCUM_CLEAR_VALUE: cuint <comptime> = 0x0b80
+global GL_MATRIX_MODE: cuint <comptime> = 0x0ba0
+global GL_NORMALIZE: cuint <comptime> = 0x0ba1
+global GL_MODELVIEW_STACK_DEPTH: cuint <comptime> = 0x0ba3
+global GL_PROJECTION_STACK_DEPTH: cuint <comptime> = 0x0ba4
+global GL_TEXTURE_STACK_DEPTH: cuint <comptime> = 0x0ba5
+global GL_MODELVIEW_MATRIX: cuint <comptime> = 0x0ba6
+global GL_PROJECTION_MATRIX: cuint <comptime> = 0x0ba7
+global GL_TEXTURE_MATRIX: cuint <comptime> = 0x0ba8
+global GL_ATTRIB_STACK_DEPTH: cuint <comptime> = 0x0bb0
+global GL_ALPHA_TEST: cuint <comptime> = 0x0bc0
+global GL_ALPHA_TEST_FUNC: cuint <comptime> = 0x0bc1
+global GL_ALPHA_TEST_REF: cuint <comptime> = 0x0bc2
+global GL_LOGIC_OP: cuint <comptime> = 0x0bf1
+global GL_AUX_BUFFERS: cuint <comptime> = 0x0c00
+global GL_INDEX_CLEAR_VALUE: cuint <comptime> = 0x0c20
+global GL_INDEX_WRITEMASK: cuint <comptime> = 0x0c21
+global GL_INDEX_MODE: cuint <comptime> = 0x0c30
+global GL_RGBA_MODE: cuint <comptime> = 0x0c31
+global GL_RENDER_MODE: cuint <comptime> = 0x0c40
+global GL_PERSPECTIVE_CORRECTION_HINT: cuint <comptime> = 0x0c50
+global GL_POINT_SMOOTH_HINT: cuint <comptime> = 0x0c51
+global GL_FOG_HINT: cuint <comptime> = 0x0c54
+global GL_TEXTURE_GEN_S: cuint <comptime> = 0x0c60
+global GL_TEXTURE_GEN_T: cuint <comptime> = 0x0c61
+global GL_TEXTURE_GEN_R: cuint <comptime> = 0x0c62
+global GL_TEXTURE_GEN_Q: cuint <comptime> = 0x0c63
+global GL_PIXEL_MAP_I_TO_I_SIZE: cuint <comptime> = 0x0cb0
+global GL_PIXEL_MAP_S_TO_S_SIZE: cuint <comptime> = 0x0cb1
+global GL_PIXEL_MAP_I_TO_R_SIZE: cuint <comptime> = 0x0cb2
+global GL_PIXEL_MAP_I_TO_G_SIZE: cuint <comptime> = 0x0cb3
+global GL_PIXEL_MAP_I_TO_B_SIZE: cuint <comptime> = 0x0cb4
+global GL_PIXEL_MAP_I_TO_A_SIZE: cuint <comptime> = 0x0cb5
+global GL_PIXEL_MAP_R_TO_R_SIZE: cuint <comptime> = 0x0cb6
+global GL_PIXEL_MAP_G_TO_G_SIZE: cuint <comptime> = 0x0cb7
+global GL_PIXEL_MAP_B_TO_B_SIZE: cuint <comptime> = 0x0cb8
+global GL_PIXEL_MAP_A_TO_A_SIZE: cuint <comptime> = 0x0cb9
+global GL_MAP_COLOR: cuint <comptime> = 0x0d10
+global GL_MAP_STENCIL: cuint <comptime> = 0x0d11
+global GL_INDEX_SHIFT: cuint <comptime> = 0x0d12
+global GL_INDEX_OFFSET: cuint <comptime> = 0x0d13
+global GL_RED_SCALE: cuint <comptime> = 0x0d14
+global GL_RED_BIAS: cuint <comptime> = 0x0d15
+global GL_ZOOM_X: cuint <comptime> = 0x0d16
+global GL_ZOOM_Y: cuint <comptime> = 0x0d17
+global GL_GREEN_SCALE: cuint <comptime> = 0x0d18
+global GL_GREEN_BIAS: cuint <comptime> = 0x0d19
+global GL_BLUE_SCALE: cuint <comptime> = 0x0d1a
+global GL_BLUE_BIAS: cuint <comptime> = 0x0d1b
+global GL_ALPHA_SCALE: cuint <comptime> = 0x0d1c
+global GL_ALPHA_BIAS: cuint <comptime> = 0x0d1d
+global GL_DEPTH_SCALE: cuint <comptime> = 0x0d1e
+global GL_DEPTH_BIAS: cuint <comptime> = 0x0d1f
+global GL_MAX_EVAL_ORDER: cuint <comptime> = 0x0d30
+global GL_MAX_LIGHTS: cuint <comptime> = 0x0d31
+global GL_MAX_CLIP_PLANES: cuint <comptime> = 0x0d32
+global GL_MAX_PIXEL_MAP_TABLE: cuint <comptime> = 0x0d34
+global GL_MAX_ATTRIB_STACK_DEPTH: cuint <comptime> = 0x0d35
+global GL_MAX_MODELVIEW_STACK_DEPTH: cuint <comptime> = 0x0d36
+global GL_MAX_NAME_STACK_DEPTH: cuint <comptime> = 0x0d37
+global GL_MAX_PROJECTION_STACK_DEPTH: cuint <comptime> = 0x0d38
+global GL_MAX_TEXTURE_STACK_DEPTH: cuint <comptime> = 0x0d39
+global GL_INDEX_BITS: cuint <comptime> = 0x0d51
+global GL_RED_BITS: cuint <comptime> = 0x0d52
+global GL_GREEN_BITS: cuint <comptime> = 0x0d53
+global GL_BLUE_BITS: cuint <comptime> = 0x0d54
+global GL_ALPHA_BITS: cuint <comptime> = 0x0d55
+global GL_DEPTH_BITS: cuint <comptime> = 0x0d56
+global GL_STENCIL_BITS: cuint <comptime> = 0x0d57
+global GL_ACCUM_RED_BITS: cuint <comptime> = 0x0d58
+global GL_ACCUM_GREEN_BITS: cuint <comptime> = 0x0d59
+global GL_ACCUM_BLUE_BITS: cuint <comptime> = 0x0d5a
+global GL_ACCUM_ALPHA_BITS: cuint <comptime> = 0x0d5b
+global GL_NAME_STACK_DEPTH: cuint <comptime> = 0x0d70
+global GL_AUTO_NORMAL: cuint <comptime> = 0x0d80
+global GL_MAP1_COLOR_4: cuint <comptime> = 0x0d90
+global GL_MAP1_INDEX: cuint <comptime> = 0x0d91
+global GL_MAP1_NORMAL: cuint <comptime> = 0x0d92
+global GL_MAP1_TEXTURE_COORD_1: cuint <comptime> = 0x0d93
+global GL_MAP1_TEXTURE_COORD_2: cuint <comptime> = 0x0d94
+global GL_MAP1_TEXTURE_COORD_3: cuint <comptime> = 0x0d95
+global GL_MAP1_TEXTURE_COORD_4: cuint <comptime> = 0x0d96
+global GL_MAP1_VERTEX_3: cuint <comptime> = 0x0d97
+global GL_MAP1_VERTEX_4: cuint <comptime> = 0x0d98
+global GL_MAP2_COLOR_4: cuint <comptime> = 0x0db0
+global GL_MAP2_INDEX: cuint <comptime> = 0x0db1
+global GL_MAP2_NORMAL: cuint <comptime> = 0x0db2
+global GL_MAP2_TEXTURE_COORD_1: cuint <comptime> = 0x0db3
+global GL_MAP2_TEXTURE_COORD_2: cuint <comptime> = 0x0db4
+global GL_MAP2_TEXTURE_COORD_3: cuint <comptime> = 0x0db5
+global GL_MAP2_TEXTURE_COORD_4: cuint <comptime> = 0x0db6
+global GL_MAP2_VERTEX_3: cuint <comptime> = 0x0db7
+global GL_MAP2_VERTEX_4: cuint <comptime> = 0x0db8
+global GL_MAP1_GRID_DOMAIN: cuint <comptime> = 0x0dd0
+global GL_MAP1_GRID_SEGMENTS: cuint <comptime> = 0x0dd1
+global GL_MAP2_GRID_DOMAIN: cuint <comptime> = 0x0dd2
+global GL_MAP2_GRID_SEGMENTS: cuint <comptime> = 0x0dd3
+global GL_TEXTURE_COMPONENTS: cuint <comptime> = 0x1003
+global GL_TEXTURE_BORDER: cuint <comptime> = 0x1005
+global GL_AMBIENT: cuint <comptime> = 0x1200
+global GL_DIFFUSE: cuint <comptime> = 0x1201
+global GL_SPECULAR: cuint <comptime> = 0x1202
+global GL_POSITION: cuint <comptime> = 0x1203
+global GL_SPOT_DIRECTION: cuint <comptime> = 0x1204
+global GL_SPOT_EXPONENT: cuint <comptime> = 0x1205
+global GL_SPOT_CUTOFF: cuint <comptime> = 0x1206
+global GL_CONSTANT_ATTENUATION: cuint <comptime> = 0x1207
+global GL_LINEAR_ATTENUATION: cuint <comptime> = 0x1208
+global GL_QUADRATIC_ATTENUATION: cuint <comptime> = 0x1209
+global GL_COMPILE: cuint <comptime> = 0x1300
+global GL_COMPILE_AND_EXECUTE: cuint <comptime> = 0x1301
+global GL_2_BYTES: cuint <comptime> = 0x1407
+global GL_3_BYTES: cuint <comptime> = 0x1408
+global GL_4_BYTES: cuint <comptime> = 0x1409
+global GL_EMISSION: cuint <comptime> = 0x1600
+global GL_SHININESS: cuint <comptime> = 0x1601
+global GL_AMBIENT_AND_DIFFUSE: cuint <comptime> = 0x1602
+global GL_COLOR_INDEXES: cuint <comptime> = 0x1603
+global GL_MODELVIEW: cuint <comptime> = 0x1700
+global GL_PROJECTION: cuint <comptime> = 0x1701
+global GL_COLOR_INDEX: cuint <comptime> = 0x1900
+global GL_LUMINANCE: cuint <comptime> = 0x1909
+global GL_LUMINANCE_ALPHA: cuint <comptime> = 0x190a
+global GL_BITMAP: cuint <comptime> = 0x1a00
+global GL_RENDER: cuint <comptime> = 0x1c00
+global GL_FEEDBACK: cuint <comptime> = 0x1c01
+global GL_SELECT: cuint <comptime> = 0x1c02
+global GL_FLAT: cuint <comptime> = 0x1d00
+global GL_SMOOTH: cuint <comptime> = 0x1d01
+global GL_S: cuint <comptime> = 0x2000
+global GL_T: cuint <comptime> = 0x2001
+global GL_R: cuint <comptime> = 0x2002
+global GL_Q: cuint <comptime> = 0x2003
+global GL_MODULATE: cuint <comptime> = 0x2100
+global GL_DECAL: cuint <comptime> = 0x2101
+global GL_TEXTURE_ENV_MODE: cuint <comptime> = 0x2200
+global GL_TEXTURE_ENV_COLOR: cuint <comptime> = 0x2201
+global GL_TEXTURE_ENV: cuint <comptime> = 0x2300
+global GL_EYE_LINEAR: cuint <comptime> = 0x2400
+global GL_OBJECT_LINEAR: cuint <comptime> = 0x2401
+global GL_SPHERE_MAP: cuint <comptime> = 0x2402
+global GL_TEXTURE_GEN_MODE: cuint <comptime> = 0x2500
+global GL_OBJECT_PLANE: cuint <comptime> = 0x2501
+global GL_EYE_PLANE: cuint <comptime> = 0x2502
+global GL_CLAMP: cuint <comptime> = 0x2900
+global GL_CLIP_PLANE0: cuint <comptime> = 0x3000
+global GL_CLIP_PLANE1: cuint <comptime> = 0x3001
+global GL_CLIP_PLANE2: cuint <comptime> = 0x3002
+global GL_CLIP_PLANE3: cuint <comptime> = 0x3003
+global GL_CLIP_PLANE4: cuint <comptime> = 0x3004
+global GL_CLIP_PLANE5: cuint <comptime> = 0x3005
+global GL_LIGHT0: cuint <comptime> = 0x4000
+global GL_LIGHT1: cuint <comptime> = 0x4001
+global GL_LIGHT2: cuint <comptime> = 0x4002
+global GL_LIGHT3: cuint <comptime> = 0x4003
+global GL_LIGHT4: cuint <comptime> = 0x4004
+global GL_LIGHT5: cuint <comptime> = 0x4005
+global GL_LIGHT6: cuint <comptime> = 0x4006
+global GL_LIGHT7: cuint <comptime> = 0x4007
+global GL_COLOR_LOGIC_OP: cuint <comptime> = 0x0bf2
+global GL_POLYGON_OFFSET_UNITS: cuint <comptime> = 0x2a00
+global GL_POLYGON_OFFSET_POINT: cuint <comptime> = 0x2a01
+global GL_POLYGON_OFFSET_LINE: cuint <comptime> = 0x2a02
+global GL_POLYGON_OFFSET_FILL: cuint <comptime> = 0x8037
+global GL_POLYGON_OFFSET_FACTOR: cuint <comptime> = 0x8038
+global GL_TEXTURE_BINDING_1D: cuint <comptime> = 0x8068
+global GL_TEXTURE_BINDING_2D: cuint <comptime> = 0x8069
+global GL_TEXTURE_INTERNAL_FORMAT: cuint <comptime> = 0x1003
+global GL_TEXTURE_RED_SIZE: cuint <comptime> = 0x805c
+global GL_TEXTURE_GREEN_SIZE: cuint <comptime> = 0x805d
+global GL_TEXTURE_BLUE_SIZE: cuint <comptime> = 0x805e
+global GL_TEXTURE_ALPHA_SIZE: cuint <comptime> = 0x805f
+global GL_DOUBLE: cuint <comptime> = 0x140a
+global GL_PROXY_TEXTURE_1D: cuint <comptime> = 0x8063
+global GL_PROXY_TEXTURE_2D: cuint <comptime> = 0x8064
+global GL_R3_G3_B2: cuint <comptime> = 0x2a10
+global GL_RGB4: cuint <comptime> = 0x804f
+global GL_RGB5: cuint <comptime> = 0x8050
+global GL_RGB8: cuint <comptime> = 0x8051
+global GL_RGB10: cuint <comptime> = 0x8052
+global GL_RGB12: cuint <comptime> = 0x8053
+global GL_RGB16: cuint <comptime> = 0x8054
+global GL_RGBA2: cuint <comptime> = 0x8055
+global GL_RGBA4: cuint <comptime> = 0x8056
+global GL_RGB5_A1: cuint <comptime> = 0x8057
+global GL_RGBA8: cuint <comptime> = 0x8058
+global GL_RGB10_A2: cuint <comptime> = 0x8059
+global GL_RGBA12: cuint <comptime> = 0x805a
+global GL_RGBA16: cuint <comptime> = 0x805b
+global GL_CLIENT_PIXEL_STORE_BIT: cuint <comptime> = 0x00000001
+global GL_CLIENT_VERTEX_ARRAY_BIT: cuint <comptime> = 0x00000002
+global GL_CLIENT_ALL_ATTRIB_BITS: cuint <comptime> = 0xffffffff
+global GL_VERTEX_ARRAY_POINTER: cuint <comptime> = 0x808e
+global GL_NORMAL_ARRAY_POINTER: cuint <comptime> = 0x808f
+global GL_COLOR_ARRAY_POINTER: cuint <comptime> = 0x8090
+global GL_INDEX_ARRAY_POINTER: cuint <comptime> = 0x8091
+global GL_TEXTURE_COORD_ARRAY_POINTER: cuint <comptime> = 0x8092
+global GL_EDGE_FLAG_ARRAY_POINTER: cuint <comptime> = 0x8093
+global GL_FEEDBACK_BUFFER_POINTER: cuint <comptime> = 0x0df0
+global GL_SELECTION_BUFFER_POINTER: cuint <comptime> = 0x0df3
+global GL_CLIENT_ATTRIB_STACK_DEPTH: cuint <comptime> = 0x0bb1
+global GL_INDEX_LOGIC_OP: cuint <comptime> = 0x0bf1
+global GL_MAX_CLIENT_ATTRIB_STACK_DEPTH: cuint <comptime> = 0x0d3b
+global GL_FEEDBACK_BUFFER_SIZE: cuint <comptime> = 0x0df1
+global GL_FEEDBACK_BUFFER_TYPE: cuint <comptime> = 0x0df2
+global GL_SELECTION_BUFFER_SIZE: cuint <comptime> = 0x0df4
+global GL_VERTEX_ARRAY: cuint <comptime> = 0x8074
+global GL_NORMAL_ARRAY: cuint <comptime> = 0x8075
+global GL_COLOR_ARRAY: cuint <comptime> = 0x8076
+global GL_INDEX_ARRAY: cuint <comptime> = 0x8077
+global GL_TEXTURE_COORD_ARRAY: cuint <comptime> = 0x8078
+global GL_EDGE_FLAG_ARRAY: cuint <comptime> = 0x8079
+global GL_VERTEX_ARRAY_SIZE: cuint <comptime> = 0x807a
+global GL_VERTEX_ARRAY_TYPE: cuint <comptime> = 0x807b
+global GL_VERTEX_ARRAY_STRIDE: cuint <comptime> = 0x807c
+global GL_NORMAL_ARRAY_TYPE: cuint <comptime> = 0x807e
+global GL_NORMAL_ARRAY_STRIDE: cuint <comptime> = 0x807f
+global GL_COLOR_ARRAY_SIZE: cuint <comptime> = 0x8081
+global GL_COLOR_ARRAY_TYPE: cuint <comptime> = 0x8082
+global GL_COLOR_ARRAY_STRIDE: cuint <comptime> = 0x8083
+global GL_INDEX_ARRAY_TYPE: cuint <comptime> = 0x8085
+global GL_INDEX_ARRAY_STRIDE: cuint <comptime> = 0x8086
+global GL_TEXTURE_COORD_ARRAY_SIZE: cuint <comptime> = 0x8088
+global GL_TEXTURE_COORD_ARRAY_TYPE: cuint <comptime> = 0x8089
+global GL_TEXTURE_COORD_ARRAY_STRIDE: cuint <comptime> = 0x808a
+global GL_EDGE_FLAG_ARRAY_STRIDE: cuint <comptime> = 0x808c
+global GL_TEXTURE_LUMINANCE_SIZE: cuint <comptime> = 0x8060
+global GL_TEXTURE_INTENSITY_SIZE: cuint <comptime> = 0x8061
+global GL_TEXTURE_PRIORITY: cuint <comptime> = 0x8066
+global GL_TEXTURE_RESIDENT: cuint <comptime> = 0x8067
+global GL_ALPHA4: cuint <comptime> = 0x803b
+global GL_ALPHA8: cuint <comptime> = 0x803c
+global GL_ALPHA12: cuint <comptime> = 0x803d
+global GL_ALPHA16: cuint <comptime> = 0x803e
+global GL_LUMINANCE4: cuint <comptime> = 0x803f
+global GL_LUMINANCE8: cuint <comptime> = 0x8040
+global GL_LUMINANCE12: cuint <comptime> = 0x8041
+global GL_LUMINANCE16: cuint <comptime> = 0x8042
+global GL_LUMINANCE4_ALPHA4: cuint <comptime> = 0x8043
+global GL_LUMINANCE6_ALPHA2: cuint <comptime> = 0x8044
+global GL_LUMINANCE8_ALPHA8: cuint <comptime> = 0x8045
+global GL_LUMINANCE12_ALPHA4: cuint <comptime> = 0x8046
+global GL_LUMINANCE12_ALPHA12: cuint <comptime> = 0x8047
+global GL_LUMINANCE16_ALPHA16: cuint <comptime> = 0x8048
+global GL_INTENSITY: cuint <comptime> = 0x8049
+global GL_INTENSITY4: cuint <comptime> = 0x804a
+global GL_INTENSITY8: cuint <comptime> = 0x804b
+global GL_INTENSITY12: cuint <comptime> = 0x804c
+global GL_INTENSITY16: cuint <comptime> = 0x804d
+global GL_V2F: cuint <comptime> = 0x2a20
+global GL_V3F: cuint <comptime> = 0x2a21
+global GL_C4UB_V2F: cuint <comptime> = 0x2a22
+global GL_C4UB_V3F: cuint <comptime> = 0x2a23
+global GL_C3F_V3F: cuint <comptime> = 0x2a24
+global GL_N3F_V3F: cuint <comptime> = 0x2a25
+global GL_C4F_N3F_V3F: cuint <comptime> = 0x2a26
+global GL_T2F_V3F: cuint <comptime> = 0x2a27
+global GL_T4F_V4F: cuint <comptime> = 0x2a28
+global GL_T2F_C4UB_V3F: cuint <comptime> = 0x2a29
+global GL_T2F_C3F_V3F: cuint <comptime> = 0x2a2a
+global GL_T2F_N3F_V3F: cuint <comptime> = 0x2a2b
+global GL_T2F_C4F_N3F_V3F: cuint <comptime> = 0x2a2c
+global GL_T4F_C4F_N3F_V4F: cuint <comptime> = 0x2a2d
+global GL_UNSIGNED_BYTE_3_3_2: cuint <comptime> = 0x8032
+global GL_UNSIGNED_SHORT_4_4_4_4: cuint <comptime> = 0x8033
+global GL_UNSIGNED_SHORT_5_5_5_1: cuint <comptime> = 0x8034
+global GL_UNSIGNED_INT_8_8_8_8: cuint <comptime> = 0x8035
+global GL_UNSIGNED_INT_10_10_10_2: cuint <comptime> = 0x8036
+global GL_TEXTURE_BINDING_3D: cuint <comptime> = 0x806a
+global GL_PACK_SKIP_IMAGES: cuint <comptime> = 0x806b
+global GL_PACK_IMAGE_HEIGHT: cuint <comptime> = 0x806c
+global GL_UNPACK_SKIP_IMAGES: cuint <comptime> = 0x806d
+global GL_UNPACK_IMAGE_HEIGHT: cuint <comptime> = 0x806e
+global GL_TEXTURE_3D: cuint <comptime> = 0x806f
+global GL_PROXY_TEXTURE_3D: cuint <comptime> = 0x8070
+global GL_TEXTURE_DEPTH: cuint <comptime> = 0x8071
+global GL_TEXTURE_WRAP_R: cuint <comptime> = 0x8072
+global GL_MAX_3D_TEXTURE_SIZE: cuint <comptime> = 0x8073
+global GL_UNSIGNED_BYTE_2_3_3_REV: cuint <comptime> = 0x8362
+global GL_UNSIGNED_SHORT_5_6_5: cuint <comptime> = 0x8363
+global GL_UNSIGNED_SHORT_5_6_5_REV: cuint <comptime> = 0x8364
+global GL_UNSIGNED_SHORT_4_4_4_4_REV: cuint <comptime> = 0x8365
+global GL_UNSIGNED_SHORT_1_5_5_5_REV: cuint <comptime> = 0x8366
+global GL_UNSIGNED_INT_8_8_8_8_REV: cuint <comptime> = 0x8367
+global GL_UNSIGNED_INT_2_10_10_10_REV: cuint <comptime> = 0x8368
+global GL_BGR: cuint <comptime> = 0x80e0
+global GL_BGRA: cuint <comptime> = 0x80e1
+global GL_MAX_ELEMENTS_VERTICES: cuint <comptime> = 0x80e8
+global GL_MAX_ELEMENTS_INDICES: cuint <comptime> = 0x80e9
+global GL_CLAMP_TO_EDGE: cuint <comptime> = 0x812f
+global GL_TEXTURE_MIN_LOD: cuint <comptime> = 0x813a
+global GL_TEXTURE_MAX_LOD: cuint <comptime> = 0x813b
+global GL_TEXTURE_BASE_LEVEL: cuint <comptime> = 0x813c
+global GL_TEXTURE_MAX_LEVEL: cuint <comptime> = 0x813d
+global GL_SMOOTH_POINT_SIZE_RANGE: cuint <comptime> = 0x0b12
+global GL_SMOOTH_POINT_SIZE_GRANULARITY: cuint <comptime> = 0x0b13
+global GL_SMOOTH_LINE_WIDTH_RANGE: cuint <comptime> = 0x0b22
+global GL_SMOOTH_LINE_WIDTH_GRANULARITY: cuint <comptime> = 0x0b23
+global GL_ALIASED_LINE_WIDTH_RANGE: cuint <comptime> = 0x846e
+global GL_RESCALE_NORMAL: cuint <comptime> = 0x803a
+global GL_LIGHT_MODEL_COLOR_CONTROL: cuint <comptime> = 0x81f8
+global GL_SINGLE_COLOR: cuint <comptime> = 0x81f9
+global GL_SEPARATE_SPECULAR_COLOR: cuint <comptime> = 0x81fa
+global GL_ALIASED_POINT_SIZE_RANGE: cuint <comptime> = 0x846d
+global GL_TEXTURE0: cuint <comptime> = 0x84c0
+global GL_TEXTURE1: cuint <comptime> = 0x84c1
+global GL_TEXTURE2: cuint <comptime> = 0x84c2
+global GL_TEXTURE3: cuint <comptime> = 0x84c3
+global GL_TEXTURE4: cuint <comptime> = 0x84c4
+global GL_TEXTURE5: cuint <comptime> = 0x84c5
+global GL_TEXTURE6: cuint <comptime> = 0x84c6
+global GL_TEXTURE7: cuint <comptime> = 0x84c7
+global GL_TEXTURE8: cuint <comptime> = 0x84c8
+global GL_TEXTURE9: cuint <comptime> = 0x84c9
+global GL_TEXTURE10: cuint <comptime> = 0x84ca
+global GL_TEXTURE11: cuint <comptime> = 0x84cb
+global GL_TEXTURE12: cuint <comptime> = 0x84cc
+global GL_TEXTURE13: cuint <comptime> = 0x84cd
+global GL_TEXTURE14: cuint <comptime> = 0x84ce
+global GL_TEXTURE15: cuint <comptime> = 0x84cf
+global GL_TEXTURE16: cuint <comptime> = 0x84d0
+global GL_TEXTURE17: cuint <comptime> = 0x84d1
+global GL_TEXTURE18: cuint <comptime> = 0x84d2
+global GL_TEXTURE19: cuint <comptime> = 0x84d3
+global GL_TEXTURE20: cuint <comptime> = 0x84d4
+global GL_TEXTURE21: cuint <comptime> = 0x84d5
+global GL_TEXTURE22: cuint <comptime> = 0x84d6
+global GL_TEXTURE23: cuint <comptime> = 0x84d7
+global GL_TEXTURE24: cuint <comptime> = 0x84d8
+global GL_TEXTURE25: cuint <comptime> = 0x84d9
+global GL_TEXTURE26: cuint <comptime> = 0x84da
+global GL_TEXTURE27: cuint <comptime> = 0x84db
+global GL_TEXTURE28: cuint <comptime> = 0x84dc
+global GL_TEXTURE29: cuint <comptime> = 0x84dd
+global GL_TEXTURE30: cuint <comptime> = 0x84de
+global GL_TEXTURE31: cuint <comptime> = 0x84df
+global GL_ACTIVE_TEXTURE: cuint <comptime> = 0x84e0
+global GL_MULTISAMPLE: cuint <comptime> = 0x809d
+global GL_SAMPLE_ALPHA_TO_COVERAGE: cuint <comptime> = 0x809e
+global GL_SAMPLE_ALPHA_TO_ONE: cuint <comptime> = 0x809f
+global GL_SAMPLE_COVERAGE: cuint <comptime> = 0x80a0
+global GL_SAMPLE_BUFFERS: cuint <comptime> = 0x80a8
+global GL_SAMPLES: cuint <comptime> = 0x80a9
+global GL_SAMPLE_COVERAGE_VALUE: cuint <comptime> = 0x80aa
+global GL_SAMPLE_COVERAGE_INVERT: cuint <comptime> = 0x80ab
+global GL_TEXTURE_CUBE_MAP: cuint <comptime> = 0x8513
+global GL_TEXTURE_BINDING_CUBE_MAP: cuint <comptime> = 0x8514
+global GL_TEXTURE_CUBE_MAP_POSITIVE_X: cuint <comptime> = 0x8515
+global GL_TEXTURE_CUBE_MAP_NEGATIVE_X: cuint <comptime> = 0x8516
+global GL_TEXTURE_CUBE_MAP_POSITIVE_Y: cuint <comptime> = 0x8517
+global GL_TEXTURE_CUBE_MAP_NEGATIVE_Y: cuint <comptime> = 0x8518
+global GL_TEXTURE_CUBE_MAP_POSITIVE_Z: cuint <comptime> = 0x8519
+global GL_TEXTURE_CUBE_MAP_NEGATIVE_Z: cuint <comptime> = 0x851a
+global GL_PROXY_TEXTURE_CUBE_MAP: cuint <comptime> = 0x851b
+global GL_MAX_CUBE_MAP_TEXTURE_SIZE: cuint <comptime> = 0x851c
+global GL_COMPRESSED_RGB: cuint <comptime> = 0x84ed
+global GL_COMPRESSED_RGBA: cuint <comptime> = 0x84ee
+global GL_TEXTURE_COMPRESSION_HINT: cuint <comptime> = 0x84ef
+global GL_TEXTURE_COMPRESSED_IMAGE_SIZE: cuint <comptime> = 0x86a0
+global GL_TEXTURE_COMPRESSED: cuint <comptime> = 0x86a1
+global GL_NUM_COMPRESSED_TEXTURE_FORMATS: cuint <comptime> = 0x86a2
+global GL_COMPRESSED_TEXTURE_FORMATS: cuint <comptime> = 0x86a3
+global GL_CLAMP_TO_BORDER: cuint <comptime> = 0x812d
+global GL_CLIENT_ACTIVE_TEXTURE: cuint <comptime> = 0x84e1
+global GL_MAX_TEXTURE_UNITS: cuint <comptime> = 0x84e2
+global GL_TRANSPOSE_MODELVIEW_MATRIX: cuint <comptime> = 0x84e3
+global GL_TRANSPOSE_PROJECTION_MATRIX: cuint <comptime> = 0x84e4
+global GL_TRANSPOSE_TEXTURE_MATRIX: cuint <comptime> = 0x84e5
+global GL_TRANSPOSE_COLOR_MATRIX: cuint <comptime> = 0x84e6
+global GL_MULTISAMPLE_BIT: cuint <comptime> = 0x20000000
+global GL_NORMAL_MAP: cuint <comptime> = 0x8511
+global GL_REFLECTION_MAP: cuint <comptime> = 0x8512
+global GL_COMPRESSED_ALPHA: cuint <comptime> = 0x84e9
+global GL_COMPRESSED_LUMINANCE: cuint <comptime> = 0x84ea
+global GL_COMPRESSED_LUMINANCE_ALPHA: cuint <comptime> = 0x84eb
+global GL_COMPRESSED_INTENSITY: cuint <comptime> = 0x84ec
+global GL_COMBINE: cuint <comptime> = 0x8570
+global GL_COMBINE_RGB: cuint <comptime> = 0x8571
+global GL_COMBINE_ALPHA: cuint <comptime> = 0x8572
+global GL_SOURCE0_RGB: cuint <comptime> = 0x8580
+global GL_SOURCE1_RGB: cuint <comptime> = 0x8581
+global GL_SOURCE2_RGB: cuint <comptime> = 0x8582
+global GL_SOURCE0_ALPHA: cuint <comptime> = 0x8588
+global GL_SOURCE1_ALPHA: cuint <comptime> = 0x8589
+global GL_SOURCE2_ALPHA: cuint <comptime> = 0x858a
+global GL_OPERAND0_RGB: cuint <comptime> = 0x8590
+global GL_OPERAND1_RGB: cuint <comptime> = 0x8591
+global GL_OPERAND2_RGB: cuint <comptime> = 0x8592
+global GL_OPERAND0_ALPHA: cuint <comptime> = 0x8598
+global GL_OPERAND1_ALPHA: cuint <comptime> = 0x8599
+global GL_OPERAND2_ALPHA: cuint <comptime> = 0x859a
+global GL_RGB_SCALE: cuint <comptime> = 0x8573
+global GL_ADD_SIGNED: cuint <comptime> = 0x8574
+global GL_INTERPOLATE: cuint <comptime> = 0x8575
+global GL_SUBTRACT: cuint <comptime> = 0x84e7
+global GL_CONSTANT: cuint <comptime> = 0x8576
+global GL_PRIMARY_COLOR: cuint <comptime> = 0x8577
+global GL_PREVIOUS: cuint <comptime> = 0x8578
+global GL_DOT3_RGB: cuint <comptime> = 0x86ae
+global GL_DOT3_RGBA: cuint <comptime> = 0x86af
+global GL_BLEND_DST_RGB: cuint <comptime> = 0x80c8
+global GL_BLEND_SRC_RGB: cuint <comptime> = 0x80c9
+global GL_BLEND_DST_ALPHA: cuint <comptime> = 0x80ca
+global GL_BLEND_SRC_ALPHA: cuint <comptime> = 0x80cb
+global GL_POINT_FADE_THRESHOLD_SIZE: cuint <comptime> = 0x8128
+global GL_DEPTH_COMPONENT16: cuint <comptime> = 0x81a5
+global GL_DEPTH_COMPONENT24: cuint <comptime> = 0x81a6
+global GL_DEPTH_COMPONENT32: cuint <comptime> = 0x81a7
+global GL_MIRRORED_REPEAT: cuint <comptime> = 0x8370
+global GL_MAX_TEXTURE_LOD_BIAS: cuint <comptime> = 0x84fd
+global GL_TEXTURE_LOD_BIAS: cuint <comptime> = 0x8501
+global GL_INCR_WRAP: cuint <comptime> = 0x8507
+global GL_DECR_WRAP: cuint <comptime> = 0x8508
+global GL_TEXTURE_DEPTH_SIZE: cuint <comptime> = 0x884a
+global GL_TEXTURE_COMPARE_MODE: cuint <comptime> = 0x884c
+global GL_TEXTURE_COMPARE_FUNC: cuint <comptime> = 0x884d
+global GL_POINT_SIZE_MIN: cuint <comptime> = 0x8126
+global GL_POINT_SIZE_MAX: cuint <comptime> = 0x8127
+global GL_POINT_DISTANCE_ATTENUATION: cuint <comptime> = 0x8129
+global GL_GENERATE_MIPMAP: cuint <comptime> = 0x8191
+global GL_GENERATE_MIPMAP_HINT: cuint <comptime> = 0x8192
+global GL_FOG_COORDINATE_SOURCE: cuint <comptime> = 0x8450
+global GL_FOG_COORDINATE: cuint <comptime> = 0x8451
+global GL_FRAGMENT_DEPTH: cuint <comptime> = 0x8452
+global GL_CURRENT_FOG_COORDINATE: cuint <comptime> = 0x8453
+global GL_FOG_COORDINATE_ARRAY_TYPE: cuint <comptime> = 0x8454
+global GL_FOG_COORDINATE_ARRAY_STRIDE: cuint <comptime> = 0x8455
+global GL_FOG_COORDINATE_ARRAY_POINTER: cuint <comptime> = 0x8456
+global GL_FOG_COORDINATE_ARRAY: cuint <comptime> = 0x8457
+global GL_COLOR_SUM: cuint <comptime> = 0x8458
+global GL_CURRENT_SECONDARY_COLOR: cuint <comptime> = 0x8459
+global GL_SECONDARY_COLOR_ARRAY_SIZE: cuint <comptime> = 0x845a
+global GL_SECONDARY_COLOR_ARRAY_TYPE: cuint <comptime> = 0x845b
+global GL_SECONDARY_COLOR_ARRAY_STRIDE: cuint <comptime> = 0x845c
+global GL_SECONDARY_COLOR_ARRAY_POINTER: cuint <comptime> = 0x845d
+global GL_SECONDARY_COLOR_ARRAY: cuint <comptime> = 0x845e
+global GL_TEXTURE_FILTER_CONTROL: cuint <comptime> = 0x8500
+global GL_DEPTH_TEXTURE_MODE: cuint <comptime> = 0x884b
+global GL_COMPARE_R_TO_TEXTURE: cuint <comptime> = 0x884e
+global GL_BLEND_COLOR: cuint <comptime> = 0x8005
+global GL_BLEND_EQUATION: cuint <comptime> = 0x8009
+global GL_CONSTANT_COLOR: cuint <comptime> = 0x8001
+global GL_ONE_MINUS_CONSTANT_COLOR: cuint <comptime> = 0x8002
+global GL_CONSTANT_ALPHA: cuint <comptime> = 0x8003
+global GL_ONE_MINUS_CONSTANT_ALPHA: cuint <comptime> = 0x8004
+global GL_FUNC_ADD: cuint <comptime> = 0x8006
+global GL_FUNC_REVERSE_SUBTRACT: cuint <comptime> = 0x800b
+global GL_FUNC_SUBTRACT: cuint <comptime> = 0x800a
+global GL_MIN: cuint <comptime> = 0x8007
+global GL_MAX: cuint <comptime> = 0x8008
+global GL_BUFFER_SIZE: cuint <comptime> = 0x8764
+global GL_BUFFER_USAGE: cuint <comptime> = 0x8765
+global GL_QUERY_COUNTER_BITS: cuint <comptime> = 0x8864
+global GL_CURRENT_QUERY: cuint <comptime> = 0x8865
+global GL_QUERY_RESULT: cuint <comptime> = 0x8866
+global GL_QUERY_RESULT_AVAILABLE: cuint <comptime> = 0x8867
+global GL_ARRAY_BUFFER: cuint <comptime> = 0x8892
+global GL_ELEMENT_ARRAY_BUFFER: cuint <comptime> = 0x8893
+global GL_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x8894
+global GL_ELEMENT_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x8895
+global GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x889f
+global GL_READ_ONLY: cuint <comptime> = 0x88b8
+global GL_WRITE_ONLY: cuint <comptime> = 0x88b9
+global GL_READ_WRITE: cuint <comptime> = 0x88ba
+global GL_BUFFER_ACCESS: cuint <comptime> = 0x88bb
+global GL_BUFFER_MAPPED: cuint <comptime> = 0x88bc
+global GL_BUFFER_MAP_POINTER: cuint <comptime> = 0x88bd
+global GL_STREAM_DRAW: cuint <comptime> = 0x88e0
+global GL_STREAM_READ: cuint <comptime> = 0x88e1
+global GL_STREAM_COPY: cuint <comptime> = 0x88e2
+global GL_STATIC_DRAW: cuint <comptime> = 0x88e4
+global GL_STATIC_READ: cuint <comptime> = 0x88e5
+global GL_STATIC_COPY: cuint <comptime> = 0x88e6
+global GL_DYNAMIC_DRAW: cuint <comptime> = 0x88e8
+global GL_DYNAMIC_READ: cuint <comptime> = 0x88e9
+global GL_DYNAMIC_COPY: cuint <comptime> = 0x88ea
+global GL_SAMPLES_PASSED: cuint <comptime> = 0x8914
+global GL_SRC1_ALPHA: cuint <comptime> = 0x8589
+global GL_VERTEX_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x8896
+global GL_NORMAL_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x8897
+global GL_COLOR_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x8898
+global GL_INDEX_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x8899
+global GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x889a
+global GL_EDGE_FLAG_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x889b
+global GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x889c
+global GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x889d
+global GL_WEIGHT_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x889e
+global GL_FOG_COORD_SRC: cuint <comptime> = 0x8450
+global GL_FOG_COORD: cuint <comptime> = 0x8451
+global GL_CURRENT_FOG_COORD: cuint <comptime> = 0x8453
+global GL_FOG_COORD_ARRAY_TYPE: cuint <comptime> = 0x8454
+global GL_FOG_COORD_ARRAY_STRIDE: cuint <comptime> = 0x8455
+global GL_FOG_COORD_ARRAY_POINTER: cuint <comptime> = 0x8456
+global GL_FOG_COORD_ARRAY: cuint <comptime> = 0x8457
+global GL_FOG_COORD_ARRAY_BUFFER_BINDING: cuint <comptime> = 0x889d
+global GL_SRC0_RGB: cuint <comptime> = 0x8580
+global GL_SRC1_RGB: cuint <comptime> = 0x8581
+global GL_SRC2_RGB: cuint <comptime> = 0x8582
+global GL_SRC0_ALPHA: cuint <comptime> = 0x8588
+global GL_SRC2_ALPHA: cuint <comptime> = 0x858a
+global GL_BLEND_EQUATION_RGB: cuint <comptime> = 0x8009
+global GL_VERTEX_ATTRIB_ARRAY_ENABLED: cuint <comptime> = 0x8622
+global GL_VERTEX_ATTRIB_ARRAY_SIZE: cuint <comptime> = 0x8623
+global GL_VERTEX_ATTRIB_ARRAY_STRIDE: cuint <comptime> = 0x8624
+global GL_VERTEX_ATTRIB_ARRAY_TYPE: cuint <comptime> = 0x8625
+global GL_CURRENT_VERTEX_ATTRIB: cuint <comptime> = 0x8626
+global GL_VERTEX_PROGRAM_POINT_SIZE: cuint <comptime> = 0x8642
+global GL_VERTEX_ATTRIB_ARRAY_POINTER: cuint <comptime> = 0x8645
+global GL_STENCIL_BACK_FUNC: cuint <comptime> = 0x8800
+global GL_STENCIL_BACK_FAIL: cuint <comptime> = 0x8801
+global GL_STENCIL_BACK_PASS_DEPTH_FAIL: cuint <comptime> = 0x8802
+global GL_STENCIL_BACK_PASS_DEPTH_PASS: cuint <comptime> = 0x8803
+global GL_MAX_DRAW_BUFFERS: cuint <comptime> = 0x8824
+global GL_DRAW_BUFFER0: cuint <comptime> = 0x8825
+global GL_DRAW_BUFFER1: cuint <comptime> = 0x8826
+global GL_DRAW_BUFFER2: cuint <comptime> = 0x8827
+global GL_DRAW_BUFFER3: cuint <comptime> = 0x8828
+global GL_DRAW_BUFFER4: cuint <comptime> = 0x8829
+global GL_DRAW_BUFFER5: cuint <comptime> = 0x882a
+global GL_DRAW_BUFFER6: cuint <comptime> = 0x882b
+global GL_DRAW_BUFFER7: cuint <comptime> = 0x882c
+global GL_DRAW_BUFFER8: cuint <comptime> = 0x882d
+global GL_DRAW_BUFFER9: cuint <comptime> = 0x882e
+global GL_DRAW_BUFFER10: cuint <comptime> = 0x882f
+global GL_DRAW_BUFFER11: cuint <comptime> = 0x8830
+global GL_DRAW_BUFFER12: cuint <comptime> = 0x8831
+global GL_DRAW_BUFFER13: cuint <comptime> = 0x8832
+global GL_DRAW_BUFFER14: cuint <comptime> = 0x8833
+global GL_DRAW_BUFFER15: cuint <comptime> = 0x8834
+global GL_BLEND_EQUATION_ALPHA: cuint <comptime> = 0x883d
+global GL_MAX_VERTEX_ATTRIBS: cuint <comptime> = 0x8869
+global GL_VERTEX_ATTRIB_ARRAY_NORMALIZED: cuint <comptime> = 0x886a
+global GL_MAX_TEXTURE_IMAGE_UNITS: cuint <comptime> = 0x8872
+global GL_FRAGMENT_SHADER: cuint <comptime> = 0x8b30
+global GL_VERTEX_SHADER: cuint <comptime> = 0x8b31
+global GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: cuint <comptime> = 0x8b49
+global GL_MAX_VERTEX_UNIFORM_COMPONENTS: cuint <comptime> = 0x8b4a
+global GL_MAX_VARYING_FLOATS: cuint <comptime> = 0x8b4b
+global GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: cuint <comptime> = 0x8b4c
+global GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: cuint <comptime> = 0x8b4d
+global GL_SHADER_TYPE: cuint <comptime> = 0x8b4f
+global GL_FLOAT_VEC2: cuint <comptime> = 0x8b50
+global GL_FLOAT_VEC3: cuint <comptime> = 0x8b51
+global GL_FLOAT_VEC4: cuint <comptime> = 0x8b52
+global GL_INT_VEC2: cuint <comptime> = 0x8b53
+global GL_INT_VEC3: cuint <comptime> = 0x8b54
+global GL_INT_VEC4: cuint <comptime> = 0x8b55
+global GL_BOOL: cuint <comptime> = 0x8b56
+global GL_BOOL_VEC2: cuint <comptime> = 0x8b57
+global GL_BOOL_VEC3: cuint <comptime> = 0x8b58
+global GL_BOOL_VEC4: cuint <comptime> = 0x8b59
+global GL_FLOAT_MAT2: cuint <comptime> = 0x8b5a
+global GL_FLOAT_MAT3: cuint <comptime> = 0x8b5b
+global GL_FLOAT_MAT4: cuint <comptime> = 0x8b5c
+global GL_SAMPLER_1D: cuint <comptime> = 0x8b5d
+global GL_SAMPLER_2D: cuint <comptime> = 0x8b5e
+global GL_SAMPLER_3D: cuint <comptime> = 0x8b5f
+global GL_SAMPLER_CUBE: cuint <comptime> = 0x8b60
+global GL_SAMPLER_1D_SHADOW: cuint <comptime> = 0x8b61
+global GL_SAMPLER_2D_SHADOW: cuint <comptime> = 0x8b62
+global GL_DELETE_STATUS: cuint <comptime> = 0x8b80
+global GL_COMPILE_STATUS: cuint <comptime> = 0x8b81
+global GL_LINK_STATUS: cuint <comptime> = 0x8b82
+global GL_VALIDATE_STATUS: cuint <comptime> = 0x8b83
+global GL_INFO_LOG_LENGTH: cuint <comptime> = 0x8b84
+global GL_ATTACHED_SHADERS: cuint <comptime> = 0x8b85
+global GL_ACTIVE_UNIFORMS: cuint <comptime> = 0x8b86
+global GL_ACTIVE_UNIFORM_MAX_LENGTH: cuint <comptime> = 0x8b87
+global GL_SHADER_SOURCE_LENGTH: cuint <comptime> = 0x8b88
+global GL_ACTIVE_ATTRIBUTES: cuint <comptime> = 0x8b89
+global GL_ACTIVE_ATTRIBUTE_MAX_LENGTH: cuint <comptime> = 0x8b8a
+global GL_FRAGMENT_SHADER_DERIVATIVE_HINT: cuint <comptime> = 0x8b8b
+global GL_SHADING_LANGUAGE_VERSION: cuint <comptime> = 0x8b8c
+global GL_CURRENT_PROGRAM: cuint <comptime> = 0x8b8d
+global GL_POINT_SPRITE_COORD_ORIGIN: cuint <comptime> = 0x8ca0
+global GL_LOWER_LEFT: cuint <comptime> = 0x8ca1
+global GL_UPPER_LEFT: cuint <comptime> = 0x8ca2
+global GL_STENCIL_BACK_REF: cuint <comptime> = 0x8ca3
+global GL_STENCIL_BACK_VALUE_MASK: cuint <comptime> = 0x8ca4
+global GL_STENCIL_BACK_WRITEMASK: cuint <comptime> = 0x8ca5
+global GL_VERTEX_PROGRAM_TWO_SIDE: cuint <comptime> = 0x8643
+global GL_POINT_SPRITE: cuint <comptime> = 0x8861
+global GL_COORD_REPLACE: cuint <comptime> = 0x8862
+global GL_MAX_TEXTURE_COORDS: cuint <comptime> = 0x8871
+global GL_PIXEL_PACK_BUFFER: cuint <comptime> = 0x88eb
+global GL_PIXEL_UNPACK_BUFFER: cuint <comptime> = 0x88ec
+global GL_PIXEL_PACK_BUFFER_BINDING: cuint <comptime> = 0x88ed
+global GL_PIXEL_UNPACK_BUFFER_BINDING: cuint <comptime> = 0x88ef
+global GL_FLOAT_MAT2x3: cuint <comptime> = 0x8b65
+global GL_FLOAT_MAT2x4: cuint <comptime> = 0x8b66
+global GL_FLOAT_MAT3x2: cuint <comptime> = 0x8b67
+global GL_FLOAT_MAT3x4: cuint <comptime> = 0x8b68
+global GL_FLOAT_MAT4x2: cuint <comptime> = 0x8b69
+global GL_FLOAT_MAT4x3: cuint <comptime> = 0x8b6a
+global GL_SRGB: cuint <comptime> = 0x8c40
+global GL_SRGB8: cuint <comptime> = 0x8c41
+global GL_SRGB_ALPHA: cuint <comptime> = 0x8c42
+global GL_SRGB8_ALPHA8: cuint <comptime> = 0x8c43
+global GL_COMPRESSED_SRGB: cuint <comptime> = 0x8c48
+global GL_COMPRESSED_SRGB_ALPHA: cuint <comptime> = 0x8c49
+global GL_CURRENT_RASTER_SECONDARY_COLOR: cuint <comptime> = 0x845f
+global GL_SLUMINANCE_ALPHA: cuint <comptime> = 0x8c44
+global GL_SLUMINANCE8_ALPHA8: cuint <comptime> = 0x8c45
+global GL_SLUMINANCE: cuint <comptime> = 0x8c46
+global GL_SLUMINANCE8: cuint <comptime> = 0x8c47
+global GL_COMPRESSED_SLUMINANCE: cuint <comptime> = 0x8c4a
+global GL_COMPRESSED_SLUMINANCE_ALPHA: cuint <comptime> = 0x8c4b
+global GL_COMPARE_REF_TO_TEXTURE: cuint <comptime> = 0x884e
+global GL_CLIP_DISTANCE0: cuint <comptime> = 0x3000
+global GL_CLIP_DISTANCE1: cuint <comptime> = 0x3001
+global GL_CLIP_DISTANCE2: cuint <comptime> = 0x3002
+global GL_CLIP_DISTANCE3: cuint <comptime> = 0x3003
+global GL_CLIP_DISTANCE4: cuint <comptime> = 0x3004
+global GL_CLIP_DISTANCE5: cuint <comptime> = 0x3005
+global GL_CLIP_DISTANCE6: cuint <comptime> = 0x3006
+global GL_CLIP_DISTANCE7: cuint <comptime> = 0x3007
+global GL_MAX_CLIP_DISTANCES: cuint <comptime> = 0x0d32
+global GL_MAJOR_VERSION: cuint <comptime> = 0x821b
+global GL_MINOR_VERSION: cuint <comptime> = 0x821c
+global GL_NUM_EXTENSIONS: cuint <comptime> = 0x821d
+global GL_CONTEXT_FLAGS: cuint <comptime> = 0x821e
+global GL_COMPRESSED_RED: cuint <comptime> = 0x8225
+global GL_COMPRESSED_RG: cuint <comptime> = 0x8226
+global GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT: cuint <comptime> = 0x00000001
+global GL_RGBA32F: cuint <comptime> = 0x8814
+global GL_RGB32F: cuint <comptime> = 0x8815
+global GL_RGBA16F: cuint <comptime> = 0x881a
+global GL_RGB16F: cuint <comptime> = 0x881b
+global GL_VERTEX_ATTRIB_ARRAY_INTEGER: cuint <comptime> = 0x88fd
+global GL_MAX_ARRAY_TEXTURE_LAYERS: cuint <comptime> = 0x88ff
+global GL_MIN_PROGRAM_TEXEL_OFFSET: cuint <comptime> = 0x8904
+global GL_MAX_PROGRAM_TEXEL_OFFSET: cuint <comptime> = 0x8905
+global GL_CLAMP_READ_COLOR: cuint <comptime> = 0x891c
+global GL_FIXED_ONLY: cuint <comptime> = 0x891d
+global GL_MAX_VARYING_COMPONENTS: cuint <comptime> = 0x8b4b
+global GL_TEXTURE_1D_ARRAY: cuint <comptime> = 0x8c18
+global GL_PROXY_TEXTURE_1D_ARRAY: cuint <comptime> = 0x8c19
+global GL_TEXTURE_2D_ARRAY: cuint <comptime> = 0x8c1a
+global GL_PROXY_TEXTURE_2D_ARRAY: cuint <comptime> = 0x8c1b
+global GL_TEXTURE_BINDING_1D_ARRAY: cuint <comptime> = 0x8c1c
+global GL_TEXTURE_BINDING_2D_ARRAY: cuint <comptime> = 0x8c1d
+global GL_R11F_G11F_B10F: cuint <comptime> = 0x8c3a
+global GL_UNSIGNED_INT_10F_11F_11F_REV: cuint <comptime> = 0x8c3b
+global GL_RGB9_E5: cuint <comptime> = 0x8c3d
+global GL_UNSIGNED_INT_5_9_9_9_REV: cuint <comptime> = 0x8c3e
+global GL_TEXTURE_SHARED_SIZE: cuint <comptime> = 0x8c3f
+global GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH: cuint <comptime> = 0x8c76
+global GL_TRANSFORM_FEEDBACK_BUFFER_MODE: cuint <comptime> = 0x8c7f
+global GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS: cuint <comptime> = 0x8c80
+global GL_TRANSFORM_FEEDBACK_VARYINGS: cuint <comptime> = 0x8c83
+global GL_TRANSFORM_FEEDBACK_BUFFER_START: cuint <comptime> = 0x8c84
+global GL_TRANSFORM_FEEDBACK_BUFFER_SIZE: cuint <comptime> = 0x8c85
+global GL_PRIMITIVES_GENERATED: cuint <comptime> = 0x8c87
+global GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN: cuint <comptime> = 0x8c88
+global GL_RASTERIZER_DISCARD: cuint <comptime> = 0x8c89
+global GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS: cuint <comptime> = 0x8c8a
+global GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS: cuint <comptime> = 0x8c8b
+global GL_INTERLEAVED_ATTRIBS: cuint <comptime> = 0x8c8c
+global GL_SEPARATE_ATTRIBS: cuint <comptime> = 0x8c8d
+global GL_TRANSFORM_FEEDBACK_BUFFER: cuint <comptime> = 0x8c8e
+global GL_TRANSFORM_FEEDBACK_BUFFER_BINDING: cuint <comptime> = 0x8c8f
+global GL_RGBA32UI: cuint <comptime> = 0x8d70
+global GL_RGB32UI: cuint <comptime> = 0x8d71
+global GL_RGBA16UI: cuint <comptime> = 0x8d76
+global GL_RGB16UI: cuint <comptime> = 0x8d77
+global GL_RGBA8UI: cuint <comptime> = 0x8d7c
+global GL_RGB8UI: cuint <comptime> = 0x8d7d
+global GL_RGBA32I: cuint <comptime> = 0x8d82
+global GL_RGB32I: cuint <comptime> = 0x8d83
+global GL_RGBA16I: cuint <comptime> = 0x8d88
+global GL_RGB16I: cuint <comptime> = 0x8d89
+global GL_RGBA8I: cuint <comptime> = 0x8d8e
+global GL_RGB8I: cuint <comptime> = 0x8d8f
+global GL_RED_INTEGER: cuint <comptime> = 0x8d94
+global GL_GREEN_INTEGER: cuint <comptime> = 0x8d95
+global GL_BLUE_INTEGER: cuint <comptime> = 0x8d96
+global GL_RGB_INTEGER: cuint <comptime> = 0x8d98
+global GL_RGBA_INTEGER: cuint <comptime> = 0x8d99
+global GL_BGR_INTEGER: cuint <comptime> = 0x8d9a
+global GL_BGRA_INTEGER: cuint <comptime> = 0x8d9b
+global GL_SAMPLER_1D_ARRAY: cuint <comptime> = 0x8dc0
+global GL_SAMPLER_2D_ARRAY: cuint <comptime> = 0x8dc1
+global GL_SAMPLER_1D_ARRAY_SHADOW: cuint <comptime> = 0x8dc3
+global GL_SAMPLER_2D_ARRAY_SHADOW: cuint <comptime> = 0x8dc4
+global GL_SAMPLER_CUBE_SHADOW: cuint <comptime> = 0x8dc5
+global GL_UNSIGNED_INT_VEC2: cuint <comptime> = 0x8dc6
+global GL_UNSIGNED_INT_VEC3: cuint <comptime> = 0x8dc7
+global GL_UNSIGNED_INT_VEC4: cuint <comptime> = 0x8dc8
+global GL_INT_SAMPLER_1D: cuint <comptime> = 0x8dc9
+global GL_INT_SAMPLER_2D: cuint <comptime> = 0x8dca
+global GL_INT_SAMPLER_3D: cuint <comptime> = 0x8dcb
+global GL_INT_SAMPLER_CUBE: cuint <comptime> = 0x8dcc
+global GL_INT_SAMPLER_1D_ARRAY: cuint <comptime> = 0x8dce
+global GL_INT_SAMPLER_2D_ARRAY: cuint <comptime> = 0x8dcf
+global GL_UNSIGNED_INT_SAMPLER_1D: cuint <comptime> = 0x8dd1
+global GL_UNSIGNED_INT_SAMPLER_2D: cuint <comptime> = 0x8dd2
+global GL_UNSIGNED_INT_SAMPLER_3D: cuint <comptime> = 0x8dd3
+global GL_UNSIGNED_INT_SAMPLER_CUBE: cuint <comptime> = 0x8dd4
+global GL_UNSIGNED_INT_SAMPLER_1D_ARRAY: cuint <comptime> = 0x8dd6
+global GL_UNSIGNED_INT_SAMPLER_2D_ARRAY: cuint <comptime> = 0x8dd7
+global GL_QUERY_WAIT: cuint <comptime> = 0x8e13
+global GL_QUERY_NO_WAIT: cuint <comptime> = 0x8e14
+global GL_QUERY_BY_REGION_WAIT: cuint <comptime> = 0x8e15
+global GL_QUERY_BY_REGION_NO_WAIT: cuint <comptime> = 0x8e16
+global GL_BUFFER_ACCESS_FLAGS: cuint <comptime> = 0x911f
+global GL_BUFFER_MAP_LENGTH: cuint <comptime> = 0x9120
+global GL_BUFFER_MAP_OFFSET: cuint <comptime> = 0x9121
+global GL_DEPTH_COMPONENT32F: cuint <comptime> = 0x8cac
+global GL_DEPTH32F_STENCIL8: cuint <comptime> = 0x8cad
+global GL_FLOAT_32_UNSIGNED_INT_24_8_REV: cuint <comptime> = 0x8dad
+global GL_INVALID_FRAMEBUFFER_OPERATION: cuint <comptime> = 0x0506
+global GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING: cuint <comptime> = 0x8210
+global GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE: cuint <comptime> = 0x8211
+global GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE: cuint <comptime> = 0x8212
+global GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE: cuint <comptime> = 0x8213
+global GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE: cuint <comptime> = 0x8214
+global GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE: cuint <comptime> = 0x8215
+global GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE: cuint <comptime> = 0x8216
+global GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE: cuint <comptime> = 0x8217
+global GL_FRAMEBUFFER_DEFAULT: cuint <comptime> = 0x8218
+global GL_FRAMEBUFFER_UNDEFINED: cuint <comptime> = 0x8219
+global GL_DEPTH_STENCIL_ATTACHMENT: cuint <comptime> = 0x821a
+global GL_MAX_RENDERBUFFER_SIZE: cuint <comptime> = 0x84e8
+global GL_DEPTH_STENCIL: cuint <comptime> = 0x84f9
+global GL_UNSIGNED_INT_24_8: cuint <comptime> = 0x84fa
+global GL_DEPTH24_STENCIL8: cuint <comptime> = 0x88f0
+global GL_TEXTURE_STENCIL_SIZE: cuint <comptime> = 0x88f1
+global GL_TEXTURE_RED_TYPE: cuint <comptime> = 0x8c10
+global GL_TEXTURE_GREEN_TYPE: cuint <comptime> = 0x8c11
+global GL_TEXTURE_BLUE_TYPE: cuint <comptime> = 0x8c12
+global GL_TEXTURE_ALPHA_TYPE: cuint <comptime> = 0x8c13
+global GL_TEXTURE_DEPTH_TYPE: cuint <comptime> = 0x8c16
+global GL_UNSIGNED_NORMALIZED: cuint <comptime> = 0x8c17
+global GL_FRAMEBUFFER_BINDING: cuint <comptime> = 0x8ca6
+global GL_DRAW_FRAMEBUFFER_BINDING: cuint <comptime> = 0x8ca6
+global GL_RENDERBUFFER_BINDING: cuint <comptime> = 0x8ca7
+global GL_READ_FRAMEBUFFER: cuint <comptime> = 0x8ca8
+global GL_DRAW_FRAMEBUFFER: cuint <comptime> = 0x8ca9
+global GL_READ_FRAMEBUFFER_BINDING: cuint <comptime> = 0x8caa
+global GL_RENDERBUFFER_SAMPLES: cuint <comptime> = 0x8cab
+global GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE: cuint <comptime> = 0x8cd0
+global GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME: cuint <comptime> = 0x8cd1
+global GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL: cuint <comptime> = 0x8cd2
+global GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE: cuint <comptime> = 0x8cd3
+global GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER: cuint <comptime> = 0x8cd4
+global GL_FRAMEBUFFER_COMPLETE: cuint <comptime> = 0x8cd5
+global GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: cuint <comptime> = 0x8cd6
+global GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: cuint <comptime> = 0x8cd7
+global GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER: cuint <comptime> = 0x8cdb
+global GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER: cuint <comptime> = 0x8cdc
+global GL_FRAMEBUFFER_UNSUPPORTED: cuint <comptime> = 0x8cdd
+global GL_MAX_COLOR_ATTACHMENTS: cuint <comptime> = 0x8cdf
+global GL_COLOR_ATTACHMENT0: cuint <comptime> = 0x8ce0
+global GL_COLOR_ATTACHMENT1: cuint <comptime> = 0x8ce1
+global GL_COLOR_ATTACHMENT2: cuint <comptime> = 0x8ce2
+global GL_COLOR_ATTACHMENT3: cuint <comptime> = 0x8ce3
+global GL_COLOR_ATTACHMENT4: cuint <comptime> = 0x8ce4
+global GL_COLOR_ATTACHMENT5: cuint <comptime> = 0x8ce5
+global GL_COLOR_ATTACHMENT6: cuint <comptime> = 0x8ce6
+global GL_COLOR_ATTACHMENT7: cuint <comptime> = 0x8ce7
+global GL_COLOR_ATTACHMENT8: cuint <comptime> = 0x8ce8
+global GL_COLOR_ATTACHMENT9: cuint <comptime> = 0x8ce9
+global GL_COLOR_ATTACHMENT10: cuint <comptime> = 0x8cea
+global GL_COLOR_ATTACHMENT11: cuint <comptime> = 0x8ceb
+global GL_COLOR_ATTACHMENT12: cuint <comptime> = 0x8cec
+global GL_COLOR_ATTACHMENT13: cuint <comptime> = 0x8ced
+global GL_COLOR_ATTACHMENT14: cuint <comptime> = 0x8cee
+global GL_COLOR_ATTACHMENT15: cuint <comptime> = 0x8cef
+global GL_COLOR_ATTACHMENT16: cuint <comptime> = 0x8cf0
+global GL_COLOR_ATTACHMENT17: cuint <comptime> = 0x8cf1
+global GL_COLOR_ATTACHMENT18: cuint <comptime> = 0x8cf2
+global GL_COLOR_ATTACHMENT19: cuint <comptime> = 0x8cf3
+global GL_COLOR_ATTACHMENT20: cuint <comptime> = 0x8cf4
+global GL_COLOR_ATTACHMENT21: cuint <comptime> = 0x8cf5
+global GL_COLOR_ATTACHMENT22: cuint <comptime> = 0x8cf6
+global GL_COLOR_ATTACHMENT23: cuint <comptime> = 0x8cf7
+global GL_COLOR_ATTACHMENT24: cuint <comptime> = 0x8cf8
+global GL_COLOR_ATTACHMENT25: cuint <comptime> = 0x8cf9
+global GL_COLOR_ATTACHMENT26: cuint <comptime> = 0x8cfa
+global GL_COLOR_ATTACHMENT27: cuint <comptime> = 0x8cfb
+global GL_COLOR_ATTACHMENT28: cuint <comptime> = 0x8cfc
+global GL_COLOR_ATTACHMENT29: cuint <comptime> = 0x8cfd
+global GL_COLOR_ATTACHMENT30: cuint <comptime> = 0x8cfe
+global GL_COLOR_ATTACHMENT31: cuint <comptime> = 0x8cff
+global GL_DEPTH_ATTACHMENT: cuint <comptime> = 0x8d00
+global GL_STENCIL_ATTACHMENT: cuint <comptime> = 0x8d20
+global GL_FRAMEBUFFER: cuint <comptime> = 0x8d40
+global GL_RENDERBUFFER: cuint <comptime> = 0x8d41
+global GL_RENDERBUFFER_WIDTH: cuint <comptime> = 0x8d42
+global GL_RENDERBUFFER_HEIGHT: cuint <comptime> = 0x8d43
+global GL_RENDERBUFFER_INTERNAL_FORMAT: cuint <comptime> = 0x8d44
+global GL_STENCIL_INDEX1: cuint <comptime> = 0x8d46
+global GL_STENCIL_INDEX4: cuint <comptime> = 0x8d47
+global GL_STENCIL_INDEX8: cuint <comptime> = 0x8d48
+global GL_STENCIL_INDEX16: cuint <comptime> = 0x8d49
+global GL_RENDERBUFFER_RED_SIZE: cuint <comptime> = 0x8d50
+global GL_RENDERBUFFER_GREEN_SIZE: cuint <comptime> = 0x8d51
+global GL_RENDERBUFFER_BLUE_SIZE: cuint <comptime> = 0x8d52
+global GL_RENDERBUFFER_ALPHA_SIZE: cuint <comptime> = 0x8d53
+global GL_RENDERBUFFER_DEPTH_SIZE: cuint <comptime> = 0x8d54
+global GL_RENDERBUFFER_STENCIL_SIZE: cuint <comptime> = 0x8d55
+global GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE: cuint <comptime> = 0x8d56
+global GL_MAX_SAMPLES: cuint <comptime> = 0x8d57
+global GL_INDEX: cuint <comptime> = 0x8222
+global GL_TEXTURE_LUMINANCE_TYPE: cuint <comptime> = 0x8c14
+global GL_TEXTURE_INTENSITY_TYPE: cuint <comptime> = 0x8c15
+global GL_FRAMEBUFFER_SRGB: cuint <comptime> = 0x8db9
+global GL_HALF_FLOAT: cuint <comptime> = 0x140b
+global GL_MAP_READ_BIT: cuint <comptime> = 0x0001
+global GL_MAP_WRITE_BIT: cuint <comptime> = 0x0002
+global GL_MAP_INVALIDATE_RANGE_BIT: cuint <comptime> = 0x0004
+global GL_MAP_INVALIDATE_BUFFER_BIT: cuint <comptime> = 0x0008
+global GL_MAP_FLUSH_EXPLICIT_BIT: cuint <comptime> = 0x0010
+global GL_MAP_UNSYNCHRONIZED_BIT: cuint <comptime> = 0x0020
+global GL_COMPRESSED_RED_RGTC1: cuint <comptime> = 0x8dbb
+global GL_COMPRESSED_SIGNED_RED_RGTC1: cuint <comptime> = 0x8dbc
+global GL_COMPRESSED_RG_RGTC2: cuint <comptime> = 0x8dbd
+global GL_COMPRESSED_SIGNED_RG_RGTC2: cuint <comptime> = 0x8dbe
+global GL_RG: cuint <comptime> = 0x8227
+global GL_RG_INTEGER: cuint <comptime> = 0x8228
+global GL_R8: cuint <comptime> = 0x8229
+global GL_R16: cuint <comptime> = 0x822a
+global GL_RG8: cuint <comptime> = 0x822b
+global GL_RG16: cuint <comptime> = 0x822c
+global GL_R16F: cuint <comptime> = 0x822d
+global GL_R32F: cuint <comptime> = 0x822e
+global GL_RG16F: cuint <comptime> = 0x822f
+global GL_RG32F: cuint <comptime> = 0x8230
+global GL_R8I: cuint <comptime> = 0x8231
+global GL_R8UI: cuint <comptime> = 0x8232
+global GL_R16I: cuint <comptime> = 0x8233
+global GL_R16UI: cuint <comptime> = 0x8234
+global GL_R32I: cuint <comptime> = 0x8235
+global GL_R32UI: cuint <comptime> = 0x8236
+global GL_RG8I: cuint <comptime> = 0x8237
+global GL_RG8UI: cuint <comptime> = 0x8238
+global GL_RG16I: cuint <comptime> = 0x8239
+global GL_RG16UI: cuint <comptime> = 0x823a
+global GL_RG32I: cuint <comptime> = 0x823b
+global GL_RG32UI: cuint <comptime> = 0x823c
+global GL_VERTEX_ARRAY_BINDING: cuint <comptime> = 0x85b5
+global GL_CLAMP_VERTEX_COLOR: cuint <comptime> = 0x891a
+global GL_CLAMP_FRAGMENT_COLOR: cuint <comptime> = 0x891b
+global GL_ALPHA_INTEGER: cuint <comptime> = 0x8d97
+global GL_SAMPLER_2D_RECT: cuint <comptime> = 0x8b63
+global GL_SAMPLER_2D_RECT_SHADOW: cuint <comptime> = 0x8b64
+global GL_SAMPLER_BUFFER: cuint <comptime> = 0x8dc2
+global GL_INT_SAMPLER_2D_RECT: cuint <comptime> = 0x8dcd
+global GL_INT_SAMPLER_BUFFER: cuint <comptime> = 0x8dd0
+global GL_UNSIGNED_INT_SAMPLER_2D_RECT: cuint <comptime> = 0x8dd5
+global GL_UNSIGNED_INT_SAMPLER_BUFFER: cuint <comptime> = 0x8dd8
+global GL_TEXTURE_BUFFER: cuint <comptime> = 0x8c2a
+global GL_MAX_TEXTURE_BUFFER_SIZE: cuint <comptime> = 0x8c2b
+global GL_TEXTURE_BINDING_BUFFER: cuint <comptime> = 0x8c2c
+global GL_TEXTURE_BUFFER_DATA_STORE_BINDING: cuint <comptime> = 0x8c2d
+global GL_TEXTURE_RECTANGLE: cuint <comptime> = 0x84f5
+global GL_TEXTURE_BINDING_RECTANGLE: cuint <comptime> = 0x84f6
+global GL_PROXY_TEXTURE_RECTANGLE: cuint <comptime> = 0x84f7
+global GL_MAX_RECTANGLE_TEXTURE_SIZE: cuint <comptime> = 0x84f8
+global GL_R8_SNORM: cuint <comptime> = 0x8f94
+global GL_RG8_SNORM: cuint <comptime> = 0x8f95
+global GL_RGB8_SNORM: cuint <comptime> = 0x8f96
+global GL_RGBA8_SNORM: cuint <comptime> = 0x8f97
+global GL_R16_SNORM: cuint <comptime> = 0x8f98
+global GL_RG16_SNORM: cuint <comptime> = 0x8f99
+global GL_RGB16_SNORM: cuint <comptime> = 0x8f9a
+global GL_RGBA16_SNORM: cuint <comptime> = 0x8f9b
+global GL_SIGNED_NORMALIZED: cuint <comptime> = 0x8f9c
+global GL_PRIMITIVE_RESTART: cuint <comptime> = 0x8f9d
+global GL_PRIMITIVE_RESTART_INDEX: cuint <comptime> = 0x8f9e
+global GL_COPY_READ_BUFFER: cuint <comptime> = 0x8f36
+global GL_COPY_WRITE_BUFFER: cuint <comptime> = 0x8f37
+global GL_UNIFORM_BUFFER: cuint <comptime> = 0x8a11
+global GL_UNIFORM_BUFFER_BINDING: cuint <comptime> = 0x8a28
+global GL_UNIFORM_BUFFER_START: cuint <comptime> = 0x8a29
+global GL_UNIFORM_BUFFER_SIZE: cuint <comptime> = 0x8a2a
+global GL_MAX_VERTEX_UNIFORM_BLOCKS: cuint <comptime> = 0x8a2b
+global GL_MAX_GEOMETRY_UNIFORM_BLOCKS: cuint <comptime> = 0x8a2c
+global GL_MAX_FRAGMENT_UNIFORM_BLOCKS: cuint <comptime> = 0x8a2d
+global GL_MAX_COMBINED_UNIFORM_BLOCKS: cuint <comptime> = 0x8a2e
+global GL_MAX_UNIFORM_BUFFER_BINDINGS: cuint <comptime> = 0x8a2f
+global GL_MAX_UNIFORM_BLOCK_SIZE: cuint <comptime> = 0x8a30
+global GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS: cuint <comptime> = 0x8a31
+global GL_MAX_COMBINED_GEOMETRY_UNIFORM_COMPONENTS: cuint <comptime> = 0x8a32
+global GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS: cuint <comptime> = 0x8a33
+global GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT: cuint <comptime> = 0x8a34
+global GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH: cuint <comptime> = 0x8a35
+global GL_ACTIVE_UNIFORM_BLOCKS: cuint <comptime> = 0x8a36
+global GL_UNIFORM_TYPE: cuint <comptime> = 0x8a37
+global GL_UNIFORM_SIZE: cuint <comptime> = 0x8a38
+global GL_UNIFORM_NAME_LENGTH: cuint <comptime> = 0x8a39
+global GL_UNIFORM_BLOCK_INDEX: cuint <comptime> = 0x8a3a
+global GL_UNIFORM_OFFSET: cuint <comptime> = 0x8a3b
+global GL_UNIFORM_ARRAY_STRIDE: cuint <comptime> = 0x8a3c
+global GL_UNIFORM_MATRIX_STRIDE: cuint <comptime> = 0x8a3d
+global GL_UNIFORM_IS_ROW_MAJOR: cuint <comptime> = 0x8a3e
+global GL_UNIFORM_BLOCK_BINDING: cuint <comptime> = 0x8a3f
+global GL_UNIFORM_BLOCK_DATA_SIZE: cuint <comptime> = 0x8a40
+global GL_UNIFORM_BLOCK_NAME_LENGTH: cuint <comptime> = 0x8a41
+global GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS: cuint <comptime> = 0x8a42
+global GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES: cuint <comptime> = 0x8a43
+global GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER: cuint <comptime> = 0x8a44
+global GL_UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER: cuint <comptime> = 0x8a45
+global GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER: cuint <comptime> = 0x8a46
+global GL_INVALID_INDEX: cuint <comptime> = 0xffffffff
+global GL_CONTEXT_CORE_PROFILE_BIT: cuint <comptime> = 0x00000001
+global GL_CONTEXT_COMPATIBILITY_PROFILE_BIT: cuint <comptime> = 0x00000002
+global GL_LINES_ADJACENCY: cuint <comptime> = 0x000a
+global GL_LINE_STRIP_ADJACENCY: cuint <comptime> = 0x000b
+global GL_TRIANGLES_ADJACENCY: cuint <comptime> = 0x000c
+global GL_TRIANGLE_STRIP_ADJACENCY: cuint <comptime> = 0x000d
+global GL_PROGRAM_POINT_SIZE: cuint <comptime> = 0x8642
+global GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS: cuint <comptime> = 0x8c29
+global GL_FRAMEBUFFER_ATTACHMENT_LAYERED: cuint <comptime> = 0x8da7
+global GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS: cuint <comptime> = 0x8da8
+global GL_GEOMETRY_SHADER: cuint <comptime> = 0x8dd9
+global GL_GEOMETRY_VERTICES_OUT: cuint <comptime> = 0x8916
+global GL_GEOMETRY_INPUT_TYPE: cuint <comptime> = 0x8917
+global GL_GEOMETRY_OUTPUT_TYPE: cuint <comptime> = 0x8918
+global GL_MAX_GEOMETRY_UNIFORM_COMPONENTS: cuint <comptime> = 0x8ddf
+global GL_MAX_GEOMETRY_OUTPUT_VERTICES: cuint <comptime> = 0x8de0
+global GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS: cuint <comptime> = 0x8de1
+global GL_MAX_VERTEX_OUTPUT_COMPONENTS: cuint <comptime> = 0x9122
+global GL_MAX_GEOMETRY_INPUT_COMPONENTS: cuint <comptime> = 0x9123
+global GL_MAX_GEOMETRY_OUTPUT_COMPONENTS: cuint <comptime> = 0x9124
+global GL_MAX_FRAGMENT_INPUT_COMPONENTS: cuint <comptime> = 0x9125
+global GL_CONTEXT_PROFILE_MASK: cuint <comptime> = 0x9126
+global GL_DEPTH_CLAMP: cuint <comptime> = 0x864f
+global GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION: cuint <comptime> = 0x8e4c
+global GL_FIRST_VERTEX_CONVENTION: cuint <comptime> = 0x8e4d
+global GL_LAST_VERTEX_CONVENTION: cuint <comptime> = 0x8e4e
+global GL_PROVOKING_VERTEX: cuint <comptime> = 0x8e4f
+global GL_TEXTURE_CUBE_MAP_SEAMLESS: cuint <comptime> = 0x884f
+global GL_MAX_SERVER_WAIT_TIMEOUT: cuint <comptime> = 0x9111
+global GL_OBJECT_TYPE: cuint <comptime> = 0x9112
+global GL_SYNC_CONDITION: cuint <comptime> = 0x9113
+global GL_SYNC_STATUS: cuint <comptime> = 0x9114
+global GL_SYNC_FLAGS: cuint <comptime> = 0x9115
+global GL_SYNC_FENCE: cuint <comptime> = 0x9116
+global GL_SYNC_GPU_COMMANDS_COMPLETE: cuint <comptime> = 0x9117
+global GL_UNSIGNALED: cuint <comptime> = 0x9118
+global GL_SIGNALED: cuint <comptime> = 0x9119
+global GL_ALREADY_SIGNALED: cuint <comptime> = 0x911a
+global GL_TIMEOUT_EXPIRED: cuint <comptime> = 0x911b
+global GL_CONDITION_SATISFIED: cuint <comptime> = 0x911c
+global GL_WAIT_FAILED: cuint <comptime> = 0x911d
+global GL_TIMEOUT_IGNORED: uint64 <comptime> = 0xffffffffffffffff
+global GL_SYNC_FLUSH_COMMANDS_BIT: cuint <comptime> = 0x00000001
+global GL_SAMPLE_POSITION: cuint <comptime> = 0x8e50
+global GL_SAMPLE_MASK: cuint <comptime> = 0x8e51
+global GL_SAMPLE_MASK_VALUE: cuint <comptime> = 0x8e52
+global GL_MAX_SAMPLE_MASK_WORDS: cuint <comptime> = 0x8e59
+global GL_TEXTURE_2D_MULTISAMPLE: cuint <comptime> = 0x9100
+global GL_PROXY_TEXTURE_2D_MULTISAMPLE: cuint <comptime> = 0x9101
+global GL_TEXTURE_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x9102
+global GL_PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x9103
+global GL_TEXTURE_BINDING_2D_MULTISAMPLE: cuint <comptime> = 0x9104
+global GL_TEXTURE_BINDING_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x9105
+global GL_TEXTURE_SAMPLES: cuint <comptime> = 0x9106
+global GL_TEXTURE_FIXED_SAMPLE_LOCATIONS: cuint <comptime> = 0x9107
+global GL_SAMPLER_2D_MULTISAMPLE: cuint <comptime> = 0x9108
+global GL_INT_SAMPLER_2D_MULTISAMPLE: cuint <comptime> = 0x9109
+global GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE: cuint <comptime> = 0x910a
+global GL_SAMPLER_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x910b
+global GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x910c
+global GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x910d
+global GL_MAX_COLOR_TEXTURE_SAMPLES: cuint <comptime> = 0x910e
+global GL_MAX_DEPTH_TEXTURE_SAMPLES: cuint <comptime> = 0x910f
+global GL_MAX_INTEGER_SAMPLES: cuint <comptime> = 0x9110
+global GL_VERTEX_ATTRIB_ARRAY_DIVISOR: cuint <comptime> = 0x88fe
+global GL_SRC1_COLOR: cuint <comptime> = 0x88f9
+global GL_ONE_MINUS_SRC1_COLOR: cuint <comptime> = 0x88fa
+global GL_ONE_MINUS_SRC1_ALPHA: cuint <comptime> = 0x88fb
+global GL_MAX_DUAL_SOURCE_DRAW_BUFFERS: cuint <comptime> = 0x88fc
+global GL_ANY_SAMPLES_PASSED: cuint <comptime> = 0x8c2f
+global GL_SAMPLER_BINDING: cuint <comptime> = 0x8919
+global GL_RGB10_A2UI: cuint <comptime> = 0x906f
+global GL_TEXTURE_SWIZZLE_R: cuint <comptime> = 0x8e42
+global GL_TEXTURE_SWIZZLE_G: cuint <comptime> = 0x8e43
+global GL_TEXTURE_SWIZZLE_B: cuint <comptime> = 0x8e44
+global GL_TEXTURE_SWIZZLE_A: cuint <comptime> = 0x8e45
+global GL_TEXTURE_SWIZZLE_RGBA: cuint <comptime> = 0x8e46
+global GL_TIME_ELAPSED: cuint <comptime> = 0x88bf
+global GL_TIMESTAMP: cuint <comptime> = 0x8e28
+global GL_INT_2_10_10_10_REV: cuint <comptime> = 0x8d9f
+global GL_SAMPLE_SHADING: cuint <comptime> = 0x8c36
+global GL_MIN_SAMPLE_SHADING_VALUE: cuint <comptime> = 0x8c37
+global GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET: cuint <comptime> = 0x8e5e
+global GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET: cuint <comptime> = 0x8e5f
+global GL_TEXTURE_CUBE_MAP_ARRAY: cuint <comptime> = 0x9009
+global GL_TEXTURE_BINDING_CUBE_MAP_ARRAY: cuint <comptime> = 0x900a
+global GL_PROXY_TEXTURE_CUBE_MAP_ARRAY: cuint <comptime> = 0x900b
+global GL_SAMPLER_CUBE_MAP_ARRAY: cuint <comptime> = 0x900c
+global GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW: cuint <comptime> = 0x900d
+global GL_INT_SAMPLER_CUBE_MAP_ARRAY: cuint <comptime> = 0x900e
+global GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY: cuint <comptime> = 0x900f
+global GL_DRAW_INDIRECT_BUFFER: cuint <comptime> = 0x8f3f
+global GL_DRAW_INDIRECT_BUFFER_BINDING: cuint <comptime> = 0x8f43
+global GL_GEOMETRY_SHADER_INVOCATIONS: cuint <comptime> = 0x887f
+global GL_MAX_GEOMETRY_SHADER_INVOCATIONS: cuint <comptime> = 0x8e5a
+global GL_MIN_FRAGMENT_INTERPOLATION_OFFSET: cuint <comptime> = 0x8e5b
+global GL_MAX_FRAGMENT_INTERPOLATION_OFFSET: cuint <comptime> = 0x8e5c
+global GL_FRAGMENT_INTERPOLATION_OFFSET_BITS: cuint <comptime> = 0x8e5d
+global GL_MAX_VERTEX_STREAMS: cuint <comptime> = 0x8e71
+global GL_DOUBLE_VEC2: cuint <comptime> = 0x8ffc
+global GL_DOUBLE_VEC3: cuint <comptime> = 0x8ffd
+global GL_DOUBLE_VEC4: cuint <comptime> = 0x8ffe
+global GL_DOUBLE_MAT2: cuint <comptime> = 0x8f46
+global GL_DOUBLE_MAT3: cuint <comptime> = 0x8f47
+global GL_DOUBLE_MAT4: cuint <comptime> = 0x8f48
+global GL_DOUBLE_MAT2x3: cuint <comptime> = 0x8f49
+global GL_DOUBLE_MAT2x4: cuint <comptime> = 0x8f4a
+global GL_DOUBLE_MAT3x2: cuint <comptime> = 0x8f4b
+global GL_DOUBLE_MAT3x4: cuint <comptime> = 0x8f4c
+global GL_DOUBLE_MAT4x2: cuint <comptime> = 0x8f4d
+global GL_DOUBLE_MAT4x3: cuint <comptime> = 0x8f4e
+global GL_ACTIVE_SUBROUTINES: cuint <comptime> = 0x8de5
+global GL_ACTIVE_SUBROUTINE_UNIFORMS: cuint <comptime> = 0x8de6
+global GL_ACTIVE_SUBROUTINE_UNIFORM_LOCATIONS: cuint <comptime> = 0x8e47
+global GL_ACTIVE_SUBROUTINE_MAX_LENGTH: cuint <comptime> = 0x8e48
+global GL_ACTIVE_SUBROUTINE_UNIFORM_MAX_LENGTH: cuint <comptime> = 0x8e49
+global GL_MAX_SUBROUTINES: cuint <comptime> = 0x8de7
+global GL_MAX_SUBROUTINE_UNIFORM_LOCATIONS: cuint <comptime> = 0x8de8
+global GL_NUM_COMPATIBLE_SUBROUTINES: cuint <comptime> = 0x8e4a
+global GL_COMPATIBLE_SUBROUTINES: cuint <comptime> = 0x8e4b
+global GL_PATCHES: cuint <comptime> = 0x000e
+global GL_PATCH_VERTICES: cuint <comptime> = 0x8e72
+global GL_PATCH_DEFAULT_INNER_LEVEL: cuint <comptime> = 0x8e73
+global GL_PATCH_DEFAULT_OUTER_LEVEL: cuint <comptime> = 0x8e74
+global GL_TESS_CONTROL_OUTPUT_VERTICES: cuint <comptime> = 0x8e75
+global GL_TESS_GEN_MODE: cuint <comptime> = 0x8e76
+global GL_TESS_GEN_SPACING: cuint <comptime> = 0x8e77
+global GL_TESS_GEN_VERTEX_ORDER: cuint <comptime> = 0x8e78
+global GL_TESS_GEN_POINT_MODE: cuint <comptime> = 0x8e79
+global GL_ISOLINES: cuint <comptime> = 0x8e7a
+global GL_FRACTIONAL_ODD: cuint <comptime> = 0x8e7b
+global GL_FRACTIONAL_EVEN: cuint <comptime> = 0x8e7c
+global GL_MAX_PATCH_VERTICES: cuint <comptime> = 0x8e7d
+global GL_MAX_TESS_GEN_LEVEL: cuint <comptime> = 0x8e7e
+global GL_MAX_TESS_CONTROL_UNIFORM_COMPONENTS: cuint <comptime> = 0x8e7f
+global GL_MAX_TESS_EVALUATION_UNIFORM_COMPONENTS: cuint <comptime> = 0x8e80
+global GL_MAX_TESS_CONTROL_TEXTURE_IMAGE_UNITS: cuint <comptime> = 0x8e81
+global GL_MAX_TESS_EVALUATION_TEXTURE_IMAGE_UNITS: cuint <comptime> = 0x8e82
+global GL_MAX_TESS_CONTROL_OUTPUT_COMPONENTS: cuint <comptime> = 0x8e83
+global GL_MAX_TESS_PATCH_COMPONENTS: cuint <comptime> = 0x8e84
+global GL_MAX_TESS_CONTROL_TOTAL_OUTPUT_COMPONENTS: cuint <comptime> = 0x8e85
+global GL_MAX_TESS_EVALUATION_OUTPUT_COMPONENTS: cuint <comptime> = 0x8e86
+global GL_MAX_TESS_CONTROL_UNIFORM_BLOCKS: cuint <comptime> = 0x8e89
+global GL_MAX_TESS_EVALUATION_UNIFORM_BLOCKS: cuint <comptime> = 0x8e8a
+global GL_MAX_TESS_CONTROL_INPUT_COMPONENTS: cuint <comptime> = 0x886c
+global GL_MAX_TESS_EVALUATION_INPUT_COMPONENTS: cuint <comptime> = 0x886d
+global GL_MAX_COMBINED_TESS_CONTROL_UNIFORM_COMPONENTS: cuint <comptime> = 0x8e1e
+global GL_MAX_COMBINED_TESS_EVALUATION_UNIFORM_COMPONENTS: cuint <comptime> = 0x8e1f
+global GL_UNIFORM_BLOCK_REFERENCED_BY_TESS_CONTROL_SHADER: cuint <comptime> = 0x84f0
+global GL_UNIFORM_BLOCK_REFERENCED_BY_TESS_EVALUATION_SHADER: cuint <comptime> = 0x84f1
+global GL_TESS_EVALUATION_SHADER: cuint <comptime> = 0x8e87
+global GL_TESS_CONTROL_SHADER: cuint <comptime> = 0x8e88
+global GL_TRANSFORM_FEEDBACK: cuint <comptime> = 0x8e22
+global GL_TRANSFORM_FEEDBACK_BUFFER_PAUSED: cuint <comptime> = 0x8e23
+global GL_TRANSFORM_FEEDBACK_BUFFER_ACTIVE: cuint <comptime> = 0x8e24
+global GL_TRANSFORM_FEEDBACK_BINDING: cuint <comptime> = 0x8e25
+global GL_MAX_TRANSFORM_FEEDBACK_BUFFERS: cuint <comptime> = 0x8e70
+global GL_FIXED: cuint <comptime> = 0x140c
+global GL_IMPLEMENTATION_COLOR_READ_TYPE: cuint <comptime> = 0x8b9a
+global GL_IMPLEMENTATION_COLOR_READ_FORMAT: cuint <comptime> = 0x8b9b
+global GL_LOW_FLOAT: cuint <comptime> = 0x8df0
+global GL_MEDIUM_FLOAT: cuint <comptime> = 0x8df1
+global GL_HIGH_FLOAT: cuint <comptime> = 0x8df2
+global GL_LOW_INT: cuint <comptime> = 0x8df3
+global GL_MEDIUM_INT: cuint <comptime> = 0x8df4
+global GL_HIGH_INT: cuint <comptime> = 0x8df5
+global GL_SHADER_COMPILER: cuint <comptime> = 0x8dfa
+global GL_SHADER_BINARY_FORMATS: cuint <comptime> = 0x8df8
+global GL_NUM_SHADER_BINARY_FORMATS: cuint <comptime> = 0x8df9
+global GL_MAX_VERTEX_UNIFORM_VECTORS: cuint <comptime> = 0x8dfb
+global GL_MAX_VARYING_VECTORS: cuint <comptime> = 0x8dfc
+global GL_MAX_FRAGMENT_UNIFORM_VECTORS: cuint <comptime> = 0x8dfd
+global GL_RGB565: cuint <comptime> = 0x8d62
+global GL_PROGRAM_BINARY_RETRIEVABLE_HINT: cuint <comptime> = 0x8257
+global GL_PROGRAM_BINARY_LENGTH: cuint <comptime> = 0x8741
+global GL_NUM_PROGRAM_BINARY_FORMATS: cuint <comptime> = 0x87fe
+global GL_PROGRAM_BINARY_FORMATS: cuint <comptime> = 0x87ff
+global GL_VERTEX_SHADER_BIT: cuint <comptime> = 0x00000001
+global GL_FRAGMENT_SHADER_BIT: cuint <comptime> = 0x00000002
+global GL_GEOMETRY_SHADER_BIT: cuint <comptime> = 0x00000004
+global GL_TESS_CONTROL_SHADER_BIT: cuint <comptime> = 0x00000008
+global GL_TESS_EVALUATION_SHADER_BIT: cuint <comptime> = 0x00000010
+global GL_ALL_SHADER_BITS: cuint <comptime> = 0xffffffff
+global GL_PROGRAM_SEPARABLE: cuint <comptime> = 0x8258
+global GL_ACTIVE_PROGRAM: cuint <comptime> = 0x8259
+global GL_PROGRAM_PIPELINE_BINDING: cuint <comptime> = 0x825a
+global GL_MAX_VIEWPORTS: cuint <comptime> = 0x825b
+global GL_VIEWPORT_SUBPIXEL_BITS: cuint <comptime> = 0x825c
+global GL_VIEWPORT_BOUNDS_RANGE: cuint <comptime> = 0x825d
+global GL_LAYER_PROVOKING_VERTEX: cuint <comptime> = 0x825e
+global GL_VIEWPORT_INDEX_PROVOKING_VERTEX: cuint <comptime> = 0x825f
+global GL_UNDEFINED_VERTEX: cuint <comptime> = 0x8260
+global GL_COPY_READ_BUFFER_BINDING: cuint <comptime> = 0x8f36
+global GL_COPY_WRITE_BUFFER_BINDING: cuint <comptime> = 0x8f37
+global GL_TRANSFORM_FEEDBACK_ACTIVE: cuint <comptime> = 0x8e24
+global GL_TRANSFORM_FEEDBACK_PAUSED: cuint <comptime> = 0x8e23
+global GL_UNPACK_COMPRESSED_BLOCK_WIDTH: cuint <comptime> = 0x9127
+global GL_UNPACK_COMPRESSED_BLOCK_HEIGHT: cuint <comptime> = 0x9128
+global GL_UNPACK_COMPRESSED_BLOCK_DEPTH: cuint <comptime> = 0x9129
+global GL_UNPACK_COMPRESSED_BLOCK_SIZE: cuint <comptime> = 0x912a
+global GL_PACK_COMPRESSED_BLOCK_WIDTH: cuint <comptime> = 0x912b
+global GL_PACK_COMPRESSED_BLOCK_HEIGHT: cuint <comptime> = 0x912c
+global GL_PACK_COMPRESSED_BLOCK_DEPTH: cuint <comptime> = 0x912d
+global GL_PACK_COMPRESSED_BLOCK_SIZE: cuint <comptime> = 0x912e
+global GL_NUM_SAMPLE_COUNTS: cuint <comptime> = 0x9380
+global GL_MIN_MAP_BUFFER_ALIGNMENT: cuint <comptime> = 0x90bc
+global GL_ATOMIC_COUNTER_BUFFER: cuint <comptime> = 0x92c0
+global GL_ATOMIC_COUNTER_BUFFER_BINDING: cuint <comptime> = 0x92c1
+global GL_ATOMIC_COUNTER_BUFFER_START: cuint <comptime> = 0x92c2
+global GL_ATOMIC_COUNTER_BUFFER_SIZE: cuint <comptime> = 0x92c3
+global GL_ATOMIC_COUNTER_BUFFER_DATA_SIZE: cuint <comptime> = 0x92c4
+global GL_ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTERS: cuint <comptime> = 0x92c5
+global GL_ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTER_INDICES: cuint <comptime> = 0x92c6
+global GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_VERTEX_SHADER: cuint <comptime> = 0x92c7
+global GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_CONTROL_SHADER: cuint <comptime> = 0x92c8
+global GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_EVALUATION_SHADER: cuint <comptime> = 0x92c9
+global GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_GEOMETRY_SHADER: cuint <comptime> = 0x92ca
+global GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_FRAGMENT_SHADER: cuint <comptime> = 0x92cb
+global GL_MAX_VERTEX_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x92cc
+global GL_MAX_TESS_CONTROL_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x92cd
+global GL_MAX_TESS_EVALUATION_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x92ce
+global GL_MAX_GEOMETRY_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x92cf
+global GL_MAX_FRAGMENT_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x92d0
+global GL_MAX_COMBINED_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x92d1
+global GL_MAX_VERTEX_ATOMIC_COUNTERS: cuint <comptime> = 0x92d2
+global GL_MAX_TESS_CONTROL_ATOMIC_COUNTERS: cuint <comptime> = 0x92d3
+global GL_MAX_TESS_EVALUATION_ATOMIC_COUNTERS: cuint <comptime> = 0x92d4
+global GL_MAX_GEOMETRY_ATOMIC_COUNTERS: cuint <comptime> = 0x92d5
+global GL_MAX_FRAGMENT_ATOMIC_COUNTERS: cuint <comptime> = 0x92d6
+global GL_MAX_COMBINED_ATOMIC_COUNTERS: cuint <comptime> = 0x92d7
+global GL_MAX_ATOMIC_COUNTER_BUFFER_SIZE: cuint <comptime> = 0x92d8
+global GL_MAX_ATOMIC_COUNTER_BUFFER_BINDINGS: cuint <comptime> = 0x92dc
+global GL_ACTIVE_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x92d9
+global GL_UNIFORM_ATOMIC_COUNTER_BUFFER_INDEX: cuint <comptime> = 0x92da
+global GL_UNSIGNED_INT_ATOMIC_COUNTER: cuint <comptime> = 0x92db
+global GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT: cuint <comptime> = 0x00000001
+global GL_ELEMENT_ARRAY_BARRIER_BIT: cuint <comptime> = 0x00000002
+global GL_UNIFORM_BARRIER_BIT: cuint <comptime> = 0x00000004
+global GL_TEXTURE_FETCH_BARRIER_BIT: cuint <comptime> = 0x00000008
+global GL_SHADER_IMAGE_ACCESS_BARRIER_BIT: cuint <comptime> = 0x00000020
+global GL_COMMAND_BARRIER_BIT: cuint <comptime> = 0x00000040
+global GL_PIXEL_BUFFER_BARRIER_BIT: cuint <comptime> = 0x00000080
+global GL_TEXTURE_UPDATE_BARRIER_BIT: cuint <comptime> = 0x00000100
+global GL_BUFFER_UPDATE_BARRIER_BIT: cuint <comptime> = 0x00000200
+global GL_FRAMEBUFFER_BARRIER_BIT: cuint <comptime> = 0x00000400
+global GL_TRANSFORM_FEEDBACK_BARRIER_BIT: cuint <comptime> = 0x00000800
+global GL_ATOMIC_COUNTER_BARRIER_BIT: cuint <comptime> = 0x00001000
+global GL_ALL_BARRIER_BITS: cuint <comptime> = 0xffffffff
+global GL_MAX_IMAGE_UNITS: cuint <comptime> = 0x8f38
+global GL_MAX_COMBINED_IMAGE_UNITS_AND_FRAGMENT_OUTPUTS: cuint <comptime> = 0x8f39
+global GL_IMAGE_BINDING_NAME: cuint <comptime> = 0x8f3a
+global GL_IMAGE_BINDING_LEVEL: cuint <comptime> = 0x8f3b
+global GL_IMAGE_BINDING_LAYERED: cuint <comptime> = 0x8f3c
+global GL_IMAGE_BINDING_LAYER: cuint <comptime> = 0x8f3d
+global GL_IMAGE_BINDING_ACCESS: cuint <comptime> = 0x8f3e
+global GL_IMAGE_1D: cuint <comptime> = 0x904c
+global GL_IMAGE_2D: cuint <comptime> = 0x904d
+global GL_IMAGE_3D: cuint <comptime> = 0x904e
+global GL_IMAGE_2D_RECT: cuint <comptime> = 0x904f
+global GL_IMAGE_CUBE: cuint <comptime> = 0x9050
+global GL_IMAGE_BUFFER: cuint <comptime> = 0x9051
+global GL_IMAGE_1D_ARRAY: cuint <comptime> = 0x9052
+global GL_IMAGE_2D_ARRAY: cuint <comptime> = 0x9053
+global GL_IMAGE_CUBE_MAP_ARRAY: cuint <comptime> = 0x9054
+global GL_IMAGE_2D_MULTISAMPLE: cuint <comptime> = 0x9055
+global GL_IMAGE_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x9056
+global GL_INT_IMAGE_1D: cuint <comptime> = 0x9057
+global GL_INT_IMAGE_2D: cuint <comptime> = 0x9058
+global GL_INT_IMAGE_3D: cuint <comptime> = 0x9059
+global GL_INT_IMAGE_2D_RECT: cuint <comptime> = 0x905a
+global GL_INT_IMAGE_CUBE: cuint <comptime> = 0x905b
+global GL_INT_IMAGE_BUFFER: cuint <comptime> = 0x905c
+global GL_INT_IMAGE_1D_ARRAY: cuint <comptime> = 0x905d
+global GL_INT_IMAGE_2D_ARRAY: cuint <comptime> = 0x905e
+global GL_INT_IMAGE_CUBE_MAP_ARRAY: cuint <comptime> = 0x905f
+global GL_INT_IMAGE_2D_MULTISAMPLE: cuint <comptime> = 0x9060
+global GL_INT_IMAGE_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x9061
+global GL_UNSIGNED_INT_IMAGE_1D: cuint <comptime> = 0x9062
+global GL_UNSIGNED_INT_IMAGE_2D: cuint <comptime> = 0x9063
+global GL_UNSIGNED_INT_IMAGE_3D: cuint <comptime> = 0x9064
+global GL_UNSIGNED_INT_IMAGE_2D_RECT: cuint <comptime> = 0x9065
+global GL_UNSIGNED_INT_IMAGE_CUBE: cuint <comptime> = 0x9066
+global GL_UNSIGNED_INT_IMAGE_BUFFER: cuint <comptime> = 0x9067
+global GL_UNSIGNED_INT_IMAGE_1D_ARRAY: cuint <comptime> = 0x9068
+global GL_UNSIGNED_INT_IMAGE_2D_ARRAY: cuint <comptime> = 0x9069
+global GL_UNSIGNED_INT_IMAGE_CUBE_MAP_ARRAY: cuint <comptime> = 0x906a
+global GL_UNSIGNED_INT_IMAGE_2D_MULTISAMPLE: cuint <comptime> = 0x906b
+global GL_UNSIGNED_INT_IMAGE_2D_MULTISAMPLE_ARRAY: cuint <comptime> = 0x906c
+global GL_MAX_IMAGE_SAMPLES: cuint <comptime> = 0x906d
+global GL_IMAGE_BINDING_FORMAT: cuint <comptime> = 0x906e
+global GL_IMAGE_FORMAT_COMPATIBILITY_TYPE: cuint <comptime> = 0x90c7
+global GL_IMAGE_FORMAT_COMPATIBILITY_BY_SIZE: cuint <comptime> = 0x90c8
+global GL_IMAGE_FORMAT_COMPATIBILITY_BY_CLASS: cuint <comptime> = 0x90c9
+global GL_MAX_VERTEX_IMAGE_UNIFORMS: cuint <comptime> = 0x90ca
+global GL_MAX_TESS_CONTROL_IMAGE_UNIFORMS: cuint <comptime> = 0x90cb
+global GL_MAX_TESS_EVALUATION_IMAGE_UNIFORMS: cuint <comptime> = 0x90cc
+global GL_MAX_GEOMETRY_IMAGE_UNIFORMS: cuint <comptime> = 0x90cd
+global GL_MAX_FRAGMENT_IMAGE_UNIFORMS: cuint <comptime> = 0x90ce
+global GL_MAX_COMBINED_IMAGE_UNIFORMS: cuint <comptime> = 0x90cf
+global GL_COMPRESSED_RGBA_BPTC_UNORM: cuint <comptime> = 0x8e8c
+global GL_COMPRESSED_SRGB_ALPHA_BPTC_UNORM: cuint <comptime> = 0x8e8d
+global GL_COMPRESSED_RGB_BPTC_SIGNED_FLOAT: cuint <comptime> = 0x8e8e
+global GL_COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT: cuint <comptime> = 0x8e8f
+global GL_TEXTURE_IMMUTABLE_FORMAT: cuint <comptime> = 0x912f
+global GL_NUM_SHADING_LANGUAGE_VERSIONS: cuint <comptime> = 0x82e9
+global GL_VERTEX_ATTRIB_ARRAY_LONG: cuint <comptime> = 0x874e
+global GL_COMPRESSED_RGB8_ETC2: cuint <comptime> = 0x9274
+global GL_COMPRESSED_SRGB8_ETC2: cuint <comptime> = 0x9275
+global GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2: cuint <comptime> = 0x9276
+global GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2: cuint <comptime> = 0x9277
+global GL_COMPRESSED_RGBA8_ETC2_EAC: cuint <comptime> = 0x9278
+global GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC: cuint <comptime> = 0x9279
+global GL_COMPRESSED_R11_EAC: cuint <comptime> = 0x9270
+global GL_COMPRESSED_SIGNED_R11_EAC: cuint <comptime> = 0x9271
+global GL_COMPRESSED_RG11_EAC: cuint <comptime> = 0x9272
+global GL_COMPRESSED_SIGNED_RG11_EAC: cuint <comptime> = 0x9273
+global GL_PRIMITIVE_RESTART_FIXED_INDEX: cuint <comptime> = 0x8d69
+global GL_ANY_SAMPLES_PASSED_CONSERVATIVE: cuint <comptime> = 0x8d6a
+global GL_MAX_ELEMENT_INDEX: cuint <comptime> = 0x8d6b
+global GL_COMPUTE_SHADER: cuint <comptime> = 0x91b9
+global GL_MAX_COMPUTE_UNIFORM_BLOCKS: cuint <comptime> = 0x91bb
+global GL_MAX_COMPUTE_TEXTURE_IMAGE_UNITS: cuint <comptime> = 0x91bc
+global GL_MAX_COMPUTE_IMAGE_UNIFORMS: cuint <comptime> = 0x91bd
+global GL_MAX_COMPUTE_SHARED_MEMORY_SIZE: cuint <comptime> = 0x8262
+global GL_MAX_COMPUTE_UNIFORM_COMPONENTS: cuint <comptime> = 0x8263
+global GL_MAX_COMPUTE_ATOMIC_COUNTER_BUFFERS: cuint <comptime> = 0x8264
+global GL_MAX_COMPUTE_ATOMIC_COUNTERS: cuint <comptime> = 0x8265
+global GL_MAX_COMBINED_COMPUTE_UNIFORM_COMPONENTS: cuint <comptime> = 0x8266
+global GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS: cuint <comptime> = 0x90eb
+global GL_MAX_COMPUTE_WORK_GROUP_COUNT: cuint <comptime> = 0x91be
+global GL_MAX_COMPUTE_WORK_GROUP_SIZE: cuint <comptime> = 0x91bf
+global GL_COMPUTE_WORK_GROUP_SIZE: cuint <comptime> = 0x8267
+global GL_UNIFORM_BLOCK_REFERENCED_BY_COMPUTE_SHADER: cuint <comptime> = 0x90ec
+global GL_ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER: cuint <comptime> = 0x90ed
+global GL_DISPATCH_INDIRECT_BUFFER: cuint <comptime> = 0x90ee
+global GL_DISPATCH_INDIRECT_BUFFER_BINDING: cuint <comptime> = 0x90ef
+global GL_COMPUTE_SHADER_BIT: cuint <comptime> = 0x00000020
+global GL_DEBUG_OUTPUT_SYNCHRONOUS: cuint <comptime> = 0x8242
+global GL_DEBUG_NEXT_LOGGED_MESSAGE_LENGTH: cuint <comptime> = 0x8243
+global GL_DEBUG_CALLBACK_FUNCTION: cuint <comptime> = 0x8244
+global GL_DEBUG_CALLBACK_USER_PARAM: cuint <comptime> = 0x8245
+global GL_DEBUG_SOURCE_API: cuint <comptime> = 0x8246
+global GL_DEBUG_SOURCE_WINDOW_SYSTEM: cuint <comptime> = 0x8247
+global GL_DEBUG_SOURCE_SHADER_COMPILER: cuint <comptime> = 0x8248
+global GL_DEBUG_SOURCE_THIRD_PARTY: cuint <comptime> = 0x8249
+global GL_DEBUG_SOURCE_APPLICATION: cuint <comptime> = 0x824a
+global GL_DEBUG_SOURCE_OTHER: cuint <comptime> = 0x824b
+global GL_DEBUG_TYPE_ERROR: cuint <comptime> = 0x824c
+global GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: cuint <comptime> = 0x824d
+global GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR: cuint <comptime> = 0x824e
+global GL_DEBUG_TYPE_PORTABILITY: cuint <comptime> = 0x824f
+global GL_DEBUG_TYPE_PERFORMANCE: cuint <comptime> = 0x8250
+global GL_DEBUG_TYPE_OTHER: cuint <comptime> = 0x8251
+global GL_MAX_DEBUG_MESSAGE_LENGTH: cuint <comptime> = 0x9143
+global GL_MAX_DEBUG_LOGGED_MESSAGES: cuint <comptime> = 0x9144
+global GL_DEBUG_LOGGED_MESSAGES: cuint <comptime> = 0x9145
+global GL_DEBUG_SEVERITY_HIGH: cuint <comptime> = 0x9146
+global GL_DEBUG_SEVERITY_MEDIUM: cuint <comptime> = 0x9147
+global GL_DEBUG_SEVERITY_LOW: cuint <comptime> = 0x9148
+global GL_DEBUG_TYPE_MARKER: cuint <comptime> = 0x8268
+global GL_DEBUG_TYPE_PUSH_GROUP: cuint <comptime> = 0x8269
+global GL_DEBUG_TYPE_POP_GROUP: cuint <comptime> = 0x826a
+global GL_DEBUG_SEVERITY_NOTIFICATION: cuint <comptime> = 0x826b
+global GL_MAX_DEBUG_GROUP_STACK_DEPTH: cuint <comptime> = 0x826c
+global GL_DEBUG_GROUP_STACK_DEPTH: cuint <comptime> = 0x826d
+global GL_BUFFER: cuint <comptime> = 0x82e0
+global GL_SHADER: cuint <comptime> = 0x82e1
+global GL_PROGRAM: cuint <comptime> = 0x82e2
+global GL_QUERY: cuint <comptime> = 0x82e3
+global GL_PROGRAM_PIPELINE: cuint <comptime> = 0x82e4
+global GL_SAMPLER: cuint <comptime> = 0x82e6
+global GL_MAX_LABEL_LENGTH: cuint <comptime> = 0x82e8
+global GL_DEBUG_OUTPUT: cuint <comptime> = 0x92e0
+global GL_CONTEXT_FLAG_DEBUG_BIT: cuint <comptime> = 0x00000002
+global GL_MAX_UNIFORM_LOCATIONS: cuint <comptime> = 0x826e
+global GL_FRAMEBUFFER_DEFAULT_WIDTH: cuint <comptime> = 0x9310
+global GL_FRAMEBUFFER_DEFAULT_HEIGHT: cuint <comptime> = 0x9311
+global GL_FRAMEBUFFER_DEFAULT_LAYERS: cuint <comptime> = 0x9312
+global GL_FRAMEBUFFER_DEFAULT_SAMPLES: cuint <comptime> = 0x9313
+global GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS: cuint <comptime> = 0x9314
+global GL_MAX_FRAMEBUFFER_WIDTH: cuint <comptime> = 0x9315
+global GL_MAX_FRAMEBUFFER_HEIGHT: cuint <comptime> = 0x9316
+global GL_MAX_FRAMEBUFFER_LAYERS: cuint <comptime> = 0x9317
+global GL_MAX_FRAMEBUFFER_SAMPLES: cuint <comptime> = 0x9318
+global GL_INTERNALFORMAT_SUPPORTED: cuint <comptime> = 0x826f
+global GL_INTERNALFORMAT_PREFERRED: cuint <comptime> = 0x8270
+global GL_INTERNALFORMAT_RED_SIZE: cuint <comptime> = 0x8271
+global GL_INTERNALFORMAT_GREEN_SIZE: cuint <comptime> = 0x8272
+global GL_INTERNALFORMAT_BLUE_SIZE: cuint <comptime> = 0x8273
+global GL_INTERNALFORMAT_ALPHA_SIZE: cuint <comptime> = 0x8274
+global GL_INTERNALFORMAT_DEPTH_SIZE: cuint <comptime> = 0x8275
+global GL_INTERNALFORMAT_STENCIL_SIZE: cuint <comptime> = 0x8276
+global GL_INTERNALFORMAT_SHARED_SIZE: cuint <comptime> = 0x8277
+global GL_INTERNALFORMAT_RED_TYPE: cuint <comptime> = 0x8278
+global GL_INTERNALFORMAT_GREEN_TYPE: cuint <comptime> = 0x8279
+global GL_INTERNALFORMAT_BLUE_TYPE: cuint <comptime> = 0x827a
+global GL_INTERNALFORMAT_ALPHA_TYPE: cuint <comptime> = 0x827b
+global GL_INTERNALFORMAT_DEPTH_TYPE: cuint <comptime> = 0x827c
+global GL_INTERNALFORMAT_STENCIL_TYPE: cuint <comptime> = 0x827d
+global GL_MAX_WIDTH: cuint <comptime> = 0x827e
+global GL_MAX_HEIGHT: cuint <comptime> = 0x827f
+global GL_MAX_DEPTH: cuint <comptime> = 0x8280
+global GL_MAX_LAYERS: cuint <comptime> = 0x8281
+global GL_MAX_COMBINED_DIMENSIONS: cuint <comptime> = 0x8282
+global GL_COLOR_COMPONENTS: cuint <comptime> = 0x8283
+global GL_DEPTH_COMPONENTS: cuint <comptime> = 0x8284
+global GL_STENCIL_COMPONENTS: cuint <comptime> = 0x8285
+global GL_COLOR_RENDERABLE: cuint <comptime> = 0x8286
+global GL_DEPTH_RENDERABLE: cuint <comptime> = 0x8287
+global GL_STENCIL_RENDERABLE: cuint <comptime> = 0x8288
+global GL_FRAMEBUFFER_RENDERABLE: cuint <comptime> = 0x8289
+global GL_FRAMEBUFFER_RENDERABLE_LAYERED: cuint <comptime> = 0x828a
+global GL_FRAMEBUFFER_BLEND: cuint <comptime> = 0x828b
+global GL_READ_PIXELS: cuint <comptime> = 0x828c
+global GL_READ_PIXELS_FORMAT: cuint <comptime> = 0x828d
+global GL_READ_PIXELS_TYPE: cuint <comptime> = 0x828e
+global GL_TEXTURE_IMAGE_FORMAT: cuint <comptime> = 0x828f
+global GL_TEXTURE_IMAGE_TYPE: cuint <comptime> = 0x8290
+global GL_GET_TEXTURE_IMAGE_FORMAT: cuint <comptime> = 0x8291
+global GL_GET_TEXTURE_IMAGE_TYPE: cuint <comptime> = 0x8292
+global GL_MIPMAP: cuint <comptime> = 0x8293
+global GL_MANUAL_GENERATE_MIPMAP: cuint <comptime> = 0x8294
+global GL_AUTO_GENERATE_MIPMAP: cuint <comptime> = 0x8295
+global GL_COLOR_ENCODING: cuint <comptime> = 0x8296
+global GL_SRGB_READ: cuint <comptime> = 0x8297
+global GL_SRGB_WRITE: cuint <comptime> = 0x8298
+global GL_FILTER: cuint <comptime> = 0x829a
+global GL_VERTEX_TEXTURE: cuint <comptime> = 0x829b
+global GL_TESS_CONTROL_TEXTURE: cuint <comptime> = 0x829c
+global GL_TESS_EVALUATION_TEXTURE: cuint <comptime> = 0x829d
+global GL_GEOMETRY_TEXTURE: cuint <comptime> = 0x829e
+global GL_FRAGMENT_TEXTURE: cuint <comptime> = 0x829f
+global GL_COMPUTE_TEXTURE: cuint <comptime> = 0x82a0
+global GL_TEXTURE_SHADOW: cuint <comptime> = 0x82a1
+global GL_TEXTURE_GATHER: cuint <comptime> = 0x82a2
+global GL_TEXTURE_GATHER_SHADOW: cuint <comptime> = 0x82a3
+global GL_SHADER_IMAGE_LOAD: cuint <comptime> = 0x82a4
+global GL_SHADER_IMAGE_STORE: cuint <comptime> = 0x82a5
+global GL_SHADER_IMAGE_ATOMIC: cuint <comptime> = 0x82a6
+global GL_IMAGE_TEXEL_SIZE: cuint <comptime> = 0x82a7
+global GL_IMAGE_COMPATIBILITY_CLASS: cuint <comptime> = 0x82a8
+global GL_IMAGE_PIXEL_FORMAT: cuint <comptime> = 0x82a9
+global GL_IMAGE_PIXEL_TYPE: cuint <comptime> = 0x82aa
+global GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_TEST: cuint <comptime> = 0x82ac
+global GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_TEST: cuint <comptime> = 0x82ad
+global GL_SIMULTANEOUS_TEXTURE_AND_DEPTH_WRITE: cuint <comptime> = 0x82ae
+global GL_SIMULTANEOUS_TEXTURE_AND_STENCIL_WRITE: cuint <comptime> = 0x82af
+global GL_TEXTURE_COMPRESSED_BLOCK_WIDTH: cuint <comptime> = 0x82b1
+global GL_TEXTURE_COMPRESSED_BLOCK_HEIGHT: cuint <comptime> = 0x82b2
+global GL_TEXTURE_COMPRESSED_BLOCK_SIZE: cuint <comptime> = 0x82b3
+global GL_CLEAR_BUFFER: cuint <comptime> = 0x82b4
+global GL_TEXTURE_VIEW: cuint <comptime> = 0x82b5
+global GL_VIEW_COMPATIBILITY_CLASS: cuint <comptime> = 0x82b6
+global GL_FULL_SUPPORT: cuint <comptime> = 0x82b7
+global GL_CAVEAT_SUPPORT: cuint <comptime> = 0x82b8
+global GL_IMAGE_CLASS_4_X_32: cuint <comptime> = 0x82b9
+global GL_IMAGE_CLASS_2_X_32: cuint <comptime> = 0x82ba
+global GL_IMAGE_CLASS_1_X_32: cuint <comptime> = 0x82bb
+global GL_IMAGE_CLASS_4_X_16: cuint <comptime> = 0x82bc
+global GL_IMAGE_CLASS_2_X_16: cuint <comptime> = 0x82bd
+global GL_IMAGE_CLASS_1_X_16: cuint <comptime> = 0x82be
+global GL_IMAGE_CLASS_4_X_8: cuint <comptime> = 0x82bf
+global GL_IMAGE_CLASS_2_X_8: cuint <comptime> = 0x82c0
+global GL_IMAGE_CLASS_1_X_8: cuint <comptime> = 0x82c1
+global GL_IMAGE_CLASS_11_11_10: cuint <comptime> = 0x82c2
+global GL_IMAGE_CLASS_10_10_10_2: cuint <comptime> = 0x82c3
+global GL_VIEW_CLASS_128_BITS: cuint <comptime> = 0x82c4
+global GL_VIEW_CLASS_96_BITS: cuint <comptime> = 0x82c5
+global GL_VIEW_CLASS_64_BITS: cuint <comptime> = 0x82c6
+global GL_VIEW_CLASS_48_BITS: cuint <comptime> = 0x82c7
+global GL_VIEW_CLASS_32_BITS: cuint <comptime> = 0x82c8
+global GL_VIEW_CLASS_24_BITS: cuint <comptime> = 0x82c9
+global GL_VIEW_CLASS_16_BITS: cuint <comptime> = 0x82ca
+global GL_VIEW_CLASS_8_BITS: cuint <comptime> = 0x82cb
+global GL_VIEW_CLASS_S3TC_DXT1_RGB: cuint <comptime> = 0x82cc
+global GL_VIEW_CLASS_S3TC_DXT1_RGBA: cuint <comptime> = 0x82cd
+global GL_VIEW_CLASS_S3TC_DXT3_RGBA: cuint <comptime> = 0x82ce
+global GL_VIEW_CLASS_S3TC_DXT5_RGBA: cuint <comptime> = 0x82cf
+global GL_VIEW_CLASS_RGTC1_RED: cuint <comptime> = 0x82d0
+global GL_VIEW_CLASS_RGTC2_RG: cuint <comptime> = 0x82d1
+global GL_VIEW_CLASS_BPTC_UNORM: cuint <comptime> = 0x82d2
+global GL_VIEW_CLASS_BPTC_FLOAT: cuint <comptime> = 0x82d3
+global GL_UNIFORM: cuint <comptime> = 0x92e1
+global GL_UNIFORM_BLOCK: cuint <comptime> = 0x92e2
+global GL_PROGRAM_INPUT: cuint <comptime> = 0x92e3
+global GL_PROGRAM_OUTPUT: cuint <comptime> = 0x92e4
+global GL_BUFFER_VARIABLE: cuint <comptime> = 0x92e5
+global GL_SHADER_STORAGE_BLOCK: cuint <comptime> = 0x92e6
+global GL_VERTEX_SUBROUTINE: cuint <comptime> = 0x92e8
+global GL_TESS_CONTROL_SUBROUTINE: cuint <comptime> = 0x92e9
+global GL_TESS_EVALUATION_SUBROUTINE: cuint <comptime> = 0x92ea
+global GL_GEOMETRY_SUBROUTINE: cuint <comptime> = 0x92eb
+global GL_FRAGMENT_SUBROUTINE: cuint <comptime> = 0x92ec
+global GL_COMPUTE_SUBROUTINE: cuint <comptime> = 0x92ed
+global GL_VERTEX_SUBROUTINE_UNIFORM: cuint <comptime> = 0x92ee
+global GL_TESS_CONTROL_SUBROUTINE_UNIFORM: cuint <comptime> = 0x92ef
+global GL_TESS_EVALUATION_SUBROUTINE_UNIFORM: cuint <comptime> = 0x92f0
+global GL_GEOMETRY_SUBROUTINE_UNIFORM: cuint <comptime> = 0x92f1
+global GL_FRAGMENT_SUBROUTINE_UNIFORM: cuint <comptime> = 0x92f2
+global GL_COMPUTE_SUBROUTINE_UNIFORM: cuint <comptime> = 0x92f3
+global GL_TRANSFORM_FEEDBACK_VARYING: cuint <comptime> = 0x92f4
+global GL_ACTIVE_RESOURCES: cuint <comptime> = 0x92f5
+global GL_MAX_NAME_LENGTH: cuint <comptime> = 0x92f6
+global GL_MAX_NUM_ACTIVE_VARIABLES: cuint <comptime> = 0x92f7
+global GL_MAX_NUM_COMPATIBLE_SUBROUTINES: cuint <comptime> = 0x92f8
+global GL_NAME_LENGTH: cuint <comptime> = 0x92f9
+global GL_TYPE: cuint <comptime> = 0x92fa
+global GL_ARRAY_SIZE: cuint <comptime> = 0x92fb
+global GL_OFFSET: cuint <comptime> = 0x92fc
+global GL_BLOCK_INDEX: cuint <comptime> = 0x92fd
+global GL_ARRAY_STRIDE: cuint <comptime> = 0x92fe
+global GL_MATRIX_STRIDE: cuint <comptime> = 0x92ff
+global GL_IS_ROW_MAJOR: cuint <comptime> = 0x9300
+global GL_ATOMIC_COUNTER_BUFFER_INDEX: cuint <comptime> = 0x9301
+global GL_BUFFER_BINDING: cuint <comptime> = 0x9302
+global GL_BUFFER_DATA_SIZE: cuint <comptime> = 0x9303
+global GL_NUM_ACTIVE_VARIABLES: cuint <comptime> = 0x9304
+global GL_ACTIVE_VARIABLES: cuint <comptime> = 0x9305
+global GL_REFERENCED_BY_VERTEX_SHADER: cuint <comptime> = 0x9306
+global GL_REFERENCED_BY_TESS_CONTROL_SHADER: cuint <comptime> = 0x9307
+global GL_REFERENCED_BY_TESS_EVALUATION_SHADER: cuint <comptime> = 0x9308
+global GL_REFERENCED_BY_GEOMETRY_SHADER: cuint <comptime> = 0x9309
+global GL_REFERENCED_BY_FRAGMENT_SHADER: cuint <comptime> = 0x930a
+global GL_REFERENCED_BY_COMPUTE_SHADER: cuint <comptime> = 0x930b
+global GL_TOP_LEVEL_ARRAY_SIZE: cuint <comptime> = 0x930c
+global GL_TOP_LEVEL_ARRAY_STRIDE: cuint <comptime> = 0x930d
+global GL_LOCATION: cuint <comptime> = 0x930e
+global GL_LOCATION_INDEX: cuint <comptime> = 0x930f
+global GL_IS_PER_PATCH: cuint <comptime> = 0x92e7
+global GL_SHADER_STORAGE_BUFFER: cuint <comptime> = 0x90d2
+global GL_SHADER_STORAGE_BUFFER_BINDING: cuint <comptime> = 0x90d3
+global GL_SHADER_STORAGE_BUFFER_START: cuint <comptime> = 0x90d4
+global GL_SHADER_STORAGE_BUFFER_SIZE: cuint <comptime> = 0x90d5
+global GL_MAX_VERTEX_SHADER_STORAGE_BLOCKS: cuint <comptime> = 0x90d6
+global GL_MAX_GEOMETRY_SHADER_STORAGE_BLOCKS: cuint <comptime> = 0x90d7
+global GL_MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS: cuint <comptime> = 0x90d8
+global GL_MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS: cuint <comptime> = 0x90d9
+global GL_MAX_FRAGMENT_SHADER_STORAGE_BLOCKS: cuint <comptime> = 0x90da
+global GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS: cuint <comptime> = 0x90db
+global GL_MAX_COMBINED_SHADER_STORAGE_BLOCKS: cuint <comptime> = 0x90dc
+global GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS: cuint <comptime> = 0x90dd
+global GL_MAX_SHADER_STORAGE_BLOCK_SIZE: cuint <comptime> = 0x90de
+global GL_SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT: cuint <comptime> = 0x90df
+global GL_SHADER_STORAGE_BARRIER_BIT: cuint <comptime> = 0x00002000
+global GL_MAX_COMBINED_SHADER_OUTPUT_RESOURCES: cuint <comptime> = 0x8f39
+global GL_DEPTH_STENCIL_TEXTURE_MODE: cuint <comptime> = 0x90ea
+global GL_TEXTURE_BUFFER_OFFSET: cuint <comptime> = 0x919d
+global GL_TEXTURE_BUFFER_SIZE: cuint <comptime> = 0x919e
+global GL_TEXTURE_BUFFER_OFFSET_ALIGNMENT: cuint <comptime> = 0x919f
+global GL_TEXTURE_VIEW_MIN_LEVEL: cuint <comptime> = 0x82db
+global GL_TEXTURE_VIEW_NUM_LEVELS: cuint <comptime> = 0x82dc
+global GL_TEXTURE_VIEW_MIN_LAYER: cuint <comptime> = 0x82dd
+global GL_TEXTURE_VIEW_NUM_LAYERS: cuint <comptime> = 0x82de
+global GL_TEXTURE_IMMUTABLE_LEVELS: cuint <comptime> = 0x82df
+global GL_VERTEX_ATTRIB_BINDING: cuint <comptime> = 0x82d4
+global GL_VERTEX_ATTRIB_RELATIVE_OFFSET: cuint <comptime> = 0x82d5
+global GL_VERTEX_BINDING_DIVISOR: cuint <comptime> = 0x82d6
+global GL_VERTEX_BINDING_OFFSET: cuint <comptime> = 0x82d7
+global GL_VERTEX_BINDING_STRIDE: cuint <comptime> = 0x82d8
+global GL_MAX_VERTEX_ATTRIB_RELATIVE_OFFSET: cuint <comptime> = 0x82d9
+global GL_MAX_VERTEX_ATTRIB_BINDINGS: cuint <comptime> = 0x82da
+global GL_VERTEX_BINDING_BUFFER: cuint <comptime> = 0x8f4f
+global GL_DISPLAY_LIST: cuint <comptime> = 0x82e7
+global GL_MAX_VERTEX_ATTRIB_STRIDE: cuint <comptime> = 0x82e5
+global GL_PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED: cuint <comptime> = 0x8221
+global GL_TEXTURE_BUFFER_BINDING: cuint <comptime> = 0x8c2a
+global GL_MAP_PERSISTENT_BIT: cuint <comptime> = 0x0040
+global GL_MAP_COHERENT_BIT: cuint <comptime> = 0x0080
+global GL_DYNAMIC_STORAGE_BIT: cuint <comptime> = 0x0100
+global GL_CLIENT_STORAGE_BIT: cuint <comptime> = 0x0200
+global GL_CLIENT_MAPPED_BUFFER_BARRIER_BIT: cuint <comptime> = 0x00004000
+global GL_BUFFER_IMMUTABLE_STORAGE: cuint <comptime> = 0x821f
+global GL_BUFFER_STORAGE_FLAGS: cuint <comptime> = 0x8220
+global GL_CLEAR_TEXTURE: cuint <comptime> = 0x9365
+global GL_LOCATION_COMPONENT: cuint <comptime> = 0x934a
+global GL_TRANSFORM_FEEDBACK_BUFFER_INDEX: cuint <comptime> = 0x934b
+global GL_TRANSFORM_FEEDBACK_BUFFER_STRIDE: cuint <comptime> = 0x934c
+global GL_QUERY_BUFFER: cuint <comptime> = 0x9192
+global GL_QUERY_BUFFER_BARRIER_BIT: cuint <comptime> = 0x00008000
+global GL_QUERY_BUFFER_BINDING: cuint <comptime> = 0x9193
+global GL_QUERY_RESULT_NO_WAIT: cuint <comptime> = 0x9194
+global GL_MIRROR_CLAMP_TO_EDGE: cuint <comptime> = 0x8743
+global GL_CONTEXT_LOST: cuint <comptime> = 0x0507
+global GL_NEGATIVE_ONE_TO_ONE: cuint <comptime> = 0x935e
+global GL_ZERO_TO_ONE: cuint <comptime> = 0x935f
+global GL_CLIP_ORIGIN: cuint <comptime> = 0x935c
+global GL_CLIP_DEPTH_MODE: cuint <comptime> = 0x935d
+global GL_QUERY_WAIT_INVERTED: cuint <comptime> = 0x8e17
+global GL_QUERY_NO_WAIT_INVERTED: cuint <comptime> = 0x8e18
+global GL_QUERY_BY_REGION_WAIT_INVERTED: cuint <comptime> = 0x8e19
+global GL_QUERY_BY_REGION_NO_WAIT_INVERTED: cuint <comptime> = 0x8e1a
+global GL_MAX_CULL_DISTANCES: cuint <comptime> = 0x82f9
+global GL_MAX_COMBINED_CLIP_AND_CULL_DISTANCES: cuint <comptime> = 0x82fa
+global GL_TEXTURE_TARGET: cuint <comptime> = 0x1006
+global GL_QUERY_TARGET: cuint <comptime> = 0x82ea
+global GL_GUILTY_CONTEXT_RESET: cuint <comptime> = 0x8253
+global GL_INNOCENT_CONTEXT_RESET: cuint <comptime> = 0x8254
+global GL_UNKNOWN_CONTEXT_RESET: cuint <comptime> = 0x8255
+global GL_RESET_NOTIFICATION_STRATEGY: cuint <comptime> = 0x8256
+global GL_LOSE_CONTEXT_ON_RESET: cuint <comptime> = 0x8252
+global GL_NO_RESET_NOTIFICATION: cuint <comptime> = 0x8261
+global GL_CONTEXT_FLAG_ROBUST_ACCESS_BIT: cuint <comptime> = 0x00000004
+global GL_COLOR_TABLE: cuint <comptime> = 0x80d0
+global GL_POST_CONVOLUTION_COLOR_TABLE: cuint <comptime> = 0x80d1
+global GL_POST_COLOR_MATRIX_COLOR_TABLE: cuint <comptime> = 0x80d2
+global GL_PROXY_COLOR_TABLE: cuint <comptime> = 0x80d3
+global GL_PROXY_POST_CONVOLUTION_COLOR_TABLE: cuint <comptime> = 0x80d4
+global GL_PROXY_POST_COLOR_MATRIX_COLOR_TABLE: cuint <comptime> = 0x80d5
+global GL_CONVOLUTION_1D: cuint <comptime> = 0x8010
+global GL_CONVOLUTION_2D: cuint <comptime> = 0x8011
+global GL_SEPARABLE_2D: cuint <comptime> = 0x8012
+global GL_HISTOGRAM: cuint <comptime> = 0x8024
+global GL_PROXY_HISTOGRAM: cuint <comptime> = 0x8025
+global GL_MINMAX: cuint <comptime> = 0x802e
+global GL_CONTEXT_RELEASE_BEHAVIOR: cuint <comptime> = 0x82fb
+global GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH: cuint <comptime> = 0x82fc
+global GL_SHADER_BINARY_FORMAT_SPIR_V: cuint <comptime> = 0x9551
+global GL_SPIR_V_BINARY: cuint <comptime> = 0x9552
+global GL_PARAMETER_BUFFER: cuint <comptime> = 0x80ee
+global GL_PARAMETER_BUFFER_BINDING: cuint <comptime> = 0x80ef
+global GL_CONTEXT_FLAG_NO_ERROR_BIT: cuint <comptime> = 0x00000008
+global GL_VERTICES_SUBMITTED: cuint <comptime> = 0x82ee
+global GL_PRIMITIVES_SUBMITTED: cuint <comptime> = 0x82ef
+global GL_VERTEX_SHADER_INVOCATIONS: cuint <comptime> = 0x82f0
+global GL_TESS_CONTROL_SHADER_PATCHES: cuint <comptime> = 0x82f1
+global GL_TESS_EVALUATION_SHADER_INVOCATIONS: cuint <comptime> = 0x82f2
+global GL_GEOMETRY_SHADER_PRIMITIVES_EMITTED: cuint <comptime> = 0x82f3
+global GL_FRAGMENT_SHADER_INVOCATIONS: cuint <comptime> = 0x82f4
+global GL_COMPUTE_SHADER_INVOCATIONS: cuint <comptime> = 0x82f5
+global GL_CLIPPING_INPUT_PRIMITIVES: cuint <comptime> = 0x82f6
+global GL_CLIPPING_OUTPUT_PRIMITIVES: cuint <comptime> = 0x82f7
+global GL_POLYGON_OFFSET_CLAMP: cuint <comptime> = 0x8e1b
+global GL_SPIR_V_EXTENSIONS: cuint <comptime> = 0x9553
+global GL_NUM_SPIR_V_EXTENSIONS: cuint <comptime> = 0x9554
+global GL_TEXTURE_MAX_ANISOTROPY: cuint <comptime> = 0x84fe
+global GL_MAX_TEXTURE_MAX_ANISOTROPY: cuint <comptime> = 0x84ff
+global GL_TRANSFORM_FEEDBACK_OVERFLOW: cuint <comptime> = 0x82ec
+global GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW: cuint <comptime> = 0x82ed
+global GL_VERSION_1_0: cuint <comptime> = 1
+global GL_VERSION_1_1: cuint <comptime> = 1
+global GL_VERSION_1_2: cuint <comptime> = 1
+global GL_VERSION_1_3: cuint <comptime> = 1
+global GL_VERSION_1_4: cuint <comptime> = 1
+global GL_VERSION_1_5: cuint <comptime> = 1
+global GL_VERSION_2_0: cuint <comptime> = 1
+global GL_VERSION_2_1: cuint <comptime> = 1
+global GL_VERSION_3_0: cuint <comptime> = 1
+global GL_VERSION_3_1: cuint <comptime> = 1
+global GL_VERSION_3_2: cuint <comptime> = 1
+global GL_VERSION_3_3: cuint <comptime> = 1
+global GL_VERSION_4_0: cuint <comptime> = 1
+global GL_VERSION_4_1: cuint <comptime> = 1
+global GL_VERSION_4_2: cuint <comptime> = 1
+global GL_VERSION_4_3: cuint <comptime> = 1
+global GL_VERSION_4_4: cuint <comptime> = 1
+global GL_VERSION_4_5: cuint <comptime> = 1
+global GL_VERSION_4_6: cuint <comptime> = 1

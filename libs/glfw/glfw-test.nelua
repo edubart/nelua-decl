@@ -1,3 +1,4 @@
+require 'glad'
 require 'glfw'
 
 local g: float32 = 0.0_f32
@@ -15,6 +16,10 @@ if not window then
 end
 glfwMakeContextCurrent(window)
 glfwSwapInterval(1)
+if gladLoadGL() == 0 then
+  error 'Could not initialize GLAD'
+end
+print('OpenGL loaded:', (@cstring)(glGetString(GL_VERSION)))
 
 while glfwWindowShouldClose(window) == 0 do
   draw()
