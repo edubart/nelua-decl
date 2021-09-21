@@ -8,10 +8,7 @@ generate:
 	$(LUA_PATH) $(CC) $(GCCPLUGIN) -S glfw-api.c -fplugin-arg-gcclua-script=glfw.lua > glfw.nelua
 
 download:
-	# should be installed by the user
-	wget -O glad.c https://glad.dav1d.de/generated/tmpq9zjypesglad/glad.c
-	wget -O glad.h https://glad.dav1d.de/generated/tmpq9zjypesglad/glad.h
-	wget -O khrplatform.h https://glad.dav1d.de/generated/tmpq9zjypesglad/khrplatform.h
+	# goto https://glad.dav1d.de/ and download manually
 
 test:
 	$(NELUA) glfw-test.nelua
