@@ -6,14 +6,12 @@ nldecl.include_names = {
 }
 
 nldecl.exclude_names = {
-  '^GL_VERSION_',
   GLFWvkproc = true,
 }
 
 nldecl.include_macros = {
   cint = {
     '^GLFW_',
-    '^GL_[A-Z_]+$',
     GLFW_VERSION_MAJOR = false,
     GLFW_VERSION_MINOR = false,
     GLFW_VERSION_REVISION = false,

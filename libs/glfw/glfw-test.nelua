@@ -1,4 +1,4 @@
-require 'glad'
+require 'glad' -- GLAD must be required before GLFW!
 require 'glfw'
 
 local g: float32 = 0.0_f32

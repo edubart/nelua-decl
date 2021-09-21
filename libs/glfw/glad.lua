@@ -12,6 +12,9 @@ nldecl.include_macros = {
   uint64 = {
     GL_TIMEOUT_IGNORED = true,
   },
+  boolean = {
+    ['^GL_VERSION_'] = false,
+  },
   cuint = {
     '^GL_',
   },

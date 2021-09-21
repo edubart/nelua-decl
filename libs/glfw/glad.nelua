@@ -2888,22 +2888,22 @@ global GL_TEXTURE_MAX_ANISOTROPY: cuint <comptime> = 0x84fe
 global GL_MAX_TEXTURE_MAX_ANISOTROPY: cuint <comptime> = 0x84ff
 global GL_TRANSFORM_FEEDBACK_OVERFLOW: cuint <comptime> = 0x82ec
 global GL_TRANSFORM_FEEDBACK_STREAM_OVERFLOW: cuint <comptime> = 0x82ed
-global GL_VERSION_1_0: cuint <comptime> = 1
-global GL_VERSION_1_1: cuint <comptime> = 1
-global GL_VERSION_1_2: cuint <comptime> = 1
-global GL_VERSION_1_3: cuint <comptime> = 1
-global GL_VERSION_1_4: cuint <comptime> = 1
-global GL_VERSION_1_5: cuint <comptime> = 1
-global GL_VERSION_2_0: cuint <comptime> = 1
-global GL_VERSION_2_1: cuint <comptime> = 1
-global GL_VERSION_3_0: cuint <comptime> = 1
-global GL_VERSION_3_1: cuint <comptime> = 1
-global GL_VERSION_3_2: cuint <comptime> = 1
-global GL_VERSION_3_3: cuint <comptime> = 1
-global GL_VERSION_4_0: cuint <comptime> = 1
-global GL_VERSION_4_1: cuint <comptime> = 1
-global GL_VERSION_4_2: cuint <comptime> = 1
-global GL_VERSION_4_3: cuint <comptime> = 1
-global GL_VERSION_4_4: cuint <comptime> = 1
-global GL_VERSION_4_5: cuint <comptime> = 1
-global GL_VERSION_4_6: cuint <comptime> = 1
+global GL_VERSION_1_0: boolean <cimport,nodecl,const>
+global GL_VERSION_1_1: boolean <cimport,nodecl,const>
+global GL_VERSION_1_2: boolean <cimport,nodecl,const>
+global GL_VERSION_1_3: boolean <cimport,nodecl,const>
+global GL_VERSION_1_4: boolean <cimport,nodecl,const>
+global GL_VERSION_1_5: boolean <cimport,nodecl,const>
+global GL_VERSION_2_0: boolean <cimport,nodecl,const>
+global GL_VERSION_2_1: boolean <cimport,nodecl,const>
+global GL_VERSION_3_0: boolean <cimport,nodecl,const>
+global GL_VERSION_3_1: boolean <cimport,nodecl,const>
+global GL_VERSION_3_2: boolean <cimport,nodecl,const>
+global GL_VERSION_3_3: boolean <cimport,nodecl,const>
+global GL_VERSION_4_0: boolean <cimport,nodecl,const>
+global GL_VERSION_4_1: boolean <cimport,nodecl,const>
+global GL_VERSION_4_2: boolean <cimport,nodecl,const>
+global GL_VERSION_4_3: boolean <cimport,nodecl,const>
+global GL_VERSION_4_4: boolean <cimport,nodecl,const>
+global GL_VERSION_4_5: boolean <cimport,nodecl,const>
+global GL_VERSION_4_6: boolean <cimport,nodecl,const>
