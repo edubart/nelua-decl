@@ -43,6 +43,9 @@ global statx: type <cimport,nodecl,cincomplete,ctypedef> = @record{
   __spare2: culonglong,
   __spare3: [12]culonglong
 }
+global cpu_set_t: type <cimport,nodecl> = @record{
+  __bits: [16]culong
+}
 global __kernel_timespec: type <cimport,nodecl,ctypedef> = @record{
   tv_sec: clonglong,
   tv_nsec: clonglong

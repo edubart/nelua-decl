@@ -10,6 +10,7 @@ nldecl.include_names = {
   sockaddr = true,
   statx = true,
   open_how = true,
+  cpu_set_t = true,
 }
 
 nldecl.include_macros = {
