@@ -16,7 +16,7 @@ if not window then
 end
 glfwMakeContextCurrent(window)
 glfwSwapInterval(1)
-if gladLoadGL() == 0 then
+if gladLoadGL(glfwGetProcAddress) == 0 then
   error 'Could not initialize GLAD'
 end
 print('OpenGL loaded:', (@cstring)(glGetString(GL_VERSION)))

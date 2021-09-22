@@ -22,8 +22,10 @@ nldecl.include_macros = {
 
 nldecl.prepend_code = [=[
 ##[[
+if not GLAD_NO_IMPL then
+  cdefine 'GLAD_GL_IMPLEMENTATION'
+end
 cinclude 'glad.h'
-cfile 'glad.c'
 if ccinfo.is_linux then
   linklib 'dl'
 end
