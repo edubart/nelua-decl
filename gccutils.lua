@@ -114,7 +114,7 @@ function gccutils.node_ctype2nltype(node)
         elseif ctype:match('int32') then nltype = 'int32'
         elseif ctype:match('int16') then nltype = 'int16'
         elseif ctype:match('int8') then nltype = 'int8'
-        elseif ctype:match('intptr') then nltype = 'isize'
+        elseif ctype:match('intptr') or ctype:match('sizeiptr') then nltype = 'isize'
         end
       end
     end

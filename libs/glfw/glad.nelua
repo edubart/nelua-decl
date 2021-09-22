@@ -43,9 +43,9 @@ global glBeginTransformFeedback: function(cuint): void <cimport,nodecl>
 global glBindAttribLocation: function(cuint, cuint, cstring): void <cimport,nodecl>
 global glBindBuffer: function(cuint, cuint): void <cimport,nodecl>
 global glBindBufferBase: function(cuint, cuint, cuint): void <cimport,nodecl>
-global glBindBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glBindBufferRange: function(cuint, cuint, cuint, isize, isize): void <cimport,nodecl>
 global glBindBuffersBase: function(cuint, cuint, cint, *cuint): void <cimport,nodecl>
-global glBindBuffersRange: function(cuint, cuint, cint, *cuint, *isize, *clong): void <cimport,nodecl>
+global glBindBuffersRange: function(cuint, cuint, cint, *cuint, *isize, *isize): void <cimport,nodecl>
 global glBindFragDataLocation: function(cuint, cuint, cstring): void <cimport,nodecl>
 global glBindFragDataLocationIndexed: function(cuint, cuint, cuint, cstring): void <cimport,nodecl>
 global glBindFramebuffer: function(cuint, cuint): void <cimport,nodecl>
@@ -74,9 +74,9 @@ global glBlendFuncSeparatei: function(cuint, cuint, cuint, cuint, cuint): void <
 global glBlendFunci: function(cuint, cuint, cuint): void <cimport,nodecl>
 global glBlitFramebuffer: function(cint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint): void <cimport,nodecl>
 global glBlitNamedFramebuffer: function(cuint, cuint, cint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint): void <cimport,nodecl>
-global glBufferData: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
-global glBufferStorage: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
-global glBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glBufferData: function(cuint, isize, pointer, cuint): void <cimport,nodecl>
+global glBufferStorage: function(cuint, isize, pointer, cuint): void <cimport,nodecl>
+global glBufferSubData: function(cuint, isize, isize, pointer): void <cimport,nodecl>
 global glCallList: function(cuint): void <cimport,nodecl>
 global glCallLists: function(cint, cuint, pointer): void <cimport,nodecl>
 global glCheckFramebufferStatus: function(cuint): cuint <cimport,nodecl>
@@ -85,7 +85,7 @@ global glClampColor: function(cuint, cuint): void <cimport,nodecl>
 global glClear: function(cuint): void <cimport,nodecl>
 global glClearAccum: function(float32, float32, float32, float32): void <cimport,nodecl>
 global glClearBufferData: function(cuint, cuint, cuint, cuint, pointer): void <cimport,nodecl>
-global glClearBufferSubData: function(cuint, cuint, isize, clong, cuint, cuint, pointer): void <cimport,nodecl>
+global glClearBufferSubData: function(cuint, cuint, isize, isize, cuint, cuint, pointer): void <cimport,nodecl>
 global glClearBufferfi: function(cuint, cint, float32, cint): void <cimport,nodecl>
 global glClearBufferfv: function(cuint, cint, *float32): void <cimport,nodecl>
 global glClearBufferiv: function(cuint, cint, *cint): void <cimport,nodecl>
@@ -95,7 +95,7 @@ global glClearDepth: function(float64): void <cimport,nodecl>
 global glClearDepthf: function(float32): void <cimport,nodecl>
 global glClearIndex: function(float32): void <cimport,nodecl>
 global glClearNamedBufferData: function(cuint, cuint, cuint, cuint, pointer): void <cimport,nodecl>
-global glClearNamedBufferSubData: function(cuint, cuint, isize, clong, cuint, cuint, pointer): void <cimport,nodecl>
+global glClearNamedBufferSubData: function(cuint, cuint, isize, isize, cuint, cuint, pointer): void <cimport,nodecl>
 global glClearNamedFramebufferfi: function(cuint, cuint, cint, float32, cint): void <cimport,nodecl>
 global glClearNamedFramebufferfv: function(cuint, cuint, cint, *float32): void <cimport,nodecl>
 global glClearNamedFramebufferiv: function(cuint, cuint, cint, *cint): void <cimport,nodecl>
@@ -157,9 +157,9 @@ global glCompressedTexSubImage3D: function(cuint, cint, cint, cint, cint, cint, 
 global glCompressedTextureSubImage1D: function(cuint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
 global glCompressedTextureSubImage2D: function(cuint, cint, cint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
 global glCompressedTextureSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cint, pointer): void <cimport,nodecl>
-global glCopyBufferSubData: function(cuint, cuint, isize, isize, clong): void <cimport,nodecl>
+global glCopyBufferSubData: function(cuint, cuint, isize, isize, isize): void <cimport,nodecl>
 global glCopyImageSubData: function(cuint, cuint, cint, cint, cint, cint, cuint, cuint, cint, cint, cint, cint, cint, cint, cint): void <cimport,nodecl>
-global glCopyNamedBufferSubData: function(cuint, cuint, isize, isize, clong): void <cimport,nodecl>
+global glCopyNamedBufferSubData: function(cuint, cuint, isize, isize, isize): void <cimport,nodecl>
 global glCopyPixels: function(cint, cint, cint, cint, cuint): void <cimport,nodecl>
 global glCopyTexImage1D: function(cuint, cint, cuint, cint, cint, cint, cint): void <cimport,nodecl>
 global glCopyTexImage2D: function(cuint, cint, cuint, cint, cint, cint, cint, cint): void <cimport,nodecl>
@@ -262,8 +262,8 @@ global glFeedbackBuffer: function(cint, cuint, *float32): void <cimport,nodecl>
 global glFenceSync: function(cuint, cuint): GLsync <cimport,nodecl>
 global glFinish: function(): void <cimport,nodecl>
 global glFlush: function(): void <cimport,nodecl>
-global glFlushMappedBufferRange: function(cuint, isize, clong): void <cimport,nodecl>
-global glFlushMappedNamedBufferRange: function(cuint, isize, clong): void <cimport,nodecl>
+global glFlushMappedBufferRange: function(cuint, isize, isize): void <cimport,nodecl>
+global glFlushMappedNamedBufferRange: function(cuint, isize, isize): void <cimport,nodecl>
 global glFogCoordPointer: function(cuint, cint, pointer): void <cimport,nodecl>
 global glFogCoordd: function(float64): void <cimport,nodecl>
 global glFogCoorddv: function(*float64): void <cimport,nodecl>
@@ -311,7 +311,7 @@ global glGetBooleanv: function(cuint, *cuchar): void <cimport,nodecl>
 global glGetBufferParameteri64v: function(cuint, cuint, *int64): void <cimport,nodecl>
 global glGetBufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
 global glGetBufferPointerv: function(cuint, cuint, *pointer): void <cimport,nodecl>
-global glGetBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glGetBufferSubData: function(cuint, isize, isize, pointer): void <cimport,nodecl>
 global glGetClipPlane: function(cuint, *float64): void <cimport,nodecl>
 global glGetCompressedTexImage: function(cuint, cint, pointer): void <cimport,nodecl>
 global glGetCompressedTextureImage: function(cuint, cint, cint, pointer): void <cimport,nodecl>
@@ -344,7 +344,7 @@ global glGetMultisamplefv: function(cuint, cuint, *float32): void <cimport,nodec
 global glGetNamedBufferParameteri64v: function(cuint, cuint, *int64): void <cimport,nodecl>
 global glGetNamedBufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
 global glGetNamedBufferPointerv: function(cuint, cuint, *pointer): void <cimport,nodecl>
-global glGetNamedBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glGetNamedBufferSubData: function(cuint, isize, isize, pointer): void <cimport,nodecl>
 global glGetNamedFramebufferAttachmentParameteriv: function(cuint, cuint, cuint, *cint): void <cimport,nodecl>
 global glGetNamedFramebufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
 global glGetNamedRenderbufferParameteriv: function(cuint, cuint, *cint): void <cimport,nodecl>
@@ -467,7 +467,7 @@ global glIndexubv: function(*cuchar): void <cimport,nodecl>
 global glInitNames: function(): void <cimport,nodecl>
 global glInterleavedArrays: function(cuint, cint, pointer): void <cimport,nodecl>
 global glInvalidateBufferData: function(cuint): void <cimport,nodecl>
-global glInvalidateBufferSubData: function(cuint, isize, clong): void <cimport,nodecl>
+global glInvalidateBufferSubData: function(cuint, isize, isize): void <cimport,nodecl>
 global glInvalidateFramebuffer: function(cuint, cint, *cuint): void <cimport,nodecl>
 global glInvalidateNamedFramebufferData: function(cuint, cint, *cuint): void <cimport,nodecl>
 global glInvalidateNamedFramebufferSubData: function(cuint, cint, *cuint, cint, cint, cint, cint): void <cimport,nodecl>
@@ -513,13 +513,13 @@ global glMap1f: function(cuint, float32, float32, cint, cint, *float32): void <c
 global glMap2d: function(cuint, float64, float64, cint, cint, float64, float64, cint, cint, *float64): void <cimport,nodecl>
 global glMap2f: function(cuint, float32, float32, cint, cint, float32, float32, cint, cint, *float32): void <cimport,nodecl>
 global glMapBuffer: function(cuint, cuint): pointer <cimport,nodecl>
-global glMapBufferRange: function(cuint, isize, clong, cuint): pointer <cimport,nodecl>
+global glMapBufferRange: function(cuint, isize, isize, cuint): pointer <cimport,nodecl>
 global glMapGrid1d: function(cint, float64, float64): void <cimport,nodecl>
 global glMapGrid1f: function(cint, float32, float32): void <cimport,nodecl>
 global glMapGrid2d: function(cint, float64, float64, cint, float64, float64): void <cimport,nodecl>
 global glMapGrid2f: function(cint, float32, float32, cint, float32, float32): void <cimport,nodecl>
 global glMapNamedBuffer: function(cuint, cuint): pointer <cimport,nodecl>
-global glMapNamedBufferRange: function(cuint, isize, clong, cuint): pointer <cimport,nodecl>
+global glMapNamedBufferRange: function(cuint, isize, isize, cuint): pointer <cimport,nodecl>
 global glMaterialf: function(cuint, cuint, float32): void <cimport,nodecl>
 global glMaterialfv: function(cuint, cuint, *float32): void <cimport,nodecl>
 global glMateriali: function(cuint, cuint, cint): void <cimport,nodecl>
@@ -579,9 +579,9 @@ global glMultiTexCoordP3ui: function(cuint, cuint, cuint): void <cimport,nodecl>
 global glMultiTexCoordP3uiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
 global glMultiTexCoordP4ui: function(cuint, cuint, cuint): void <cimport,nodecl>
 global glMultiTexCoordP4uiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
-global glNamedBufferData: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
-global glNamedBufferStorage: function(cuint, clong, pointer, cuint): void <cimport,nodecl>
-global glNamedBufferSubData: function(cuint, isize, clong, pointer): void <cimport,nodecl>
+global glNamedBufferData: function(cuint, isize, pointer, cuint): void <cimport,nodecl>
+global glNamedBufferStorage: function(cuint, isize, pointer, cuint): void <cimport,nodecl>
+global glNamedBufferSubData: function(cuint, isize, isize, pointer): void <cimport,nodecl>
 global glNamedFramebufferDrawBuffer: function(cuint, cuint): void <cimport,nodecl>
 global glNamedFramebufferDrawBuffers: function(cuint, cint, *cuint): void <cimport,nodecl>
 global glNamedFramebufferParameteri: function(cuint, cuint, cint): void <cimport,nodecl>
@@ -783,7 +783,7 @@ global glStencilMaskSeparate: function(cuint, cuint): void <cimport,nodecl>
 global glStencilOp: function(cuint, cuint, cuint): void <cimport,nodecl>
 global glStencilOpSeparate: function(cuint, cuint, cuint, cuint): void <cimport,nodecl>
 global glTexBuffer: function(cuint, cuint, cuint): void <cimport,nodecl>
-global glTexBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glTexBufferRange: function(cuint, cuint, cuint, isize, isize): void <cimport,nodecl>
 global glTexCoord1d: function(float64): void <cimport,nodecl>
 global glTexCoord1dv: function(*float64): void <cimport,nodecl>
 global glTexCoord1f: function(float32): void <cimport,nodecl>
@@ -856,7 +856,7 @@ global glTexSubImage2D: function(cuint, cint, cint, cint, cint, cint, cuint, cui
 global glTexSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
 global glTextureBarrier: function(): void <cimport,nodecl>
 global glTextureBuffer: function(cuint, cuint, cuint): void <cimport,nodecl>
-global glTextureBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glTextureBufferRange: function(cuint, cuint, cuint, isize, isize): void <cimport,nodecl>
 global glTextureParameterIiv: function(cuint, cuint, *cint): void <cimport,nodecl>
 global glTextureParameterIuiv: function(cuint, cuint, *cuint): void <cimport,nodecl>
 global glTextureParameterf: function(cuint, cuint, float32): void <cimport,nodecl>
@@ -873,7 +873,7 @@ global glTextureSubImage2D: function(cuint, cint, cint, cint, cint, cint, cuint,
 global glTextureSubImage3D: function(cuint, cint, cint, cint, cint, cint, cint, cint, cuint, cuint, pointer): void <cimport,nodecl>
 global glTextureView: function(cuint, cuint, cuint, cuint, cuint, cuint, cuint, cuint): void <cimport,nodecl>
 global glTransformFeedbackBufferBase: function(cuint, cuint, cuint): void <cimport,nodecl>
-global glTransformFeedbackBufferRange: function(cuint, cuint, cuint, isize, clong): void <cimport,nodecl>
+global glTransformFeedbackBufferRange: function(cuint, cuint, cuint, isize, isize): void <cimport,nodecl>
 global glTransformFeedbackVaryings: function(cuint, cint, *cstring, cuint): void <cimport,nodecl>
 global glTranslated: function(float64, float64, float64): void <cimport,nodecl>
 global glTranslatef: function(float32, float32, float32): void <cimport,nodecl>
