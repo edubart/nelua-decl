@@ -85,7 +85,8 @@ and multi-protocol networking library)
     - [lexbor.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/lexbor/lexbor.nelua) (HTML/CSS/DOM parser/engine)
 * [tree-sitter](https://tree-sitter.github.io/tree-sitter/)
     - [tree-sitter.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/tree-sitter/tree-sitter.nelua) (A parser generator tool and an incremental parsing library)
-
+* [microui](https://github.com/rxi/microui)
+    - [microui.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/microui/microui.nelua) (A tiny, portable, immediate-mode UI library)
 Plus the following platform specific libraries:
 * dl
     - [dl.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/dl/dl.nelua) (Unix dynamic library loader)

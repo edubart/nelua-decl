@@ -1,0 +1,6 @@
+require 'microui'
+
+local muctx: mu_Context
+mu_init(&muctx)
+
+print 'microui OK!'

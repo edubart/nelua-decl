@@ -1,0 +1,295 @@
+##[[
+cinclude 'microui.h'
+if not MICROUI_NO_IMPL then
+  cinclude 'microui.c'
+end
+]]
+global MU_CLIP_PART: cint <comptime> = 1
+global MU_CLIP_ALL: cint <comptime> = 2
+global MU_COMMAND_JUMP: cint <comptime> = 1
+global MU_COMMAND_CLIP: cint <comptime> = 2
+global MU_COMMAND_RECT: cint <comptime> = 3
+global MU_COMMAND_TEXT: cint <comptime> = 4
+global MU_COMMAND_ICON: cint <comptime> = 5
+global MU_COMMAND_MAX: cint <comptime> = 6
+global MU_COLOR_TEXT: cint <comptime> = 0
+global MU_COLOR_BORDER: cint <comptime> = 1
+global MU_COLOR_WINDOWBG: cint <comptime> = 2
+global MU_COLOR_TITLEBG: cint <comptime> = 3
+global MU_COLOR_TITLETEXT: cint <comptime> = 4
+global MU_COLOR_PANELBG: cint <comptime> = 5
+global MU_COLOR_BUTTON: cint <comptime> = 6
+global MU_COLOR_BUTTONHOVER: cint <comptime> = 7
+global MU_COLOR_BUTTONFOCUS: cint <comptime> = 8
+global MU_COLOR_BASE: cint <comptime> = 9
+global MU_COLOR_BASEHOVER: cint <comptime> = 10
+global MU_COLOR_BASEFOCUS: cint <comptime> = 11
+global MU_COLOR_SCROLLBASE: cint <comptime> = 12
+global MU_COLOR_SCROLLTHUMB: cint <comptime> = 13
+global MU_COLOR_MAX: cint <comptime> = 14
+global MU_ICON_CLOSE: cint <comptime> = 1
+global MU_ICON_CHECK: cint <comptime> = 2
+global MU_ICON_COLLAPSED: cint <comptime> = 3
+global MU_ICON_EXPANDED: cint <comptime> = 4
+global MU_ICON_MAX: cint <comptime> = 5
+global MU_RES_ACTIVE: cint <comptime> = 1
+global MU_RES_SUBMIT: cint <comptime> = 2
+global MU_RES_CHANGE: cint <comptime> = 4
+global MU_OPT_ALIGNCENTER: cint <comptime> = 1
+global MU_OPT_ALIGNRIGHT: cint <comptime> = 2
+global MU_OPT_NOINTERACT: cint <comptime> = 4
+global MU_OPT_NOFRAME: cint <comptime> = 8
+global MU_OPT_NORESIZE: cint <comptime> = 16
+global MU_OPT_NOSCROLL: cint <comptime> = 32
+global MU_OPT_NOCLOSE: cint <comptime> = 64
+global MU_OPT_NOTITLE: cint <comptime> = 128
+global MU_OPT_HOLDFOCUS: cint <comptime> = 256
+global MU_OPT_AUTOSIZE: cint <comptime> = 512
+global MU_OPT_POPUP: cint <comptime> = 1024
+global MU_OPT_CLOSED: cint <comptime> = 2048
+global MU_OPT_EXPANDED: cint <comptime> = 4096
+global MU_MOUSE_LEFT: cint <comptime> = 1
+global MU_MOUSE_RIGHT: cint <comptime> = 2
+global MU_MOUSE_MIDDLE: cint <comptime> = 4
+global MU_KEY_SHIFT: cint <comptime> = 1
+global MU_KEY_CTRL: cint <comptime> = 2
+global MU_KEY_ALT: cint <comptime> = 4
+global MU_KEY_BACKSPACE: cint <comptime> = 8
+global MU_KEY_RETURN: cint <comptime> = 16
+global mu_Context: type <cimport,nodecl,forwarddecl> = @record{}
+global mu_Font: type = @pointer
+global mu_Vec2: type <cimport,nodecl> = @record{
+  x: cint,
+  y: cint
+}
+global mu_Rect: type <cimport,nodecl> = @record{
+  x: cint,
+  y: cint,
+  w: cint,
+  h: cint
+}
+global mu_Color: type <cimport,nodecl> = @record{
+  r: cuchar,
+  g: cuchar,
+  b: cuchar,
+  a: cuchar
+}
+global mu_PoolItem: type <cimport,nodecl> = @record{
+  id: cuint,
+  last_update: cint
+}
+global mu_BaseCommand: type <cimport,nodecl> = @record{
+  type: cint,
+  size: cint
+}
+global mu_JumpCommand: type <cimport,nodecl> = @record{
+  base: mu_BaseCommand,
+  dst: pointer
+}
+global mu_ClipCommand: type <cimport,nodecl> = @record{
+  base: mu_BaseCommand,
+  rect: mu_Rect
+}
+global mu_RectCommand: type <cimport,nodecl> = @record{
+  base: mu_BaseCommand,
+  rect: mu_Rect,
+  color: mu_Color
+}
+global mu_TextCommand: type <cimport,nodecl> = @record{
+  base: mu_BaseCommand,
+  font: mu_Font,
+  pos: mu_Vec2,
+  color: mu_Color,
+  str: [1]cchar
+}
+global mu_IconCommand: type <cimport,nodecl> = @record{
+  base: mu_BaseCommand,
+  rect: mu_Rect,
+  id: cint,
+  color: mu_Color
+}
+global mu_Command: type <cimport,nodecl> = @union{
+  type: cint,
+  base: mu_BaseCommand,
+  jump: mu_JumpCommand,
+  clip: mu_ClipCommand,
+  rect: mu_RectCommand,
+  text: mu_TextCommand,
+  icon: mu_IconCommand
+}
+global mu_Layout: type <cimport,nodecl> = @record{
+  body: mu_Rect,
+  next: mu_Rect,
+  position: mu_Vec2,
+  size: mu_Vec2,
+  max: mu_Vec2,
+  widths: [16]cint,
+  items: cint,
+  item_index: cint,
+  next_row: cint,
+  next_type: cint,
+  indent: cint
+}
+global mu_Container: type <cimport,nodecl> = @record{
+  head: *mu_Command,
+  tail: *mu_Command,
+  rect: mu_Rect,
+  body: mu_Rect,
+  content_size: mu_Vec2,
+  scroll: mu_Vec2,
+  zindex: cint,
+  open: cint
+}
+global mu_Style: type <cimport,nodecl> = @record{
+  font: mu_Font,
+  size: mu_Vec2,
+  padding: cint,
+  spacing: cint,
+  indent: cint,
+  title_height: cint,
+  scrollbar_size: cint,
+  thumb_size: cint,
+  colors: [14]mu_Color
+}
+mu_Context = @record{
+  text_width: function(mu_Font, cstring, cint): cint,
+  text_height: function(mu_Font): cint,
+  draw_frame: function(*mu_Context, mu_Rect, cint): void,
+  _style: mu_Style,
+  style: *mu_Style,
+  hover: cuint,
+  focus: cuint,
+  last_id: cuint,
+  last_rect: mu_Rect,
+  last_zindex: cint,
+  updated_focus: cint,
+  frame: cint,
+  hover_root: *mu_Container,
+  next_hover_root: *mu_Container,
+  scroll_target: *mu_Container,
+  number_edit_buf: [127]cchar,
+  number_edit: cuint,
+  command_list: record{
+    idx: cint,
+    items: [262144]cchar
+  },
+  root_list: record{
+    idx: cint,
+    items: [32]*mu_Container
+  },
+  container_stack: record{
+    idx: cint,
+    items: [32]*mu_Container
+  },
+  clip_stack: record{
+    idx: cint,
+    items: [32]mu_Rect
+  },
+  id_stack: record{
+    idx: cint,
+    items: [32]cuint
+  },
+  layout_stack: record{
+    idx: cint,
+    items: [16]mu_Layout
+  },
+  container_pool: [48]mu_PoolItem,
+  containers: [48]mu_Container,
+  treenode_pool: [48]mu_PoolItem,
+  mouse_pos: mu_Vec2,
+  last_mouse_pos: mu_Vec2,
+  mouse_delta: mu_Vec2,
+  scroll_delta: mu_Vec2,
+  mouse_down: cint,
+  mouse_pressed: cint,
+  key_down: cint,
+  key_pressed: cint,
+  input_text: [32]cchar
+}
+global function mu_vec2(x: cint, y: cint): mu_Vec2 <cimport,nodecl> end
+global function mu_rect(x: cint, y: cint, w: cint, h: cint): mu_Rect <cimport,nodecl> end
+global function mu_color(r: cint, g: cint, b: cint, a: cint): mu_Color <cimport,nodecl> end
+global function mu_init(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_begin(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_end(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_set_focus(ctx: *mu_Context, id: cuint): void <cimport,nodecl> end
+global function mu_get_id(ctx: *mu_Context, data: pointer, size: cint): cuint <cimport,nodecl> end
+global function mu_push_id(ctx: *mu_Context, data: pointer, size: cint): void <cimport,nodecl> end
+global function mu_pop_id(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_push_clip_rect(ctx: *mu_Context, rect: mu_Rect): void <cimport,nodecl> end
+global function mu_pop_clip_rect(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_get_clip_rect(ctx: *mu_Context): mu_Rect <cimport,nodecl> end
+global function mu_check_clip(ctx: *mu_Context, r: mu_Rect): cint <cimport,nodecl> end
+global function mu_get_current_container(ctx: *mu_Context): *mu_Container <cimport,nodecl> end
+global function mu_get_container(ctx: *mu_Context, name: cstring): *mu_Container <cimport,nodecl> end
+global function mu_bring_to_front(ctx: *mu_Context, cnt: *mu_Container): void <cimport,nodecl> end
+global function mu_pool_init(ctx: *mu_Context, items: *mu_PoolItem, len: cint, id: cuint): cint <cimport,nodecl> end
+global function mu_pool_get(ctx: *mu_Context, items: *mu_PoolItem, len: cint, id: cuint): cint <cimport,nodecl> end
+global function mu_pool_update(ctx: *mu_Context, items: *mu_PoolItem, idx: cint): void <cimport,nodecl> end
+global function mu_input_mousemove(ctx: *mu_Context, x: cint, y: cint): void <cimport,nodecl> end
+global function mu_input_mousedown(ctx: *mu_Context, x: cint, y: cint, btn: cint): void <cimport,nodecl> end
+global function mu_input_mouseup(ctx: *mu_Context, x: cint, y: cint, btn: cint): void <cimport,nodecl> end
+global function mu_input_scroll(ctx: *mu_Context, x: cint, y: cint): void <cimport,nodecl> end
+global function mu_input_keydown(ctx: *mu_Context, key: cint): void <cimport,nodecl> end
+global function mu_input_keyup(ctx: *mu_Context, key: cint): void <cimport,nodecl> end
+global function mu_input_text(ctx: *mu_Context, text: cstring): void <cimport,nodecl> end
+global function mu_push_command(ctx: *mu_Context, type: cint, size: cint): *mu_Command <cimport,nodecl> end
+global function mu_next_command(ctx: *mu_Context, cmd: **mu_Command): cint <cimport,nodecl> end
+global function mu_set_clip(ctx: *mu_Context, rect: mu_Rect): void <cimport,nodecl> end
+global function mu_draw_rect(ctx: *mu_Context, rect: mu_Rect, color: mu_Color): void <cimport,nodecl> end
+global function mu_draw_box(ctx: *mu_Context, rect: mu_Rect, color: mu_Color): void <cimport,nodecl> end
+global function mu_draw_text(ctx: *mu_Context, font: mu_Font, str: cstring, len: cint, pos: mu_Vec2, color: mu_Color): void <cimport,nodecl> end
+global function mu_draw_icon(ctx: *mu_Context, id: cint, rect: mu_Rect, color: mu_Color): void <cimport,nodecl> end
+global function mu_layout_row(ctx: *mu_Context, items: cint, widths: *cint, height: cint): void <cimport,nodecl> end
+global function mu_layout_width(ctx: *mu_Context, width: cint): void <cimport,nodecl> end
+global function mu_layout_height(ctx: *mu_Context, height: cint): void <cimport,nodecl> end
+global function mu_layout_begin_column(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_layout_end_column(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_layout_set_next(ctx: *mu_Context, r: mu_Rect, relative: cint): void <cimport,nodecl> end
+global function mu_layout_next(ctx: *mu_Context): mu_Rect <cimport,nodecl> end
+global function mu_draw_control_frame(ctx: *mu_Context, id: cuint, rect: mu_Rect, colorid: cint, opt: cint): void <cimport,nodecl> end
+global function mu_draw_control_text(ctx: *mu_Context, str: cstring, rect: mu_Rect, colorid: cint, opt: cint): void <cimport,nodecl> end
+global function mu_mouse_over(ctx: *mu_Context, rect: mu_Rect): cint <cimport,nodecl> end
+global function mu_update_control(ctx: *mu_Context, id: cuint, rect: mu_Rect, opt: cint): void <cimport,nodecl> end
+global function mu_text(ctx: *mu_Context, text: cstring): void <cimport,nodecl> end
+global function mu_label(ctx: *mu_Context, text: cstring): void <cimport,nodecl> end
+global function mu_button_ex(ctx: *mu_Context, label: cstring, icon: cint, opt: cint): cint <cimport,nodecl> end
+global function mu_checkbox(ctx: *mu_Context, label: cstring, state: *cint): cint <cimport,nodecl> end
+global function mu_textbox_raw(ctx: *mu_Context, buf: cstring, bufsz: cint, id: cuint, r: mu_Rect, opt: cint): cint <cimport,nodecl> end
+global function mu_textbox_ex(ctx: *mu_Context, buf: cstring, bufsz: cint, opt: cint): cint <cimport,nodecl> end
+global function mu_slider_ex(ctx: *mu_Context, value: *float32, low: float32, high: float32, step: float32, fmt: cstring, opt: cint): cint <cimport,nodecl> end
+global function mu_number_ex(ctx: *mu_Context, value: *float32, step: float32, fmt: cstring, opt: cint): cint <cimport,nodecl> end
+global function mu_header_ex(ctx: *mu_Context, label: cstring, opt: cint): cint <cimport,nodecl> end
+global function mu_begin_treenode_ex(ctx: *mu_Context, label: cstring, opt: cint): cint <cimport,nodecl> end
+global function mu_end_treenode(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_begin_window_ex(ctx: *mu_Context, title: cstring, rect: mu_Rect, opt: cint): cint <cimport,nodecl> end
+global function mu_end_window(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_open_popup(ctx: *mu_Context, name: cstring): void <cimport,nodecl> end
+global function mu_begin_popup(ctx: *mu_Context, name: cstring): cint <cimport,nodecl> end
+global function mu_end_popup(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_begin_panel_ex(ctx: *mu_Context, name: cstring, opt: cint): void <cimport,nodecl> end
+global function mu_end_panel(ctx: *mu_Context): void <cimport,nodecl> end
+global function mu_button(ctx: *mu_Context, label: cstring): cint
+  return mu_button_ex(ctx, label, 0, MU_OPT_ALIGNCENTER)
+end
+global function mu_textbox(ctx: *mu_Context, buf: cstring, bufsz: cint): cint
+  return mu_textbox_ex(ctx, buf, bufsz, 0)
+end
+global function mu_slider(ctx: *mu_Context, value: *float32, lo: float32, hi: float32): cint
+  return mu_slider_ex(ctx, value, lo, hi, 0, "%.2f", MU_OPT_ALIGNCENTER)
+end
+global function mu_number(ctx: *mu_Context, value: *float32, step: float32): cint
+  return mu_number_ex(ctx, value, step, "%.2f", MU_OPT_ALIGNCENTER)
+end
+global function mu_header(ctx: *mu_Context, label: cstring): cint
+  return mu_header_ex(ctx, label, 0)
+end
+global function mu_begin_treenode(ctx: *mu_Context, label: cstring): cint
+  return mu_begin_treenode_ex(ctx, label, 0)
+end
+global function mu_begin_window(ctx: *mu_Context, title: cstring, rect: mu_Rect): cint
+  return mu_begin_window_ex(ctx, title, rect, 0)
+end
+global function mu_begin_panel(ctx: *mu_Context, name: cstring): void
+  mu_begin_panel_ex(ctx, name, 0)
+end
