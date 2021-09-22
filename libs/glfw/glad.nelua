@@ -2886,22 +2886,22 @@ global GL_ZERO: cuint <comptime> = 0
 global GL_ZERO_TO_ONE: cuint <comptime> = 0x935f
 global GL_ZOOM_X: cuint <comptime> = 0x0d16
 global GL_ZOOM_Y: cuint <comptime> = 0x0d17
-global GL_VERSION_1_0: boolean <cimport,nodecl,const>
-global GL_VERSION_1_1: boolean <cimport,nodecl,const>
-global GL_VERSION_1_2: boolean <cimport,nodecl,const>
-global GL_VERSION_1_3: boolean <cimport,nodecl,const>
-global GL_VERSION_1_4: boolean <cimport,nodecl,const>
-global GL_VERSION_1_5: boolean <cimport,nodecl,const>
-global GL_VERSION_2_0: boolean <cimport,nodecl,const>
-global GL_VERSION_2_1: boolean <cimport,nodecl,const>
-global GL_VERSION_3_0: boolean <cimport,nodecl,const>
-global GL_VERSION_3_1: boolean <cimport,nodecl,const>
-global GL_VERSION_3_2: boolean <cimport,nodecl,const>
-global GL_VERSION_3_3: boolean <cimport,nodecl,const>
-global GL_VERSION_4_0: boolean <cimport,nodecl,const>
-global GL_VERSION_4_1: boolean <cimport,nodecl,const>
-global GL_VERSION_4_2: boolean <cimport,nodecl,const>
-global GL_VERSION_4_3: boolean <cimport,nodecl,const>
-global GL_VERSION_4_4: boolean <cimport,nodecl,const>
-global GL_VERSION_4_5: boolean <cimport,nodecl,const>
-global GL_VERSION_4_6: boolean <cimport,nodecl,const>
+global GL_VERSION_1_0: cuint <comptime> = 1
+global GL_VERSION_1_1: cuint <comptime> = 1
+global GL_VERSION_1_2: cuint <comptime> = 1
+global GL_VERSION_1_3: cuint <comptime> = 1
+global GL_VERSION_1_4: cuint <comptime> = 1
+global GL_VERSION_1_5: cuint <comptime> = 1
+global GL_VERSION_2_0: cuint <comptime> = 1
+global GL_VERSION_2_1: cuint <comptime> = 1
+global GL_VERSION_3_0: cuint <comptime> = 1
+global GL_VERSION_3_1: cuint <comptime> = 1
+global GL_VERSION_3_2: cuint <comptime> = 1
+global GL_VERSION_3_3: cuint <comptime> = 1
+global GL_VERSION_4_0: cuint <comptime> = 1
+global GL_VERSION_4_1: cuint <comptime> = 1
+global GL_VERSION_4_2: cuint <comptime> = 1
+global GL_VERSION_4_3: cuint <comptime> = 1
+global GL_VERSION_4_4: cuint <comptime> = 1
+global GL_VERSION_4_5: cuint <comptime> = 1
+global GL_VERSION_4_6: cuint <comptime> = 1

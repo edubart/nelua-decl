@@ -15,7 +15,6 @@ if not window then
   error "Could not create window"
 end
 glfwMakeContextCurrent(window)
-glfwSwapInterval(1)
 if gladLoadGL(glfwGetProcAddress) == 0 then
   error 'Could not initialize GLAD'
 end
@@ -25,7 +24,7 @@ while glfwWindowShouldClose(window) == 0 do
   draw()
   glfwSwapBuffers(window)
   glfwPollEvents()
-  if glfwGetTime() > 1.0 then
+  if glfwGetTime() > 2.0 then
     break
   end
 end
