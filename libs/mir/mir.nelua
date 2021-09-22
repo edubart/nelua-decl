@@ -336,6 +336,7 @@ global function VARR_MIR_var_tpush_arr(varr: *VARR_MIR_var_t, objs: *MIR_var_t, 
 global function VARR_MIR_var_tpop(varr: *VARR_MIR_var_t): MIR_var_t <cimport,nodecl> end
 global MIR_func: type <cimport,nodecl,ctypedef> = @record{
   name: cstring,
+  func_item: MIR_item_t,
   insns: DLIST_MIR_insn_t,
   original_insns: DLIST_MIR_insn_t,
   nres: uint32,
