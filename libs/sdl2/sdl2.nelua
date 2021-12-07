@@ -98,14 +98,16 @@ global function SDL_sscanf(text: cstring, fmt: cstring, ...: cvarargs): cint <ci
 global function SDL_vsscanf(text: cstring, fmt: cstring, ap: cvalist): cint <cimport,nodecl> end
 global function SDL_snprintf(text: cstring, maxlen: csize, fmt: cstring, ...: cvarargs): cint <cimport,nodecl> end
 global function SDL_vsnprintf(text: cstring, maxlen: csize, fmt: cstring, ap: cvalist): cint <cimport,nodecl> end
+global function SDL_asprintf(strp: *cstring, fmt: cstring, ...: cvarargs): cint <cimport,nodecl> end
+global function SDL_vasprintf(strp: *cstring, fmt: cstring, ap: cvalist): cint <cimport,nodecl> end
 global function SDL_acos(x: float64): float64 <cimport,nodecl> end
 global function SDL_acosf(x: float32): float32 <cimport,nodecl> end
 global function SDL_asin(x: float64): float64 <cimport,nodecl> end
 global function SDL_asinf(x: float32): float32 <cimport,nodecl> end
 global function SDL_atan(x: float64): float64 <cimport,nodecl> end
 global function SDL_atanf(x: float32): float32 <cimport,nodecl> end
-global function SDL_atan2(x: float64, y: float64): float64 <cimport,nodecl> end
-global function SDL_atan2f(x: float32, y: float32): float32 <cimport,nodecl> end
+global function SDL_atan2(y: float64, x: float64): float64 <cimport,nodecl> end
+global function SDL_atan2f(y: float32, x: float32): float32 <cimport,nodecl> end
 global function SDL_ceil(x: float64): float64 <cimport,nodecl> end
 global function SDL_ceilf(x: float32): float32 <cimport,nodecl> end
 global function SDL_copysign(x: float64, y: float64): float64 <cimport,nodecl> end
@@ -646,6 +648,7 @@ global function SDL_DuplicateSurface(surface: *SDL_Surface): *SDL_Surface <cimpo
 global function SDL_ConvertSurface(src: *SDL_Surface, fmt: *SDL_PixelFormat, flags: uint32): *SDL_Surface <cimport,nodecl> end
 global function SDL_ConvertSurfaceFormat(src: *SDL_Surface, pixel_format: uint32, flags: uint32): *SDL_Surface <cimport,nodecl> end
 global function SDL_ConvertPixels(width: cint, height: cint, src_format: uint32, src: pointer, src_pitch: cint, dst_format: uint32, dst: pointer, dst_pitch: cint): cint <cimport,nodecl> end
+global function SDL_PremultiplyAlpha(width: cint, height: cint, src_format: uint32, src: pointer, src_pitch: cint, dst_format: uint32, dst: pointer, dst_pitch: cint): cint <cimport,nodecl> end
 global function SDL_FillRect(dst: *SDL_Surface, rect: *SDL_Rect, color: uint32): cint <cimport,nodecl> end
 global function SDL_FillRects(dst: *SDL_Surface, rects: *SDL_Rect, count: cint, color: uint32): cint <cimport,nodecl> end
 global function SDL_UpperBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect): cint <cimport,nodecl> end
@@ -708,7 +711,9 @@ global SDL_WindowEventID: type <cimport,nodecl,using> = @enum(cint){
   SDL_WINDOWEVENT_FOCUS_LOST = 13,
   SDL_WINDOWEVENT_CLOSE = 14,
   SDL_WINDOWEVENT_TAKE_FOCUS = 15,
-  SDL_WINDOWEVENT_HIT_TEST = 16
+  SDL_WINDOWEVENT_HIT_TEST = 16,
+  SDL_WINDOWEVENT_ICCPROF_CHANGED = 17,
+  SDL_WINDOWEVENT_DISPLAY_CHANGED = 18
 }
 global SDL_DisplayEventID: type <cimport,nodecl,using> = @enum(cint){
   SDL_DISPLAYEVENT_NONE = 0,
@@ -796,6 +801,7 @@ global function SDL_GetClosestDisplayMode(displayIndex: cint, mode: *SDL_Display
 global function SDL_GetWindowDisplayIndex(window: *SDL_Window): cint <cimport,nodecl> end
 global function SDL_SetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint <cimport,nodecl> end
 global function SDL_GetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint <cimport,nodecl> end
+global function SDL_GetWindowICCProfile(window: *SDL_Window, size: *csize): pointer <cimport,nodecl> end
 global function SDL_GetWindowPixelFormat(window: *SDL_Window): uint32 <cimport,nodecl> end
 global function SDL_CreateWindow(title: cstring, x: cint, y: cint, w: cint, h: cint, flags: uint32): *SDL_Window <cimport,nodecl> end
 global function SDL_CreateWindowFrom(data: pointer): *SDL_Window <cimport,nodecl> end
@@ -836,6 +842,8 @@ global function SDL_GetWindowGrab(window: *SDL_Window): SDL_bool <cimport,nodecl
 global function SDL_GetWindowKeyboardGrab(window: *SDL_Window): SDL_bool <cimport,nodecl> end
 global function SDL_GetWindowMouseGrab(window: *SDL_Window): SDL_bool <cimport,nodecl> end
 global function SDL_GetGrabbedWindow(): *SDL_Window <cimport,nodecl> end
+global function SDL_SetWindowMouseRect(window: *SDL_Window, rect: *SDL_Rect): cint <cimport,nodecl> end
+global function SDL_GetWindowMouseRect(window: *SDL_Window): *SDL_Rect <cimport,nodecl> end
 global function SDL_SetWindowBrightness(window: *SDL_Window, brightness: float32): cint <cimport,nodecl> end
 global function SDL_GetWindowBrightness(window: *SDL_Window): float32 <cimport,nodecl> end
 global function SDL_SetWindowOpacity(window: *SDL_Window, opacity: float32): cint <cimport,nodecl> end
@@ -1380,11 +1388,12 @@ global SDL_Keymod: type <cimport,nodecl,using> = @enum(cint){
   KMOD_NUM = 4096,
   KMOD_CAPS = 8192,
   KMOD_MODE = 16384,
-  KMOD_RESERVED = 32768,
+  KMOD_SCROLL = 32768,
   KMOD_CTRL = 192,
   KMOD_SHIFT = 3,
   KMOD_ALT = 768,
-  KMOD_GUI = 3072
+  KMOD_GUI = 3072,
+  KMOD_RESERVED = 32768
 }
 global SDL_Keysym: type <cimport,nodecl> = @record{
   scancode: SDL_Scancode,
@@ -1517,6 +1526,8 @@ global function SDL_JoystickGetButton(joystick: *SDL_Joystick, button: cint): ui
 global function SDL_JoystickRumble(joystick: *SDL_Joystick, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint <cimport,nodecl> end
 global function SDL_JoystickRumbleTriggers(joystick: *SDL_Joystick, left_rumble: uint16, right_rumble: uint16, duration_ms: uint32): cint <cimport,nodecl> end
 global function SDL_JoystickHasLED(joystick: *SDL_Joystick): SDL_bool <cimport,nodecl> end
+global function SDL_JoystickHasRumble(joystick: *SDL_Joystick): SDL_bool <cimport,nodecl> end
+global function SDL_JoystickHasRumbleTriggers(joystick: *SDL_Joystick): SDL_bool <cimport,nodecl> end
 global function SDL_JoystickSetLED(joystick: *SDL_Joystick, red: uint8, green: uint8, blue: uint8): cint <cimport,nodecl> end
 global function SDL_JoystickSendEffect(joystick: *SDL_Joystick, data: pointer, size: cint): cint <cimport,nodecl> end
 global function SDL_JoystickClose(joystick: *SDL_Joystick): void <cimport,nodecl> end
@@ -1655,9 +1666,13 @@ global function SDL_GameControllerGetSensorData(gamecontroller: *SDL_GameControl
 global function SDL_GameControllerRumble(gamecontroller: *SDL_GameController, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint <cimport,nodecl> end
 global function SDL_GameControllerRumbleTriggers(gamecontroller: *SDL_GameController, left_rumble: uint16, right_rumble: uint16, duration_ms: uint32): cint <cimport,nodecl> end
 global function SDL_GameControllerHasLED(gamecontroller: *SDL_GameController): SDL_bool <cimport,nodecl> end
+global function SDL_GameControllerHasRumble(gamecontroller: *SDL_GameController): SDL_bool <cimport,nodecl> end
+global function SDL_GameControllerHasRumbleTriggers(gamecontroller: *SDL_GameController): SDL_bool <cimport,nodecl> end
 global function SDL_GameControllerSetLED(gamecontroller: *SDL_GameController, red: uint8, green: uint8, blue: uint8): cint <cimport,nodecl> end
 global function SDL_GameControllerSendEffect(gamecontroller: *SDL_GameController, data: pointer, size: cint): cint <cimport,nodecl> end
 global function SDL_GameControllerClose(gamecontroller: *SDL_GameController): void <cimport,nodecl> end
+global function SDL_GameControllerGetAppleSFSymbolsNameForButton(gamecontroller: *SDL_GameController, button: SDL_GameControllerButton): cstring <cimport,nodecl> end
+global function SDL_GameControllerGetAppleSFSymbolsNameForAxis(gamecontroller: *SDL_GameController, axis: SDL_GameControllerAxis): cstring <cimport,nodecl> end
 global SDL_TouchDeviceType: type <cimport,nodecl,using> = @enum(cint){
   SDL_TOUCH_DEVICE_INVALID = -1,
   SDL_TOUCH_DEVICE_DIRECT = 0,
@@ -1734,6 +1749,7 @@ global SDL_EventType: type <cimport,nodecl,using> = @enum(cint){
   SDL_SENSORUPDATE = 4608,
   SDL_RENDER_TARGETS_RESET = 8192,
   SDL_RENDER_DEVICE_RESET = 8193,
+  SDL_POLLSENTINEL = 32512,
   SDL_USEREVENT = 32768,
   SDL_LASTEVENT = 65535
 }
@@ -1816,7 +1832,9 @@ global SDL_MouseWheelEvent: type <cimport,nodecl> = @record{
   which: uint32,
   x: int32,
   y: int32,
-  direction: uint32
+  direction: uint32,
+  preciseX: float32,
+  preciseY: float32
 }
 global SDL_JoyAxisEvent: type <cimport,nodecl> = @record{
   type: uint32,
@@ -2161,6 +2179,44 @@ global function SDL_HapticRumbleSupported(haptic: *SDL_Haptic): cint <cimport,no
 global function SDL_HapticRumbleInit(haptic: *SDL_Haptic): cint <cimport,nodecl> end
 global function SDL_HapticRumblePlay(haptic: *SDL_Haptic, strength: float32, length: uint32): cint <cimport,nodecl> end
 global function SDL_HapticRumbleStop(haptic: *SDL_Haptic): cint <cimport,nodecl> end
+global SDL_hid_device_: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global SDL_hid_device: type = @SDL_hid_device_
+global SDL_hid_device_info: type <cimport,nodecl,forwarddecl> = @record{}
+SDL_hid_device_info = @record{
+  path: cstring,
+  vendor_id: cushort,
+  product_id: cushort,
+  serial_number: *cint,
+  release_number: cushort,
+  manufacturer_string: *cint,
+  product_string: *cint,
+  usage_page: cushort,
+  usage: cushort,
+  interface_number: cint,
+  interface_class: cint,
+  interface_subclass: cint,
+  interface_protocol: cint,
+  next: *SDL_hid_device_info
+}
+global function SDL_hid_init(): cint <cimport,nodecl> end
+global function SDL_hid_exit(): cint <cimport,nodecl> end
+global function SDL_hid_device_change_count(): uint32 <cimport,nodecl> end
+global function SDL_hid_enumerate(vendor_id: cushort, product_id: cushort): *SDL_hid_device_info <cimport,nodecl> end
+global function SDL_hid_free_enumeration(devs: *SDL_hid_device_info): void <cimport,nodecl> end
+global function SDL_hid_open(vendor_id: cushort, product_id: cushort, serial_number: *cint): *SDL_hid_device <cimport,nodecl> end
+global function SDL_hid_open_path(path: cstring, bExclusive: cint): *SDL_hid_device <cimport,nodecl> end
+global function SDL_hid_write(dev: *SDL_hid_device, data: *cuchar, length: csize): cint <cimport,nodecl> end
+global function SDL_hid_read_timeout(dev: *SDL_hid_device, data: *cuchar, length: csize, milliseconds: cint): cint <cimport,nodecl> end
+global function SDL_hid_read(dev: *SDL_hid_device, data: *cuchar, length: csize): cint <cimport,nodecl> end
+global function SDL_hid_set_nonblocking(dev: *SDL_hid_device, nonblock: cint): cint <cimport,nodecl> end
+global function SDL_hid_send_feature_report(dev: *SDL_hid_device, data: *cuchar, length: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_feature_report(dev: *SDL_hid_device, data: *cuchar, length: csize): cint <cimport,nodecl> end
+global function SDL_hid_close(dev: *SDL_hid_device): void <cimport,nodecl> end
+global function SDL_hid_get_manufacturer_string(dev: *SDL_hid_device, string: *cint, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_product_string(dev: *SDL_hid_device, string: *cint, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_serial_number_string(dev: *SDL_hid_device, string: *cint, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_indexed_string(dev: *SDL_hid_device, string_index: cint, string: *cint, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_ble_scan(active: SDL_bool): void <cimport,nodecl> end
 global SDL_HintPriority: type <cimport,nodecl,using> = @enum(cint){
   SDL_HINT_DEFAULT = 0,
   SDL_HINT_NORMAL = 1,
@@ -2294,6 +2350,11 @@ global SDL_RendererInfo: type <cimport,nodecl> = @record{
   max_texture_width: cint,
   max_texture_height: cint
 }
+global SDL_Vertex: type <cimport,nodecl> = @record{
+  position: SDL_FPoint,
+  color: SDL_Color,
+  tex_coord: SDL_FPoint
+}
 global SDL_ScaleMode: type <cimport,nodecl,using> = @enum(cint){
   SDL_ScaleModeNearest = 0,
   SDL_ScaleModeLinear = 1,
@@ -2335,6 +2396,8 @@ global function SDL_SetTextureBlendMode(texture: *SDL_Texture, blendMode: SDL_Bl
 global function SDL_GetTextureBlendMode(texture: *SDL_Texture, blendMode: *SDL_BlendMode): cint <cimport,nodecl> end
 global function SDL_SetTextureScaleMode(texture: *SDL_Texture, scaleMode: SDL_ScaleMode): cint <cimport,nodecl> end
 global function SDL_GetTextureScaleMode(texture: *SDL_Texture, scaleMode: *SDL_ScaleMode): cint <cimport,nodecl> end
+global function SDL_SetTextureUserData(texture: *SDL_Texture, userdata: pointer): cint <cimport,nodecl> end
+global function SDL_GetTextureUserData(texture: *SDL_Texture): pointer <cimport,nodecl> end
 global function SDL_UpdateTexture(texture: *SDL_Texture, rect: *SDL_Rect, pixels: pointer, pitch: cint): cint <cimport,nodecl> end
 global function SDL_UpdateYUVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Yplane: *uint8, Ypitch: cint, Uplane: *uint8, Upitch: cint, Vplane: *uint8, Vpitch: cint): cint <cimport,nodecl> end
 global function SDL_UpdateNVTexture(texture: *SDL_Texture, rect: *SDL_Rect, Yplane: *uint8, Ypitch: cint, UVplane: *uint8, UVpitch: cint): cint <cimport,nodecl> end
@@ -2355,6 +2418,8 @@ global function SDL_RenderGetClipRect(renderer: *SDL_Renderer, rect: *SDL_Rect):
 global function SDL_RenderIsClipEnabled(renderer: *SDL_Renderer): SDL_bool <cimport,nodecl> end
 global function SDL_RenderSetScale(renderer: *SDL_Renderer, scaleX: float32, scaleY: float32): cint <cimport,nodecl> end
 global function SDL_RenderGetScale(renderer: *SDL_Renderer, scaleX: *float32, scaleY: *float32): void <cimport,nodecl> end
+global function SDL_RenderWindowToLogical(renderer: *SDL_Renderer, windowX: cint, windowY: cint, logicalX: *float32, logicalY: *float32): void <cimport,nodecl> end
+global function SDL_RenderLogicalToWindow(renderer: *SDL_Renderer, logicalX: float32, logicalY: float32, windowX: *cint, windowY: *cint): void <cimport,nodecl> end
 global function SDL_SetRenderDrawColor(renderer: *SDL_Renderer, r: uint8, g: uint8, b: uint8, a: uint8): cint <cimport,nodecl> end
 global function SDL_GetRenderDrawColor(renderer: *SDL_Renderer, r: *uint8, g: *uint8, b: *uint8, a: *uint8): cint <cimport,nodecl> end
 global function SDL_SetRenderDrawBlendMode(renderer: *SDL_Renderer, blendMode: SDL_BlendMode): cint <cimport,nodecl> end
@@ -2380,6 +2445,8 @@ global function SDL_RenderFillRectF(renderer: *SDL_Renderer, rect: *SDL_FRect): 
 global function SDL_RenderFillRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect, count: cint): cint <cimport,nodecl> end
 global function SDL_RenderCopyF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect): cint <cimport,nodecl> end
 global function SDL_RenderCopyExF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect, angle: float64, center: *SDL_FPoint, flip: SDL_RendererFlip): cint <cimport,nodecl> end
+global function SDL_RenderGeometry(renderer: *SDL_Renderer, texture: *SDL_Texture, vertices: *SDL_Vertex, num_vertices: cint, indices: *cint, num_indices: cint): cint <cimport,nodecl> end
+global function SDL_RenderGeometryRaw(renderer: *SDL_Renderer, texture: *SDL_Texture, xy: *float32, xy_stride: cint, color: *cint, color_stride: cint, uv: *float32, uv_stride: cint, num_vertices: cint, indices: pointer, num_indices: cint, size_indices: cint): cint <cimport,nodecl> end
 global function SDL_RenderReadPixels(renderer: *SDL_Renderer, rect: *SDL_Rect, format: uint32, pixels: pointer, pitch: cint): cint <cimport,nodecl> end
 global function SDL_RenderPresent(renderer: *SDL_Renderer): void <cimport,nodecl> end
 global function SDL_DestroyTexture(texture: *SDL_Texture): void <cimport,nodecl> end
@@ -2389,6 +2456,7 @@ global function SDL_GL_BindTexture(texture: *SDL_Texture, texw: *float32, texh: 
 global function SDL_GL_UnbindTexture(texture: *SDL_Texture): cint <cimport,nodecl> end
 global function SDL_RenderGetMetalLayer(renderer: *SDL_Renderer): pointer <cimport,nodecl> end
 global function SDL_RenderGetMetalCommandEncoder(renderer: *SDL_Renderer): pointer <cimport,nodecl> end
+global function SDL_RenderSetVSync(renderer: *SDL_Renderer, vsync: cint): cint <cimport,nodecl> end
 global function SDL_CreateShapedWindow(title: cstring, x: cuint, y: cuint, w: cuint, h: cuint, flags: uint32): *SDL_Window <cimport,nodecl> end
 global function SDL_IsShapedWindow(window: *SDL_Window): SDL_bool <cimport,nodecl> end
 global WindowShapeMode: type <cimport,nodecl,using> = @enum(cint){
@@ -2408,6 +2476,7 @@ global SDL_WindowShapeMode: type <cimport,nodecl> = @record{
 global function SDL_SetWindowShape(window: *SDL_Window, shape: *SDL_Surface, shape_mode: *SDL_WindowShapeMode): cint <cimport,nodecl> end
 global function SDL_GetShapedWindowMode(window: *SDL_Window, shape_mode: *SDL_WindowShapeMode): cint <cimport,nodecl> end
 global function SDL_LinuxSetThreadPriority(threadID: int64, priority: cint): cint <cimport,nodecl> end
+global function SDL_LinuxSetThreadPriorityAndPolicy(threadID: int64, sdlPriority: cint, schedPolicy: cint): cint <cimport,nodecl> end
 global function SDL_IsTablet(): SDL_bool <cimport,nodecl> end
 global function SDL_OnApplicationWillTerminate(): void <cimport,nodecl> end
 global function SDL_OnApplicationDidReceiveMemoryWarning(): void <cimport,nodecl> end
@@ -2416,6 +2485,7 @@ global function SDL_OnApplicationDidEnterBackground(): void <cimport,nodecl> end
 global function SDL_OnApplicationWillEnterForeground(): void <cimport,nodecl> end
 global function SDL_OnApplicationDidBecomeActive(): void <cimport,nodecl> end
 global function SDL_GetTicks(): uint32 <cimport,nodecl> end
+global function SDL_GetTicks64(): uint64 <cimport,nodecl> end
 global function SDL_GetPerformanceCounter(): uint64 <cimport,nodecl> end
 global function SDL_GetPerformanceFrequency(): uint64 <cimport,nodecl> end
 global function SDL_Delay(ms: uint32): void <cimport,nodecl> end
@@ -2540,6 +2610,7 @@ global SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION: cstring <comptime> = "
 global SDL_HINT_ANDROID_BLOCK_ON_PAUSE: cstring <comptime> = "SDL_ANDROID_BLOCK_ON_PAUSE"
 global SDL_HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO: cstring <comptime> = "SDL_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO"
 global SDL_HINT_ANDROID_TRAP_BACK_BUTTON: cstring <comptime> = "SDL_ANDROID_TRAP_BACK_BUTTON"
+global SDL_HINT_APP_NAME: cstring <comptime> = "SDL_APP_NAME"
 global SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS: cstring <comptime> = "SDL_APPLE_TV_CONTROLLER_UI_EVENTS"
 global SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION: cstring <comptime> = "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION"
 global SDL_HINT_AUDIO_CATEGORY: cstring <comptime> = "SDL_AUDIO_CATEGORY"
@@ -2565,6 +2636,7 @@ global SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: cstring <comptime> = "SDL_GAME
 global SDL_HINT_GRAB_KEYBOARD: cstring <comptime> = "SDL_GRAB_KEYBOARD"
 global SDL_HINT_IDLE_TIMER_DISABLED: cstring <comptime> = "SDL_IOS_IDLE_TIMER_DISABLED"
 global SDL_HINT_IME_INTERNAL_EDITING: cstring <comptime> = "SDL_IME_INTERNAL_EDITING"
+global SDL_HINT_IME_SHOW_UI: cstring <comptime> = "SDL_IME_SHOW_UI"
 global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring <comptime> = "SDL_IOS_HIDE_HOME_INDICATOR"
 global SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS: cstring <comptime> = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS"
 global SDL_HINT_JOYSTICK_HIDAPI: cstring <comptime> = "SDL_JOYSTICK_HIDAPI"
@@ -2585,6 +2657,8 @@ global SDL_HINT_JOYSTICK_RAWINPUT: cstring <comptime> = "SDL_JOYSTICK_RAWINPUT"
 global SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT: cstring <comptime> = "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
 global SDL_HINT_JOYSTICK_THREAD: cstring <comptime> = "SDL_JOYSTICK_THREAD"
 global SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER: cstring <comptime> = "SDL_KMSDRM_REQUIRE_DRM_MASTER"
+global SDL_HINT_JOYSTICK_DEVICE: cstring <comptime> = "SDL_JOYSTICK_DEVICE"
+global SDL_HINT_LINUX_JOYSTICK_CLASSIC: cstring <comptime> = "SDL_LINUX_JOYSTICK_CLASSIC"
 global SDL_HINT_LINUX_JOYSTICK_DEADZONES: cstring <comptime> = "SDL_LINUX_JOYSTICK_DEADZONES"
 global SDL_HINT_MAC_BACKGROUND_APP: cstring <comptime> = "SDL_MAC_BACKGROUND_APP"
 global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring <comptime> = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
@@ -2599,6 +2673,7 @@ global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring <comptime> = "SDL_MOUSE_TOUCH_EVENTS
 global SDL_HINT_NO_SIGNAL_HANDLERS: cstring <comptime> = "SDL_NO_SIGNAL_HANDLERS"
 global SDL_HINT_OPENGL_ES_DRIVER: cstring <comptime> = "SDL_OPENGL_ES_DRIVER"
 global SDL_HINT_ORIENTATIONS: cstring <comptime> = "SDL_IOS_ORIENTATIONS"
+global SDL_HINT_POLL_SENTINEL: cstring <comptime> = "SDL_POLL_SENTINEL"
 global SDL_HINT_PREFERRED_LOCALES: cstring <comptime> = "SDL_PREFERRED_LOCALES"
 global SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION: cstring <comptime> = "SDL_QTWAYLAND_CONTENT_ORIENTATION"
 global SDL_HINT_QTWAYLAND_WINDOW_FLAGS: cstring <comptime> = "SDL_QTWAYLAND_WINDOW_FLAGS"
@@ -2612,6 +2687,7 @@ global SDL_HINT_RENDER_SCALE_QUALITY: cstring <comptime> = "SDL_RENDER_SCALE_QUA
 global SDL_HINT_RENDER_VSYNC: cstring <comptime> = "SDL_RENDER_VSYNC"
 global SDL_HINT_RETURN_KEY_HIDES_IME: cstring <comptime> = "SDL_RETURN_KEY_HIDES_IME"
 global SDL_HINT_RPI_VIDEO_LAYER: cstring <comptime> = "SDL_RPI_VIDEO_LAYER"
+global SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME: cstring <comptime> = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME"
 global SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL: cstring <comptime> = "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL"
 global SDL_HINT_THREAD_PRIORITY_POLICY: cstring <comptime> = "SDL_THREAD_PRIORITY_POLICY"
 global SDL_HINT_THREAD_STACK_SIZE: cstring <comptime> = "SDL_THREAD_STACK_SIZE"
@@ -2620,6 +2696,7 @@ global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring <comptime> = "SDL_TOUCH_MOUSE_EVENTS
 global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring <comptime> = "SDL_TV_REMOTE_AS_JOYSTICK"
 global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring <comptime> = "SDL_VIDEO_ALLOW_SCREENSAVER"
 global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring <comptime> = "SDL_VIDEO_DOUBLE_BUFFER"
+global SDL_HINT_VIDEO_EGL_ALLOW_TRANSPARENCY: cstring <comptime> = "SDL_VIDEO_EGL_ALLOW_TRANSPARENCY"
 global SDL_HINT_VIDEO_EXTERNAL_CONTEXT: cstring <comptime> = "SDL_VIDEO_EXTERNAL_CONTEXT"
 global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring <comptime> = "SDL_VIDEO_HIGHDPI_DISABLED"
 global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring <comptime> = "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
@@ -2646,6 +2723,7 @@ global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring <comptime> = "SDL_WINDOW
 global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring <comptime> = "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4"
 global SDL_HINT_WINDOWS_USE_D3D9EX: cstring <comptime> = "SDL_WINDOWS_USE_D3D9EX"
 global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring <comptime> = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
+global SDL_HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN: cstring <comptime> = "SDL_WINDOW_NO_ACTIVATION_WHEN_SHOWN"
 global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring <comptime> = "SDL_WINRT_HANDLE_BACK_BUTTON"
 global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_LABEL"
 global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_URL"

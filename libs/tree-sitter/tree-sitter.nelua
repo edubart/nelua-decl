@@ -84,7 +84,8 @@ global TSQueryError: type <cimport,nodecl,using> = @enum(cint){
   TSQueryErrorNodeType = 2,
   TSQueryErrorField = 3,
   TSQueryErrorCapture = 4,
-  TSQueryErrorStructure = 5
+  TSQueryErrorStructure = 5,
+  TSQueryErrorLanguage = 6
 }
 global function ts_parser_new(): *TSParser <cimport,nodecl> end
 global function ts_parser_delete(parser: *TSParser): void <cimport,nodecl> end
@@ -162,7 +163,7 @@ global function ts_query_capture_count(a1: *TSQuery): uint32 <cimport,nodecl> en
 global function ts_query_string_count(a1: *TSQuery): uint32 <cimport,nodecl> end
 global function ts_query_start_byte_for_pattern(a1: *TSQuery, a2: uint32): uint32 <cimport,nodecl> end
 global function ts_query_predicates_for_pattern(self: *TSQuery, pattern_index: uint32, length: *uint32): *TSQueryPredicateStep <cimport,nodecl> end
-global function ts_query_step_is_definite(self: *TSQuery, byte_offset: uint32): boolean <cimport,nodecl> end
+global function ts_query_is_pattern_guaranteed_at_step(self: *TSQuery, byte_offset: uint32): boolean <cimport,nodecl> end
 global function ts_query_capture_name_for_id(a1: *TSQuery, id: uint32, length: *uint32): cstring <cimport,nodecl> end
 global function ts_query_string_value_for_id(a1: *TSQuery, id: uint32, length: *uint32): cstring <cimport,nodecl> end
 global function ts_query_disable_capture(a1: *TSQuery, a2: cstring, a3: uint32): void <cimport,nodecl> end

@@ -929,6 +929,8 @@ global function lxb_dom_document_destroy_struct(document: *lxb_dom_document_t, s
 global function lxb_dom_document_create_text(document: *lxb_dom_document_t, len: csize): *cuchar <cimport,nodecl> end
 global function lxb_dom_document_destroy_text(document: *lxb_dom_document_t, text: *cuchar): pointer <cimport,nodecl> end
 global function lxb_dom_document_element(document: *lxb_dom_document_t): *lxb_dom_element_t <cimport,nodecl> end
+global function lxb_dom_document_scripting(document: *lxb_dom_document_t): boolean <cimport,nodecl> end
+global function lxb_dom_document_scripting_set(document: *lxb_dom_document_t, scripting: boolean): void <cimport,nodecl> end
 global function lxb_dom_document_create_interface_noi(document: *lxb_dom_document_t, tag_id: culong, ns: culong): pointer <cimport,nodecl> end
 global function lxb_dom_document_destroy_interface_noi(intrfc: pointer): pointer <cimport,nodecl> end
 global function lxb_dom_document_create_struct_noi(document: *lxb_dom_document_t, struct_size: csize): pointer <cimport,nodecl> end
@@ -936,6 +938,8 @@ global function lxb_dom_document_destroy_struct_noi(document: *lxb_dom_document_
 global function lxb_dom_document_create_text_noi(document: *lxb_dom_document_t, len: csize): *cuchar <cimport,nodecl> end
 global function lxb_dom_document_destroy_text_noi(document: *lxb_dom_document_t, text: *cuchar): pointer <cimport,nodecl> end
 global function lxb_dom_document_element_noi(document: *lxb_dom_document_t): *lxb_dom_element_t <cimport,nodecl> end
+global function lxb_dom_document_scripting_noi(document: *lxb_dom_document_t): boolean <cimport,nodecl> end
+global function lxb_dom_document_scripting_set_noi(document: *lxb_dom_document_t, scripting: boolean): void <cimport,nodecl> end
 global lxb_dom_attr_data_t: type <cimport,nodecl> = @record{
   entry: lexbor_hash_entry_t,
   attr_id: culong,
@@ -1657,10 +1661,14 @@ global function lxb_html_parser_tokenizer(parser: *lxb_html_parser_t): *lxb_html
 global function lxb_html_parser_tree(parser: *lxb_html_parser_t): *lxb_html_tree_t <cimport,nodecl> end
 global function lxb_html_parser_status(parser: *lxb_html_parser_t): cuint <cimport,nodecl> end
 global function lxb_html_parser_state(parser: *lxb_html_parser_t): cuint <cimport,nodecl> end
+global function lxb_html_parser_scripting(parser: *lxb_html_parser_t): boolean <cimport,nodecl> end
+global function lxb_html_parser_scripting_set(parser: *lxb_html_parser_t, scripting: boolean): void <cimport,nodecl> end
 global function lxb_html_parser_tokenizer_noi(parser: *lxb_html_parser_t): *lxb_html_tokenizer_t <cimport,nodecl> end
 global function lxb_html_parser_tree_noi(parser: *lxb_html_parser_t): *lxb_html_tree_t <cimport,nodecl> end
 global function lxb_html_parser_status_noi(parser: *lxb_html_parser_t): cuint <cimport,nodecl> end
 global function lxb_html_parser_state_noi(parser: *lxb_html_parser_t): cuint <cimport,nodecl> end
+global function lxb_html_parser_scripting_noi(parser: *lxb_html_parser_t): boolean <cimport,nodecl> end
+global function lxb_html_parser_scripting_set_noi(parser: *lxb_html_parser_t, scripting: boolean): void <cimport,nodecl> end
 global function lxb_html_tokenizer_state_rawtext_before(tkz: *lxb_html_tokenizer_t, data: *cuchar, End: *cuchar): *cuchar <cimport,nodecl> end
 global function lxb_html_tokenizer_state_script_data_before(tkz: *lxb_html_tokenizer_t, data: *cuchar, End: *cuchar): *cuchar <cimport,nodecl> end
 global function lxb_html_tokenizer_state_comment_before_start(tkz: *lxb_html_tokenizer_t, data: *cuchar, End: *cuchar): *cuchar <cimport,nodecl> end

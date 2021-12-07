@@ -89,7 +89,9 @@ global function sqlite3_extended_result_codes(a1: *sqlite3, onoff: cint): cint <
 global function sqlite3_last_insert_rowid(a1: *sqlite3): int64 <cimport,nodecl> end
 global function sqlite3_set_last_insert_rowid(a1: *sqlite3, a2: int64): void <cimport,nodecl> end
 global function sqlite3_changes(a1: *sqlite3): cint <cimport,nodecl> end
+global function sqlite3_changes64(a1: *sqlite3): int64 <cimport,nodecl> end
 global function sqlite3_total_changes(a1: *sqlite3): cint <cimport,nodecl> end
+global function sqlite3_total_changes64(a1: *sqlite3): int64 <cimport,nodecl> end
 global function sqlite3_interrupt(a1: *sqlite3): void <cimport,nodecl> end
 global function sqlite3_complete(sql: cstring): cint <cimport,nodecl> end
 global function sqlite3_complete16(sql: pointer): cint <cimport,nodecl> end
@@ -143,7 +145,6 @@ global function sqlite3_prepare16_v2(db: *sqlite3, zSql: pointer, nByte: cint, p
 global function sqlite3_prepare16_v3(db: *sqlite3, zSql: pointer, nByte: cint, prepFlags: cuint, ppStmt: **sqlite3_stmt, pzTail: *pointer): cint <cimport,nodecl> end
 global function sqlite3_sql(pStmt: *sqlite3_stmt): cstring <cimport,nodecl> end
 global function sqlite3_expanded_sql(pStmt: *sqlite3_stmt): cstring <cimport,nodecl> end
-global function sqlite3_normalized_sql(pStmt: *sqlite3_stmt): cstring <cimport,nodecl> end
 global function sqlite3_stmt_readonly(pStmt: *sqlite3_stmt): cint <cimport,nodecl> end
 global function sqlite3_stmt_isexplain(pStmt: *sqlite3_stmt): cint <cimport,nodecl> end
 global function sqlite3_stmt_busy(a1: *sqlite3_stmt): cint <cimport,nodecl> end
@@ -265,6 +266,7 @@ global function sqlite3_txn_state(a1: *sqlite3, zSchema: cstring): cint <cimport
 global function sqlite3_next_stmt(pDb: *sqlite3, pStmt: *sqlite3_stmt): *sqlite3_stmt <cimport,nodecl> end
 global function sqlite3_commit_hook(a1: *sqlite3, a2: function(pointer): cint, a3: pointer): pointer <cimport,nodecl> end
 global function sqlite3_rollback_hook(a1: *sqlite3, a2: function(pointer): void, a3: pointer): pointer <cimport,nodecl> end
+global function sqlite3_autovacuum_pages(db: *sqlite3, a2: function(pointer, cstring, cuint, cuint, cuint): cuint, a3: pointer, a4: function(pointer): void): cint <cimport,nodecl> end
 global function sqlite3_update_hook(a1: *sqlite3, a2: function(pointer, cint, cstring, cstring, int64): void, a3: pointer): pointer <cimport,nodecl> end
 global function sqlite3_enable_shared_cache(a1: cint): cint <cimport,nodecl> end
 global function sqlite3_release_memory(a1: cint): cint <cimport,nodecl> end
@@ -500,9 +502,9 @@ sqlite3_rtree_query_info = @record{
   rScore: float64,
   apSqlParam: **sqlite3_value
 }
-global SQLITE_VERSION: cstring <comptime> = "3.36.0"
-global SQLITE_VERSION_NUMBER: cint <comptime> = 3036000
-global SQLITE_SOURCE_ID: cstring <comptime> = "2021-06-18 18:36:39 5c9a6c06871cb9fe42814af9c039eb6da5427a6ec28f187af7ebfb62eafaalt1"
+global SQLITE_VERSION: cstring <comptime> = "3.37.0"
+global SQLITE_VERSION_NUMBER: cint <comptime> = 3037000
+global SQLITE_SOURCE_ID: cstring <comptime> = "2021-11-27 14:13:22 bd41822c7424d393a30e92ff6cb254d25c26769889c1499a18a0b9339f5dalt1"
 global SQLITE_OK: cint <comptime> = 0
 global SQLITE_ERROR: cint <comptime> = 1
 global SQLITE_INTERNAL: cint <comptime> = 2
@@ -602,6 +604,7 @@ global SQLITE_CONSTRAINT_UNIQUE: cint <cimport,nodecl,const>
 global SQLITE_CONSTRAINT_VTAB: cint <cimport,nodecl,const>
 global SQLITE_CONSTRAINT_ROWID: cint <cimport,nodecl,const>
 global SQLITE_CONSTRAINT_PINNED: cint <cimport,nodecl,const>
+global SQLITE_CONSTRAINT_DATATYPE: cint <cimport,nodecl,const>
 global SQLITE_NOTICE_RECOVER_WAL: cint <cimport,nodecl,const>
 global SQLITE_NOTICE_RECOVER_ROLLBACK: cint <cimport,nodecl,const>
 global SQLITE_WARNING_AUTOINDEX: cint <cimport,nodecl,const>
@@ -629,6 +632,7 @@ global SQLITE_OPEN_SHAREDCACHE: cint <comptime> = 0x00020000
 global SQLITE_OPEN_PRIVATECACHE: cint <comptime> = 0x00040000
 global SQLITE_OPEN_WAL: cint <comptime> = 0x00080000
 global SQLITE_OPEN_NOFOLLOW: cint <comptime> = 0x01000000
+global SQLITE_OPEN_EXRESCODE: cint <comptime> = 0x02000000
 global SQLITE_OPEN_MASTER_JOURNAL: cint <comptime> = 0x00004000
 global SQLITE_IOCAP_ATOMIC: cint <comptime> = 0x00000001
 global SQLITE_IOCAP_ATOMIC512: cint <comptime> = 0x00000002

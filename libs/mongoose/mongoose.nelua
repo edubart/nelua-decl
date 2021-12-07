@@ -44,15 +44,15 @@ global function mg_log_set_callback(fn: function(pointer, csize, pointer): void,
 global mg_timer: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 mg_timer = @record{
   period_ms: culong,
+  expire: culong,
   flags: cuint,
   fn: function(pointer): void,
   arg: pointer,
-  expire: culong,
   next: *mg_timer
 }
 global function mg_timer_init(a1: *mg_timer, ms: culong, a3: cuint, fn: function(pointer): void, a5: pointer): void <cimport,nodecl> end
 global function mg_timer_free(a1: *mg_timer): void <cimport,nodecl> end
-global function mg_timer_poll(uptime_ms: culong): void <cimport,nodecl> end
+global function mg_timer_poll(current_time_ms: culong): void <cimport,nodecl> end
 global function mg_file_read(path: cstring, size: *csize): cstring <cimport,nodecl> end
 global function mg_file_write(path: cstring, buf: pointer, len: csize): boolean <cimport,nodecl> end
 global function mg_file_printf(path: cstring, fmt: cstring, ...: cvarargs): boolean <cimport,nodecl> end
@@ -134,23 +134,24 @@ global mg_event_handler_t: type <cimport,nodecl> = @function(*mg_connection, cin
 global function mg_call(c: *mg_connection, ev: cint, ev_data: pointer): void <cimport,nodecl> end
 global function mg_error(c: *mg_connection, fmt: cstring, ...: cvarargs): void <cimport,nodecl> end
 global MG_EV_ERROR: cint <comptime> = 0
-global MG_EV_POLL: cint <comptime> = 1
-global MG_EV_RESOLVE: cint <comptime> = 2
-global MG_EV_CONNECT: cint <comptime> = 3
-global MG_EV_ACCEPT: cint <comptime> = 4
-global MG_EV_READ: cint <comptime> = 5
-global MG_EV_WRITE: cint <comptime> = 6
-global MG_EV_CLOSE: cint <comptime> = 7
-global MG_EV_HTTP_MSG: cint <comptime> = 8
-global MG_EV_HTTP_CHUNK: cint <comptime> = 9
-global MG_EV_WS_OPEN: cint <comptime> = 10
-global MG_EV_WS_MSG: cint <comptime> = 11
-global MG_EV_WS_CTL: cint <comptime> = 12
-global MG_EV_MQTT_CMD: cint <comptime> = 13
-global MG_EV_MQTT_MSG: cint <comptime> = 14
-global MG_EV_MQTT_OPEN: cint <comptime> = 15
-global MG_EV_SNTP_TIME: cint <comptime> = 16
-global MG_EV_USER: cint <comptime> = 17
+global MG_EV_OPEN: cint <comptime> = 1
+global MG_EV_POLL: cint <comptime> = 2
+global MG_EV_RESOLVE: cint <comptime> = 3
+global MG_EV_CONNECT: cint <comptime> = 4
+global MG_EV_ACCEPT: cint <comptime> = 5
+global MG_EV_READ: cint <comptime> = 6
+global MG_EV_WRITE: cint <comptime> = 7
+global MG_EV_CLOSE: cint <comptime> = 8
+global MG_EV_HTTP_MSG: cint <comptime> = 9
+global MG_EV_HTTP_CHUNK: cint <comptime> = 10
+global MG_EV_WS_OPEN: cint <comptime> = 11
+global MG_EV_WS_MSG: cint <comptime> = 12
+global MG_EV_WS_CTL: cint <comptime> = 13
+global MG_EV_MQTT_CMD: cint <comptime> = 14
+global MG_EV_MQTT_MSG: cint <comptime> = 15
+global MG_EV_MQTT_OPEN: cint <comptime> = 16
+global MG_EV_SNTP_TIME: cint <comptime> = 17
+global MG_EV_USER: cint <comptime> = 18
 global mg_dns: type <cimport,nodecl,ctypedef> = @record{
   url: cstring,
   c: *mg_connection
@@ -203,6 +204,7 @@ global function mg_mgr_init(a1: *mg_mgr): void <cimport,nodecl> end
 global function mg_mgr_free(a1: *mg_mgr): void <cimport,nodecl> end
 global function mg_listen(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport,nodecl> end
 global function mg_connect(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport,nodecl> end
+global function mg_connect_resolved(a1: *mg_connection): void <cimport,nodecl> end
 global function mg_send(a1: *mg_connection, a2: pointer, a3: csize): boolean <cimport,nodecl> end
 global function mg_printf(a1: *mg_connection, fmt: cstring, ...: cvarargs): cint <cimport,nodecl> end
 global function mg_vprintf(a1: *mg_connection, fmt: cstring, ap: cvalist): cint <cimport,nodecl> end
@@ -261,6 +263,7 @@ global function mg_http_next_multipart(a1: mg_str, a2: csize, a3: *mg_http_part)
 global function mg_http_serve_ssi(c: *mg_connection, root: cstring, fullpath: cstring): void <cimport,nodecl> end
 global mg_tls_opts: type <cimport,nodecl,ctypedef> = @record{
   ca: cstring,
+  crl: cstring,
   cert: cstring,
   certkey: cstring,
   ciphers: cstring,
@@ -283,6 +286,8 @@ global function mg_sntp_connect(mgr: *mg_mgr, url: cstring, fn: mg_event_handler
 global function mg_sntp_send(c: *mg_connection, utc: culong): void <cimport,nodecl> end
 global function mg_sntp_parse(buf: *cuchar, len: csize, tv: *timeval): cint <cimport,nodecl> end
 global mg_mqtt_opts: type <cimport,nodecl,ctypedef> = @record{
+  user: mg_str,
+  pass: mg_str,
   client_id: mg_str,
   will_topic: mg_str,
   will_message: mg_str,
@@ -302,7 +307,7 @@ global mg_mqtt_message: type <cimport,nodecl,ctypedef> = @record{
 }
 global function mg_mqtt_connect(a1: *mg_mgr, url: cstring, opts: *mg_mqtt_opts, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport,nodecl> end
 global function mg_mqtt_listen(mgr: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport,nodecl> end
-global function mg_mqtt_login(c: *mg_connection, url: cstring, opts: *mg_mqtt_opts): void <cimport,nodecl> end
+global function mg_mqtt_login(c: *mg_connection, opts: *mg_mqtt_opts): void <cimport,nodecl> end
 global function mg_mqtt_pub(c: *mg_connection, topic: *mg_str, data: *mg_str, qos: cint, retain: boolean): void <cimport,nodecl> end
 global function mg_mqtt_sub(a1: *mg_connection, topic: *mg_str, qos: cint): void <cimport,nodecl> end
 global function mg_mqtt_parse(buf: *uint8, len: csize, m: *mg_mqtt_message): cint <cimport,nodecl> end
@@ -353,6 +358,7 @@ global MG_IO_SIZE: cint <comptime> = 2048
 global MG_MAX_RECV_BUF_SIZE: cint <cimport,nodecl,const>
 global MG_MAX_HTTP_HEADERS: cint <comptime> = 40
 global MG_PATH_MAX: cint <cimport,nodecl,const>
+global MG_SOCK_LISTEN_BACKLOG_SIZE: cint <comptime> = 128
 global MG_ARCH_CUSTOM: cint <comptime> = 0
 global MG_ARCH_UNIX: cint <comptime> = 1
 global MG_ARCH_WIN32: cint <comptime> = 2
@@ -360,6 +366,7 @@ global MG_ARCH_ESP32: cint <comptime> = 3
 global MG_ARCH_ESP8266: cint <comptime> = 4
 global MG_ARCH_FREERTOS_TCP: cint <comptime> = 5
 global MG_ARCH_FREERTOS_LWIP: cint <comptime> = 6
+global MG_ARCH_AZURERTOS: cint <comptime> = 7
 global MG_ARCH: cint <comptime> = MG_ARCH_UNIX
 global MG_DIRSEP: cint <cimport,nodecl,const>
 global MG_INT64_FMT: cint <cimport,nodecl,const>

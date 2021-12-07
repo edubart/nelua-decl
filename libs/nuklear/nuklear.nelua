@@ -334,6 +334,7 @@ global function nk_layout_space_to_screen(a1: *NK_context, a2: NK_vec2): NK_vec2
 global function nk_layout_space_to_local(a1: *NK_context, a2: NK_vec2): NK_vec2 <cimport,nodecl> end
 global function nk_layout_space_rect_to_screen(a1: *NK_context, a2: NK_rect): NK_rect <cimport,nodecl> end
 global function nk_layout_space_rect_to_local(a1: *NK_context, a2: NK_rect): NK_rect <cimport,nodecl> end
+global function nk_spacer(a1: *NK_context): void <cimport,nodecl> end
 global function nk_group_begin(a1: *NK_context, title: cstring, a3: cuint): cint <cimport,nodecl> end
 global function nk_group_begin_titled(a1: *NK_context, name: cstring, title: cstring, a4: cuint): cint <cimport,nodecl> end
 global function nk_group_end(a1: *NK_context): void <cimport,nodecl> end

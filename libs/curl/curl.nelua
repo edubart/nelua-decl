@@ -130,6 +130,7 @@ global curl_infotype: type <cimport,nodecl,using> = @enum(cint){
   CURLINFO_END = 7
 }
 global curl_debug_callback: type <cimport,nodecl> = @function(pointer, curl_infotype, cstring, csize, pointer): cint
+global curl_prereq_callback: type <cimport,nodecl> = @function(pointer, cstring, cstring, cint, cint): cint
 global CURLcode: type <cimport,nodecl,using> = @enum(cint){
   CURLE_OK = 0,
   CURLE_UNSUPPORTED_PROTOCOL = 1,
@@ -650,7 +651,11 @@ global CURLoption: type <cimport,nodecl,using> = @enum(cint){
   CURLOPT_DOH_SSL_VERIFYSTATUS = 308,
   CURLOPT_CAINFO_BLOB = 40309,
   CURLOPT_PROXY_CAINFO_BLOB = 40310,
-  CURLOPT_LASTENTRY = 40311
+  CURLOPT_SSH_HOST_PUBLIC_KEY_SHA256 = 10311,
+  CURLOPT_PREREQFUNCTION = 20312,
+  CURLOPT_PREREQDATA = 10313,
+  CURLOPT_MAXLIFETIME_CONN = 314,
+  CURLOPT_LASTENTRY = 315
 }
 global CURL_HTTP_VERSION_NONE: cint <comptime> = 0
 global CURL_HTTP_VERSION_1_0: cint <comptime> = 1
@@ -1073,7 +1078,8 @@ global CURLUcode: type <cimport,nodecl,using> = @enum(cint){
   CURLUE_NO_HOST = 14,
   CURLUE_NO_PORT = 15,
   CURLUE_NO_QUERY = 16,
-  CURLUE_NO_FRAGMENT = 17
+  CURLUE_NO_FRAGMENT = 17,
+  CURLUE_LAST = 18
 }
 global CURLUPart: type <cimport,nodecl,using> = @enum(cint){
   CURLUPART_URL = 0,
@@ -1094,6 +1100,7 @@ global function curl_url_cleanup(handle: *CURLU): void <cimport,nodecl> end
 global function curl_url_dup(In: *CURLU): *CURLU <cimport,nodecl> end
 global function curl_url_get(handle: *CURLU, what: CURLUPart, part: *cstring, flags: cuint): CURLUcode <cimport,nodecl> end
 global function curl_url_set(handle: *CURLU, what: CURLUPart, part: cstring, flags: cuint): CURLUcode <cimport,nodecl> end
+global function curl_url_strerror(a1: CURLUcode): cstring <cimport,nodecl> end
 global curl_easytype: type <cimport,nodecl,using> = @enum(cint){
   CURLOT_LONG = 0,
   CURLOT_VALUES = 1,

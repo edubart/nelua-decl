@@ -75,5 +75,6 @@ global function emscripten_print_double(x: float64, to: cstring, max: cint): cin
 global function emscripten_scan_registers(func: function(pointer, pointer): void): void <cimport,nodecl> end
 global function emscripten_scan_stack(func: function(pointer, pointer): void): void <cimport,nodecl> end
 global function emscripten_dlopen(filename: cstring, flags: cint, user_data: pointer, onsuccess: function(pointer, pointer): void, onerror: function(pointer): void): void <cimport,nodecl> end
+global function emscripten_throw_number(number: float64): void <cimport,nodecl> end
+global function emscripten_throw_string(utf8String: cstring): void <cimport,nodecl> end
 global function emscripten_sleep(ms: cuint): void <cimport,nodecl> end
-global function emscripten_sleep_with_yield(ms: cuint): void <cimport,nodecl> end

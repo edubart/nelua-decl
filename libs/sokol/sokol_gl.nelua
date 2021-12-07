@@ -86,6 +86,7 @@ global function sgl_c4f(r: float32, g: float32, b: float32, a: float32): void <c
 global function sgl_c3b(r: uint8, g: uint8, b: uint8): void <cimport,nodecl> end
 global function sgl_c4b(r: uint8, g: uint8, b: uint8, a: uint8): void <cimport,nodecl> end
 global function sgl_c1i(rgba: uint32): void <cimport,nodecl> end
+global function sgl_point_size(s: float32): void <cimport,nodecl> end
 global function sgl_begin_points(): void <cimport,nodecl> end
 global function sgl_begin_lines(): void <cimport,nodecl> end
 global function sgl_begin_line_strip(): void <cimport,nodecl> end

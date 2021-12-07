@@ -4,6 +4,7 @@ nldecl.include_names = {
   '^io_uring',
   '^IO_URING',
   __kernel_timespec = true,
+  cpu_set_t = true,
   sigset_t = true,
   iovec = true,
   msghdr = true,
