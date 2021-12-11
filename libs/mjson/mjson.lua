@@ -1,7 +1,7 @@
 local nldecl = require 'nldecl'
 
 nldecl.include_names = {
-  '^mjson_',
+  '^mjson',
   '^jsonrpc_',
   '^MJSON_',
   '^JSONRPC_',

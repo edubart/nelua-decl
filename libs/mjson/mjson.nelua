@@ -5,6 +5,7 @@ if not MJSON_NO_IMPL then
 end
 ]]
 global mjson_cb_t: type <cimport,nodecl> = @function(cint, cstring, cint, cint, pointer): cint
+global function mjson(s: cstring, len: cint, cb: mjson_cb_t, ud: pointer): cint <cimport,nodecl> end
 global function mjson_find(s: cstring, len: cint, jp: cstring, a4: *cstring, a5: *cint): cint <cimport,nodecl> end
 global function mjson_get_number(s: cstring, len: cint, path: cstring, v: *float64): cint <cimport,nodecl> end
 global function mjson_get_bool(s: cstring, len: cint, path: cstring, v: *cint): cint <cimport,nodecl> end
