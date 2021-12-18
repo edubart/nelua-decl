@@ -1,0 +1,39 @@
+##[[
+if not MSF_GIF_NO_IMPL then
+  cdefine 'MSF_GIF_IMPL'
+end
+cinclude 'msf_gif.h'
+]]
+global MsfGifResult: type <cimport,nodecl> = @record{
+  data: pointer,
+  dataSize: csize,
+  allocSize: csize,
+  contextPointer: pointer
+}
+global MsfGifBuffer: type <cimport,nodecl,forwarddecl> = @record{}
+MsfGifBuffer = @record{
+  next: *MsfGifBuffer,
+  size: csize,
+  data: [1]uint8
+}
+global MsfGifFileWriteFunc: type <cimport,nodecl> = @function(pointer, csize, csize, pointer): csize
+global MsfGifState: type <cimport,nodecl,cincomplete> = @record{
+  fileWriteFunc: MsfGifFileWriteFunc,
+  fileWriteData: pointer,
+  lzwMem: *int16,
+  listHead: *MsfGifBuffer,
+  listTail: *MsfGifBuffer,
+  width: cint,
+  height: cint,
+  customAllocatorContext: pointer,
+  framesSubmitted: cint
+}
+global function msf_gif_begin(handle: *MsfGifState, width: cint, height: cint): cint <cimport,nodecl> end
+global function msf_gif_frame(handle: *MsfGifState, pixelData: *uint8, centiSecondsPerFame: cint, maxBitDepth: cint, pitchInBytes: cint): cint <cimport,nodecl> end
+global function msf_gif_end(handle: *MsfGifState): MsfGifResult <cimport,nodecl> end
+global function msf_gif_free(result: MsfGifResult): void <cimport,nodecl> end
+global msf_gif_alpha_threshold: cint <cimport,nodecl>
+global msf_gif_bgra_flag: cint <cimport,nodecl>
+global function msf_gif_begin_to_file(handle: *MsfGifState, width: cint, height: cint, func: MsfGifFileWriteFunc, filePointer: pointer): cint <cimport,nodecl> end
+global function msf_gif_frame_to_file(handle: *MsfGifState, pixelData: *uint8, centiSecondsPerFame: cint, maxBitDepth: cint, pitchInBytes: cint): cint <cimport,nodecl> end
+global function msf_gif_end_to_file(handle: *MsfGifState): cint <cimport,nodecl> end

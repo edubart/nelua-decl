@@ -10,8 +10,8 @@ require 'C.string'
 do -- stb_image/stb_image_write
   -- Create a test image
   local cR: [3]byte = {255,0,0}
-  local cB: [3]byte = {0,255,0}
-  local cG: [3]byte = {0,0,255}
+  local cG: [3]byte = {0,255,0}
+  local cB: [3]byte = {0,0,255}
   local cW: [3]byte = {255,255,255}
   local image: [4][4][3]byte = {
     {cR,cR,cG,cG},

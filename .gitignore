@@ -9,3 +9,4 @@ nelua_cache
 *.o
 *.a
 *.so
+*.gif

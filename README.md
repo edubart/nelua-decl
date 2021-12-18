@@ -87,6 +87,8 @@ and multi-protocol networking library)
     - [tree-sitter.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/tree-sitter/tree-sitter.nelua) (A parser generator tool and an incremental parsing library)
 * [microui](https://github.com/rxi/microui)
     - [microui.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/microui/microui.nelua) (A tiny, portable, immediate-mode UI library)
+* [msf_gif](https://github.com/notnullnotvoid/msf_gif)
+    - [msf_gif.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/msf_gif/msf_gif.nelua) (A single-header animated GIF exporter)
 Plus the following platform specific libraries:
 * dl
     - [dl.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/dl/dl.nelua) (Unix dynamic library loader)

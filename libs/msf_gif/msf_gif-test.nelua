@@ -1,0 +1,52 @@
+require 'msf_gif'
+require 'io'
+
+local WIDTH <comptime>, HEIGHT <comptime> = 4, 4
+local CHANNELS <comptime> = 4
+local FRAMES <comptime> = 4
+local BPP <comptime> = 16
+local DELAY <comptime> = 10
+local gif_state: MsfGifState = {}
+
+local R: [4]byte = {0xff,0x00,0x00}
+local G: [4]byte = {0x00,0xff,0x00}
+local B: [4]byte = {0x00,0x00,0xff}
+local W: [4]byte = {0xff,0xff,0xff}
+local frames: [FRAMES][HEIGHT][WIDTH][CHANNELS]byte = {
+  {
+    {R,R,G,G},
+    {R,R,G,G},
+    {B,B,W,W},
+    {B,B,W,W},
+  }, {
+    {G,G,B,B},
+    {G,G,B,B},
+    {W,W,R,R},
+    {W,W,R,R},
+  }, {
+    {B,B,W,W},
+    {B,B,W,W},
+    {R,R,G,G},
+    {R,R,G,G},
+  }, {
+    {W,W,R,R},
+    {W,W,R,R},
+    {G,G,B,B},
+    {G,G,B,B},
+  }
+}
+
+msf_gif_begin(&gif_state, WIDTH, HEIGHT)
+for frame=0,FRAMES-1 do
+  msf_gif_frame(&gif_state, &frames[frame][0][0][0], DELAY, BPP, WIDTH * CHANNELS)
+end
+local result: MsfGifResult = msf_gif_end(&gif_state)
+local data: span(byte) = {(@*[0]byte)(result.data), result.dataSize}
+assert(not data:empty(), 'failed to encode gif')
+local file = io.open('mygif.gif', 'w')
+assert(file:isopen(), 'failed to write gif')
+file:write(data)
+file:close()
+msf_gif_free(result)
+
+print 'msf_gif OK!'

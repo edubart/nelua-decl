@@ -30,6 +30,7 @@ generate:
 	$(MKC) libs/mir generate
 	$(MKC) libs/lexbor generate
 	$(MKC) libs/tree-sitter generate
+	$(MKC) libs/msf_gif generate
 
 	$(MKC) libs/c generate
 	$(MKC) libs/dl generate
@@ -69,6 +70,7 @@ download:
 	$(MKC) libs/mir download
 	$(MKC) libs/lexbor download
 	$(MKC) libs/tree-sitter download
+	$(MKC) libs/msf_gif download
 
 	$(MKC) libs/c download
 	$(MKC) libs/dl download
@@ -108,6 +110,7 @@ test:
 	$(MKC) libs/mir test
 	$(MKC) libs/lexbor test
 	$(MKC) libs/tree-sitter test
+	$(MKC) libs/msf_gif test
 
 	$(MKC) libs/c test
 	$(MKC) libs/dl test
