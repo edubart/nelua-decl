@@ -9,8 +9,7 @@ local function data_callback(pDevice: *ma_device, pOutput: pointer, pInput: poin
   if not pDecoder then
     return
   end
-  local read = ma_decoder_read_pcm_frames(pDecoder, pOutput, frameCount)
-  if read == 0 then
+  if ma_decoder_read_pcm_frames(pDecoder, pOutput, frameCount, nilptr) ~= MA_SUCCESS then
     ma_event_signal(&stop_event)
   end
 end
@@ -29,7 +28,7 @@ if ma_event_init(&stop_event) ~= 0 then
 end
 
 result = ma_decoder_init_file(C.argv[1], nilptr, &decoder)
-if result ~= 0 then
+if result ~= MA_SUCCESS then
   error "Failed to load file"
 end
 
@@ -40,12 +39,12 @@ deviceConfig.sampleRate        = decoder.outputSampleRate
 deviceConfig.dataCallback      = data_callback
 deviceConfig.pUserData         = &decoder
 
-if ma_device_init(nilptr, &deviceConfig, &device) ~= 0 then
+if ma_device_init(nilptr, &deviceConfig, &device) ~= MA_SUCCESS then
   ma_decoder_uninit(&decoder)
   error "Failed to open playback device."
 end
 
-if ma_device_start(&device) ~= 0 then
+if ma_device_start(&device) ~= MA_SUCCESS then
   ma_device_uninit(&device)
   ma_decoder_uninit(&decoder)
   error "Failed to start playback device."

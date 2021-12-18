@@ -5,11 +5,9 @@ CC=gcc
 
 generate:
 	$(LUA_PATH) $(CC) $(GCCPLUGIN) -S miniaudio.c -fplugin-arg-gcclua-script=miniaudio.lua > miniaudio.nelua
-	$(LUA_PATH) $(CC) $(GCCPLUGIN) -S miniaudio_engine.c -fplugin-arg-gcclua-script=miniaudio_engine.lua > miniaudio_engine.nelua
 
 download:
 	wget -O miniaudio.h https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h
-	wget -O miniaudio_engine.h https://raw.githubusercontent.com/mackron/miniaudio/master/research/miniaudio_engine.h
 
 test:
 	$(NELUA) miniaudio-test.nelua pluck.wav

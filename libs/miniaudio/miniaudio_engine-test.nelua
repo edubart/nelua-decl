@@ -1,4 +1,4 @@
-require 'miniaudio_engine'
+require 'miniaudio'
 
 require 'C.arg'
 require 'C.stdio'

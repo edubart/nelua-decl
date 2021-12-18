@@ -32,6 +32,9 @@ nldecl.include_macros = {
     MA_VERSION_MINOR = false,
     MA_VERSION_REVISION = false,
   },
+  uint32 = {
+    MA_SOUND_SOURCE_CHANNEL_COUNT = true,
+  },
   cstring = {
     MA_VERSION_STRING = false,
   }

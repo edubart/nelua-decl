@@ -16,6 +16,7 @@ nldecl.include_macros = {
   },
   cstring = {
     MG_VERSION = true,
+    MG_HTTP_INDEX = true,
   },
 }
 

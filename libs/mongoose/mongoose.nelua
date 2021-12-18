@@ -342,10 +342,11 @@ global function mg_resolve_cancel(a1: *mg_connection): void <cimport,nodecl> end
 global function mg_dns_parse(buf: *uint8, len: csize, a3: *mg_dns_message): boolean <cimport,nodecl> end
 global function mg_dns_parse_rr(buf: *uint8, len: csize, ofs: csize, is_question: boolean, a5: *mg_dns_rr): csize <cimport,nodecl> end
 global function mg_dns_decode_name(a1: *uint8, a2: csize, a3: csize, a4: cstring, a5: csize): csize <cimport,nodecl> end
-global MG_VERSION: cstring <comptime> = "7.4"
+global MG_VERSION: cstring <comptime> = "7.5"
 global MG_ENABLE_SOCKET: cint <comptime> = 1
 global MG_ENABLE_MBEDTLS: cint <comptime> = 0
 global MG_ENABLE_OPENSSL: cint <comptime> = 0
+global MG_ENABLE_CUSTOM_TLS: cint <comptime> = 0
 global MG_ENABLE_SSI: cint <comptime> = 1
 global MG_ENABLE_IPV6: cint <comptime> = 0
 global MG_ENABLE_LOG: cint <comptime> = 1
@@ -357,6 +358,7 @@ global MG_ENABLE_PACKED_FS: cint <comptime> = 0
 global MG_IO_SIZE: cint <comptime> = 2048
 global MG_MAX_RECV_BUF_SIZE: cint <cimport,nodecl,const>
 global MG_MAX_HTTP_HEADERS: cint <comptime> = 40
+global MG_HTTP_INDEX: cstring <comptime> = "index.html"
 global MG_PATH_MAX: cint <cimport,nodecl,const>
 global MG_SOCK_LISTEN_BACKLOG_SIZE: cint <comptime> = 128
 global MG_ARCH_CUSTOM: cint <comptime> = 0
