@@ -121,35 +121,35 @@ global PDWORD64: type = @*culonglong
 global PKAFFINITY: type = @*culonglong
 global PVOID: type = @pointer
 global PVOID64: type = @pointer
-global PWCHAR: type = @*cushort
-global LPWCH: type = @*cushort
-global PWCH: type = @*cushort
-global LPCWCH: type = @*cushort
-global PCWCH: type = @*cushort
-global NWPSTR: type = @*cushort
-global LPWSTR: type = @*cushort
-global PWSTR: type = @*cushort
+global PWCHAR: type = @*cwchar_t
+global LPWCH: type = @*cwchar_t
+global PWCH: type = @*cwchar_t
+global LPCWCH: type = @*cwchar_t
+global PCWCH: type = @*cwchar_t
+global NWPSTR: type = @*cwchar_t
+global LPWSTR: type = @*cwchar_t
+global PWSTR: type = @*cwchar_t
 global PZPWSTR: type = @*PWSTR
 global PCZPWSTR: type = @*PWSTR
-global LPUWSTR: type = @*cushort
-global PUWSTR: type = @*cushort
-global LPCWSTR: type = @*cushort
-global PCWSTR: type = @*cushort
+global LPUWSTR: type = @*cwchar_t
+global PUWSTR: type = @*cwchar_t
+global LPCWSTR: type = @*cwchar_t
+global PCWSTR: type = @*cwchar_t
 global PZPCWSTR: type = @*PCWSTR
-global LPCUWSTR: type = @*cushort
-global PCUWSTR: type = @*cushort
-global PZZWSTR: type = @*cushort
-global PCZZWSTR: type = @*cushort
-global PUZZWSTR: type = @*cushort
-global PCUZZWSTR: type = @*cushort
-global PNZWCH: type = @*cushort
-global PCNZWCH: type = @*cushort
-global PUNZWCH: type = @*cushort
-global PCUNZWCH: type = @*cushort
-global LPCWCHAR: type = @*cushort
-global PCWCHAR: type = @*cushort
-global LPCUWCHAR: type = @*cushort
-global PCUWCHAR: type = @*cushort
+global LPCUWSTR: type = @*cwchar_t
+global PCUWSTR: type = @*cwchar_t
+global PZZWSTR: type = @*cwchar_t
+global PCZZWSTR: type = @*cwchar_t
+global PUZZWSTR: type = @*cwchar_t
+global PCUZZWSTR: type = @*cwchar_t
+global PNZWCH: type = @*cwchar_t
+global PCNZWCH: type = @*cwchar_t
+global PUNZWCH: type = @*cwchar_t
+global PCUNZWCH: type = @*cwchar_t
+global LPCWCHAR: type = @*cwchar_t
+global PCWCHAR: type = @*cwchar_t
+global LPCUWCHAR: type = @*cwchar_t
+global PCUWCHAR: type = @*cwchar_t
 global PUCSCHAR: type = @*culong
 global PCUCSCHAR: type = @*culong
 global PUCSSTR: type = @*culong
@@ -2329,7 +2329,7 @@ global _FILE_NOTIFY_INFORMATION: type <cimport,nodecl,ctypedef> = @record{
   NextEntryOffset: culong,
   Action: culong,
   FileNameLength: culong,
-  FileName: [1]cushort
+  FileName: [1]cwchar_t
 }
 global FILE_NOTIFY_INFORMATION: type = @_FILE_NOTIFY_INFORMATION
 global PFILE_NOTIFY_INFORMATION: type = @*_FILE_NOTIFY_INFORMATION
@@ -3945,7 +3945,7 @@ global IMAGE_RESOURCE_DIRECTORY_STRING: type = @_IMAGE_RESOURCE_DIRECTORY_STRING
 global PIMAGE_RESOURCE_DIRECTORY_STRING: type = @*_IMAGE_RESOURCE_DIRECTORY_STRING
 global _IMAGE_RESOURCE_DIR_STRING_U: type <cimport,nodecl,ctypedef> = @record{
   Length: cushort,
-  NameString: [1]cushort
+  NameString: [1]cwchar_t
 }
 global IMAGE_RESOURCE_DIR_STRING_U: type = @_IMAGE_RESOURCE_DIR_STRING_U
 global PIMAGE_RESOURCE_DIR_STRING_U: type = @*_IMAGE_RESOURCE_DIR_STRING_U
@@ -4423,7 +4423,7 @@ global _OSVERSIONINFOW: type <cimport,nodecl,ctypedef> = @record{
   dwMinorVersion: culong,
   dwBuildNumber: culong,
   dwPlatformId: culong,
-  szCSDVersion: [128]cushort
+  szCSDVersion: [128]cwchar_t
 }
 global OSVERSIONINFOW: type = @_OSVERSIONINFOW
 global POSVERSIONINFOW: type = @*_OSVERSIONINFOW
@@ -4455,7 +4455,7 @@ global _OSVERSIONINFOEXW: type <cimport,nodecl,ctypedef> = @record{
   dwMinorVersion: culong,
   dwBuildNumber: culong,
   dwPlatformId: culong,
-  szCSDVersion: [128]cushort,
+  szCSDVersion: [128]cwchar_t,
   wServicePackMajor: cushort,
   wServicePackMinor: cushort,
   wSuiteMask: cushort,
@@ -4734,7 +4734,7 @@ global EVENTLOGRECORD: type = @_EVENTLOGRECORD
 global PEVENTLOGRECORD: type = @*_EVENTLOGRECORD
 global _EVENTSFORLOGFILE: type <cimport,nodecl,ctypedef> = @record{
   ulSize: culong,
-  szLogicalLogFile: [256]cushort,
+  szLogicalLogFile: [256]cwchar_t,
   ulNumRecords: culong,
   pEventLogRecords: [0]EVENTLOGRECORD
 }
@@ -5009,7 +5009,7 @@ global _KCRM_TRANSACTION_BLOB: type <cimport,nodecl,ctypedef> = @record{
   IsolationLevel: culong,
   IsolationFlags: culong,
   Timeout: culong,
-  Description: [64]cushort
+  Description: [64]cwchar_t
 }
 global KCRM_TRANSACTION_BLOB: type = @_KCRM_TRANSACTION_BLOB
 global PKCRM_TRANSACTION_BLOB: type = @*_KCRM_TRANSACTION_BLOB
@@ -5056,7 +5056,7 @@ global TRANSACTIONMANAGER_LOG_INFORMATION: type = @_TRANSACTIONMANAGER_LOG_INFOR
 global PTRANSACTIONMANAGER_LOG_INFORMATION: type = @*_TRANSACTIONMANAGER_LOG_INFORMATION
 global _TRANSACTIONMANAGER_LOGPATH_INFORMATION: type <cimport,nodecl,ctypedef> = @record{
   LogPathLength: culong,
-  LogPath: [1]cushort
+  LogPath: [1]cwchar_t
 }
 global TRANSACTIONMANAGER_LOGPATH_INFORMATION: type = @_TRANSACTIONMANAGER_LOGPATH_INFORMATION
 global PTRANSACTIONMANAGER_LOGPATH_INFORMATION: type = @*_TRANSACTIONMANAGER_LOGPATH_INFORMATION
@@ -5076,7 +5076,7 @@ global _TRANSACTION_PROPERTIES_INFORMATION: type <cimport,nodecl,ctypedef> = @re
   Timeout: LARGE_INTEGER,
   Outcome: culong,
   DescriptionLength: culong,
-  Description: [1]cushort
+  Description: [1]cwchar_t
 }
 global TRANSACTION_PROPERTIES_INFORMATION: type = @_TRANSACTION_PROPERTIES_INFORMATION
 global PTRANSACTION_PROPERTIES_INFORMATION: type = @*_TRANSACTION_PROPERTIES_INFORMATION
@@ -5105,7 +5105,7 @@ global PTRANSACTION_SUPERIOR_ENLISTMENT_INFORMATION: type = @*_TRANSACTION_SUPER
 global _RESOURCEMANAGER_BASIC_INFORMATION: type <cimport,nodecl,ctypedef> = @record{
   ResourceManagerId: GUID,
   DescriptionLength: culong,
-  Description: [1]cushort
+  Description: [1]cwchar_t
 }
 global RESOURCEMANAGER_BASIC_INFORMATION: type = @_RESOURCEMANAGER_BASIC_INFORMATION
 global PRESOURCEMANAGER_BASIC_INFORMATION: type = @*_RESOURCEMANAGER_BASIC_INFORMATION
@@ -5533,8 +5533,8 @@ global _WIN32_FIND_DATAW: type <cimport,nodecl,ctypedef> = @record{
   nFileSizeLow: culong,
   dwReserved0: culong,
   dwReserved1: culong,
-  cFileName: [260]cushort,
-  cAlternateFileName: [14]cushort
+  cFileName: [260]cwchar_t,
+  cAlternateFileName: [14]cwchar_t
 }
 global WIN32_FIND_DATAW: type = @_WIN32_FIND_DATAW
 global PWIN32_FIND_DATAW: type = @*_WIN32_FIND_DATAW
@@ -6497,7 +6497,7 @@ global _COMMPROP: type <cimport,nodecl,ctypedef> = @record{
   dwCurrentRxQueue: culong,
   dwProvSpec1: culong,
   dwProvSpec2: culong,
-  wcProvChar: [1]cushort
+  wcProvChar: [1]cwchar_t
 }
 global COMMPROP: type = @_COMMPROP
 global LPCOMMPROP: type = @*_COMMPROP
@@ -6564,7 +6564,7 @@ global _COMMCONFIG: type <cimport,nodecl,ctypedef> = @record{
   dwProviderSubType: culong,
   dwProviderOffset: culong,
   dwProviderSize: culong,
-  wcProviderData: [1]cushort
+  wcProviderData: [1]cwchar_t
 }
 global COMMCONFIG: type = @_COMMCONFIG
 global LPCOMMCONFIG: type = @*_COMMCONFIG
@@ -6782,7 +6782,7 @@ global _WIN32_STREAM_ID: type <cimport,nodecl,ctypedef> = @record{
   dwStreamAttributes: culong,
   Size: LARGE_INTEGER,
   dwStreamNameSize: culong,
-  cStreamName: [1]cushort
+  cStreamName: [1]cwchar_t
 }
 global WIN32_STREAM_ID: type = @_WIN32_STREAM_ID
 global LPWIN32_STREAM_ID: type = @*_WIN32_STREAM_ID
@@ -6964,7 +6964,7 @@ global _STREAM_INFO_LEVELS: type <cimport,nodecl,using,ctypedef> = @enum(cint){
 global STREAM_INFO_LEVELS: type = @_STREAM_INFO_LEVELS
 global _WIN32_FIND_STREAM_DATA: type <cimport,nodecl,ctypedef> = @record{
   StreamSize: LARGE_INTEGER,
-  cStreamName: [296]cushort
+  cStreamName: [296]cwchar_t
 }
 global WIN32_FIND_STREAM_DATA: type = @_WIN32_FIND_STREAM_DATA
 global PWIN32_FIND_STREAM_DATA: type = @*_WIN32_FIND_STREAM_DATA
@@ -7068,8 +7068,8 @@ global HW_PROFILE_INFOA: type = @tagHW_PROFILE_INFOA
 global LPHW_PROFILE_INFOA: type = @*tagHW_PROFILE_INFOA
 global tagHW_PROFILE_INFOW: type <cimport,nodecl,ctypedef> = @record{
   dwDockInfo: culong,
-  szHwProfileGuid: [39]cushort,
-  szHwProfileName: [80]cushort
+  szHwProfileGuid: [39]cwchar_t,
+  szHwProfileName: [80]cwchar_t
 }
 global HW_PROFILE_INFOW: type = @tagHW_PROFILE_INFOW
 global LPHW_PROFILE_INFOW: type = @*tagHW_PROFILE_INFOW
@@ -7100,10 +7100,10 @@ global function GetComputerNameA(lpBuffer: LPSTR, nSize: LPDWORD): cint <cimport
 global function GetComputerNameW(lpBuffer: LPWSTR, nSize: LPDWORD): cint <cimport,nodecl> end
 global _TIME_ZONE_INFORMATION: type <cimport,nodecl,ctypedef> = @record{
   Bias: clong,
-  StandardName: [32]cushort,
+  StandardName: [32]cwchar_t,
   StandardDate: SYSTEMTIME,
   StandardBias: clong,
-  DaylightName: [32]cushort,
+  DaylightName: [32]cwchar_t,
   DaylightDate: SYSTEMTIME,
   DaylightBias: clong
 }
@@ -7112,13 +7112,13 @@ global PTIME_ZONE_INFORMATION: type = @*_TIME_ZONE_INFORMATION
 global LPTIME_ZONE_INFORMATION: type = @*_TIME_ZONE_INFORMATION
 global _TIME_DYNAMIC_ZONE_INFORMATION: type <cimport,nodecl,ctypedef> = @record{
   Bias: clong,
-  StandardName: [32]cushort,
+  StandardName: [32]cwchar_t,
   StandardDate: SYSTEMTIME,
   StandardBias: clong,
-  DaylightName: [32]cushort,
+  DaylightName: [32]cwchar_t,
   DaylightDate: SYSTEMTIME,
   DaylightBias: clong,
-  TimeZoneKeyName: [128]cushort,
+  TimeZoneKeyName: [128]cwchar_t,
   DynamicDaylightTimeDisabled: BOOLEAN
 }
 global DYNAMIC_TIME_ZONE_INFORMATION: type = @_TIME_DYNAMIC_ZONE_INFORMATION
@@ -7293,7 +7293,7 @@ global FILE_STANDARD_INFO: type = @_FILE_STANDARD_INFO
 global PFILE_STANDARD_INFO: type = @*_FILE_STANDARD_INFO
 global _FILE_NAME_INFO: type <cimport,nodecl,ctypedef> = @record{
   FileNameLength: culong,
-  FileName: [1]cushort
+  FileName: [1]cwchar_t
 }
 global FILE_NAME_INFO: type = @_FILE_NAME_INFO
 global PFILE_NAME_INFO: type = @*_FILE_NAME_INFO
@@ -7309,7 +7309,7 @@ global _FILE_RENAME_INFO: type <cimport,nodecl,ctypedef> = @record{
   },
   RootDirectory: HANDLE,
   FileNameLength: culong,
-  FileName: [1]cushort
+  FileName: [1]cwchar_t
 }
 global FILE_RENAME_INFO: type = @_FILE_RENAME_INFO
 global PFILE_RENAME_INFO: type = @*_FILE_RENAME_INFO
@@ -7328,7 +7328,7 @@ global _FILE_STREAM_INFO: type <cimport,nodecl,ctypedef> = @record{
   StreamNameLength: culong,
   StreamSize: LARGE_INTEGER,
   StreamAllocationSize: LARGE_INTEGER,
-  StreamName: [1]cushort
+  StreamName: [1]cwchar_t
 }
 global FILE_STREAM_INFO: type = @_FILE_STREAM_INFO
 global PFILE_STREAM_INFO: type = @*_FILE_STREAM_INFO
@@ -7371,9 +7371,9 @@ global _FILE_ID_BOTH_DIR_INFO: type <cimport,nodecl,ctypedef> = @record{
   FileNameLength: culong,
   EaSize: culong,
   ShortNameLength: cchar,
-  ShortName: [12]cushort,
+  ShortName: [12]cwchar_t,
   FileId: LARGE_INTEGER,
-  FileName: [1]cushort
+  FileName: [1]cwchar_t
 }
 global FILE_ID_BOTH_DIR_INFO: type = @_FILE_ID_BOTH_DIR_INFO
 global PFILE_ID_BOTH_DIR_INFO: type = @*_FILE_ID_BOTH_DIR_INFO
@@ -7389,7 +7389,7 @@ global _FILE_FULL_DIR_INFO: type <cimport,nodecl,ctypedef> = @record{
   FileAttributes: culong,
   FileNameLength: culong,
   EaSize: culong,
-  FileName: [1]cushort
+  FileName: [1]cwchar_t
 }
 global FILE_FULL_DIR_INFO: type = @_FILE_FULL_DIR_INFO
 global PFILE_FULL_DIR_INFO: type = @*_FILE_FULL_DIR_INFO
@@ -7573,7 +7573,7 @@ global tagLOGCOLORSPACEW: type <cimport,nodecl,ctypedef> = @record{
   lcsGammaRed: culong,
   lcsGammaGreen: culong,
   lcsGammaBlue: culong,
-  lcsFilename: [260]cushort
+  lcsFilename: [260]cwchar_t
 }
 global LOGCOLORSPACEW: type = @tagLOGCOLORSPACEW
 global LPLOGCOLORSPACEW: type = @*tagLOGCOLORSPACEW
@@ -7901,10 +7901,10 @@ global tagTEXTMETRICW: type <cimport,nodecl,ctypedef> = @record{
   tmOverhang: clong,
   tmDigitizedAspectX: clong,
   tmDigitizedAspectY: clong,
-  tmFirstChar: cushort,
-  tmLastChar: cushort,
-  tmDefaultChar: cushort,
-  tmBreakChar: cushort,
+  tmFirstChar: cwchar_t,
+  tmLastChar: cwchar_t,
+  tmDefaultChar: cwchar_t,
+  tmBreakChar: cwchar_t,
   tmItalic: cuchar,
   tmUnderlined: cuchar,
   tmStruckOut: cuchar,
@@ -7961,10 +7961,10 @@ global tagNEWTEXTMETRICW: type <cimport,nodecl,ctypedef> = @record{
   tmOverhang: clong,
   tmDigitizedAspectX: clong,
   tmDigitizedAspectY: clong,
-  tmFirstChar: cushort,
-  tmLastChar: cushort,
-  tmDefaultChar: cushort,
-  tmBreakChar: cushort,
+  tmFirstChar: cwchar_t,
+  tmLastChar: cwchar_t,
+  tmDefaultChar: cwchar_t,
+  tmBreakChar: cwchar_t,
   tmItalic: cuchar,
   tmUnderlined: cuchar,
   tmStruckOut: cuchar,
@@ -8114,7 +8114,7 @@ global tagLOGFONTW: type <cimport,nodecl,ctypedef> = @record{
   lfClipPrecision: cuchar,
   lfQuality: cuchar,
   lfPitchAndFamily: cuchar,
-  lfFaceName: [32]cushort
+  lfFaceName: [32]cwchar_t
 }
 global LOGFONTW: type = @tagLOGFONTW
 global PLOGFONTW: type = @*tagLOGFONTW
@@ -8133,8 +8133,8 @@ global ENUMLOGFONTA: type = @tagENUMLOGFONTA
 global LPENUMLOGFONTA: type = @*tagENUMLOGFONTA
 global tagENUMLOGFONTW: type <cimport,nodecl,ctypedef> = @record{
   elfLogFont: LOGFONTW,
-  elfFullName: [64]cushort,
-  elfStyle: [32]cushort
+  elfFullName: [64]cwchar_t,
+  elfStyle: [32]cwchar_t
 }
 global ENUMLOGFONTW: type = @tagENUMLOGFONTW
 global LPENUMLOGFONTW: type = @*tagENUMLOGFONTW
@@ -8150,9 +8150,9 @@ global ENUMLOGFONTEXA: type = @tagENUMLOGFONTEXA
 global LPENUMLOGFONTEXA: type = @*tagENUMLOGFONTEXA
 global tagENUMLOGFONTEXW: type <cimport,nodecl,ctypedef> = @record{
   elfLogFont: LOGFONTW,
-  elfFullName: [64]cushort,
-  elfStyle: [32]cushort,
-  elfScript: [32]cushort
+  elfFullName: [64]cwchar_t,
+  elfStyle: [32]cwchar_t,
+  elfScript: [32]cwchar_t
 }
 global ENUMLOGFONTEXW: type = @tagENUMLOGFONTEXW
 global LPENUMLOGFONTEXW: type = @*tagENUMLOGFONTEXW
@@ -8190,8 +8190,8 @@ global NPEXTLOGFONTA: type = @*tagEXTLOGFONTA
 global LPEXTLOGFONTA: type = @*tagEXTLOGFONTA
 global tagEXTLOGFONTW: type <cimport,nodecl,ctypedef> = @record{
   elfLogFont: LOGFONTW,
-  elfFullName: [64]cushort,
-  elfStyle: [32]cushort,
+  elfFullName: [64]cwchar_t,
+  elfStyle: [32]cwchar_t,
   elfVersion: culong,
   elfStyleSize: culong,
   elfMatch: culong,
@@ -8261,7 +8261,7 @@ global PDEVMODEA: type = @*_devicemodeA
 global NPDEVMODEA: type = @*_devicemodeA
 global LPDEVMODEA: type = @*_devicemodeA
 global _devicemodeW: type <cimport,nodecl,ctypedef> = @record{
-  dmDeviceName: [32]cushort,
+  dmDeviceName: [32]cwchar_t,
   dmSpecVersion: cushort,
   dmDriverVersion: cushort,
   dmSize: cushort,
@@ -8289,7 +8289,7 @@ global _devicemodeW: type <cimport,nodecl,ctypedef> = @record{
   dmYResolution: cshort,
   dmTTOption: cshort,
   dmCollate: cshort,
-  dmFormName: [32]cushort,
+  dmFormName: [32]cwchar_t,
   dmLogPixels: cushort,
   dmBitsPerPel: culong,
   dmPelsWidth: culong,
@@ -8329,11 +8329,11 @@ global PDISPLAY_DEVICEA: type = @*_DISPLAY_DEVICEA
 global LPDISPLAY_DEVICEA: type = @*_DISPLAY_DEVICEA
 global _DISPLAY_DEVICEW: type <cimport,nodecl,ctypedef> = @record{
   cb: culong,
-  DeviceName: [32]cushort,
-  DeviceString: [128]cushort,
+  DeviceName: [32]cwchar_t,
+  DeviceString: [128]cwchar_t,
   StateFlags: culong,
-  DeviceID: [128]cushort,
-  DeviceKey: [128]cushort
+  DeviceID: [128]cwchar_t,
+  DeviceKey: [128]cwchar_t
 }
 global DISPLAY_DEVICEW: type = @_DISPLAY_DEVICEW
 global PDISPLAY_DEVICEW: type = @*_DISPLAY_DEVICEW
@@ -8740,7 +8740,7 @@ global function GetFontLanguageInfo(hdc: HDC): culong <cimport,nodecl> end
 global function GetCharacterPlacementA(hdc: HDC, lpString: LPCSTR, nCount: cint, nMexExtent: cint, lpResults: LPGCP_RESULTSA, dwFlags: culong): culong <cimport,nodecl> end
 global function GetCharacterPlacementW(hdc: HDC, lpString: LPCWSTR, nCount: cint, nMexExtent: cint, lpResults: LPGCP_RESULTSW, dwFlags: culong): culong <cimport,nodecl> end
 global tagWCRANGE: type <cimport,nodecl,ctypedef> = @record{
-  wcLow: cushort,
+  wcLow: cwchar_t,
   cGlyphs: cushort
 }
 global WCRANGE: type = @tagWCRANGE
@@ -8788,7 +8788,7 @@ global LPAXISINFOA: type = @*tagAXISINFOA
 global tagAXISINFOW: type <cimport,nodecl,ctypedef> = @record{
   axMinValue: clong,
   axMaxValue: clong,
-  axAxisName: [16]cushort
+  axAxisName: [16]cwchar_t
 }
 global AXISINFOW: type = @tagAXISINFOW
 global PAXISINFOW: type = @*tagAXISINFOW
@@ -10725,13 +10725,13 @@ global function CharPrevW(lpszStart: LPCWSTR, lpszCurrent: LPCWSTR): LPWSTR <cim
 global function CharNextExA(CodePage: cushort, lpCurrentChar: LPCSTR, dwFlags: culong): LPSTR <cimport,nodecl> end
 global function CharPrevExA(CodePage: cushort, lpStart: LPCSTR, lpCurrentChar: LPCSTR, dwFlags: culong): LPSTR <cimport,nodecl> end
 global function IsCharAlphaA(ch: cchar): cint <cimport,nodecl> end
-global function IsCharAlphaW(ch: cushort): cint <cimport,nodecl> end
+global function IsCharAlphaW(ch: cwchar_t): cint <cimport,nodecl> end
 global function IsCharAlphaNumericA(ch: cchar): cint <cimport,nodecl> end
-global function IsCharAlphaNumericW(ch: cushort): cint <cimport,nodecl> end
+global function IsCharAlphaNumericW(ch: cwchar_t): cint <cimport,nodecl> end
 global function IsCharUpperA(ch: cchar): cint <cimport,nodecl> end
-global function IsCharUpperW(ch: cushort): cint <cimport,nodecl> end
+global function IsCharUpperW(ch: cwchar_t): cint <cimport,nodecl> end
 global function IsCharLowerA(ch: cchar): cint <cimport,nodecl> end
-global function IsCharLowerW(ch: cushort): cint <cimport,nodecl> end
+global function IsCharLowerW(ch: cwchar_t): cint <cimport,nodecl> end
 global function SetFocus(hWnd: HWND): HWND <cimport,nodecl> end
 global function GetActiveWindow(): HWND <cimport,nodecl> end
 global function GetFocus(): HWND <cimport,nodecl> end
@@ -10748,9 +10748,9 @@ global function ToAsciiEx(uVirtKey: cuint, uScanCode: cuint, lpKeyState: *cuchar
 global function ToUnicode(wVirtKey: cuint, wScanCode: cuint, lpKeyState: *cuchar, pwszBuff: LPWSTR, cchBuff: cint, wFlags: cuint): cint <cimport,nodecl> end
 global function OemKeyScan(wOemChar: cushort): culong <cimport,nodecl> end
 global function VkKeyScanA(ch: cchar): cshort <cimport,nodecl> end
-global function VkKeyScanW(ch: cushort): cshort <cimport,nodecl> end
+global function VkKeyScanW(ch: cwchar_t): cshort <cimport,nodecl> end
 global function VkKeyScanExA(ch: cchar, dwhkl: HKL): cshort <cimport,nodecl> end
-global function VkKeyScanExW(ch: cushort, dwhkl: HKL): cshort <cimport,nodecl> end
+global function VkKeyScanExW(ch: cwchar_t, dwhkl: HKL): cshort <cimport,nodecl> end
 global tagMOUSEINPUT: type <cimport,nodecl,ctypedef> = @record{
   dx: clong,
   dy: clong,
@@ -11188,12 +11188,12 @@ global PMENUITEMTEMPLATEHEADER: type = @*record{
 global MENUITEMTEMPLATE: type <cimport,nodecl> = @record{
   mtOption: cushort,
   mtID: cushort,
-  mtString: [1]cushort
+  mtString: [1]cwchar_t
 }
 global PMENUITEMTEMPLATE: type = @*record{
   mtOption: cushort,
   mtID: cushort,
-  mtString: [1]cushort
+  mtString: [1]cwchar_t
 }
 global function LoadBitmapA(hInstance: HINSTANCE, lpBitmapName: LPCSTR): HBITMAP <cimport,nodecl> end
 global function LoadBitmapW(hInstance: HINSTANCE, lpBitmapName: LPCWSTR): HBITMAP <cimport,nodecl> end
@@ -11262,8 +11262,8 @@ global _ICONINFOEXW: type <cimport,nodecl,ctypedef> = @record{
   hbmMask: HBITMAP,
   hbmColor: HBITMAP,
   wResID: cushort,
-  szModName: [260]cushort,
-  szResName: [260]cushort
+  szModName: [260]cwchar_t,
+  szResName: [260]cwchar_t
 }
 global ICONINFOEXW: type = @_ICONINFOEXW
 global PICONINFOEXW: type = @*_ICONINFOEXW
@@ -11350,8 +11350,8 @@ global PMULTIKEYHELPA: type = @*tagMULTIKEYHELPA
 global LPMULTIKEYHELPA: type = @*tagMULTIKEYHELPA
 global tagMULTIKEYHELPW: type <cimport,nodecl,ctypedef> = @record{
   mkSize: culong,
-  mkKeylist: cushort,
-  szKeyphrase: [1]cushort
+  mkKeylist: cwchar_t,
+  szKeyphrase: [1]cwchar_t
 }
 global MULTIKEYHELPW: type = @tagMULTIKEYHELPW
 global PMULTIKEYHELPW: type = @*tagMULTIKEYHELPW
@@ -11378,7 +11378,7 @@ global tagHELPWININFOW: type <cimport,nodecl,ctypedef> = @record{
   dx: cint,
   dy: cint,
   wMax: cint,
-  rgchMember: [2]cushort
+  rgchMember: [2]cwchar_t
 }
 global HELPWININFOW: type = @tagHELPWININFOW
 global PHELPWININFOW: type = @*tagHELPWININFOW
@@ -11660,7 +11660,7 @@ global tagMONITORINFOEXW: type <cimport,nodecl,ctypedef> = @record{
     rcWork: RECT,
     dwFlags: culong
   },
-  szDevice: [32]cushort
+  szDevice: [32]cwchar_t
 }
 global MONITORINFOEXW: type = @tagMONITORINFOEXW
 global LPMONITORINFOEXW: type = @*tagMONITORINFOEXW
@@ -11952,7 +11952,7 @@ global _cpinfoexA: type <cimport,nodecl,ctypedef> = @record{
   MaxCharSize: cuint,
   DefaultChar: [2]cuchar,
   LeadByte: [12]cuchar,
-  UnicodeDefaultChar: cushort,
+  UnicodeDefaultChar: cwchar_t,
   CodePage: cuint,
   CodePageName: [260]cchar
 }
@@ -11962,9 +11962,9 @@ global _cpinfoexW: type <cimport,nodecl,ctypedef> = @record{
   MaxCharSize: cuint,
   DefaultChar: [2]cuchar,
   LeadByte: [12]cuchar,
-  UnicodeDefaultChar: cushort,
+  UnicodeDefaultChar: cwchar_t,
   CodePage: cuint,
-  CodePageName: [260]cushort
+  CodePageName: [260]cwchar_t
 }
 global CPINFOEXW: type = @_cpinfoexW
 global LPCPINFOEXW: type = @*_cpinfoexW
@@ -12239,7 +12239,7 @@ global _KEY_EVENT_RECORD: type <cimport,nodecl,ctypedef> = @record{
   wVirtualKeyCode: cushort,
   wVirtualScanCode: cushort,
   uChar: union{
-    UnicodeChar: cushort,
+    UnicodeChar: cwchar_t,
     AsciiChar: cchar
   },
   dwControlKeyState: culong
@@ -12283,7 +12283,7 @@ global INPUT_RECORD: type = @_INPUT_RECORD
 global PINPUT_RECORD: type = @*_INPUT_RECORD
 global _CHAR_INFO: type <cimport,nodecl,ctypedef> = @record{
   Char: union{
-    UnicodeChar: cushort,
+    UnicodeChar: cwchar_t,
     AsciiChar: cchar
   },
   Attributes: cushort
@@ -12336,7 +12336,7 @@ global function WriteConsoleOutputCharacterA(hConsoleOutput: HANDLE, lpCharacter
 global function WriteConsoleOutputCharacterW(hConsoleOutput: HANDLE, lpCharacter: LPCWSTR, nLength: culong, dwWriteCoord: COORD, lpNumberOfCharsWritten: LPDWORD): cint <cimport,nodecl> end
 global function WriteConsoleOutputAttribute(hConsoleOutput: HANDLE, lpAttribute: *cushort, nLength: culong, dwWriteCoord: COORD, lpNumberOfAttrsWritten: LPDWORD): cint <cimport,nodecl> end
 global function FillConsoleOutputCharacterA(hConsoleOutput: HANDLE, cCharacter: cchar, nLength: culong, dwWriteCoord: COORD, lpNumberOfCharsWritten: LPDWORD): cint <cimport,nodecl> end
-global function FillConsoleOutputCharacterW(hConsoleOutput: HANDLE, cCharacter: cushort, nLength: culong, dwWriteCoord: COORD, lpNumberOfCharsWritten: LPDWORD): cint <cimport,nodecl> end
+global function FillConsoleOutputCharacterW(hConsoleOutput: HANDLE, cCharacter: cwchar_t, nLength: culong, dwWriteCoord: COORD, lpNumberOfCharsWritten: LPDWORD): cint <cimport,nodecl> end
 global function FillConsoleOutputAttribute(hConsoleOutput: HANDLE, wAttribute: cushort, nLength: culong, dwWriteCoord: COORD, lpNumberOfAttrsWritten: LPDWORD): cint <cimport,nodecl> end
 global function GetConsoleMode(hConsoleHandle: HANDLE, lpMode: LPDWORD): cint <cimport,nodecl> end
 global function GetNumberOfConsoleInputEvents(hConsoleInput: HANDLE, lpNumberOfEvents: LPDWORD): cint <cimport,nodecl> end
@@ -12405,7 +12405,7 @@ global _CONSOLE_FONT_INFOEX: type <cimport,nodecl,ctypedef> = @record{
   dwFontSize: COORD,
   FontFamily: cuint,
   FontWeight: cuint,
-  FaceName: [32]cushort
+  FaceName: [32]cwchar_t
 }
 global CONSOLE_FONT_INFOEX: type = @_CONSOLE_FONT_INFOEX
 global PCONSOLE_FONT_INFOEX: type = @*_CONSOLE_FONT_INFOEX
@@ -12795,7 +12795,7 @@ global function ua_CharUpperW(String: LPUWSTR): LPUWSTR <cimport,nodecl> end
 global function ua_lstrcmpW(String1: LPCUWSTR, String2: LPCUWSTR): cint <cimport,nodecl> end
 global function ua_lstrcmpiW(String1: LPCUWSTR, String2: LPCUWSTR): cint <cimport,nodecl> end
 global function ua_lstrlenW(String: LPCUWSTR): cint <cimport,nodecl> end
-global PUWSTR_C: type = @*cushort
+global PUWSTR_C: type = @*cwchar_t
 global _SERVICE_DESCRIPTIONA: type <cimport,nodecl,ctypedef> = @record{
   lpDescription: LPSTR
 }
@@ -13226,7 +13226,7 @@ global NPSTYLEBUFA: type = @*tagSTYLEBUFA
 global LPSTYLEBUFA: type = @*tagSTYLEBUFA
 global tagSTYLEBUFW: type <cimport,nodecl,ctypedef> = @record{
   dwStyle: culong,
-  szDescription: [32]cushort
+  szDescription: [32]cwchar_t
 }
 global STYLEBUFW: type = @tagSTYLEBUFW
 global PSTYLEBUFW: type = @*tagSTYLEBUFW
@@ -13259,7 +13259,7 @@ global tagIMEMENUITEMINFOW: type <cimport,nodecl,ctypedef> = @record{
   hbmpChecked: HBITMAP,
   hbmpUnchecked: HBITMAP,
   dwItemData: culong,
-  szString: [80]cushort,
+  szString: [80]cwchar_t,
   hbmpItem: HBITMAP
 }
 global IMEMENUITEMINFOW: type = @tagIMEMENUITEMINFOW

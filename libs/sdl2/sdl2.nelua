@@ -55,15 +55,15 @@ global function SDL_memset4(dst: pointer, val: uint32, dwords: csize): void <cim
 global function SDL_memcpy(dst: pointer, src: pointer, len: csize): pointer <cimport,nodecl> end
 global function SDL_memmove(dst: pointer, src: pointer, len: csize): pointer <cimport,nodecl> end
 global function SDL_memcmp(s1: pointer, s2: pointer, len: csize): cint <cimport,nodecl> end
-global function SDL_wcslen(wstr: *cint): csize <cimport,nodecl> end
-global function SDL_wcslcpy(dst: *cint, src: *cint, maxlen: csize): csize <cimport,nodecl> end
-global function SDL_wcslcat(dst: *cint, src: *cint, maxlen: csize): csize <cimport,nodecl> end
-global function SDL_wcsdup(wstr: *cint): *cint <cimport,nodecl> end
-global function SDL_wcsstr(haystack: *cint, needle: *cint): *cint <cimport,nodecl> end
-global function SDL_wcscmp(str1: *cint, str2: *cint): cint <cimport,nodecl> end
-global function SDL_wcsncmp(str1: *cint, str2: *cint, maxlen: csize): cint <cimport,nodecl> end
-global function SDL_wcscasecmp(str1: *cint, str2: *cint): cint <cimport,nodecl> end
-global function SDL_wcsncasecmp(str1: *cint, str2: *cint, len: csize): cint <cimport,nodecl> end
+global function SDL_wcslen(wstr: *cwchar_t): csize <cimport,nodecl> end
+global function SDL_wcslcpy(dst: *cwchar_t, src: *cwchar_t, maxlen: csize): csize <cimport,nodecl> end
+global function SDL_wcslcat(dst: *cwchar_t, src: *cwchar_t, maxlen: csize): csize <cimport,nodecl> end
+global function SDL_wcsdup(wstr: *cwchar_t): *cwchar_t <cimport,nodecl> end
+global function SDL_wcsstr(haystack: *cwchar_t, needle: *cwchar_t): *cwchar_t <cimport,nodecl> end
+global function SDL_wcscmp(str1: *cwchar_t, str2: *cwchar_t): cint <cimport,nodecl> end
+global function SDL_wcsncmp(str1: *cwchar_t, str2: *cwchar_t, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_wcscasecmp(str1: *cwchar_t, str2: *cwchar_t): cint <cimport,nodecl> end
+global function SDL_wcsncasecmp(str1: *cwchar_t, str2: *cwchar_t, len: csize): cint <cimport,nodecl> end
 global function SDL_strlen(str: cstring): csize <cimport,nodecl> end
 global function SDL_strlcpy(dst: cstring, src: cstring, maxlen: csize): csize <cimport,nodecl> end
 global function SDL_utf8strlcpy(dst: cstring, src: cstring, dst_bytes: csize): csize <cimport,nodecl> end
@@ -2186,10 +2186,10 @@ SDL_hid_device_info = @record{
   path: cstring,
   vendor_id: cushort,
   product_id: cushort,
-  serial_number: *cint,
+  serial_number: *cwchar_t,
   release_number: cushort,
-  manufacturer_string: *cint,
-  product_string: *cint,
+  manufacturer_string: *cwchar_t,
+  product_string: *cwchar_t,
   usage_page: cushort,
   usage: cushort,
   interface_number: cint,
@@ -2203,7 +2203,7 @@ global function SDL_hid_exit(): cint <cimport,nodecl> end
 global function SDL_hid_device_change_count(): uint32 <cimport,nodecl> end
 global function SDL_hid_enumerate(vendor_id: cushort, product_id: cushort): *SDL_hid_device_info <cimport,nodecl> end
 global function SDL_hid_free_enumeration(devs: *SDL_hid_device_info): void <cimport,nodecl> end
-global function SDL_hid_open(vendor_id: cushort, product_id: cushort, serial_number: *cint): *SDL_hid_device <cimport,nodecl> end
+global function SDL_hid_open(vendor_id: cushort, product_id: cushort, serial_number: *cwchar_t): *SDL_hid_device <cimport,nodecl> end
 global function SDL_hid_open_path(path: cstring, bExclusive: cint): *SDL_hid_device <cimport,nodecl> end
 global function SDL_hid_write(dev: *SDL_hid_device, data: *cuchar, length: csize): cint <cimport,nodecl> end
 global function SDL_hid_read_timeout(dev: *SDL_hid_device, data: *cuchar, length: csize, milliseconds: cint): cint <cimport,nodecl> end
@@ -2212,10 +2212,10 @@ global function SDL_hid_set_nonblocking(dev: *SDL_hid_device, nonblock: cint): c
 global function SDL_hid_send_feature_report(dev: *SDL_hid_device, data: *cuchar, length: csize): cint <cimport,nodecl> end
 global function SDL_hid_get_feature_report(dev: *SDL_hid_device, data: *cuchar, length: csize): cint <cimport,nodecl> end
 global function SDL_hid_close(dev: *SDL_hid_device): void <cimport,nodecl> end
-global function SDL_hid_get_manufacturer_string(dev: *SDL_hid_device, string: *cint, maxlen: csize): cint <cimport,nodecl> end
-global function SDL_hid_get_product_string(dev: *SDL_hid_device, string: *cint, maxlen: csize): cint <cimport,nodecl> end
-global function SDL_hid_get_serial_number_string(dev: *SDL_hid_device, string: *cint, maxlen: csize): cint <cimport,nodecl> end
-global function SDL_hid_get_indexed_string(dev: *SDL_hid_device, string_index: cint, string: *cint, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_manufacturer_string(dev: *SDL_hid_device, string: *cwchar_t, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_product_string(dev: *SDL_hid_device, string: *cwchar_t, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_serial_number_string(dev: *SDL_hid_device, string: *cwchar_t, maxlen: csize): cint <cimport,nodecl> end
+global function SDL_hid_get_indexed_string(dev: *SDL_hid_device, string_index: cint, string: *cwchar_t, maxlen: csize): cint <cimport,nodecl> end
 global function SDL_hid_ble_scan(active: SDL_bool): void <cimport,nodecl> end
 global SDL_HintPriority: type <cimport,nodecl,using> = @enum(cint){
   SDL_HINT_DEFAULT = 0,

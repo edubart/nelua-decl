@@ -721,7 +721,7 @@ global XmbTextItem: type <cimport,nodecl> = @record{
   font_set: XFontSet
 }
 global XwcTextItem: type <cimport,nodecl> = @record{
-  chars: *cint,
+  chars: *cwchar_t,
   nchars: cint,
   delta: cint,
   font_set: XFontSet
@@ -770,7 +770,7 @@ global XIMText: type <cimport,nodecl> = @record{
   encoding_is_wchar: cint,
   string: union{
     multi_byte: cstring,
-    wide_char: *cint
+    wide_char: *cwchar_t
   }
 }
 global XIMPreeditStateNotifyCallbackStruct: type <cimport,nodecl> = @record{
@@ -782,7 +782,7 @@ global XIMStringConversionText: type <cimport,nodecl> = @record{
   encoding_is_wchar: cint,
   string: union{
     mbs: cstring,
-    wcs: *cint
+    wcs: *cwchar_t
   }
 }
 global XIMCaretDirection: type <cimport,nodecl,using> = @enum(cint){
@@ -1212,22 +1212,22 @@ global function XDirectionalDependentDrawing(a1: XFontSet): cint <cimport,nodecl
 global function XContextualDrawing(a1: XFontSet): cint <cimport,nodecl> end
 global function XExtentsOfFontSet(a1: XFontSet): *XFontSetExtents <cimport,nodecl> end
 global function XmbTextEscapement(a1: XFontSet, a2: cstring, a3: cint): cint <cimport,nodecl> end
-global function XwcTextEscapement(a1: XFontSet, a2: *cint, a3: cint): cint <cimport,nodecl> end
+global function XwcTextEscapement(a1: XFontSet, a2: *cwchar_t, a3: cint): cint <cimport,nodecl> end
 global function Xutf8TextEscapement(a1: XFontSet, a2: cstring, a3: cint): cint <cimport,nodecl> end
 global function XmbTextExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle): cint <cimport,nodecl> end
-global function XwcTextExtents(a1: XFontSet, a2: *cint, a3: cint, a4: *XRectangle, a5: *XRectangle): cint <cimport,nodecl> end
+global function XwcTextExtents(a1: XFontSet, a2: *cwchar_t, a3: cint, a4: *XRectangle, a5: *XRectangle): cint <cimport,nodecl> end
 global function Xutf8TextExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle): cint <cimport,nodecl> end
 global function XmbTextPerCharExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle, a6: cint, a7: *cint, a8: *XRectangle, a9: *XRectangle): cint <cimport,nodecl> end
-global function XwcTextPerCharExtents(a1: XFontSet, a2: *cint, a3: cint, a4: *XRectangle, a5: *XRectangle, a6: cint, a7: *cint, a8: *XRectangle, a9: *XRectangle): cint <cimport,nodecl> end
+global function XwcTextPerCharExtents(a1: XFontSet, a2: *cwchar_t, a3: cint, a4: *XRectangle, a5: *XRectangle, a6: cint, a7: *cint, a8: *XRectangle, a9: *XRectangle): cint <cimport,nodecl> end
 global function Xutf8TextPerCharExtents(a1: XFontSet, a2: cstring, a3: cint, a4: *XRectangle, a5: *XRectangle, a6: cint, a7: *cint, a8: *XRectangle, a9: *XRectangle): cint <cimport,nodecl> end
 global function XmbDrawText(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XmbTextItem, a7: cint): void <cimport,nodecl> end
 global function XwcDrawText(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XwcTextItem, a7: cint): void <cimport,nodecl> end
 global function Xutf8DrawText(a1: *Display, a2: Drawable, a3: GC, a4: cint, a5: cint, a6: *XmbTextItem, a7: cint): void <cimport,nodecl> end
 global function XmbDrawString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint): void <cimport,nodecl> end
-global function XwcDrawString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: *cint, a8: cint): void <cimport,nodecl> end
+global function XwcDrawString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: *cwchar_t, a8: cint): void <cimport,nodecl> end
 global function Xutf8DrawString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint): void <cimport,nodecl> end
 global function XmbDrawImageString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint): void <cimport,nodecl> end
-global function XwcDrawImageString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: *cint, a8: cint): void <cimport,nodecl> end
+global function XwcDrawImageString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: *cwchar_t, a8: cint): void <cimport,nodecl> end
 global function Xutf8DrawImageString(a1: *Display, a2: Drawable, a3: XFontSet, a4: GC, a5: cint, a6: cint, a7: cstring, a8: cint): void <cimport,nodecl> end
 global function XOpenIM(a1: *Display, a2: pointer, a3: cstring, a4: cstring): XIM <cimport,nodecl> end
 global function XCloseIM(a1: XIM): cint <cimport,nodecl> end
@@ -1239,7 +1239,7 @@ global function XCreateIC(a1: XIM, ...: cvarargs): XIC <cimport,nodecl> end
 global function XDestroyIC(a1: XIC): void <cimport,nodecl> end
 global function XSetICFocus(a1: XIC): void <cimport,nodecl> end
 global function XUnsetICFocus(a1: XIC): void <cimport,nodecl> end
-global function XwcResetIC(a1: XIC): *cint <cimport,nodecl> end
+global function XwcResetIC(a1: XIC): *cwchar_t <cimport,nodecl> end
 global function XmbResetIC(a1: XIC): cstring <cimport,nodecl> end
 global function Xutf8ResetIC(a1: XIC): cstring <cimport,nodecl> end
 global function XSetICValues(a1: XIC, ...: cvarargs): cstring <cimport,nodecl> end
@@ -1247,7 +1247,7 @@ global function XGetICValues(a1: XIC, ...: cvarargs): cstring <cimport,nodecl> e
 global function XIMOfIC(a1: XIC): XIM <cimport,nodecl> end
 global function XFilterEvent(a1: *XEvent, a2: Window): cint <cimport,nodecl> end
 global function XmbLookupString(a1: XIC, a2: *XKeyPressedEvent, a3: cstring, a4: cint, a5: *KeySym, a6: *cint): cint <cimport,nodecl> end
-global function XwcLookupString(a1: XIC, a2: *XKeyPressedEvent, a3: *cint, a4: cint, a5: *KeySym, a6: *cint): cint <cimport,nodecl> end
+global function XwcLookupString(a1: XIC, a2: *XKeyPressedEvent, a3: *cwchar_t, a4: cint, a5: *KeySym, a6: *cint): cint <cimport,nodecl> end
 global function Xutf8LookupString(a1: XIC, a2: *XKeyPressedEvent, a3: cstring, a4: cint, a5: *KeySym, a6: *cint): cint <cimport,nodecl> end
 global function XVaCreateNestedList(a1: cint, ...: cvarargs): XVaNestedList <cimport,nodecl> end
 global function XRegisterIMInstantiateCallback(a1: *Display, a2: pointer, a3: cstring, a4: cstring, a5: XIDProc, a6: XPointer): cint <cimport,nodecl> end
@@ -1409,12 +1409,12 @@ global function XShrinkRegion(a1: Region, a2: cint, a3: cint): cint <cimport,nod
 global function XStringListToTextProperty(a1: *cstring, a2: cint, a3: *XTextProperty): cint <cimport,nodecl> end
 global function XSubtractRegion(a1: Region, a2: Region, a3: Region): cint <cimport,nodecl> end
 global function XmbTextListToTextProperty(display: *Display, list: *cstring, count: cint, style: XICCEncodingStyle, text_prop_return: *XTextProperty): cint <cimport,nodecl> end
-global function XwcTextListToTextProperty(display: *Display, list: **cint, count: cint, style: XICCEncodingStyle, text_prop_return: *XTextProperty): cint <cimport,nodecl> end
+global function XwcTextListToTextProperty(display: *Display, list: **cwchar_t, count: cint, style: XICCEncodingStyle, text_prop_return: *XTextProperty): cint <cimport,nodecl> end
 global function Xutf8TextListToTextProperty(display: *Display, list: *cstring, count: cint, style: XICCEncodingStyle, text_prop_return: *XTextProperty): cint <cimport,nodecl> end
-global function XwcFreeStringList(list: **cint): void <cimport,nodecl> end
+global function XwcFreeStringList(list: **cwchar_t): void <cimport,nodecl> end
 global function XTextPropertyToStringList(a1: *XTextProperty, a2: **cstring, a3: *cint): cint <cimport,nodecl> end
 global function XmbTextPropertyToTextList(display: *Display, text_prop: *XTextProperty, list_return: **cstring, count_return: *cint): cint <cimport,nodecl> end
-global function XwcTextPropertyToTextList(display: *Display, text_prop: *XTextProperty, list_return: ***cint, count_return: *cint): cint <cimport,nodecl> end
+global function XwcTextPropertyToTextList(display: *Display, text_prop: *XTextProperty, list_return: ***cwchar_t, count_return: *cint): cint <cimport,nodecl> end
 global function Xutf8TextPropertyToTextList(display: *Display, text_prop: *XTextProperty, list_return: **cstring, count_return: *cint): cint <cimport,nodecl> end
 global function XUnionRectWithRegion(a1: *XRectangle, a2: Region, a3: Region): cint <cimport,nodecl> end
 global function XUnionRegion(a1: Region, a2: Region, a3: Region): cint <cimport,nodecl> end

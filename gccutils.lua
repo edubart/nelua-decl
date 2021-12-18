@@ -85,6 +85,9 @@ local ctype2nltype = {
   ['__clock_t'] = 'cclock_t',
   ['time_t'] = 'ctime_t',
   ['__time_t'] = 'ctime_t',
+  ['wchar_t'] = 'cwchar_t',
+  ['__wchar_t'] = 'cwchar_t',
+  ['WCHAR'] = 'cwchar_t',
 }
 
 function gccutils.is_primitive_name(name)

@@ -793,10 +793,10 @@ global function div(numer: cint, denom: cint): div_t <cimport,nodecl> end
 global function ldiv(numer: clong, denom: clong): ldiv_t <cimport,nodecl> end
 global function lldiv(numer: clonglong, denom: clonglong): lldiv_t <cimport,nodecl> end
 global function mblen(s: cstring, n: csize): cint <cimport,nodecl> end
-global function mbtowc(pwc: *cint, s: cstring, n: csize): cint <cimport,nodecl> end
-global function wctomb(s: cstring, wchar: cint): cint <cimport,nodecl> end
-global function mbstowcs(pwcs: *cint, s: cstring, n: csize): csize <cimport,nodecl> end
-global function wcstombs(s: cstring, pwcs: *cint, n: csize): csize <cimport,nodecl> end
+global function mbtowc(pwc: *cwchar_t, s: cstring, n: csize): cint <cimport,nodecl> end
+global function wctomb(s: cstring, wchar: cwchar_t): cint <cimport,nodecl> end
+global function mbstowcs(pwcs: *cwchar_t, s: cstring, n: csize): csize <cimport,nodecl> end
+global function wcstombs(s: cstring, pwcs: *cwchar_t, n: csize): csize <cimport,nodecl> end
 global function memcpy(dest: pointer, src: pointer, n: csize): pointer <cimport,nodecl> end
 global function memmove(dest: pointer, src: pointer, n: csize): pointer <cimport,nodecl> end
 global function memccpy(dest: pointer, src: pointer, c: cint, n: csize): pointer <cimport,nodecl> end
@@ -862,66 +862,66 @@ global function mbrtoc16(pc16: *cushort, s: cstring, n: csize, p: *mbstate_t): c
 global function c16rtomb(s: cstring, c16: cushort, ps: *mbstate_t): csize <cimport,nodecl> end
 global function mbrtoc32(pc32: *cuint, s: cstring, n: csize, p: *mbstate_t): csize <cimport,nodecl> end
 global function c32rtomb(s: cstring, c32: cuint, ps: *mbstate_t): csize <cimport,nodecl> end
-global function wcscpy(dest: *cint, src: *cint): *cint <cimport,nodecl> end
-global function wcsncpy(dest: *cint, src: *cint, n: csize): *cint <cimport,nodecl> end
-global function wcscat(dest: *cint, src: *cint): *cint <cimport,nodecl> end
-global function wcsncat(dest: *cint, src: *cint, n: csize): *cint <cimport,nodecl> end
-global function wcscmp(s1: *cint, s2: *cint): cint <cimport,nodecl> end
-global function wcsncmp(s1: *cint, s2: *cint, n: csize): cint <cimport,nodecl> end
-global function wcscoll(s1: *cint, s2: *cint): cint <cimport,nodecl> end
-global function wcsxfrm(s1: *cint, s2: *cint, n: csize): csize <cimport,nodecl> end
-global function wcschr(wcs: *cint, wc: cint): *cint <cimport,nodecl> end
-global function wcsrchr(wcs: *cint, wc: cint): *cint <cimport,nodecl> end
-global function wcscspn(wcs: *cint, reject: *cint): csize <cimport,nodecl> end
-global function wcsspn(wcs: *cint, accept: *cint): csize <cimport,nodecl> end
-global function wcspbrk(wcs: *cint, accept: *cint): *cint <cimport,nodecl> end
-global function wcsstr(haystack: *cint, needle: *cint): *cint <cimport,nodecl> end
-global function wcstok(s: *cint, delim: *cint, ptr: **cint): *cint <cimport,nodecl> end
-global function wcslen(s: *cint): csize <cimport,nodecl> end
-global function wmemchr(s: *cint, c: cint, n: csize): *cint <cimport,nodecl> end
-global function wmemcmp(s1: *cint, s2: *cint, n: csize): cint <cimport,nodecl> end
-global function wmemcpy(s1: *cint, s2: *cint, n: csize): *cint <cimport,nodecl> end
-global function wmemmove(s1: *cint, s2: *cint, n: csize): *cint <cimport,nodecl> end
-global function wmemset(s: *cint, c: cint, n: csize): *cint <cimport,nodecl> end
+global function wcscpy(dest: *cwchar_t, src: *cwchar_t): *cwchar_t <cimport,nodecl> end
+global function wcsncpy(dest: *cwchar_t, src: *cwchar_t, n: csize): *cwchar_t <cimport,nodecl> end
+global function wcscat(dest: *cwchar_t, src: *cwchar_t): *cwchar_t <cimport,nodecl> end
+global function wcsncat(dest: *cwchar_t, src: *cwchar_t, n: csize): *cwchar_t <cimport,nodecl> end
+global function wcscmp(s1: *cwchar_t, s2: *cwchar_t): cint <cimport,nodecl> end
+global function wcsncmp(s1: *cwchar_t, s2: *cwchar_t, n: csize): cint <cimport,nodecl> end
+global function wcscoll(s1: *cwchar_t, s2: *cwchar_t): cint <cimport,nodecl> end
+global function wcsxfrm(s1: *cwchar_t, s2: *cwchar_t, n: csize): csize <cimport,nodecl> end
+global function wcschr(wcs: *cwchar_t, wc: cwchar_t): *cwchar_t <cimport,nodecl> end
+global function wcsrchr(wcs: *cwchar_t, wc: cwchar_t): *cwchar_t <cimport,nodecl> end
+global function wcscspn(wcs: *cwchar_t, reject: *cwchar_t): csize <cimport,nodecl> end
+global function wcsspn(wcs: *cwchar_t, accept: *cwchar_t): csize <cimport,nodecl> end
+global function wcspbrk(wcs: *cwchar_t, accept: *cwchar_t): *cwchar_t <cimport,nodecl> end
+global function wcsstr(haystack: *cwchar_t, needle: *cwchar_t): *cwchar_t <cimport,nodecl> end
+global function wcstok(s: *cwchar_t, delim: *cwchar_t, ptr: **cwchar_t): *cwchar_t <cimport,nodecl> end
+global function wcslen(s: *cwchar_t): csize <cimport,nodecl> end
+global function wmemchr(s: *cwchar_t, c: cwchar_t, n: csize): *cwchar_t <cimport,nodecl> end
+global function wmemcmp(s1: *cwchar_t, s2: *cwchar_t, n: csize): cint <cimport,nodecl> end
+global function wmemcpy(s1: *cwchar_t, s2: *cwchar_t, n: csize): *cwchar_t <cimport,nodecl> end
+global function wmemmove(s1: *cwchar_t, s2: *cwchar_t, n: csize): *cwchar_t <cimport,nodecl> end
+global function wmemset(s: *cwchar_t, c: cwchar_t, n: csize): *cwchar_t <cimport,nodecl> end
 global function btowc(c: cint): cuint <cimport,nodecl> end
 global function wctob(c: cuint): cint <cimport,nodecl> end
 global function mbsinit(ps: *mbstate_t): cint <cimport,nodecl> end
-global function mbrtowc(pwc: *cint, s: cstring, n: csize, p: *mbstate_t): csize <cimport,nodecl> end
-global function wcrtomb(s: cstring, wc: cint, ps: *mbstate_t): csize <cimport,nodecl> end
+global function mbrtowc(pwc: *cwchar_t, s: cstring, n: csize, p: *mbstate_t): csize <cimport,nodecl> end
+global function wcrtomb(s: cstring, wc: cwchar_t, ps: *mbstate_t): csize <cimport,nodecl> end
 global function __mbrlen(s: cstring, n: csize, ps: *mbstate_t): csize <cimport,nodecl> end
 global function mbrlen(s: cstring, n: csize, ps: *mbstate_t): csize <cimport,nodecl> end
-global function mbsrtowcs(dst: *cint, src: *cstring, len: csize, ps: *mbstate_t): csize <cimport,nodecl> end
-global function wcsrtombs(dst: cstring, src: **cint, len: csize, ps: *mbstate_t): csize <cimport,nodecl> end
-global function wcstod(nptr: *cint, endptr: **cint): float64 <cimport,nodecl> end
-global function wcstof(nptr: *cint, endptr: **cint): float32 <cimport,nodecl> end
-global function wcstold(nptr: *cint, endptr: **cint): clongdouble <cimport,nodecl> end
-global function wcstol(nptr: *cint, endptr: **cint, base: cint): clong <cimport,nodecl> end
-global function wcstoul(nptr: *cint, endptr: **cint, base: cint): culong <cimport,nodecl> end
-global function wcstoll(nptr: *cint, endptr: **cint, base: cint): clonglong <cimport,nodecl> end
-global function wcstoull(nptr: *cint, endptr: **cint, base: cint): culonglong <cimport,nodecl> end
+global function mbsrtowcs(dst: *cwchar_t, src: *cstring, len: csize, ps: *mbstate_t): csize <cimport,nodecl> end
+global function wcsrtombs(dst: cstring, src: **cwchar_t, len: csize, ps: *mbstate_t): csize <cimport,nodecl> end
+global function wcstod(nptr: *cwchar_t, endptr: **cwchar_t): float64 <cimport,nodecl> end
+global function wcstof(nptr: *cwchar_t, endptr: **cwchar_t): float32 <cimport,nodecl> end
+global function wcstold(nptr: *cwchar_t, endptr: **cwchar_t): clongdouble <cimport,nodecl> end
+global function wcstol(nptr: *cwchar_t, endptr: **cwchar_t, base: cint): clong <cimport,nodecl> end
+global function wcstoul(nptr: *cwchar_t, endptr: **cwchar_t, base: cint): culong <cimport,nodecl> end
+global function wcstoll(nptr: *cwchar_t, endptr: **cwchar_t, base: cint): clonglong <cimport,nodecl> end
+global function wcstoull(nptr: *cwchar_t, endptr: **cwchar_t, base: cint): culonglong <cimport,nodecl> end
 global function fwide(fp: *__FILE, mode: cint): cint <cimport,nodecl> end
-global function fwprintf(stream: *__FILE, format: *cint, ...: cvarargs): cint <cimport,nodecl> end
-global function wprintf(format: *cint, ...: cvarargs): cint <cimport,nodecl> end
-global function swprintf(s: *cint, n: csize, format: *cint, ...: cvarargs): cint <cimport,nodecl> end
-global function vfwprintf(s: *__FILE, format: *cint, arg: cvalist): cint <cimport,nodecl> end
-global function vwprintf(format: *cint, arg: cvalist): cint <cimport,nodecl> end
-global function vswprintf(s: *cint, n: csize, format: *cint, arg: cvalist): cint <cimport,nodecl> end
-global function fwscanf(stream: *__FILE, format: *cint, ...: cvarargs): cint <cimport,nodecl> end
-global function wscanf(format: *cint, ...: cvarargs): cint <cimport,nodecl> end
-global function swscanf(s: *cint, format: *cint, ...: cvarargs): cint <cimport,nodecl> end
-global function vfwscanf(s: *__FILE, format: *cint, arg: cvalist): cint <cimport,nodecl> end
-global function vwscanf(format: *cint, arg: cvalist): cint <cimport,nodecl> end
-global function vswscanf(s: *cint, format: *cint, arg: cvalist): cint <cimport,nodecl> end
+global function fwprintf(stream: *__FILE, format: *cwchar_t, ...: cvarargs): cint <cimport,nodecl> end
+global function wprintf(format: *cwchar_t, ...: cvarargs): cint <cimport,nodecl> end
+global function swprintf(s: *cwchar_t, n: csize, format: *cwchar_t, ...: cvarargs): cint <cimport,nodecl> end
+global function vfwprintf(s: *__FILE, format: *cwchar_t, arg: cvalist): cint <cimport,nodecl> end
+global function vwprintf(format: *cwchar_t, arg: cvalist): cint <cimport,nodecl> end
+global function vswprintf(s: *cwchar_t, n: csize, format: *cwchar_t, arg: cvalist): cint <cimport,nodecl> end
+global function fwscanf(stream: *__FILE, format: *cwchar_t, ...: cvarargs): cint <cimport,nodecl> end
+global function wscanf(format: *cwchar_t, ...: cvarargs): cint <cimport,nodecl> end
+global function swscanf(s: *cwchar_t, format: *cwchar_t, ...: cvarargs): cint <cimport,nodecl> end
+global function vfwscanf(s: *__FILE, format: *cwchar_t, arg: cvalist): cint <cimport,nodecl> end
+global function vwscanf(format: *cwchar_t, arg: cvalist): cint <cimport,nodecl> end
+global function vswscanf(s: *cwchar_t, format: *cwchar_t, arg: cvalist): cint <cimport,nodecl> end
 global function fgetwc(stream: *__FILE): cuint <cimport,nodecl> end
 global function getwc(stream: *__FILE): cuint <cimport,nodecl> end
 global function getwchar(): cuint <cimport,nodecl> end
-global function fputwc(wc: cint, stream: *__FILE): cuint <cimport,nodecl> end
-global function putwc(wc: cint, stream: *__FILE): cuint <cimport,nodecl> end
-global function putwchar(wc: cint): cuint <cimport,nodecl> end
-global function fgetws(ws: *cint, n: cint, stream: *__FILE): *cint <cimport,nodecl> end
-global function fputws(ws: *cint, stream: *__FILE): cint <cimport,nodecl> end
+global function fputwc(wc: cwchar_t, stream: *__FILE): cuint <cimport,nodecl> end
+global function putwc(wc: cwchar_t, stream: *__FILE): cuint <cimport,nodecl> end
+global function putwchar(wc: cwchar_t): cuint <cimport,nodecl> end
+global function fgetws(ws: *cwchar_t, n: cint, stream: *__FILE): *cwchar_t <cimport,nodecl> end
+global function fputws(ws: *cwchar_t, stream: *__FILE): cint <cimport,nodecl> end
 global function ungetwc(wc: cuint, stream: *__FILE): cuint <cimport,nodecl> end
-global function wcsftime(s: *cint, maxsize: csize, format: *cint, tp: *tm): csize <cimport,nodecl> end
+global function wcsftime(s: *cwchar_t, maxsize: csize, format: *cwchar_t, tp: *tm): csize <cimport,nodecl> end
 global __ISwupper: cint <comptime> = 0
 global __ISwlower: cint <comptime> = 1
 global __ISwalpha: cint <comptime> = 2

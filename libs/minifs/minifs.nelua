@@ -18,7 +18,7 @@ global mfs_file_info: type <cimport,nodecl,cincomplete> = @record{
   isReadOnly: cuint
 }
 global function mfs_fopen(ppFile: **FILE, pFilePath: cstring, pOpenMode: cstring): cint <cimport,nodecl> end
-global function mfs_wfopen(ppFile: **FILE, pFilePath: *cint, pOpenMode: *cint): cint <cimport,nodecl> end
+global function mfs_wfopen(ppFile: **FILE, pFilePath: *cwchar_t, pOpenMode: *cwchar_t): cint <cimport,nodecl> end
 global function mfs_fclose(pFile: *FILE): cint <cimport,nodecl> end
 global function mfs_fread(pFile: *FILE, pData: pointer, sizeInBytes: csize, pBytesRead: *csize): cint <cimport,nodecl> end
 global function mfs_fwrite(pFile: *FILE, pData: pointer, sizeInBytes: csize, pBytesWritten: *csize): cint <cimport,nodecl> end
