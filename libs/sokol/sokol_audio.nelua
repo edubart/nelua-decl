@@ -29,5 +29,6 @@ global function saudio_query_desc(): saudio_desc <cimport,nodecl> end
 global function saudio_sample_rate(): cint <cimport,nodecl> end
 global function saudio_buffer_frames(): cint <cimport,nodecl> end
 global function saudio_channels(): cint <cimport,nodecl> end
+global function saudio_suspended(): boolean <cimport,nodecl> end
 global function saudio_expect(): cint <cimport,nodecl> end
 global function saudio_push(frames: *float32, num_frames: cint): cint <cimport,nodecl> end

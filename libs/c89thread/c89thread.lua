@@ -19,6 +19,7 @@ nldecl.prepend_code = [=[
 if not C89THREAD_NO_IMPL then
   cdefine 'C89THREAD_IMPLEMENTATION'
 end
+cdefine 'C89THREAD_NO_PTHREAD_IN_HEADER'
 cinclude 'c89thread.h'
 if ccinfo.is_linux then
   cflags '-pthread'

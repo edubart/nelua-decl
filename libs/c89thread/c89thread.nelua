@@ -2,12 +2,21 @@
 if not C89THREAD_NO_IMPL then
   cdefine 'C89THREAD_IMPLEMENTATION'
 end
+cdefine 'C89THREAD_NO_PTHREAD_IN_HEADER'
 cinclude 'c89thread.h'
 if ccinfo.is_linux then
   cflags '-pthread'
 end
 ]]
 global c89thread_handle: type = @pointer
+global c89thread_pthread_mutex_t: type <cimport,nodecl> = @union{
+  __data: [40]cchar,
+  __alignment: uint64
+}
+global c89thread_pthread_cond_t: type <cimport,nodecl> = @union{
+  __data: [48]cchar,
+  __alignment: uint64
+}
 global timespec: type <cimport,nodecl,ctypedef> = @record{
   tv_sec: ctime_t,
   tv_nsec: clong
@@ -45,7 +54,7 @@ global function c89thrd_yield(): void <cimport,nodecl> end
 global function c89thrd_exit(res: cint): void <cimport,nodecl> end
 global function c89thrd_detach(thr: c89thrd_t): cint <cimport,nodecl> end
 global function c89thrd_join(thr: c89thrd_t, res: *cint): cint <cimport,nodecl> end
-global c89mtx_t: type <cimport,nodecl,cincomplete> = @record{}
+global c89mtx_t: type = @c89thread_pthread_mutex_t
 global c89mtx_plain: cint <comptime> = 0
 global c89mtx_timed: cint <comptime> = 1
 global c89mtx_recursive: cint <comptime> = 2
@@ -55,7 +64,7 @@ global function c89mtx_lock(mutex: *c89mtx_t): cint <cimport,nodecl> end
 global function c89mtx_timedlock(mutex: *c89mtx_t, time_point: *timespec): cint <cimport,nodecl> end
 global function c89mtx_trylock(mutex: *c89mtx_t): cint <cimport,nodecl> end
 global function c89mtx_unlock(mutex: *c89mtx_t): cint <cimport,nodecl> end
-global c89cnd_t: type <cimport,nodecl,cincomplete> = @record{}
+global c89cnd_t: type = @c89thread_pthread_cond_t
 global function c89cnd_init(cnd: *c89cnd_t): cint <cimport,nodecl> end
 global function c89cnd_destroy(cnd: *c89cnd_t): void <cimport,nodecl> end
 global function c89cnd_signal(cnd: *c89cnd_t): cint <cimport,nodecl> end
