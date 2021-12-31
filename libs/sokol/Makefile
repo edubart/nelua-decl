@@ -10,6 +10,7 @@ generate:
 	$(LUA_PATH) $(CC) $(GCCPLUGIN) -S sokol_time.c -fplugin-arg-gcclua-script=sokol_time.lua > sokol_time.nelua
 	$(LUA_PATH) $(CC) $(GCCPLUGIN) -S sokol_nuklear.c -fplugin-arg-gcclua-script=sokol_nuklear.lua > sokol_nuklear.nelua
 	$(LUA_PATH) $(CC) $(GCCPLUGIN) -S sokol_gl.c -fplugin-arg-gcclua-script=sokol_gl.lua > sokol_gl.nelua
+	$(LUA_PATH) $(CC) $(GCCPLUGIN) -S sokol_gp.c -fplugin-arg-gcclua-script=sokol_gp.lua > sokol_gp.nelua
 
 download:
 	wget -O sokol_app.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_app.h
@@ -19,6 +20,9 @@ download:
 	wget -O sokol_time.h https://raw.githubusercontent.com/floooh/sokol/master/sokol_time.h
 	wget -O sokol_nuklear.h https://raw.githubusercontent.com/floooh/sokol/master/util/sokol_nuklear.h
 	wget -O sokol_gl.h https://raw.githubusercontent.com/floooh/sokol/master/util/sokol_gl.h
+	wget -O sokol_gp.h https://raw.githubusercontent.com/edubart/sokol_gp/master/sokol_gp.h
 
 test:
 	$(NELUA) sokol-test.nelua test
+	$(NELUA) sokol_gl-test.nelua test
+	$(NELUA) sokol_gp-test.nelua test

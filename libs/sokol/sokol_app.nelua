@@ -315,6 +315,7 @@ global function sapp_cancel_quit(): void <cimport,nodecl> end
 global function sapp_quit(): void <cimport,nodecl> end
 global function sapp_consume_event(): void <cimport,nodecl> end
 global function sapp_frame_count(): uint64 <cimport,nodecl> end
+global function sapp_frame_duration(): float64 <cimport,nodecl> end
 global function sapp_set_clipboard_string(str: cstring): void <cimport,nodecl> end
 global function sapp_get_clipboard_string(): cstring <cimport,nodecl> end
 global function sapp_set_window_title(str: cstring): void <cimport,nodecl> end

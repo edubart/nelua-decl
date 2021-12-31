@@ -25,7 +25,7 @@ local function init()
   stm_setup()
   start_time = stm_now()
 
-  -- setup Sokol GP
+  -- setup Sokol GL
   local sgldesc: sgl_desc_t = {sample_count = sapp_sample_count()}
   sgl_setup(&sgldesc)
 
@@ -39,7 +39,7 @@ local function init()
   local imgdesc: sg_image_desc = {
     width = 8,
     height = 8,
-    data = {subimage = {{{ptr=&pixels[0][0], size=8*8}}}}
+    data = {subimage = {{{ptr=&pixels[0][0], size=8*8*4}}}}
   }
   state.img = sg_make_image(&imgdesc)
 
@@ -191,12 +191,12 @@ end
 local function frame()
   local dw = sapp_width()
   local dh = sapp_height()
-  local ww = dh/2
-  local hh = dh/2
-  local x0 = dw/2 - hh
-  local x1 = dw/2
+  local ww = dh//2
+  local hh = dh//2
+  local x0 = dw//2 - hh
+  local x1 = dw//2
   local y0 = 0
-  local y1 = dh/2
+  local y1 = dh//2
   sgl_viewport(x0, y0, ww, hh, true)
   draw_triangle()
   sgl_viewport(x1, y0, ww, hh, true)

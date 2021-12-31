@@ -1,0 +1,158 @@
+##[[
+if not SOKOL_GP_NO_IMPL then
+  cdefine 'SOKOL_GP_API_DECL static'
+  cdefine 'SOKOL_GP_IMPL'
+end
+cinclude 'sokol_gp.h'
+]]
+global sgp_error: type <cimport,nodecl,using> = @enum(cint){
+  SGP_NO_ERROR = 0,
+  SGP_ERROR_SOKOL_INVALID = 1,
+  SGP_ERROR_VERTICES_FULL = 2,
+  SGP_ERROR_UNIFORMS_FULL = 3,
+  SGP_ERROR_COMMANDS_FULL = 4,
+  SGP_ERROR_VERTICES_OVERFLOW = 5,
+  SGP_ERROR_TRANSFORM_STACK_OVERFLOW = 6,
+  SGP_ERROR_TRANSFORM_STACK_UNDERFLOW = 7,
+  SGP_ERROR_STATE_STACK_OVERFLOW = 8,
+  SGP_ERROR_STATE_STACK_UNDERFLOW = 9,
+  SGP_ERROR_ALLOC_FAILED = 10,
+  SGP_ERROR_MAKE_VERTEX_BUFFER_FAILED = 11,
+  SGP_ERROR_MAKE_WHITE_IMAGE_FAILED = 12,
+  SGP_ERROR_MAKE_COMMON_SHADER_FAILED = 13,
+  SGP_ERROR_MAKE_COMMON_PIPELINE_FAILED = 14
+}
+global sgp_blend_mode: type <cimport,nodecl,using> = @enum(cint){
+  SGP_BLENDMODE_NONE = 0,
+  SGP_BLENDMODE_BLEND = 1,
+  SGP_BLENDMODE_ADD = 2,
+  SGP_BLENDMODE_MOD = 3,
+  SGP_BLENDMODE_MUL = 4,
+  _SGP_BLENDMODE_NUM = 5
+}
+global sgp_isize: type <cimport,nodecl> = @record{
+  w: cint,
+  h: cint
+}
+global sgp_irect: type <cimport,nodecl> = @record{
+  x: cint,
+  y: cint,
+  w: cint,
+  h: cint
+}
+global sgp_rect: type <cimport,nodecl> = @record{
+  x: float32,
+  y: float32,
+  w: float32,
+  h: float32
+}
+global sgp_textured_rect: type <cimport,nodecl> = @record{
+  dst: sgp_rect,
+  src: sgp_rect
+}
+global sgp_vec2: type <cimport,nodecl> = @record{
+  x: float32,
+  y: float32
+}
+global sgp_point: type = @sgp_vec2
+global sgp_line: type <cimport,nodecl> = @record{
+  a: sgp_point,
+  b: sgp_point
+}
+global sgp_triangle: type <cimport,nodecl> = @record{
+  a: sgp_point,
+  b: sgp_point,
+  c: sgp_point
+}
+global sgp_mat2x3: type <cimport,nodecl> = @record{
+  v: [2][3]float32
+}
+global sgp_color: type <cimport,nodecl> = @record{
+  r: float32,
+  g: float32,
+  b: float32,
+  a: float32
+}
+global sgp_uniform: type <cimport,nodecl> = @record{
+  size: uint32,
+  content: [4]float32
+}
+global sgp_images_uniform: type <cimport,nodecl> = @record{
+  count: uint32,
+  images: [4]sg_image
+}
+global sgp_state: type <cimport,nodecl,cincomplete> = @record{
+  frame_size: sgp_isize,
+  viewport: sgp_irect,
+  scissor: sgp_irect,
+  proj: sgp_mat2x3,
+  transform: sgp_mat2x3,
+  mvp: sgp_mat2x3,
+  color: sgp_color,
+  images: sgp_images_uniform,
+  uniform: sgp_uniform,
+  blend_mode: sgp_blend_mode,
+  _base_vertex: uint32,
+  _base_uniform: uint32,
+  _base_command: uint32
+}
+global sgp_desc: type <cimport,nodecl> = @record{
+  max_vertices: uint32,
+  max_commands: uint32
+}
+global sgp_pipeline_desc: type <cimport,nodecl,cincomplete> = @record{
+  primitive_type: sg_primitive_type,
+  blend_mode: sgp_blend_mode
+}
+global function sgp_setup(desc: *sgp_desc): void <cimport,nodecl> end
+global function sgp_shutdown(): void <cimport,nodecl> end
+global function sgp_is_valid(): boolean <cimport,nodecl> end
+global function sgp_get_last_error(): sgp_error <cimport,nodecl> end
+global function sgp_get_error_message(error: sgp_error): cstring <cimport,nodecl> end
+global function sgp_make_pipeline(desc: *sgp_pipeline_desc): sg_pipeline <cimport,nodecl> end
+global function sgp_begin(width: cint, height: cint): void <cimport,nodecl> end
+global function sgp_flush(): void <cimport,nodecl> end
+global function sgp_end(): void <cimport,nodecl> end
+global function sgp_project(left: float32, right: float32, top: float32, bottom: float32): void <cimport,nodecl> end
+global function sgp_reset_project(): void <cimport,nodecl> end
+global function sgp_push_transform(): void <cimport,nodecl> end
+global function sgp_pop_transform(): void <cimport,nodecl> end
+global function sgp_reset_transform(): void <cimport,nodecl> end
+global function sgp_translate(x: float32, y: float32): void <cimport,nodecl> end
+global function sgp_rotate(theta: float32): void <cimport,nodecl> end
+global function sgp_rotate_at(theta: float32, x: float32, y: float32): void <cimport,nodecl> end
+global function sgp_scale(sx: float32, sy: float32): void <cimport,nodecl> end
+global function sgp_scale_at(sx: float32, sy: float32, x: float32, y: float32): void <cimport,nodecl> end
+global function sgp_set_pipeline(pipeline: sg_pipeline): void <cimport,nodecl> end
+global function sgp_reset_pipeline(): void <cimport,nodecl> end
+global function sgp_set_uniform(data: pointer, size: uint32): void <cimport,nodecl> end
+global function sgp_reset_uniform(): void <cimport,nodecl> end
+global function sgp_set_blend_mode(blend_mode: sgp_blend_mode): void <cimport,nodecl> end
+global function sgp_reset_blend_mode(): void <cimport,nodecl> end
+global function sgp_set_color(r: float32, g: float32, b: float32, a: float32): void <cimport,nodecl> end
+global function sgp_reset_color(): void <cimport,nodecl> end
+global function sgp_set_image(channel: cint, image: sg_image): void <cimport,nodecl> end
+global function sgp_unset_image(channel: cint): void <cimport,nodecl> end
+global function sgp_reset_image(channel: cint): void <cimport,nodecl> end
+global function sgp_viewport(x: cint, y: cint, w: cint, h: cint): void <cimport,nodecl> end
+global function sgp_reset_viewport(): void <cimport,nodecl> end
+global function sgp_scissor(x: cint, y: cint, w: cint, h: cint): void <cimport,nodecl> end
+global function sgp_reset_scissor(): void <cimport,nodecl> end
+global function sgp_reset_state(): void <cimport,nodecl> end
+global function sgp_clear(): void <cimport,nodecl> end
+global function sgp_draw_points(points: *sgp_point, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_point(x: float32, y: float32): void <cimport,nodecl> end
+global function sgp_draw_lines(lines: *sgp_line, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_line(ax: float32, ay: float32, bx: float32, by: float32): void <cimport,nodecl> end
+global function sgp_draw_lines_strip(points: *sgp_point, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_filled_triangles(triangles: *sgp_triangle, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_filled_triangle(ax: float32, ay: float32, bx: float32, by: float32, cx: float32, cy: float32): void <cimport,nodecl> end
+global function sgp_draw_filled_triangles_strip(points: *sgp_point, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_filled_rects(rects: *sgp_rect, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_filled_rect(x: float32, y: float32, w: float32, h: float32): void <cimport,nodecl> end
+global function sgp_draw_textured_rects(rects: *sgp_rect, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_textured_rect(x: float32, y: float32, w: float32, h: float32): void <cimport,nodecl> end
+global function sgp_draw_textured_rects_ex(channel: cint, rects: *sgp_textured_rect, count: uint32): void <cimport,nodecl> end
+global function sgp_draw_textured_rect_ex(channel: cint, dest_rect: sgp_rect, src_rect: sgp_rect): void <cimport,nodecl> end
+global function sgp_query_state(): *sgp_state <cimport,nodecl> end
+global function sgp_query_desc(): sgp_desc <cimport,nodecl> end

@@ -72,6 +72,21 @@ linklib 'mbedcrypto'
 linklib 'mbedtls'
 linklib 'mbedx509'
 ]]
+global tm: type <cimport,nodecl,ctypedef> = @record{
+  tm_sec: cint,
+  tm_min: cint,
+  tm_hour: cint,
+  tm_mday: cint,
+  tm_mon: cint,
+  tm_year: cint,
+  tm_wday: cint,
+  tm_yday: cint,
+  tm_isdst: cint,
+  tm_gmtoff: clong,
+  tm_zone: cstring
+}
+global function mbedtls_platform_zeroize(buf: pointer, len: csize): void <cimport,nodecl> end
+global function mbedtls_platform_gmtime_r(tt: *clong, tm_buf: *tm): *tm <cimport,nodecl> end
 global mbedtls_aes_context: type <cimport,nodecl> = @record{
   nr: cint,
   rk: *uint32,
@@ -114,21 +129,6 @@ global function mbedtls_arc4_free(ctx: *mbedtls_arc4_context): void <cimport,nod
 global function mbedtls_arc4_setup(ctx: *mbedtls_arc4_context, key: *cuchar, keylen: cuint): void <cimport,nodecl> end
 global function mbedtls_arc4_crypt(ctx: *mbedtls_arc4_context, length: csize, input: *cuchar, output: *cuchar): cint <cimport,nodecl> end
 global function mbedtls_arc4_self_test(verbose: cint): cint <cimport,nodecl> end
-global tm: type <cimport,nodecl,ctypedef> = @record{
-  tm_sec: cint,
-  tm_min: cint,
-  tm_hour: cint,
-  tm_mday: cint,
-  tm_mon: cint,
-  tm_year: cint,
-  tm_wday: cint,
-  tm_yday: cint,
-  tm_isdst: cint,
-  tm_gmtoff: clong,
-  tm_zone: cstring
-}
-global function mbedtls_platform_zeroize(buf: pointer, len: csize): void <cimport,nodecl> end
-global function mbedtls_platform_gmtime_r(tt: *clong, tm_buf: *tm): *tm <cimport,nodecl> end
 global mbedtls_aria_context: type <cimport,nodecl> = @record{
   nr: cuchar,
   rk: [17][4]uint32
@@ -188,7 +188,7 @@ global function mbedtls_mpi_div_mpi(Q: *mbedtls_mpi, R: *mbedtls_mpi, A: *mbedtl
 global function mbedtls_mpi_div_int(Q: *mbedtls_mpi, R: *mbedtls_mpi, A: *mbedtls_mpi, b: clong): cint <cimport,nodecl> end
 global function mbedtls_mpi_mod_mpi(R: *mbedtls_mpi, A: *mbedtls_mpi, B: *mbedtls_mpi): cint <cimport,nodecl> end
 global function mbedtls_mpi_mod_int(r: *culong, A: *mbedtls_mpi, b: clong): cint <cimport,nodecl> end
-global function mbedtls_mpi_exp_mod(X: *mbedtls_mpi, A: *mbedtls_mpi, E: *mbedtls_mpi, N: *mbedtls_mpi, _RR: *mbedtls_mpi): cint <cimport,nodecl> end
+global function mbedtls_mpi_exp_mod(X: *mbedtls_mpi, A: *mbedtls_mpi, E: *mbedtls_mpi, N: *mbedtls_mpi, prec_RR: *mbedtls_mpi): cint <cimport,nodecl> end
 global function mbedtls_mpi_fill_random(X: *mbedtls_mpi, size: csize, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport,nodecl> end
 global function mbedtls_mpi_random(X: *mbedtls_mpi, min: clong, N: *mbedtls_mpi, f_rng: function(pointer, *cuchar, csize): cint, p_rng: pointer): cint <cimport,nodecl> end
 global function mbedtls_mpi_gcd(G: *mbedtls_mpi, A: *mbedtls_mpi, B: *mbedtls_mpi): cint <cimport,nodecl> end
@@ -1283,13 +1283,14 @@ global mbedtls_ssl_set_timer_t: type <cimport,nodecl> = @function(pointer, uint3
 global mbedtls_ssl_get_timer_t: type <cimport,nodecl> = @function(pointer): cint
 global mbedtls_ssl_session: type <cimport,nodecl,forwarddecl> = @record{}
 global mbedtls_ssl_context: type <cimport,nodecl,forwarddecl> = @record{}
-global mbedtls_ssl_config: type <cimport,nodecl,forwarddecl,cincomplete> = @record{}
+global mbedtls_ssl_config: type <cimport,nodecl,forwarddecl> = @record{}
 global mbedtls_ssl_transform: type <cimport,nodecl,forwarddecl> = @record{}
 global mbedtls_ssl_handshake_params: type <cimport,nodecl,forwarddecl> = @record{}
 global mbedtls_ssl_sig_hash_set_t: type <cimport,nodecl,forwarddecl> = @record{}
 global mbedtls_ssl_key_cert: type <cimport,nodecl,forwarddecl> = @record{}
 global mbedtls_ssl_flight_item: type <cimport,nodecl,forwarddecl> = @record{}
 mbedtls_ssl_session = @record{
+  mfl_code: cuchar,
   start: clong,
   ciphersuite: cint,
   compression: cint,
@@ -1301,11 +1302,36 @@ mbedtls_ssl_session = @record{
   ticket: *cuchar,
   ticket_len: csize,
   ticket_lifetime: uint32,
-  mfl_code: cuchar,
   trunc_hmac: cint,
   encrypt_then_mac: cint
 }
 mbedtls_ssl_config = @record{
+  max_major_ver: cuchar,
+  max_minor_ver: cuchar,
+  min_major_ver: cuchar,
+  min_minor_ver: cuchar,
+  endpoint: uint8,
+  transport: uint8,
+  authmode: uint8,
+  allow_legacy_renegotiation: uint8,
+  arc4_disabled: uint8,
+  mfl_code: uint8,
+  encrypt_then_mac: uint8,
+  extended_ms: uint8,
+  anti_replay: uint8,
+  cbc_record_splitting: uint8,
+  disable_renegotiation: uint8,
+  trunc_hmac: uint8,
+  session_tickets: uint8,
+  fallback: uint8,
+  cert_req_ca_list: uint8,
+  read_timeout: uint32,
+  hs_timeout_min: uint32,
+  hs_timeout_max: uint32,
+  renego_max_records: cint,
+  renego_period: [8]cuchar,
+  badmac_limit: cuint,
+  dhm_min_bitlen: cuint,
   ciphersuite_list: [4]*cint,
   f_dbg: function(pointer, cint, cstring, cint, cstring): void,
   p_dbg: pointer,
@@ -1341,33 +1367,7 @@ mbedtls_ssl_config = @record{
   psk_len: csize,
   psk_identity: *cuchar,
   psk_identity_len: csize,
-  alpn_list: *cstring,
-  read_timeout: uint32,
-  hs_timeout_min: uint32,
-  hs_timeout_max: uint32,
-  renego_max_records: cint,
-  renego_period: [8]cuchar,
-  badmac_limit: cuint,
-  dhm_min_bitlen: cuint,
-  max_major_ver: cuchar,
-  max_minor_ver: cuchar,
-  min_major_ver: cuchar,
-  min_minor_ver: cuchar,
-  endpoint: cuint,
-  transport: cuint,
-  authmode: cuint,
-  allow_legacy_renegotiation: cuint,
-  arc4_disabled: cuint,
-  mfl_code: cuint,
-  encrypt_then_mac: cuint,
-  extended_ms: cuint,
-  anti_replay: cuint,
-  cbc_record_splitting: cuint,
-  disable_renegotiation: cuint,
-  trunc_hmac: cuint,
-  session_tickets: cuint,
-  fallback: cuint,
-  cert_req_ca_list: cuint
+  alpn_list: *cstring
 }
 mbedtls_ssl_context = @record{
   conf: *mbedtls_ssl_config,
@@ -1977,6 +1977,8 @@ global function mbedtls_xtea_setup(ctx: *mbedtls_xtea_context, key: *cuchar): vo
 global function mbedtls_xtea_crypt_ecb(ctx: *mbedtls_xtea_context, mode: cint, input: *cuchar, output: *cuchar): cint <cimport,nodecl> end
 global function mbedtls_xtea_crypt_cbc(ctx: *mbedtls_xtea_context, mode: cint, length: csize, iv: *cuchar, input: *cuchar, output: *cuchar): cint <cimport,nodecl> end
 global function mbedtls_xtea_self_test(verbose: cint): cint <cimport,nodecl> end
+global MBEDTLS_CHECK_RETURN: cint <cimport,nodecl,const>
+global MBEDTLS_CHECK_RETURN_CRITICAL: cint <cimport,nodecl,const>
 global MBEDTLS_AES_ENCRYPT: cint <cimport,nodecl,const>
 global MBEDTLS_AES_DECRYPT: cint <cimport,nodecl,const>
 global MBEDTLS_ERR_AES_INVALID_KEY_LENGTH: cint <cimport,nodecl,const>

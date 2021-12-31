@@ -45,6 +45,8 @@ The following cross-platform libraries bindings are ready and generated as examp
     - [sokol_glue.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_glue.nelua)
     - [sokol_time.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_time.nelua) (Platform time utilities)
     - [sokol_nuklear.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_nuklear.nelua) (Sokol backend for Nuklear)
+    - [sokol_gl.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_gl.nelua) (Sokol 3D painter)
+    - [sokol_gp.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/sokol/sokol_gp.nelua) (Sokol 2D painter)
 * [Blend2D](https://blend2d.com/)
     - [blend2d.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/blend2d/blend2d.nelua) (2D vector graphics engine)
 * [Chipmunk](https://chipmunk-physics.net/)
