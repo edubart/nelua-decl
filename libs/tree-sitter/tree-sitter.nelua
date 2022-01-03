@@ -187,6 +187,7 @@ global function ts_language_field_name_for_id(a1: *TSLanguage, a2: cushort): cst
 global function ts_language_field_id_for_name(a1: *TSLanguage, a2: cstring, a3: uint32): cushort <cimport,nodecl> end
 global function ts_language_symbol_type(a1: *TSLanguage, a2: cushort): TSSymbolType <cimport,nodecl> end
 global function ts_language_version(a1: *TSLanguage): uint32 <cimport,nodecl> end
+global function ts_set_allocator(new_malloc: function(csize): pointer, new_calloc: function(csize, csize): pointer, new_realloc: function(pointer, csize): pointer, new_free: function(pointer): void): void <cimport,nodecl> end
 global TSFieldMapEntry: type <cimport,nodecl> = @record{
   field_id: cushort,
   child_index: uint8,

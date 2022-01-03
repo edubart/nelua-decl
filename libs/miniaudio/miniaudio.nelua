@@ -1034,6 +1034,32 @@ global ma_backend: type <cimport,nodecl,using> = @enum(cint){
   ma_backend_custom = 13,
   ma_backend_null = 14
 }
+global ma_device_notification_type: type <cimport,nodecl,using> = @enum(cint){
+  ma_device_notification_type_started = 0,
+  ma_device_notification_type_stopped = 1,
+  ma_device_notification_type_rerouted = 2,
+  ma_device_notification_type_interruption_began = 3,
+  ma_device_notification_type_interruption_ended = 4
+}
+global ma_device_notification: type <cimport,nodecl> = @record{
+  pDevice: *ma_device,
+  type: ma_device_notification_type,
+  data: union{
+    started: record{
+      _unused: cint
+    },
+    stopped: record{
+      _unused: cint
+    },
+    rerouted: record{
+      _unused: cint
+    },
+    interruption: record{
+      _unused: cint
+    }
+  }
+}
+global ma_device_notification_proc: type <cimport,nodecl> = @function(*ma_device_notification): void
 global ma_device_data_proc: type <cimport,nodecl> = @function(*ma_device, pointer, pointer, uint32): void
 global ma_stop_proc: type <cimport,nodecl> = @function(*ma_device): void
 global ma_device_type: type <cimport,nodecl,using> = @enum(cint){
@@ -1168,6 +1194,7 @@ ma_device_config = @record{
   noClip: ma_bool8,
   noDisableDenormals: ma_bool8,
   dataCallback: ma_device_data_proc,
+  notificationCallback: ma_device_notification_proc,
   stopCallback: ma_stop_proc,
   pUserData: pointer,
   resampling: ma_resampler_config,
@@ -1422,6 +1449,7 @@ ma_context = @record{
       pa_stream_set_write_callback: ma_proc,
       pa_stream_set_read_callback: ma_proc,
       pa_stream_set_suspended_callback: ma_proc,
+      pa_stream_set_moved_callback: ma_proc,
       pa_stream_is_suspended: ma_proc,
       pa_stream_flush: ma_proc,
       pa_stream_drain: ma_proc,
@@ -1435,7 +1463,9 @@ ma_context = @record{
       pa_stream_writable_size: ma_proc,
       pa_stream_readable_size: ma_proc,
       pMainLoop: ma_ptr,
-      pPulseContext: ma_ptr
+      pPulseContext: ma_ptr,
+      pApplicationName: cstring,
+      pServerName: cstring
     },
     jack: record{
       jackSO: ma_handle,
@@ -1490,6 +1520,7 @@ ma_device = @record{
   sampleRate: uint32,
   state: ma_device_state,
   onData: ma_device_data_proc,
+  onNotification: ma_device_notification_proc,
   onStop: ma_stop_proc,
   pUserData: pointer,
   thread: culonglong,
@@ -1558,6 +1589,8 @@ ma_device = @record{
       isUsingMMapCapture: ma_bool8
     },
     pulse: record{
+      pMainLoop: ma_ptr,
+      pPulseContext: ma_ptr,
       pStreamPlayback: ma_ptr,
       pStreamCapture: ma_ptr
     },
