@@ -502,9 +502,9 @@ sqlite3_rtree_query_info = @record{
   rScore: float64,
   apSqlParam: **sqlite3_value
 }
-global SQLITE_VERSION: cstring <comptime> = "3.37.0"
-global SQLITE_VERSION_NUMBER: cint <comptime> = 3037000
-global SQLITE_SOURCE_ID: cstring <comptime> = "2021-11-27 14:13:22 bd41822c7424d393a30e92ff6cb254d25c26769889c1499a18a0b9339f5dalt1"
+global SQLITE_VERSION: cstring <comptime> = "3.37.1"
+global SQLITE_VERSION_NUMBER: cint <comptime> = 3037001
+global SQLITE_SOURCE_ID: cstring <comptime> = "2021-12-30 15:30:28 378629bf2ea546f73eee84063c5358439a12f7300e433f18c9e1bddd948dalt1"
 global SQLITE_OK: cint <comptime> = 0
 global SQLITE_ERROR: cint <comptime> = 1
 global SQLITE_INTERNAL: cint <comptime> = 2

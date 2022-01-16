@@ -281,9 +281,20 @@ global sg_uniform_type: type <cimport,nodecl,using> = @enum(cint){
   SG_UNIFORMTYPE_FLOAT2 = 2,
   SG_UNIFORMTYPE_FLOAT3 = 3,
   SG_UNIFORMTYPE_FLOAT4 = 4,
-  SG_UNIFORMTYPE_MAT4 = 5,
-  _SG_UNIFORMTYPE_NUM = 6,
+  SG_UNIFORMTYPE_INT = 5,
+  SG_UNIFORMTYPE_INT2 = 6,
+  SG_UNIFORMTYPE_INT3 = 7,
+  SG_UNIFORMTYPE_INT4 = 8,
+  SG_UNIFORMTYPE_MAT4 = 9,
+  _SG_UNIFORMTYPE_NUM = 10,
   _SG_UNIFORMTYPE_FORCE_U32 = 2147483647
+}
+global sg_uniform_layout: type <cimport,nodecl,using> = @enum(cint){
+  _SG_UNIFORMLAYOUT_DEFAULT = 0,
+  SG_UNIFORMLAYOUT_NATIVE = 1,
+  SG_UNIFORMLAYOUT_STD140 = 2,
+  _SG_UNIFORMLAYOUT_NUM = 3,
+  _SG_UNIFORMLAYOUT_FORCE_U32 = 2147483647
 }
 global sg_cull_mode: type <cimport,nodecl,using> = @enum(cint){
   _SG_CULLMODE_DEFAULT = 0,
@@ -469,6 +480,7 @@ global sg_shader_uniform_desc: type <cimport,nodecl> = @record{
 }
 global sg_shader_uniform_block_desc: type <cimport,nodecl> = @record{
   size: csize,
+  layout: sg_uniform_layout,
   uniforms: [16]sg_shader_uniform_desc
 }
 global sg_shader_image_desc: type <cimport,nodecl> = @record{

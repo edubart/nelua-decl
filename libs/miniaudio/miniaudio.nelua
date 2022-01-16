@@ -52,6 +52,12 @@ global ma_pthread_cond_t: type <cimport,nodecl> = @union{
   __data: [48]cchar,
   __alignment: uint64
 }
+global ma_log_level: type <cimport,nodecl,using> = @enum(cint){
+  MA_LOG_LEVEL_DEBUG = 4,
+  MA_LOG_LEVEL_INFO = 3,
+  MA_LOG_LEVEL_WARNING = 2,
+  MA_LOG_LEVEL_ERROR = 1
+}
 global ma_context: type <cimport,nodecl,forwarddecl,cincomplete> = @record{}
 global ma_device: type <cimport,nodecl,forwarddecl,cincomplete> = @record{}
 global ma_channel: type = @cuchar
@@ -668,7 +674,23 @@ global ma_spatializer_config: type <cimport,nodecl> = @record{
 }
 global function ma_spatializer_config_init(channelsIn: uint32, channelsOut: uint32): ma_spatializer_config <cimport,nodecl> end
 global ma_spatializer: type <cimport,nodecl> = @record{
-  config: ma_spatializer_config,
+  channelsIn: uint32,
+  channelsOut: uint32,
+  pChannelMapIn: *ma_channel,
+  attenuationModel: ma_attenuation_model,
+  positioning: ma_positioning,
+  handedness: ma_handedness,
+  minGain: float32,
+  maxGain: float32,
+  minDistance: float32,
+  maxDistance: float32,
+  rolloff: float32,
+  coneInnerAngleInRadians: float32,
+  coneOuterAngleInRadians: float32,
+  coneOuterGain: float32,
+  dopplerFactor: float32,
+  directionalAttenuationFactor: float32,
+  gainSmoothTimeInFrames: uint32,
   position: ma_vec3f,
   direction: ma_vec3f,
   velocity: ma_vec3f,
@@ -1010,6 +1032,193 @@ global function ma_blend_f32(pOut: *float32, pInA: *float32, pInB: *float32, fac
 global function ma_get_bytes_per_sample(format: ma_format): uint32 <cimport,nodecl> end
 global function ma_get_bytes_per_frame(format: ma_format, channels: uint32): uint32 <cimport,nodecl> end
 global function ma_log_level_to_string(logLevel: uint32): cstring <cimport,nodecl> end
+global function ma_spinlock_lock(pSpinlock: *cuint): ma_result <cimport,nodecl> end
+global function ma_spinlock_lock_noyield(pSpinlock: *cuint): ma_result <cimport,nodecl> end
+global function ma_spinlock_unlock(pSpinlock: *cuint): ma_result <cimport,nodecl> end
+global function ma_mutex_init(pMutex: *ma_mutex): ma_result <cimport,nodecl> end
+global function ma_mutex_uninit(pMutex: *ma_mutex): void <cimport,nodecl> end
+global function ma_mutex_lock(pMutex: *ma_mutex): void <cimport,nodecl> end
+global function ma_mutex_unlock(pMutex: *ma_mutex): void <cimport,nodecl> end
+global function ma_event_init(pEvent: *ma_event): ma_result <cimport,nodecl> end
+global function ma_event_uninit(pEvent: *ma_event): void <cimport,nodecl> end
+global function ma_event_wait(pEvent: *ma_event): ma_result <cimport,nodecl> end
+global function ma_event_signal(pEvent: *ma_event): ma_result <cimport,nodecl> end
+global ma_fence: type <cimport,nodecl,cincomplete> = @record{
+  counter: uint32
+}
+global function ma_fence_init(pFence: *ma_fence): ma_result <cimport,nodecl> end
+global function ma_fence_uninit(pFence: *ma_fence): void <cimport,nodecl> end
+global function ma_fence_acquire(pFence: *ma_fence): ma_result <cimport,nodecl> end
+global function ma_fence_release(pFence: *ma_fence): ma_result <cimport,nodecl> end
+global function ma_fence_wait(pFence: *ma_fence): ma_result <cimport,nodecl> end
+global ma_async_notification_callbacks: type <cimport,nodecl> = @record{
+  onSignal: function(pointer): void
+}
+global function ma_async_notification_signal(pNotification: pointer): ma_result <cimport,nodecl> end
+global ma_async_notification_poll: type <cimport,nodecl> = @record{
+  cb: ma_async_notification_callbacks,
+  signalled: ma_bool32
+}
+global function ma_async_notification_poll_init(pNotificationPoll: *ma_async_notification_poll): ma_result <cimport,nodecl> end
+global function ma_async_notification_poll_is_signalled(pNotificationPoll: *ma_async_notification_poll): ma_bool32 <cimport,nodecl> end
+global ma_async_notification_event: type <cimport,nodecl,cincomplete> = @record{
+  cb: ma_async_notification_callbacks,
+}
+global function ma_async_notification_event_init(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
+global function ma_async_notification_event_uninit(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
+global function ma_async_notification_event_wait(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
+global function ma_async_notification_event_signal(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
+global ma_slot_allocator_config: type <cimport,nodecl> = @record{
+  capacity: uint32
+}
+global function ma_slot_allocator_config_init(capacity: uint32): ma_slot_allocator_config <cimport,nodecl> end
+global ma_slot_allocator_group: type <cimport,nodecl,aligned(4)> = @record{
+  bitfield: uint32
+}
+global ma_slot_allocator: type <cimport,nodecl> = @record{
+  pGroups: *ma_slot_allocator_group,
+  pSlots: *uint32,
+  count: uint32,
+  capacity: uint32,
+  _ownsHeap: ma_bool32,
+  _pHeap: pointer
+}
+global function ma_slot_allocator_get_heap_size(pConfig: *ma_slot_allocator_config, pHeapSizeInBytes: *csize): ma_result <cimport,nodecl> end
+global function ma_slot_allocator_init_preallocated(pConfig: *ma_slot_allocator_config, pHeap: pointer, pAllocator: *ma_slot_allocator): ma_result <cimport,nodecl> end
+global function ma_slot_allocator_init(pConfig: *ma_slot_allocator_config, pAllocationCallbacks: *ma_allocation_callbacks, pAllocator: *ma_slot_allocator): ma_result <cimport,nodecl> end
+global function ma_slot_allocator_uninit(pAllocator: *ma_slot_allocator, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
+global function ma_slot_allocator_alloc(pAllocator: *ma_slot_allocator, pSlot: *uint64): ma_result <cimport,nodecl> end
+global function ma_slot_allocator_free(pAllocator: *ma_slot_allocator, slot: uint64): ma_result <cimport,nodecl> end
+global ma_job: type <cimport,nodecl,forwarddecl> = @record{}
+global ma_job_proc: type <cimport,nodecl> = @function(*ma_job): ma_result
+global ma_job_type: type <cimport,nodecl,using> = @enum(cint){
+  MA_JOB_TYPE_QUIT = 0,
+  MA_JOB_TYPE_CUSTOM = 1,
+  MA_JOB_TYPE_RESOURCE_MANAGER_LOAD_DATA_BUFFER_NODE = 2,
+  MA_JOB_TYPE_RESOURCE_MANAGER_FREE_DATA_BUFFER_NODE = 3,
+  MA_JOB_TYPE_RESOURCE_MANAGER_PAGE_DATA_BUFFER_NODE = 4,
+  MA_JOB_TYPE_RESOURCE_MANAGER_LOAD_DATA_BUFFER = 5,
+  MA_JOB_TYPE_RESOURCE_MANAGER_FREE_DATA_BUFFER = 6,
+  MA_JOB_TYPE_RESOURCE_MANAGER_LOAD_DATA_STREAM = 7,
+  MA_JOB_TYPE_RESOURCE_MANAGER_FREE_DATA_STREAM = 8,
+  MA_JOB_TYPE_RESOURCE_MANAGER_PAGE_DATA_STREAM = 9,
+  MA_JOB_TYPE_RESOURCE_MANAGER_SEEK_DATA_STREAM = 10,
+  MA_JOB_TYPE_DEVICE_AAUDIO_REROUTE = 11,
+  MA_JOB_TYPE_COUNT = 12
+}
+ma_job = @record{
+  toc: union{
+    breakup: record{
+      code: uint16,
+      slot: uint16,
+      refcount: uint32
+    },
+    allocation: uint64
+  },
+  next: uint64,
+  order: uint32,
+  data: union{
+    custom: record{
+      proc: ma_job_proc,
+      data0: usize,
+      data1: usize
+    },
+    resourceManager: union{
+      loadDataBufferNode: record{
+        pResourceManager: pointer,
+        pDataBufferNode: pointer,
+        pFilePath: cstring,
+        pFilePathW: *cwchar_t,
+        decode: ma_bool32,
+        pInitNotification: pointer,
+        pDoneNotification: pointer,
+        pInitFence: *ma_fence,
+        pDoneFence: *ma_fence
+      },
+      freeDataBufferNode: record{
+        pResourceManager: pointer,
+        pDataBufferNode: pointer,
+        pDoneNotification: pointer,
+        pDoneFence: *ma_fence
+      },
+      pageDataBufferNode: record{
+        pResourceManager: pointer,
+        pDataBufferNode: pointer,
+        pDecoder: pointer,
+        pDoneNotification: pointer,
+        pDoneFence: *ma_fence
+      },
+      loadDataBuffer: record{
+        pDataBuffer: pointer,
+        pInitNotification: pointer,
+        pDoneNotification: pointer,
+        pInitFence: *ma_fence,
+        pDoneFence: *ma_fence
+      },
+      freeDataBuffer: record{
+        pDataBuffer: pointer,
+        pDoneNotification: pointer,
+        pDoneFence: *ma_fence
+      },
+      loadDataStream: record{
+        pDataStream: pointer,
+        pFilePath: cstring,
+        pFilePathW: *cwchar_t,
+        initialSeekPoint: uint64,
+        pInitNotification: pointer,
+        pInitFence: *ma_fence
+      },
+      freeDataStream: record{
+        pDataStream: pointer,
+        pDoneNotification: pointer,
+        pDoneFence: *ma_fence
+      },
+      pageDataStream: record{
+        pDataStream: pointer,
+        pageIndex: uint32
+      },
+      seekDataStream: record{
+        pDataStream: pointer,
+        frameIndex: uint64
+      }
+    },
+    device: union{
+      aaudio: union{
+        reroute: record{
+          pDevice: pointer,
+          deviceType: uint32
+        }
+      }
+    }
+  }
+}
+global function ma_job_init(code: uint16): ma_job <cimport,nodecl> end
+global function ma_job_process(pJob: *ma_job): ma_result <cimport,nodecl> end
+global ma_job_queue_flags: type <cimport,nodecl,using> = @enum(cint){
+  MA_JOB_QUEUE_FLAG_NON_BLOCKING = 1
+}
+global ma_job_queue_config: type <cimport,nodecl> = @record{
+  flags: uint32,
+  capacity: uint32
+}
+global function ma_job_queue_config_init(flags: uint32, capacity: uint32): ma_job_queue_config <cimport,nodecl> end
+global ma_job_queue: type <cimport,nodecl,aligned(8),cincomplete> = @record{
+  flags: uint32,
+  capacity: uint32,
+  head: uint64,
+  tail: uint64,
+  allocator: ma_slot_allocator,
+  pJobs: *ma_job,
+  lock: cuint,
+  _pHeap: pointer,
+  _ownsHeap: ma_bool32
+}
+global function ma_job_queue_get_heap_size(pConfig: *ma_job_queue_config, pHeapSizeInBytes: *csize): ma_result <cimport,nodecl> end
+global function ma_job_queue_init_preallocated(pConfig: *ma_job_queue_config, pHeap: pointer, pQueue: *ma_job_queue): ma_result <cimport,nodecl> end
+global function ma_job_queue_init(pConfig: *ma_job_queue_config, pAllocationCallbacks: *ma_allocation_callbacks, pQueue: *ma_job_queue): ma_result <cimport,nodecl> end
+global function ma_job_queue_uninit(pQueue: *ma_job_queue, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
+global function ma_job_queue_post(pQueue: *ma_job_queue, pJob: *ma_job): ma_result <cimport,nodecl> end
+global function ma_job_queue_next(pQueue: *ma_job_queue, pJob: *ma_job): ma_result <cimport,nodecl> end
 global ma_device_state: type <cimport,nodecl,using> = @enum(cint){
   ma_device_state_uninitialized = 0,
   ma_device_state_stopped = 1,
@@ -1034,6 +1243,21 @@ global ma_backend: type <cimport,nodecl,using> = @enum(cint){
   ma_backend_custom = 13,
   ma_backend_null = 14
 }
+global ma_device_job_thread_config: type <cimport,nodecl> = @record{
+  noThread: ma_bool32,
+  jobQueueCapacity: uint32,
+  jobQueueFlags: uint32
+}
+global function ma_device_job_thread_config_init(): ma_device_job_thread_config <cimport,nodecl> end
+global ma_device_job_thread: type <cimport,nodecl,aligned(8)> = @record{
+  thread: culonglong,
+  jobQueue: ma_job_queue,
+  _hasThread: ma_bool32
+}
+global function ma_device_job_thread_init(pConfig: *ma_device_job_thread_config, pAllocationCallbacks: *ma_allocation_callbacks, pJobThread: *ma_device_job_thread): ma_result <cimport,nodecl> end
+global function ma_device_job_thread_uninit(pJobThread: *ma_device_job_thread, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
+global function ma_device_job_thread_post(pJobThread: *ma_device_job_thread, pJob: *ma_job): ma_result <cimport,nodecl> end
+global function ma_device_job_thread_next(pJobThread: *ma_device_job_thread, pJob: *ma_job): ma_result <cimport,nodecl> end
 global ma_device_notification_type: type <cimport,nodecl,using> = @enum(cint){
   ma_device_notification_type_started = 0,
   ma_device_notification_type_stopped = 1,
@@ -1193,6 +1417,7 @@ ma_device_config = @record{
   noPreSilencedOutputBuffer: ma_bool8,
   noClip: ma_bool8,
   noDisableDenormals: ma_bool8,
+  noFixedSizedCallback: ma_bool8,
   dataCallback: ma_device_data_proc,
   notificationCallback: ma_device_notification_proc,
   stopCallback: ma_stop_proc,
@@ -1240,7 +1465,8 @@ ma_device_config = @record{
   aaudio: record{
     usage: ma_aaudio_usage,
     contentType: ma_aaudio_content_type,
-    inputPreset: ma_aaudio_input_preset
+    inputPreset: ma_aaudio_input_preset,
+    noAutoStartAfterReroute: ma_bool32
   }
 }
 global ma_enum_devices_callback_proc: type <cimport,nodecl> = @function(*ma_context, ma_device_type, *ma_device_info, pointer): ma_bool32
@@ -1529,6 +1755,7 @@ ma_device = @record{
   noPreSilencedOutputBuffer: ma_bool8,
   noClip: ma_bool8,
   noDisableDenormals: ma_bool8,
+  noFixedSizedCallback: ma_bool8,
   masterVolumeFactor: float32,
   duplexRB: ma_duplex_rb,
   resampling: record{
@@ -1540,6 +1767,7 @@ ma_device = @record{
     }
   },
   playback: record{
+    pID: *ma_device_id,
     id: ma_device_id,
     name: [256]cchar,
     shareMode: ma_share_mode,
@@ -1554,12 +1782,16 @@ ma_device = @record{
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
     converter: ma_data_converter,
+    pIntermediaryBuffer: pointer,
+    intermediaryBufferCap: uint32,
+    intermediaryBufferLen: uint32,
     pInputCache: pointer,
     inputCacheCap: uint64,
     inputCacheConsumed: uint64,
     inputCacheRemaining: uint64
   },
   capture: record{
+    pID: *ma_device_id,
     id: ma_device_id,
     name: [256]cchar,
     shareMode: ma_share_mode,
@@ -1573,7 +1805,10 @@ ma_device = @record{
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
-    converter: ma_data_converter
+    converter: ma_data_converter,
+    pIntermediaryBuffer: pointer,
+    intermediaryBufferCap: uint32,
+    intermediaryBufferLen: uint32
   },
   __unnamed1: union{
     alsa: record{
@@ -1636,6 +1871,7 @@ global function ma_device_start(pDevice: *ma_device): ma_result <cimport,nodecl>
 global function ma_device_stop(pDevice: *ma_device): ma_result <cimport,nodecl> end
 global function ma_device_is_started(pDevice: *ma_device): ma_bool32 <cimport,nodecl> end
 global function ma_device_get_state(pDevice: *ma_device): ma_device_state <cimport,nodecl> end
+global function ma_device_post_init(pDevice: *ma_device, deviceType: ma_device_type, pPlaybackDescriptor: *ma_device_descriptor, pCaptureDescriptor: *ma_device_descriptor): ma_result <cimport,nodecl> end
 global function ma_device_set_master_volume(pDevice: *ma_device, volume: float32): ma_result <cimport,nodecl> end
 global function ma_device_get_master_volume(pDevice: *ma_device, pVolume: *float32): ma_result <cimport,nodecl> end
 global function ma_device_set_master_volume_db(pDevice: *ma_device, gainDB: float32): ma_result <cimport,nodecl> end
@@ -1646,42 +1882,6 @@ global function ma_get_backend_name(backend: ma_backend): cstring <cimport,nodec
 global function ma_is_backend_enabled(backend: ma_backend): ma_bool32 <cimport,nodecl> end
 global function ma_get_enabled_backends(pBackends: *ma_backend, backendCap: csize, pBackendCount: *csize): ma_result <cimport,nodecl> end
 global function ma_is_loopback_supported(backend: ma_backend): ma_bool32 <cimport,nodecl> end
-global function ma_spinlock_lock(pSpinlock: *cuint): ma_result <cimport,nodecl> end
-global function ma_spinlock_lock_noyield(pSpinlock: *cuint): ma_result <cimport,nodecl> end
-global function ma_spinlock_unlock(pSpinlock: *cuint): ma_result <cimport,nodecl> end
-global function ma_mutex_init(pMutex: *ma_mutex): ma_result <cimport,nodecl> end
-global function ma_mutex_uninit(pMutex: *ma_mutex): void <cimport,nodecl> end
-global function ma_mutex_lock(pMutex: *ma_mutex): void <cimport,nodecl> end
-global function ma_mutex_unlock(pMutex: *ma_mutex): void <cimport,nodecl> end
-global function ma_event_init(pEvent: *ma_event): ma_result <cimport,nodecl> end
-global function ma_event_uninit(pEvent: *ma_event): void <cimport,nodecl> end
-global function ma_event_wait(pEvent: *ma_event): ma_result <cimport,nodecl> end
-global function ma_event_signal(pEvent: *ma_event): ma_result <cimport,nodecl> end
-global ma_fence: type <cimport,nodecl,cincomplete> = @record{
-  counter: uint32
-}
-global function ma_fence_init(pFence: *ma_fence): ma_result <cimport,nodecl> end
-global function ma_fence_uninit(pFence: *ma_fence): void <cimport,nodecl> end
-global function ma_fence_acquire(pFence: *ma_fence): ma_result <cimport,nodecl> end
-global function ma_fence_release(pFence: *ma_fence): ma_result <cimport,nodecl> end
-global function ma_fence_wait(pFence: *ma_fence): ma_result <cimport,nodecl> end
-global ma_async_notification_callbacks: type <cimport,nodecl> = @record{
-  onSignal: function(pointer): void
-}
-global function ma_async_notification_signal(pNotification: pointer): ma_result <cimport,nodecl> end
-global ma_async_notification_poll: type <cimport,nodecl> = @record{
-  cb: ma_async_notification_callbacks,
-  signalled: ma_bool32
-}
-global function ma_async_notification_poll_init(pNotificationPoll: *ma_async_notification_poll): ma_result <cimport,nodecl> end
-global function ma_async_notification_poll_is_signalled(pNotificationPoll: *ma_async_notification_poll): ma_bool32 <cimport,nodecl> end
-global ma_async_notification_event: type <cimport,nodecl,cincomplete> = @record{
-  cb: ma_async_notification_callbacks,
-}
-global function ma_async_notification_event_init(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
-global function ma_async_notification_event_uninit(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
-global function ma_async_notification_event_wait(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
-global function ma_async_notification_event_signal(pNotificationEvent: *ma_async_notification_event): ma_result <cimport,nodecl> end
 global function ma_calculate_buffer_size_in_milliseconds_from_frames(bufferSizeInFrames: uint32, sampleRate: uint32): uint32 <cimport,nodecl> end
 global function ma_calculate_buffer_size_in_frames_from_milliseconds(bufferSizeInMilliseconds: uint32, sampleRate: uint32): uint32 <cimport,nodecl> end
 global function ma_copy_pcm_frames(dst: pointer, src: pointer, frameCount: uint64, format: ma_format, channels: uint32): void <cimport,nodecl> end
@@ -1727,27 +1927,6 @@ global function ma_copy_and_apply_volume_and_clip_samples_f32(pDst: *float32, pS
 global function ma_copy_and_apply_volume_and_clip_pcm_frames(pDst: pointer, pSrc: pointer, frameCount: uint64, format: ma_format, channels: uint32, volume: float32): void <cimport,nodecl> end
 global function ma_volume_linear_to_db(factor: float32): float32 <cimport,nodecl> end
 global function ma_volume_db_to_linear(gain: float32): float32 <cimport,nodecl> end
-global ma_slot_allocator_config: type <cimport,nodecl> = @record{
-  capacity: uint32
-}
-global function ma_slot_allocator_config_init(capacity: uint32): ma_slot_allocator_config <cimport,nodecl> end
-global ma_slot_allocator_group: type <cimport,nodecl,aligned(4)> = @record{
-  bitfield: uint32
-}
-global ma_slot_allocator: type <cimport,nodecl> = @record{
-  pGroups: *ma_slot_allocator_group,
-  pSlots: *uint32,
-  count: uint32,
-  capacity: uint32,
-  _ownsHeap: ma_bool32,
-  _pHeap: pointer
-}
-global function ma_slot_allocator_get_heap_size(pConfig: *ma_slot_allocator_config, pHeapSizeInBytes: *csize): ma_result <cimport,nodecl> end
-global function ma_slot_allocator_init_preallocated(pConfig: *ma_slot_allocator_config, pHeap: pointer, pAllocator: *ma_slot_allocator): ma_result <cimport,nodecl> end
-global function ma_slot_allocator_init(pConfig: *ma_slot_allocator_config, pAllocationCallbacks: *ma_allocation_callbacks, pAllocator: *ma_slot_allocator): ma_result <cimport,nodecl> end
-global function ma_slot_allocator_uninit(pAllocator: *ma_slot_allocator, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
-global function ma_slot_allocator_alloc(pAllocator: *ma_slot_allocator, pSlot: *uint64): ma_result <cimport,nodecl> end
-global function ma_slot_allocator_free(pAllocator: *ma_slot_allocator, slot: uint64): ma_result <cimport,nodecl> end
 global ma_data_source_vtable: type <cimport,nodecl> = @record{
   onRead: function(pointer, pointer, uint64, *uint64): ma_result,
   onSeek: function(pointer, uint64): ma_result,
@@ -2005,8 +2184,8 @@ global function ma_decode_from_vfs(pVFS: pointer, pFilePath: cstring, pConfig: *
 global function ma_decode_file(pFilePath: cstring, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport,nodecl> end
 global function ma_decode_memory(pData: pointer, dataSize: csize, pConfig: *ma_decoder_config, pFrameCountOut: *uint64, ppPCMFramesOut: *pointer): ma_result <cimport,nodecl> end
 global ma_encoder: type <cimport,nodecl,forwarddecl> = @record{}
-global ma_encoder_write_proc: type <cimport,nodecl> = @function(*ma_encoder, pointer, csize): csize
-global ma_encoder_seek_proc: type <cimport,nodecl> = @function(*ma_encoder, cint, ma_seek_origin): ma_bool32
+global ma_encoder_write_proc: type <cimport,nodecl> = @function(*ma_encoder, pointer, csize, *csize): ma_result
+global ma_encoder_seek_proc: type <cimport,nodecl> = @function(*ma_encoder, int64, ma_seek_origin): ma_result
 global ma_encoder_init_proc: type <cimport,nodecl> = @function(*ma_encoder): ma_result
 global ma_encoder_uninit_proc: type <cimport,nodecl> = @function(*ma_encoder): void
 global ma_encoder_write_pcm_frames_proc: type <cimport,nodecl> = @function(*ma_encoder, pointer, uint64, *uint64): ma_result
@@ -2027,9 +2206,16 @@ ma_encoder = @record{
   onWritePCMFrames: ma_encoder_write_pcm_frames_proc,
   pUserData: pointer,
   pInternalEncoder: pointer,
-  pFile: pointer
+  data: union{
+    vfs: record{
+      pVFS: pointer,
+      file: ma_vfs_file
+    }
+  }
 }
 global function ma_encoder_init(onWrite: ma_encoder_write_proc, onSeek: ma_encoder_seek_proc, pUserData: pointer, pConfig: *ma_encoder_config, pEncoder: *ma_encoder): ma_result <cimport,nodecl> end
+global function ma_encoder_init_vfs(pVFS: pointer, pFilePath: cstring, pConfig: *ma_encoder_config, pEncoder: *ma_encoder): ma_result <cimport,nodecl> end
+global function ma_encoder_init_vfs_w(pVFS: pointer, pFilePath: *cwchar_t, pConfig: *ma_encoder_config, pEncoder: *ma_encoder): ma_result <cimport,nodecl> end
 global function ma_encoder_init_file(pFilePath: cstring, pConfig: *ma_encoder_config, pEncoder: *ma_encoder): ma_result <cimport,nodecl> end
 global function ma_encoder_init_file_w(pFilePath: *cwchar_t, pConfig: *ma_encoder_config, pEncoder: *ma_encoder): ma_result <cimport,nodecl> end
 global function ma_encoder_uninit(pEncoder: *ma_encoder): void <cimport,nodecl> end
@@ -2113,19 +2299,6 @@ global ma_resource_manager_data_source_flags: type <cimport,nodecl,using> = @enu
   MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_ASYNC = 4,
   MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_WAIT_INIT = 8
 }
-global ma_resource_manager_job_type: type <cimport,nodecl,using> = @enum(cint){
-  MA_RESOURCE_MANAGER_JOB_QUIT = 0,
-  MA_RESOURCE_MANAGER_JOB_LOAD_DATA_BUFFER_NODE = 1,
-  MA_RESOURCE_MANAGER_JOB_FREE_DATA_BUFFER_NODE = 2,
-  MA_RESOURCE_MANAGER_JOB_PAGE_DATA_BUFFER_NODE = 3,
-  MA_RESOURCE_MANAGER_JOB_LOAD_DATA_BUFFER = 4,
-  MA_RESOURCE_MANAGER_JOB_FREE_DATA_BUFFER = 5,
-  MA_RESOURCE_MANAGER_JOB_LOAD_DATA_STREAM = 6,
-  MA_RESOURCE_MANAGER_JOB_FREE_DATA_STREAM = 7,
-  MA_RESOURCE_MANAGER_JOB_PAGE_DATA_STREAM = 8,
-  MA_RESOURCE_MANAGER_JOB_SEEK_DATA_STREAM = 9,
-  MA_RESOURCE_MANAGER_JOB_CUSTOM = 256
-}
 global ma_resource_manager_pipeline_stage_notification: type <cimport,nodecl> = @record{
   pNotification: pointer,
   pFence: *ma_fence
@@ -2135,104 +2308,6 @@ global ma_resource_manager_pipeline_notifications: type <cimport,nodecl> = @reco
   done: ma_resource_manager_pipeline_stage_notification
 }
 global function ma_resource_manager_pipeline_notifications_init(): ma_resource_manager_pipeline_notifications <cimport,nodecl> end
-global ma_resource_manager_job: type <cimport,nodecl,aligned(8)> = @record{
-  toc: union{
-    breakup: record{
-      code: uint16,
-      slot: uint16,
-      refcount: uint32
-    },
-    allocation: uint64
-  },
-  next: uint64,
-  order: uint32,
-  data: union{
-    loadDataBufferNode: record{
-      pDataBufferNode: *ma_resource_manager_data_buffer_node,
-      pFilePath: cstring,
-      pFilePathW: *cwchar_t,
-      decode: ma_bool32,
-      pInitNotification: pointer,
-      pDoneNotification: pointer,
-      pInitFence: *ma_fence,
-      pDoneFence: *ma_fence
-    },
-    freeDataBufferNode: record{
-      pDataBufferNode: *ma_resource_manager_data_buffer_node,
-      pDoneNotification: pointer,
-      pDoneFence: *ma_fence
-    },
-    pageDataBufferNode: record{
-      pDataBufferNode: *ma_resource_manager_data_buffer_node,
-      pDecoder: *ma_decoder,
-      pDoneNotification: pointer,
-      pDoneFence: *ma_fence
-    },
-    loadDataBuffer: record{
-      pDataBuffer: *ma_resource_manager_data_buffer,
-      pInitNotification: pointer,
-      pDoneNotification: pointer,
-      pInitFence: *ma_fence,
-      pDoneFence: *ma_fence
-    },
-    freeDataBuffer: record{
-      pDataBuffer: *ma_resource_manager_data_buffer,
-      pDoneNotification: pointer,
-      pDoneFence: *ma_fence
-    },
-    loadDataStream: record{
-      pDataStream: *ma_resource_manager_data_stream,
-      pFilePath: cstring,
-      pFilePathW: *cwchar_t,
-      initialSeekPoint: uint64,
-      pInitNotification: pointer,
-      pInitFence: *ma_fence
-    },
-    freeDataStream: record{
-      pDataStream: *ma_resource_manager_data_stream,
-      pDoneNotification: pointer,
-      pDoneFence: *ma_fence
-    },
-    pageDataStream: record{
-      pDataStream: *ma_resource_manager_data_stream,
-      pageIndex: uint32
-    },
-    seekDataStream: record{
-      pDataStream: *ma_resource_manager_data_stream,
-      frameIndex: uint64
-    },
-    custom: record{
-      data0: usize,
-      data1: usize
-    }
-  }
-}
-global function ma_resource_manager_job_init(code: uint16): ma_resource_manager_job <cimport,nodecl> end
-global ma_resource_manager_job_queue_flags: type <cimport,nodecl,using> = @enum(cint){
-  MA_RESOURCE_MANAGER_JOB_QUEUE_FLAG_NON_BLOCKING = 1
-}
-global ma_resource_manager_job_queue_config: type <cimport,nodecl> = @record{
-  flags: uint32,
-  capacity: uint32
-}
-global function ma_resource_manager_job_queue_config_init(flags: uint32, capacity: uint32): ma_resource_manager_job_queue_config <cimport,nodecl> end
-global ma_resource_manager_job_queue: type <cimport,nodecl,aligned(8),cincomplete> = @record{
-  flags: uint32,
-  capacity: uint32,
-  head: uint64,
-  tail: uint64,
-  allocator: ma_slot_allocator,
-  pJobs: *ma_resource_manager_job,
-  lock: cuint,
-  _pHeap: pointer,
-  _ownsHeap: ma_bool32
-}
-global function ma_resource_manager_job_queue_get_heap_size(pConfig: *ma_resource_manager_job_queue_config, pHeapSizeInBytes: *csize): ma_result <cimport,nodecl> end
-global function ma_resource_manager_job_queue_init_preallocated(pConfig: *ma_resource_manager_job_queue_config, pHeap: pointer, pQueue: *ma_resource_manager_job_queue): ma_result <cimport,nodecl> end
-global function ma_resource_manager_job_queue_init(pConfig: *ma_resource_manager_job_queue_config, pAllocationCallbacks: *ma_allocation_callbacks, pQueue: *ma_resource_manager_job_queue): ma_result <cimport,nodecl> end
-global function ma_resource_manager_job_queue_uninit(pQueue: *ma_resource_manager_job_queue, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
-global function ma_resource_manager_job_queue_post(pQueue: *ma_resource_manager_job_queue, pJob: *ma_resource_manager_job): ma_result <cimport,nodecl> end
-global function ma_resource_manager_job_queue_next(pQueue: *ma_resource_manager_job_queue, pJob: *ma_resource_manager_job): ma_result <cimport,nodecl> end
 global ma_resource_manager_flags: type <cimport,nodecl,using> = @enum(cint){
   MA_RESOURCE_MANAGER_FLAG_NON_BLOCKING = 1,
   MA_RESOURCE_MANAGER_FLAG_NO_THREADING = 2
@@ -2356,7 +2431,7 @@ ma_resource_manager = @record{
   config: ma_resource_manager_config,
   pRootDataBufferNode: *ma_resource_manager_data_buffer_node,
   jobThreads: [64]culonglong,
-  jobQueue: ma_resource_manager_job_queue,
+  jobQueue: ma_job_queue,
   defaultVFS: ma_default_vfs,
   log: ma_log
 }
@@ -2414,17 +2489,18 @@ global function ma_resource_manager_data_source_result(pDataSource: *ma_resource
 global function ma_resource_manager_data_source_set_looping(pDataSource: *ma_resource_manager_data_source, isLooping: ma_bool32): ma_result <cimport,nodecl> end
 global function ma_resource_manager_data_source_is_looping(pDataSource: *ma_resource_manager_data_source): ma_bool32 <cimport,nodecl> end
 global function ma_resource_manager_data_source_get_available_frames(pDataSource: *ma_resource_manager_data_source, pAvailableFrames: *uint64): ma_result <cimport,nodecl> end
-global function ma_resource_manager_post_job(pResourceManager: *ma_resource_manager, pJob: *ma_resource_manager_job): ma_result <cimport,nodecl> end
+global function ma_resource_manager_post_job(pResourceManager: *ma_resource_manager, pJob: *ma_job): ma_result <cimport,nodecl> end
 global function ma_resource_manager_post_job_quit(pResourceManager: *ma_resource_manager): ma_result <cimport,nodecl> end
-global function ma_resource_manager_next_job(pResourceManager: *ma_resource_manager, pJob: *ma_resource_manager_job): ma_result <cimport,nodecl> end
-global function ma_resource_manager_process_job(pResourceManager: *ma_resource_manager, pJob: *ma_resource_manager_job): ma_result <cimport,nodecl> end
+global function ma_resource_manager_next_job(pResourceManager: *ma_resource_manager, pJob: *ma_job): ma_result <cimport,nodecl> end
+global function ma_resource_manager_process_job(pResourceManager: *ma_resource_manager, pJob: *ma_job): ma_result <cimport,nodecl> end
 global function ma_resource_manager_process_next_job(pResourceManager: *ma_resource_manager): ma_result <cimport,nodecl> end
 global ma_node_graph: type <cimport,nodecl,forwarddecl> = @record{}
 global ma_node_flags: type <cimport,nodecl,using> = @enum(cint){
   MA_NODE_FLAG_PASSTHROUGH = 1,
   MA_NODE_FLAG_CONTINUOUS_PROCESSING = 2,
   MA_NODE_FLAG_ALLOW_NULL_INPUT = 4,
-  MA_NODE_FLAG_DIFFERENT_PROCESSING_RATES = 8
+  MA_NODE_FLAG_DIFFERENT_PROCESSING_RATES = 8,
+  MA_NODE_FLAG_SILENT_OUTPUT = 16
 }
 global ma_node_state: type <cimport,nodecl,using> = @enum(cint){
   ma_node_state_started = 0,
@@ -2489,7 +2565,7 @@ ma_node_base = @record{
   _pHeap: pointer,
   _ownsHeap: ma_bool32
 }
-global function ma_node_get_heap_size(pConfig: *ma_node_config, pHeapSizeInBytes: *csize): ma_result <cimport,nodecl> end
+global function ma_node_get_heap_size(pNodeGraph: *ma_node_graph, pConfig: *ma_node_config, pHeapSizeInBytes: *csize): ma_result <cimport,nodecl> end
 global function ma_node_init_preallocated(pNodeGraph: *ma_node_graph, pConfig: *ma_node_config, pHeap: pointer, pNode: pointer): ma_result <cimport,nodecl> end
 global function ma_node_init(pNodeGraph: *ma_node_graph, pConfig: *ma_node_config, pAllocationCallbacks: *ma_allocation_callbacks, pNode: pointer): ma_result <cimport,nodecl> end
 global function ma_node_uninit(pNode: pointer, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
@@ -2512,11 +2588,13 @@ global function ma_node_get_state_by_time_range(pNode: pointer, globalTimeBeg: u
 global function ma_node_get_time(pNode: pointer): uint64 <cimport,nodecl> end
 global function ma_node_set_time(pNode: pointer, localTime: uint64): ma_result <cimport,nodecl> end
 global ma_node_graph_config: type <cimport,nodecl> = @record{
-  channels: uint32
+  channels: uint32,
+  nodeCacheCapInFrames: uint16
 }
 global function ma_node_graph_config_init(channels: uint32): ma_node_graph_config <cimport,nodecl> end
 ma_node_graph = @record{
   endpoint: ma_node_base,
+  nodeCacheCapInFrames: uint16,
   isReading: ma_bool32
 }
 global function ma_node_graph_init(pConfig: *ma_node_graph_config, pAllocationCallbacks: *ma_allocation_callbacks, pNodeGraph: *ma_node_graph): ma_result <cimport,nodecl> end
@@ -2790,7 +2868,7 @@ global function ma_engine_get_device(pEngine: *ma_engine): *ma_device <cimport,n
 global function ma_engine_get_log(pEngine: *ma_engine): *ma_log <cimport,nodecl> end
 global function ma_engine_get_endpoint(pEngine: *ma_engine): pointer <cimport,nodecl> end
 global function ma_engine_get_time(pEngine: *ma_engine): uint64 <cimport,nodecl> end
-global function ma_engine_set_time(pEngine: *ma_engine, globalTime: uint64): uint64 <cimport,nodecl> end
+global function ma_engine_set_time(pEngine: *ma_engine, globalTime: uint64): ma_result <cimport,nodecl> end
 global function ma_engine_get_channels(pEngine: *ma_engine): uint32 <cimport,nodecl> end
 global function ma_engine_get_sample_rate(pEngine: *ma_engine): uint32 <cimport,nodecl> end
 global function ma_engine_start(pEngine: *ma_engine): ma_result <cimport,nodecl> end
@@ -2811,6 +2889,7 @@ global function ma_engine_listener_set_world_up(pEngine: *ma_engine, listenerInd
 global function ma_engine_listener_get_world_up(pEngine: *ma_engine, listenerIndex: uint32): ma_vec3f <cimport,nodecl> end
 global function ma_engine_listener_set_enabled(pEngine: *ma_engine, listenerIndex: uint32, isEnabled: ma_bool32): void <cimport,nodecl> end
 global function ma_engine_listener_is_enabled(pEngine: *ma_engine, listenerIndex: uint32): ma_bool32 <cimport,nodecl> end
+global function ma_engine_play_sound_ex(pEngine: *ma_engine, pFilePath: cstring, pNode: pointer, nodeInputBusIndex: uint32): ma_result <cimport,nodecl> end
 global function ma_engine_play_sound(pEngine: *ma_engine, pFilePath: cstring, pGroup: *ma_sound_group): ma_result <cimport,nodecl> end
 global function ma_sound_init_from_file(pEngine: *ma_engine, pFilePath: cstring, flags: uint32, pGroup: *ma_sound_group, pDoneFence: *ma_fence, pSound: *ma_sound): ma_result <cimport,nodecl> end
 global function ma_sound_init_from_file_w(pEngine: *ma_engine, pFilePath: *cwchar_t, flags: uint32, pGroup: *ma_sound_group, pDoneFence: *ma_fence, pSound: *ma_sound): ma_result <cimport,nodecl> end
@@ -2940,10 +3019,6 @@ global MA_VERSION_STRING: cstring <cimport,nodecl,const>
 global MA_SIZEOF_PTR: cint <comptime> = 8
 global MA_TRUE: cint <comptime> = 1
 global MA_FALSE: cint <comptime> = 0
-global MA_LOG_LEVEL_DEBUG: cint <comptime> = 4
-global MA_LOG_LEVEL_INFO: cint <comptime> = 3
-global MA_LOG_LEVEL_WARNING: cint <comptime> = 2
-global MA_LOG_LEVEL_ERROR: cint <comptime> = 1
 global MA_MIN_CHANNELS: cint <comptime> = 1
 global MA_MAX_CHANNELS: cint <comptime> = 254
 global MA_MAX_FILTER_ORDER: cint <comptime> = 8
@@ -2953,6 +3028,7 @@ global MA_BACKEND_COUNT: cint <cimport,nodecl,const>
 global MA_DATA_FORMAT_FLAG_EXCLUSIVE_MODE: cint <cimport,nodecl,const>
 global MA_MAX_DEVICE_NAME_LENGTH: cint <comptime> = 255
 global MA_DATA_SOURCE_SELF_MANAGED_RANGE_AND_LOOP_POINT: cint <comptime> = 0x00000001
+global MA_JOB_TYPE_RESOURCE_MANAGER_QUEUE_FLAG_NON_BLOCKING: cint <cimport,nodecl,const>
 global MA_RESOURCE_MANAGER_MAX_JOB_THREAD_COUNT: cint <comptime> = 64
 global MA_MAX_NODE_BUS_COUNT: cint <comptime> = 254
 global MA_MAX_NODE_LOCAL_BUS_COUNT: cint <comptime> = 2
