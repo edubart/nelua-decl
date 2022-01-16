@@ -116,6 +116,8 @@ Plus the following platform specific libraries:
     - [emscripten.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/emscripten/emscripten.nelua) (Emscripten APIs)
 * X11
     - [x11.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/x11/x11.nelua) (X11 Window APIs)
+* [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime)
+    - [wamr.nelua](https://github.com/edubart/nelua-decl/blob/main/libs/wamr/wamr.nelua) (WASM Micro Runtime APIs)
 
 ## How to generate bindings
 

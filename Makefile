@@ -39,6 +39,7 @@ generate:
 	$(MKC) libs/linux generate
 	$(MKC) libs/x11 generate
 	$(MKC) libs/emscripten generate
+	#$(MKC) libs/wamr generate
 
 download:
 	$(MKC) libs/blend2d download
@@ -79,6 +80,7 @@ download:
 	$(MKC) libs/linux download
 	$(MKC) libs/x11 download
 	$(MKC) libs/emscripten download
+	#$(MKC) libs/wamr download
 
 test:
 	$(MKC) libs/blend2d test
@@ -119,5 +121,6 @@ test:
 	$(MKC) libs/linux test
 	$(MKC) libs/x11 test
 	$(MKC) libs/emscripten test
+	#$(MKC) libs/wamr test
 
 	echo "All tests OK!"

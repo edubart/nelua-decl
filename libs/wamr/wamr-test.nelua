@@ -1,0 +1,60 @@
+require 'wamr'
+require 'io'
+require 'C.stdlib'
+
+local STACK_SIZE <comptime> = 8192
+local HEAP_SIZE <comptime> = 65536
+
+-- Load file
+local file = io.open('hello.wasm')
+if not file:isopen() then
+  io.stderr:write("Open wasm app file failed")
+  return -1
+end
+local buffer = file:read('a')
+file:close()
+
+-- Setup WASM HEAP buffer
+local heap_buffer: [16 * 1024 * 1024]byte
+
+-- Initialize WASM runtime
+local init_args: RuntimeInitArgs = {
+  mem_alloc_type = mem_alloc_type_t.Alloc_With_Pool,
+  mem_alloc_option = {
+    pool = {
+      heap_buf = (@pointer)(&heap_buffer),
+      heap_size = (@uint32)(#heap_buffer),
+    }
+  }
+}
+if not wasm_runtime_full_init(&init_args) then
+  io.stderr:write("Init runtime environment failed")
+  return -1
+end
+
+-- Load module
+local error_buf: [128]cchar
+local module = wasm_runtime_load(buffer.data, buffer.size, &error_buf, #error_buf)
+if not module then
+  io.stderr:writef("Load wasm module failed: %s\n", &error_buf[0])
+  return -1
+end
+
+-- Instantiate module
+local module_inst = wasm_runtime_instantiate(module, STACK_SIZE, HEAP_SIZE, &error_buf, #error_buf)
+if not module_inst then
+  io.stderr:writef("Instantiate wasm module failed: %s\n", &error_buf[0])
+  return -1
+end
+
+-- Execute main
+local ok = wasm_application_execute_main(module_inst, 0, nilptr)
+if not ok then
+  io.stderr:writef("Failed to execute main: %s\n", wasm_runtime_get_exception(module_inst))
+  return -1
+end
+
+-- Cleanup
+wasm_runtime_deinstantiate(module_inst)
+wasm_runtime_unload(module)
+wasm_runtime_destroy()

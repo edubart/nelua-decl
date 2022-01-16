@@ -1,0 +1,13 @@
+##[=[
+cflags([[
+-Oz
+-z stack-size=8192
+--sysroot="]]..os.getenv('WAMR_SDK_PATH')..[[/app-sdk/wasi-sysroot"
+-Wl,--allow-undefined-file="]]..os.getenv('WAMR_SDK_PATH')..[[/app-sdk/wasi-sysroot/share/wasm32-wasi/defined-symbols.txt"
+-Wl,--strip-all
+-Wl,--export-dynamic
+-Wl,--initial-memory=65536,--max-memory=65536
+]])
+]=]
+
+print 'hello world'
