@@ -3,11 +3,15 @@ cflags([[
 -Oz
 -z stack-size=8192
 --sysroot="]]..os.getenv('WAMR_SDK_PATH')..[[/app-sdk/wasi-sysroot"
--Wl,--allow-undefined-file="]]..os.getenv('WAMR_SDK_PATH')..[[/app-sdk/wasi-sysroot/share/wasm32-wasi/defined-symbols.txt"
--Wl,--strip-all
--Wl,--export-dynamic
 -Wl,--initial-memory=65536,--max-memory=65536
+-Wl,--allow-undefined-file="]]..os.getenv('WAMR_SDK_PATH')..[[/app-sdk/wasi-sysroot/share/wasm32-wasi/defined-symbols.txt"
+-Wl,--export=__heap_base -Wl,--export=__data_end
+-Wl,--strip-all
+-Wl,--allow-undefined
 ]])
 ]=]
 
-print 'hello world'
+local function hello_from_host() <cimport> end
+
+print 'hello from guest'
+hello_from_host()

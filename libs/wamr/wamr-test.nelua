@@ -2,10 +2,13 @@ require 'wamr'
 require 'io'
 require 'C.stdlib'
 
-local STACK_SIZE <comptime> = 8192
-local HEAP_SIZE <comptime> = 65536
+local STACK_SIZE <comptime> = 8192 -- 8KB
+local HEAP_SIZE <comptime> = 65536 -- 64KB
 
--- Load file
+-- All the runtime memory allocations are restricted in the global_heap_buf array
+local global_heap_buffer: [256 * 1024]byte -- 256KB
+
+-- Read WASM file into a memory buffer
 local file = io.open('hello.wasm')
 if not file:isopen() then
   io.stderr:write("Open wasm app file failed")
@@ -14,18 +17,36 @@ end
 local buffer = file:read('a')
 file:close()
 
--- Setup WASM HEAP buffer
-local heap_buffer: [16 * 1024 * 1024]byte
+-- Host functions
+local function hello_from_host()
+  print 'hello from host'
+end
 
--- Initialize WASM runtime
+-- Configure the native functions being exported to WASM app.
+local native_symbols: []NativeSymbol = {
+  {
+    "hello_from_host",
+    (@pointer)(hello_from_host),
+    "()",
+    nilptr
+  }
+}
+
+-- Configure the memory allocator for the runtime.
+local mem_alloc_option: MemAllocOption = {
+  pool = {
+    heap_buf = (@pointer)(&global_heap_buffer),
+    heap_size = (@uint32)(#global_heap_buffer),
+  }
+}
+
+-- Initialize runtime environment with user configurations
 local init_args: RuntimeInitArgs = {
   mem_alloc_type = mem_alloc_type_t.Alloc_With_Pool,
-  mem_alloc_option = {
-    pool = {
-      heap_buf = (@pointer)(&heap_buffer),
-      heap_size = (@uint32)(#heap_buffer),
-    }
-  }
+  mem_alloc_option = mem_alloc_option,
+  native_module_name = 'env',
+  native_symbols = &native_symbols,
+  n_native_symbols = #native_symbols
 }
 if not wasm_runtime_full_init(&init_args) then
   io.stderr:write("Init runtime environment failed")
@@ -58,3 +79,5 @@ end
 wasm_runtime_deinstantiate(module_inst)
 wasm_runtime_unload(module)
 wasm_runtime_destroy()
+
+print 'WAMR OK!'
