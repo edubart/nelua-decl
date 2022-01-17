@@ -18,17 +18,16 @@ local buffer = file:read('a')
 file:close()
 
 -- Host functions
-local function hello_from_host()
-  print 'hello from host'
+local function host_puts(exec_env: wasm_exec_env_t, msg: cstring): void
+  print(msg)
 end
 
 -- Configure the native functions being exported to WASM app.
 local native_symbols: []NativeSymbol = {
   {
-    "hello_from_host",
-    (@pointer)(hello_from_host),
-    "()",
-    nilptr
+    "host_puts",
+    (@pointer)(host_puts),
+    "($)"
   }
 }
 
