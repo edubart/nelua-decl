@@ -2446,7 +2446,7 @@ global function SDL_RenderFillRectsF(renderer: *SDL_Renderer, rects: *SDL_FRect,
 global function SDL_RenderCopyF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect): cint <cimport,nodecl> end
 global function SDL_RenderCopyExF(renderer: *SDL_Renderer, texture: *SDL_Texture, srcrect: *SDL_Rect, dstrect: *SDL_FRect, angle: float64, center: *SDL_FPoint, flip: SDL_RendererFlip): cint <cimport,nodecl> end
 global function SDL_RenderGeometry(renderer: *SDL_Renderer, texture: *SDL_Texture, vertices: *SDL_Vertex, num_vertices: cint, indices: *cint, num_indices: cint): cint <cimport,nodecl> end
-global function SDL_RenderGeometryRaw(renderer: *SDL_Renderer, texture: *SDL_Texture, xy: *float32, xy_stride: cint, color: *cint, color_stride: cint, uv: *float32, uv_stride: cint, num_vertices: cint, indices: pointer, num_indices: cint, size_indices: cint): cint <cimport,nodecl> end
+global function SDL_RenderGeometryRaw(renderer: *SDL_Renderer, texture: *SDL_Texture, xy: *float32, xy_stride: cint, color: *SDL_Color, color_stride: cint, uv: *float32, uv_stride: cint, num_vertices: cint, indices: pointer, num_indices: cint, size_indices: cint): cint <cimport,nodecl> end
 global function SDL_RenderReadPixels(renderer: *SDL_Renderer, rect: *SDL_Rect, format: uint32, pixels: pointer, pitch: cint): cint <cimport,nodecl> end
 global function SDL_RenderPresent(renderer: *SDL_Renderer): void <cimport,nodecl> end
 global function SDL_DestroyTexture(texture: *SDL_Texture): void <cimport,nodecl> end
@@ -2678,6 +2678,7 @@ global SDL_HINT_PREFERRED_LOCALES: cstring <comptime> = "SDL_PREFERRED_LOCALES"
 global SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION: cstring <comptime> = "SDL_QTWAYLAND_CONTENT_ORIENTATION"
 global SDL_HINT_QTWAYLAND_WINDOW_FLAGS: cstring <comptime> = "SDL_QTWAYLAND_WINDOW_FLAGS"
 global SDL_HINT_RENDER_BATCHING: cstring <comptime> = "SDL_RENDER_BATCHING"
+global SDL_HINT_RENDER_LINE_METHOD: cstring <comptime> = "SDL_RENDER_LINE_METHOD"
 global SDL_HINT_RENDER_DIRECT3D11_DEBUG: cstring <comptime> = "SDL_RENDER_DIRECT3D11_DEBUG"
 global SDL_HINT_RENDER_DIRECT3D_THREADSAFE: cstring <comptime> = "SDL_RENDER_DIRECT3D_THREADSAFE"
 global SDL_HINT_RENDER_DRIVER: cstring <comptime> = "SDL_RENDER_DRIVER"

@@ -1169,6 +1169,7 @@ global function uv_ip4_addr(ip: cstring, port: cint, addr: *sockaddr_in): cint <
 global function uv_ip6_addr(ip: cstring, port: cint, addr: *sockaddr_in6): cint <cimport,nodecl> end
 global function uv_ip4_name(src: *sockaddr_in, dst: cstring, size: csize): cint <cimport,nodecl> end
 global function uv_ip6_name(src: *sockaddr_in6, dst: cstring, size: csize): cint <cimport,nodecl> end
+global function uv_ip_name(src: *sockaddr, dst: cstring, size: csize): cint <cimport,nodecl> end
 global function uv_inet_ntop(af: cint, src: pointer, dst: cstring, size: csize): cint <cimport,nodecl> end
 global function uv_inet_pton(af: cint, src: cstring, dst: pointer): cint <cimport,nodecl> end
 uv_random_s = @record{

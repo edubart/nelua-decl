@@ -17,6 +17,7 @@ nldecl.include_macros = {
   cstring = {
     MG_VERSION = true,
     MG_HTTP_INDEX = true,
+    MG_FATFS_ROOT = true,
   },
 }
 

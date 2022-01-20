@@ -3,13 +3,21 @@ cinclude '<SDL2/SDL_ttf.h>'
 linklib 'SDL2_ttf'
 ]]
 global function TTF_Linked_Version(): *SDL_version <cimport,nodecl> end
-global function TTF_ByteSwappedUNICODE(swapped: cint): void <cimport,nodecl> end
+global function TTF_GetFreeTypeVersion(major: *cint, minor: *cint, patch: *cint): void <cimport,nodecl> end
+global function TTF_GetHarfBuzzVersion(major: *cint, minor: *cint, patch: *cint): void <cimport,nodecl> end
+global function TTF_ByteSwappedUNICODE(swapped: SDL_bool): void <cimport,nodecl> end
 global TTF_Font: type <cimport,nodecl,forwarddecl> = @record{}
 global function TTF_Init(): cint <cimport,nodecl> end
 global function TTF_OpenFont(file: cstring, ptsize: cint): *TTF_Font <cimport,nodecl> end
 global function TTF_OpenFontIndex(file: cstring, ptsize: cint, index: clong): *TTF_Font <cimport,nodecl> end
 global function TTF_OpenFontRW(src: *SDL_RWops, freesrc: cint, ptsize: cint): *TTF_Font <cimport,nodecl> end
 global function TTF_OpenFontIndexRW(src: *SDL_RWops, freesrc: cint, ptsize: cint, index: clong): *TTF_Font <cimport,nodecl> end
+global function TTF_OpenFontDPI(file: cstring, ptsize: cint, hdpi: cuint, vdpi: cuint): *TTF_Font <cimport,nodecl> end
+global function TTF_OpenFontIndexDPI(file: cstring, ptsize: cint, index: clong, hdpi: cuint, vdpi: cuint): *TTF_Font <cimport,nodecl> end
+global function TTF_OpenFontDPIRW(src: *SDL_RWops, freesrc: cint, ptsize: cint, hdpi: cuint, vdpi: cuint): *TTF_Font <cimport,nodecl> end
+global function TTF_OpenFontIndexDPIRW(src: *SDL_RWops, freesrc: cint, ptsize: cint, index: clong, hdpi: cuint, vdpi: cuint): *TTF_Font <cimport,nodecl> end
+global function TTF_SetFontSize(font: *TTF_Font, ptsize: cint): cint <cimport,nodecl> end
+global function TTF_SetFontSizeDPI(font: *TTF_Font, ptsize: cint, hdpi: cuint, vdpi: cuint): cint <cimport,nodecl> end
 global function TTF_GetFontStyle(font: *TTF_Font): cint <cimport,nodecl> end
 global function TTF_SetFontStyle(font: *TTF_Font, style: cint): void <cimport,nodecl> end
 global function TTF_GetFontOutline(font: *TTF_Font): cint <cimport,nodecl> end
@@ -27,18 +35,31 @@ global function TTF_FontFaceIsFixedWidth(font: *TTF_Font): cint <cimport,nodecl>
 global function TTF_FontFaceFamilyName(font: *TTF_Font): cstring <cimport,nodecl> end
 global function TTF_FontFaceStyleName(font: *TTF_Font): cstring <cimport,nodecl> end
 global function TTF_GlyphIsProvided(font: *TTF_Font, ch: uint16): cint <cimport,nodecl> end
+global function TTF_GlyphIsProvided32(font: *TTF_Font, ch: uint32): cint <cimport,nodecl> end
 global function TTF_GlyphMetrics(font: *TTF_Font, ch: uint16, minx: *cint, maxx: *cint, miny: *cint, maxy: *cint, advance: *cint): cint <cimport,nodecl> end
+global function TTF_GlyphMetrics32(font: *TTF_Font, ch: uint32, minx: *cint, maxx: *cint, miny: *cint, maxy: *cint, advance: *cint): cint <cimport,nodecl> end
 global function TTF_SizeText(font: *TTF_Font, text: cstring, w: *cint, h: *cint): cint <cimport,nodecl> end
 global function TTF_SizeUTF8(font: *TTF_Font, text: cstring, w: *cint, h: *cint): cint <cimport,nodecl> end
 global function TTF_SizeUNICODE(font: *TTF_Font, text: *uint16, w: *cint, h: *cint): cint <cimport,nodecl> end
+global function TTF_MeasureText(font: *TTF_Font, text: cstring, measure_width: cint, extent: *cint, count: *cint): cint <cimport,nodecl> end
+global function TTF_MeasureUTF8(font: *TTF_Font, text: cstring, measure_width: cint, extent: *cint, count: *cint): cint <cimport,nodecl> end
+global function TTF_MeasureUNICODE(font: *TTF_Font, text: *uint16, measure_width: cint, extent: *cint, count: *cint): cint <cimport,nodecl> end
 global function TTF_RenderText_Solid(font: *TTF_Font, text: cstring, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderUTF8_Solid(font: *TTF_Font, text: cstring, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderUNICODE_Solid(font: *TTF_Font, text: *uint16, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderText_Solid_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderUTF8_Solid_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderUNICODE_Solid_Wrapped(font: *TTF_Font, text: *uint16, fg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderGlyph_Solid(font: *TTF_Font, ch: uint16, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderGlyph32_Solid(font: *TTF_Font, ch: uint32, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderText_Shaded(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderUTF8_Shaded(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderUNICODE_Shaded(font: *TTF_Font, text: *uint16, fg: SDL_Color, bg: SDL_Color): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderText_Shaded_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderUTF8_Shaded_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderUNICODE_Shaded_Wrapped(font: *TTF_Font, text: *uint16, fg: SDL_Color, bg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderGlyph_Shaded(font: *TTF_Font, ch: uint16, fg: SDL_Color, bg: SDL_Color): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderGlyph32_Shaded(font: *TTF_Font, ch: uint32, fg: SDL_Color, bg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderText_Blended(font: *TTF_Font, text: cstring, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderUTF8_Blended(font: *TTF_Font, text: cstring, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderUNICODE_Blended(font: *TTF_Font, text: *uint16, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
@@ -46,11 +67,17 @@ global function TTF_RenderText_Blended_Wrapped(font: *TTF_Font, text: cstring, f
 global function TTF_RenderUTF8_Blended_Wrapped(font: *TTF_Font, text: cstring, fg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderUNICODE_Blended_Wrapped(font: *TTF_Font, text: *uint16, fg: SDL_Color, wrapLength: uint32): *SDL_Surface <cimport,nodecl> end
 global function TTF_RenderGlyph_Blended(font: *TTF_Font, ch: uint16, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
+global function TTF_RenderGlyph32_Blended(font: *TTF_Font, ch: uint32, fg: SDL_Color): *SDL_Surface <cimport,nodecl> end
+global function TTF_SetDirection(direction: cint): cint <cimport,nodecl> end
+global function TTF_SetScript(script: cint): cint <cimport,nodecl> end
 global function TTF_CloseFont(font: *TTF_Font): void <cimport,nodecl> end
 global function TTF_Quit(): void <cimport,nodecl> end
 global function TTF_WasInit(): cint <cimport,nodecl> end
 global function TTF_GetFontKerningSize(font: *TTF_Font, prev_index: cint, index: cint): cint <cimport,nodecl> end
 global function TTF_GetFontKerningSizeGlyphs(font: *TTF_Font, previous_ch: uint16, ch: uint16): cint <cimport,nodecl> end
+global function TTF_GetFontKerningSizeGlyphs32(font: *TTF_Font, previous_ch: uint32, ch: uint32): cint <cimport,nodecl> end
+global function TTF_SetFontSDF(font: *TTF_Font, on_off: SDL_bool): cint <cimport,nodecl> end
+global function TTF_GetFontSDF(font: *TTF_Font): SDL_bool <cimport,nodecl> end
 global SDL_TTF_MAJOR_VERSION: cint <cimport,nodecl,const>
 global SDL_TTF_MINOR_VERSION: cint <cimport,nodecl,const>
 global SDL_TTF_PATCHLEVEL: cint <cimport,nodecl,const>
