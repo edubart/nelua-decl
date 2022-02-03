@@ -37,8 +37,11 @@ global function mg_strcmp(str1: mg_str, str2: mg_str): cint <cimport,nodecl> end
 global function mg_strstrip(s: mg_str): mg_str <cimport,nodecl> end
 global function mg_strdup(s: mg_str): mg_str <cimport,nodecl> end
 global function mg_strstr(haystack: mg_str, needle: mg_str): cstring <cimport,nodecl> end
-global function mg_log_prefix(ll: cint, file: cstring, line: cint, fname: cstring): boolean <cimport,nodecl> end
+global function mg_match(str: mg_str, pattern: mg_str, caps: *mg_str): boolean <cimport,nodecl> end
+global function mg_globmatch(pattern: cstring, plen: csize, s: cstring, n: csize): boolean <cimport,nodecl> end
+global function mg_commalist(s: *mg_str, k: *mg_str, v: *mg_str): boolean <cimport,nodecl> end
 global function mg_log(fmt: cstring, ...: cvarargs): void <cimport,nodecl> end
+global function mg_log_prefix(ll: cint, file: cstring, line: cint, fname: cstring): boolean <cimport,nodecl> end
 global function mg_log_set(spec: cstring): void <cimport,nodecl> end
 global function mg_log_set_callback(fn: function(pointer, csize, pointer): void, param: pointer): void <cimport,nodecl> end
 global mg_timer: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
@@ -81,8 +84,6 @@ global function mg_file_read(fs: *mg_fs, path: cstring, size: *csize): cstring <
 global function mg_file_write(fs: *mg_fs, path: cstring, a3: pointer, a4: csize): boolean <cimport,nodecl> end
 global function mg_file_printf(fs: *mg_fs, path: cstring, fmt: cstring, ...: cvarargs): boolean <cimport,nodecl> end
 global function mg_random(buf: pointer, len: csize): void <cimport,nodecl> end
-global function mg_globmatch(pattern: cstring, plen: csize, s: cstring, n: csize): boolean <cimport,nodecl> end
-global function mg_commalist(s: *mg_str, k: *mg_str, v: *mg_str): boolean <cimport,nodecl> end
 global function mg_ntohs(net: uint16): uint16 <cimport,nodecl> end
 global function mg_ntohl(net: uint32): uint32 <cimport,nodecl> end
 global function mg_crc32(crc: uint32, buf: cstring, len: csize): uint32 <cimport,nodecl> end
@@ -346,7 +347,7 @@ global function mg_resolve_cancel(a1: *mg_connection): void <cimport,nodecl> end
 global function mg_dns_parse(buf: *uint8, len: csize, a3: *mg_dns_message): boolean <cimport,nodecl> end
 global function mg_dns_parse_rr(buf: *uint8, len: csize, ofs: csize, is_question: boolean, a5: *mg_dns_rr): csize <cimport,nodecl> end
 global function mg_dns_decode_name(a1: *uint8, a2: csize, a3: csize, a4: cstring, a5: csize): csize <cimport,nodecl> end
-global MG_VERSION: cstring <comptime> = "7.5"
+global MG_VERSION: cstring <comptime> = "7.6"
 global MG_ARCH_CUSTOM: cint <comptime> = 0
 global MG_ARCH_UNIX: cint <comptime> = 1
 global MG_ARCH_WIN32: cint <comptime> = 2

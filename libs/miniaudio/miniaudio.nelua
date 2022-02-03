@@ -1960,6 +1960,8 @@ global function ma_data_source_seek_to_pcm_frame(pDataSource: pointer, frameInde
 global function ma_data_source_get_data_format(pDataSource: pointer, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32, pChannelMap: *ma_channel, channelMapCap: csize): ma_result <cimport,nodecl> end
 global function ma_data_source_get_cursor_in_pcm_frames(pDataSource: pointer, pCursor: *uint64): ma_result <cimport,nodecl> end
 global function ma_data_source_get_length_in_pcm_frames(pDataSource: pointer, pLength: *uint64): ma_result <cimport,nodecl> end
+global function ma_data_source_get_cursor_in_seconds(pDataSource: pointer, pCursor: *float32): ma_result <cimport,nodecl> end
+global function ma_data_source_get_length_in_seconds(pDataSource: pointer, pLength: *float32): ma_result <cimport,nodecl> end
 global function ma_data_source_set_looping(pDataSource: pointer, isLooping: ma_bool32): ma_result <cimport,nodecl> end
 global function ma_data_source_is_looping(pDataSource: pointer): ma_bool32 <cimport,nodecl> end
 global function ma_data_source_set_range_in_pcm_frames(pDataSource: pointer, rangeBegInFrames: uint64, rangeEndInFrames: uint64): ma_result <cimport,nodecl> end
@@ -2593,6 +2595,7 @@ global ma_node_graph_config: type <cimport,nodecl> = @record{
 }
 global function ma_node_graph_config_init(channels: uint32): ma_node_graph_config <cimport,nodecl> end
 ma_node_graph = @record{
+  base: ma_node_base,
   endpoint: ma_node_base,
   nodeCacheCapInFrames: uint16,
   isReading: ma_bool32
@@ -2957,6 +2960,8 @@ global function ma_sound_seek_to_pcm_frame(pSound: *ma_sound, frameIndex: uint64
 global function ma_sound_get_data_format(pSound: *ma_sound, pFormat: *ma_format, pChannels: *uint32, pSampleRate: *uint32, pChannelMap: *ma_channel, channelMapCap: csize): ma_result <cimport,nodecl> end
 global function ma_sound_get_cursor_in_pcm_frames(pSound: *ma_sound, pCursor: *uint64): ma_result <cimport,nodecl> end
 global function ma_sound_get_length_in_pcm_frames(pSound: *ma_sound, pLength: *uint64): ma_result <cimport,nodecl> end
+global function ma_sound_get_cursor_in_seconds(pSound: *ma_sound, pCursor: *float32): ma_result <cimport,nodecl> end
+global function ma_sound_get_length_in_seconds(pSound: *ma_sound, pLength: *float32): ma_result <cimport,nodecl> end
 global function ma_sound_group_init(pEngine: *ma_engine, flags: uint32, pParentGroup: *ma_sound_group, pGroup: *ma_sound_group): ma_result <cimport,nodecl> end
 global function ma_sound_group_init_ex(pEngine: *ma_engine, pConfig: *ma_sound_group_config, pGroup: *ma_sound_group): ma_result <cimport,nodecl> end
 global function ma_sound_group_uninit(pGroup: *ma_sound_group): void <cimport,nodecl> end
