@@ -1,14 +1,183 @@
 ##[=[
-cflags([[
--Oz
--z stack-size=8192
--nostartfiles -Wl,--no-entry
--Wl,--initial-memory=65536,--max-memory=65536
--Wl,--export=__heap_base,--export=__data_end,--export=__main_argc_argv
--Wl,--strip-all
--Wl,--allow-undefined
-]])
+-- cflags([[
+-- -O0
+-- -z stack-size=8192
+-- -nostartfiles -Wl,--no-entry
+-- -Wl,--initial-memory=1048576,--max-memory=1048576
+-- -Wl,--export=__heap_base,--export=__data_end,--export=__main_argc_argv
+-- -Wl,--strip-all
+-- -Wl,--allow-undefined
+-- ]])
+
+
+cflags "--no-entry"
+cflags "-Oz"
+cflags '-s STANDALONE_WASM=1'
+cflags "-s NO_EXIT_RUNTIME=1"
+cflags "-s ERROR_ON_UNDEFINED_SYMBOLS=0"
+cflags "-s INITIAL_MEMORY=65536"
+cflags "-s TOTAL_MEMORY=65536"
+cflags "-s TOTAL_STACK=8192"
+cflags [==[-s EXPORTED_FUNCTIONS="['_main']"]==]
+ldflags "-Wl,--stack-first"
+
+cdefine 'MCO_USE_ASYNCIFY'
+cdefine 'MCO_DEFAULT_STACK_SIZE 8192'
+cdefine 'MCO_MIN_STACK_SIZE 8192'
+
+primtypes.uinteger = primtypes.uint32
+
+primtypes.integer = primtypes.int32
+
+primtypes.number = primtypes.float32
+
+context.rootpragmas.nogc = true
+-- Generates an illegal instruction on aborts/panics
+context.rootpragmas.abort = "trap"
+-- We will not write to stdout, instead any write to it will be hooked.
+context.rootpragmas.writestderr = "none"
+-- We don't need to emit `main()` entry point, we will hook this ourselves.
+context.rootpragmas.nogcentry = true
+-- Bundle `snprintf` (used by `string.format`).
+context.rootpragmas.usenanoprintf = true
+
 ]=]
+
+require 'allocators.heap'
+global embedded_general_allocator: HeapAllocator(512*1024)
+require 'allocators.default'
+require 'string'
 
 local function host_puts(s: cstring): void <cimport> end
 host_puts('hello from guest')
+
+require 'coroutine'
+local counter = 0
+local main_co = coroutine.running()
+
+do -- basic tests
+  assert(coroutine.isyieldable(main_co) == false)
+  assert(coroutine.status(main_co) == 'running')
+  counter = 0
+  local co = coroutine.create(function()
+    local co = coroutine.running()
+    assert(coroutine.status(main_co) == 'normal')
+    assert(coroutine.status(co) == 'running')
+    assert(coroutine.isyieldable(co) == true)
+    counter = counter + 1
+  end)
+  assert(counter == 0)
+  assert(coroutine.status(co) == 'suspended')
+  assert(coroutine.resume(co) == true)
+  assert(coroutine.status(co) == 'dead')
+  assert(counter == 1)
+  assert(coroutine.resume(co) == false)
+  coroutine.destroy(co)
+end
+
+do -- resume/yield
+  counter = 0
+  local co = coroutine.create(function()
+    counter = counter + 1
+    coroutine.yield()
+    counter = counter + 1
+  end)
+  assert(counter == 0)
+  assert(coroutine.status(co) == 'suspended')
+  assert(coroutine.resume(co) == true)
+  assert(counter == 1)
+  assert(coroutine.status(co) == 'suspended')
+  assert(coroutine.resume(co) == true)
+  assert(counter == 2)
+  assert(coroutine.status(co) == 'dead')
+  assert(coroutine.resume(co) == false)
+  coroutine.destroy(co)
+end
+
+do -- spawn
+  counter = -1
+  local co = coroutine.spawn(function(x: integer)
+    counter = x
+    counter = counter + 1
+    coroutine.yield()
+    counter = counter + 1
+  end, 0)
+  assert(counter == 1)
+  assert(coroutine.status(co) == 'suspended')
+  assert(coroutine.resume(co) == true)
+  assert(counter == 2)
+  assert(coroutine.status(co) == 'dead')
+  assert(coroutine.resume(co) == false)
+  coroutine.destroy(co)
+end
+
+do -- passing 1 value between yield and resume
+  local co = coroutine.create(function(a: integer): integer
+    assert(a == 1)
+    local co = coroutine.running()
+    coroutine.yield(2)
+    local i: integer
+    assert(coroutine.pop(co, &i) == true)
+    assert(i == 3)
+    return 4
+  end)
+  local i: integer
+  assert(coroutine.status(co) == 'suspended')
+  assert(coroutine.resume(co, 1) == true)
+  assert(coroutine.pop(co, &i) == true and i == 2)
+  assert(coroutine.status(co) == 'suspended')
+  assert(coroutine.resume(co, 3) == true)
+  assert(coroutine.pop(co, &i) == true and i == 4)
+  assert(coroutine.status(co) == 'dead')
+  assert(coroutine.resume(co) == false)
+  assert(coroutine.pop(co, &i) == false)
+  coroutine.destroy(co)
+end
+
+do -- passing 2 values between yield and resume
+  local Pair = @record{first: integer, second: string}
+  local co = coroutine.create(function(first: integer, second: string): (integer, string)
+    local co = coroutine.running()
+    assert(first == 1 and second == 'a')
+    coroutine.yield(2, 'b')
+    local s: string, i: integer
+    assert(coroutine.pop(co, &i, &s) == true and s == 'c' and i == 3)
+    return 4, 'd'
+  end)
+  local s: string, i: integer
+  assert(coroutine.status(co) == 'suspended')
+  s = 'a'
+  assert(coroutine.resume(co, 1, s) == true)
+  assert(coroutine.pop(co, &i, &s) == true and s == 'b' and i == 2)
+  assert(coroutine.status(co) == 'suspended')
+  assert(coroutine.resume(co, 3, 'c') == true)
+  assert(coroutine.pop(co, &i, &s) == true and s == 'd' and i == 4)
+  assert(coroutine.status(co) == 'dead')
+  assert(coroutine.resume(co) == false)
+  assert(coroutine.pop(co, &i) == false)
+  coroutine.destroy(co)
+end
+
+do -- fibonacci example
+  local co = coroutine.spawn(function(max: integer): integer
+    local co = coroutine.running()
+    local m: integer, n: integer = 1, 1
+    while m < max do
+      coroutine.yield(m)
+      m, n = n, m + n
+    end
+    return m
+  end, 1000000)
+  local m: integer = 0
+  while coroutine.status(co) == 'suspended' do
+    assert(coroutine.pop(co, &m) == true)
+    assert(m > 0)
+    assert(coroutine.resume(co) == true)
+  end
+  assert(coroutine.pop(co, &m) == true and m == 1346269)
+  assert(coroutine.status(co) == 'dead')
+  assert(coroutine.pop(co, &m) == false)
+  coroutine.destroy(co)
+end
+
+host_puts 'coroutine OK!'
