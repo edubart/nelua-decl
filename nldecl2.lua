@@ -4,7 +4,6 @@ local fs = require 'nelua.utils.fs'
 local Emitter = require 'nelua.emitter'
 
 -- TODO: handle structs, unions fields
--- TODO: handle function definitions
 -- TODO: force include used names
 
 --[[
@@ -31,6 +30,9 @@ NAME_SUFFIX   <-- identifier-suffix
 -- Identifiers
 
 identifier <== !KEYWORD
+  {identifier-nondigit identifier-suffix?} SKIP
+
+free-identifier:identifier <==
   {identifier-nondigit identifier-suffix?} SKIP
 
 identifier-suffix <- (identifier-nondigit / digit)+
@@ -140,7 +142,7 @@ hexadecimal-escape-sequence <-- '\x' hexadecimal-digit+
 string-literal <==
   encoding-prefix? string-suffix+
 string-suffix <-- '"' {s-char-sequence?} '"' SKIP
-encoding-prefix <-- 'u8' / 'u' / 'U' / 'L'
+encoding-prefix <-- 'u8' / [uUL]
 s-char-sequence <-- s-char+
 s-char <- [^"\%cn%cr] / escape-sequence
 
@@ -148,10 +150,10 @@ s-char <- [^"\%cn%cr] / escape-sequence
 -- Expressions
 
 primary-expression <--
+  string-literal /
   type-name /
   identifier /
   constant /
-  string-literal /
   statement-expression /
   `(` expression `)` /
   generic-selection
@@ -321,7 +323,7 @@ tg-promote <==
   `__tg_promote` @`(` (expression / parameter-varargs) @`)`
 
 attribute-item <==
-  identifier (`(` expression (`,` expression)* `)`)?
+  free-identifier (`(` expression (`,` expression)* `)`)?
 
 asm <==
   (`__asm` / `__asm__`)
@@ -331,6 +333,9 @@ asm <==
 asm-argument <-- (
     string-literal /
     {`:`} /
+    {`,`} /
+    `[` expression @`]` /
+    `(` expression @`)` /
     expression
   )+
 
@@ -343,13 +348,16 @@ typedef-declaration <==
 type-declaration <==
   declaration-specifiers init-declarator-list?
 
-declaration-specifiers <== (
-    storage-class-specifier /
-    type-specifier /
-    type-qualifier /
-    function-specifier /
-    alignment-specifier
-  )+
+declaration-specifiers <==
+  (declaration-specifiers-aux* type-specifier declaration-specifiers-aux*) /
+  declaration-specifiers-aux+
+
+declaration-specifiers-aux <--
+  storage-class-specifier /
+  type-qualifier /
+  type-specifier-aux /
+  function-specifier /
+  alignment-specifier
 
 init-declarator-list <==
   init-declarator (`,` init-declarator)*
@@ -368,21 +376,23 @@ storage-class-specifier <==
 type-specifier <==
   {`void`} /
   {`char`} /
-  {`short`} /
   {`int`} /
-  {`long`} /
   {`float`} /
   {`double`} /
-  {`signed`} /
-  {`unsigned`} /
   {`_Bool`} /
-  {`_Complex`} /
-  {`_Imaginary`} /
   atomic-type-specifier /
   struct-or-union-specifier /
   enum-specifier /
   typedef-name /
   typeof
+
+type-specifier-aux : type-specifier <==
+  {`short`} /
+  {`signed`} / `__signed__` -> 'signed' /
+  {`unsigned`} /
+  {`long`} /
+  {`_Complex`} /
+  {`_Imaginary`}
 
 typeof <==
   `__typeof__` @argument-expression
@@ -401,7 +411,13 @@ struct-declaration <==
   specifier-qualifier-list struct-declarator-list? @`;`
 
 specifier-qualifier-list <==
-  (type-specifier / type-qualifier)+
+  (specifier-qualifier-aux* type-specifier specifier-qualifier-aux*) /
+  specifier-qualifier-aux+
+
+specifier-qualifier-aux <--
+  type-specifier-aux /
+  type-qualifier /
+  alignment-specifier
 
 struct-declarator-list <==
   struct-declarator (`,` struct-declarator)*
@@ -426,7 +442,7 @@ type-qualifier <==
   {`const`} /
   {`restrict`} / (`__restrict` / `__restrict__`)->'restrict' /
   {`volatile`} /
-  {`_Atomic`} /
+  {`_Atomic`} !`(` /
   extension-specifier
 
 function-specifier <==
@@ -456,7 +472,7 @@ direct-declarator-suffix <--
   declarator-parameters
 
 declarator-subscript <==
-  `[` type-qualifier-list? assignment-expression? `]` /
+  `[` type-qualifier-list? (assignment-expression / $false) `]` /
   `[` &`static` storage-class-specifier type-qualifier-list? assignment-expression @`]` /
   `[` type-qualifier-list &`static` storage-class-specifier assignment-expression @`]` /
   `[` type-qualifier-list? pointer @`]`
@@ -484,7 +500,10 @@ parameter-declaration <==
   declaration-specifiers (declarator / abstract-declarator?)
 
 identifier-list <==
-  identifier (`,` @identifier)*
+  identifier-list-item (`,` @identifier-list-item)*
+
+identifier-list-item <--
+  identifier / `(` type-name @`)`
 
 type-name <==
   specifier-qualifier-list abstract-declarator?
@@ -631,7 +650,7 @@ local SyntaxErrorLabels = {
 local builtin_typedefs = {
   __builtin_va_list = true,
   __auto_type = true,
-  __int128 = true,
+  __int128 = true, __int128_t = true,
   _Float32 = true, _Float32x = true,
   _Float64 = true, _Float64x = true,
   _Float128 = true,
@@ -708,6 +727,7 @@ local exclude_ctypes = {
   u_int64_t = true,
 }
 
+--[[
 local cattr_to_nlattr = {
   -- type qualifiers
   ['const'] = 'const',
@@ -725,6 +745,7 @@ local cattr_to_nlattr = {
   ['inline'] = 'inline',
   ['_Noreturn'] = 'noreturn',
 }
+]]
 
 local reserved_names = {
   ["and"] = true,
@@ -903,7 +924,7 @@ function BindingContext:resolve_typename(ctypename)
   return typenode
 end
 
-function BindingContext:normalize_param_name(name)
+function BindingContext.normalize_param_name(_, name)
   name = name:gsub('^__', '') -- strip `__` prefix from C lib internal names
   if reserved_names[name] then
     return name:sub(1,1):upper()..name:sub(2)
@@ -912,9 +933,10 @@ function BindingContext:normalize_param_name(name)
 end
 
 function BindingContext:generate_typedef_name(name, typenode)
-  -- TODO: check typedef name collisions
   local typedefname = name..'_t'
-  assert(not self.type_by_name[typedefname], 'typedef already used')
+  while self.type_by_name[typedefname] do
+    typedefname = typedefname..'t'
+  end
   self.typedefname_by_type[typenode] = name
   self.type_by_name[typedefname] = typenode
   return typedefname
@@ -924,9 +946,9 @@ end
 -- Binding pass
 
 local function find_child_node_by_tag(node, tag)
-  for _,childnode in ipairs(node) do
-    if childnode.tag == tag then
-      return childnode
+  for i,childnode in ipairs(node) do
+    if childnode and childnode.tag == tag then
+      return childnode, i
     end
   end
 end
@@ -940,8 +962,6 @@ local function parse_extensions(node, attr)
     local extnode = node[1]
     if extnode.tag == 'extension' then
       attr.__extension__ = true
-    elseif extnode.tag == 'asm' then
-      -- TODO: fill asm attribute?
     elseif extnode.tag == 'attribute' then
       for _,attrib in ipairs(extnode) do
         local attrname = attrib[1][1]
@@ -949,6 +969,7 @@ local function parse_extensions(node, attr)
         -- TODO: parse arguments
       end
     end
+    -- TODO: fill asm attribute?
   else
     error('unhandled '..node.tag)
   end
@@ -1104,6 +1125,7 @@ local function parse_type(context, node, attr)
         ctype = parse_declarator(context, typespecifier[1], attr)
       elseif typespecifier.tag == 'typeof' then
         -- TODO: handle __typeof__(x)?
+        attr.__typeof__ = true
       else
         error('unhandled '..typespecifier.tag)
       end
@@ -1113,6 +1135,7 @@ local function parse_type(context, node, attr)
       parse_qualifiers(specifier, attr)
     elseif specifier.tag == 'alignment-specifier' then
       -- TODO: handle _Alignas
+      attr._Alignas = true
     else
       error('unhandled '..specifier.tag)
     end
@@ -1158,16 +1181,21 @@ function parse_declarator(context, node, firsttype, attr)
       return {tag='CPointerType', firsttype}, nil
     end
   elseif node.tag == 'declarator-subscript' then -- fixed array type
-    local subnode = node[1]
+    local subnode = #node >= 2 and node[1]
+    local lennode = node[#node]
     -- TODO: do we need to parse specifiers?
-    local subtype, name = parse_declarator(context, subnode, firsttype, attr)
-    assert(subtype and name)
-    local lennode = #node > 1 and node[#node]
+    local subtype, name = firsttype, nil
+    if subnode then
+      subtype, name = parse_declarator(context, subnode, firsttype, attr)
+    end
     local len
     if lennode then -- size is available
-      -- TODO: handle other node cases than integer-constant?
-      assert(lennode.tag == 'integer-constant', 'unexpected node in fixed array type')
-      len = lennode[1]
+      len = parse_constant_expression(lennode)
+      if not len then
+        -- TODO: handle other node cases than integer-constant?
+        len = -1
+        attr.unknowntype = true
+      end
     end
     local type = {tag='CArrayType', subtype, len}
     -- invert len sizes for multidimensional arrays
@@ -1204,7 +1232,7 @@ function parse_declarator(context, node, firsttype, attr)
     -- elseif paramlist and paramlist.tag == 'identifier-list' then
     elseif paramlist then
       -- TODO: handle identifier-list
-      error('unhandled '..paramlist.tag)
+      io.stderr:write('warning: identifier-list not supported yet\n')
     end
     return type, name
   elseif node.tag == 'declarator' then
@@ -1266,8 +1294,8 @@ parse_bindings_visitors['typedef-declaration'] = function(context, node)
   end
 end
 
-parse_bindings_visitors['function-definition'] = function(context, node)
-  -- TODO
+parse_bindings_visitors['function-definition'] = function()
+  io.stderr:write('warning: function definition not supported yet\n')
 end
 
 parse_bindings_visitors['declaration'] = function(context, node)
@@ -1328,7 +1356,7 @@ function generate_bindings_visitors.CArrayType(context, node, emitter, params)
   context:traverse_node(subtype, emitter)
 end
 
-function generate_bindings_visitors.CVarargsType(context, node, emitter)
+function generate_bindings_visitors.CVarargsType(_, _, emitter)
   emitter:add('...: cvarargs')
 end
 
@@ -1359,7 +1387,7 @@ function generate_bindings_visitors.CFuncType(context, node, emitter, params)
 end
 
 function generate_bindings_visitors.CStructOrUnionType(context, node, emitter, params)
-  local kind, name, fields = node[1], node[2], node[3]
+  local kind, name = node[1], node[2]
   kind = kind == 'struct' and 'record' or 'union'
   local typedefname = context.typedefname_by_type[node]
   local importname = typedefname or name
@@ -1379,12 +1407,21 @@ function generate_bindings_visitors.CStructOrUnionType(context, node, emitter, p
     if context.forward_names[importname] then -- already predeclared
       emitter:add(importname.." = @")
     else
+      local annotations
       if typedefname then
-        emitter:add("global "..importname..": type <cimport,nodecl> = @")
+        annotations = {
+          "cimport",
+          "nodecl"
+        }
       else
         typedefname = context:generate_typedef_name(name, node)
-        emitter:add("global "..importname..": type <cimport'"..typedefname.."',ctypedef,nodecl> = @")
+        annotations = {
+          "cimport'"..typedefname.."'",
+          "ctypedef'"..importname.."'",
+          "nodecl"
+        }
       end
+      emitter:add("global "..importname..": type <"..table.concat(annotations,',').."> = @")
     end
   end
   emitter:add(kind..'{')
@@ -1400,7 +1437,7 @@ function generate_bindings_visitors.CEnumType(context, node, emitter, params)
   local importname = typedefname or name
   local intname = ctype_to_nltype[cintname]
   local decl = params and params.decl
-  if not decl then
+  if not decl then -- not a declaration, just emit enum name
     emitter:add(importname or intname)
     return
   end
@@ -1427,19 +1464,25 @@ function generate_bindings_visitors.CEnumType(context, node, emitter, params)
           emitter:add_indent_ln("global "..fieldname..': '..intname..' <comptime> = '..fieldvalue)
         end
       end
-    else
-      -- TODO
+    else -- has unknown fields
+      io.stderr:write('warning: enum with unknown fields not supported yet\n')
     end
   else -- enum has a name
     if knowallfields then -- all fields are known
+      local annotations
       if typedefname then
-        emitter:add_ln("global "..importname..": type <cimport,nodecl,using>"
-                    .." = @enum("..intname.."){")
+        annotations = {"cimport", "nodecl", "using"}
       else
         typedefname = context:generate_typedef_name(name, node)
-        emitter:add_ln("global "..importname..": type <cimport'"..typedefname.."',ctypedef,nodecl,using>"
-                    .." = @enum("..intname.."){")
+        annotations = {
+          "cimport'"..typedefname.."'",
+          "ctypedef'"..importname.."'",
+          "nodecl",
+          "using"
+        }
       end
+      emitter:add_ln("global "..importname..": type <"..table.concat(annotations,',')..">"..
+                     " = @enum("..intname.."){")
       emitter:inc_indent()
       for i,field in ipairs(fields) do
         local fieldname, fieldvalue = field[1], field[2]
@@ -1450,6 +1493,7 @@ function generate_bindings_visitors.CEnumType(context, node, emitter, params)
       emitter:add_ln('}')
     else -- not all fields are known
       -- TODO
+      io.stderr:write('warning: enum with unknown fields not supported yet\n')
     end
   end
 end
@@ -1457,6 +1501,9 @@ end
 function generate_bindings_visitors.CTypedef(context, node, emitter)
   local name, typenode = node[1], node[2]
   if typenode.tag == 'CFuncType' then -- ignore non function pointer
+    return
+  end
+  if node.attr.unknowntype then -- happens on typedefs compile-time assert hacks
     return
   end
   if not context:can_include_name(name) then -- filtered out
@@ -1500,7 +1547,11 @@ function generate_bindings_visitors.COpaqueType(context, node, emitter, params)
       annotations = {"cimport", 'nodecl'}
     elseif not typedefname then
       typedefname = context:generate_typedef_name(name, typenode)
-      annotations = {"cimport'"..typedefname.."'", 'ctypedef', 'nodecl'}
+      annotations = {
+        "cimport'"..typedefname.."'",
+          "ctypedef'"..importname.."'",
+        'nodecl'
+      }
     end
     if kind ~= 'enum' then
       table.insert(annotations, 'forwarddecl')
@@ -1514,8 +1565,8 @@ function generate_bindings_visitors.COpaqueType(context, node, emitter, params)
       emitter:add_ln('union{}')
     end
   else
-    assert(typedefname)
-    emitter:add(typedefname)
+    -- assert(typedefname)
+    emitter:add(typedefname or fullname)
   end
 end
 
@@ -1536,6 +1587,9 @@ end
 
 function generate_bindings_visitors.CVarDecl(context, node, emitter)
   local name, typenode = node[1], node[2]
+  if node.attr.unknowntype then
+    return
+  end
   if not context:can_include_name(name) then -- filtered out
     return
   end
@@ -1799,16 +1853,24 @@ it("function declarations", function()
   expect_bindings([[void f(int** x);]],
                   [[global function f(x: **cint): void <cimport,nodecl> end]])
   -- arrays parameter
+  expect_bindings([[void f(int[]);]],
+                  [[global function f(a1: *[0]cint): void <cimport,nodecl> end]])
   expect_bindings([[void f(int x[]);]],
                   [[global function f(x: *[0]cint): void <cimport,nodecl> end]])
+  expect_bindings([[void f(int[4]);]],
+                  [[global function f(a1: *[4]cint): void <cimport,nodecl> end]])
   expect_bindings([[void f(int x[4]);]],
                   [[global function f(x: *[4]cint): void <cimport,nodecl> end]])
+  expect_bindings([[void f(int[3][2][1]);]],
+                  [[global function f(a1: *[3][2][1]cint): void <cimport,nodecl> end]])
   expect_bindings([[void f(int x[3][2][1]);]],
                   [[global function f(x: *[3][2][1]cint): void <cimport,nodecl> end]])
   -- valist parameter
   expect_bindings([[int vsprintf(char*restrict s, const char*restrict format, __builtin_va_list arg);]],
                   [[global function vsprintf(s: cstring, format: cstring, arg: cvalist): cint <cimport,nodecl> end]])
   -- varargs parameter
+  expect_bindings([[void f(int, ...);]],
+                  [[global function f(a1: cint, ...: cvarargs): void <cimport,nodecl> end]])
   expect_bindings([[void f(int x, ...);]],
                   [[global function f(x: cint, ...: cvarargs): void <cimport,nodecl> end]])
   -- callback parameter
@@ -1825,11 +1887,11 @@ end)
 
 it("enum type", function()
   expect_bindings([[enum MyEnum* e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef,nodecl> = @cint
+global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl> = @cint
 global e: *MyEnum <cimport,nodecl>
 ]])
   expect_bindings([[enum MyEnum; enum MyEnum* e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef,nodecl> = @cint
+global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl> = @cint
 global e: *MyEnum <cimport,nodecl>
 ]])
   expect_bindings([[typedef enum MyEnum MyEnum; MyEnum* e;]], [[
@@ -1841,7 +1903,7 @@ global MyEnum: type <cimport,nodecl> = @cint
 global e: *MyEnum <cimport,nodecl>
 ]])
   expect_bindings([[enum MyEnum{MyEnumA, MyEnumB}; enum MyEnum e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef,nodecl,using> = @enum(cint){
+global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl,using> = @enum(cint){
   MyEnumA = 0,
   MyEnumB = 1
 }
@@ -1869,7 +1931,7 @@ global MyEnum_t: type <cimport,nodecl,using> = @enum(cint){
 global e: MyEnum_t <cimport,nodecl>
 ]])
   expect_bindings([[typedef enum MyEnum{MyEnumA, MyEnumB}* MyEnum_p; MyEnum_p e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef,nodecl,using> = @enum(cint){
+global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl,using> = @enum(cint){
   MyEnumA = 0,
   MyEnumB = 1
 }
@@ -1931,7 +1993,7 @@ end)
 
 it("struct type", function()
   expect_bindings([[struct MyStruct{}; struct MyStruct s;]], [[
-global MyStruct: type <cimport'MyStruct_t',ctypedef,nodecl> = @record{}
+global MyStruct: type <cimport'MyStruct_t',ctypedef'MyStruct',nodecl> = @record{}
 global s: MyStruct <cimport,nodecl>
 ]])
   expect_bindings([[typedef struct MyStruct{} MyStruct;]],
@@ -1947,11 +2009,11 @@ end)
 
 it("forward declaration", function()
   expect_bindings([[struct MyStruct; struct MyStruct* s;]], [[
-global MyStruct: type <cimport'MyStruct_t',ctypedef,nodecl,forwarddecl> = @record{}
+global MyStruct: type <cimport'MyStruct_t',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
 global s: *MyStruct <cimport,nodecl>
 ]])
   expect_bindings([[struct MyStruct; struct MyStruct* s; struct MyStruct{};]], [[
-global MyStruct: type <cimport'MyStruct_t',ctypedef,nodecl,forwarddecl> = @record{}
+global MyStruct: type <cimport'MyStruct_t',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
 global s: *MyStruct <cimport,nodecl>
 MyStruct = @record{}
 ]])
@@ -1994,13 +2056,20 @@ ulong_t x;
 global ulong_t: type <cimport,nodecl> = @culong
 global x: ulong_t <cimport,nodecl>
 ]])
-
 end)
 
 it("big C file", function()
-  local c_source = fs.readfile('pt_gcc.c')
+  local ppflags = '-E -dD -P -C'
+  os.execute("gcc      -DCAPI  "..ppflags.." t.c > t.h")
+  -- os.execute("gcc      -DCAPI -DPOSIX -DGLIBC -DGRAPHICS "..ppflags.." t.c > t.h")
+  -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DGRAPHICS "..ppflags.." t.c > t.h")
+  -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
+  -- os.execute("c2m      -DCAPI -DPOSIX -DGLIBC -DGRAPHICS -E t.c > t.h")
+  -- os.execute("emcc -DCAPI -DGRAPHICS -s USE_SDL=2 "..ppflags.." t.c > t.h")
+  -- os.execute("x86_64-w64-mingw32-gcc -DCAPI -DGRAPHICS -DWINDOWS "..ppflags.." t.c > t.h")
+  local c_source = fs.readfile('t.h')
   local nelua_source = nldecl.generate_bindings_from_c_code(c_source)
-  fs.writefile('pt.nelua', nelua_source)
+  fs.writefile('t.nelua', nelua_source)
 end)
 
 end)
