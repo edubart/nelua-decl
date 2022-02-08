@@ -4,7 +4,6 @@ local fs = require 'nelua.utils.fs'
 local Emitter = require 'nelua.emitter'
 
 -- TODO: handle structs, unions fields
--- TODO: force include used names
 
 --[[
 This grammar is based on the C11 specification.
@@ -214,7 +213,7 @@ unary-op <==
 cast-expression <--
   op-cast /
   unary-expression
-op-cast:binary-op <==
+op-cast:unary-op <==
   `(` $'cast' type-name `)` cast-expression
 
 multiplicative-expression <--
@@ -313,7 +312,7 @@ extension-specifiers <==
   extension-specifier+
 
 extension-specifier <==
-  attribute / asm / extension / tg-promote
+  attribute / asm / tg-promote
 
 attribute <==
   (`__attribute__` / `__attribute`)
@@ -338,9 +337,6 @@ asm-argument <-- (
     `(` expression @`)` /
     expression
   )+
-
-extension <==
-  `__extension__`
 
 typedef-declaration <==
   `typedef` @declaration-specifiers (typedef-declarator (`,` @typedef-declarator)*)?
@@ -662,17 +658,17 @@ local ctype_to_nltype = {
   -- integral types
   ['char'] = 'cchar',
   ['signed char'] = 'cschar',
-  ['short int'] = 'cshort',
-  ['int'] = 'cint',
-  ['long int'] = 'clong',
+  ['short int'] = 'cshort',             ['short'] = 'cshort',
+  ['int'] = 'cint',                     ['signed'] = 'cint',
+  ['long int'] = 'clong',               ['long'] = 'clong',
   ['long long int'] = 'clonglong',
-  ['unsigned char'] = 'cuchar',
-  ['unsigned short int'] = 'cushort',
-  ['unsigned int'] = 'cuint',
-  ['unsigned long int'] = 'culong',
+  ['unsigned char'] = 'cuchar',         ['__u_char'] = 'cuchar',
+  ['unsigned short int'] = 'cushort',   ['__u_short'] = 'cushort',
+  ['unsigned int'] = 'cuint',           ['__u_int'] = 'cuint',    ['unsigned'] = 'cuint',
+  ['unsigned long int'] = 'culong',     ['__u_long'] = 'culong',
   ['unsigned long long int'] = 'culonglong',
-  ['intptr_t'] = 'isize',    ['__intptr_t'] = 'isize',
-  ['uintptr_t'] = 'usize',   ['__uintptr_t'] = 'usize',
+  ['intptr_t'] = 'isize',               ['__intptr_t'] = 'isize',
+  ['uintptr_t'] = 'usize',              ['__uintptr_t'] = 'usize',
   -- float types
   ['long double'] = 'clongdouble',
   ['long double _Complex'] = 'clongcomplex',
@@ -690,41 +686,26 @@ local ctype_to_nltype = {
   ['char16_t'] = 'uint16',        ['__char16_t'] = 'uint16',
   ['char32_t'] = 'uint32',        ['__char32_t'] = 'uint32',
   -- fixed float types
-  ['float'] = 'float32',      ['_Float32x'] = 'float32',   ['_Float32'] = 'float32',
-  ['double'] = 'float64',     ['_Float64x'] = 'float64',   ['_Float64'] = 'float64',
-  ['_Float128'] = 'float128', ['__float128'] = 'float128',
+  ['float'] = 'float32',          ['_Float32x'] = 'float32',   ['_Float32'] = 'float32',
+  ['double'] = 'float64',         ['_Float64x'] = 'float64',   ['_Float64'] = 'float64',
+  ['__float128'] = 'float128',    ['_Float128'] = 'float128',
   -- complex types
-  ['float _Complex'] = 'complex32',   ['_Float32x _Complex'] = 'complex32', ['_Float32 _Complex'] = 'complex32',
-  ['double _Complex'] = 'complex64',  ['_Float64x _Complex'] = 'complex64', ['_Float64 _Complex'] = 'complex64',
-  ['_Float128 _Complex'] = 'complex128',
+  ['float _Complex'] = 'complex32',
+  ['_Float32x _Complex'] = 'complex32',   ['_Float32 _Complex'] = 'complex32',
+  ['double _Complex'] = 'complex64',      ['_Complex'] = 'complex64',
+  ['_Float64x _Complex'] = 'complex64',   ['_Float64 _Complex'] = 'complex64',
+  ['__float128 _Complex'] = 'complex128', ['_Float128 _Complex'] = 'complex128',
   -- boolean types
   ['bool'] = 'boolean', ['_Bool'] = 'boolean',
   -- special typedefs
-  ['ptrdiff_t'] = 'cptrdiff',
-  ['size_t'] = 'csize',
-  ['clock_t'] = 'cclock_t',  ['__clock_t'] = 'cclock_t',
-  ['time_t'] = 'ctime_t',    ['__time_t'] = 'ctime_t',
-  ['wchar_t'] = 'cwchar_t',  ['__wchar_t'] = 'cwchar_t',        ['__gwchar_t'] = 'cwchar_t',
+  ['ptrdiff_t'] = 'cptrdiff', ['__ptrdiff_t'] = 'cptrdiff',
+  ['size_t'] = 'csize',       ['__size_t'] = 'csize',
+  ['clock_t'] = 'cclock_t',   ['__clock_t'] = 'cclock_t',
+  ['time_t'] = 'ctime_t',     ['__time_t'] = 'ctime_t',
+  ['wchar_t'] = 'cwchar_t',   ['__wchar_t'] = 'cwchar_t',        ['__gwchar_t'] = 'cwchar_t',
 
   -- C va_list support
   ['va_list'] = 'cvalist',   ['__builtin_va_list'] = 'cvalist', ['__gnuc_va_list'] = 'cvalist'
-}
-
--- Execute typedefs using these names, because it's redundant.
-local exclude_ctypes = {
-  float_t = true,
-  double_t = true,
-  u_char = true,
-  u_short = true,
-  u_int = true,
-  u_long = true,
-  ulong = true,
-  ushort = true,
-  uint = true,
-  u_int8_t = true,
-  u_int16_t = true,
-  u_int32_t = true,
-  u_int64_t = true,
 }
 
 --[[
@@ -779,6 +760,25 @@ local reserved_names = {
   ["nilptr"] = true,
   ["fallthrough"] = true,
 }
+
+-- Execute typedefs using these names, because it's redundant.
+local common_exclude_names = {
+  float_t = true,
+  double_t = true,
+  u_char = true,
+  u_short = true,
+  u_int = true,
+  u_long = true,
+  ulong = true,
+  ushort = true,
+  uint = true,
+  u_int8_t = true,
+  u_int16_t = true,
+  u_int32_t = true,
+  u_int64_t = true,
+}
+tabler.update(common_exclude_names, reserved_names)
+tabler.update(common_exclude_names, ctype_to_nltype)
 
 -- Parsing typedefs identifiers in C11 requires context information.
 local ctypedefs
@@ -835,15 +835,16 @@ local BindingContext_mt = {__index = BindingContext}
 function BindingContext.create()
   return setmetatable({
     bindings_ast = {},
-    type_by_name = {},
-    typedefname_by_type = {},
-    included_names = {},
-    forward_names = {},
+    node_by_name = {}, -- symbol list, map of all nodes with an identifier by name
+    typedefname_by_node = {}, -- map of all typedefs
+    declared_names = {}, -- set of names that has been declared so far
+    forward_declared_names = {}, -- set of names that has been forward declared so far
+    constants_integers = {},
     visitors = {},
-    exclude_filters = {
-      '^__', -- internal types
+    exclude_patterns = {
+      '^__', -- internal names
     },
-    exclude_names = exclude_ctypes
+    exclude_names = {}
   }, BindingContext_mt)
 end
 
@@ -858,19 +859,13 @@ function BindingContext:traverse_nodes(node, ...)
 end
 
 function BindingContext:can_include_name(name)
-  if self.included_names[name] then -- already included
+  if common_exclude_names[name] then -- exclude internal names
     return false
   end
-  if ctype_to_nltype[name] then -- ignore builtin types
-    return
-  end
-  if self.exclude_names[name] then
+  if self.exclude_names[name] then -- name explicitly excluded
     return false
   end
-  if reserved_names[name] then
-    return false
-  end
-  for _,patt in ipairs(self.exclude_filters) do
+  for _,patt in ipairs(self.exclude_patterns) do
     if name:match(patt) then
       return false
     end
@@ -878,24 +873,136 @@ function BindingContext:can_include_name(name)
   return true
 end
 
-function BindingContext:redefine_type(fullname, typenode)
-  -- update typedefs references on forward declared types
-  local oldtype = self.type_by_name[fullname]
-  if oldtype then
-    local typedefname = self.typedefname_by_type[oldtype]
-    if typedefname then
-      self.type_by_name[typedefname] = typenode
-      self.typedefname_by_type[typenode] = typedefname
+function BindingContext:mark_imports_for_node(node)
+  if node.import then return end
+  if node.tag == 'CPointerType' then
+    node.import = true
+    local subtypenode = node[1]
+    self:mark_imports_for_node(subtypenode)
+  elseif node.tag == 'CType' then
+    -- mark itself
+    local fullname = node[1]
+    local name = fullname:gsub('^[a-z]+#', '') -- remove struct/union/enum prefix
+    if common_exclude_names[name] then -- ignore internal names
+      return
     end
+    node.import = true
+    -- mark canonical node
+    local canonicalnode = self:get_canonical_node(node)
+    if canonicalnode ~= node then
+      self:mark_imports_for_node(canonicalnode)
+    end
+  elseif node.tag == 'CStructOrUnionType' then
+    -- TODO
+    node.import = true
+  elseif node.tag == 'CFuncType' then
+    node.import = true
+    local paramnodes, retnode = node[1], node[2]
+    for _,paramnode in ipairs(paramnodes) do
+      local paramtypenode = paramnode.tag == 'CParamDecl' and paramnode[2] or paramnode
+      self:mark_imports_for_node(paramtypenode)
+    end
+    self:mark_imports_for_node(retnode)
+  elseif node.tag == 'CEnumField' then
+    node.import = true
+    local enumtypenode = node[3]
+    self:mark_imports_for_node(enumtypenode)
+  elseif node.tag == 'CArrayType' then
+    local subtypenode = node[1]
+    self:mark_imports_for_node(subtypenode)
+    node.import = true
+  elseif node.tag == 'CVarDecl' or node.tag == 'CFuncDecl' or node.tag == 'CTypeDecl' then
+    node.import = true
+    local typenode = node[2]
+    self:mark_imports_for_node(typenode)
+  elseif node.tag == 'CTypedef' then
+    local typenode = node[2]
+    if typenode.tag == 'CFuncType' then -- ignore non function pointer
+      return
+    end
+    self:mark_imports_for_node(typenode)
+    node.import = true
+  else
+    node.import = true
   end
-  self.type_by_name[fullname] = typenode
 end
 
-function BindingContext:canonial_type_node(node)
+function BindingContext:mark_imports()
+  for fullname,node in pairs(self.node_by_name) do
+    local name = fullname:gsub('^[a-z]+#', '') -- remove struct/union/enum prefix
+    if self:can_include_name(name) then -- should be imported
+      self:mark_imports_for_node(node)
+    end
+  end
+  -- mark all top scope declarations
+  for _,node in pairs(self.bindings_ast) do
+    local fullname = node[1]
+    if node.tag == 'CTypeDecl' then
+      fullname = node[2][2]
+      local typenode = node[2]
+      -- mark anonymous enums
+      if typenode.tag == 'CEnumType' then
+        local enumname, fieldnodes = typenode[2], typenode[3]
+        if not enumname then
+          for _,fieldnode in ipairs(fieldnodes) do
+            local fieldname = fieldnode[1]
+            if self:can_include_name(fieldname) then
+              self:mark_imports_for_node(fieldnode)
+            end
+          end
+        end
+      end
+    end
+    if fullname then
+      local name = fullname:gsub('^[a-z]+#', '') -- remove struct/union/enum prefix
+      if self:can_include_name(name) then -- should be imported
+        self:mark_imports_for_node(node)
+      end
+    end
+  end
+  -- mark CTypeDecl
+  for _,node in pairs(self.bindings_ast) do
+    if node.tag == 'CTypeDecl' then
+      local typenode = node[2]
+      if typenode.import then
+        self:mark_imports_for_node(node)
+      end
+    end
+  end
+  -- mark used CTypedef
+  for _,node in pairs(self.bindings_ast) do
+    if node.tag == 'CTypedef' then
+      local name, typenode = node[1], node[2]
+      if typenode.import then
+        if not common_exclude_names[name] then
+          self:mark_imports_for_node(node)
+        end
+      end
+    end
+  end
+end
+
+function BindingContext:define_symbol(fullname, node)
+  local oldnode = self.node_by_name[fullname]
+  if oldnode then -- symbol redefinition, happens on forward declared types
+    local typedefname = self.typedefname_by_node[oldnode]
+    if typedefname then -- update typedef references for forward declared types
+      self.node_by_name[typedefname] = node
+      self.typedefname_by_node[node] = typedefname
+    end
+  end
+  self.node_by_name[fullname] = node
+end
+
+function BindingContext:get_canonical_node(node)
   while node.tag == 'CType' do
-    local resolved_type = self.type_by_name[node[1]]
-    if resolved_type and resolved_type ~= node then
-      node = resolved_type
+    local typename = node[1]
+    if ctype_to_nltype[typename] then
+      break
+    end
+    local resolved_node = self.node_by_name[typename]
+    if resolved_node and resolved_node ~= node then
+      node = resolved_node
     else
       break
     end
@@ -903,43 +1010,58 @@ function BindingContext:canonial_type_node(node)
   return node
 end
 
-function BindingContext:resolve_typename(ctypename)
-  -- try primitive types first
-  local typename = ctype_to_nltype[ctypename]
-  if typename then return typename end
-  -- check if type is already included
-  if self.included_names[ctypename] then
-    return ctypename
+function BindingContext:get_canonical_imported_node(node)
+  if node.import then
+    return node
   end
-  -- find the canonical type
-  local typenode = self.type_by_name[ctypename]
-  if typenode then
-    -- try primitive again
-    typename = typenode.tag == 'CType' and ctype_to_nltype[typenode[1]]
-    if typename then return typename end
-    -- otherwise use name of latest typedef
-    typename = self.typedefname_by_type[typenode]
-    if typename and self.included_names[typename] then return typename end
+  while node.tag == 'CType' do
+    local typename = node[1]
+    if ctype_to_nltype[typename] then
+      break
+    end
+    local resolved_node = self.node_by_name[typename]
+    if resolved_node and not resolved_node.import and resolved_node ~= node then
+      node = resolved_node
+    else
+      break
+    end
   end
-  return typenode
+  return node
 end
 
-function BindingContext.normalize_param_name(_, name)
+function BindingContext:resolve_typename(fullname)
+  -- try primitive types first
+  local typename = ctype_to_nltype[fullname]
+  if typename then return typename end
+  -- check if type is already included
+  if self.declared_names[fullname] then
+    return fullname
+  end
+  return self.node_by_name[fullname]
+end
+
+function BindingContext:normalize_param_name(name)
   name = name:gsub('^__', '') -- strip `__` prefix from C lib internal names
   if reserved_names[name] then
-    return name:sub(1,1):upper()..name:sub(2)
+    name = name:sub(1,1):upper()..name:sub(2)
+  end
+  while self.node_by_name[name] do
+    name = '_'..name
   end
   return name
 end
 
-function BindingContext:generate_typedef_name(name, typenode)
-  local typedefname = name..'_t'
-  while self.type_by_name[typedefname] do
-    typedefname = typedefname..'t'
+function BindingContext:get_or_generate_import_name(name, node)
+  local typedefname = self.typedefname_by_node[node]
+  if typedefname then return typedefname, false end
+  if not name then return nil, false end
+  typedefname = name
+  while self.node_by_name[typedefname] do
+    typedefname = typedefname..'_t'
   end
-  self.typedefname_by_type[typenode] = name
-  self.type_by_name[typedefname] = typenode
-  return typedefname
+  self.typedefname_by_node[node] = typedefname
+  self.node_by_name[typedefname] = node
+  return typedefname, true
 end
 
 -------------------------------------------------------------------------------
@@ -992,19 +1114,60 @@ local function parse_qualifiers(node, attr)
   end
 end
 
-local function parse_constant_expression(node)
-  -- TODO: handle more constant expressions
+local function parse_constant_expression(context, node)
   if node.tag == 'integer-constant' then
     local value = node[1]
-    if value:find('^0x[0-9a-fA-F]+$') then -- hexadecimal number
-      value = tonumber(value)
-    elseif value:find('^-?[0-9]+$') then -- decimal number
-      value = tonumber(value)
-    else -- cannot calculate
-      return nil
+    value = value:lower():gsub('u?l?l?$', '') -- trim suffixes
+    if value:find('^0x[0-9a-f]+$') then -- hexadecimal
+      return tonumber(value:match('^0x([0-9a-f]+)$'), 16)
+    elseif value:find('^[0-9]+$') then -- decimal
+      return tonumber(value, 10)
+    elseif value:find('^0[0-7]+$') then -- octal
+      return tonumber(value, 8)
     end
-    return value
+  elseif node.tag == 'character-constant' then
+    local char = node[1]
+    return string.byte(char)
+  elseif node.tag == 'identifier' then
+    local name = node[1]
+    return context.constants_integers[name]
+  elseif node.tag == 'unary-op' then
+    local op, val = node[1], parse_constant_expression(context, node[2])
+    if val then
+      if op == '-' then
+        return -val
+      elseif op == '~' then
+        return ~val
+      end
+    end
+  elseif node.tag == 'binary-op' then
+    local lhs, op, rhs =
+      parse_constant_expression(context, node[1]), node[2], parse_constant_expression(context, node[3])
+    if lhs and rhs then
+      if op == '<<' and lhs >= 0 then
+        return lhs << rhs
+      elseif op == '>>' then
+        return lhs >> rhs
+      elseif op == '|' then
+        return lhs | rhs
+      elseif op == '&' then
+        return lhs & rhs
+      elseif op == '^' then
+        return lhs ~ rhs
+      elseif op == '+' then
+        return lhs + rhs
+      elseif op == '-' then
+        return lhs - rhs
+      elseif op == '*' then
+        return lhs * rhs
+      elseif op == '/' and lhs >= 0 and rhs >= 0 then
+        return lhs // rhs
+      end
+    end
+  elseif node.tag == 'expression' and #node == 1 then
+    return parse_constant_expression(context, node[1])
   end
+  --TODO: ternary op and comparisons
 end
 
 local function parse_struct_or_union(context, node, attr)
@@ -1015,27 +1178,27 @@ local function parse_struct_or_union(context, node, attr)
   if extensions then
     parse_extensions(extensions, attr)
   end
-  local name, fullname, type
+  local name, fullname, typenode
   if identifier then -- has name (not anonymous)
     name = identifier[1]
-    fullname = kind..' '..name
+    fullname = kind..'#'..name
   end
   if fieldlist then -- has fields (not opaque)
-    type = {tag='CStructOrUnionType', kind, name}
+    typenode = {tag='CStructOrUnionType', kind, name}
+    table.insert(context.bindings_ast, {tag='CTypeDecl', fullname, typenode})
     if fullname then
-      table.insert(context.bindings_ast, {tag='CTypeDecl', type})
-      context:redefine_type(fullname, type)
+      context:define_symbol(fullname, typenode)
     end
   else
     assert(fullname, 'struct or union must have a name or declaration')
-    type = {tag='CType', fullname}
-    if not context.type_by_name[fullname] then
+    typenode = {tag='CType', fullname}
+    if not context.node_by_name[fullname] then -- not defined yet
       local opaquetype = {tag='COpaqueType', kind, name}
-      context.type_by_name[fullname] = opaquetype
-      table.insert(context.bindings_ast, {tag='CTypeDecl', opaquetype})
+      context:define_symbol(fullname, opaquetype)
+      table.insert(context.bindings_ast, {tag='CTypeDecl', fullname, opaquetype})
     end
   end
-  return type
+  return typenode
 end
 
 local function parse_enum(context, node, attr)
@@ -1045,43 +1208,57 @@ local function parse_enum(context, node, attr)
   if extensions then
     parse_extensions(extensions, attr)
   end
-  local name, fullname, type
+  local name, fullname, typenode
   if identifier then -- has name (not anonymous)
     name = identifier[1]
-    fullname = 'enum '..name
+    fullname = 'enum#'..name
   end
   if enumlist then -- has fields (not opaque)
     local fields = {}
+    local inttype = 'int'
+    typenode = {tag='CEnumType', inttype, name, fields}
+    table.insert(context.bindings_ast, {tag='CTypeDecl', fullname, typenode})
+    if fullname then
+      context:define_symbol(fullname, typenode)
+    end
+    -- fill fields
     local lastvalue = -1
+    local maxvalue
     for _,enumfield in ipairs(enumlist) do
-      local fieldname = enumfield[1][1]
-      local fieldexpr = enumfield[2]
+      local fieldname, fieldexpr = enumfield[1][1], enumfield[2]
       local fieldvalue
       if fieldexpr then
-        fieldvalue = parse_constant_expression(fieldexpr)
+        fieldvalue = parse_constant_expression(context, fieldexpr)
       elseif lastvalue then
         fieldvalue = lastvalue + 1
       end
-      table.insert(fields, {fieldname, fieldvalue})
+      if fieldvalue then
+        if not maxvalue or fieldvalue > maxvalue then
+          maxvalue = fieldvalue
+        end
+        context.constants_integers[fieldname] = fieldvalue
+      end
+      local fieldnode = {tag='CEnumField', fieldname, fieldvalue, typenode}
+      table.insert(fields, fieldnode)
       lastvalue = fieldvalue
+      context:define_symbol(fieldname, fieldnode)
     end
-    -- TODO: enum may be unsigned, consider it
-    local cinttype = 'int'
-    type = {tag='CEnumType', name, fields, cinttype}
-    table.insert(context.bindings_ast, {tag='CTypeDecl', type})
-    if fullname then
-      context:redefine_type(fullname, type)
+    if maxvalue then
+      if maxvalue > (1<<31)-1 then
+        inttype = 'unsigned int'
+      end
+      typenode[1] = inttype
     end
   else -- opaque enum
     assert(fullname, 'enum must have a name or declaration')
-    type = {tag='CType', fullname}
-    if not context.type_by_name[fullname] then
+    typenode = {tag='CType', fullname}
+    if not context.node_by_name[fullname] then -- not defined yet
       local opaquetype = {tag='COpaqueType', 'enum', name}
-      context.type_by_name[fullname] = opaquetype
-      table.insert(context.bindings_ast, {tag='CTypeDecl', opaquetype})
+      context:define_symbol(fullname, opaquetype)
+      table.insert(context.bindings_ast, {tag='CTypeDecl', fullname, opaquetype})
     end
   end
-  return type
+  return typenode
 end
 
 local parse_declarator
@@ -1134,7 +1311,7 @@ local function parse_type(context, node, attr)
            specifier.tag == 'function-specifier' then
       parse_qualifiers(specifier, attr)
     elseif specifier.tag == 'alignment-specifier' then
-      -- TODO: handle _Alignas
+      -- TODO: handle _Alignas?
       attr._Alignas = true
     else
       error('unhandled '..specifier.tag)
@@ -1158,11 +1335,11 @@ local function parse_type(context, node, attr)
   end
 end
 
-function parse_declarator(context, node, firsttype, attr)
+function parse_declarator(context, node, firsttypenode, attr)
   if node.tag == 'identifier' then -- identifier associated with the type
-    return firsttype, node[1]
+    return firsttypenode, node[1]
   elseif node.tag == 'typedef-identifier' then -- typedef type
-    return firsttype, node[1][1]
+    return firsttypenode, node[1][1]
   elseif node.tag == 'pointer' then -- pointer type
     local lastnode = node[#node]
     local subnode = lastnode and (lastnode.tag ~= 'type-qualifier-list' and
@@ -1176,40 +1353,35 @@ function parse_declarator(context, node, firsttype, attr)
       parse_extensions(extensions, attr)
     end
     if subnode then -- pointer with an identifier
-      return parse_declarator(context, subnode, {tag='CPointerType', firsttype}, attr)
+      return parse_declarator(context, subnode, {tag='CPointerType', firsttypenode}, attr)
     else -- pointer without an identifier (used by function pointers without a name)
-      return {tag='CPointerType', firsttype}, nil
+      return {tag='CPointerType', firsttypenode}, nil
     end
   elseif node.tag == 'declarator-subscript' then -- fixed array type
     local subnode = #node >= 2 and node[1]
     local lennode = node[#node]
     -- TODO: do we need to parse specifiers?
-    local subtype, name = firsttype, nil
+    local subtypenode, name = firsttypenode, nil
     if subnode then
-      subtype, name = parse_declarator(context, subnode, firsttype, attr)
+      subtypenode, name = parse_declarator(context, subnode, firsttypenode, attr)
     end
     local len
     if lennode then -- size is available
-      len = parse_constant_expression(lennode)
-      if not len then
-        -- TODO: handle other node cases than integer-constant?
-        len = -1
-        attr.unknowntype = true
-      end
+      len = parse_constant_expression(context, lennode)
     end
-    local type = {tag='CArrayType', subtype, len}
+    local typenode = {tag='CArrayType', subtypenode, len}
     -- invert len sizes for multidimensional arrays
-    local topsubtype = type
-    while subtype.tag == 'CArrayType' do
-      subtype[2], topsubtype[2] = topsubtype[2], subtype[2]
-      topsubtype, subtype = subtype, subtype[1]
+    local topsubtype = typenode
+    while subtypenode.tag == 'CArrayType' do
+      subtypenode[2], topsubtype[2] = topsubtype[2], subtypenode[2]
+      topsubtype, subtypenode = subtypenode, subtypenode[1]
     end
-    return type, name
-  elseif node.tag == 'declarator-parameters' then -- function type
+    return typenode, name
+  elseif node.tag == 'declarator-parameters' then -- function typenode
     local namenode, paramlist = node[1], node[2]
     local params = {}
-    local functypenode = {tag='CFuncType', params, firsttype}
-    local type, name = parse_declarator(context, namenode, functypenode, attr)
+    local functypenode = {tag='CFuncType', params, firsttypenode}
+    local typenode, name = parse_declarator(context, namenode, functypenode, attr)
     if paramlist and paramlist.tag == 'parameter-type-list' then
       for _,paramdecl in ipairs(paramlist) do
         if paramdecl.tag == 'parameter-declaration' then
@@ -1234,21 +1406,21 @@ function parse_declarator(context, node, firsttype, attr)
       -- TODO: handle identifier-list
       io.stderr:write('warning: identifier-list not supported yet\n')
     end
-    return type, name
+    return typenode, name
   elseif node.tag == 'declarator' then
     local extensions = node[2]
     if extensions then
       parse_extensions(extensions, attr)
     end
-    return parse_declarator(context, node[1], firsttype, attr)
+    return parse_declarator(context, node[1], firsttypenode, attr)
   elseif node.tag == 'type-name' then
     local specifiers, declarator = node[1], node[2]
     assert(specifiers.tag == 'specifier-qualifier-list')
-    firsttype = parse_type(context, specifiers, attr)
+    firsttypenode = parse_type(context, specifiers, attr)
     if declarator then
-      return parse_declarator(context, declarator, firsttype, attr), nil
+      return parse_declarator(context, declarator, firsttypenode, attr), nil
     else
-      return firsttype, nil
+      return firsttypenode, nil
     end
   else
     error('unhandled '..node.tag)
@@ -1260,19 +1432,22 @@ local parse_bindings_visitors = {}
 parse_bindings_visitors['type-declaration'] = function(context, node)
   local specifiers, initdeclatorlist = node[1], node[2]
   local firstattr = {}
-  local firsttype = parse_type(context, specifiers, firstattr)
+  local firsttypenode = parse_type(context, specifiers, firstattr)
   if initdeclatorlist then -- variable declaration
     for _,initdeclarator in ipairs(initdeclatorlist) do
       local declarator = initdeclarator[1]
       -- TODO: consider init constants?
       local attr = tabler.copy(firstattr)
-      local type, name = parse_declarator(context, declarator, firsttype, attr)
-      assert(type and name)
-      if type.tag == 'CFuncType' then
-        table.insert(context.bindings_ast, {tag='CFuncDecl', attr=attr, name, type})
+      local typenode, name = parse_declarator(context, declarator, firsttypenode, attr)
+      assert(typenode and name)
+      local declnode
+      if typenode.tag == 'CFuncType' then
+        declnode = {tag='CFuncDecl', attr=attr, name, typenode}
       else
-        table.insert(context.bindings_ast, {tag='CVarDecl', attr=attr, name, type})
+        declnode = {tag='CVarDecl', attr=attr, name, typenode}
       end
+      table.insert(context.bindings_ast, declnode)
+      context:define_symbol(name, declnode)
     end
   end
 end
@@ -1280,22 +1455,22 @@ end
 parse_bindings_visitors['typedef-declaration'] = function(context, node)
   local specifiers = node[1]
   local firstattr = {}
-  local firsttype = parse_type(context, specifiers, firstattr)
+  local firsttypenode = parse_type(context, specifiers, firstattr)
   for i=2,#node do
     local declarator = node[i]
     local attr = tabler.copy(firstattr)
-    local type, name = parse_declarator(context, declarator, firsttype, attr)
-    assert(type and name)
-    local canonial_type = context:canonial_type_node(type)
-    context.type_by_name[name] = canonial_type
-    context.typedefname_by_type[type] = name
-    context.typedefname_by_type[canonial_type] = name
-    table.insert(context.bindings_ast, {tag='CTypedef', attr=attr, name, type})
+    local typenode, name = parse_declarator(context, declarator, firsttypenode, attr)
+    assert(typenode and name)
+    local canonicalnode = context:get_canonical_node(typenode)
+    context:define_symbol(name, typenode)
+    context.typedefname_by_node[typenode] = name
+    context.typedefname_by_node[canonicalnode] = name
+    table.insert(context.bindings_ast, {tag='CTypedef', attr=attr, name, typenode})
   end
 end
 
 parse_bindings_visitors['function-definition'] = function()
-  io.stderr:write('warning: function definition not supported yet\n')
+  -- io.stderr:write('warning: function definition not supported yet\n')
 end
 
 parse_bindings_visitors['declaration'] = function(context, node)
@@ -1308,6 +1483,7 @@ local function parse_c_bindings(c_ast)
   context.visitors = parse_bindings_visitors
   context.c_ast = c_ast
   context:traverse_nodes(c_ast)
+  context:mark_imports()
   return context
 end
 
@@ -1317,11 +1493,15 @@ end
 local generate_bindings_visitors = {}
 
 function generate_bindings_visitors.CType(context, node, emitter)
-  local resolvedtype = context:resolve_typename(node[1])
-  if type(resolvedtype) == 'string' then
-    emitter:add(resolvedtype)
-  else -- a node
-    if resolvedtype ~= node then -- FIXME
+  local canonicalnode = context:get_canonical_imported_node(node)
+  if canonicalnode ~= node  then
+    context:traverse_node(canonicalnode, emitter)
+  else
+    local name = node[1]
+    local resolvedtype = context:resolve_typename(name)
+    if type(resolvedtype) == 'string' then
+      emitter:add(resolvedtype)
+    else -- a node
       context:traverse_node(resolvedtype, emitter)
     end
   end
@@ -1344,16 +1524,12 @@ end
 
 function generate_bindings_visitors.CArrayType(context, node, emitter, params)
   local argi = params and params.argi
-  local subtype, len = node[1], node[2]
-  if len then
-    if argi then -- function parameter pass by pointer
-      emitter:add('*')
-    end
-    emitter:add('['..len..']')
-  else -- actually a pointer to an array
-    emitter:add('*[0]')
+  local subtypenode, len = node[1], node[2]
+  if argi then -- function parameter pass by pointer
+    emitter:add('*')
   end
-  context:traverse_node(subtype, emitter)
+  emitter:add('['..(len or 0)..']')
+  context:traverse_node(subtypenode, emitter)
 end
 
 function generate_bindings_visitors.CVarargsType(_, _, emitter)
@@ -1388,43 +1564,41 @@ end
 
 function generate_bindings_visitors.CStructOrUnionType(context, node, emitter, params)
   local kind, name = node[1], node[2]
-  kind = kind == 'struct' and 'record' or 'union'
-  local typedefname = context.typedefname_by_type[node]
-  local importname = typedefname or name
+  local importname, generated = context:get_or_generate_import_name(name, node)
   local decl = params and params.decl
-  assert(importname or not decl)
+  if not (importname or not decl) then -- no name or declaration, just ignore it
+    return
+  end
   if not decl and importname then
     emitter:add(importname)
     return
   end
   if importname then
-    if not context:can_include_name(importname) then -- filtered out
-      return
-    end
-    context.included_names[importname] = true
+    if context.declared_names[importname] then return end
+    context.declared_names[importname] = true
   end
   if decl then
-    if context.forward_names[importname] then -- already predeclared
+    if context.forward_declared_names[importname] then -- already predeclared
       emitter:add(importname.." = @")
     else
       local annotations
-      if typedefname then
+      if not generated then
         annotations = {
           "cimport",
           "nodecl"
         }
       else
-        typedefname = context:generate_typedef_name(name, node)
         annotations = {
-          "cimport'"..typedefname.."'",
-          "ctypedef'"..importname.."'",
+          "cimport'"..importname.."'",
+          "ctypedef'"..name.."'",
           "nodecl"
         }
       end
       emitter:add("global "..importname..": type <"..table.concat(annotations,',').."> = @")
     end
   end
-  emitter:add(kind..'{')
+  local typekind = kind == 'struct' and 'record' or 'union'
+  emitter:add(typekind..'{')
   emitter:add('}')
   if decl then
     emitter:add_ln()
@@ -1432,9 +1606,8 @@ function generate_bindings_visitors.CStructOrUnionType(context, node, emitter, p
 end
 
 function generate_bindings_visitors.CEnumType(context, node, emitter, params)
-  local name, fields, cintname = node[1], node[2], node[3]
-  local typedefname = context.typedefname_by_type[node]
-  local importname = typedefname or name
+  local cintname, name, fields = node[1], node[2], node[3]
+  local importname, generated = context:get_or_generate_import_name(name, node)
   local intname = ctype_to_nltype[cintname]
   local decl = params and params.decl
   if not decl then -- not a declaration, just emit enum name
@@ -1442,10 +1615,8 @@ function generate_bindings_visitors.CEnumType(context, node, emitter, params)
     return
   end
   if importname then
-    if not context:can_include_name(importname) then -- filtered out
-      return
-    end
-    context.included_names[importname] = true
+    if context.declared_names[importname] then return end
+    context.declared_names[importname] = true
   end
   -- determine if all fields values are known
   local knowallfields = true
@@ -1460,23 +1631,29 @@ function generate_bindings_visitors.CEnumType(context, node, emitter, params)
     if knowallfields then -- all fields are known
       for _,field in ipairs(fields) do
         local fieldname, fieldvalue = field[1], field[2]
-        if context:can_include_name(fieldname) then
+        if field.import and not context.declared_names[fieldname] then
+          context.declared_names[fieldname] = true
           emitter:add_indent_ln("global "..fieldname..': '..intname..' <comptime> = '..fieldvalue)
         end
       end
     else -- has unknown fields
-      io.stderr:write('warning: enum with unknown fields not supported yet\n')
+      for _,field in ipairs(fields) do
+        local fieldname = field[1]
+        if field.import and not context.declared_names[fieldname] then
+          context.declared_names[fieldname] = true
+          emitter:add_indent_ln("global "..fieldname..': '..intname..' <cimport,nodecl,const>')
+        end
+      end
     end
   else -- enum has a name
     if knowallfields then -- all fields are known
       local annotations
-      if typedefname then
+      if not generated then
         annotations = {"cimport", "nodecl", "using"}
       else
-        typedefname = context:generate_typedef_name(name, node)
         annotations = {
-          "cimport'"..typedefname.."'",
-          "ctypedef'"..importname.."'",
+          "cimport'"..importname.."'",
+          "ctypedef'"..name.."'",
           "nodecl",
           "using"
         }
@@ -1492,64 +1669,44 @@ function generate_bindings_visitors.CEnumType(context, node, emitter, params)
       emitter:dec_indent()
       emitter:add_ln('}')
     else -- not all fields are known
-      -- TODO
-      io.stderr:write('warning: enum with unknown fields not supported yet\n')
+      emitter:add_ln("global "..importname..": type = @"..intname)
+      for _,field in ipairs(fields) do
+        local fieldname = field[1]
+        if not context.declared_names[fieldname] then
+          context.declared_names[fieldname] = true
+          emitter:add_indent_ln("global "..fieldname..': '..intname..' <cimport,nodecl,const>')
+        end
+      end
     end
   end
-end
-
-function generate_bindings_visitors.CTypedef(context, node, emitter)
-  local name, typenode = node[1], node[2]
-  if typenode.tag == 'CFuncType' then -- ignore non function pointer
-    return
-  end
-  if node.attr.unknowntype then -- happens on typedefs compile-time assert hacks
-    return
-  end
-  if not context:can_include_name(name) then -- filtered out
-    return
-  end
-  if context.forward_names[name] then -- already declared
-    return
-  end
-  context.included_names[name] = true
-  emitter:add('global '..name..': type <cimport,nodecl> = @')
-  context:traverse_node(typenode, emitter)
-  emitter:add_ln()
 end
 
 function generate_bindings_visitors.COpaqueType(context, node, emitter, params)
   local decl = params and params.decl
   local kind, name = node[1], node[2]
-  local fullname = kind..' '..name
-  local typenode = context.type_by_name[fullname]
-  local typedefname = context.typedefname_by_type[typenode]
-  local importname = typedefname or name
+  local fullname = kind..'#'..name
+  local typenode = context.node_by_name[fullname]
   assert(typenode)
+  local importname, generated = context:get_or_generate_import_name(name, typenode)
   if decl then
     if kind == 'enum' and typenode.tag == 'CEnumType' then -- define the enum early
       context:traverse_node(typenode, emitter, {decl=true})
       return
     end
-    if not context:can_include_name(importname) then -- filtered out
-      return
-    end
     if kind ~= 'enum' then
-      if context.forward_names[importname] then -- already forward declared
-        return
-      end
-      context.forward_names[importname] = true
+      if context.forward_declared_names[importname] then return end -- already forward declared
+      context.forward_declared_names[importname] = true
     else
-      context.included_names[importname] = true
+      if context.declared_names[importname] then return end
+      context.declared_names[importname] = true
     end
     local annotations
-    if typedefname then
+    if not generated then
       annotations = {"cimport", 'nodecl'}
-    elseif not typedefname then
-      typedefname = context:generate_typedef_name(name, typenode)
+    else
       annotations = {
-        "cimport'"..typedefname.."'",
-          "ctypedef'"..importname.."'",
+        "cimport'"..importname.."'",
+        "ctypedef'"..name.."'",
         'nodecl'
       }
     end
@@ -1565,37 +1722,44 @@ function generate_bindings_visitors.COpaqueType(context, node, emitter, params)
       emitter:add_ln('union{}')
     end
   else
-    -- assert(typedefname)
-    emitter:add(typedefname or fullname)
+    emitter:add(importname or fullname)
   end
-end
-
-function generate_bindings_visitors.CTypeDecl(context, node, emitter)
-  local typenode = node[1]
-  context:traverse_node(typenode, emitter, {decl=true})
 end
 
 function generate_bindings_visitors.CFuncDecl(context, node, emitter)
+  if not node.import then return end
   local name, functypenode = node[1], node[2]
-  if not context:can_include_name(name) then -- filtered out
-    return
-  end
+  if context.declared_names[name] then return end
+  context.declared_names[name] = true
   emitter:add('global function '..name)
   context:traverse_node(functypenode, emitter, {decl=true})
   emitter:add_ln(' <cimport,nodecl> end')
 end
 
 function generate_bindings_visitors.CVarDecl(context, node, emitter)
+  if not node.import then return end
   local name, typenode = node[1], node[2]
-  if node.attr.unknowntype then
-    return
-  end
-  if not context:can_include_name(name) then -- filtered out
-    return
-  end
+  if context.declared_names[name] then return end
+  context.declared_names[name] = true
   emitter:add('global '..name..': ')
   context:traverse_node(typenode, emitter)
   emitter:add(' <cimport,nodecl>')
+  emitter:add_ln()
+end
+
+function generate_bindings_visitors.CTypeDecl(context, node, emitter)
+  if not node.import then return end
+  local typenode = node[2]
+  context:traverse_node(typenode, emitter, {decl=true})
+end
+
+function generate_bindings_visitors.CTypedef(context, node, emitter)
+  if not node.import then return end
+  local name, typenode = node[1], node[2]
+  if context.declared_names[name] or context.forward_declared_names[name] then return end
+  context.declared_names[name] = true
+  emitter:add('global '..name..': type <cimport,nodecl> = @')
+  context:traverse_node(typenode, emitter)
   emitter:add_ln()
 end
 
@@ -1603,7 +1767,6 @@ local function generate_nelua_bindings(context)
   local emitter = Emitter()
   context.emitter = emitter
   context.visitors = generate_bindings_visitors
-  -- dump(lpegrex.prettyast(context.bindings_ast))
   context:traverse_nodes(context.bindings_ast, emitter)
   return emitter:generate()
 end
@@ -1741,13 +1904,14 @@ end)
 
 it("arrays", function()
   expect_bindings([[int x[];]],
-                  [[global x: *[0]cint <cimport,nodecl>]])
+                  [[global x: [0]cint <cimport,nodecl>]])
   expect_bindings([[int x[0];]],
                   [[global x: [0]cint <cimport,nodecl>]])
   expect_bindings([[int x[4];]],
                   [[global x: [4]cint <cimport,nodecl>]])
   expect_bindings([[int x[3][2][1];]],
                   [[global x: [3][2][1]cint <cimport,nodecl>]])
+  expect_bindings([[int x[sizeof(int)];]], [[global x: [0]cint <cimport,nodecl>]])
 end)
 
 it("typedefs", function()
@@ -1865,6 +2029,8 @@ it("function declarations", function()
                   [[global function f(a1: *[3][2][1]cint): void <cimport,nodecl> end]])
   expect_bindings([[void f(int x[3][2][1]);]],
                   [[global function f(x: *[3][2][1]cint): void <cimport,nodecl> end]])
+  expect_bindings([[void f(int[sizeof(int)]);]],
+                  [[global function f(a1: *[0]cint): void <cimport,nodecl> end]])
   -- valist parameter
   expect_bindings([[int vsprintf(char*restrict s, const char*restrict format, __builtin_va_list arg);]],
                   [[global function vsprintf(s: cstring, format: cstring, arg: cvalist): cint <cimport,nodecl> end]])
@@ -1877,7 +2043,7 @@ it("function declarations", function()
   expect_bindings([[void f(void(*)(void));]],
                   [[global function f(a1: function(): void): void <cimport,nodecl> end]])
   expect_bindings([[void f(void(*f)(void));]],
-                  [[global function f(f: function(): void): void <cimport,nodecl> end]])
+                  [[global function f(_f: function(): void): void <cimport,nodecl> end]])
   -- with specifiers
   expect_bindings([[static inline volatile int f();]],
                   [[global function f(): cint <cimport,nodecl> end]])
@@ -1887,11 +2053,11 @@ end)
 
 it("enum type", function()
   expect_bindings([[enum MyEnum* e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl> = @cint
+global MyEnum: type <cimport'MyEnum',ctypedef'MyEnum',nodecl> = @cint
 global e: *MyEnum <cimport,nodecl>
 ]])
   expect_bindings([[enum MyEnum; enum MyEnum* e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl> = @cint
+global MyEnum: type <cimport'MyEnum',ctypedef'MyEnum',nodecl> = @cint
 global e: *MyEnum <cimport,nodecl>
 ]])
   expect_bindings([[typedef enum MyEnum MyEnum; MyEnum* e;]], [[
@@ -1903,7 +2069,7 @@ global MyEnum: type <cimport,nodecl> = @cint
 global e: *MyEnum <cimport,nodecl>
 ]])
   expect_bindings([[enum MyEnum{MyEnumA, MyEnumB}; enum MyEnum e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl,using> = @enum(cint){
+global MyEnum: type <cimport'MyEnum',ctypedef'MyEnum',nodecl,using> = @enum(cint){
   MyEnumA = 0,
   MyEnumB = 1
 }
@@ -1931,7 +2097,7 @@ global MyEnum_t: type <cimport,nodecl,using> = @enum(cint){
 global e: MyEnum_t <cimport,nodecl>
 ]])
   expect_bindings([[typedef enum MyEnum{MyEnumA, MyEnumB}* MyEnum_p; MyEnum_p e;]], [[
-global MyEnum: type <cimport'MyEnum_t',ctypedef'MyEnum',nodecl,using> = @enum(cint){
+global MyEnum: type <cimport'MyEnum',ctypedef'MyEnum',nodecl,using> = @enum(cint){
   MyEnumA = 0,
   MyEnumB = 1
 }
@@ -1989,16 +2155,32 @@ global MyEnum: type <cimport,nodecl,using> = @enum(cint){
 }
 global e: MyEnum <cimport,nodecl>
 ]])
+  expect_bindings([[enum {A = 1, B = sizeof(int)};]], [[
+global A: cint <cimport,nodecl,const>
+global B: cint <cimport,nodecl,const>
+]])
+  expect_bindings([[
+typedef enum __myenum {A = 0, B = sizeof(int)} __myenum_t;
+int f(__myenum_t e);
+]], [[
+global __myenum_t: type = @cint
+global A: cint <cimport,nodecl,const>
+global B: cint <cimport,nodecl,const>
+global function f(e: __myenum_t): cint <cimport,nodecl> end
+]])
 end)
 
 it("struct type", function()
+  expect_bindings([[struct{} s;]], [[global s: record{} <cimport,nodecl>]])
   expect_bindings([[struct MyStruct{}; struct MyStruct s;]], [[
-global MyStruct: type <cimport'MyStruct_t',ctypedef'MyStruct',nodecl> = @record{}
+global MyStruct: type <cimport'MyStruct',ctypedef'MyStruct',nodecl> = @record{}
 global s: MyStruct <cimport,nodecl>
 ]])
   expect_bindings([[typedef struct MyStruct{} MyStruct;]],
                   [[global MyStruct: type <cimport,nodecl> = @record{}]])
   expect_bindings([[struct MyStruct{}; typedef struct MyStruct MyStruct;]],
+                  [[global MyStruct: type <cimport,nodecl> = @record{}]])
+  expect_bindings([[typedef struct{int x;} MyStruct;]],
                   [[global MyStruct: type <cimport,nodecl> = @record{}]])
   -- ignore
   expect_bindings([[typedef struct{} va_list;]], [[]])
@@ -2009,11 +2191,11 @@ end)
 
 it("forward declaration", function()
   expect_bindings([[struct MyStruct; struct MyStruct* s;]], [[
-global MyStruct: type <cimport'MyStruct_t',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
+global MyStruct: type <cimport'MyStruct',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
 global s: *MyStruct <cimport,nodecl>
 ]])
   expect_bindings([[struct MyStruct; struct MyStruct* s; struct MyStruct{};]], [[
-global MyStruct: type <cimport'MyStruct_t',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
+global MyStruct: type <cimport'MyStruct',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
 global s: *MyStruct <cimport,nodecl>
 MyStruct = @record{}
 ]])
@@ -2058,9 +2240,68 @@ global x: ulong_t <cimport,nodecl>
 ]])
 end)
 
+it("force include excluded dependent types", function()
+  expect_bindings([[
+struct __locale_struct{};
+typedef struct __locale_struct locale_t;
+]], [[
+global locale_t: type <cimport,nodecl> = @record{}
+]])
+  expect_bindings([[
+struct __locale_struct{};
+typedef struct __locale_struct __locale_t;
+typedef __locale_t locale_t;
+]], [[
+global locale_t: type <cimport,nodecl> = @record{}
+]])
+  expect_bindings([[
+struct __locale_struct{};
+typedef struct __locale_struct* __locale_t;
+typedef __locale_t locale_t;
+]], [[
+global __locale_struct: type <cimport'__locale_struct',ctypedef'__locale_struct',nodecl> = @record{}
+global __locale_t: type <cimport,nodecl> = @*__locale_struct
+global locale_t: type <cimport,nodecl> = @__locale_t
+]])
+  expect_bindings([[
+typedef struct{} __my_struct;
+int f(__my_struct s);
+]], [[
+global __my_struct: type <cimport,nodecl> = @record{}
+global function f(s: __my_struct): cint <cimport,nodecl> end
+]])
+end)
+
+it("import name collision", function()
+  expect_bindings([[
+long int timezone;
+struct timezone{int tz_minuteswest; int tz_dsttime;};
+int settimeofday(void* tv, struct timezone *tz);
+]], [[
+global timezone: clong <cimport,nodecl>
+global timezone_t: type <cimport'timezone_t',ctypedef'timezone',nodecl> = @record{}
+global function settimeofday(tv: pointer, tz: *timezone_t): cint <cimport,nodecl> end
+]])
+  expect_bindings([[int MyStruct; struct MyStruct; struct MyStruct* s;]], [[
+global MyStruct: cint <cimport,nodecl>
+global MyStruct_t: type <cimport'MyStruct_t',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
+global s: *MyStruct_t <cimport,nodecl>
+]])
+  expect_bindings([[int MyStruct; int MyStruct_t; struct MyStruct; struct MyStruct* s;]], [[
+global MyStruct: cint <cimport,nodecl>
+global MyStruct_t: cint <cimport,nodecl>
+global MyStruct_t_t: type <cimport'MyStruct_t_t',ctypedef'MyStruct',nodecl,forwarddecl> = @record{}
+global s: *MyStruct_t_t <cimport,nodecl>
+]])
+end)
+
+it("manual", function()
+  -- expect_bindings([[typedef int A[sizeof(int)]; A a; void f(A a);]], [[]])
+end)
+
 it("big C file", function()
-  local ppflags = '-E -dD -P -C'
-  os.execute("gcc      -DCAPI  "..ppflags.." t.c > t.h")
+  local ppflags = '-E -P' -- -dD --C
+  os.execute("gcc      -DCAPI  "..ppflags.." libs/miniaudio/miniaudio.h > t.h")
   -- os.execute("gcc      -DCAPI -DPOSIX -DGLIBC -DGRAPHICS "..ppflags.." t.c > t.h")
   -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DGRAPHICS "..ppflags.." t.c > t.h")
   -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
@@ -2070,6 +2311,7 @@ it("big C file", function()
   local c_source = fs.readfile('t.h')
   local nelua_source = nldecl.generate_bindings_from_c_code(c_source)
   fs.writefile('t.nelua', nelua_source)
+  os.execute('nelua -t t.nelua')
 end)
 
 end)

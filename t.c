@@ -28,7 +28,6 @@
 #include <uchar.h>
 #include <wchar.h>
 #include <wctype.h>
-#include <complex.h>
 #ifndef _WIN32
 #include <threads.h>
 #endif
@@ -36,8 +35,9 @@
 #include <iso646.h>
 #endif
 #ifndef __mirc__
-#include <stdatomic.h>
-#include <tgmath.h>
+// #include <stdatomic.h>
+// #include <tgmath.h>
+// #include <complex.h>
 #endif
 #endif
 
@@ -47,7 +47,7 @@
 #include <aio.h>
 #include <arpa/inet.h>
 #include <assert.h>
-#include <complex.h>
+// #include <complex.h>
 #include <cpio.h>
 #include <ctype.h>
 #include <dirent.h>
@@ -145,7 +145,7 @@
 #include <arpa/tftp.h>
 #include <assert.h>
 #include <byteswap.h>
-#include <complex.h>
+//#include <complex.h>
 #include <cpio.h>
 #include <ctype.h>
 #include <dirent.h>
@@ -380,7 +380,7 @@
 #include <arpa/tftp.h>
 #include <assert.h>
 #include <byteswap.h>
-#include <complex.h>
+// #include <complex.h>
 #include <cpio.h>
 #include <crypt.h>
 #include <ctype.h>
