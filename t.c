@@ -1,8 +1,9 @@
+#define _LARGEFILE64_SOURCE
 #ifndef _WIN32
 #define _GNU_SOURCE
 #endif
 
-// C
+/* C */
 #ifdef CAPI
 #include <assert.h>
 #include <ctype.h>
@@ -35,19 +36,19 @@
 #include <iso646.h>
 #endif
 #ifndef __mirc__
-// #include <stdatomic.h>
-// #include <tgmath.h>
-// #include <complex.h>
+/* #include <stdatomic.h> */
+/* #include <tgmath.h> */
+/* #include <complex.h> */
 #endif
 #endif
 
-// POSIX
+/* POSIX */
 
 #ifdef POSIX
 #include <aio.h>
 #include <arpa/inet.h>
 #include <assert.h>
-// #include <complex.h>
+/* #include <complex.h> */
 #include <cpio.h>
 #include <ctype.h>
 #include <dirent.h>
@@ -63,7 +64,7 @@
 #include <grp.h>
 #include <iconv.h>
 #include <inttypes.h>
-// #include <iso646.h>
+/* #include <iso646.h> */
 #include <langinfo.h>
 #include <libgen.h>
 #include <limits.h>
@@ -95,7 +96,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-// #include <stropts.h>
+/* #include <stropts.h> */
 #include <sys/ipc.h>
 #include <sys/mman.h>
 #include <sys/msg.h>
@@ -116,9 +117,9 @@
 #include <syslog.h>
 #include <tar.h>
 #include <termios.h>
-//#include <tgmath.h>
+/*#include <tgmath.h> */
 #include <time.h>
-// #include <trace.h>
+/* #include <trace.h> */
 #include <ulimit.h>
 #include <unistd.h>
 #include <utime.h>
@@ -128,7 +129,7 @@
 #include <wordexp.h>
 #endif
 
-// GLIBC
+/* GLIBC */
 #ifdef GLIBC
 #include <a.out.h>
 #include <aio.h>
@@ -145,7 +146,7 @@
 #include <arpa/tftp.h>
 #include <assert.h>
 #include <byteswap.h>
-//#include <complex.h>
+/*#include <complex.h> */
 #include <cpio.h>
 #include <ctype.h>
 #include <dirent.h>
@@ -268,7 +269,7 @@
 #include <sys/debugreg.h>
 #include <sys/dir.h>
 #include <sys/epoll.h>
-// #include <sys/errno.h>
+/* #include <sys/errno.h> */
 #include <sys/eventfd.h>
 #include <sys/fanotify.h>
 #include <sys/fcntl.h>
@@ -348,7 +349,7 @@
 #include <tar.h>
 #include <termio.h>
 #include <termios.h>
-//#include <tgmath.h>
+/*#include <tgmath.h> */
 #include <thread_db.h>
 #include <threads.h>
 #include <time.h>
@@ -367,7 +368,7 @@
 #include <wordexp.h>
 #endif
 
-// MUSL
+/* MUSL */
 #ifdef MUSLC
 #include <aio.h>
 #include <alloca.h>
@@ -380,7 +381,7 @@
 #include <arpa/tftp.h>
 #include <assert.h>
 #include <byteswap.h>
-// #include <complex.h>
+/* #include <complex.h> */
 #include <cpio.h>
 #include <crypt.h>
 #include <ctype.h>
@@ -403,7 +404,7 @@
 #include <iconv.h>
 #include <ifaddrs.h>
 #include <inttypes.h>
-// #include <iso646.h>
+/* #include <iso646.h> */
 #include <langinfo.h>
 #include <lastlog.h>
 #include <libgen.h>
@@ -470,10 +471,10 @@
 #include <sys/cachectl.h>
 #include <sys/dir.h>
 #include <sys/epoll.h>
-// #include <sys/errno.h>
+/* #include <sys/errno.h> */
 #include <sys/eventfd.h>
 #include <sys/fanotify.h>
-// #include <sys/fcntl.h>
+/* #include <sys/fcntl.h> */
 #include <sys/file.h>
 #include <sys/fsuid.h>
 #include <sys/inotify.h>
@@ -489,7 +490,7 @@
 #include <sys/mtio.h>
 #include <sys/param.h>
 #include <sys/personality.h>
-// #include <sys/poll.h>
+/* #include <sys/poll.h> */
 #include <sys/prctl.h>
 #include <sys/procfs.h>
 #include <sys/ptrace.h>
@@ -502,20 +503,20 @@
 #include <sys/sem.h>
 #include <sys/sendfile.h>
 #include <sys/shm.h>
-// #include <sys/signal.h>
+/* #include <sys/signal.h> */
 #include <sys/signalfd.h>
 #include <sys/socket.h>
 #include <sys/soundcard.h>
 #include <sys/stat.h>
 #include <sys/statfs.h>
 #include <sys/statvfs.h>
-//#include <sys/stropts.h>
+/*#include <sys/stropts.h> */
 #include <sys/swap.h>
 #include <sys/syscall.h>
 #include <sys/sysinfo.h>
 #include <sys/syslog.h>
 #include <sys/sysmacros.h>
-// #include <sys/termios.h>
+/* #include <sys/termios.h> */
 #include <sys/time.h>
 #include <sys/timeb.h>
 #include <sys/timerfd.h>
@@ -537,7 +538,7 @@
 #include <syslog.h>
 #include <tar.h>
 #include <termios.h>
-//#include <tgmath.h>
+/*#include <tgmath.h> */
 #include <threads.h>
 #include <time.h>
 #include <uchar.h>
@@ -553,25 +554,82 @@
 #include <wordexp.h>
 #endif
 
-// Graphics
-#if GRAPHICS
-#ifdef __linux__
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xresource.h>
-#include <X11/Xatom.h>
-#include <X11/cursorfont.h>
-#include <X11/keysym.h>
-#include <X11/XKBlib.h>
-#include <X11/extensions/XTest.h>
-#include <X11/extensions/XShm.h>
-#endif
-#include <GLFW/glfw3.h>
-#include <GL/gl.h>
-#include <SDL2/SDL.h>
-#endif
+/* Libs */
+#if LIBS
 
-// Windows
+/* Windows */
 #ifdef WINDOWS
 #include <windows.h>
+#endif
+
+#define SDL_DISABLE_IMMINTRIN_H
+
+#include "libs/glfw/glad-api.c"
+#include "libs/glfw/glfw-api.c"
+#include "libs/sokol/sokol_gfx.c"
+#include "libs/sokol/sokol_args.c"
+#include "libs/sokol/sokol_time.c"
+#include "libs/sokol/sokol_nuklear.c"
+#include "libs/sokol/sokol_audio.c"
+#include "libs/sokol/sokol_app.c"
+#include "libs/sokol/sokol_gp.c"
+#include "libs/sokol/sokol_gl.c"
+#include "libs/miniaudio/miniaudio.c"
+#include "libs/miniphysfs/miniphysfs.c"
+#include "libs/znet/znet.c"
+#include "libs/miniminiz/miniminiz.c"
+#include "libs/dmon/dmon.c"
+#include "libs/stb/stb_image_resize.c"
+#include "libs/stb/stb_vorbis.c"
+#include "libs/stb/stb_truetype.c"
+#include "libs/stb/stb_image.c"
+#include "libs/stb/stb_image_write.c"
+#include "libs/enet/enet.c"
+#include "libs/microui/microui-api.c"
+#include "libs/minicoro/minicoro.c"
+#include "libs/c89thread/c89thread.c"
+#include "libs/webview/webview-api.c"
+#include "libs/cJSON/cJSON-api.c"
+#include "libs/msf_gif/msf_gif-api.c"
+#include "libs/nuklear/nuklear-api.c"
+#include "libs/mpc/mpc-api.c"
+#include "libs/minilua/minilua.c"
+#include "libs/mjson/mjson-api.c"
+#include "libs/minifs/minifs.c"
+#include "libs/sdl2/sdl2.c"
+#include "libs/sdl2/sdl2_mixer.c"
+#include "extralibs/kann/kann-api.c"
+#include "extralibs/cj5/cj5.c"
+#include "extralibs/fann/fann-api.c"
+// #include "extralibs/openssl/openssl.c"
+
+#ifndef WINDOWS
+#include "libs/lexbor/lexbor-api.c"
+#include "libs/binaryen/binaryen-api.c"
+#include "libs/tree-sitter/tree-sitter.c"
+#include "libs/mbedtls/mbedtls-api.c"
+#include "libs/curl/curl.c"
+#include "libs/sqlite3/sqlite3.c"
+#include "libs/uv/uv.c"
+#include "libs/blend2d/blend2d.c"
+#include "libs/sdl2/sdl2_ttf.c"
+#include "libs/sdl2/sdl2_image.c"
+#include "libs/mir/mir-api.c"
+#include "libs/chipmunk/chipmunk.c"
+#endif
+
+#ifdef GLIBC
+#include "libs/x11/x11-api.c"
+#endif
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
+// #include "libs/raylib/raylib.c"
+// #include "libs/mongoose/mongoose-api.c"
+// #include "libs/subprocess/subprocess.c"
+// #include "extralibs/tensorflow/tensorflow.c"
+// #include "libs/wamr/wamr-api.c"
+
 #endif
