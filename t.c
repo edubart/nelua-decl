@@ -554,13 +554,14 @@
 #include <wordexp.h>
 #endif
 
-/* Libs */
-#if LIBS
-
 /* Windows */
 #ifdef WINDOWS
+#include <winsock2.h>
 #include <windows.h>
 #endif
+
+/* Libs */
+#if LIBS
 
 #define SDL_DISABLE_IMMINTRIN_H
 

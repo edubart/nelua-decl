@@ -2,8 +2,8 @@ local nldecl = require 'nldecl2'
 local lester = require 'lester'
 local describe, it, expect = lester.describe, lester.it, lester.expect
 
-local function expect_bindings(c_code, expected_nelua_code)
-  local nelua_code = nldecl.generate_bindings_from_c_code(c_code)
+local function expect_bindings(c_code, expected_nelua_code, opts)
+  local nelua_code = nldecl.generate_bindings_from_c_code(c_code, opts)
   if #expected_nelua_code > 0 and expected_nelua_code:sub(-1,-1) ~= '\n' then -- always ends with new line
     expected_nelua_code = expected_nelua_code..'\n'
   end
@@ -406,6 +406,21 @@ global E: type <cimport,nodecl,using> = @enum(cuint){
   C = 4294967295
 }
 ]])
+  expect_bindings([[
+typedef enum {
+  ZERO,
+  LAST = ZERO,
+  ONE,
+  FORCE_UINT32 = 0xFFFFFFFF
+} E;
+]], [[
+global E: type <cimport,nodecl,using> = @enum(cuint){
+  ZERO = 0,
+  LAST = 0,
+  ONE = 1,
+  FORCE_UINT32 = 4294967295
+}
+]])
 end)
 
 it("struct type", function()
@@ -503,6 +518,19 @@ global constant_cast_int: cint <comptime> = 1
 global constant_cast_u8: cint <comptime> = 1
 global constant_cast_u32: cint <comptime> = 1
 global constant_first: cint <comptime> = 5
+]])
+  expect_bindings([[
+enum {
+  intmax = 0x7fffffff,
+  intmin = -0x7fffffff - 1
+};
+enum {
+  uintmax = 0xffffffffu,
+};
+]], [[
+global intmax: cint <comptime> = 2147483647
+global intmin: cint <comptime> = -2147483648
+global uintmax: cuint <comptime> = 4294967295
 ]])
 end)
 
@@ -630,12 +658,183 @@ it("reserved names", function()
                   [[global function f(function_: pointer): void <cimport,nodecl> end]])
   expect_bindings([[typedef unsigned int uint; uint x;]],
                   [[global x: cuint <cimport,nodecl>]])
+  expect_bindings([[typedef unsigned int uint; void f(uint uint);]],
+                  [[global function f(_uint: cuint): void <cimport,nodecl> end]])
 
 end)
 
 it("excluded names", function()
   expect_bindings([[typedef float float_t;]], [[]])
   expect_bindings([[float float_t;]], [[]])
+  expect_bindings([[float myvar; float MY_var;]], [[]], {exclude_names={'^MY_',myvar=true}})
+  expect_bindings([[float MY_var;]], [[global MY_var: float32 <cimport,nodecl>]],
+    {exclude_names={'^MY_'},include_names={MY_var=true}})
+  expect_bindings([[float MY_var1, MY_var2, my_var;]], [[global MY_var2: float32 <cimport,nodecl>]],
+    {exclude_names={MY_var1=true},include_names={'^MY_'}})
+end)
+
+it("opaque names", function()
+  expect_bindings([[
+typedef struct S S;
+struct S s;
+struct S {int x;};
+]], [[
+global S: type <cimport,nodecl,forwarddecl> = @record{}
+S = @record{
+  x: cint
+}
+global s: S <cimport,nodecl>
+]])
+  expect_bindings([[
+typedef struct {
+  int x;
+} FILE;
+FILE* stdout;
+]], [[
+global FILE: type <cimport,nodecl,cincomplete> = @record{}
+global stdout: *FILE <cimport,nodecl>
+]])
+  expect_bindings([[
+struct _IO_FILE;
+typedef struct _IO_FILE __FILE;
+typedef struct _IO_FILE FILE;
+struct _IO_FILE{};
+FILE* stdout;
+]], [[
+global FILE: type <cimport,nodecl,cincomplete> = @record{}
+global stdout: *FILE <cimport,nodecl>
+]], {exclude_names = {'^_'}})
+end)
+
+it("define constants", function()
+  expect_bindings([[#define MYDEF 1]], [[global MYDEF: cint <comptime> = 1]])
+  expect_bindings([[
+#define v_ull 1ull
+#define v_llu 1ull
+#define v_ul 1ul
+#define v_lu 1lu
+#define v_u 1u
+#define v_ll 1ll
+#define v_l 1l
+#define v_f 1.0f
+#define v_lf 1.0l
+#define v_qf 1.0q
+#define v_c 'A'
+#define v_cfa '\xfa'
+#define v_c7f '\x7f'
+#define v_c80 '\x80'
+#define v_cff '\xff'
+#define v_cs "hello\nworld"
+#define v_inf 1.0f/0.0f
+#define v_ninf -1.0/0.0
+]], [[
+global v_ull: culonglong <comptime> = 1
+global v_llu: culonglong <comptime> = 1
+global v_ul: culong <comptime> = 1
+global v_lu: culong <comptime> = 1
+global v_u: cuint <comptime> = 1
+global v_ll: clonglong <comptime> = 1
+global v_l: clong <comptime> = 1
+global v_f: float32 <comptime> = 1.0
+global v_lf: clongdouble <cimport,nodecl,const>
+global v_qf: float128 <cimport,nodecl,const>
+global v_c: cchar <comptime> = 65
+global v_cfa: cchar <comptime> = -6
+global v_c7f: cchar <comptime> = 127
+global v_c80: cchar <comptime> = -128
+global v_cff: cchar <comptime> = -1
+global v_cs: cstring <comptime> = "hello\nworld"
+global v_inf: float32 <cimport,nodecl,const>
+global v_ninf: float64 <cimport,nodecl,const>
+]])
+  expect_bindings([[
+#define v_ll7f 0x7fffffffffffffffLL
+#define v_ll80 0x8000000000000000LL
+#define v_ull7f 0x7fffffffffffffffULL
+#define v_ullff 0xffffffffffffffffULL
+#define v_7f 0x7fffffffffffffff
+#define v_ff 0xffffffffffffffff
+#define v_huge 1e5000
+#define v_huge2 (1e300* 1e300)
+]], [[
+global v_ll7f: clonglong <comptime> = 9223372036854775807
+global v_ll80: clonglong <cimport,nodecl,const>
+global v_ull7f: culonglong <comptime> = 9223372036854775807
+global v_ullff: culonglong <cimport,nodecl,const>
+global v_7f: clonglong <comptime> = 9223372036854775807
+global v_ff: culonglong <cimport,nodecl,const>
+global v_huge: float64 <cimport,nodecl,const>
+global v_huge2: float64 <cimport,nodecl,const>
+]])
+  expect_bindings([[
+#define v_i ((int)(-1 + 2))
+#define v_if ((int)(0xffffffff))
+#define v_ni ~1
+#define v_80 0x80000000
+#define v_subu 0U - 10U
+]], [[
+global v_i: cint <comptime> = 1
+global v_if: cint <cimport,nodecl,const>
+global v_ni: cint <cimport,nodecl,const>
+global v_80: cuint <comptime> = 2147483648
+global v_subu: cuint <cimport,nodecl,const>
+]])
+  expect_bindings([[
+#define A 1
+#undef A
+]], [[]])
+  expect_bindings([[
+#define A 1
+#define A 2
+]], [[
+global A: cint <comptime> = 2
+]])
+end)
+
+it("define aliases", function()
+  expect_bindings([[
+void f();
+int a;
+typedef struct S{} S;
+#define F f
+#define A a
+#define SS1 struct S
+#define SS2 S
+]], [[
+global S: type <cimport,nodecl> = @record{}
+global function f(): void <cimport,nodecl> end
+global a: cint <cimport,nodecl>
+global function F(): void <cimport,nodecl> end
+global A: cint <cimport,nodecl>
+global SS1: type = S
+global SS2: type = S
+]])
+end)
+
+it("define references", function()
+  expect_bindings([[
+int* __errno_location();
+#define errno (*__errno_location ())
+]], [[
+global errno: cint <cimport,nodecl>
+]])
+  expect_bindings([[
+int a;
+#define pa (&a)
+#define p ((void*)&a)
+]], [[
+global a: cint <cimport,nodecl>
+global pa: *cint <cimport,nodecl,const>
+global p: pointer <cimport,nodecl,const>
+]])
+end)
+
+it("exclude defines", function()
+  expect_bindings([[
+#define HAVE_SOMETHING 1
+#define SOMETHING_H 1
+#define and int
+]], [[]])
 end)
 
 it("parse errors", function()
@@ -650,37 +849,42 @@ it("parse errors", function()
   end, 'not supported yet')
 end)
 
-it("opaque variables", function()
-  expect_bindings([[
-typedef struct S S;
-struct S s;
-struct S {int x;};
-]], [[
-global S: type <cimport,nodecl,forwarddecl> = @record{}
-S = @record{
-  x: cint
-}
-global s: S <cimport,nodecl>
-]])
-end)
-
 it("high level API", function()
   nldecl.generate_bindings_file{
     output_file = 'sdl2.nelua',
-    parse_includes = {'SDL2/SDL.h'},
-    parse_defines = {'SDL_DISABLE_IMMINTRIN_H'},
-    include_names = {'^SDL_'},
+    parse_includes = {
+      '<stddef.h>',
+      '<stdbool.h>',
+      '<stdint.h>',
+      '<assert.h>',
+      '<ctype.h>',
+      '<errno.h>',
+      '<fenv.h>',
+      '<float.h>',
+      '<inttypes.h>',
+      '<limits.h>',
+      '<locale.h>',
+      '<math.h>',
+      '<setjmp.h>',
+      '<signal.h>',
+      '<stdalign.h>',
+      '<stdarg.h>',
+      '<stdio.h>',
+      '<stdlib.h>',
+      '<stdnoreturn.h>',
+      '<string.h>',
+      '<time.h>',
+      '<uchar.h>',
+      '<wchar.h>',
+      '<wctype.h>',
+  },
+    parse_defines = {'_GNU_SOURCE'},
+    cc = 'gcc',
+    opaque_names = {
+      FILE=true,
+    },
     output_head = [====[
-##[[
-cdefine 'SDL_MAIN_HANDLED'
-cdefine 'SDL_DISABLE_IMMINTRIN_H'
-if ccinfo.is_emscripten then
-  cflags '-s USE_SDL=2'
-else
-  linklib 'SDL2'
-end
-cinclude '<SDL2/SDL.h>'
-]]
+## cinclude '<stdio.h>'
 ]====]
   }
 end)
@@ -689,18 +893,22 @@ it("big C file", function()
   local fs = require 'nelua.utils.fs'
   local ppflags = '-E -dD' -- -dD --C
   -- os.execute("gcc      "..ppflags.." libs/blend2d/blend2d.c > t.h")
-  os.execute("gcc     -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
-  -- os.execute("tcc     -DCAPI -DPOSIX -DGLIBC "..ppflags.." t.c > t.h")
-  -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
-  -- os.execute("tcc      -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
-  -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
-  -- os.execute("c2m      -DCAPI -DPOSIX -DGLIBC -DLIBS -E t.c > t.h")
-  -- os.execute("emcc -DCAPI "..ppflags.." t.c > t.h")
-  -- os.execute("x86_64-w64-mingw32-gcc -DCAPI -DLIBS -DWINDOWS "..ppflags.." t.c > t.h")
-  local c_source = fs.readfile('t.h')
-  local nelua_source = nldecl.generate_bindings_from_c_code(c_source)
-  fs.writefile('t.nelua', nelua_source)
-  os.execute('nelua -t t.nelua')
+  os.execute("gcc  `pkg-config --cflags --libs libadwaita-1`   "..ppflags.." t2.c > t.h")
+--   -- os.execute("gcc     -DCAPI -DPOSIX -DGLIBC "..ppflags.." t.c > t.h")
+--   -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+--   -- os.execute("tcc      -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+--   -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
+--   -- os.execute("c2m      -DCAPI -DPOSIX -DGLIBC -DLIBS -E t.c > t.h")
+--   -- os.execute("emcc -DCAPI "..ppflags.." t.c > t.h")
+--   -- os.execute("x86_64-w64-mingw32-gcc -DCAPI -DWINDOWS "..ppflags.." t.c > t.h")
+--   local c_source = fs.readfile('t.h')
+--   local nelua_source = nldecl.generate_bindings_from_c_code(c_source)
+--   nelua_source = [===[
+-- ## cinclude 't.c'
+-- ## cflags '-DCAPI -DPOSIX -DGLIBC `pkg-config --cflags --libs libadwaita-1`'
+-- ]===]..nelua_source
+--   fs.writefile('t.nelua', nelua_source)
+--   os.execute('nelua -tV t.nelua')
 end)
 
 --[[

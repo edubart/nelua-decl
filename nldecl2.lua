@@ -11,6 +11,8 @@ local tabler = require 'nelua.utils.tabler'
 local Emitter = require 'nelua.emitter'
 local fs = require 'nelua.utils.fs'
 local executor = require 'nelua.utils.executor'
+local bn = require 'nelua.utils.bn'
+local pegger = require 'nelua.utils.pegger'
 
 --[[
 This grammar is based on the C11 specification.
@@ -18,7 +20,7 @@ As seen in https://port70.net/~nsz/c/c11/n1570.html#A.1
 Support for parsing some new C2x syntax were also added.
 Support for some extensions to use with GCC/Clang were also added.
 ]]
-local Grammar = [==[
+local c_grammar = [==[
 chunk <- SHEBANG? SKIP translation-unit (!.)^UnexpectedSyntax
 
 SHEBANG       <-- '#!' (!LINEBREAK .)* LINEBREAK?
@@ -119,16 +121,13 @@ hexadecimal-fractional-constant <--
 
 binary-exponent-part <-- [pP] sign? digit-sequence
 hexadecimal-digit-sequence <-- hexadecimal-digit+
-floating-suffix <-- [flFL]
+floating-suffix <-- [fFlLqQ]
 
 enumeration-constant <--
   identifier
 
 character-constant <==
- "'" {c-char-sequence} "'" /
- "L'" {c-char-sequence} "'" /
- "u'" {c-char-sequence} "'" /
- "U'" {c-char-sequence} "'"
+ [LUu]? "'" {~c-char-sequence~} "'"
 
 c-char-sequence <-- c-char+
 c-char <--
@@ -142,18 +141,22 @@ escape-sequence <--
  universal-character-name
 
 simple-escape-sequence <--
- "\'" / '\"' / "\?" / "\\" /
- "\a" / "\b" / "\f" / "\n" / "\r" / "\t" / "\v"
+ "\"->'' simple-escape-sequence-suffix
 
-octal-escape-sequence <-- '\' octal-digit^-3
-hexadecimal-escape-sequence <-- '\x' hexadecimal-digit+
+simple-escape-sequence-suffix <-
+  [\'"?] /
+  ("a" $7 / "b" $8 / "f" $12 / "n" $10 / "r" $13 / "t" $9 / "v" $11) ->tochar /
+  (LINEBREAK $10)->tochar
+
+octal-escape-sequence <-- ('\' {octal-digit octal-digit^-2} $8)->tochar
+hexadecimal-escape-sequence <-- ('\x' {hexadecimal-digit+} $16)->tochar
 
 --------------------------------------------------------------------------------
 -- String literals
 
 string-literal <==
   encoding-prefix? string-suffix+
-string-suffix <-- '"' {s-char-sequence?} '"' SKIP
+string-suffix <-- '"' {~s-char-sequence?~} '"' SKIP
 encoding-prefix <-- 'u8' / [uUL]
 s-char-sequence <-- s-char+
 s-char <- [^"\%cn%cr] / escape-sequence
@@ -204,14 +207,14 @@ postfix-expression-suffix <--
   post-decrement
 
 array-subscript <== `[` expression `]`
-argument-expression <== `(` argument-expression-list? `)`
+argument-expression <== `(` argument-expression-list `)`
 struct-or-union-member <== `.` identifier-word
 pointer-member <== `->` identifier-word
 post-increment <== `++`
 post-decrement <== `--`
 
 argument-expression-list <==
-  assignment-expression (`,` assignment-expression)*
+  (assignment-expression (`,` assignment-expression)*)?
 
 unary-expression <--
   unary-op /
@@ -273,7 +276,7 @@ op-inclusive-OR:binary-op <==
 logical-AND-expression <--
   (inclusive-OR-expression op-logical-AND*) ~> foldleft
 op-logical-AND:binary-op <==
-  {'&&'} SKIP @inclusive-OR-expression
+  {`&&`} SKIP @inclusive-OR-expression
 
 logical-OR-expression <--
   (logical-AND-expression op-logical-OR*) ~> foldleft
@@ -410,13 +413,14 @@ typeof <==
   (`typeof` / `__typeof` / `__typeof__`) @argument-expression
 
 struct-or-union-specifier <==
-  struct-or-union extension-specifiers~? identifier-word~? (`{` struct-declaration-list `}`)?
+  struct-or-union extension-specifiers~?
+  (identifier-word struct-declaration-list? / $false struct-declaration-list)
 
 struct-or-union <--
   {`struct`} / {`union`}
 
 struct-declaration-list <==
-  (struct-declaration / static_assert-declaration)*
+  `{` (struct-declaration / static_assert-declaration)* @`}`
 
 struct-declaration <==
   specifier-qualifier-list struct-declarator-list? @`;`
@@ -444,7 +448,7 @@ enumerator-list <==
   enumerator (`,` enumerator)*
 
 enumerator <==
-  enumeration-constant (`=` @constant-expression)?
+  enumeration-constant extension-specifiers~? (`=` @constant-expression)?
 
 atomic-type-specifier <==
   `_Atomic` `(` type-name `)`
@@ -672,15 +676,15 @@ local ctype_to_nltype = {
   -- integral types
   ['char'] = 'cchar',
   ['signed char'] = 'cschar',
-  ['short int'] = 'cshort',             ['short'] = 'cshort',
+  ['short int'] = 'cshort',             ['signed short'] = 'cshort', ['short'] = 'cshort',
   ['int'] = 'cint',                     ['signed'] = 'cint',
-  ['long int'] = 'clong',               ['long'] = 'clong',
-  ['long long int'] = 'clonglong',
+  ['long int'] = 'clong',               ['signed long'] = 'clong', ['long'] = 'clong',
+  ['long long int'] = 'clonglong',      ['signed long long'] = 'clonglong', ['long long'] = 'clonglong',
   ['unsigned char'] = 'cuchar',         ['__u_char'] = 'cuchar',
-  ['unsigned short int'] = 'cushort',   ['__u_short'] = 'cushort',
+  ['unsigned short int'] = 'cushort',   ['unsigned short'] = 'cushort', ['__u_short'] = 'cushort',
   ['unsigned int'] = 'cuint',           ['__u_int'] = 'cuint',    ['unsigned'] = 'cuint',
-  ['unsigned long int'] = 'culong',     ['__u_long'] = 'culong',
-  ['unsigned long long int'] = 'culonglong',
+  ['unsigned long int'] = 'culong',     ['unsigned long'] = 'culong', ['__u_long'] = 'culong',
+  ['unsigned long long int'] = 'culonglong', ['unsigned long long'] = 'culonglong',
   ['intptr_t'] = 'isize',               ['__intptr_t'] = 'isize',
   ['uintptr_t'] = 'usize',              ['__uintptr_t'] = 'usize',
   -- float types
@@ -790,54 +794,51 @@ local common_exclude_names = {
 tabler.update(common_exclude_names, reserved_names)
 tabler.update(common_exclude_names, ctype_to_nltype)
 
-local common_opaque_names = {
-  FILE = true, -- FILE struct on GLIBC
-}
-
 -- Parsing typedefs identifiers in C requires context information.
-local ctypedefs
-
--- Clear ctypedefs.
-local function init_typedefs()
-  ctypedefs = {}
-  for k in pairs(builtin_typedefs) do
-    ctypedefs[k] = true
-  end
-end
+local current_typedefs
 
 local Defs = {}
 
 -- Checks whether an identifier node is a typedef.
 function Defs.is_typedef(_, _, node)
-  return ctypedefs[node[1]] == true
+  return current_typedefs[node[1]] == true
 end
 
 -- Set an identifier as a typedef.
 function Defs.set_typedef(_, _, node)
-  ctypedefs[node[1]] = true
+  current_typedefs[node[1]] = true
   return true
 end
 
 -- Compile grammar.
-local grammar_patt = lpegrex.compile(Grammar, Defs)
+local c_grammar_patt = lpegrex.compile(c_grammar, Defs)
 
 --[[
 Parse C source code into an AST.
 The source code must be already preprocessed (preprocessor directives will be ignored).
 ]]
-local function parse_c11(source, name)
-  init_typedefs()
-  local ast, errlabel, errpos = grammar_patt:match(source)
-  ctypedefs = nil
+local function parse_c11(source, name, initial_typedefs)
+  current_typedefs = {}
+  for k in pairs(builtin_typedefs) do
+    current_typedefs[k] = true
+  end
+  if initial_typedefs then
+    for k in pairs(initial_typedefs) do
+      current_typedefs[k] = true
+    end
+  end
+  local ast, errlabel, errpos = c_grammar_patt:match(source)
+  local typedefs = current_typedefs
+  current_typedefs = nil
   if not ast then
     name = name or '<source>'
     local lineno, colno, line = lpegrex.calcline(source, errpos)
     local colhelp = string.rep(' ', colno-1)..'^'
     local errmsg = SyntaxErrorLabels[errlabel] or errlabel
-    error('syntax error: '..name..':'..lineno..':'..colno..': '..errmsg..
-          '\n'..line..'\n'..colhelp)
+    return nil, 'syntax error: '..name..':'..lineno..':'..colno..': '..errmsg..
+          '\n'..line..'\n'..colhelp
   end
-  return ast
+  return ast, typedefs
 end
 
 -------------------------------------------------------------------------------
@@ -852,21 +853,28 @@ function BindingContext.create(opts)
     '^__', -- internal names
     '_compile_time_assert_', '^_dummy_array' -- compile time assert from some libs
   }
+  local incomplete_names = {
+    FILE = true, -- FILE struct on GLIBC
+  }
   if opts.exclude_names ~= nil then
     exclude_names = opts.exclude_names
   end
+  if opts.incomplete_names ~= nil then
+    incomplete_names = opts.incomplete_names
+  end
   local context = setmetatable({
     types_ast = {},
+    defines_ast = {},
     vars_ast = {},
     node_by_name = {}, -- symbol list, map of all nodes with an identifier by name
     typedefname_by_node = {}, -- map of all typedefs
     declared_names = {}, -- set of names that has been declared so far
     forward_declared_names = {}, -- set of names that has been forward declared so far
-    constants_integers = {},
+    expressions_values = {},
     visitors = {},
     exclude_names = exclude_names,
     include_names = opts.include_names,
-    opaque_names = opts.opaque_names,
+    incomplete_names = incomplete_names,
   }, BindingContext_mt)
   return context
 end
@@ -882,14 +890,11 @@ function BindingContext:traverse_nodes(node, ...)
 end
 
 function BindingContext:can_include_name(name)
-  if common_exclude_names[name] then
-    return false
-  end
-  if self.exclude_names and self.exclude_names[name] then
-    return false
-  end
   if self.include_names and self.include_names[name] then
     return true
+  end
+  if common_exclude_names[name] or self.exclude_names and self.exclude_names[name] then
+    return false
   end
   if self.exclude_names then
     for _,patt in ipairs(self.exclude_names) do
@@ -930,7 +935,7 @@ function BindingContext:mark_imports_for_node(node)
       self:mark_imports_for_node(canonicalnode)
     end
   elseif node.tag == 'CStructOrUnionType' then
-    if not node.opaque then
+    if not node.incomplete then
       local fieldnodes = node[3]
       for _,fieldnode in ipairs(fieldnodes) do
         self:mark_imports_for_node(fieldnode[2])
@@ -964,33 +969,41 @@ function BindingContext:mark_imports_for_node(node)
     end
     self:mark_imports_for_node(typenode)
     node.import = true
+  elseif node.tag == 'CDefine' then
+    local valuenode = node[2]
+    local typenode = valuenode[2]
+    if typenode then
+      self:mark_imports_for_node(typenode)
+    end
+    node.import = true
   else
     node.import = true
   end
 end
 
 function BindingContext:mark_imports()
-  -- transform opaque types
-  for name in pairs(common_opaque_names) do
+  -- mark incomplete types
+  for name in pairs(self.incomplete_names) do
     local node = self.node_by_name[name]
     if node then
       local canonicalnode = self:get_canonical_node(node)
       if canonicalnode.tag == 'CStructOrUnionType' then
-        canonicalnode.tag = 'COpaqueType'
-        canonicalnode[3] = nil
-        if not canonicalnode[2] then
-          canonicalnode[2] = name
-          local fullname = canonicalnode[1]..'#'..name
-          self.node_by_name[fullname] = canonicalnode
-        end
+        canonicalnode.incomplete = true
       end
     end
   end
-  -- mark all nodes
+  -- mark all nodes by name
   for fullname,node in pairs(self.node_by_name) do
     local name = fullname:gsub('^[a-z]+#', '') -- remove struct/union/enum prefix
     if self:can_include_name(name) then -- should be imported
       self:mark_imports_for_node(node)
+    end
+  end
+  -- mark defines
+  for _,definenode in pairs(self.defines_ast) do
+    local name = definenode[1]
+    if not definenode.ignore and self:can_include_name(name) then -- should be imported
+      self:mark_imports_for_node(definenode)
     end
   end
   -- mark all top scope declarations
@@ -1025,6 +1038,20 @@ function BindingContext:mark_imports()
       local typenode = node[2]
       if typenode.import then
         self:mark_imports_for_node(node)
+      end
+    end
+  end
+  -- mark needed COpaqueType
+  for i=1,#self.types_ast-1 do
+    local node = self.types_ast[i]
+    if node.tag == 'CTypeDecl' then
+      local typenode = node[2]
+      if typenode.tag == 'COpaqueType' then
+        local name = node[1]
+        local canonicalnode = self:get_canonical_node(self.node_by_name[name])
+        if canonicalnode.import then
+          node.import = true
+        end
       end
     end
   end
@@ -1068,13 +1095,13 @@ function BindingContext:define_symbol(fullname, node)
   self.node_by_name[fullname] = node
 end
 
-function BindingContext:get_canonical_node(node)
+function BindingContext:get_canonical_node(node, resolve_builtin_typedefs)
   while node.tag == 'CType' do
     local typename = node[1]
-    if ctype_to_nltype[typename] then
+    local resolved_node = self.node_by_name[typename]
+    if ctype_to_nltype[typename] and (not resolve_builtin_typedefs or not resolved_node) then
       break
     end
-    local resolved_node = self.node_by_name[typename]
     if resolved_node and resolved_node ~= node then
       node = resolved_node
     else
@@ -1194,76 +1221,218 @@ local function parse_qualifiers(node, attr)
   end
 end
 
-local cintmin, cintmax = -(1<<31), (1<<31)-1
-
-local function parse_constant_expression(context, node)
+local function parse_expression_value(context, node)
   --TODO: handle overflow in operations
   if node.tag == 'integer-constant' then
-    local value = node[1]
-    value = value:lower():gsub('u?l?l?$', '') -- trim suffixes
+    local value, suffix = node[1]:lower():match('^([^ul]+)(u?l?l?u?)$')
     if value:find('^0x[0-9a-f]+$') then -- hexadecimal
-      return tonumber(value:match('^0x([0-9a-f]+)$'), 16)
+      value = tonumber(value:match('^0x([0-9a-f]+)$'), 16)
     elseif value:find('^0[0-7]+$') then -- octal
-      return tonumber(value, 8)
-    elseif value:find('^[0-9]+$') then -- decimal
-      return tonumber(value, 10)
+      value = tonumber(value, 8)
+    else -- should be decimal
+      value = tonumber(value, 10)
     end
+    local typenode
+    local is_unsigned = false
+    if suffix == 'ull' or suffix == 'llu' then
+      typenode = {tag='CType', 'unsigned long long'}
+      is_unsigned = true
+    elseif suffix == 'ul' or suffix == 'lu' then
+      typenode = {tag='CType', 'unsigned long'}
+      is_unsigned = true
+    elseif suffix == 'u' then
+      typenode = {tag='CType', 'unsigned int'}
+      is_unsigned = true
+    elseif suffix == 'll' then
+      typenode = {tag='CType', 'long long'}
+    elseif suffix == 'l' then
+      typenode = {tag='CType', 'long'}
+    else
+      if value and value >= 0x80000000 and value <= 0xffffffff then
+        typenode = {tag='CType', 'unsigned int'}
+        is_unsigned = true
+      elseif value and value < 0 then -- range overflow
+        typenode = {tag='CType', 'unsigned long long'}
+        is_unsigned = true
+      elseif value and value > 0xffffffff then
+        typenode = {tag='CType', 'long long'}
+      else
+        typenode = {tag='CType', 'int'}
+      end
+    end
+    if value and value < 0 then -- range overflow
+      value = nil
+    end
+    return {tag='CValue', value, typenode, is_comptime_scalar=not not value, is_unsigned=is_unsigned}
+  elseif node.tag == 'floating-constant' then
+    local value, suffix = node[1]:lower():match('^([^lfq]+)([lfq]?)$')
+    value = tonumber(value)
+    if value and (value ~= value or math.abs(value) == math.huge) then -- non finite
+      value = nil
+    end
+    local typenode
+    if suffix == 'f' then
+      typenode = {tag='CType', 'float'}
+    elseif suffix == 'l' then
+      typenode = {tag='CType', 'long double'}
+      value = nil -- no enough precision
+    elseif suffix == 'q' then
+      typenode = {tag='CType', '__float128'}
+      value = nil -- no enough precision
+    else
+      typenode = {tag='CType', 'double'}
+    end
+    return {tag='CValue', value, typenode, is_comptime_scalar=not not value}
   elseif node.tag == 'character-constant' then
-    local char = node[1]
-    return string.byte(char)
+    local value = node[1]
+    if #value == 1 then -- one byte character
+      value = string.byte(value)
+      if value > 127 then -- range overflow
+        value = -((~value & 0xff) + 1)
+      end
+      local typenode = {tag='CType', 'char'}
+      return {tag='CValue', value, typenode, is_comptime_scalar=not not value}
+    end
   elseif node.tag == 'identifier' then
     local name = node[1]
-    return context.constants_integers[name]
+    local valuenode = context.expressions_values[name]
+    if valuenode then
+      return valuenode
+    end
+    local aliasnode = context.node_by_name[name]
+    if aliasnode and (aliasnode.tag == 'CVarDecl' or aliasnode.tag == 'CFuncDecl') then
+      return {tag='CValue', name, aliasnode, is_alias=true}
+    end
   elseif node.tag == 'unary-op' then
-    local op, val = node[1], parse_constant_expression(context, node[2])
-    if val then
-      if op == '-' and val > cintmin then
-        return -val
-      --TODO: we need actually to wrap around to use binary negation?
-      -- elseif op == '~' then
-        -- return ~val
+    local op, valnode = node[1], parse_expression_value(context, node[2])
+    if op == 'sizeof' then
+      return {tag='CValue', nil, {tag='CType', 'unsigned int'}}
+    elseif valnode then
+      if op == '-' then
+        local resval
+        if valnode.is_comptime_scalar and not valnode.is_unsigned then
+          resval = -valnode[1]
+        end
+        return {tag='CValue', resval, valnode[2], is_comptime_scalar=not not resval}
+      elseif op == '~' then
+        return {tag='CValue', nil, valnode[2]}
+      elseif op == '*' then
+        if valnode[2].tag == 'CPointerType' then
+          return {tag='CValue', nil, valnode[2][1], is_lvalue=true}
+        end
+      elseif op == '&' then
+        return {tag='CValue', nil, {tag='CPointerType', valnode[2][2]}}
       end
     end
   elseif node.tag == 'binary-op' then
-    local lhs, op, rhs =
-      parse_constant_expression(context, node[1]), node[2], parse_constant_expression(context, node[3])
-    if lhs and rhs then
-      if op == '<<' and lhs >= 0 and rhs >= 0 and rhs < 32 then
-        return lhs << rhs
-      elseif op == '>>' and rhs >= 0 and rhs < 32 then
-        return lhs >> rhs
-      elseif op == '|' then
-        return lhs | rhs
-      elseif op == '&' then
-        return lhs & rhs
-      elseif op == '^' then
-        return lhs ~ rhs
-      elseif op == '+' then
-        return lhs + rhs
-      elseif op == '-' then
-        return lhs - rhs
-      elseif op == '*' then
-        return lhs * rhs
-      elseif op == '/' and lhs >= 0 and rhs > 0 then
-        return lhs // rhs
-      end
-    elseif op == 'cast' and rhs then
-      local typenode = parse_type(context, node[1][1], {})
-      local canonicalnode = context:get_canonical_node(typenode)
-      if canonicalnode and canonicalnode.tag == 'CType' then
-        local ctypename = canonicalnode[1]
-        -- TODO: handle more types and actually wrap around values
-        if ctypename == 'int' and rhs >= cintmin and rhs <= cintmax then
-          return rhs
-        elseif ctypename == 'uint32_t' and rhs >= 0 and rhs <= 0xffffffff then
-          return rhs
-        elseif ctypename == 'uint8_t' and rhs >= 0 and rhs <= 0xff then
-          return rhs
+    local lhsnode, op, rhsnode =
+      parse_expression_value(context, node[1]), node[2], parse_expression_value(context, node[3])
+    if lhsnode and lhsnode.is_comptime_scalar and rhsnode and rhsnode.is_comptime_scalar then
+      local lhs, rhs = lhsnode[1], rhsnode[1]
+      if lhs and rhs then
+        local resval
+        local restype
+        if op == '<<' and lhs >= 0 and rhs >= 0 and rhs < 31 then
+          resval = lhs << rhs
+          if resval >= 0x80000000 then
+            restype = {tag='CType', 'unsigned int'}
+          else
+            restype = {tag='CType', 'int'}
+          end
+        elseif op == '>>' and rhs >= 0 then
+          resval = lhs >> rhs
+          if resval >= 0x80000000 then
+            restype = {tag='CType', 'unsigned int'}
+          else
+            restype = {tag='CType', 'int'}
+          end
+        elseif lhsnode[2][1] == rhsnode[2][1] then -- same types
+          restype = lhsnode[2]
+          --TODO: promote types?
+          if op == '|' then
+            resval = lhs | rhs
+          elseif op == '&' then
+            resval = lhs & rhs
+          elseif op == '^' then
+            resval = lhs ~ rhs
+          elseif op == '+' then
+            resval = lhs + rhs
+          elseif op == '-' and not lhsnode.is_unsigned then
+            resval = lhs - rhs
+          elseif op == '*' then
+            resval = lhs * rhs
+          elseif op == '/' and lhs >= 0 and rhs > 0 then
+            resval = lhs // rhs
+          end
+          if resval and (resval ~= resval or math.abs(resval) == math.huge) then -- non finite
+            resval = nil
+          end
         end
+        if restype then
+          return {tag='CValue', resval, restype, is_comptime_scalar=not not resval, is_unsigned=lhsnode.is_unsigned}
+        end
+      end
+    elseif op == 'cast' and rhsnode then
+      local specifiers, declarator = node[1][1], node[1][2]
+      assert(specifiers.tag == 'specifier-qualifier-list')
+      local attr = {}
+      local typenode = parse_type(context, specifiers, attr)
+      if typenode then
+        if declarator then
+          typenode = parse_declarator(context, declarator, typenode, attr)
+        end
+        local canonicalnode = context:get_canonical_node(typenode, true)
+        if canonicalnode and canonicalnode.tag == 'CType' then
+          local ctypename = canonicalnode[1]
+          local rhs = rhsnode[1]
+          if rhsnode.is_comptime_scalar and rhs then
+            -- TODO: handle more types and actually wrap around values?
+            if (ctypename == 'char' and rhs >= -0x80 and rhs <= 0x7f) or
+               (ctypename == 'signed char' and rhs >= -0x80 and rhs <= 0x7f) or
+               (ctypename == 'short int' and rhs >= -0x8000 and rhs <= 0x7fff) or
+               (ctypename == 'int' and rhs >= -0x80000000 and rhs <= 0x7fffffff) or
+               (ctypename == 'long int' and rhs >= -0x80000000 and rhs <= 0x7fffffff) or
+               (ctypename == 'int8_t' and rhs >= -0x80 and rhs <= 0x7f) or
+               (ctypename == 'int16_t' and rhs >= -0x8000 and rhs <= 0xffff) or
+               (ctypename == 'int32_t' and rhs >= -0x80000000 and rhs <= 0xffffffff) or
+               (ctypename == 'int64_t' and rhs >= -0x8000000000000000 and rhs <= 0x7fffffffffffffff) then
+              return {tag='CValue', rhs, typenode, is_comptime_scalar=true}
+            elseif
+               (ctypename == 'unsigned char' and rhs >= 0 and rhs <= 0xff) or
+               (ctypename == 'unsigned short int' and rhs >= 0 and rhs <= 0xffff) or
+               (ctypename == 'unsigned int' and rhs >= 0 and rhs <= 0xffffffff) or
+               (ctypename == 'unsigned long int' and rhs >= 0 and rhs <= 0xffffffff) or
+               (ctypename == 'uint8_t' and rhs >= 0 and rhs <= 0xff) or
+               (ctypename == 'uint16_t' and rhs >= 0 and rhs <= 0xffff) or
+               (ctypename == 'uint32_t' and rhs >= 0 and rhs <= 0xffffffff) or
+               (ctypename == 'uint64_t' and rhs >= 0 and rhs <= 0x7fffffffffffffff) then
+              return {tag='CValue', rhs, typenode, is_comptime_scalar=true, is_unsigned=true}
+            end
+          end
+        end
+        return {tag='CValue', nil, typenode}
       end
     end
   elseif node.tag == 'expression' and #node == 1 then
-    return parse_constant_expression(context, node[1])
+    return parse_expression_value(context, node[1])
+  elseif node.tag == 'argument-expression' then
+    local callee = node[2]
+    if callee.tag == 'identifier' then
+      local name = callee[1]
+      local typenode = context.node_by_name[name]
+      if typenode and typenode.tag == 'CFuncDecl' then
+        local rettypenode = typenode[2][2]
+        return {tag='CValue', nil, rettypenode}
+      end
+    end
+  elseif node.tag == 'string-literal' then
+    local type = {tag='CPointerType', {tag='CType', 'char'}}
+    return {tag='CValue', node[1], type}
+  elseif node.tag == 'type-name' then
+    local typenode = parse_type(context, node[1], {})
+    if typenode then
+      return {tag='CValue', typenode, is_type=true}
+    end
   end
   --TODO: ternary op and comparisons
 end
@@ -1312,8 +1481,7 @@ local function parse_struct_or_union(context, node, attr)
     if fullname then
       context:define_symbol(fullname, typenode)
     end
-  else
-    assert(fullname, 'struct or union must have a name or declaration')
+  elseif fullname then
     typenode = {tag='CType', fullname}
     if not context.node_by_name[fullname] then -- not defined yet
       local opaquetype = {tag='COpaqueType', kind, name}
@@ -1345,10 +1513,13 @@ local function parse_enum(context, node, attr)
     local lastvalue = -1
     local minvalue, maxvalue
     for _,enumfield in ipairs(enumlist) do
-      local fieldname, fieldexpr = enumfield[1][1], enumfield[2]
+      local fieldname, fieldexpr = enumfield[1][1], enumfield[3]
+      local fieldexprvalue
       local fieldvalue
       if fieldexpr then
-        fieldvalue = parse_constant_expression(context, fieldexpr)
+        fieldexprvalue = parse_expression_value(context, fieldexpr)
+        fieldvalue = fieldexprvalue and fieldexprvalue.is_comptime_scalar and fieldexprvalue[1]
+        context.expressions_values[fieldname] = fieldexprvalue
       elseif lastvalue then
         fieldvalue = lastvalue + 1
       end
@@ -1359,18 +1530,21 @@ local function parse_enum(context, node, attr)
         if not minvalue or fieldvalue < minvalue then
           minvalue = fieldvalue
         end
-        context.constants_integers[fieldname] = fieldvalue
+        if minvalue and maxvalue then
+          if minvalue >= 0 and maxvalue >= 0x80000000 then
+            inttype = 'unsigned int'
+            typenode[1] = inttype
+          end
+        end
+        if not fieldexprvalue then
+          fieldexprvalue = {tag='CValue', fieldvalue, {tag='CType', inttype}, is_comptime_scalar=true}
+          context.expressions_values[fieldname] = fieldexprvalue
+        end
       end
       local fieldnode = {tag='CEnumField', fieldname, fieldvalue, typenode}
       table.insert(fields, fieldnode)
       lastvalue = fieldvalue
       context:define_symbol(fieldname, fieldnode)
-    end
-    if minvalue and maxvalue then
-      if minvalue >= 0 and maxvalue > (1<<31)-1 then
-        inttype = 'unsigned int'
-      end
-      typenode[1] = inttype
     end
   else -- opaque enum
     assert(fullname, 'enum must have a name or declaration')
@@ -1439,7 +1613,6 @@ function parse_type(context, node, attr)
     end
     return {tag='CType', fullctype}, attr
   else -- unnamed struct/union/enum
-    assert(ctype)
     return ctype
   end
 end
@@ -1473,7 +1646,8 @@ function parse_declarator(context, node, firsttypenode, attr)
     end
     local len
     if lennode then -- size is available
-      len = parse_constant_expression(context, lennode)
+      local exprvalue = parse_expression_value(context, lennode)
+      len = exprvalue and exprvalue.is_comptime_scalar and exprvalue[1]
     end
     local typenode = {tag='CArrayType', subtypenode, len}
     -- invert len sizes for multidimensional arrays
@@ -1494,6 +1668,7 @@ function parse_declarator(context, node, firsttypenode, attr)
           local specifiers, declarator = paramdecl[1], paramdecl[2]
           local paramattr = {}
           local firstparamtype = parse_type(context, specifiers, paramattr)
+          assert(firstparamtype)
           if declarator then
             local paramtype, paramname = parse_declarator(context, declarator, firstparamtype, paramattr)
             table.insert(params, {tag='CParamDecl', attr=paramattr, paramname, paramtype})
@@ -1521,6 +1696,7 @@ function parse_declarator(context, node, firsttypenode, attr)
     local specifiers, declarator = node[1], node[2]
     assert(specifiers.tag == 'specifier-qualifier-list')
     firsttypenode = parse_type(context, specifiers, attr)
+    assert(firsttypenode)
     if declarator then
       return parse_declarator(context, declarator, firsttypenode, attr), nil
     else
@@ -1537,7 +1713,7 @@ parse_bindings_visitors['type-declaration'] = function(context, node)
   local specifiers, initdeclatorlist = node[1], node[2]
   local firstattr = {}
   local firsttypenode = parse_type(context, specifiers, firstattr)
-  if initdeclatorlist then -- variable declaration
+  if firsttypenode and initdeclatorlist then -- variable declaration
     for _,initdeclarator in ipairs(initdeclatorlist) do
       local declarator = initdeclarator[1]
       local attr = tabler.copy(firstattr)
@@ -1559,19 +1735,21 @@ parse_bindings_visitors['typedef-declaration'] = function(context, node)
   local specifiers = node[1]
   local firstattr = {}
   local firsttypenode = parse_type(context, specifiers, firstattr)
-  for i=2,#node do
-    local declarator = node[i]
-    local attr = tabler.copy(firstattr)
-    local typenode, name = parse_declarator(context, declarator, firsttypenode, attr)
-    assert(typenode and name)
-    local canonicalnode = context:get_canonical_node(typenode)
-    context:define_symbol(name, typenode)
-    context.typedefname_by_node[typenode] = name
-    local curname = context.typedefname_by_node[canonicalnode]
-    if not curname or not context:can_include_name(curname) then
-      context.typedefname_by_node[canonicalnode] = name
+  if firsttypenode then
+    for i=2,#node do
+      local declarator = node[i]
+      local attr = tabler.copy(firstattr)
+      local typenode, name = parse_declarator(context, declarator, firsttypenode, attr)
+      assert(typenode and name)
+      local canonicalnode = context:get_canonical_node(typenode)
+      context:define_symbol(name, typenode)
+      context.typedefname_by_node[typenode] = name
+      local curname = context.typedefname_by_node[canonicalnode]
+      if not curname or not context:can_include_name(curname) then
+        context.typedefname_by_node[canonicalnode] = name
+      end
+      table.insert(context.types_ast, {tag='CTypedef', attr=attr, name, typenode})
     end
-    table.insert(context.types_ast, {tag='CTypedef', attr=attr, name, typenode})
   end
 end
 
@@ -1580,22 +1758,146 @@ parse_bindings_visitors['function-definition'] = function(context, node)
   assert(#declarationlist == 0, 'declaration list in function definition is not supported yet')
   local attr = {}
   local firsttypenode = parse_type(context, specifiers, attr)
-  local typenode, name = parse_declarator(context, declarator, firsttypenode, attr)
-  assert(typenode and name)
-  assert(typenode.tag == 'CFuncType')
-  local declnode = {tag='CFuncDecl', attr=attr, name, typenode}
-  table.insert(context.vars_ast, declnode)
-  context:define_symbol(name, declnode)
+  if firsttypenode then
+    local typenode, name = parse_declarator(context, declarator, firsttypenode, attr)
+    assert(typenode and name)
+    assert(typenode.tag == 'CFuncType')
+    local declnode = {tag='CFuncDecl', attr=attr, name, typenode}
+    table.insert(context.vars_ast, declnode)
+    context:define_symbol(name, declnode)
+  end
 end
 
 parse_bindings_visitors['declaration'] = function(context, node)
   context:traverse_nodes(node)
 end
 
-local function parse_c_bindings(context)
+local function parse_c_declarations(context)
   context.visitors = parse_bindings_visitors
   context:traverse_nodes(context.c_ast)
-  context:mark_imports()
+end
+
+-------------------------------------------------------------------------------
+-- C Preprocessor reader
+
+local c_preprocessor_grammar = [[
+chunk <- SHEBANG? directives (!.)^UnexpectedSyntax
+
+LINEBREAK      <-- %nl %cr / %cr %nl / %nl / %cr
+NAME           <-- {[_A-Za-z]+ NAME_SUFFIX?} SKIP
+NAME_SUFFIX    <-- [_A-Za-z0-9]+
+SKIP           <-- [ %ct]*
+UNTIL_LINEEND  <-- (!LINEBREAK .)+
+SHEBANG        <-- '#!' (!LINEBREAK .)* LINEBREAK?
+
+directives <== (LINEBREAK / directive / UNTIL_LINEEND)*
+
+directive <--
+  `#` (define-function / define / undef)
+
+define-function <==
+  `define` NAME `(` define-function-params `)` {UNTIL_LINEEND}?
+
+define-function-params <==
+  (NAME (`,` NAME)*)? {`...`}?
+
+define <==
+  `define` NAME {UNTIL_LINEEND}?
+
+undef <==
+  `undef` NAME
+
+]]
+
+local c_preprocessor_patt = lpegrex.compile(c_preprocessor_grammar)
+
+local exclude_macro_names = {
+  '^_',
+  '^HAVE_',
+  '^[A-Z0-9_]+_H_?$',
+  NULL=true, assert=true, -- lib C
+  linux=true, unix=true, -- linux
+  WIN32=true, WIN64=true, WINNT=true, '^USE___', '^MINGW_HAS', -- mingw
+}
+
+local function can_include_macro(name)
+  if exclude_macro_names[name] then
+    return false
+  end
+  for _,patt in ipairs(exclude_macro_names) do
+    if name:find(patt) then
+      return false
+    end
+  end
+  return true
+end
+
+local function parse_c_directive(context, directive)
+  if directive.resolved then
+    return false
+  end
+  --TODO: handle define-function
+  --TODO: evaluate macros
+  if directive.tag == 'define' then
+    local name, exprcode = directive[1], directive[2]
+    if exprcode then
+      exprcode = exprcode:gsub('%s+$','') -- trim right
+      local linecode = 'int VALUE = '..exprcode..';'
+      local valueast = parse_c11(linecode, nil, context.c_typedefs)
+      if valueast then
+        local exprnode = valueast[1][1][2][1][2][1]
+        if exprnode.tag ~= 'struct-or-union-member' and
+           exprnode.tag ~= 'array-subscript' and
+           exprnode.tag ~= 'initializer-list' then
+          local value = parse_expression_value(context, exprnode)
+          if value then
+            context.expressions_values[name] = value
+            directive.resolved = true
+            if not directive.ignore and can_include_macro(name) then
+              local node = {tag='CDefine', name, value}
+              directive.node = node
+              table.insert(context.defines_ast, node)
+            end
+            return true
+          end
+        end
+      end
+    end
+  end
+  return false
+end
+
+local function parse_c_defines(context, ccode)
+  local directives = c_preprocessor_patt:match(ccode)
+  -- mark undefs
+  local directives_by_name = {}
+  for _,directive in ipairs(directives) do
+    local name = directive[1]
+    if directive.tag == 'undef' then
+      local definedirective = directives_by_name[name]
+      if definedirective then
+        definedirective.ignore = true
+      end
+    else
+      directives_by_name[name] = directive
+    end
+  end
+  directives_by_name = {}
+  -- resolve defines
+  repeat
+    local resolutions_count = 0
+    for _,directive in ipairs(directives) do
+      if parse_c_directive(context, directive) then
+        local name = directive[1]
+        local definedirective = directives_by_name[name]
+        if definedirective and definedirective.node then -- override define
+          definedirective.node.ignore = true
+        end
+        directives_by_name[name] = directive
+        resolutions_count = resolutions_count + 1
+      end
+    end
+  until resolutions_count == 0
 end
 
 -------------------------------------------------------------------------------
@@ -1696,12 +1998,15 @@ function generate_bindings_visitors.CStructOrUnionType(context, node, emitter, p
       if generated then
         table.insert(annotations, "ctypedef'"..name.."'")
       end
+      if node.incomplete then
+        table.insert(annotations, 'cincomplete')
+      end
       emitter:add("global "..importname..": type <"..table.concat(annotations,',').."> = @")
     end
   end
   local typekind = kind == 'struct' and 'record' or 'union'
   emitter:add(typekind)
-  if #fieldnodes > 0 then
+  if not node.incomplete and #fieldnodes > 0 then
     emitter:add_ln('{')
     emitter:inc_indent()
     for i,fieldnode in ipairs(fieldnodes) do
@@ -1804,19 +2109,24 @@ function generate_bindings_visitors.COpaqueType(context, node, emitter, params)
       context:traverse_node(typenode, emitter, {decl=true})
       return
     end
-    if kind ~= 'enum' then
-      if context.forward_declared_names[importname] then return end -- already forward declared
-      context.forward_declared_names[importname] = true
-    else
-      if context.declared_names[importname] then return end
-      context.declared_names[importname] = true
-    end
     local annotations = {"cimport", 'nodecl'}
     if generated then
       table.insert(annotations, "ctypedef'"..name.."'")
     end
     if kind ~= 'enum' then
-      table.insert(annotations, 'forwarddecl')
+      local canonicalnode = context:get_canonical_node(typenode)
+      if canonicalnode.incomplete then
+        if context.declared_names[importname] then return end
+        context.declared_names[importname] = true
+        table.insert(annotations, 'cincomplete')
+      else
+        if context.forward_declared_names[importname] then return end -- already forward declared
+        context.forward_declared_names[importname] = true
+        table.insert(annotations, 'forwarddecl')
+      end
+    else
+      if context.declared_names[importname] then return end
+      context.declared_names[importname] = true
     end
     emitter:add("global "..importname..": type <"..table.concat(annotations, ',').."> = @")
     if kind == 'enum' then
@@ -1868,12 +2178,55 @@ function generate_bindings_visitors.CTypedef(context, node, emitter)
   emitter:add_ln()
 end
 
+function generate_bindings_visitors.CDefine(context, node, emitter)
+  if not node.import then return end
+  local name, valuenode = node[1], node[2]
+  local value = valuenode[1]
+  local typenode = valuenode[2]
+  if valuenode.is_alias then
+    local clone = tabler.copy(typenode)
+    clone[1] = name -- change name
+    context:traverse_node(clone, emitter)
+  else
+    if context.declared_names[name] then return end
+    context.declared_names[name] = true
+    if valuenode.is_type then
+      emitter:add('global '..name..': type = ')
+      context:traverse_node(value, emitter)
+      emitter:add_ln()
+    else
+      emitter:add('global '..name..': ')
+      context:traverse_node(typenode, emitter)
+      if valuenode.is_comptime_scalar then
+        emitter:add_ln(' <comptime> = '..bn.todecsci(value))
+        -- emitter:add('global '..name..'_: ')
+        -- context:traverse_node(typenode, emitter)
+        -- emitter:add_ln(' <cimport"'..name..'",nodecl>')
+        -- emitter:add_ln('assert('..name..' == '..name..'_)')
+      elseif type(value) == 'string' then
+        emitter:add_ln(' <comptime> = '..pegger.double_quote_lua_string(value))
+        -- emitter:add('global '..name..'_: ')
+        -- context:traverse_node(typenode, emitter)
+        -- emitter:add_ln(' <cimport"'..name..'",nodecl>')
+        -- emitter:add_ln('assert((@string)('..name..') == (@string)('..name..'_))')
+      else
+        if valuenode.is_lvalue then
+          emitter:add_ln(' <cimport,nodecl>')
+        else
+          emitter:add_ln(' <cimport,nodecl,const>')
+        end
+      end
+    end
+  end
+end
+
 local function generate_nelua_bindings(context)
   local emitter = Emitter()
   context.emitter = emitter
   context.visitors = generate_bindings_visitors
   context:traverse_nodes(context.types_ast, emitter)
   context:traverse_nodes(context.vars_ast, emitter)
+  context:traverse_nodes(context.defines_ast, emitter)
   return emitter:generate()
 end
 
@@ -1882,8 +2235,10 @@ local nldecl = {}
 
 function nldecl.generate_bindings_from_c_code(ccode, opts)
   local context = BindingContext.create(opts)
-  context.c_ast = parse_c11(ccode)
-  parse_c_bindings(context)
+  context.c_ast, context.c_typedefs = assert(parse_c11(ccode))
+  parse_c_declarations(context)
+  parse_c_defines(context, ccode)
+  context:mark_imports()
   return generate_nelua_bindings(context)
 end
 
@@ -1914,28 +2269,16 @@ end
 local function preprocess_c_code(ccode, opts)
   local cfilename = gen_c_file(ccode)
   local cc = opts.cc or 'gcc'
-  local ccargs = {
-    '-E',
-    -- '-P',
-    -- '-dD',
-    cfilename
-  }
+  local ccargs = {'-E', '-dD', cfilename}
   local ok, status, stdout, stderr = executor.execex(cc, ccargs)
   fs.deletefile(cfilename)
   assert(ok and stdout, stderr or 'failed to preprocess C code')
   return stdout
 end
 
-local function parse_defines(ccode, opts)
-  for line in ccode:gmatch('\n#[^\n]*\n') do
-    print(line)
-  end
-end
-
 function nldecl.generate_bindings_file(opts)
   local ccode = emit_c_includes_code(opts)
   ccode = preprocess_c_code(ccode, opts)
-  parse_defines(ccode)
   local neluacode = nldecl.generate_bindings_from_c_code(ccode, opts)
   if opts.output_head then
     neluacode = opts.output_head..neluacode
@@ -1945,5 +2288,15 @@ function nldecl.generate_bindings_file(opts)
   end
   assert(fs.makefile(opts.output_file, neluacode))
 end
+
+function nldecl.cbind(opts)
+  if type(opts) == 'string' then
+    opts = {opts}
+  end
+  return nldecl.generate_bindings_from_c_code(opts)
+end
+
+-- Export to current environment.
+_ENV.cbind = nldecl.cbind
 
 return nldecl
