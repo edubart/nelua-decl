@@ -85,12 +85,11 @@ octal-digit <--  [0-7]
 hexadecimal-digit <-- [0-9a-fA-F]
 
 integer-suffix <--
-  unsigned-suffix (long-long-suffix / long-suffix)? /
-  (long-long-suffix / long-suffix) unsigned-suffix?
+  unsigned-suffix (long-suffix long-suffix?)? /
+  (long-suffix long-suffix?) unsigned-suffix?
 
 unsigned-suffix <-- [uU]
 long-suffix <-- [lL]
-long-long-suffix <-- 'll' / 'LL'
 
 floating-constant <==
   {decimal-floating-constant} /
@@ -174,7 +173,7 @@ primary-expression <--
   generic-selection
 
 statement-expression <==
-  '({'SKIP (declaration / statement)* '})'SKIP
+  '({'SKIP (label-statement / declaration / statement)* '})'SKIP
 
 generic-selection <==
   `_Generic` @`(` @assignment-expression @`,` @generic-assoc-list @`)`
@@ -190,10 +189,8 @@ postfix-expression <--
   (postfix-expression-prefix postfix-expression-suffix*) ~> rfoldright
 
 postfix-expression-prefix <--
-  (
-    type-initializer  /
-    primary-expression
-  )
+  type-initializer  /
+  primary-expression
 
 type-initializer <==
   `(` type-name `)` `{` initializer-list? `,`? `}`
@@ -276,7 +273,7 @@ op-inclusive-OR:binary-op <==
 logical-AND-expression <--
   (inclusive-OR-expression op-logical-AND*) ~> foldleft
 op-logical-AND:binary-op <==
-  {`&&`} SKIP @inclusive-OR-expression
+  {`&&`} @inclusive-OR-expression
 
 logical-OR-expression <--
   (logical-AND-expression op-logical-OR*) ~> foldleft
@@ -288,12 +285,11 @@ conditional-expression <--
 op-conditional:ternary-op <==
   {`?`} @expression @`:` @conditional-expression
 
-op-assignment:binary-op <==
-  unary-expression assignment-operator @assignment-expression
 assignment-expression <--
-  op-assignment /
-  conditional-expression
-
+  conditional-expression !assignment-operator /
+  (unary-expression op-assignment+) ~> foldleft
+op-assignment:binary-op <==
+  assignment-operator @assignment-expression
 assignment-operator <--
   {`=`} /
   {`*=`} /
@@ -402,7 +398,7 @@ type-specifier <==
 
 type-specifier-width : type-specifier <==
   {`short`} /
-  (`signed` / `__signed` / `__signed__`)->'signed' /
+  (`signed` / `__signed__`)->'signed' /
   {`unsigned`} /
   (`long` `long`)->'long long' /
   {`long`} /
@@ -1838,29 +1834,22 @@ local function parse_c_directive(context, directive)
   end
   --TODO: handle define-function
   --TODO: evaluate macros
-  if directive.tag == 'define' then
-    local name, exprcode = directive[1], directive[2]
-    if exprcode then
-      exprcode = exprcode:gsub('%s+$','') -- trim right
-      local linecode = 'int VALUE = '..exprcode..';'
-      local valueast = parse_c11(linecode, nil, context.c_typedefs)
-      if valueast then
-        local exprnode = valueast[1][1][2][1][2][1]
-        if exprnode.tag ~= 'struct-or-union-member' and
-           exprnode.tag ~= 'array-subscript' and
-           exprnode.tag ~= 'initializer-list' then
-          local value = parse_expression_value(context, exprnode)
-          if value then
-            context.expressions_values[name] = value
-            directive.resolved = true
-            if not directive.ignore and can_include_macro(name) then
-              local node = {tag='CDefine', name, value}
-              directive.node = node
-              table.insert(context.defines_ast, node)
-            end
-            return true
-          end
+  if directive.tag == 'define' and directive.exprast then
+    local exprnode = directive.exprast
+    if exprnode.tag ~= 'struct-or-union-member' and
+       exprnode.tag ~= 'array-subscript' and
+       exprnode.tag ~= 'initializer-list' then
+      local name = directive[1]
+      local value = parse_expression_value(context, exprnode)
+      if value then
+        context.expressions_values[name] = value
+        directive.resolved = true
+        if not directive.ignore and can_include_macro(name) then
+          local node = {tag='CDefine', name, value}
+          directive.node = node
+          table.insert(context.defines_ast, node)
         end
+        return true
       end
     end
   end
@@ -1871,6 +1860,7 @@ local function parse_c_defines(context, ccode)
   local directives = c_preprocessor_patt:match(ccode)
   -- mark undefs
   local directives_by_name = {}
+  local cache = {}
   for _,directive in ipairs(directives) do
     local name = directive[1]
     if directive.tag == 'undef' then
@@ -1878,7 +1868,20 @@ local function parse_c_defines(context, ccode)
       if definedirective then
         definedirective.ignore = true
       end
-    else
+    elseif directive.tag == 'define' then
+      local code = directive[2]
+      if code then
+        local ast = cache[code]
+        if ast == nil then
+          local evalcode = 'int VALUE = '..code..';'
+          ast = parse_c11(evalcode, nil, context.c_typedefs)
+          if ast then
+            ast = ast[1][1][2][1][2][1]
+          end
+          cache[code] = ast or false
+        end
+        directive.exprast = ast
+      end
       directives_by_name[name] = directive
     end
   end
@@ -2235,10 +2238,15 @@ local nldecl = {}
 
 function nldecl.generate_bindings_from_c_code(ccode, opts)
   local context = BindingContext.create(opts)
+  -- local start = os.clock()
   context.c_ast, context.c_typedefs = assert(parse_c11(ccode))
+  -- print('parse1', os.clock() - start) start = os.clock()
   parse_c_declarations(context)
+  -- print('parse2', os.clock() - start) start = os.clock()
   parse_c_defines(context, ccode)
+  -- print('parse3', os.clock() - start) start = os.clock()
   context:mark_imports()
+  -- print('parse4', os.clock() - start) start = os.clock()
   return generate_nelua_bindings(context)
 end
 
@@ -2269,7 +2277,7 @@ end
 local function preprocess_c_code(ccode, opts)
   local cfilename = gen_c_file(ccode)
   local cc = opts.cc or 'gcc'
-  local ccargs = {'-E', '-dD', cfilename}
+  local ccargs = {'-E', '-dD', '-P', cfilename}
   local ok, status, stdout, stderr = executor.execex(cc, ccargs)
   fs.deletefile(cfilename)
   assert(ok and stdout, stderr or 'failed to preprocess C code')

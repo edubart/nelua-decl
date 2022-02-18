@@ -893,22 +893,22 @@ it("big C file", function()
   local fs = require 'nelua.utils.fs'
   local ppflags = '-E -dD' -- -dD --C
   -- os.execute("gcc      "..ppflags.." libs/blend2d/blend2d.c > t.h")
-  os.execute("gcc  `pkg-config --cflags --libs libadwaita-1`   "..ppflags.." t2.c > t.h")
---   -- os.execute("gcc     -DCAPI -DPOSIX -DGLIBC "..ppflags.." t.c > t.h")
---   -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
---   -- os.execute("tcc      -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
---   -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
---   -- os.execute("c2m      -DCAPI -DPOSIX -DGLIBC -DLIBS -E t.c > t.h")
---   -- os.execute("emcc -DCAPI "..ppflags.." t.c > t.h")
---   -- os.execute("x86_64-w64-mingw32-gcc -DCAPI -DWINDOWS "..ppflags.." t.c > t.h")
---   local c_source = fs.readfile('t.h')
---   local nelua_source = nldecl.generate_bindings_from_c_code(c_source)
+  -- os.execute("gcc  `pkg-config --cflags libadwaita-1`   "..ppflags.." t2.c > t.h")
+  -- os.execute("gcc     -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+  -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+  -- os.execute("tcc      -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+  -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
+  -- os.execute("c2m      -DCAPI -DPOSIX -DGLIBC -DLIBS -E t.c > t.h")
+  -- os.execute("emcc -DCAPI "..ppflags.." t.c > t.h")
+  os.execute("x86_64-w64-mingw32-gcc -DCAPI -DWINDOWS "..ppflags.." t.c > t.h")
+  local c_source = fs.readfile('t.h')
+  local nelua_source = nldecl.generate_bindings_from_c_code(c_source)
 --   nelua_source = [===[
 -- ## cinclude 't.c'
 -- ## cflags '-DCAPI -DPOSIX -DGLIBC `pkg-config --cflags --libs libadwaita-1`'
 -- ]===]..nelua_source
---   fs.writefile('t.nelua', nelua_source)
---   os.execute('nelua -tV t.nelua')
+  fs.writefile('t.nelua', nelua_source)
+  os.execute('nelua -tV t.nelua')
 end)
 
 --[[
