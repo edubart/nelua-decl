@@ -40,6 +40,21 @@ global function mg_strstr(haystack: mg_str, needle: mg_str): cstring <cimport,no
 global function mg_match(str: mg_str, pattern: mg_str, caps: *mg_str): boolean <cimport,nodecl> end
 global function mg_globmatch(pattern: cstring, plen: csize, s: cstring, n: csize): boolean <cimport,nodecl> end
 global function mg_commalist(s: *mg_str, k: *mg_str, v: *mg_str): boolean <cimport,nodecl> end
+global function mg_vsnprintf(buf: cstring, len: csize, fmt: cstring, ap: cvalist): csize <cimport,nodecl> end
+global function mg_snprintf(a1: cstring, a2: csize, fmt: cstring, ...: cvarargs): csize <cimport,nodecl> end
+global function mg_hexdump(buf: pointer, len: csize): cstring <cimport,nodecl> end
+global function mg_hex(buf: pointer, len: csize, dst: cstring): cstring <cimport,nodecl> end
+global function mg_unhex(buf: cstring, len: csize, to: *cuchar): void <cimport,nodecl> end
+global function mg_unhexn(s: cstring, len: csize): culong <cimport,nodecl> end
+global function mg_asprintf(a1: *cstring, a2: csize, fmt: cstring, ...: cvarargs): csize <cimport,nodecl> end
+global function mg_vasprintf(buf: *cstring, size: csize, fmt: cstring, ap: cvalist): csize <cimport,nodecl> end
+global function mg_check_ip_acl(acl: mg_str, remote_ip: uint32): cint <cimport,nodecl> end
+global function mg_to64(str: mg_str): int64 <cimport,nodecl> end
+global MG_LL_NONE: cint <comptime> = 0
+global MG_LL_ERROR: cint <comptime> = 1
+global MG_LL_INFO: cint <comptime> = 2
+global MG_LL_DEBUG: cint <comptime> = 3
+global MG_LL_VERBOSE: cint <comptime> = 4
 global function mg_log(fmt: cstring, ...: cvarargs): void <cimport,nodecl> end
 global function mg_log_prefix(ll: cint, file: cstring, line: cint, fname: cstring): boolean <cimport,nodecl> end
 global function mg_log_set(spec: cstring): void <cimport,nodecl> end
@@ -60,15 +75,15 @@ global MG_FS_READ: cint <comptime> = 1
 global MG_FS_WRITE: cint <comptime> = 2
 global MG_FS_DIR: cint <comptime> = 4
 global mg_fs: type <cimport,nodecl,ctypedef> = @record{
-  stat: function(cstring, *csize, *ctime_t): cint,
-  list: function(cstring, function(cstring, pointer): void, pointer): void,
-  open: function(cstring, cint): pointer,
-  close: function(pointer): void,
-  read: function(pointer, pointer, csize): csize,
-  write: function(pointer, pointer, csize): csize,
-  seek: function(pointer, csize): csize,
-  rename: function(cstring, cstring): boolean,
-  remove: function(cstring): boolean,
+  st: function(cstring, *csize, *ctime_t): cint,
+  ls: function(cstring, function(cstring, pointer): void, pointer): void,
+  op: function(cstring, cint): pointer,
+  cl: function(pointer): void,
+  rd: function(pointer, pointer, csize): csize,
+  wr: function(pointer, pointer, csize): csize,
+  sk: function(pointer, csize): csize,
+  mv: function(cstring, cstring): boolean,
+  rm: function(cstring): boolean,
   mkd: function(cstring): boolean
 }
 global mg_fs_posix: mg_fs <cimport,nodecl>
@@ -87,14 +102,6 @@ global function mg_random(buf: pointer, len: csize): void <cimport,nodecl> end
 global function mg_ntohs(net: uint16): uint16 <cimport,nodecl> end
 global function mg_ntohl(net: uint32): uint32 <cimport,nodecl> end
 global function mg_crc32(crc: uint32, buf: cstring, len: csize): uint32 <cimport,nodecl> end
-global function mg_hexdump(buf: pointer, len: csize): cstring <cimport,nodecl> end
-global function mg_hex(buf: pointer, len: csize, dst: cstring): cstring <cimport,nodecl> end
-global function mg_unhex(buf: cstring, len: csize, to: *cuchar): void <cimport,nodecl> end
-global function mg_unhexn(s: cstring, len: csize): culong <cimport,nodecl> end
-global function mg_asprintf(buf: *cstring, size: csize, fmt: cstring, ...: cvarargs): cint <cimport,nodecl> end
-global function mg_vasprintf(buf: *cstring, size: csize, fmt: cstring, ap: cvalist): cint <cimport,nodecl> end
-global function mg_check_ip_acl(acl: mg_str, remote_ip: uint32): cint <cimport,nodecl> end
-global function mg_to64(str: mg_str): int64 <cimport,nodecl> end
 global function mg_millis(): int64 <cimport,nodecl> end
 global function mg_url_port(url: cstring): cushort <cimport,nodecl> end
 global function mg_url_is_ssl(url: cstring): cint <cimport,nodecl> end
@@ -177,7 +184,8 @@ global mg_mgr: type <cimport,nodecl,ctypedef> = @record{
 mg_connection = @record{
   next: *mg_connection,
   mgr: *mg_mgr,
-  peer: mg_addr,
+  loc: mg_addr,
+  rem: mg_addr,
   fd: pointer,
   id: culong,
   recv: mg_iobuf,
@@ -210,13 +218,16 @@ global function mg_listen(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_
 global function mg_connect(a1: *mg_mgr, url: cstring, fn: mg_event_handler_t, fn_data: pointer): *mg_connection <cimport,nodecl> end
 global function mg_connect_resolved(a1: *mg_connection): void <cimport,nodecl> end
 global function mg_send(a1: *mg_connection, a2: pointer, a3: csize): boolean <cimport,nodecl> end
-global function mg_printf(a1: *mg_connection, fmt: cstring, ...: cvarargs): cint <cimport,nodecl> end
-global function mg_vprintf(a1: *mg_connection, fmt: cstring, ap: cvalist): cint <cimport,nodecl> end
+global function mg_printf(a1: *mg_connection, fmt: cstring, ...: cvarargs): csize <cimport,nodecl> end
+global function mg_vprintf(a1: *mg_connection, fmt: cstring, ap: cvalist): csize <cimport,nodecl> end
 global function mg_straddr(a1: *mg_addr, a2: cstring, a3: csize): cstring <cimport,nodecl> end
 global function mg_aton(str: mg_str, addr: *mg_addr): boolean <cimport,nodecl> end
 global function mg_ntoa(addr: *mg_addr, buf: cstring, len: csize): cstring <cimport,nodecl> end
 global function mg_mkpipe(a1: *mg_mgr, a2: mg_event_handler_t, a3: pointer): *mg_connection <cimport,nodecl> end
 global function mg_mgr_wakeup(pipe: *mg_connection, buf: pointer, len: csize): void <cimport,nodecl> end
+global function mg_alloc_conn(a1: *mg_mgr): *mg_connection <cimport,nodecl> end
+global function mg_close_conn(c: *mg_connection): void <cimport,nodecl> end
+global function mg_open_listener(c: *mg_connection, url: cstring): boolean <cimport,nodecl> end
 global mg_http_header: type <cimport,nodecl,ctypedef> = @record{
   name: mg_str,
   value: mg_str
@@ -264,6 +275,7 @@ global function mg_http_upload(a1: *mg_connection, hm: *mg_http_message, fs: *mg
 global function mg_http_bauth(a1: *mg_connection, user: cstring, pass: cstring): void <cimport,nodecl> end
 global function mg_http_get_header_var(s: mg_str, v: mg_str): mg_str <cimport,nodecl> end
 global function mg_http_next_multipart(a1: mg_str, a2: csize, a3: *mg_http_part): csize <cimport,nodecl> end
+global function mg_http_status(hm: *mg_http_message): cint <cimport,nodecl> end
 global function mg_http_serve_ssi(c: *mg_connection, root: cstring, fullpath: cstring): void <cimport,nodecl> end
 global mg_tls_opts: type <cimport,nodecl,ctypedef> = @record{
   ca: cstring,
@@ -357,7 +369,6 @@ global MG_ARCH_FREERTOS_TCP: cint <comptime> = 5
 global MG_ARCH_FREERTOS_LWIP: cint <comptime> = 6
 global MG_ARCH_AZURERTOS: cint <comptime> = 7
 global MG_ARCH: cint <comptime> = MG_ARCH_UNIX
-global MG_INT64_FMT: cint <cimport,nodecl,const>
 global MG_ENABLE_DIRLIST: cint <comptime> = 1
 global MG_ENABLE_FATFS: cint <comptime> = 0
 global MG_FATFS_ROOT: cstring <comptime> = "/"

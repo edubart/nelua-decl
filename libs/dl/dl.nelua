@@ -45,6 +45,14 @@ global Dl_serinfo: type <cimport,nodecl> = @record{
     __dls_serpath_pad: [1]Dl_serpath
   }
 }
+global dl_find_object: type <cimport,nodecl,ctypedef> = @record{
+  dlfo_flags: culonglong,
+  dlfo_map_start: pointer,
+  dlfo_map_end: pointer,
+  dlfo_link_map: *link_map,
+  dlfo_eh_frame: pointer,
+  __dflo_reserved: [7]culonglong
+}
 global RTLD_LAZY: cint <comptime> = 0x00001
 global RTLD_NOW: cint <comptime> = 0x00002
 global RTLD_BINDING_MASK: cint <comptime> = 0x3

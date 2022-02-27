@@ -31,6 +31,8 @@ global function mfs_open_and_write_file(pFilePath: cstring, fileSize: csize, pFi
 global function mfs_set_current_directory(pDirectoryPath: cstring): cint <cimport,nodecl> end
 global function mfs_get_current_directory(pDirectoryPath: cstring, directoryPathSizeInBytes: csize): cint <cimport,nodecl> end
 global function mfs_mkdir(pDirectory: cstring, recursive: cuint): cint <cimport,nodecl> end
+global function mfs_rmdir(pDirectory: cstring, recursive: cuint): cint <cimport,nodecl> end
+global function mfs_rmdir_content(pDirectory: cstring): cint <cimport,nodecl> end
 global function mfs_is_directory(pPath: cstring): cuint <cimport,nodecl> end
 global function mfs_file_exists(pFilePath: cstring): cuint <cimport,nodecl> end
 global function mfs_copy_file(pSrcFilePath: cstring, pDstFilePath: cstring, failIfExists: cuint): cint <cimport,nodecl> end
