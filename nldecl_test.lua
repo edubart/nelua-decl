@@ -849,67 +849,249 @@ it("parse errors", function()
   end, 'not supported yet')
 end)
 
+-- it("high level API", function()
+--   nldecl.generate_bindings_file{
+--     output_file = 'sdl2.nelua',
+--     parse_includes = {
+--       '<stddef.h>',
+--       '<stdbool.h>',
+--       '<stdint.h>',
+--       '<assert.h>',
+--       '<ctype.h>',
+--       '<errno.h>',
+--       '<fenv.h>',
+--       '<float.h>',
+--       '<inttypes.h>',
+--       '<limits.h>',
+--       '<locale.h>',
+--       '<math.h>',
+--       '<setjmp.h>',
+--       '<signal.h>',
+--       '<stdalign.h>',
+--       '<stdarg.h>',
+--       '<stdio.h>',
+--       '<stdlib.h>',
+--       '<stdnoreturn.h>',
+--       '<string.h>',
+--       '<time.h>',
+--       '<uchar.h>',
+--       '<wchar.h>',
+--       '<wctype.h>',
+--   },
+--     parse_defines = {'_GNU_SOURCE'},
+--     cc = 'gcc',
+--     opaque_names = {
+--       FILE=true,
+--     },
+--     output_head = [====[
+-- ## cinclude '<stdio.h>'
+-- ]====]
+--   }
+-- end)
+
+-- it("high level API", function()
+--   nldecl.generate_bindings_file{
+--     output_file = 'dnnl.nelua',
+--     parse_includes = {
+--       '<oneapi/dnnl/dnnl.h>',
+--       '<oneapi/dnnl/dnnl_debug.h>',
+--     },
+--     include_dirs = {
+--       '/home/bart/apps/oneDNN/build/include'
+--     },
+--     parse_defines = {'_GNU_SOURCE'},
+--     cc = 'gcc',
+--     opaque_names = {
+--       FILE=true,
+--     },
+--     include_names = {
+--       '^dnnl_',
+--       '^DNNL_',
+--     },
+--     output_head = [====[
+-- ## cinclude '<oneapi/dnnl/dnnl.h>'
+-- ## cinclude '<oneapi/dnnl/dnnl_debug.h>'
+-- ## linklib 'dnnl'
+-- ]====]
+--   }
+-- end)
+
+--[[
 it("high level API", function()
   nldecl.generate_bindings_file{
-    output_file = 'sdl2.nelua',
+    output_file = 'mlir.nelua',
     parse_includes = {
-      '<stddef.h>',
-      '<stdbool.h>',
-      '<stdint.h>',
-      '<assert.h>',
-      '<ctype.h>',
-      '<errno.h>',
-      '<fenv.h>',
-      '<float.h>',
-      '<inttypes.h>',
-      '<limits.h>',
-      '<locale.h>',
-      '<math.h>',
-      '<setjmp.h>',
-      '<signal.h>',
-      '<stdalign.h>',
-      '<stdarg.h>',
-      '<stdio.h>',
-      '<stdlib.h>',
-      '<stdnoreturn.h>',
-      '<string.h>',
-      '<time.h>',
-      '<uchar.h>',
-      '<wchar.h>',
-      '<wctype.h>',
-  },
-    parse_defines = {'_GNU_SOURCE'},
-    cc = 'gcc',
-    opaque_names = {
-      FILE=true,
+      '<mlir-c/AffineExpr.h>',
+      '<mlir-c/AffineMap.h>',
+      '<mlir-c/BuiltinAttributes.h>',
+      '<mlir-c/BuiltinTypes.h>',
+      '<mlir-c/Conversion.h>',
+      '<mlir-c/Debug.h>',
+      '<mlir-c/Diagnostics.h>',
+      '<mlir-c/ExecutionEngine.h>',
+      '<mlir-c/IntegerSet.h>',
+      '<mlir-c/Interfaces.h>',
+      '<mlir-c/IR.h>',
+      '<mlir-c/Pass.h>',
+      '<mlir-c/Registration.h>',
+      '<mlir-c/Support.h>',
+      '<mlir-c/Transforms.h>',
+      '<mlir-c/IR.h>',
+      '<mlir-c/Dialect/Async.h>',
+      '<mlir-c/Dialect/Func.h>',
+      '<mlir-c/Dialect/GPU.h>',
+      '<mlir-c/Dialect/Linalg.h>',
+      '<mlir-c/Dialect/LLVM.h>',
+      '<mlir-c/Dialect/PDL.h>',
+      '<mlir-c/Dialect/Quant.h>',
+      '<mlir-c/Dialect/SCF.h>',
+      '<mlir-c/Dialect/Shape.h>',
+      '<mlir-c/Dialect/SparseTensor.h>',
+      '<mlir-c/Dialect/Standard.h>',
+      '<mlir-c/Dialect/Tensor.h>',
     },
-    output_head = [====[
-## cinclude '<stdio.h>'
-]====]
+    include_dirs = {
+      '/home/bart/apps/llvm/include'
+    },
+    cc = 'gcc',
+    include_names = {
+      '^mlir',
+      '^MLIR',
+    }
   }
 end)
+]]
 
-it("big C file", function()
-  local fs = require 'nelua.utils.fs'
-  local ppflags = '-E -dD' -- -dD --C
-  -- os.execute("gcc      "..ppflags.." libs/blend2d/blend2d.c > t.h")
-  -- os.execute("gcc  `pkg-config --cflags libadwaita-1`   "..ppflags.." t2.c > t.h")
-  -- os.execute("gcc     -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
-  -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
-  -- os.execute("tcc      -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
-  -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
-  -- os.execute("c2m      -DCAPI -DPOSIX -DGLIBC -DLIBS -E t.c > t.h")
-  -- os.execute("emcc -DCAPI "..ppflags.." t.c > t.h")
-  os.execute("x86_64-w64-mingw32-gcc -DCAPI -DWINDOWS "..ppflags.." t.c > t.h")
-  local c_source = fs.readfile('t.h')
-  local nelua_source = nldecl.generate_bindings_from_c_code(c_source)
---   nelua_source = [===[
--- ## cinclude 't.c'
--- ## cflags '-DCAPI -DPOSIX -DGLIBC `pkg-config --cflags --libs libadwaita-1`'
--- ]===]..nelua_source
-  fs.writefile('t.nelua', nelua_source)
-  os.execute('nelua -tV t.nelua')
+--[[
+it("high level API", function()
+  nldecl.generate_bindings_file{
+    output_file = 'tensorflow.nelua',
+    parse_includes = {
+      '<tensorflow/c/c_api.h>',
+      -- '<tensorflow/c/c_api_experimental.h>',
+      '<tensorflow/c/eager/c_api.h>',
+      -- '<tensorflow/c/eager/c_api_experimental.h>',
+    },
+    cc = 'gcc',
+    include_dirs = {
+      '/usr/include/tensorflow'
+    },
+    include_names = {
+      '^TF_',
+      '^TFE_',
+    }
+  }
 end)
+]]
+
+-- it("high level API", function()
+--   nldecl.generate_bindings_file{
+--     output_file = 'cudnn.nelua',
+--     parse_includes = {
+--       '<cudnn_backend.h>',
+--       '<cuda_runtime.h>',
+--       '<cublas_v2.h>',
+--     },
+--     cc = 'gcc',
+--     include_dirs = {
+--       '/opt/cuda/targets/x86_64-linux/include'
+--     },
+--     include_names = {
+--       '^CUDNN',
+--       '^cudnn',
+--       '^CUDA',
+--       '^cuda',
+--       '^cublas',
+--       '^CUBLAS',
+--     }
+--   }
+-- end)
+
+--[[
+it("high level API", function()
+  nldecl.generate_bindings_file{
+    output_file = 'omp.nelua',
+    parse_includes = {
+      '<omp.h>',
+    },
+    cc = 'clang',
+    include_names = {
+      '^OMP',
+      '^omp',
+      '^llvm_omp',
+    }
+  }
+end)
+]]
+
+-- it("high level API", function()
+--   nldecl.generate_bindings_file{
+--     output_file = 'mkl.nelua',
+--     parse_includes = {
+--       '<mkl.h>',
+--     },
+--     cc = 'gcc',
+--     include_dirs = {
+--       '/opt/intel/mkl/include'
+--     },
+--     include_names = {
+--       '^mkl',
+--       '^MKL',
+--       '^cblas',
+--       '^CBLAS',
+--     }
+--   }
+-- end)
+
+
+-- it("high level API", function()
+--   nldecl.generate_bindings_file{
+--     output_file = 'iree.nelua',
+--     parse_includes = {
+--       '<iree/base/api.h>',
+--       -- '<iree/vm/api.h>',
+--       -- '<iree/hal/api.h>',
+--     },
+--     cc = 'gcc',
+--     include_dirs = {
+--       '/home/bart/apps/iree'
+--     },
+--     include_names = {
+--       '^iree',
+--       '^IREE',
+--     }
+--   }
+-- end)
+
+-- it("big C file", function()
+--   local fs = require 'nelua.utils.fs'
+--   local ppflags = '-E -dD' -- -dD --C
+--   -- os.execute("gcc      "..ppflags.." libs/blend2d/blend2d.c > t.h")
+--   os.execute("gcc  `pkg-config --cflags libadwaita-1`   "..ppflags.." t2.c > t.h")
+--   -- os.execute("gcc     -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+--   -- os.execute("clang    -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+--   -- os.execute("tcc      -DCAPI -DPOSIX -DGLIBC -DLIBS "..ppflags.." t.c > t.h")
+--   -- os.execute("musl-gcc -DCAPI -DMUSLC -I/usr/lib/zig/libc/include/any-linux-any "..ppflags.." t.c > t.h")
+--   -- os.execute("c2m      -DCAPI -DPOSIX -DGLIBC -DLIBS -E t.c > t.h")
+--   -- os.execute("emcc -DCAPI "..ppflags.." t.c > t.h")
+--   -- os.execute("x86_64-w64-mingw32-gcc -DCAPI -DWINDOWS "..ppflags.." t.c > t.h")
+--   local c_source = fs.readfile('t.h')
+--   local nelua_source = nldecl.generate_bindings_from_c_code(c_source, {
+--     -- include_names = {
+--     --   '^gtk', '^Gtk', '^GTK',
+--     --   -- '^gdk', '^Gdk', '^GDK',
+--     --   -- '^gsk', '^Gsk', '^GSK',
+--     --   '^adw', '^ADW', '^Adw',
+--     --   '^g_', '^G_', '^G[A-Z]'
+--     -- }
+--   })
+-- --   nelua_source = [===[
+-- -- ## cinclude 't.c'
+-- -- ## cflags '-DCAPI -DPOSIX -DGLIBC `pkg-config --cflags --libs libadwaita-1`'
+-- -- ]===]..nelua_source
+--   fs.writefile('t.nelua', nelua_source)
+--   os.execute('nelua -tV t.nelua')
+-- end)
 
 --[[
 cbindings {

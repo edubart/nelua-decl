@@ -1764,6 +1764,10 @@ parse_bindings_visitors['function-definition'] = function(context, node)
   end
 end
 
+parse_bindings_visitors['static_assert-declaration'] = function()
+  -- ignore
+end
+
 parse_bindings_visitors['declaration'] = function(context, node)
   context:traverse_nodes(node)
 end
@@ -2278,6 +2282,12 @@ local function preprocess_c_code(ccode, opts)
   local cfilename = gen_c_file(ccode)
   local cc = opts.cc or 'gcc'
   local ccargs = {'-E', '-dD', '-P', cfilename}
+  if opts.include_dirs then
+    for _,incdir in ipairs(opts.include_dirs) do
+      table.insert(ccargs, '-I')
+      table.insert(ccargs, incdir)
+    end
+  end
   local ok, status, stdout, stderr = executor.execex(cc, ccargs)
   fs.deletefile(cfilename)
   assert(ok and stdout, stderr or 'failed to preprocess C code')
