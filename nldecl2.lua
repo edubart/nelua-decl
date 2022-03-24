@@ -1921,8 +1921,10 @@ function generate_bindings_visitors.CType(context, node, emitter)
     local resolvedtype = context:resolve_typename(name)
     if type(resolvedtype) == 'string' then
       emitter:add(resolvedtype)
-    else -- a node
+    elseif resolvedtype then -- a node
       context:traverse_node(resolvedtype, emitter)
+    else
+      emitter:add(name)
     end
   end
 end
@@ -2243,7 +2245,7 @@ local nldecl = {}
 function nldecl.generate_bindings_from_c_code(ccode, opts)
   local context = BindingContext.create(opts)
   -- local start = os.clock()
-  context.c_ast, context.c_typedefs = assert(parse_c11(ccode))
+  context.c_ast, context.c_typedefs = assert(parse_c11(ccode, nil, opts.parse_typedefs))
   -- print('parse1', os.clock() - start) start = os.clock()
   parse_c_declarations(context)
   -- print('parse2', os.clock() - start) start = os.clock()
