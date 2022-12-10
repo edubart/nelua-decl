@@ -1,0 +1,39 @@
+##[[
+if not RPNG_NO_IMPL then
+  cdefine 'RPNG_IMPLEMENTATION'
+end
+cinclude 'rpng.h'
+]]
+global rpng_chunk: type <cimport,nodecl> = @record{
+  length: cint,
+  type: [4]cuchar,
+  data: *cuchar,
+  crc: cuint
+}
+global function rpng_load_image(filename: cstring, width: *cint, height: *cint, color_channels: *cint, bit_depth: *cint): cstring <cimport,nodecl> end
+global function rpng_save_image(filename: cstring, data: cstring, width: cint, height: cint, color_channels: cint, bit_depth: cint): void <cimport,nodecl> end
+global function rpng_chunk_count(filename: cstring): cint <cimport,nodecl> end
+global function rpng_chunk_read(filename: cstring, chunk_type: cstring): rpng_chunk <cimport,nodecl> end
+global function rpng_chunk_read_all(filename: cstring, count: *cint): *rpng_chunk <cimport,nodecl> end
+global function rpng_chunk_remove(filename: cstring, chunk_type: cstring): void <cimport,nodecl> end
+global function rpng_chunk_remove_ancillary(filename: cstring): void <cimport,nodecl> end
+global function rpng_chunk_write(filename: cstring, data: rpng_chunk): void <cimport,nodecl> end
+global function rpng_chunk_write_text(filename: cstring, keyword: cstring, text: cstring): void <cimport,nodecl> end
+global function rpng_chunk_write_comp_text(filename: cstring, keyword: cstring, text: cstring): void <cimport,nodecl> end
+global function rpng_chunk_write_gamma(filename: cstring, gamma: float32): void <cimport,nodecl> end
+global function rpng_chunk_write_srgb(filename: cstring, srgb_type: cchar): void <cimport,nodecl> end
+global function rpng_chunk_write_time(filename: cstring, year: cshort, month: cchar, day: cchar, hour: cchar, min: cchar, sec: cchar): void <cimport,nodecl> end
+global function rpng_chunk_write_physical_size(filename: cstring, pixels_unit_x: cint, pixels_unit_y: cint, meters: boolean): void <cimport,nodecl> end
+global function rpng_chunk_write_chroma(filename: cstring, white_x: float32, white_y: float32, red_x: float32, red_y: float32, green_x: float32, green_y: float32, blue_x: float32, blue_y: float32): void <cimport,nodecl> end
+global function rpng_chunk_print_info(filename: cstring): void <cimport,nodecl> end
+global function rpng_chunk_check_all_valid(filename: cstring): boolean <cimport,nodecl> end
+global function rpng_chunk_combine_image_data(filename: cstring): void <cimport,nodecl> end
+global function rpng_chunk_split_image_data(filename: cstring, split_size: cint): void <cimport,nodecl> end
+global function rpng_chunk_count_from_memory(buffer: cstring): cint <cimport,nodecl> end
+global function rpng_chunk_read_from_memory(buffer: cstring, chunk_type: cstring): rpng_chunk <cimport,nodecl> end
+global function rpng_chunk_read_all_from_memory(buffer: cstring, count: *cint): *rpng_chunk <cimport,nodecl> end
+global function rpng_chunk_remove_from_memory(buffer: cstring, chunk_type: cstring, output_size: *cint): cstring <cimport,nodecl> end
+global function rpng_chunk_remove_ancillary_from_memory(buffer: cstring, output_size: *cint): cstring <cimport,nodecl> end
+global function rpng_chunk_write_from_memory(buffer: cstring, chunk: rpng_chunk, output_size: *cint): cstring <cimport,nodecl> end
+global function rpng_chunk_combine_image_data_from_memory(buffer: cstring, output_size: *cint): cstring <cimport,nodecl> end
+global function rpng_chunk_split_image_data_from_memory(buffer: cstring, split_size: cint, output_size: *cint): cstring <cimport,nodecl> end

@@ -1,0 +1,1556 @@
+global cudaRoundMode: type <cimport,nodecl,using,ctypedef'cudaRoundMode'> = @enum(cint){
+  cudaRoundNearest = 0,
+  cudaRoundZero = 1,
+  cudaRoundPosInf = 2,
+  cudaRoundMinInf = 3
+}
+global dim3: type <cimport,nodecl> = @record{
+  x: cuint,
+  y: cuint,
+  z: cuint
+}
+global cudaError_t: type <cimport,nodecl,using> = @enum(cint){
+  cudaSuccess = 0,
+  cudaErrorInvalidValue = 1,
+  cudaErrorMemoryAllocation = 2,
+  cudaErrorInitializationError = 3,
+  cudaErrorCudartUnloading = 4,
+  cudaErrorProfilerDisabled = 5,
+  cudaErrorProfilerNotInitialized = 6,
+  cudaErrorProfilerAlreadyStarted = 7,
+  cudaErrorProfilerAlreadyStopped = 8,
+  cudaErrorInvalidConfiguration = 9,
+  cudaErrorInvalidPitchValue = 12,
+  cudaErrorInvalidSymbol = 13,
+  cudaErrorInvalidHostPointer = 16,
+  cudaErrorInvalidDevicePointer = 17,
+  cudaErrorInvalidTexture = 18,
+  cudaErrorInvalidTextureBinding = 19,
+  cudaErrorInvalidChannelDescriptor = 20,
+  cudaErrorInvalidMemcpyDirection = 21,
+  cudaErrorAddressOfConstant = 22,
+  cudaErrorTextureFetchFailed = 23,
+  cudaErrorTextureNotBound = 24,
+  cudaErrorSynchronizationError = 25,
+  cudaErrorInvalidFilterSetting = 26,
+  cudaErrorInvalidNormSetting = 27,
+  cudaErrorMixedDeviceExecution = 28,
+  cudaErrorNotYetImplemented = 31,
+  cudaErrorMemoryValueTooLarge = 32,
+  cudaErrorStubLibrary = 34,
+  cudaErrorInsufficientDriver = 35,
+  cudaErrorCallRequiresNewerDriver = 36,
+  cudaErrorInvalidSurface = 37,
+  cudaErrorDuplicateVariableName = 43,
+  cudaErrorDuplicateTextureName = 44,
+  cudaErrorDuplicateSurfaceName = 45,
+  cudaErrorDevicesUnavailable = 46,
+  cudaErrorIncompatibleDriverContext = 49,
+  cudaErrorMissingConfiguration = 52,
+  cudaErrorPriorLaunchFailure = 53,
+  cudaErrorLaunchMaxDepthExceeded = 65,
+  cudaErrorLaunchFileScopedTex = 66,
+  cudaErrorLaunchFileScopedSurf = 67,
+  cudaErrorSyncDepthExceeded = 68,
+  cudaErrorLaunchPendingCountExceeded = 69,
+  cudaErrorInvalidDeviceFunction = 98,
+  cudaErrorNoDevice = 100,
+  cudaErrorInvalidDevice = 101,
+  cudaErrorDeviceNotLicensed = 102,
+  cudaErrorSoftwareValidityNotEstablished = 103,
+  cudaErrorStartupFailure = 127,
+  cudaErrorInvalidKernelImage = 200,
+  cudaErrorDeviceUninitialized = 201,
+  cudaErrorMapBufferObjectFailed = 205,
+  cudaErrorUnmapBufferObjectFailed = 206,
+  cudaErrorArrayIsMapped = 207,
+  cudaErrorAlreadyMapped = 208,
+  cudaErrorNoKernelImageForDevice = 209,
+  cudaErrorAlreadyAcquired = 210,
+  cudaErrorNotMapped = 211,
+  cudaErrorNotMappedAsArray = 212,
+  cudaErrorNotMappedAsPointer = 213,
+  cudaErrorECCUncorrectable = 214,
+  cudaErrorUnsupportedLimit = 215,
+  cudaErrorDeviceAlreadyInUse = 216,
+  cudaErrorPeerAccessUnsupported = 217,
+  cudaErrorInvalidPtx = 218,
+  cudaErrorInvalidGraphicsContext = 219,
+  cudaErrorNvlinkUncorrectable = 220,
+  cudaErrorJitCompilerNotFound = 221,
+  cudaErrorUnsupportedPtxVersion = 222,
+  cudaErrorJitCompilationDisabled = 223,
+  cudaErrorUnsupportedExecAffinity = 224,
+  cudaErrorUnsupportedDevSideSync = 225,
+  cudaErrorInvalidSource = 300,
+  cudaErrorFileNotFound = 301,
+  cudaErrorSharedObjectSymbolNotFound = 302,
+  cudaErrorSharedObjectInitFailed = 303,
+  cudaErrorOperatingSystem = 304,
+  cudaErrorInvalidResourceHandle = 400,
+  cudaErrorIllegalState = 401,
+  cudaErrorSymbolNotFound = 500,
+  cudaErrorNotReady = 600,
+  cudaErrorIllegalAddress = 700,
+  cudaErrorLaunchOutOfResources = 701,
+  cudaErrorLaunchTimeout = 702,
+  cudaErrorLaunchIncompatibleTexturing = 703,
+  cudaErrorPeerAccessAlreadyEnabled = 704,
+  cudaErrorPeerAccessNotEnabled = 705,
+  cudaErrorSetOnActiveProcess = 708,
+  cudaErrorContextIsDestroyed = 709,
+  cudaErrorAssert = 710,
+  cudaErrorTooManyPeers = 711,
+  cudaErrorHostMemoryAlreadyRegistered = 712,
+  cudaErrorHostMemoryNotRegistered = 713,
+  cudaErrorHardwareStackError = 714,
+  cudaErrorIllegalInstruction = 715,
+  cudaErrorMisalignedAddress = 716,
+  cudaErrorInvalidAddressSpace = 717,
+  cudaErrorInvalidPc = 718,
+  cudaErrorLaunchFailure = 719,
+  cudaErrorCooperativeLaunchTooLarge = 720,
+  cudaErrorNotPermitted = 800,
+  cudaErrorNotSupported = 801,
+  cudaErrorSystemNotReady = 802,
+  cudaErrorSystemDriverMismatch = 803,
+  cudaErrorCompatNotSupportedOnDevice = 804,
+  cudaErrorMpsConnectionFailed = 805,
+  cudaErrorMpsRpcFailure = 806,
+  cudaErrorMpsServerNotReady = 807,
+  cudaErrorMpsMaxClientsReached = 808,
+  cudaErrorMpsMaxConnectionsReached = 809,
+  cudaErrorMpsClientTerminated = 810,
+  cudaErrorCdpNotSupported = 811,
+  cudaErrorCdpVersionMismatch = 812,
+  cudaErrorStreamCaptureUnsupported = 900,
+  cudaErrorStreamCaptureInvalidated = 901,
+  cudaErrorStreamCaptureMerge = 902,
+  cudaErrorStreamCaptureUnmatched = 903,
+  cudaErrorStreamCaptureUnjoined = 904,
+  cudaErrorStreamCaptureIsolation = 905,
+  cudaErrorStreamCaptureImplicit = 906,
+  cudaErrorCapturedEvent = 907,
+  cudaErrorStreamCaptureWrongThread = 908,
+  cudaErrorTimeout = 909,
+  cudaErrorGraphExecUpdateFailure = 910,
+  cudaErrorExternalDevice = 911,
+  cudaErrorInvalidClusterSize = 912,
+  cudaErrorUnknown = 999,
+  cudaErrorApiFailureBase = 10000
+}
+global cudaChannelFormatKind: type <cimport,nodecl,using,ctypedef'cudaChannelFormatKind'> = @enum(cint){
+  cudaChannelFormatKindSigned = 0,
+  cudaChannelFormatKindUnsigned = 1,
+  cudaChannelFormatKindFloat = 2,
+  cudaChannelFormatKindNone = 3,
+  cudaChannelFormatKindNV12 = 4,
+  cudaChannelFormatKindUnsignedNormalized8X1 = 5,
+  cudaChannelFormatKindUnsignedNormalized8X2 = 6,
+  cudaChannelFormatKindUnsignedNormalized8X4 = 7,
+  cudaChannelFormatKindUnsignedNormalized16X1 = 8,
+  cudaChannelFormatKindUnsignedNormalized16X2 = 9,
+  cudaChannelFormatKindUnsignedNormalized16X4 = 10,
+  cudaChannelFormatKindSignedNormalized8X1 = 11,
+  cudaChannelFormatKindSignedNormalized8X2 = 12,
+  cudaChannelFormatKindSignedNormalized8X4 = 13,
+  cudaChannelFormatKindSignedNormalized16X1 = 14,
+  cudaChannelFormatKindSignedNormalized16X2 = 15,
+  cudaChannelFormatKindSignedNormalized16X4 = 16,
+  cudaChannelFormatKindUnsignedBlockCompressed1 = 17,
+  cudaChannelFormatKindUnsignedBlockCompressed1SRGB = 18,
+  cudaChannelFormatKindUnsignedBlockCompressed2 = 19,
+  cudaChannelFormatKindUnsignedBlockCompressed2SRGB = 20,
+  cudaChannelFormatKindUnsignedBlockCompressed3 = 21,
+  cudaChannelFormatKindUnsignedBlockCompressed3SRGB = 22,
+  cudaChannelFormatKindUnsignedBlockCompressed4 = 23,
+  cudaChannelFormatKindSignedBlockCompressed4 = 24,
+  cudaChannelFormatKindUnsignedBlockCompressed5 = 25,
+  cudaChannelFormatKindSignedBlockCompressed5 = 26,
+  cudaChannelFormatKindUnsignedBlockCompressed6H = 27,
+  cudaChannelFormatKindSignedBlockCompressed6H = 28,
+  cudaChannelFormatKindUnsignedBlockCompressed7 = 29,
+  cudaChannelFormatKindUnsignedBlockCompressed7SRGB = 30
+}
+global cudaChannelFormatDesc: type <cimport,nodecl,ctypedef'cudaChannelFormatDesc'> = @record{
+  x: cint,
+  y: cint,
+  z: cint,
+  w: cint,
+  f: cudaChannelFormatKind
+}
+global cudaArray: type <cimport,nodecl,ctypedef'cudaArray',forwarddecl> = @record{}
+global cudaArray_t: type <cimport,nodecl> = @*cudaArray
+global cudaArray_const_t: type <cimport,nodecl> = @*cudaArray
+global cudaMipmappedArray: type <cimport,nodecl,ctypedef'cudaMipmappedArray',forwarddecl> = @record{}
+global cudaMipmappedArray_t: type <cimport,nodecl> = @*cudaMipmappedArray
+global cudaMipmappedArray_const_t: type <cimport,nodecl> = @*cudaMipmappedArray
+global cudaArraySparseProperties: type <cimport,nodecl,ctypedef'cudaArraySparseProperties'> = @record{
+  tileExtent: record{
+    width: cuint,
+    height: cuint,
+    depth: cuint
+  },
+  miptailFirstLevel: cuint,
+  miptailSize: culonglong,
+  flags: cuint,
+  reserved: [4]cuint
+}
+global cudaArrayMemoryRequirements: type <cimport,nodecl,ctypedef'cudaArrayMemoryRequirements'> = @record{
+  size: csize,
+  alignment: csize,
+  reserved: [4]cuint
+}
+global cudaMemoryType: type <cimport,nodecl,using,ctypedef'cudaMemoryType'> = @enum(cint){
+  cudaMemoryTypeUnregistered = 0,
+  cudaMemoryTypeHost = 1,
+  cudaMemoryTypeDevice = 2,
+  cudaMemoryTypeManaged = 3
+}
+global cudaMemcpyKind: type <cimport,nodecl,using,ctypedef'cudaMemcpyKind'> = @enum(cint){
+  cudaMemcpyHostToHost = 0,
+  cudaMemcpyHostToDevice = 1,
+  cudaMemcpyDeviceToHost = 2,
+  cudaMemcpyDeviceToDevice = 3,
+  cudaMemcpyDefault = 4
+}
+global cudaPitchedPtr: type <cimport,nodecl,ctypedef'cudaPitchedPtr'> = @record{
+  ptr: pointer,
+  pitch: csize,
+  xsize: csize,
+  ysize: csize
+}
+global cudaExtent: type <cimport,nodecl,ctypedef'cudaExtent'> = @record{
+  width: csize,
+  height: csize,
+  depth: csize
+}
+global cudaPos: type <cimport,nodecl,ctypedef'cudaPos'> = @record{
+  x: csize,
+  y: csize,
+  z: csize
+}
+global cudaMemcpy3DParms: type <cimport,nodecl,ctypedef'cudaMemcpy3DParms'> = @record{
+  srcArray: cudaArray_t,
+  srcPos: cudaPos,
+  srcPtr: cudaPitchedPtr,
+  dstArray: cudaArray_t,
+  dstPos: cudaPos,
+  dstPtr: cudaPitchedPtr,
+  extent: cudaExtent,
+  kind: cudaMemcpyKind
+}
+global cudaMemcpy3DPeerParms: type <cimport,nodecl,ctypedef'cudaMemcpy3DPeerParms'> = @record{
+  srcArray: cudaArray_t,
+  srcPos: cudaPos,
+  srcPtr: cudaPitchedPtr,
+  srcDevice: cint,
+  dstArray: cudaArray_t,
+  dstPos: cudaPos,
+  dstPtr: cudaPitchedPtr,
+  dstDevice: cint,
+  extent: cudaExtent
+}
+global cudaMemsetParams: type <cimport,nodecl,ctypedef'cudaMemsetParams'> = @record{
+  dst: pointer,
+  pitch: csize,
+  value: cuint,
+  elementSize: cuint,
+  width: csize,
+  height: csize
+}
+global cudaAccessProperty: type <cimport,nodecl,using,ctypedef'cudaAccessProperty'> = @enum(cint){
+  cudaAccessPropertyNormal = 0,
+  cudaAccessPropertyStreaming = 1,
+  cudaAccessPropertyPersisting = 2
+}
+global cudaAccessPolicyWindow: type <cimport,nodecl,ctypedef'cudaAccessPolicyWindow'> = @record{
+  base_ptr: pointer,
+  num_bytes: csize,
+  hitRatio: float32,
+  hitProp: cudaAccessProperty,
+  missProp: cudaAccessProperty
+}
+global cudaHostFn_t: type <cimport,nodecl> = @function(userData: pointer): void
+global cudaHostNodeParams: type <cimport,nodecl,ctypedef'cudaHostNodeParams'> = @record{
+  fn: cudaHostFn_t,
+  userData: pointer
+}
+global cudaStreamCaptureStatus: type <cimport,nodecl,using,ctypedef'cudaStreamCaptureStatus'> = @enum(cint){
+  cudaStreamCaptureStatusNone = 0,
+  cudaStreamCaptureStatusActive = 1,
+  cudaStreamCaptureStatusInvalidated = 2
+}
+global cudaStreamCaptureMode: type <cimport,nodecl,using,ctypedef'cudaStreamCaptureMode'> = @enum(cint){
+  cudaStreamCaptureModeGlobal = 0,
+  cudaStreamCaptureModeThreadLocal = 1,
+  cudaStreamCaptureModeRelaxed = 2
+}
+global cudaSynchronizationPolicy: type <cimport,nodecl,using,ctypedef'cudaSynchronizationPolicy'> = @enum(cint){
+  cudaSyncPolicyAuto = 1,
+  cudaSyncPolicySpin = 2,
+  cudaSyncPolicyYield = 3,
+  cudaSyncPolicyBlockingSync = 4
+}
+global cudaClusterSchedulingPolicy: type <cimport,nodecl,using,ctypedef'cudaClusterSchedulingPolicy'> = @enum(cint){
+  cudaClusterSchedulingPolicyDefault = 0,
+  cudaClusterSchedulingPolicySpread = 1,
+  cudaClusterSchedulingPolicyLoadBalancing = 2
+}
+global cudaStreamUpdateCaptureDependenciesFlags: type <cimport,nodecl,using,ctypedef'cudaStreamUpdateCaptureDependenciesFlags'> = @enum(cint){
+  cudaStreamAddCaptureDependencies = 0,
+  cudaStreamSetCaptureDependencies = 1
+}
+global cudaUserObjectFlags: type <cimport,nodecl,using,ctypedef'cudaUserObjectFlags'> = @enum(cint){
+  cudaUserObjectNoDestructorSync = 1
+}
+global cudaUserObjectRetainFlags: type <cimport,nodecl,using,ctypedef'cudaUserObjectRetainFlags'> = @enum(cint){
+  cudaGraphUserObjectMove = 1
+}
+global cudaGraphicsResource: type <cimport,nodecl,ctypedef'cudaGraphicsResource',forwarddecl> = @record{}
+global cudaGraphicsRegisterFlags: type <cimport,nodecl,using,ctypedef'cudaGraphicsRegisterFlags'> = @enum(cint){
+  cudaGraphicsRegisterFlagsNone = 0,
+  cudaGraphicsRegisterFlagsReadOnly = 1,
+  cudaGraphicsRegisterFlagsWriteDiscard = 2,
+  cudaGraphicsRegisterFlagsSurfaceLoadStore = 4,
+  cudaGraphicsRegisterFlagsTextureGather = 8
+}
+global cudaGraphicsMapFlags: type <cimport,nodecl,using,ctypedef'cudaGraphicsMapFlags'> = @enum(cint){
+  cudaGraphicsMapFlagsNone = 0,
+  cudaGraphicsMapFlagsReadOnly = 1,
+  cudaGraphicsMapFlagsWriteDiscard = 2
+}
+global cudaGraphicsCubeFace: type <cimport,nodecl,using,ctypedef'cudaGraphicsCubeFace'> = @enum(cint){
+  cudaGraphicsCubeFacePositiveX = 0,
+  cudaGraphicsCubeFaceNegativeX = 1,
+  cudaGraphicsCubeFacePositiveY = 2,
+  cudaGraphicsCubeFaceNegativeY = 3,
+  cudaGraphicsCubeFacePositiveZ = 4,
+  cudaGraphicsCubeFaceNegativeZ = 5
+}
+global cudaResourceType: type <cimport,nodecl,using,ctypedef'cudaResourceType'> = @enum(cint){
+  cudaResourceTypeArray = 0,
+  cudaResourceTypeMipmappedArray = 1,
+  cudaResourceTypeLinear = 2,
+  cudaResourceTypePitch2D = 3
+}
+global cudaResourceViewFormat: type <cimport,nodecl,using,ctypedef'cudaResourceViewFormat'> = @enum(cint){
+  cudaResViewFormatNone = 0,
+  cudaResViewFormatUnsignedChar1 = 1,
+  cudaResViewFormatUnsignedChar2 = 2,
+  cudaResViewFormatUnsignedChar4 = 3,
+  cudaResViewFormatSignedChar1 = 4,
+  cudaResViewFormatSignedChar2 = 5,
+  cudaResViewFormatSignedChar4 = 6,
+  cudaResViewFormatUnsignedShort1 = 7,
+  cudaResViewFormatUnsignedShort2 = 8,
+  cudaResViewFormatUnsignedShort4 = 9,
+  cudaResViewFormatSignedShort1 = 10,
+  cudaResViewFormatSignedShort2 = 11,
+  cudaResViewFormatSignedShort4 = 12,
+  cudaResViewFormatUnsignedInt1 = 13,
+  cudaResViewFormatUnsignedInt2 = 14,
+  cudaResViewFormatUnsignedInt4 = 15,
+  cudaResViewFormatSignedInt1 = 16,
+  cudaResViewFormatSignedInt2 = 17,
+  cudaResViewFormatSignedInt4 = 18,
+  cudaResViewFormatHalf1 = 19,
+  cudaResViewFormatHalf2 = 20,
+  cudaResViewFormatHalf4 = 21,
+  cudaResViewFormatFloat1 = 22,
+  cudaResViewFormatFloat2 = 23,
+  cudaResViewFormatFloat4 = 24,
+  cudaResViewFormatUnsignedBlockCompressed1 = 25,
+  cudaResViewFormatUnsignedBlockCompressed2 = 26,
+  cudaResViewFormatUnsignedBlockCompressed3 = 27,
+  cudaResViewFormatUnsignedBlockCompressed4 = 28,
+  cudaResViewFormatSignedBlockCompressed4 = 29,
+  cudaResViewFormatUnsignedBlockCompressed5 = 30,
+  cudaResViewFormatSignedBlockCompressed5 = 31,
+  cudaResViewFormatUnsignedBlockCompressed6H = 32,
+  cudaResViewFormatSignedBlockCompressed6H = 33,
+  cudaResViewFormatUnsignedBlockCompressed7 = 34
+}
+global cudaResourceDesc: type <cimport,nodecl,ctypedef'cudaResourceDesc'> = @record{
+  resType: cudaResourceType,
+  res: union{
+    array: record{
+      array: cudaArray_t
+    },
+    mipmap: record{
+      mipmap: cudaMipmappedArray_t
+    },
+    linear: record{
+      devPtr: pointer,
+      desc: cudaChannelFormatDesc,
+      sizeInBytes: csize
+    },
+    pitch2D: record{
+      devPtr: pointer,
+      desc: cudaChannelFormatDesc,
+      width: csize,
+      height: csize,
+      pitchInBytes: csize
+    }
+  }
+}
+global cudaResourceViewDesc: type <cimport,nodecl,ctypedef'cudaResourceViewDesc'> = @record{
+  format: cudaResourceViewFormat,
+  width: csize,
+  height: csize,
+  depth: csize,
+  firstMipmapLevel: cuint,
+  lastMipmapLevel: cuint,
+  firstLayer: cuint,
+  lastLayer: cuint
+}
+global cudaPointerAttributes: type <cimport,nodecl,ctypedef'cudaPointerAttributes'> = @record{
+  type: cudaMemoryType,
+  device: cint,
+  devicePointer: pointer,
+  hostPointer: pointer
+}
+global cudaFuncAttributes: type <cimport,nodecl,ctypedef'cudaFuncAttributes'> = @record{
+  sharedSizeBytes: csize,
+  constSizeBytes: csize,
+  localSizeBytes: csize,
+  maxThreadsPerBlock: cint,
+  numRegs: cint,
+  ptxVersion: cint,
+  binaryVersion: cint,
+  cacheModeCA: cint,
+  maxDynamicSharedSizeBytes: cint,
+  preferredShmemCarveout: cint,
+  clusterDimMustBeSet: cint,
+  requiredClusterWidth: cint,
+  requiredClusterHeight: cint,
+  requiredClusterDepth: cint,
+  clusterSchedulingPolicyPreference: cint,
+  nonPortableClusterSizeAllowed: cint,
+  reserved: [16]cint
+}
+global cudaFuncAttribute: type <cimport,nodecl,using,ctypedef'cudaFuncAttribute'> = @enum(cint){
+  cudaFuncAttributeMaxDynamicSharedMemorySize = 8,
+  cudaFuncAttributePreferredSharedMemoryCarveout = 9,
+  cudaFuncAttributeClusterDimMustBeSet = 10,
+  cudaFuncAttributeRequiredClusterWidth = 11,
+  cudaFuncAttributeRequiredClusterHeight = 12,
+  cudaFuncAttributeRequiredClusterDepth = 13,
+  cudaFuncAttributeNonPortableClusterSizeAllowed = 14,
+  cudaFuncAttributeClusterSchedulingPolicyPreference = 15,
+  cudaFuncAttributeMax = 16
+}
+global cudaFuncCache: type <cimport,nodecl,using,ctypedef'cudaFuncCache'> = @enum(cint){
+  cudaFuncCachePreferNone = 0,
+  cudaFuncCachePreferShared = 1,
+  cudaFuncCachePreferL1 = 2,
+  cudaFuncCachePreferEqual = 3
+}
+global cudaSharedMemConfig: type <cimport,nodecl,using,ctypedef'cudaSharedMemConfig'> = @enum(cint){
+  cudaSharedMemBankSizeDefault = 0,
+  cudaSharedMemBankSizeFourByte = 1,
+  cudaSharedMemBankSizeEightByte = 2
+}
+global cudaSharedCarveout: type <cimport,nodecl,using,ctypedef'cudaSharedCarveout'> = @enum(cint){
+  cudaSharedmemCarveoutDefault = -1,
+  cudaSharedmemCarveoutMaxShared = 100,
+  cudaSharedmemCarveoutMaxL1 = 0
+}
+global cudaComputeMode: type <cimport,nodecl,using,ctypedef'cudaComputeMode'> = @enum(cint){
+  cudaComputeModeDefault = 0,
+  cudaComputeModeExclusive = 1,
+  cudaComputeModeProhibited = 2,
+  cudaComputeModeExclusiveProcess = 3
+}
+global cudaLimit: type <cimport,nodecl,using,ctypedef'cudaLimit'> = @enum(cint){
+  cudaLimitStackSize = 0,
+  cudaLimitPrintfFifoSize = 1,
+  cudaLimitMallocHeapSize = 2,
+  cudaLimitDevRuntimeSyncDepth = 3,
+  cudaLimitDevRuntimePendingLaunchCount = 4,
+  cudaLimitMaxL2FetchGranularity = 5,
+  cudaLimitPersistingL2CacheSize = 6
+}
+global cudaMemoryAdvise: type <cimport,nodecl,using,ctypedef'cudaMemoryAdvise'> = @enum(cint){
+  cudaMemAdviseSetReadMostly = 1,
+  cudaMemAdviseUnsetReadMostly = 2,
+  cudaMemAdviseSetPreferredLocation = 3,
+  cudaMemAdviseUnsetPreferredLocation = 4,
+  cudaMemAdviseSetAccessedBy = 5,
+  cudaMemAdviseUnsetAccessedBy = 6
+}
+global cudaMemRangeAttribute: type <cimport,nodecl,using,ctypedef'cudaMemRangeAttribute'> = @enum(cint){
+  cudaMemRangeAttributeReadMostly = 1,
+  cudaMemRangeAttributePreferredLocation = 2,
+  cudaMemRangeAttributeAccessedBy = 3,
+  cudaMemRangeAttributeLastPrefetchLocation = 4
+}
+global cudaFlushGPUDirectRDMAWritesOptions: type <cimport,nodecl,using,ctypedef'cudaFlushGPUDirectRDMAWritesOptions'> = @enum(cint){
+  cudaFlushGPUDirectRDMAWritesOptionHost = 1,
+  cudaFlushGPUDirectRDMAWritesOptionMemOps = 2
+}
+global cudaGPUDirectRDMAWritesOrdering: type <cimport,nodecl,using,ctypedef'cudaGPUDirectRDMAWritesOrdering'> = @enum(cint){
+  cudaGPUDirectRDMAWritesOrderingNone = 0,
+  cudaGPUDirectRDMAWritesOrderingOwner = 100,
+  cudaGPUDirectRDMAWritesOrderingAllDevices = 200
+}
+global cudaFlushGPUDirectRDMAWritesScope: type <cimport,nodecl,using,ctypedef'cudaFlushGPUDirectRDMAWritesScope'> = @enum(cint){
+  cudaFlushGPUDirectRDMAWritesToOwner = 100,
+  cudaFlushGPUDirectRDMAWritesToAllDevices = 200
+}
+global cudaFlushGPUDirectRDMAWritesTarget: type <cimport,nodecl,using,ctypedef'cudaFlushGPUDirectRDMAWritesTarget'> = @enum(cint){
+  cudaFlushGPUDirectRDMAWritesTargetCurrentDevice = 0
+}
+global cudaDeviceAttr: type <cimport,nodecl,using,ctypedef'cudaDeviceAttr'> = @enum(cint){
+  cudaDevAttrMaxThreadsPerBlock = 1,
+  cudaDevAttrMaxBlockDimX = 2,
+  cudaDevAttrMaxBlockDimY = 3,
+  cudaDevAttrMaxBlockDimZ = 4,
+  cudaDevAttrMaxGridDimX = 5,
+  cudaDevAttrMaxGridDimY = 6,
+  cudaDevAttrMaxGridDimZ = 7,
+  cudaDevAttrMaxSharedMemoryPerBlock = 8,
+  cudaDevAttrTotalConstantMemory = 9,
+  cudaDevAttrWarpSize = 10,
+  cudaDevAttrMaxPitch = 11,
+  cudaDevAttrMaxRegistersPerBlock = 12,
+  cudaDevAttrClockRate = 13,
+  cudaDevAttrTextureAlignment = 14,
+  cudaDevAttrGpuOverlap = 15,
+  cudaDevAttrMultiProcessorCount = 16,
+  cudaDevAttrKernelExecTimeout = 17,
+  cudaDevAttrIntegrated = 18,
+  cudaDevAttrCanMapHostMemory = 19,
+  cudaDevAttrComputeMode = 20,
+  cudaDevAttrMaxTexture1DWidth = 21,
+  cudaDevAttrMaxTexture2DWidth = 22,
+  cudaDevAttrMaxTexture2DHeight = 23,
+  cudaDevAttrMaxTexture3DWidth = 24,
+  cudaDevAttrMaxTexture3DHeight = 25,
+  cudaDevAttrMaxTexture3DDepth = 26,
+  cudaDevAttrMaxTexture2DLayeredWidth = 27,
+  cudaDevAttrMaxTexture2DLayeredHeight = 28,
+  cudaDevAttrMaxTexture2DLayeredLayers = 29,
+  cudaDevAttrSurfaceAlignment = 30,
+  cudaDevAttrConcurrentKernels = 31,
+  cudaDevAttrEccEnabled = 32,
+  cudaDevAttrPciBusId = 33,
+  cudaDevAttrPciDeviceId = 34,
+  cudaDevAttrTccDriver = 35,
+  cudaDevAttrMemoryClockRate = 36,
+  cudaDevAttrGlobalMemoryBusWidth = 37,
+  cudaDevAttrL2CacheSize = 38,
+  cudaDevAttrMaxThreadsPerMultiProcessor = 39,
+  cudaDevAttrAsyncEngineCount = 40,
+  cudaDevAttrUnifiedAddressing = 41,
+  cudaDevAttrMaxTexture1DLayeredWidth = 42,
+  cudaDevAttrMaxTexture1DLayeredLayers = 43,
+  cudaDevAttrMaxTexture2DGatherWidth = 45,
+  cudaDevAttrMaxTexture2DGatherHeight = 46,
+  cudaDevAttrMaxTexture3DWidthAlt = 47,
+  cudaDevAttrMaxTexture3DHeightAlt = 48,
+  cudaDevAttrMaxTexture3DDepthAlt = 49,
+  cudaDevAttrPciDomainId = 50,
+  cudaDevAttrTexturePitchAlignment = 51,
+  cudaDevAttrMaxTextureCubemapWidth = 52,
+  cudaDevAttrMaxTextureCubemapLayeredWidth = 53,
+  cudaDevAttrMaxTextureCubemapLayeredLayers = 54,
+  cudaDevAttrMaxSurface1DWidth = 55,
+  cudaDevAttrMaxSurface2DWidth = 56,
+  cudaDevAttrMaxSurface2DHeight = 57,
+  cudaDevAttrMaxSurface3DWidth = 58,
+  cudaDevAttrMaxSurface3DHeight = 59,
+  cudaDevAttrMaxSurface3DDepth = 60,
+  cudaDevAttrMaxSurface1DLayeredWidth = 61,
+  cudaDevAttrMaxSurface1DLayeredLayers = 62,
+  cudaDevAttrMaxSurface2DLayeredWidth = 63,
+  cudaDevAttrMaxSurface2DLayeredHeight = 64,
+  cudaDevAttrMaxSurface2DLayeredLayers = 65,
+  cudaDevAttrMaxSurfaceCubemapWidth = 66,
+  cudaDevAttrMaxSurfaceCubemapLayeredWidth = 67,
+  cudaDevAttrMaxSurfaceCubemapLayeredLayers = 68,
+  cudaDevAttrMaxTexture1DLinearWidth = 69,
+  cudaDevAttrMaxTexture2DLinearWidth = 70,
+  cudaDevAttrMaxTexture2DLinearHeight = 71,
+  cudaDevAttrMaxTexture2DLinearPitch = 72,
+  cudaDevAttrMaxTexture2DMipmappedWidth = 73,
+  cudaDevAttrMaxTexture2DMipmappedHeight = 74,
+  cudaDevAttrComputeCapabilityMajor = 75,
+  cudaDevAttrComputeCapabilityMinor = 76,
+  cudaDevAttrMaxTexture1DMipmappedWidth = 77,
+  cudaDevAttrStreamPrioritiesSupported = 78,
+  cudaDevAttrGlobalL1CacheSupported = 79,
+  cudaDevAttrLocalL1CacheSupported = 80,
+  cudaDevAttrMaxSharedMemoryPerMultiprocessor = 81,
+  cudaDevAttrMaxRegistersPerMultiprocessor = 82,
+  cudaDevAttrManagedMemory = 83,
+  cudaDevAttrIsMultiGpuBoard = 84,
+  cudaDevAttrMultiGpuBoardGroupID = 85,
+  cudaDevAttrHostNativeAtomicSupported = 86,
+  cudaDevAttrSingleToDoublePrecisionPerfRatio = 87,
+  cudaDevAttrPageableMemoryAccess = 88,
+  cudaDevAttrConcurrentManagedAccess = 89,
+  cudaDevAttrComputePreemptionSupported = 90,
+  cudaDevAttrCanUseHostPointerForRegisteredMem = 91,
+  cudaDevAttrReserved92 = 92,
+  cudaDevAttrReserved93 = 93,
+  cudaDevAttrReserved94 = 94,
+  cudaDevAttrCooperativeLaunch = 95,
+  cudaDevAttrCooperativeMultiDeviceLaunch = 96,
+  cudaDevAttrMaxSharedMemoryPerBlockOptin = 97,
+  cudaDevAttrCanFlushRemoteWrites = 98,
+  cudaDevAttrHostRegisterSupported = 99,
+  cudaDevAttrPageableMemoryAccessUsesHostPageTables = 100,
+  cudaDevAttrDirectManagedMemAccessFromHost = 101,
+  cudaDevAttrMaxBlocksPerMultiprocessor = 106,
+  cudaDevAttrMaxPersistingL2CacheSize = 108,
+  cudaDevAttrMaxAccessPolicyWindowSize = 109,
+  cudaDevAttrReservedSharedMemoryPerBlock = 111,
+  cudaDevAttrSparseCudaArraySupported = 112,
+  cudaDevAttrHostRegisterReadOnlySupported = 113,
+  cudaDevAttrTimelineSemaphoreInteropSupported = 114,
+  cudaDevAttrMaxTimelineSemaphoreInteropSupported = 114,
+  cudaDevAttrMemoryPoolsSupported = 115,
+  cudaDevAttrGPUDirectRDMASupported = 116,
+  cudaDevAttrGPUDirectRDMAFlushWritesOptions = 117,
+  cudaDevAttrGPUDirectRDMAWritesOrdering = 118,
+  cudaDevAttrMemoryPoolSupportedHandleTypes = 119,
+  cudaDevAttrClusterLaunch = 120,
+  cudaDevAttrDeferredMappingCudaArraySupported = 121,
+  cudaDevAttrReserved122 = 122,
+  cudaDevAttrReserved123 = 123,
+  cudaDevAttrReserved124 = 124,
+  cudaDevAttrIpcEventSupport = 125,
+  cudaDevAttrMemSyncDomainCount = 126,
+  cudaDevAttrReserved127 = 127,
+  cudaDevAttrReserved128 = 128,
+  cudaDevAttrReserved129 = 129,
+  cudaDevAttrReserved132 = 132,
+  cudaDevAttrMax = 133
+}
+global cudaMemPoolAttr: type <cimport,nodecl,using,ctypedef'cudaMemPoolAttr'> = @enum(cint){
+  cudaMemPoolReuseFollowEventDependencies = 1,
+  cudaMemPoolReuseAllowOpportunistic = 2,
+  cudaMemPoolReuseAllowInternalDependencies = 3,
+  cudaMemPoolAttrReleaseThreshold = 4,
+  cudaMemPoolAttrReservedMemCurrent = 5,
+  cudaMemPoolAttrReservedMemHigh = 6,
+  cudaMemPoolAttrUsedMemCurrent = 7,
+  cudaMemPoolAttrUsedMemHigh = 8
+}
+global cudaMemLocationType: type <cimport,nodecl,using,ctypedef'cudaMemLocationType'> = @enum(cint){
+  cudaMemLocationTypeInvalid = 0,
+  cudaMemLocationTypeDevice = 1
+}
+global cudaMemLocation: type <cimport,nodecl,ctypedef'cudaMemLocation'> = @record{
+  type: cudaMemLocationType,
+  id: cint
+}
+global cudaMemAccessFlags: type <cimport,nodecl,using,ctypedef'cudaMemAccessFlags'> = @enum(cint){
+  cudaMemAccessFlagsProtNone = 0,
+  cudaMemAccessFlagsProtRead = 1,
+  cudaMemAccessFlagsProtReadWrite = 3
+}
+global cudaMemAccessDesc: type <cimport,nodecl,ctypedef'cudaMemAccessDesc'> = @record{
+  location: cudaMemLocation,
+  flags: cudaMemAccessFlags
+}
+global cudaMemAllocationType: type <cimport,nodecl,using,ctypedef'cudaMemAllocationType'> = @enum(cint){
+  cudaMemAllocationTypeInvalid = 0,
+  cudaMemAllocationTypePinned = 1,
+  cudaMemAllocationTypeMax = 2147483647
+}
+global cudaMemAllocationHandleType: type <cimport,nodecl,using,ctypedef'cudaMemAllocationHandleType'> = @enum(cint){
+  cudaMemHandleTypeNone = 0,
+  cudaMemHandleTypePosixFileDescriptor = 1,
+  cudaMemHandleTypeWin32 = 2,
+  cudaMemHandleTypeWin32Kmt = 4
+}
+global cudaMemPoolProps: type <cimport,nodecl,ctypedef'cudaMemPoolProps'> = @record{
+  allocType: cudaMemAllocationType,
+  handleTypes: cudaMemAllocationHandleType,
+  location: cudaMemLocation,
+  win32SecurityAttributes: pointer,
+  reserved: [64]cuchar
+}
+global cudaMemPoolPtrExportData: type <cimport,nodecl,ctypedef'cudaMemPoolPtrExportData'> = @record{
+  reserved: [64]cuchar
+}
+global cudaMemAllocNodeParams: type <cimport,nodecl,ctypedef'cudaMemAllocNodeParams'> = @record{
+  poolProps: cudaMemPoolProps,
+  accessDescs: *cudaMemAccessDesc,
+  accessDescCount: csize,
+  bytesize: csize,
+  dptr: pointer
+}
+global cudaGraphMemAttributeType: type <cimport,nodecl,using,ctypedef'cudaGraphMemAttributeType'> = @enum(cint){
+  cudaGraphMemAttrUsedMemCurrent = 0,
+  cudaGraphMemAttrUsedMemHigh = 1,
+  cudaGraphMemAttrReservedMemCurrent = 2,
+  cudaGraphMemAttrReservedMemHigh = 3
+}
+global cudaDeviceP2PAttr: type <cimport,nodecl,using,ctypedef'cudaDeviceP2PAttr'> = @enum(cint){
+  cudaDevP2PAttrPerformanceRank = 1,
+  cudaDevP2PAttrAccessSupported = 2,
+  cudaDevP2PAttrNativeAtomicSupported = 3,
+  cudaDevP2PAttrCudaArrayAccessSupported = 4
+}
+global cudaUUID_t: type <cimport,nodecl> = @record{
+  bytes: [16]cchar
+}
+global cudaDeviceProp: type <cimport,nodecl,ctypedef'cudaDeviceProp'> = @record{
+  name: [256]cchar,
+  uuid: cudaUUID_t,
+  luid: [8]cchar,
+  luidDeviceNodeMask: cuint,
+  totalGlobalMem: csize,
+  sharedMemPerBlock: csize,
+  regsPerBlock: cint,
+  warpSize: cint,
+  memPitch: csize,
+  maxThreadsPerBlock: cint,
+  maxThreadsDim: [3]cint,
+  maxGridSize: [3]cint,
+  clockRate: cint,
+  totalConstMem: csize,
+  major: cint,
+  minor: cint,
+  textureAlignment: csize,
+  texturePitchAlignment: csize,
+  deviceOverlap: cint,
+  multiProcessorCount: cint,
+  kernelExecTimeoutEnabled: cint,
+  integrated: cint,
+  canMapHostMemory: cint,
+  computeMode: cint,
+  maxTexture1D: cint,
+  maxTexture1DMipmap: cint,
+  maxTexture1DLinear: cint,
+  maxTexture2D: [2]cint,
+  maxTexture2DMipmap: [2]cint,
+  maxTexture2DLinear: [3]cint,
+  maxTexture2DGather: [2]cint,
+  maxTexture3D: [3]cint,
+  maxTexture3DAlt: [3]cint,
+  maxTextureCubemap: cint,
+  maxTexture1DLayered: [2]cint,
+  maxTexture2DLayered: [3]cint,
+  maxTextureCubemapLayered: [2]cint,
+  maxSurface1D: cint,
+  maxSurface2D: [2]cint,
+  maxSurface3D: [3]cint,
+  maxSurface1DLayered: [2]cint,
+  maxSurface2DLayered: [3]cint,
+  maxSurfaceCubemap: cint,
+  maxSurfaceCubemapLayered: [2]cint,
+  surfaceAlignment: csize,
+  concurrentKernels: cint,
+  ECCEnabled: cint,
+  pciBusID: cint,
+  pciDeviceID: cint,
+  pciDomainID: cint,
+  tccDriver: cint,
+  asyncEngineCount: cint,
+  unifiedAddressing: cint,
+  memoryClockRate: cint,
+  memoryBusWidth: cint,
+  l2CacheSize: cint,
+  persistingL2CacheMaxSize: cint,
+  maxThreadsPerMultiProcessor: cint,
+  streamPrioritiesSupported: cint,
+  globalL1CacheSupported: cint,
+  localL1CacheSupported: cint,
+  sharedMemPerMultiprocessor: csize,
+  regsPerMultiprocessor: cint,
+  managedMemory: cint,
+  isMultiGpuBoard: cint,
+  multiGpuBoardGroupID: cint,
+  hostNativeAtomicSupported: cint,
+  singleToDoublePrecisionPerfRatio: cint,
+  pageableMemoryAccess: cint,
+  concurrentManagedAccess: cint,
+  computePreemptionSupported: cint,
+  canUseHostPointerForRegisteredMem: cint,
+  cooperativeLaunch: cint,
+  cooperativeMultiDeviceLaunch: cint,
+  sharedMemPerBlockOptin: csize,
+  pageableMemoryAccessUsesHostPageTables: cint,
+  directManagedMemAccessFromHost: cint,
+  maxBlocksPerMultiProcessor: cint,
+  accessPolicyMaxWindowSize: cint,
+  reservedSharedMemPerBlock: csize,
+  hostRegisterSupported: cint,
+  sparseCudaArraySupported: cint,
+  hostRegisterReadOnlySupported: cint,
+  timelineSemaphoreInteropSupported: cint,
+  memoryPoolsSupported: cint,
+  gpuDirectRDMASupported: cint,
+  gpuDirectRDMAFlushWritesOptions: cuint,
+  gpuDirectRDMAWritesOrdering: cint,
+  memoryPoolSupportedHandleTypes: cuint,
+  deferredMappingCudaArraySupported: cint,
+  ipcEventSupported: cint,
+  clusterLaunch: cint,
+  unifiedFunctionPointers: cint,
+  reserved2: [2]cint,
+  reserved: [61]cint
+}
+global cudaIpcEventHandle_t: type <cimport,nodecl> = @record{
+  reserved: [64]cchar
+}
+global cudaIpcMemHandle_t: type <cimport,nodecl> = @record{
+  reserved: [64]cchar
+}
+global cudaExternalMemoryHandleType: type <cimport,nodecl,using,ctypedef'cudaExternalMemoryHandleType'> = @enum(cint){
+  cudaExternalMemoryHandleTypeOpaqueFd = 1,
+  cudaExternalMemoryHandleTypeOpaqueWin32 = 2,
+  cudaExternalMemoryHandleTypeOpaqueWin32Kmt = 3,
+  cudaExternalMemoryHandleTypeD3D12Heap = 4,
+  cudaExternalMemoryHandleTypeD3D12Resource = 5,
+  cudaExternalMemoryHandleTypeD3D11Resource = 6,
+  cudaExternalMemoryHandleTypeD3D11ResourceKmt = 7,
+  cudaExternalMemoryHandleTypeNvSciBuf = 8
+}
+global cudaExternalMemoryHandleDesc: type <cimport,nodecl,ctypedef'cudaExternalMemoryHandleDesc'> = @record{
+  type: cudaExternalMemoryHandleType,
+  handle: union{
+    fd: cint,
+    win32: record{
+      handle: pointer,
+      name: pointer
+    },
+    nvSciBufObject: pointer
+  },
+  size: culonglong,
+  flags: cuint
+}
+global cudaExternalMemoryBufferDesc: type <cimport,nodecl,ctypedef'cudaExternalMemoryBufferDesc'> = @record{
+  offset: culonglong,
+  size: culonglong,
+  flags: cuint
+}
+global cudaExternalMemoryMipmappedArrayDesc: type <cimport,nodecl,ctypedef'cudaExternalMemoryMipmappedArrayDesc'> = @record{
+  offset: culonglong,
+  formatDesc: cudaChannelFormatDesc,
+  extent: cudaExtent,
+  flags: cuint,
+  numLevels: cuint
+}
+global cudaExternalSemaphoreHandleType: type <cimport,nodecl,using,ctypedef'cudaExternalSemaphoreHandleType'> = @enum(cint){
+  cudaExternalSemaphoreHandleTypeOpaqueFd = 1,
+  cudaExternalSemaphoreHandleTypeOpaqueWin32 = 2,
+  cudaExternalSemaphoreHandleTypeOpaqueWin32Kmt = 3,
+  cudaExternalSemaphoreHandleTypeD3D12Fence = 4,
+  cudaExternalSemaphoreHandleTypeD3D11Fence = 5,
+  cudaExternalSemaphoreHandleTypeNvSciSync = 6,
+  cudaExternalSemaphoreHandleTypeKeyedMutex = 7,
+  cudaExternalSemaphoreHandleTypeKeyedMutexKmt = 8,
+  cudaExternalSemaphoreHandleTypeTimelineSemaphoreFd = 9,
+  cudaExternalSemaphoreHandleTypeTimelineSemaphoreWin32 = 10
+}
+global cudaExternalSemaphoreHandleDesc: type <cimport,nodecl,ctypedef'cudaExternalSemaphoreHandleDesc'> = @record{
+  type: cudaExternalSemaphoreHandleType,
+  handle: union{
+    fd: cint,
+    win32: record{
+      handle: pointer,
+      name: pointer
+    },
+    nvSciSyncObj: pointer
+  },
+  flags: cuint
+}
+global cudaExternalSemaphoreSignalParams_v1: type <cimport,nodecl,ctypedef'cudaExternalSemaphoreSignalParams_v1'> = @record{
+  params: record{
+    fence: record{
+      value: culonglong
+    },
+    nvSciSync: union{
+      fence: pointer,
+      reserved: culonglong
+    },
+    keyedMutex: record{
+      key: culonglong
+    }
+  },
+  flags: cuint
+}
+global cudaExternalSemaphoreWaitParams_v1: type <cimport,nodecl,ctypedef'cudaExternalSemaphoreWaitParams_v1'> = @record{
+  params: record{
+    fence: record{
+      value: culonglong
+    },
+    nvSciSync: union{
+      fence: pointer,
+      reserved: culonglong
+    },
+    keyedMutex: record{
+      key: culonglong,
+      timeoutMs: cuint
+    }
+  },
+  flags: cuint
+}
+global cudaExternalSemaphoreSignalParams: type <cimport,nodecl,ctypedef'cudaExternalSemaphoreSignalParams'> = @record{
+  params: record{
+    fence: record{
+      value: culonglong
+    },
+    nvSciSync: union{
+      fence: pointer,
+      reserved: culonglong
+    },
+    keyedMutex: record{
+      key: culonglong
+    },
+    reserved: [12]cuint
+  },
+  flags: cuint,
+  reserved: [16]cuint
+}
+global cudaExternalSemaphoreWaitParams: type <cimport,nodecl,ctypedef'cudaExternalSemaphoreWaitParams'> = @record{
+  params: record{
+    fence: record{
+      value: culonglong
+    },
+    nvSciSync: union{
+      fence: pointer,
+      reserved: culonglong
+    },
+    keyedMutex: record{
+      key: culonglong,
+      timeoutMs: cuint
+    },
+    reserved: [10]cuint
+  },
+  flags: cuint,
+  reserved: [16]cuint
+}
+global CUstream_st: type <cimport,nodecl,ctypedef'CUstream_st',forwarddecl> = @record{}
+global cudaStream_t: type <cimport,nodecl> = @*CUstream_st
+global CUevent_st: type <cimport,nodecl,ctypedef'CUevent_st',forwarddecl> = @record{}
+global cudaEvent_t: type <cimport,nodecl> = @*CUevent_st
+global cudaGraphicsResource_t: type <cimport,nodecl> = @*cudaGraphicsResource
+global CUexternalMemory_st: type <cimport,nodecl,ctypedef'CUexternalMemory_st',forwarddecl> = @record{}
+global cudaExternalMemory_t: type <cimport,nodecl> = @*CUexternalMemory_st
+global CUexternalSemaphore_st: type <cimport,nodecl,ctypedef'CUexternalSemaphore_st',forwarddecl> = @record{}
+global cudaExternalSemaphore_t: type <cimport,nodecl> = @*CUexternalSemaphore_st
+global CUgraph_st: type <cimport,nodecl,ctypedef'CUgraph_st',forwarddecl> = @record{}
+global cudaGraph_t: type <cimport,nodecl> = @*CUgraph_st
+global CUgraphNode_st: type <cimport,nodecl,ctypedef'CUgraphNode_st',forwarddecl> = @record{}
+global cudaGraphNode_t: type <cimport,nodecl> = @*CUgraphNode_st
+global CUuserObject_st: type <cimport,nodecl,ctypedef'CUuserObject_st',forwarddecl> = @record{}
+global cudaUserObject_t: type <cimport,nodecl> = @*CUuserObject_st
+global CUfunc_st: type <cimport,nodecl,ctypedef'CUfunc_st',forwarddecl> = @record{}
+global cudaFunction_t: type <cimport,nodecl> = @*CUfunc_st
+global CUkern_st: type <cimport,nodecl,ctypedef'CUkern_st',forwarddecl> = @record{}
+global cudaKernel_t: type <cimport,nodecl> = @*CUkern_st
+global CUmemPoolHandle_st: type <cimport,nodecl,ctypedef'CUmemPoolHandle_st',forwarddecl> = @record{}
+global cudaMemPool_t: type <cimport,nodecl> = @*CUmemPoolHandle_st
+global cudaCGScope: type <cimport,nodecl,using,ctypedef'cudaCGScope'> = @enum(cint){
+  cudaCGScopeInvalid = 0,
+  cudaCGScopeGrid = 1,
+  cudaCGScopeMultiGrid = 2
+}
+global cudaLaunchParams: type <cimport,nodecl,ctypedef'cudaLaunchParams'> = @record{
+  func: pointer,
+  gridDim: dim3,
+  blockDim: dim3,
+  args: *pointer,
+  sharedMem: csize,
+  stream: cudaStream_t
+}
+global cudaKernelNodeParams: type <cimport,nodecl,ctypedef'cudaKernelNodeParams'> = @record{
+  func: pointer,
+  gridDim: dim3,
+  blockDim: dim3,
+  sharedMemBytes: cuint,
+  kernelParams: *pointer,
+  extra: *pointer
+}
+global cudaExternalSemaphoreSignalNodeParams: type <cimport,nodecl,ctypedef'cudaExternalSemaphoreSignalNodeParams'> = @record{
+  extSemArray: *cudaExternalSemaphore_t,
+  paramsArray: *cudaExternalSemaphoreSignalParams,
+  numExtSems: cuint
+}
+global cudaExternalSemaphoreWaitNodeParams: type <cimport,nodecl,ctypedef'cudaExternalSemaphoreWaitNodeParams'> = @record{
+  extSemArray: *cudaExternalSemaphore_t,
+  paramsArray: *cudaExternalSemaphoreWaitParams,
+  numExtSems: cuint
+}
+global cudaGraphNodeType: type <cimport,nodecl,using,ctypedef'cudaGraphNodeType'> = @enum(cint){
+  cudaGraphNodeTypeKernel = 0,
+  cudaGraphNodeTypeMemcpy = 1,
+  cudaGraphNodeTypeMemset = 2,
+  cudaGraphNodeTypeHost = 3,
+  cudaGraphNodeTypeGraph = 4,
+  cudaGraphNodeTypeEmpty = 5,
+  cudaGraphNodeTypeWaitEvent = 6,
+  cudaGraphNodeTypeEventRecord = 7,
+  cudaGraphNodeTypeExtSemaphoreSignal = 8,
+  cudaGraphNodeTypeExtSemaphoreWait = 9,
+  cudaGraphNodeTypeMemAlloc = 10,
+  cudaGraphNodeTypeMemFree = 11,
+  cudaGraphNodeTypeCount = 12
+}
+global CUgraphExec_st: type <cimport,nodecl,ctypedef'CUgraphExec_st',forwarddecl> = @record{}
+global cudaGraphExec_t: type <cimport,nodecl> = @*CUgraphExec_st
+global cudaGraphExecUpdateResult: type <cimport,nodecl,using,ctypedef'cudaGraphExecUpdateResult'> = @enum(cint){
+  cudaGraphExecUpdateSuccess = 0,
+  cudaGraphExecUpdateError = 1,
+  cudaGraphExecUpdateErrorTopologyChanged = 2,
+  cudaGraphExecUpdateErrorNodeTypeChanged = 3,
+  cudaGraphExecUpdateErrorFunctionChanged = 4,
+  cudaGraphExecUpdateErrorParametersChanged = 5,
+  cudaGraphExecUpdateErrorNotSupported = 6,
+  cudaGraphExecUpdateErrorUnsupportedFunctionChange = 7,
+  cudaGraphExecUpdateErrorAttributesChanged = 8
+}
+global cudaGraphInstantiateResult: type <cimport,nodecl,using> = @enum(cint){
+  cudaGraphInstantiateSuccess = 0,
+  cudaGraphInstantiateError = 1,
+  cudaGraphInstantiateInvalidStructure = 2,
+  cudaGraphInstantiateNodeOperationNotSupported = 3,
+  cudaGraphInstantiateMultipleDevicesNotSupported = 4
+}
+global cudaGraphInstantiateParams: type <cimport,nodecl> = @record{
+  flags: culonglong,
+  uploadStream: cudaStream_t,
+  errNode_out: cudaGraphNode_t,
+  result_out: cudaGraphInstantiateResult
+}
+global cudaGraphExecUpdateResultInfo: type <cimport,nodecl> = @record{
+  result: cudaGraphExecUpdateResult,
+  errorNode: cudaGraphNode_t,
+  errorFromNode: cudaGraphNode_t
+}
+global cudaGetDriverEntryPointFlags: type <cimport,nodecl,using,ctypedef'cudaGetDriverEntryPointFlags'> = @enum(cint){
+  cudaEnableDefault = 0,
+  cudaEnableLegacyStream = 1,
+  cudaEnablePerThreadDefaultStream = 2
+}
+global cudaDriverEntryPointQueryResult: type <cimport,nodecl,using,ctypedef'cudaDriverEntryPointQueryResult'> = @enum(cint){
+  cudaDriverEntryPointSuccess = 0,
+  cudaDriverEntryPointSymbolNotFound = 1,
+  cudaDriverEntryPointVersionNotSufficent = 2
+}
+global cudaGraphDebugDotFlags: type <cimport,nodecl,using,ctypedef'cudaGraphDebugDotFlags'> = @enum(cint){
+  cudaGraphDebugDotFlagsVerbose = 1,
+  cudaGraphDebugDotFlagsKernelNodeParams = 4,
+  cudaGraphDebugDotFlagsMemcpyNodeParams = 8,
+  cudaGraphDebugDotFlagsMemsetNodeParams = 16,
+  cudaGraphDebugDotFlagsHostNodeParams = 32,
+  cudaGraphDebugDotFlagsEventNodeParams = 64,
+  cudaGraphDebugDotFlagsExtSemasSignalNodeParams = 128,
+  cudaGraphDebugDotFlagsExtSemasWaitNodeParams = 256,
+  cudaGraphDebugDotFlagsKernelNodeAttributes = 512,
+  cudaGraphDebugDotFlagsHandles = 1024
+}
+global cudaGraphInstantiateFlags: type <cimport,nodecl,using,ctypedef'cudaGraphInstantiateFlags'> = @enum(cint){
+  cudaGraphInstantiateFlagAutoFreeOnLaunch = 1,
+  cudaGraphInstantiateFlagUpload = 2,
+  cudaGraphInstantiateFlagDeviceLaunch = 4,
+  cudaGraphInstantiateFlagUseNodePriority = 8
+}
+global cudaLaunchMemSyncDomain: type <cimport,nodecl,using> = @enum(cint){
+  cudaLaunchMemSyncDomainDefault = 0,
+  cudaLaunchMemSyncDomainRemote = 1
+}
+global cudaLaunchMemSyncDomainMap: type <cimport,nodecl> = @record{
+  default_: cuchar,
+  remote: cuchar
+}
+global cudaLaunchAttributeID: type <cimport,nodecl,using> = @enum(cint){
+  cudaLaunchAttributeIgnore = 0,
+  cudaLaunchAttributeAccessPolicyWindow = 1,
+  cudaLaunchAttributeCooperative = 2,
+  cudaLaunchAttributeSynchronizationPolicy = 3,
+  cudaLaunchAttributeClusterDimension = 4,
+  cudaLaunchAttributeClusterSchedulingPolicyPreference = 5,
+  cudaLaunchAttributeProgrammaticStreamSerialization = 6,
+  cudaLaunchAttributeProgrammaticEvent = 7,
+  cudaLaunchAttributePriority = 8,
+  cudaLaunchAttributeMemSyncDomainMap = 9,
+  cudaLaunchAttributeMemSyncDomain = 10
+}
+global cudaLaunchAttributeValue: type <cimport,nodecl> = @union{
+  pad: [64]cchar,
+  accessPolicyWindow: cudaAccessPolicyWindow,
+  cooperative: cint,
+  syncPolicy: cudaSynchronizationPolicy,
+  clusterDim: record{
+    x: cuint,
+    y: cuint,
+    z: cuint
+  },
+  clusterSchedulingPolicyPreference: cudaClusterSchedulingPolicy,
+  programmaticStreamSerializationAllowed: cint,
+  programmaticEvent: record{
+    event: cudaEvent_t,
+    flags: cint,
+    triggerAtBlockStart: cint
+  },
+  priority: cint,
+  memSyncDomainMap: cudaLaunchMemSyncDomainMap,
+  memSyncDomain: cudaLaunchMemSyncDomain
+}
+global cudaLaunchAttribute: type <cimport,nodecl> = @record{
+  id: cudaLaunchAttributeID,
+  pad: [0]cchar,
+  val: cudaLaunchAttributeValue
+}
+global cudaLaunchConfig_t: type <cimport,nodecl> = @record{
+  gridDim: dim3,
+  blockDim: dim3,
+  dynamicSmemBytes: csize,
+  stream: cudaStream_t,
+  attrs: *cudaLaunchAttribute,
+  numAttrs: cuint
+}
+global cudaSurfaceBoundaryMode: type <cimport,nodecl,using,ctypedef'cudaSurfaceBoundaryMode'> = @enum(cint){
+  cudaBoundaryModeZero = 0,
+  cudaBoundaryModeClamp = 1,
+  cudaBoundaryModeTrap = 2
+}
+global cudaSurfaceFormatMode: type <cimport,nodecl,using,ctypedef'cudaSurfaceFormatMode'> = @enum(cint){
+  cudaFormatModeForced = 0,
+  cudaFormatModeAuto = 1
+}
+global cudaSurfaceObject_t: type <cimport,nodecl> = @culonglong
+global cudaTextureAddressMode: type <cimport,nodecl,using,ctypedef'cudaTextureAddressMode'> = @enum(cint){
+  cudaAddressModeWrap = 0,
+  cudaAddressModeClamp = 1,
+  cudaAddressModeMirror = 2,
+  cudaAddressModeBorder = 3
+}
+global cudaTextureFilterMode: type <cimport,nodecl,using,ctypedef'cudaTextureFilterMode'> = @enum(cint){
+  cudaFilterModePoint = 0,
+  cudaFilterModeLinear = 1
+}
+global cudaTextureReadMode: type <cimport,nodecl,using,ctypedef'cudaTextureReadMode'> = @enum(cint){
+  cudaReadModeElementType = 0,
+  cudaReadModeNormalizedFloat = 1
+}
+global cudaTextureDesc: type <cimport,nodecl,ctypedef'cudaTextureDesc'> = @record{
+  addressMode: [3]cudaTextureAddressMode,
+  filterMode: cudaTextureFilterMode,
+  readMode: cudaTextureReadMode,
+  sRGB: cint,
+  borderColor: [4]float32,
+  normalizedCoords: cint,
+  maxAnisotropy: cuint,
+  mipmapFilterMode: cudaTextureFilterMode,
+  mipmapLevelBias: float32,
+  minMipmapLevelClamp: float32,
+  maxMipmapLevelClamp: float32,
+  disableTrilinearOptimization: cint,
+  seamlessCubemap: cint
+}
+global cudaTextureObject_t: type <cimport,nodecl> = @culonglong
+global cudaDataType: type <cimport,nodecl,using> = @enum(cint){
+  CUDA_R_16F = 2,
+  CUDA_C_16F = 6,
+  CUDA_R_16BF = 14,
+  CUDA_C_16BF = 15,
+  CUDA_R_32F = 0,
+  CUDA_C_32F = 4,
+  CUDA_R_64F = 1,
+  CUDA_C_64F = 5,
+  CUDA_R_4I = 16,
+  CUDA_C_4I = 17,
+  CUDA_R_4U = 18,
+  CUDA_C_4U = 19,
+  CUDA_R_8I = 3,
+  CUDA_C_8I = 7,
+  CUDA_R_8U = 8,
+  CUDA_C_8U = 9,
+  CUDA_R_16I = 20,
+  CUDA_C_16I = 21,
+  CUDA_R_16U = 22,
+  CUDA_C_16U = 23,
+  CUDA_R_32I = 10,
+  CUDA_C_32I = 11,
+  CUDA_R_32U = 12,
+  CUDA_C_32U = 13,
+  CUDA_R_64I = 24,
+  CUDA_C_64I = 25,
+  CUDA_R_64U = 26,
+  CUDA_C_64U = 27,
+  CUDA_R_8F_E4M3 = 28,
+  CUDA_R_8F_E5M2 = 29
+}
+global cudaDataType_t: type <cimport,nodecl> = @cudaDataType
+global cudaStreamCallback_t: type <cimport,nodecl> = @function(stream: cudaStream_t, status: cudaError_t, userData: pointer): void
+global function cudaDeviceReset(): cudaError_t <cimport,nodecl> end
+global function cudaDeviceSynchronize(): cudaError_t <cimport,nodecl> end
+global function cudaDeviceSetLimit(limit: cudaLimit, value: csize): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetLimit(pValue: *csize, limit: cudaLimit): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetTexture1DLinearMaxWidth(maxWidthInElements: *csize, fmtDesc: *cudaChannelFormatDesc, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetCacheConfig(pCacheConfig: *cudaFuncCache): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetStreamPriorityRange(leastPriority: *cint, greatestPriority: *cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceSetCacheConfig(cacheConfig: cudaFuncCache): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetSharedMemConfig(pConfig: *cudaSharedMemConfig): cudaError_t <cimport,nodecl> end
+global function cudaDeviceSetSharedMemConfig(config: cudaSharedMemConfig): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetByPCIBusId(device: *cint, pciBusId: cstring): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetPCIBusId(pciBusId: cstring, len: cint, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaIpcGetEventHandle(handle: *cudaIpcEventHandle_t, event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaIpcOpenEventHandle(event: *cudaEvent_t, handle: cudaIpcEventHandle_t): cudaError_t <cimport,nodecl> end
+global function cudaIpcGetMemHandle(handle: *cudaIpcMemHandle_t, devPtr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaIpcOpenMemHandle(devPtr: *pointer, handle: cudaIpcMemHandle_t, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaIpcCloseMemHandle(devPtr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaDeviceFlushGPUDirectRDMAWrites(target: cudaFlushGPUDirectRDMAWritesTarget, scope: cudaFlushGPUDirectRDMAWritesScope): cudaError_t <cimport,nodecl> end
+global function cudaThreadExit(): cudaError_t <cimport,nodecl> end
+global function cudaThreadSynchronize(): cudaError_t <cimport,nodecl> end
+global function cudaThreadSetLimit(limit: cudaLimit, value: csize): cudaError_t <cimport,nodecl> end
+global function cudaThreadGetLimit(pValue: *csize, limit: cudaLimit): cudaError_t <cimport,nodecl> end
+global function cudaThreadGetCacheConfig(pCacheConfig: *cudaFuncCache): cudaError_t <cimport,nodecl> end
+global function cudaThreadSetCacheConfig(cacheConfig: cudaFuncCache): cudaError_t <cimport,nodecl> end
+global function cudaGetLastError(): cudaError_t <cimport,nodecl> end
+global function cudaPeekAtLastError(): cudaError_t <cimport,nodecl> end
+global function cudaGetErrorName(error: cudaError_t): cstring <cimport,nodecl> end
+global function cudaGetErrorString(error: cudaError_t): cstring <cimport,nodecl> end
+global function cudaGetDeviceCount(count: *cint): cudaError_t <cimport,nodecl> end
+global function cudaGetDeviceProperties_v2(prop: *cudaDeviceProp, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetAttribute(value: *cint, attr: cudaDeviceAttr, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetDefaultMemPool(memPool: *cudaMemPool_t, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceSetMemPool(device: cint, memPool: cudaMemPool_t): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetMemPool(memPool: *cudaMemPool_t, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetNvSciSyncAttributes(nvSciSyncAttrList: pointer, device: cint, flags: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetP2PAttribute(value: *cint, attr: cudaDeviceP2PAttr, srcDevice: cint, dstDevice: cint): cudaError_t <cimport,nodecl> end
+global function cudaChooseDevice(device: *cint, prop: *cudaDeviceProp): cudaError_t <cimport,nodecl> end
+global function cudaInitDevice(device: cint, deviceFlags: cuint, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaSetDevice(device: cint): cudaError_t <cimport,nodecl> end
+global function cudaGetDevice(device: *cint): cudaError_t <cimport,nodecl> end
+global function cudaSetValidDevices(device_arr: *cint, len: cint): cudaError_t <cimport,nodecl> end
+global function cudaSetDeviceFlags(flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGetDeviceFlags(flags: *cuint): cudaError_t <cimport,nodecl> end
+global function cudaStreamCreate(pStream: *cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaStreamCreateWithFlags(pStream: *cudaStream_t, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaStreamCreateWithPriority(pStream: *cudaStream_t, flags: cuint, priority: cint): cudaError_t <cimport,nodecl> end
+global function cudaStreamGetPriority(hStream: cudaStream_t, priority: *cint): cudaError_t <cimport,nodecl> end
+global function cudaStreamGetFlags(hStream: cudaStream_t, flags: *cuint): cudaError_t <cimport,nodecl> end
+global function cudaStreamGetId(hStream: cudaStream_t, streamId: *culonglong): cudaError_t <cimport,nodecl> end
+global function cudaCtxResetPersistingL2Cache(): cudaError_t <cimport,nodecl> end
+global function cudaStreamCopyAttributes(dst: cudaStream_t, src: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaStreamGetAttribute(hStream: cudaStream_t, attr: cudaLaunchAttributeID, value_out: *cudaLaunchAttributeValue): cudaError_t <cimport,nodecl> end
+global function cudaStreamSetAttribute(hStream: cudaStream_t, attr: cudaLaunchAttributeID, value: *cudaLaunchAttributeValue): cudaError_t <cimport,nodecl> end
+global function cudaStreamDestroy(stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaStreamWaitEvent(stream: cudaStream_t, event: cudaEvent_t, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaStreamAddCallback(stream: cudaStream_t, callback: cudaStreamCallback_t, userData: pointer, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaStreamSynchronize(stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaStreamQuery(stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaStreamAttachMemAsync(stream: cudaStream_t, devPtr: pointer, length: csize, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaStreamBeginCapture(stream: cudaStream_t, mode: cudaStreamCaptureMode): cudaError_t <cimport,nodecl> end
+global function cudaThreadExchangeStreamCaptureMode(mode: *cudaStreamCaptureMode): cudaError_t <cimport,nodecl> end
+global function cudaStreamEndCapture(stream: cudaStream_t, pGraph: *cudaGraph_t): cudaError_t <cimport,nodecl> end
+global function cudaStreamIsCapturing(stream: cudaStream_t, pCaptureStatus: *cudaStreamCaptureStatus): cudaError_t <cimport,nodecl> end
+global function cudaStreamGetCaptureInfo_v2(stream: cudaStream_t, captureStatus_out: *cudaStreamCaptureStatus, id_out: *culonglong, graph_out: *cudaGraph_t, dependencies_out: **cudaGraphNode_t, numDependencies_out: *csize): cudaError_t <cimport,nodecl> end
+global function cudaStreamUpdateCaptureDependencies(stream: cudaStream_t, dependencies: *cudaGraphNode_t, numDependencies: csize, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaEventCreate(event: *cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaEventCreateWithFlags(event: *cudaEvent_t, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaEventRecord(event: cudaEvent_t, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaEventRecordWithFlags(event: cudaEvent_t, stream: cudaStream_t, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaEventQuery(event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaEventSynchronize(event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaEventDestroy(event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaEventElapsedTime(ms: *float32, start: cudaEvent_t, end_: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaImportExternalMemory(extMem_out: *cudaExternalMemory_t, memHandleDesc: *cudaExternalMemoryHandleDesc): cudaError_t <cimport,nodecl> end
+global function cudaExternalMemoryGetMappedBuffer(devPtr: *pointer, extMem: cudaExternalMemory_t, bufferDesc: *cudaExternalMemoryBufferDesc): cudaError_t <cimport,nodecl> end
+global function cudaExternalMemoryGetMappedMipmappedArray(mipmap: *cudaMipmappedArray_t, extMem: cudaExternalMemory_t, mipmapDesc: *cudaExternalMemoryMipmappedArrayDesc): cudaError_t <cimport,nodecl> end
+global function cudaDestroyExternalMemory(extMem: cudaExternalMemory_t): cudaError_t <cimport,nodecl> end
+global function cudaImportExternalSemaphore(extSem_out: *cudaExternalSemaphore_t, semHandleDesc: *cudaExternalSemaphoreHandleDesc): cudaError_t <cimport,nodecl> end
+global function cudaSignalExternalSemaphoresAsync_v2(extSemArray: *cudaExternalSemaphore_t, paramsArray: *cudaExternalSemaphoreSignalParams, numExtSems: cuint, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaWaitExternalSemaphoresAsync_v2(extSemArray: *cudaExternalSemaphore_t, paramsArray: *cudaExternalSemaphoreWaitParams, numExtSems: cuint, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaDestroyExternalSemaphore(extSem: cudaExternalSemaphore_t): cudaError_t <cimport,nodecl> end
+global function cudaLaunchKernel(func: pointer, gridDim: dim3, blockDim: dim3, args: *pointer, sharedMem: csize, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaLaunchKernelExC(config: *cudaLaunchConfig_t, func: pointer, args: *pointer): cudaError_t <cimport,nodecl> end
+global function cudaLaunchCooperativeKernel(func: pointer, gridDim: dim3, blockDim: dim3, args: *pointer, sharedMem: csize, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaLaunchCooperativeKernelMultiDevice(launchParamsList: *cudaLaunchParams, numDevices: cuint, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaFuncSetCacheConfig(func: pointer, cacheConfig: cudaFuncCache): cudaError_t <cimport,nodecl> end
+global function cudaFuncSetSharedMemConfig(func: pointer, config: cudaSharedMemConfig): cudaError_t <cimport,nodecl> end
+global function cudaFuncGetAttributes(attr: *cudaFuncAttributes, func: pointer): cudaError_t <cimport,nodecl> end
+global function cudaFuncSetAttribute(func: pointer, attr: cudaFuncAttribute, value: cint): cudaError_t <cimport,nodecl> end
+global function cudaSetDoubleForDevice(d: *float64): cudaError_t <cimport,nodecl> end
+global function cudaSetDoubleForHost(d: *float64): cudaError_t <cimport,nodecl> end
+global function cudaLaunchHostFunc(stream: cudaStream_t, fn: cudaHostFn_t, userData: pointer): cudaError_t <cimport,nodecl> end
+global function cudaOccupancyMaxActiveBlocksPerMultiprocessor(numBlocks: *cint, func: pointer, blockSize: cint, dynamicSMemSize: csize): cudaError_t <cimport,nodecl> end
+global function cudaOccupancyAvailableDynamicSMemPerBlock(dynamicSmemSize: *csize, func: pointer, numBlocks: cint, blockSize: cint): cudaError_t <cimport,nodecl> end
+global function cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFlags(numBlocks: *cint, func: pointer, blockSize: cint, dynamicSMemSize: csize, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaOccupancyMaxPotentialClusterSize(clusterSize: *cint, func: pointer, launchConfig: *cudaLaunchConfig_t): cudaError_t <cimport,nodecl> end
+global function cudaOccupancyMaxActiveClusters(numClusters: *cint, func: pointer, launchConfig: *cudaLaunchConfig_t): cudaError_t <cimport,nodecl> end
+global function cudaMallocManaged(devPtr: *pointer, size: csize, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaMalloc(devPtr: *pointer, size: csize): cudaError_t <cimport,nodecl> end
+global function cudaMallocHost(ptr: *pointer, size: csize): cudaError_t <cimport,nodecl> end
+global function cudaMallocPitch(devPtr: *pointer, pitch: *csize, width: csize, height: csize): cudaError_t <cimport,nodecl> end
+global function cudaMallocArray(array: *cudaArray_t, desc: *cudaChannelFormatDesc, width: csize, height: csize, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaFree(devPtr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaFreeHost(ptr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaFreeArray(array: cudaArray_t): cudaError_t <cimport,nodecl> end
+global function cudaFreeMipmappedArray(mipmappedArray: cudaMipmappedArray_t): cudaError_t <cimport,nodecl> end
+global function cudaHostAlloc(pHost: *pointer, size: csize, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaHostRegister(ptr: pointer, size: csize, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaHostUnregister(ptr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaHostGetDevicePointer(pDevice: *pointer, pHost: pointer, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaHostGetFlags(pFlags: *cuint, pHost: pointer): cudaError_t <cimport,nodecl> end
+global function cudaMalloc3D(pitchedDevPtr: *cudaPitchedPtr, extent: cudaExtent): cudaError_t <cimport,nodecl> end
+global function cudaMalloc3DArray(array: *cudaArray_t, desc: *cudaChannelFormatDesc, extent: cudaExtent, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaMallocMipmappedArray(mipmappedArray: *cudaMipmappedArray_t, desc: *cudaChannelFormatDesc, extent: cudaExtent, numLevels: cuint, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGetMipmappedArrayLevel(levelArray: *cudaArray_t, mipmappedArray: cudaMipmappedArray_const_t, level: cuint): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy3D(p: *cudaMemcpy3DParms): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy3DPeer(p: *cudaMemcpy3DPeerParms): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy3DAsync(p: *cudaMemcpy3DParms, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy3DPeerAsync(p: *cudaMemcpy3DPeerParms, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemGetInfo(free: *csize, total: *csize): cudaError_t <cimport,nodecl> end
+global function cudaArrayGetInfo(desc: *cudaChannelFormatDesc, extent: *cudaExtent, flags: *cuint, array: cudaArray_t): cudaError_t <cimport,nodecl> end
+global function cudaArrayGetPlane(pPlaneArray: *cudaArray_t, hArray: cudaArray_t, planeIdx: cuint): cudaError_t <cimport,nodecl> end
+global function cudaArrayGetMemoryRequirements(memoryRequirements: *cudaArrayMemoryRequirements, array: cudaArray_t, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaMipmappedArrayGetMemoryRequirements(memoryRequirements: *cudaArrayMemoryRequirements, mipmap: cudaMipmappedArray_t, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaArrayGetSparseProperties(sparseProperties: *cudaArraySparseProperties, array: cudaArray_t): cudaError_t <cimport,nodecl> end
+global function cudaMipmappedArrayGetSparseProperties(sparseProperties: *cudaArraySparseProperties, mipmap: cudaMipmappedArray_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy(dst: pointer, src: pointer, count: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyPeer(dst: pointer, dstDevice: cint, src: pointer, srcDevice: cint, count: csize): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy2D(dst: pointer, dpitch: csize, src: pointer, spitch: csize, width: csize, height: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy2DToArray(dst: cudaArray_t, wOffset: csize, hOffset: csize, src: pointer, spitch: csize, width: csize, height: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy2DFromArray(dst: pointer, dpitch: csize, src: cudaArray_const_t, wOffset: csize, hOffset: csize, width: csize, height: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy2DArrayToArray(dst: cudaArray_t, wOffsetDst: csize, hOffsetDst: csize, src: cudaArray_const_t, wOffsetSrc: csize, hOffsetSrc: csize, width: csize, height: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyToSymbol(symbol: pointer, src: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyFromSymbol(dst: pointer, symbol: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyAsync(dst: pointer, src: pointer, count: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyPeerAsync(dst: pointer, dstDevice: cint, src: pointer, srcDevice: cint, count: csize, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy2DAsync(dst: pointer, dpitch: csize, src: pointer, spitch: csize, width: csize, height: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy2DToArrayAsync(dst: cudaArray_t, wOffset: csize, hOffset: csize, src: pointer, spitch: csize, width: csize, height: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpy2DFromArrayAsync(dst: pointer, dpitch: csize, src: cudaArray_const_t, wOffset: csize, hOffset: csize, width: csize, height: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyToSymbolAsync(symbol: pointer, src: pointer, count: csize, offset: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyFromSymbolAsync(dst: pointer, symbol: pointer, count: csize, offset: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemset(devPtr: pointer, value: cint, count: csize): cudaError_t <cimport,nodecl> end
+global function cudaMemset2D(devPtr: pointer, pitch: csize, value: cint, width: csize, height: csize): cudaError_t <cimport,nodecl> end
+global function cudaMemset3D(pitchedDevPtr: cudaPitchedPtr, value: cint, extent: cudaExtent): cudaError_t <cimport,nodecl> end
+global function cudaMemsetAsync(devPtr: pointer, value: cint, count: csize, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemset2DAsync(devPtr: pointer, pitch: csize, value: cint, width: csize, height: csize, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemset3DAsync(pitchedDevPtr: cudaPitchedPtr, value: cint, extent: cudaExtent, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaGetSymbolAddress(devPtr: *pointer, symbol: pointer): cudaError_t <cimport,nodecl> end
+global function cudaGetSymbolSize(size: *csize, symbol: pointer): cudaError_t <cimport,nodecl> end
+global function cudaMemPrefetchAsync(devPtr: pointer, count: csize, dstDevice: cint, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemAdvise(devPtr: pointer, count: csize, advice: cudaMemoryAdvise, device: cint): cudaError_t <cimport,nodecl> end
+global function cudaMemRangeGetAttribute(data: pointer, dataSize: csize, attribute: cudaMemRangeAttribute, devPtr: pointer, count: csize): cudaError_t <cimport,nodecl> end
+global function cudaMemRangeGetAttributes(data: *pointer, dataSizes: *csize, attributes: *cudaMemRangeAttribute, numAttributes: csize, devPtr: pointer, count: csize): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyToArray(dst: cudaArray_t, wOffset: csize, hOffset: csize, src: pointer, count: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyFromArray(dst: pointer, src: cudaArray_const_t, wOffset: csize, hOffset: csize, count: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyArrayToArray(dst: cudaArray_t, wOffsetDst: csize, hOffsetDst: csize, src: cudaArray_const_t, wOffsetSrc: csize, hOffsetSrc: csize, count: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyToArrayAsync(dst: cudaArray_t, wOffset: csize, hOffset: csize, src: pointer, count: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemcpyFromArrayAsync(dst: pointer, src: cudaArray_const_t, wOffset: csize, hOffset: csize, count: csize, kind: cudaMemcpyKind, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMallocAsync(devPtr: *pointer, size: csize, hStream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaFreeAsync(devPtr: pointer, hStream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolTrimTo(memPool: cudaMemPool_t, minBytesToKeep: csize): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolSetAttribute(memPool: cudaMemPool_t, attr: cudaMemPoolAttr, value: pointer): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolGetAttribute(memPool: cudaMemPool_t, attr: cudaMemPoolAttr, value: pointer): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolSetAccess(memPool: cudaMemPool_t, descList: *cudaMemAccessDesc, count: csize): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolGetAccess(flags: *cudaMemAccessFlags, memPool: cudaMemPool_t, location: *cudaMemLocation): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolCreate(memPool: *cudaMemPool_t, poolProps: *cudaMemPoolProps): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolDestroy(memPool: cudaMemPool_t): cudaError_t <cimport,nodecl> end
+global function cudaMallocFromPoolAsync(ptr: *pointer, size: csize, memPool: cudaMemPool_t, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolExportToShareableHandle(shareableHandle: pointer, memPool: cudaMemPool_t, handleType: cudaMemAllocationHandleType, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolImportFromShareableHandle(memPool: *cudaMemPool_t, shareableHandle: pointer, handleType: cudaMemAllocationHandleType, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolExportPointer(exportData: *cudaMemPoolPtrExportData, ptr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaMemPoolImportPointer(ptr: *pointer, memPool: cudaMemPool_t, exportData: *cudaMemPoolPtrExportData): cudaError_t <cimport,nodecl> end
+global function cudaPointerGetAttributes(attributes: *cudaPointerAttributes, ptr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaDeviceCanAccessPeer(canAccessPeer: *cint, device: cint, peerDevice: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceEnablePeerAccess(peerDevice: cint, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceDisablePeerAccess(peerDevice: cint): cudaError_t <cimport,nodecl> end
+global function cudaGraphicsUnregisterResource(resource: cudaGraphicsResource_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphicsResourceSetMapFlags(resource: cudaGraphicsResource_t, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGraphicsMapResources(count: cint, resources: *cudaGraphicsResource_t, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphicsUnmapResources(count: cint, resources: *cudaGraphicsResource_t, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphicsResourceGetMappedPointer(devPtr: *pointer, size: *csize, resource: cudaGraphicsResource_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphicsSubResourceGetMappedArray(array: *cudaArray_t, resource: cudaGraphicsResource_t, arrayIndex: cuint, mipLevel: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGraphicsResourceGetMappedMipmappedArray(mipmappedArray: *cudaMipmappedArray_t, resource: cudaGraphicsResource_t): cudaError_t <cimport,nodecl> end
+global function cudaGetChannelDesc(desc: *cudaChannelFormatDesc, array: cudaArray_const_t): cudaError_t <cimport,nodecl> end
+global function cudaCreateChannelDesc(x: cint, y: cint, z: cint, w: cint, f: cudaChannelFormatKind): cudaChannelFormatDesc <cimport,nodecl> end
+global function cudaCreateTextureObject(pTexObject: *cudaTextureObject_t, pResDesc: *cudaResourceDesc, pTexDesc: *cudaTextureDesc, pResViewDesc: *cudaResourceViewDesc): cudaError_t <cimport,nodecl> end
+global function cudaDestroyTextureObject(texObject: cudaTextureObject_t): cudaError_t <cimport,nodecl> end
+global function cudaGetTextureObjectResourceDesc(pResDesc: *cudaResourceDesc, texObject: cudaTextureObject_t): cudaError_t <cimport,nodecl> end
+global function cudaGetTextureObjectTextureDesc(pTexDesc: *cudaTextureDesc, texObject: cudaTextureObject_t): cudaError_t <cimport,nodecl> end
+global function cudaGetTextureObjectResourceViewDesc(pResViewDesc: *cudaResourceViewDesc, texObject: cudaTextureObject_t): cudaError_t <cimport,nodecl> end
+global function cudaCreateSurfaceObject(pSurfObject: *cudaSurfaceObject_t, pResDesc: *cudaResourceDesc): cudaError_t <cimport,nodecl> end
+global function cudaDestroySurfaceObject(surfObject: cudaSurfaceObject_t): cudaError_t <cimport,nodecl> end
+global function cudaGetSurfaceObjectResourceDesc(pResDesc: *cudaResourceDesc, surfObject: cudaSurfaceObject_t): cudaError_t <cimport,nodecl> end
+global function cudaDriverGetVersion(driverVersion: *cint): cudaError_t <cimport,nodecl> end
+global function cudaRuntimeGetVersion(runtimeVersion: *cint): cudaError_t <cimport,nodecl> end
+global function cudaGraphCreate(pGraph: *cudaGraph_t, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddKernelNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, pNodeParams: *cudaKernelNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphKernelNodeGetParams(node: cudaGraphNode_t, pNodeParams: *cudaKernelNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphKernelNodeSetParams(node: cudaGraphNode_t, pNodeParams: *cudaKernelNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphKernelNodeCopyAttributes(hSrc: cudaGraphNode_t, hDst: cudaGraphNode_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphKernelNodeGetAttribute(hNode: cudaGraphNode_t, attr: cudaLaunchAttributeID, value_out: *cudaLaunchAttributeValue): cudaError_t <cimport,nodecl> end
+global function cudaGraphKernelNodeSetAttribute(hNode: cudaGraphNode_t, attr: cudaLaunchAttributeID, value: *cudaLaunchAttributeValue): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddMemcpyNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, pCopyParams: *cudaMemcpy3DParms): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddMemcpyNodeToSymbol(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, symbol: pointer, src: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddMemcpyNodeFromSymbol(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, dst: pointer, symbol: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddMemcpyNode1D(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, dst: pointer, src: pointer, count: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemcpyNodeGetParams(node: cudaGraphNode_t, pNodeParams: *cudaMemcpy3DParms): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemcpyNodeSetParams(node: cudaGraphNode_t, pNodeParams: *cudaMemcpy3DParms): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemcpyNodeSetParamsToSymbol(node: cudaGraphNode_t, symbol: pointer, src: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemcpyNodeSetParamsFromSymbol(node: cudaGraphNode_t, dst: pointer, symbol: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemcpyNodeSetParams1D(node: cudaGraphNode_t, dst: pointer, src: pointer, count: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddMemsetNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, pMemsetParams: *cudaMemsetParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemsetNodeGetParams(node: cudaGraphNode_t, pNodeParams: *cudaMemsetParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemsetNodeSetParams(node: cudaGraphNode_t, pNodeParams: *cudaMemsetParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddHostNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, pNodeParams: *cudaHostNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphHostNodeGetParams(node: cudaGraphNode_t, pNodeParams: *cudaHostNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphHostNodeSetParams(node: cudaGraphNode_t, pNodeParams: *cudaHostNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddChildGraphNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, childGraph: cudaGraph_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphChildGraphNodeGetGraph(node: cudaGraphNode_t, pGraph: *cudaGraph_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddEmptyNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddEventRecordNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphEventRecordNodeGetEvent(node: cudaGraphNode_t, event_out: *cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphEventRecordNodeSetEvent(node: cudaGraphNode_t, event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddEventWaitNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphEventWaitNodeGetEvent(node: cudaGraphNode_t, event_out: *cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphEventWaitNodeSetEvent(node: cudaGraphNode_t, event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddExternalSemaphoresSignalNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, nodeParams: *cudaExternalSemaphoreSignalNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExternalSemaphoresSignalNodeGetParams(hNode: cudaGraphNode_t, params_out: *cudaExternalSemaphoreSignalNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExternalSemaphoresSignalNodeSetParams(hNode: cudaGraphNode_t, nodeParams: *cudaExternalSemaphoreSignalNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddExternalSemaphoresWaitNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, nodeParams: *cudaExternalSemaphoreWaitNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExternalSemaphoresWaitNodeGetParams(hNode: cudaGraphNode_t, params_out: *cudaExternalSemaphoreWaitNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExternalSemaphoresWaitNodeSetParams(hNode: cudaGraphNode_t, nodeParams: *cudaExternalSemaphoreWaitNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddMemAllocNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, nodeParams: *cudaMemAllocNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemAllocNodeGetParams(node: cudaGraphNode_t, params_out: *cudaMemAllocNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddMemFreeNode(pGraphNode: *cudaGraphNode_t, graph: cudaGraph_t, pDependencies: *cudaGraphNode_t, numDependencies: csize, dptr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaGraphMemFreeNodeGetParams(node: cudaGraphNode_t, dptr_out: pointer): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGraphMemTrim(device: cint): cudaError_t <cimport,nodecl> end
+global function cudaDeviceGetGraphMemAttribute(device: cint, attr: cudaGraphMemAttributeType, value: pointer): cudaError_t <cimport,nodecl> end
+global function cudaDeviceSetGraphMemAttribute(device: cint, attr: cudaGraphMemAttributeType, value: pointer): cudaError_t <cimport,nodecl> end
+global function cudaGraphClone(pGraphClone: *cudaGraph_t, originalGraph: cudaGraph_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphNodeFindInClone(pNode: *cudaGraphNode_t, originalNode: cudaGraphNode_t, clonedGraph: cudaGraph_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphNodeGetType(node: cudaGraphNode_t, pType: *cudaGraphNodeType): cudaError_t <cimport,nodecl> end
+global function cudaGraphGetNodes(graph: cudaGraph_t, nodes: *cudaGraphNode_t, numNodes: *csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphGetRootNodes(graph: cudaGraph_t, pRootNodes: *cudaGraphNode_t, pNumRootNodes: *csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphGetEdges(graph: cudaGraph_t, from: *cudaGraphNode_t, to: *cudaGraphNode_t, numEdges: *csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphNodeGetDependencies(node: cudaGraphNode_t, pDependencies: *cudaGraphNode_t, pNumDependencies: *csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphNodeGetDependentNodes(node: cudaGraphNode_t, pDependentNodes: *cudaGraphNode_t, pNumDependentNodes: *csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphAddDependencies(graph: cudaGraph_t, from: *cudaGraphNode_t, to: *cudaGraphNode_t, numDependencies: csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphRemoveDependencies(graph: cudaGraph_t, from: *cudaGraphNode_t, to: *cudaGraphNode_t, numDependencies: csize): cudaError_t <cimport,nodecl> end
+global function cudaGraphDestroyNode(node: cudaGraphNode_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphInstantiate(pGraphExec: *cudaGraphExec_t, graph: cudaGraph_t, flags: culonglong): cudaError_t <cimport,nodecl> end
+global function cudaGraphInstantiateWithFlags(pGraphExec: *cudaGraphExec_t, graph: cudaGraph_t, flags: culonglong): cudaError_t <cimport,nodecl> end
+global function cudaGraphInstantiateWithParams(pGraphExec: *cudaGraphExec_t, graph: cudaGraph_t, instantiateParams: *cudaGraphInstantiateParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecGetFlags(graphExec: cudaGraphExec_t, flags: *culonglong): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecKernelNodeSetParams(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, pNodeParams: *cudaKernelNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecMemcpyNodeSetParams(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, pNodeParams: *cudaMemcpy3DParms): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecMemcpyNodeSetParamsToSymbol(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, symbol: pointer, src: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecMemcpyNodeSetParamsFromSymbol(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, dst: pointer, symbol: pointer, count: csize, offset: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecMemcpyNodeSetParams1D(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, dst: pointer, src: pointer, count: csize, kind: cudaMemcpyKind): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecMemsetNodeSetParams(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, pNodeParams: *cudaMemsetParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecHostNodeSetParams(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, pNodeParams: *cudaHostNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecChildGraphNodeSetParams(hGraphExec: cudaGraphExec_t, node: cudaGraphNode_t, childGraph: cudaGraph_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecEventRecordNodeSetEvent(hGraphExec: cudaGraphExec_t, hNode: cudaGraphNode_t, event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecEventWaitNodeSetEvent(hGraphExec: cudaGraphExec_t, hNode: cudaGraphNode_t, event: cudaEvent_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecExternalSemaphoresSignalNodeSetParams(hGraphExec: cudaGraphExec_t, hNode: cudaGraphNode_t, nodeParams: *cudaExternalSemaphoreSignalNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecExternalSemaphoresWaitNodeSetParams(hGraphExec: cudaGraphExec_t, hNode: cudaGraphNode_t, nodeParams: *cudaExternalSemaphoreWaitNodeParams): cudaError_t <cimport,nodecl> end
+global function cudaGraphNodeSetEnabled(hGraphExec: cudaGraphExec_t, hNode: cudaGraphNode_t, isEnabled: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGraphNodeGetEnabled(hGraphExec: cudaGraphExec_t, hNode: cudaGraphNode_t, isEnabled: *cuint): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecUpdate(hGraphExec: cudaGraphExec_t, hGraph: cudaGraph_t, resultInfo: *cudaGraphExecUpdateResultInfo): cudaError_t <cimport,nodecl> end
+global function cudaGraphUpload(graphExec: cudaGraphExec_t, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphLaunch(graphExec: cudaGraphExec_t, stream: cudaStream_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphExecDestroy(graphExec: cudaGraphExec_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphDestroy(graph: cudaGraph_t): cudaError_t <cimport,nodecl> end
+global function cudaGraphDebugDotPrint(graph: cudaGraph_t, path: cstring, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaUserObjectCreate(object_out: *cudaUserObject_t, ptr: pointer, destroy: cudaHostFn_t, initialRefcount: cuint, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaUserObjectRetain(object: cudaUserObject_t, count: cuint): cudaError_t <cimport,nodecl> end
+global function cudaUserObjectRelease(object: cudaUserObject_t, count: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGraphRetainUserObject(graph: cudaGraph_t, object: cudaUserObject_t, count: cuint, flags: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGraphReleaseUserObject(graph: cudaGraph_t, object: cudaUserObject_t, count: cuint): cudaError_t <cimport,nodecl> end
+global function cudaGetDriverEntryPoint(symbol: cstring, funcPtr: *pointer, flags: culonglong, driverStatus: *cudaDriverEntryPointQueryResult): cudaError_t <cimport,nodecl> end
+global function cudaGetExportTable(ppExportTable: *pointer, pExportTableId: *cudaUUID_t): cudaError_t <cimport,nodecl> end
+global function cudaGetFuncBySymbol(functionPtr: *cudaFunction_t, symbolPtr: pointer): cudaError_t <cimport,nodecl> end
+global function cudaGetKernel(kernelPtr: *cudaKernel_t, entryFuncAddr: pointer): cudaError_t <cimport,nodecl> end
+global cudaHostAllocDefault: cint <comptime> = 0
+global cudaHostAllocPortable: cint <comptime> = 1
+global cudaHostAllocMapped: cint <comptime> = 2
+global cudaHostAllocWriteCombined: cint <comptime> = 4
+global cudaHostRegisterDefault: cint <comptime> = 0
+global cudaHostRegisterPortable: cint <comptime> = 1
+global cudaHostRegisterMapped: cint <comptime> = 2
+global cudaHostRegisterIoMemory: cint <comptime> = 4
+global cudaHostRegisterReadOnly: cint <comptime> = 8
+global cudaPeerAccessDefault: cint <comptime> = 0
+global cudaStreamDefault: cint <comptime> = 0
+global cudaStreamNonBlocking: cint <comptime> = 1
+global cudaStreamLegacy: cudaStream_t <cimport,nodecl,const>
+global cudaStreamPerThread: cudaStream_t <cimport,nodecl,const>
+global cudaEventDefault: cint <comptime> = 0
+global cudaEventBlockingSync: cint <comptime> = 1
+global cudaEventDisableTiming: cint <comptime> = 2
+global cudaEventInterprocess: cint <comptime> = 4
+global cudaEventRecordDefault: cint <comptime> = 0
+global cudaEventRecordExternal: cint <comptime> = 1
+global cudaEventWaitDefault: cint <comptime> = 0
+global cudaEventWaitExternal: cint <comptime> = 1
+global cudaDeviceScheduleAuto: cint <comptime> = 0
+global cudaDeviceScheduleSpin: cint <comptime> = 1
+global cudaDeviceScheduleYield: cint <comptime> = 2
+global cudaDeviceScheduleBlockingSync: cint <comptime> = 4
+global cudaDeviceBlockingSync: cint <comptime> = 4
+global cudaDeviceScheduleMask: cint <comptime> = 7
+global cudaDeviceMapHost: cint <comptime> = 8
+global cudaDeviceLmemResizeToMax: cint <comptime> = 16
+global cudaDeviceSyncMemops: cint <comptime> = 128
+global cudaDeviceMask: cint <comptime> = 255
+global cudaArrayDefault: cint <comptime> = 0
+global cudaArrayLayered: cint <comptime> = 1
+global cudaArraySurfaceLoadStore: cint <comptime> = 2
+global cudaArrayCubemap: cint <comptime> = 4
+global cudaArrayTextureGather: cint <comptime> = 8
+global cudaArrayColorAttachment: cint <comptime> = 32
+global cudaArraySparse: cint <comptime> = 64
+global cudaArrayDeferredMapping: cint <comptime> = 128
+global cudaIpcMemLazyEnablePeerAccess: cint <comptime> = 1
+global cudaMemAttachGlobal: cint <comptime> = 1
+global cudaMemAttachHost: cint <comptime> = 2
+global cudaMemAttachSingle: cint <comptime> = 4
+global cudaOccupancyDefault: cint <comptime> = 0
+global cudaOccupancyDisableCachingOverride: cint <comptime> = 1
+global cudaCpuDeviceId: cint <comptime> = -1
+global cudaInvalidDeviceId: cint <comptime> = -2
+global cudaInitDeviceFlagsAreValid: cint <comptime> = 1
+global cudaCooperativeLaunchMultiDeviceNoPreSync: cint <comptime> = 1
+global cudaCooperativeLaunchMultiDeviceNoPostSync: cint <comptime> = 2
+global cudaArraySparsePropertiesSingleMipTail: cint <comptime> = 1
+global CUDA_IPC_HANDLE_SIZE: cint <comptime> = 64
+global cudaExternalMemoryDedicated: cint <comptime> = 1
+global cudaExternalSemaphoreSignalSkipNvSciBufMemSync: cint <comptime> = 1
+global cudaExternalSemaphoreWaitSkipNvSciBufMemSync: cint <comptime> = 2
+global cudaNvSciSyncAttrSignal: cint <comptime> = 1
+global cudaNvSciSyncAttrWait: cint <comptime> = 2
+global cudaStreamAttrID: type = cudaLaunchAttributeID
+global cudaStreamAttributeAccessPolicyWindow: cint <comptime> = 1
+global cudaStreamAttributeSynchronizationPolicy: cint <comptime> = 3
+global cudaStreamAttributeMemSyncDomainMap: cint <comptime> = 9
+global cudaStreamAttributeMemSyncDomain: cint <comptime> = 10
+global cudaStreamAttributePriority: cint <comptime> = 8
+global cudaStreamAttrValue: type = cudaLaunchAttributeValue
+global cudaKernelNodeAttrID: type = cudaLaunchAttributeID
+global cudaKernelNodeAttributeAccessPolicyWindow: cint <comptime> = 1
+global cudaKernelNodeAttributeCooperative: cint <comptime> = 2
+global cudaKernelNodeAttributePriority: cint <comptime> = 8
+global cudaKernelNodeAttributeClusterDimension: cint <comptime> = 4
+global cudaKernelNodeAttributeClusterSchedulingPolicyPreference: cint <comptime> = 5
+global cudaKernelNodeAttributeMemSyncDomainMap: cint <comptime> = 9
+global cudaKernelNodeAttributeMemSyncDomain: cint <comptime> = 10
+global cudaKernelNodeAttrValue: type = cudaLaunchAttributeValue
+global cudaSurfaceType1D: cint <comptime> = 1
+global cudaSurfaceType2D: cint <comptime> = 2
+global cudaSurfaceType3D: cint <comptime> = 3
+global cudaSurfaceTypeCubemap: cint <comptime> = 12
+global cudaSurfaceType1DLayered: cint <comptime> = 241
+global cudaSurfaceType2DLayered: cint <comptime> = 242
+global cudaSurfaceTypeCubemapLayered: cint <comptime> = 252
+global cudaTextureType1D: cint <comptime> = 1
+global cudaTextureType2D: cint <comptime> = 2
+global cudaTextureType3D: cint <comptime> = 3
+global cudaTextureTypeCubemap: cint <comptime> = 12
+global cudaTextureType1DLayered: cint <comptime> = 241
+global cudaTextureType2DLayered: cint <comptime> = 242
+global cudaTextureTypeCubemapLayered: cint <comptime> = 252
+global CUDART_VERSION: cint <comptime> = 12010
+global function cudaGetDeviceProperties(prop: *cudaDeviceProp, device: cint): cudaError_t <cimport,nodecl> end

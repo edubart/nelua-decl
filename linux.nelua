@@ -1,0 +1,79 @@
+global off_t: type <cimport,nodecl> = @clong
+global mode_t: type <cimport,nodecl> = @cuint
+global function mmap(addr: pointer, len: csize, prot: cint, flags: cint, fd: cint, offset: clong): pointer <cimport,nodecl> end
+global function munmap(addr: pointer, len: csize): cint <cimport,nodecl> end
+global function mprotect(addr: pointer, len: csize, prot: cint): cint <cimport,nodecl> end
+global function msync(addr: pointer, len: csize, flags: cint): cint <cimport,nodecl> end
+global function madvise(addr: pointer, len: csize, advice: cint): cint <cimport,nodecl> end
+global function posix_madvise(addr: pointer, len: csize, advice: cint): cint <cimport,nodecl> end
+global function mlock(addr: pointer, len: csize): cint <cimport,nodecl> end
+global function munlock(addr: pointer, len: csize): cint <cimport,nodecl> end
+global function mlockall(flags: cint): cint <cimport,nodecl> end
+global function munlockall(): cint <cimport,nodecl> end
+global function mincore(start: pointer, len: csize, vec: *cuchar): cint <cimport,nodecl> end
+global function shm_open(name: cstring, oflag: cint, mode: mode_t): cint <cimport,nodecl> end
+global function shm_unlink(name: cstring): cint <cimport,nodecl> end
+global MAP_32BIT: cint <comptime> = 64
+global MAP_GROWSDOWN: cint <comptime> = 256
+global MAP_DENYWRITE: cint <comptime> = 2048
+global MAP_EXECUTABLE: cint <comptime> = 4096
+global MAP_LOCKED: cint <comptime> = 8192
+global MAP_NORESERVE: cint <comptime> = 16384
+global MAP_POPULATE: cint <comptime> = 32768
+global MAP_NONBLOCK: cint <comptime> = 65536
+global MAP_STACK: cint <comptime> = 131072
+global MAP_HUGETLB: cint <comptime> = 262144
+global MAP_SYNC: cint <comptime> = 524288
+global MAP_FIXED_NOREPLACE: cint <comptime> = 1048576
+global PROT_READ: cint <comptime> = 1
+global PROT_WRITE: cint <comptime> = 2
+global PROT_EXEC: cint <comptime> = 4
+global PROT_NONE: cint <comptime> = 0
+global PROT_GROWSDOWN: cint <comptime> = 16777216
+global PROT_GROWSUP: cint <comptime> = 33554432
+global MAP_SHARED: cint <comptime> = 1
+global MAP_PRIVATE: cint <comptime> = 2
+global MAP_SHARED_VALIDATE: cint <comptime> = 3
+global MAP_TYPE: cint <comptime> = 15
+global MAP_FIXED: cint <comptime> = 16
+global MAP_FILE: cint <comptime> = 0
+global MAP_ANONYMOUS: cint <comptime> = 32
+global MAP_ANON: cint <comptime> = 32
+global MAP_HUGE_SHIFT: cint <comptime> = 26
+global MAP_HUGE_MASK: cint <comptime> = 63
+global MS_ASYNC: cint <comptime> = 1
+global MS_SYNC: cint <comptime> = 4
+global MS_INVALIDATE: cint <comptime> = 2
+global MADV_NORMAL: cint <comptime> = 0
+global MADV_RANDOM: cint <comptime> = 1
+global MADV_SEQUENTIAL: cint <comptime> = 2
+global MADV_WILLNEED: cint <comptime> = 3
+global MADV_DONTNEED: cint <comptime> = 4
+global MADV_FREE: cint <comptime> = 8
+global MADV_REMOVE: cint <comptime> = 9
+global MADV_DONTFORK: cint <comptime> = 10
+global MADV_DOFORK: cint <comptime> = 11
+global MADV_MERGEABLE: cint <comptime> = 12
+global MADV_UNMERGEABLE: cint <comptime> = 13
+global MADV_HUGEPAGE: cint <comptime> = 14
+global MADV_NOHUGEPAGE: cint <comptime> = 15
+global MADV_DONTDUMP: cint <comptime> = 16
+global MADV_DODUMP: cint <comptime> = 17
+global MADV_WIPEONFORK: cint <comptime> = 18
+global MADV_KEEPONFORK: cint <comptime> = 19
+global MADV_COLD: cint <comptime> = 20
+global MADV_PAGEOUT: cint <comptime> = 21
+global MADV_POPULATE_READ: cint <comptime> = 22
+global MADV_POPULATE_WRITE: cint <comptime> = 23
+global MADV_DONTNEED_LOCKED: cint <comptime> = 24
+global MADV_COLLAPSE: cint <comptime> = 25
+global MADV_HWPOISON: cint <comptime> = 100
+global POSIX_MADV_NORMAL: cint <comptime> = 0
+global POSIX_MADV_RANDOM: cint <comptime> = 1
+global POSIX_MADV_SEQUENTIAL: cint <comptime> = 2
+global POSIX_MADV_WILLNEED: cint <comptime> = 3
+global POSIX_MADV_DONTNEED: cint <comptime> = 4
+global MCL_CURRENT: cint <comptime> = 1
+global MCL_FUTURE: cint <comptime> = 2
+global MCL_ONFAULT: cint <comptime> = 4
+global MAP_FAILED: pointer <cimport,nodecl,const>

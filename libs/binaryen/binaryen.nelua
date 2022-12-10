@@ -1,0 +1,1119 @@
+##[[
+linklib 'binaryen'
+cinclude '<binaryen-c.h>'
+if ccinfo.is_linux then
+  linklib 'pthread'
+end
+require 'nldecl2'
+]]
+global function BinaryenTypeNone(): culong <cimport,nodecl> end
+global function BinaryenTypeInt32(): culong <cimport,nodecl> end
+global function BinaryenTypeInt64(): culong <cimport,nodecl> end
+global function BinaryenTypeFloat32(): culong <cimport,nodecl> end
+global function BinaryenTypeFloat64(): culong <cimport,nodecl> end
+global function BinaryenTypeVec128(): culong <cimport,nodecl> end
+global function BinaryenTypeFuncref(): culong <cimport,nodecl> end
+global function BinaryenTypeExternref(): culong <cimport,nodecl> end
+global function BinaryenTypeAnyref(): culong <cimport,nodecl> end
+global function BinaryenTypeEqref(): culong <cimport,nodecl> end
+global function BinaryenTypeI31ref(): culong <cimport,nodecl> end
+global function BinaryenTypeDataref(): culong <cimport,nodecl> end
+global function BinaryenTypeUnreachable(): culong <cimport,nodecl> end
+global function BinaryenTypeAuto(): culong <cimport,nodecl> end
+global function BinaryenTypeCreate(valueTypes: *culong, numTypes: cuint): culong <cimport,nodecl> end
+global function BinaryenTypeArity(t: culong): uint32 <cimport,nodecl> end
+global function BinaryenTypeExpand(t: culong, buf: *culong): void <cimport,nodecl> end
+global function BinaryenNone(): culong <cimport,nodecl> end
+global function BinaryenInt32(): culong <cimport,nodecl> end
+global function BinaryenInt64(): culong <cimport,nodecl> end
+global function BinaryenFloat32(): culong <cimport,nodecl> end
+global function BinaryenFloat64(): culong <cimport,nodecl> end
+global function BinaryenUndefined(): culong <cimport,nodecl> end
+global function BinaryenInvalidId(): cuint <cimport,nodecl> end
+global function BinaryenNopId(): cuint <cimport,nodecl> end
+global function BinaryenBlockId(): cuint <cimport,nodecl> end
+global function BinaryenIfId(): cuint <cimport,nodecl> end
+global function BinaryenLoopId(): cuint <cimport,nodecl> end
+global function BinaryenBreakId(): cuint <cimport,nodecl> end
+global function BinaryenSwitchId(): cuint <cimport,nodecl> end
+global function BinaryenCallId(): cuint <cimport,nodecl> end
+global function BinaryenCallIndirectId(): cuint <cimport,nodecl> end
+global function BinaryenLocalGetId(): cuint <cimport,nodecl> end
+global function BinaryenLocalSetId(): cuint <cimport,nodecl> end
+global function BinaryenGlobalGetId(): cuint <cimport,nodecl> end
+global function BinaryenGlobalSetId(): cuint <cimport,nodecl> end
+global function BinaryenLoadId(): cuint <cimport,nodecl> end
+global function BinaryenStoreId(): cuint <cimport,nodecl> end
+global function BinaryenAtomicRMWId(): cuint <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgId(): cuint <cimport,nodecl> end
+global function BinaryenAtomicWaitId(): cuint <cimport,nodecl> end
+global function BinaryenAtomicNotifyId(): cuint <cimport,nodecl> end
+global function BinaryenAtomicFenceId(): cuint <cimport,nodecl> end
+global function BinaryenSIMDExtractId(): cuint <cimport,nodecl> end
+global function BinaryenSIMDReplaceId(): cuint <cimport,nodecl> end
+global function BinaryenSIMDShuffleId(): cuint <cimport,nodecl> end
+global function BinaryenSIMDTernaryId(): cuint <cimport,nodecl> end
+global function BinaryenSIMDShiftId(): cuint <cimport,nodecl> end
+global function BinaryenSIMDLoadId(): cuint <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneId(): cuint <cimport,nodecl> end
+global function BinaryenMemoryInitId(): cuint <cimport,nodecl> end
+global function BinaryenDataDropId(): cuint <cimport,nodecl> end
+global function BinaryenMemoryCopyId(): cuint <cimport,nodecl> end
+global function BinaryenMemoryFillId(): cuint <cimport,nodecl> end
+global function BinaryenConstId(): cuint <cimport,nodecl> end
+global function BinaryenUnaryId(): cuint <cimport,nodecl> end
+global function BinaryenBinaryId(): cuint <cimport,nodecl> end
+global function BinaryenSelectId(): cuint <cimport,nodecl> end
+global function BinaryenDropId(): cuint <cimport,nodecl> end
+global function BinaryenReturnId(): cuint <cimport,nodecl> end
+global function BinaryenMemorySizeId(): cuint <cimport,nodecl> end
+global function BinaryenMemoryGrowId(): cuint <cimport,nodecl> end
+global function BinaryenUnreachableId(): cuint <cimport,nodecl> end
+global function BinaryenPopId(): cuint <cimport,nodecl> end
+global function BinaryenRefNullId(): cuint <cimport,nodecl> end
+global function BinaryenRefIsId(): cuint <cimport,nodecl> end
+global function BinaryenRefFuncId(): cuint <cimport,nodecl> end
+global function BinaryenRefEqId(): cuint <cimport,nodecl> end
+global function BinaryenTableGetId(): cuint <cimport,nodecl> end
+global function BinaryenTableSetId(): cuint <cimport,nodecl> end
+global function BinaryenTableSizeId(): cuint <cimport,nodecl> end
+global function BinaryenTableGrowId(): cuint <cimport,nodecl> end
+global function BinaryenTryId(): cuint <cimport,nodecl> end
+global function BinaryenThrowId(): cuint <cimport,nodecl> end
+global function BinaryenRethrowId(): cuint <cimport,nodecl> end
+global function BinaryenTupleMakeId(): cuint <cimport,nodecl> end
+global function BinaryenTupleExtractId(): cuint <cimport,nodecl> end
+global function BinaryenI31NewId(): cuint <cimport,nodecl> end
+global function BinaryenI31GetId(): cuint <cimport,nodecl> end
+global function BinaryenCallRefId(): cuint <cimport,nodecl> end
+global function BinaryenRefTestId(): cuint <cimport,nodecl> end
+global function BinaryenRefCastId(): cuint <cimport,nodecl> end
+global function BinaryenBrOnId(): cuint <cimport,nodecl> end
+global function BinaryenRttCanonId(): cuint <cimport,nodecl> end
+global function BinaryenRttSubId(): cuint <cimport,nodecl> end
+global function BinaryenStructNewId(): cuint <cimport,nodecl> end
+global function BinaryenStructGetId(): cuint <cimport,nodecl> end
+global function BinaryenStructSetId(): cuint <cimport,nodecl> end
+global function BinaryenArrayNewId(): cuint <cimport,nodecl> end
+global function BinaryenArrayInitId(): cuint <cimport,nodecl> end
+global function BinaryenArrayGetId(): cuint <cimport,nodecl> end
+global function BinaryenArraySetId(): cuint <cimport,nodecl> end
+global function BinaryenArrayLenId(): cuint <cimport,nodecl> end
+global function BinaryenArrayCopyId(): cuint <cimport,nodecl> end
+global function BinaryenRefAsId(): cuint <cimport,nodecl> end
+global function BinaryenExternalFunction(): cuint <cimport,nodecl> end
+global function BinaryenExternalTable(): cuint <cimport,nodecl> end
+global function BinaryenExternalMemory(): cuint <cimport,nodecl> end
+global function BinaryenExternalGlobal(): cuint <cimport,nodecl> end
+global function BinaryenExternalTag(): cuint <cimport,nodecl> end
+global function BinaryenFeatureMVP(): cuint <cimport,nodecl> end
+global function BinaryenFeatureAtomics(): cuint <cimport,nodecl> end
+global function BinaryenFeatureBulkMemory(): cuint <cimport,nodecl> end
+global function BinaryenFeatureMutableGlobals(): cuint <cimport,nodecl> end
+global function BinaryenFeatureNontrappingFPToInt(): cuint <cimport,nodecl> end
+global function BinaryenFeatureSignExt(): cuint <cimport,nodecl> end
+global function BinaryenFeatureSIMD128(): cuint <cimport,nodecl> end
+global function BinaryenFeatureExceptionHandling(): cuint <cimport,nodecl> end
+global function BinaryenFeatureTailCall(): cuint <cimport,nodecl> end
+global function BinaryenFeatureReferenceTypes(): cuint <cimport,nodecl> end
+global function BinaryenFeatureMultivalue(): cuint <cimport,nodecl> end
+global function BinaryenFeatureGC(): cuint <cimport,nodecl> end
+global function BinaryenFeatureMemory64(): cuint <cimport,nodecl> end
+global function BinaryenFeatureTypedFunctionReferences(): cuint <cimport,nodecl> end
+global function BinaryenFeatureRelaxedSIMD(): cuint <cimport,nodecl> end
+global function BinaryenFeatureAll(): cuint <cimport,nodecl> end
+global BinaryenModule: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenModuleRef: type = @*BinaryenModule
+global function BinaryenModuleCreate(): BinaryenModuleRef <cimport,nodecl> end
+global function BinaryenModuleDispose(module: BinaryenModuleRef): void <cimport,nodecl> end
+global BinaryenLiteral: type <cimport,nodecl,ctypedef> = @record{
+  type: usize,
+  __unnamed1: union{
+    i32: int32,
+    i64: int64,
+    f32: float32,
+    f64: float64,
+    v128: [16]uint8,
+    func: cstring
+  }
+}
+global function BinaryenLiteralInt32(x: int32): BinaryenLiteral <cimport,nodecl> end
+global function BinaryenLiteralInt64(x: int64): BinaryenLiteral <cimport,nodecl> end
+global function BinaryenLiteralFloat32(x: float32): BinaryenLiteral <cimport,nodecl> end
+global function BinaryenLiteralFloat64(x: float64): BinaryenLiteral <cimport,nodecl> end
+global function BinaryenLiteralVec128(x: *uint8): BinaryenLiteral <cimport,nodecl> end
+global function BinaryenLiteralFloat32Bits(x: int32): BinaryenLiteral <cimport,nodecl> end
+global function BinaryenLiteralFloat64Bits(x: int64): BinaryenLiteral <cimport,nodecl> end
+global function BinaryenClzInt32(): cint <cimport,nodecl> end
+global function BinaryenCtzInt32(): cint <cimport,nodecl> end
+global function BinaryenPopcntInt32(): cint <cimport,nodecl> end
+global function BinaryenNegFloat32(): cint <cimport,nodecl> end
+global function BinaryenAbsFloat32(): cint <cimport,nodecl> end
+global function BinaryenCeilFloat32(): cint <cimport,nodecl> end
+global function BinaryenFloorFloat32(): cint <cimport,nodecl> end
+global function BinaryenTruncFloat32(): cint <cimport,nodecl> end
+global function BinaryenNearestFloat32(): cint <cimport,nodecl> end
+global function BinaryenSqrtFloat32(): cint <cimport,nodecl> end
+global function BinaryenEqZInt32(): cint <cimport,nodecl> end
+global function BinaryenClzInt64(): cint <cimport,nodecl> end
+global function BinaryenCtzInt64(): cint <cimport,nodecl> end
+global function BinaryenPopcntInt64(): cint <cimport,nodecl> end
+global function BinaryenNegFloat64(): cint <cimport,nodecl> end
+global function BinaryenAbsFloat64(): cint <cimport,nodecl> end
+global function BinaryenCeilFloat64(): cint <cimport,nodecl> end
+global function BinaryenFloorFloat64(): cint <cimport,nodecl> end
+global function BinaryenTruncFloat64(): cint <cimport,nodecl> end
+global function BinaryenNearestFloat64(): cint <cimport,nodecl> end
+global function BinaryenSqrtFloat64(): cint <cimport,nodecl> end
+global function BinaryenEqZInt64(): cint <cimport,nodecl> end
+global function BinaryenExtendSInt32(): cint <cimport,nodecl> end
+global function BinaryenExtendUInt32(): cint <cimport,nodecl> end
+global function BinaryenWrapInt64(): cint <cimport,nodecl> end
+global function BinaryenTruncSFloat32ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncSFloat32ToInt64(): cint <cimport,nodecl> end
+global function BinaryenTruncUFloat32ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncUFloat32ToInt64(): cint <cimport,nodecl> end
+global function BinaryenTruncSFloat64ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncSFloat64ToInt64(): cint <cimport,nodecl> end
+global function BinaryenTruncUFloat64ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncUFloat64ToInt64(): cint <cimport,nodecl> end
+global function BinaryenReinterpretFloat32(): cint <cimport,nodecl> end
+global function BinaryenReinterpretFloat64(): cint <cimport,nodecl> end
+global function BinaryenConvertSInt32ToFloat32(): cint <cimport,nodecl> end
+global function BinaryenConvertSInt32ToFloat64(): cint <cimport,nodecl> end
+global function BinaryenConvertUInt32ToFloat32(): cint <cimport,nodecl> end
+global function BinaryenConvertUInt32ToFloat64(): cint <cimport,nodecl> end
+global function BinaryenConvertSInt64ToFloat32(): cint <cimport,nodecl> end
+global function BinaryenConvertSInt64ToFloat64(): cint <cimport,nodecl> end
+global function BinaryenConvertUInt64ToFloat32(): cint <cimport,nodecl> end
+global function BinaryenConvertUInt64ToFloat64(): cint <cimport,nodecl> end
+global function BinaryenPromoteFloat32(): cint <cimport,nodecl> end
+global function BinaryenDemoteFloat64(): cint <cimport,nodecl> end
+global function BinaryenReinterpretInt32(): cint <cimport,nodecl> end
+global function BinaryenReinterpretInt64(): cint <cimport,nodecl> end
+global function BinaryenExtendS8Int32(): cint <cimport,nodecl> end
+global function BinaryenExtendS16Int32(): cint <cimport,nodecl> end
+global function BinaryenExtendS8Int64(): cint <cimport,nodecl> end
+global function BinaryenExtendS16Int64(): cint <cimport,nodecl> end
+global function BinaryenExtendS32Int64(): cint <cimport,nodecl> end
+global function BinaryenAddInt32(): cint <cimport,nodecl> end
+global function BinaryenSubInt32(): cint <cimport,nodecl> end
+global function BinaryenMulInt32(): cint <cimport,nodecl> end
+global function BinaryenDivSInt32(): cint <cimport,nodecl> end
+global function BinaryenDivUInt32(): cint <cimport,nodecl> end
+global function BinaryenRemSInt32(): cint <cimport,nodecl> end
+global function BinaryenRemUInt32(): cint <cimport,nodecl> end
+global function BinaryenAndInt32(): cint <cimport,nodecl> end
+global function BinaryenOrInt32(): cint <cimport,nodecl> end
+global function BinaryenXorInt32(): cint <cimport,nodecl> end
+global function BinaryenShlInt32(): cint <cimport,nodecl> end
+global function BinaryenShrUInt32(): cint <cimport,nodecl> end
+global function BinaryenShrSInt32(): cint <cimport,nodecl> end
+global function BinaryenRotLInt32(): cint <cimport,nodecl> end
+global function BinaryenRotRInt32(): cint <cimport,nodecl> end
+global function BinaryenEqInt32(): cint <cimport,nodecl> end
+global function BinaryenNeInt32(): cint <cimport,nodecl> end
+global function BinaryenLtSInt32(): cint <cimport,nodecl> end
+global function BinaryenLtUInt32(): cint <cimport,nodecl> end
+global function BinaryenLeSInt32(): cint <cimport,nodecl> end
+global function BinaryenLeUInt32(): cint <cimport,nodecl> end
+global function BinaryenGtSInt32(): cint <cimport,nodecl> end
+global function BinaryenGtUInt32(): cint <cimport,nodecl> end
+global function BinaryenGeSInt32(): cint <cimport,nodecl> end
+global function BinaryenGeUInt32(): cint <cimport,nodecl> end
+global function BinaryenAddInt64(): cint <cimport,nodecl> end
+global function BinaryenSubInt64(): cint <cimport,nodecl> end
+global function BinaryenMulInt64(): cint <cimport,nodecl> end
+global function BinaryenDivSInt64(): cint <cimport,nodecl> end
+global function BinaryenDivUInt64(): cint <cimport,nodecl> end
+global function BinaryenRemSInt64(): cint <cimport,nodecl> end
+global function BinaryenRemUInt64(): cint <cimport,nodecl> end
+global function BinaryenAndInt64(): cint <cimport,nodecl> end
+global function BinaryenOrInt64(): cint <cimport,nodecl> end
+global function BinaryenXorInt64(): cint <cimport,nodecl> end
+global function BinaryenShlInt64(): cint <cimport,nodecl> end
+global function BinaryenShrUInt64(): cint <cimport,nodecl> end
+global function BinaryenShrSInt64(): cint <cimport,nodecl> end
+global function BinaryenRotLInt64(): cint <cimport,nodecl> end
+global function BinaryenRotRInt64(): cint <cimport,nodecl> end
+global function BinaryenEqInt64(): cint <cimport,nodecl> end
+global function BinaryenNeInt64(): cint <cimport,nodecl> end
+global function BinaryenLtSInt64(): cint <cimport,nodecl> end
+global function BinaryenLtUInt64(): cint <cimport,nodecl> end
+global function BinaryenLeSInt64(): cint <cimport,nodecl> end
+global function BinaryenLeUInt64(): cint <cimport,nodecl> end
+global function BinaryenGtSInt64(): cint <cimport,nodecl> end
+global function BinaryenGtUInt64(): cint <cimport,nodecl> end
+global function BinaryenGeSInt64(): cint <cimport,nodecl> end
+global function BinaryenGeUInt64(): cint <cimport,nodecl> end
+global function BinaryenAddFloat32(): cint <cimport,nodecl> end
+global function BinaryenSubFloat32(): cint <cimport,nodecl> end
+global function BinaryenMulFloat32(): cint <cimport,nodecl> end
+global function BinaryenDivFloat32(): cint <cimport,nodecl> end
+global function BinaryenCopySignFloat32(): cint <cimport,nodecl> end
+global function BinaryenMinFloat32(): cint <cimport,nodecl> end
+global function BinaryenMaxFloat32(): cint <cimport,nodecl> end
+global function BinaryenEqFloat32(): cint <cimport,nodecl> end
+global function BinaryenNeFloat32(): cint <cimport,nodecl> end
+global function BinaryenLtFloat32(): cint <cimport,nodecl> end
+global function BinaryenLeFloat32(): cint <cimport,nodecl> end
+global function BinaryenGtFloat32(): cint <cimport,nodecl> end
+global function BinaryenGeFloat32(): cint <cimport,nodecl> end
+global function BinaryenAddFloat64(): cint <cimport,nodecl> end
+global function BinaryenSubFloat64(): cint <cimport,nodecl> end
+global function BinaryenMulFloat64(): cint <cimport,nodecl> end
+global function BinaryenDivFloat64(): cint <cimport,nodecl> end
+global function BinaryenCopySignFloat64(): cint <cimport,nodecl> end
+global function BinaryenMinFloat64(): cint <cimport,nodecl> end
+global function BinaryenMaxFloat64(): cint <cimport,nodecl> end
+global function BinaryenEqFloat64(): cint <cimport,nodecl> end
+global function BinaryenNeFloat64(): cint <cimport,nodecl> end
+global function BinaryenLtFloat64(): cint <cimport,nodecl> end
+global function BinaryenLeFloat64(): cint <cimport,nodecl> end
+global function BinaryenGtFloat64(): cint <cimport,nodecl> end
+global function BinaryenGeFloat64(): cint <cimport,nodecl> end
+global function BinaryenAtomicRMWAdd(): cint <cimport,nodecl> end
+global function BinaryenAtomicRMWSub(): cint <cimport,nodecl> end
+global function BinaryenAtomicRMWAnd(): cint <cimport,nodecl> end
+global function BinaryenAtomicRMWOr(): cint <cimport,nodecl> end
+global function BinaryenAtomicRMWXor(): cint <cimport,nodecl> end
+global function BinaryenAtomicRMWXchg(): cint <cimport,nodecl> end
+global function BinaryenTruncSatSFloat32ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncSatSFloat32ToInt64(): cint <cimport,nodecl> end
+global function BinaryenTruncSatUFloat32ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncSatUFloat32ToInt64(): cint <cimport,nodecl> end
+global function BinaryenTruncSatSFloat64ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncSatSFloat64ToInt64(): cint <cimport,nodecl> end
+global function BinaryenTruncSatUFloat64ToInt32(): cint <cimport,nodecl> end
+global function BinaryenTruncSatUFloat64ToInt64(): cint <cimport,nodecl> end
+global function BinaryenSplatVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenReplaceLaneVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenSplatVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenReplaceLaneVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenSplatVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenReplaceLaneVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenSplatVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenReplaceLaneVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenSplatVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenReplaceLaneVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenSplatVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenExtractLaneVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenReplaceLaneVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenEqVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenNeVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenLtSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenLtUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenGtSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenGtUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenLeSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenLeUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenGeSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenGeUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenEqVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenNeVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenLtSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenLtUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenGtSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenGtUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenLeSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenLeUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenGeSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenGeUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenEqVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenNeVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenLtSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenLtUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenGtSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenGtUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenLeSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenLeUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenGeSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenGeUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenEqVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenNeVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenLtSVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenGtSVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenLeSVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenGeSVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenEqVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenNeVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenLtVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenGtVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenLeVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenGeVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenEqVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenNeVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenLtVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenGtVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenLeVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenGeVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenNotVec128(): cint <cimport,nodecl> end
+global function BinaryenAndVec128(): cint <cimport,nodecl> end
+global function BinaryenOrVec128(): cint <cimport,nodecl> end
+global function BinaryenXorVec128(): cint <cimport,nodecl> end
+global function BinaryenAndNotVec128(): cint <cimport,nodecl> end
+global function BinaryenBitselectVec128(): cint <cimport,nodecl> end
+global function BinaryenAnyTrueVec128(): cint <cimport,nodecl> end
+global function BinaryenPopcntVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenAbsVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenNegVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenAllTrueVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenBitmaskVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenShlVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenShrSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenShrUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenAddVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenAddSatSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenAddSatUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenSubVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenSubSatSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenSubSatUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenMinSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenMinUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenMaxSVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenMaxUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenAvgrUVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenAbsVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenNegVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenAllTrueVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenBitmaskVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenShlVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenShrSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenShrUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenAddVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenAddSatSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenAddSatUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenSubVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenSubSatSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenSubSatUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenMulVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenMinSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenMinUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenMaxSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenMaxUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenAvgrUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenQ15MulrSatSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtMulLowSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtMulHighSVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtMulLowUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtMulHighUVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenAbsVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenNegVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenAllTrueVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenBitmaskVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenShlVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenShrSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenShrUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenAddVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenSubVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenMulVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenMinSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenMinUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenMaxSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenMaxUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenDotSVecI16x8ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtMulLowSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtMulHighSVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtMulLowUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtMulHighUVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenAbsVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenNegVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenAllTrueVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenBitmaskVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenShlVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenShrSVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenShrUVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenAddVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenSubVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenMulVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtMulLowSVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtMulHighSVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtMulLowUVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtMulHighUVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenAbsVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenNegVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenSqrtVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenAddVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenSubVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenMulVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenDivVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenMinVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenMaxVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenPMinVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenPMaxVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenCeilVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenFloorVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenTruncVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenNearestVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenAbsVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenNegVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenSqrtVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenAddVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenSubVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenMulVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenDivVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenMinVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenMaxVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenPMinVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenPMaxVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenCeilVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenFloorVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenTruncVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenNearestVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenExtAddPairwiseSVecI8x16ToI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtAddPairwiseUVecI8x16ToI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtAddPairwiseSVecI16x8ToI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtAddPairwiseUVecI16x8ToI32x4(): cint <cimport,nodecl> end
+global function BinaryenTruncSatSVecF32x4ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenTruncSatUVecF32x4ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenConvertSVecI32x4ToVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenConvertUVecI32x4ToVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenLoad8SplatVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad16SplatVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad32SplatVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad64SplatVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad8x8SVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad8x8UVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad16x4SVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad16x4UVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad32x2SVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad32x2UVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad32ZeroVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad64ZeroVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad8LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad16LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad32LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenLoad64LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenStore8LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenStore16LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenStore32LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenStore64LaneVec128(): cint <cimport,nodecl> end
+global function BinaryenNarrowSVecI16x8ToVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenNarrowUVecI16x8ToVecI8x16(): cint <cimport,nodecl> end
+global function BinaryenNarrowSVecI32x4ToVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenNarrowUVecI32x4ToVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtendLowSVecI8x16ToVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtendHighSVecI8x16ToVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtendLowUVecI8x16ToVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtendHighUVecI8x16ToVecI16x8(): cint <cimport,nodecl> end
+global function BinaryenExtendLowSVecI16x8ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtendHighSVecI16x8ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtendLowUVecI16x8ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtendHighUVecI16x8ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenExtendLowSVecI32x4ToVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtendHighSVecI32x4ToVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtendLowUVecI32x4ToVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenExtendHighUVecI32x4ToVecI64x2(): cint <cimport,nodecl> end
+global function BinaryenConvertLowSVecI32x4ToVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenConvertLowUVecI32x4ToVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenTruncSatZeroSVecF64x2ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenTruncSatZeroUVecF64x2ToVecI32x4(): cint <cimport,nodecl> end
+global function BinaryenDemoteZeroVecF64x2ToVecF32x4(): cint <cimport,nodecl> end
+global function BinaryenPromoteLowVecF32x4ToVecF64x2(): cint <cimport,nodecl> end
+global function BinaryenSwizzleVec8x16(): cint <cimport,nodecl> end
+global function BinaryenRefIsNull(): cint <cimport,nodecl> end
+global function BinaryenRefIsFunc(): cint <cimport,nodecl> end
+global function BinaryenRefIsData(): cint <cimport,nodecl> end
+global function BinaryenRefIsI31(): cint <cimport,nodecl> end
+global function BinaryenRefAsNonNull(): cint <cimport,nodecl> end
+global function BinaryenRefAsFunc(): cint <cimport,nodecl> end
+global function BinaryenRefAsData(): cint <cimport,nodecl> end
+global function BinaryenRefAsI31(): cint <cimport,nodecl> end
+global BinaryenExpression: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenExpressionRef: type = @*BinaryenExpression
+global function BinaryenBlock(module: BinaryenModuleRef, name: cstring, children: *BinaryenExpressionRef, numChildren: cuint, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenIf(module: BinaryenModuleRef, condition: BinaryenExpressionRef, ifTrue: BinaryenExpressionRef, ifFalse: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLoop(module: BinaryenModuleRef, In: cstring, body: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBreak(module: BinaryenModuleRef, name: cstring, condition: BinaryenExpressionRef, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSwitch(module: BinaryenModuleRef, names: *cstring, numNames: cuint, defaultName: cstring, condition: BinaryenExpressionRef, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenCall(module: BinaryenModuleRef, target: cstring, operands: *BinaryenExpressionRef, numOperands: cuint, returnType: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenCallIndirect(module: BinaryenModuleRef, table: cstring, target: BinaryenExpressionRef, operands: *BinaryenExpressionRef, numOperands: cuint, params: culong, results: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenReturnCall(module: BinaryenModuleRef, target: cstring, operands: *BinaryenExpressionRef, numOperands: cuint, returnType: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenReturnCallIndirect(module: BinaryenModuleRef, table: cstring, target: BinaryenExpressionRef, operands: *BinaryenExpressionRef, numOperands: cuint, params: culong, results: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLocalGet(module: BinaryenModuleRef, index: cuint, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLocalSet(module: BinaryenModuleRef, index: cuint, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLocalTee(module: BinaryenModuleRef, index: cuint, value: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenGlobalGet(module: BinaryenModuleRef, name: cstring, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenGlobalSet(module: BinaryenModuleRef, name: cstring, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLoad(module: BinaryenModuleRef, bytes: uint32, signed_: boolean, offset: uint32, align: uint32, type: culong, ptr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenStore(module: BinaryenModuleRef, bytes: uint32, offset: uint32, align: uint32, ptr: BinaryenExpressionRef, value: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenConst(module: BinaryenModuleRef, value: BinaryenLiteral): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenUnary(module: BinaryenModuleRef, op: cint, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBinary(module: BinaryenModuleRef, op: cint, left: BinaryenExpressionRef, right: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSelect(module: BinaryenModuleRef, condition: BinaryenExpressionRef, ifTrue: BinaryenExpressionRef, ifFalse: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenDrop(module: BinaryenModuleRef, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenReturn(module: BinaryenModuleRef, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemorySize(module: BinaryenModuleRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryGrow(module: BinaryenModuleRef, delta: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenNop(module: BinaryenModuleRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenUnreachable(module: BinaryenModuleRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicLoad(module: BinaryenModuleRef, bytes: uint32, offset: uint32, type: culong, ptr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicStore(module: BinaryenModuleRef, bytes: uint32, offset: uint32, ptr: BinaryenExpressionRef, value: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicRMW(module: BinaryenModuleRef, op: cint, bytes: cuint, offset: cuint, ptr: BinaryenExpressionRef, value: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicCmpxchg(module: BinaryenModuleRef, bytes: cuint, offset: cuint, ptr: BinaryenExpressionRef, expected: BinaryenExpressionRef, replacement: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicWait(module: BinaryenModuleRef, ptr: BinaryenExpressionRef, expected: BinaryenExpressionRef, timeout: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicNotify(module: BinaryenModuleRef, ptr: BinaryenExpressionRef, notifyCount: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicFence(module: BinaryenModuleRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDExtract(module: BinaryenModuleRef, op: cint, vec: BinaryenExpressionRef, index: uint8): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDReplace(module: BinaryenModuleRef, op: cint, vec: BinaryenExpressionRef, index: uint8, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDShuffle(module: BinaryenModuleRef, left: BinaryenExpressionRef, right: BinaryenExpressionRef, mask: *uint8): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDTernary(module: BinaryenModuleRef, op: cint, a: BinaryenExpressionRef, b: BinaryenExpressionRef, c: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDShift(module: BinaryenModuleRef, op: cint, vec: BinaryenExpressionRef, shift: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDLoad(module: BinaryenModuleRef, op: cint, offset: uint32, align: uint32, ptr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLane(module: BinaryenModuleRef, op: cint, offset: uint32, align: uint32, index: uint8, ptr: BinaryenExpressionRef, vec: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryInit(module: BinaryenModuleRef, segment: uint32, dest: BinaryenExpressionRef, offset: BinaryenExpressionRef, size: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenDataDrop(module: BinaryenModuleRef, segment: uint32): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryCopy(module: BinaryenModuleRef, dest: BinaryenExpressionRef, source: BinaryenExpressionRef, size: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryFill(module: BinaryenModuleRef, dest: BinaryenExpressionRef, value: BinaryenExpressionRef, size: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefNull(module: BinaryenModuleRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefIs(module: BinaryenModuleRef, op: cint, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefAs(module: BinaryenModuleRef, op: cint, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefFunc(module: BinaryenModuleRef, func: cstring, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefEq(module: BinaryenModuleRef, left: BinaryenExpressionRef, right: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableGet(module: BinaryenModuleRef, name: cstring, index: BinaryenExpressionRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableSet(module: BinaryenModuleRef, name: cstring, index: BinaryenExpressionRef, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableSize(module: BinaryenModuleRef, name: cstring): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableGrow(module: BinaryenModuleRef, name: cstring, value: BinaryenExpressionRef, delta: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTry(module: BinaryenModuleRef, name: cstring, body: BinaryenExpressionRef, catchTags: *cstring, numCatchTags: cuint, catchBodies: *BinaryenExpressionRef, numCatchBodies: cuint, delegateTarget: cstring): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenThrow(module: BinaryenModuleRef, tag: cstring, operands: *BinaryenExpressionRef, numOperands: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRethrow(module: BinaryenModuleRef, target: cstring): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTupleMake(module: BinaryenModuleRef, operands: *BinaryenExpressionRef, numOperands: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTupleExtract(module: BinaryenModuleRef, tuple: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenPop(module: BinaryenModuleRef, type: culong): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenI31New(module: BinaryenModuleRef, value: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenI31Get(module: BinaryenModuleRef, i31: BinaryenExpressionRef, signed_: boolean): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenExpressionGetId(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenExpressionGetType(expr: BinaryenExpressionRef): culong <cimport,nodecl> end
+global function BinaryenExpressionSetType(expr: BinaryenExpressionRef, type: culong): void <cimport,nodecl> end
+global function BinaryenExpressionPrint(expr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenExpressionFinalize(expr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenExpressionCopy(expr: BinaryenExpressionRef, module: BinaryenModuleRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBlockGetName(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenBlockSetName(expr: BinaryenExpressionRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenBlockGetNumChildren(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenBlockGetChildAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBlockSetChildAt(expr: BinaryenExpressionRef, index: cuint, childExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenBlockAppendChild(expr: BinaryenExpressionRef, childExpr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenBlockInsertChildAt(expr: BinaryenExpressionRef, index: cuint, childExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenBlockRemoveChildAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenIfGetCondition(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenIfSetCondition(expr: BinaryenExpressionRef, condExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenIfGetIfTrue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenIfSetIfTrue(expr: BinaryenExpressionRef, ifTrueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenIfGetIfFalse(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenIfSetIfFalse(expr: BinaryenExpressionRef, ifFalseExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenLoopGetName(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenLoopSetName(expr: BinaryenExpressionRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenLoopGetBody(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLoopSetBody(expr: BinaryenExpressionRef, bodyExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenBreakGetName(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenBreakSetName(expr: BinaryenExpressionRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenBreakGetCondition(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBreakSetCondition(expr: BinaryenExpressionRef, condExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenBreakGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBreakSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSwitchGetNumNames(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenSwitchGetNameAt(expr: BinaryenExpressionRef, index: cuint): cstring <cimport,nodecl> end
+global function BinaryenSwitchSetNameAt(expr: BinaryenExpressionRef, index: cuint, name: cstring): void <cimport,nodecl> end
+global function BinaryenSwitchAppendName(expr: BinaryenExpressionRef, name: cstring): cuint <cimport,nodecl> end
+global function BinaryenSwitchInsertNameAt(expr: BinaryenExpressionRef, index: cuint, name: cstring): void <cimport,nodecl> end
+global function BinaryenSwitchRemoveNameAt(expr: BinaryenExpressionRef, index: cuint): cstring <cimport,nodecl> end
+global function BinaryenSwitchGetDefaultName(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenSwitchSetDefaultName(expr: BinaryenExpressionRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenSwitchGetCondition(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSwitchSetCondition(expr: BinaryenExpressionRef, condExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSwitchGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSwitchSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenCallGetTarget(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenCallSetTarget(expr: BinaryenExpressionRef, target: cstring): void <cimport,nodecl> end
+global function BinaryenCallGetNumOperands(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenCallGetOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenCallSetOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenCallAppendOperand(expr: BinaryenExpressionRef, operandExpr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenCallInsertOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenCallRemoveOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenCallIsReturn(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenCallSetReturn(expr: BinaryenExpressionRef, isReturn: boolean): void <cimport,nodecl> end
+global function BinaryenCallIndirectGetTarget(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenCallIndirectSetTarget(expr: BinaryenExpressionRef, targetExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenCallIndirectGetTable(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenCallIndirectSetTable(expr: BinaryenExpressionRef, table: cstring): void <cimport,nodecl> end
+global function BinaryenCallIndirectGetNumOperands(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenCallIndirectGetOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenCallIndirectSetOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenCallIndirectAppendOperand(expr: BinaryenExpressionRef, operandExpr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenCallIndirectInsertOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenCallIndirectRemoveOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenCallIndirectIsReturn(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenCallIndirectSetReturn(expr: BinaryenExpressionRef, isReturn: boolean): void <cimport,nodecl> end
+global function BinaryenCallIndirectGetParams(expr: BinaryenExpressionRef): culong <cimport,nodecl> end
+global function BinaryenCallIndirectSetParams(expr: BinaryenExpressionRef, params: culong): void <cimport,nodecl> end
+global function BinaryenCallIndirectGetResults(expr: BinaryenExpressionRef): culong <cimport,nodecl> end
+global function BinaryenCallIndirectSetResults(expr: BinaryenExpressionRef, params: culong): void <cimport,nodecl> end
+global function BinaryenLocalGetGetIndex(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenLocalGetSetIndex(expr: BinaryenExpressionRef, index: cuint): void <cimport,nodecl> end
+global function BinaryenLocalSetIsTee(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenLocalSetGetIndex(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenLocalSetSetIndex(expr: BinaryenExpressionRef, index: cuint): void <cimport,nodecl> end
+global function BinaryenLocalSetGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLocalSetSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenGlobalGetGetName(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenGlobalGetSetName(expr: BinaryenExpressionRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenGlobalSetGetName(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenGlobalSetSetName(expr: BinaryenExpressionRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenGlobalSetGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenGlobalSetSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTableGetGetTable(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenTableGetSetTable(expr: BinaryenExpressionRef, table: cstring): void <cimport,nodecl> end
+global function BinaryenTableGetGetIndex(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableGetSetIndex(expr: BinaryenExpressionRef, indexExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTableSetGetTable(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenTableSetSetTable(expr: BinaryenExpressionRef, table: cstring): void <cimport,nodecl> end
+global function BinaryenTableSetGetIndex(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableSetSetIndex(expr: BinaryenExpressionRef, indexExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTableSetGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableSetSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTableSizeGetTable(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenTableSizeSetTable(expr: BinaryenExpressionRef, table: cstring): void <cimport,nodecl> end
+global function BinaryenTableGrowGetTable(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenTableGrowSetTable(expr: BinaryenExpressionRef, table: cstring): void <cimport,nodecl> end
+global function BinaryenTableGrowGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableGrowSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTableGrowGetDelta(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTableGrowSetDelta(expr: BinaryenExpressionRef, deltaExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryGrowGetDelta(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryGrowSetDelta(expr: BinaryenExpressionRef, deltaExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenLoadIsAtomic(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenLoadSetAtomic(expr: BinaryenExpressionRef, isAtomic: boolean): void <cimport,nodecl> end
+global function BinaryenLoadIsSigned(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenLoadSetSigned(expr: BinaryenExpressionRef, isSigned: boolean): void <cimport,nodecl> end
+global function BinaryenLoadGetOffset(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenLoadSetOffset(expr: BinaryenExpressionRef, offset: uint32): void <cimport,nodecl> end
+global function BinaryenLoadGetBytes(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenLoadSetBytes(expr: BinaryenExpressionRef, bytes: uint32): void <cimport,nodecl> end
+global function BinaryenLoadGetAlign(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenLoadSetAlign(expr: BinaryenExpressionRef, align: uint32): void <cimport,nodecl> end
+global function BinaryenLoadGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenLoadSetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenStoreIsAtomic(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenStoreSetAtomic(expr: BinaryenExpressionRef, isAtomic: boolean): void <cimport,nodecl> end
+global function BinaryenStoreGetBytes(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenStoreSetBytes(expr: BinaryenExpressionRef, bytes: uint32): void <cimport,nodecl> end
+global function BinaryenStoreGetOffset(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenStoreSetOffset(expr: BinaryenExpressionRef, offset: uint32): void <cimport,nodecl> end
+global function BinaryenStoreGetAlign(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenStoreSetAlign(expr: BinaryenExpressionRef, align: uint32): void <cimport,nodecl> end
+global function BinaryenStoreGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenStoreSetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenStoreGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenStoreSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenStoreGetValueType(expr: BinaryenExpressionRef): culong <cimport,nodecl> end
+global function BinaryenStoreSetValueType(expr: BinaryenExpressionRef, valueType: culong): void <cimport,nodecl> end
+global function BinaryenConstGetValueI32(expr: BinaryenExpressionRef): int32 <cimport,nodecl> end
+global function BinaryenConstSetValueI32(expr: BinaryenExpressionRef, value: int32): void <cimport,nodecl> end
+global function BinaryenConstGetValueI64(expr: BinaryenExpressionRef): int64 <cimport,nodecl> end
+global function BinaryenConstSetValueI64(expr: BinaryenExpressionRef, value: int64): void <cimport,nodecl> end
+global function BinaryenConstGetValueI64Low(expr: BinaryenExpressionRef): int32 <cimport,nodecl> end
+global function BinaryenConstSetValueI64Low(expr: BinaryenExpressionRef, valueLow: int32): void <cimport,nodecl> end
+global function BinaryenConstGetValueI64High(expr: BinaryenExpressionRef): int32 <cimport,nodecl> end
+global function BinaryenConstSetValueI64High(expr: BinaryenExpressionRef, valueHigh: int32): void <cimport,nodecl> end
+global function BinaryenConstGetValueF32(expr: BinaryenExpressionRef): float32 <cimport,nodecl> end
+global function BinaryenConstSetValueF32(expr: BinaryenExpressionRef, value: float32): void <cimport,nodecl> end
+global function BinaryenConstGetValueF64(expr: BinaryenExpressionRef): float64 <cimport,nodecl> end
+global function BinaryenConstSetValueF64(expr: BinaryenExpressionRef, value: float64): void <cimport,nodecl> end
+global function BinaryenConstGetValueV128(expr: BinaryenExpressionRef, out: *uint8): void <cimport,nodecl> end
+global function BinaryenConstSetValueV128(expr: BinaryenExpressionRef, value: *uint8): void <cimport,nodecl> end
+global function BinaryenUnaryGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenUnarySetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenUnaryGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenUnarySetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenBinaryGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenBinarySetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenBinaryGetLeft(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBinarySetLeft(expr: BinaryenExpressionRef, leftExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenBinaryGetRight(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenBinarySetRight(expr: BinaryenExpressionRef, rightExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSelectGetIfTrue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSelectSetIfTrue(expr: BinaryenExpressionRef, ifTrueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSelectGetIfFalse(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSelectSetIfFalse(expr: BinaryenExpressionRef, ifFalseExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSelectGetCondition(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSelectSetCondition(expr: BinaryenExpressionRef, condExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenDropGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenDropSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenReturnGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenReturnSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicRMWGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenAtomicRMWSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenAtomicRMWGetBytes(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenAtomicRMWSetBytes(expr: BinaryenExpressionRef, bytes: uint32): void <cimport,nodecl> end
+global function BinaryenAtomicRMWGetOffset(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenAtomicRMWSetOffset(expr: BinaryenExpressionRef, offset: uint32): void <cimport,nodecl> end
+global function BinaryenAtomicRMWGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicRMWSetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicRMWGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicRMWSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgGetBytes(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgSetBytes(expr: BinaryenExpressionRef, bytes: uint32): void <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgGetOffset(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgSetOffset(expr: BinaryenExpressionRef, offset: uint32): void <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgSetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgGetExpected(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgSetExpected(expr: BinaryenExpressionRef, expectedExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgGetReplacement(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicCmpxchgSetReplacement(expr: BinaryenExpressionRef, replacementExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicWaitGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicWaitSetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicWaitGetExpected(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicWaitSetExpected(expr: BinaryenExpressionRef, expectedExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicWaitGetTimeout(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicWaitSetTimeout(expr: BinaryenExpressionRef, timeoutExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicWaitGetExpectedType(expr: BinaryenExpressionRef): culong <cimport,nodecl> end
+global function BinaryenAtomicWaitSetExpectedType(expr: BinaryenExpressionRef, expectedType: culong): void <cimport,nodecl> end
+global function BinaryenAtomicNotifyGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicNotifySetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicNotifyGetNotifyCount(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenAtomicNotifySetNotifyCount(expr: BinaryenExpressionRef, notifyCountExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenAtomicFenceGetOrder(expr: BinaryenExpressionRef): uint8 <cimport,nodecl> end
+global function BinaryenAtomicFenceSetOrder(expr: BinaryenExpressionRef, order: uint8): void <cimport,nodecl> end
+global function BinaryenSIMDExtractGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenSIMDExtractSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenSIMDExtractGetVec(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDExtractSetVec(expr: BinaryenExpressionRef, vecExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDExtractGetIndex(expr: BinaryenExpressionRef): uint8 <cimport,nodecl> end
+global function BinaryenSIMDExtractSetIndex(expr: BinaryenExpressionRef, index: uint8): void <cimport,nodecl> end
+global function BinaryenSIMDReplaceGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenSIMDReplaceSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenSIMDReplaceGetVec(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDReplaceSetVec(expr: BinaryenExpressionRef, vecExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDReplaceGetIndex(expr: BinaryenExpressionRef): uint8 <cimport,nodecl> end
+global function BinaryenSIMDReplaceSetIndex(expr: BinaryenExpressionRef, index: uint8): void <cimport,nodecl> end
+global function BinaryenSIMDReplaceGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDReplaceSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDShuffleGetLeft(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDShuffleSetLeft(expr: BinaryenExpressionRef, leftExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDShuffleGetRight(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDShuffleSetRight(expr: BinaryenExpressionRef, rightExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDShuffleGetMask(expr: BinaryenExpressionRef, mask: *uint8): void <cimport,nodecl> end
+global function BinaryenSIMDShuffleSetMask(expr: BinaryenExpressionRef, mask: *uint8): void <cimport,nodecl> end
+global function BinaryenSIMDTernaryGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenSIMDTernarySetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenSIMDTernaryGetA(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDTernarySetA(expr: BinaryenExpressionRef, aExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDTernaryGetB(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDTernarySetB(expr: BinaryenExpressionRef, bExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDTernaryGetC(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDTernarySetC(expr: BinaryenExpressionRef, cExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDShiftGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenSIMDShiftSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenSIMDShiftGetVec(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDShiftSetVec(expr: BinaryenExpressionRef, vecExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDShiftGetShift(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDShiftSetShift(expr: BinaryenExpressionRef, shiftExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDLoadGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenSIMDLoadSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenSIMDLoadGetOffset(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenSIMDLoadSetOffset(expr: BinaryenExpressionRef, offset: uint32): void <cimport,nodecl> end
+global function BinaryenSIMDLoadGetAlign(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenSIMDLoadSetAlign(expr: BinaryenExpressionRef, align: uint32): void <cimport,nodecl> end
+global function BinaryenSIMDLoadGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDLoadSetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneGetOffset(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneSetOffset(expr: BinaryenExpressionRef, offset: uint32): void <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneGetAlign(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneSetAlign(expr: BinaryenExpressionRef, align: uint32): void <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneGetIndex(expr: BinaryenExpressionRef): uint8 <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneSetIndex(expr: BinaryenExpressionRef, index: uint8): void <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneGetPtr(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneSetPtr(expr: BinaryenExpressionRef, ptrExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneGetVec(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneSetVec(expr: BinaryenExpressionRef, vecExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenSIMDLoadStoreLaneIsStore(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenMemoryInitGetSegment(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenMemoryInitSetSegment(expr: BinaryenExpressionRef, segmentIndex: uint32): void <cimport,nodecl> end
+global function BinaryenMemoryInitGetDest(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryInitSetDest(expr: BinaryenExpressionRef, destExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryInitGetOffset(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryInitSetOffset(expr: BinaryenExpressionRef, offsetExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryInitGetSize(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryInitSetSize(expr: BinaryenExpressionRef, sizeExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenDataDropGetSegment(expr: BinaryenExpressionRef): uint32 <cimport,nodecl> end
+global function BinaryenDataDropSetSegment(expr: BinaryenExpressionRef, segmentIndex: uint32): void <cimport,nodecl> end
+global function BinaryenMemoryCopyGetDest(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryCopySetDest(expr: BinaryenExpressionRef, destExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryCopyGetSource(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryCopySetSource(expr: BinaryenExpressionRef, sourceExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryCopyGetSize(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryCopySetSize(expr: BinaryenExpressionRef, sizeExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryFillGetDest(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryFillSetDest(expr: BinaryenExpressionRef, destExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryFillGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryFillSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenMemoryFillGetSize(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenMemoryFillSetSize(expr: BinaryenExpressionRef, sizeExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenRefIsGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenRefIsSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenRefIsGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefIsSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenRefAsGetOp(expr: BinaryenExpressionRef): cint <cimport,nodecl> end
+global function BinaryenRefAsSetOp(expr: BinaryenExpressionRef, op: cint): void <cimport,nodecl> end
+global function BinaryenRefAsGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefAsSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenRefFuncGetFunc(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenRefFuncSetFunc(expr: BinaryenExpressionRef, funcName: cstring): void <cimport,nodecl> end
+global function BinaryenRefEqGetLeft(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefEqSetLeft(expr: BinaryenExpressionRef, left: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenRefEqGetRight(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRefEqSetRight(expr: BinaryenExpressionRef, right: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTryGetName(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenTrySetName(expr: BinaryenExpressionRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenTryGetBody(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTrySetBody(expr: BinaryenExpressionRef, bodyExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTryGetNumCatchTags(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenTryGetNumCatchBodies(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenTryGetCatchTagAt(expr: BinaryenExpressionRef, index: cuint): cstring <cimport,nodecl> end
+global function BinaryenTrySetCatchTagAt(expr: BinaryenExpressionRef, index: cuint, catchTag: cstring): void <cimport,nodecl> end
+global function BinaryenTryAppendCatchTag(expr: BinaryenExpressionRef, catchTag: cstring): cuint <cimport,nodecl> end
+global function BinaryenTryInsertCatchTagAt(expr: BinaryenExpressionRef, index: cuint, catchTag: cstring): void <cimport,nodecl> end
+global function BinaryenTryRemoveCatchTagAt(expr: BinaryenExpressionRef, index: cuint): cstring <cimport,nodecl> end
+global function BinaryenTryGetCatchBodyAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTrySetCatchBodyAt(expr: BinaryenExpressionRef, index: cuint, catchExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTryAppendCatchBody(expr: BinaryenExpressionRef, catchExpr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenTryInsertCatchBodyAt(expr: BinaryenExpressionRef, index: cuint, catchExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTryRemoveCatchBodyAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTryHasCatchAll(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenTryGetDelegateTarget(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenTrySetDelegateTarget(expr: BinaryenExpressionRef, delegateTarget: cstring): void <cimport,nodecl> end
+global function BinaryenTryIsDelegate(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenThrowGetTag(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenThrowSetTag(expr: BinaryenExpressionRef, tagName: cstring): void <cimport,nodecl> end
+global function BinaryenThrowGetNumOperands(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenThrowGetOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenThrowSetOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenThrowAppendOperand(expr: BinaryenExpressionRef, operandExpr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenThrowInsertOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenThrowRemoveOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenRethrowGetTarget(expr: BinaryenExpressionRef): cstring <cimport,nodecl> end
+global function BinaryenRethrowSetTarget(expr: BinaryenExpressionRef, target: cstring): void <cimport,nodecl> end
+global function BinaryenTupleMakeGetNumOperands(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenTupleMakeGetOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTupleMakeSetOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTupleMakeAppendOperand(expr: BinaryenExpressionRef, operandExpr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenTupleMakeInsertOperandAt(expr: BinaryenExpressionRef, index: cuint, operandExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTupleMakeRemoveOperandAt(expr: BinaryenExpressionRef, index: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTupleExtractGetTuple(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTupleExtractSetTuple(expr: BinaryenExpressionRef, tupleExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenTupleExtractGetIndex(expr: BinaryenExpressionRef): cuint <cimport,nodecl> end
+global function BinaryenTupleExtractSetIndex(expr: BinaryenExpressionRef, index: cuint): void <cimport,nodecl> end
+global function BinaryenI31NewGetValue(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenI31NewSetValue(expr: BinaryenExpressionRef, valueExpr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenI31GetGetI31(expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenI31GetSetI31(expr: BinaryenExpressionRef, i31Expr: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenI31GetIsSigned(expr: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function BinaryenI31GetSetSigned(expr: BinaryenExpressionRef, signed_: boolean): void <cimport,nodecl> end
+global BinaryenFunction: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenFunctionRef: type = @*BinaryenFunction
+global function BinaryenAddFunction(module: BinaryenModuleRef, name: cstring, params: culong, results: culong, varTypes: *culong, numVarTypes: cuint, body: BinaryenExpressionRef): BinaryenFunctionRef <cimport,nodecl> end
+global function BinaryenGetFunction(module: BinaryenModuleRef, name: cstring): BinaryenFunctionRef <cimport,nodecl> end
+global function BinaryenRemoveFunction(module: BinaryenModuleRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenGetNumFunctions(module: BinaryenModuleRef): cuint <cimport,nodecl> end
+global function BinaryenGetFunctionByIndex(module: BinaryenModuleRef, index: cuint): BinaryenFunctionRef <cimport,nodecl> end
+global function BinaryenAddFunctionImport(module: BinaryenModuleRef, internalName: cstring, externalModuleName: cstring, externalBaseName: cstring, params: culong, results: culong): void <cimport,nodecl> end
+global function BinaryenAddTableImport(module: BinaryenModuleRef, internalName: cstring, externalModuleName: cstring, externalBaseName: cstring): void <cimport,nodecl> end
+global function BinaryenAddMemoryImport(module: BinaryenModuleRef, internalName: cstring, externalModuleName: cstring, externalBaseName: cstring, shared: uint8): void <cimport,nodecl> end
+global function BinaryenAddGlobalImport(module: BinaryenModuleRef, internalName: cstring, externalModuleName: cstring, externalBaseName: cstring, globalType: culong, mutable_: boolean): void <cimport,nodecl> end
+global function BinaryenAddTagImport(module: BinaryenModuleRef, internalName: cstring, externalModuleName: cstring, externalBaseName: cstring, params: culong, results: culong): void <cimport,nodecl> end
+global BinaryenExport: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenExportRef: type = @*BinaryenExport
+global function BinaryenAddExport(module: BinaryenModuleRef, internalName: cstring, externalName: cstring): BinaryenExportRef <cimport,nodecl> end
+global function BinaryenAddFunctionExport(module: BinaryenModuleRef, internalName: cstring, externalName: cstring): BinaryenExportRef <cimport,nodecl> end
+global function BinaryenAddTableExport(module: BinaryenModuleRef, internalName: cstring, externalName: cstring): BinaryenExportRef <cimport,nodecl> end
+global function BinaryenAddMemoryExport(module: BinaryenModuleRef, internalName: cstring, externalName: cstring): BinaryenExportRef <cimport,nodecl> end
+global function BinaryenAddGlobalExport(module: BinaryenModuleRef, internalName: cstring, externalName: cstring): BinaryenExportRef <cimport,nodecl> end
+global function BinaryenAddTagExport(module: BinaryenModuleRef, internalName: cstring, externalName: cstring): BinaryenExportRef <cimport,nodecl> end
+global function BinaryenGetExport(module: BinaryenModuleRef, externalName: cstring): BinaryenExportRef <cimport,nodecl> end
+global function BinaryenRemoveExport(module: BinaryenModuleRef, externalName: cstring): void <cimport,nodecl> end
+global function BinaryenGetNumExports(module: BinaryenModuleRef): cuint <cimport,nodecl> end
+global function BinaryenGetExportByIndex(module: BinaryenModuleRef, index: cuint): BinaryenExportRef <cimport,nodecl> end
+global BinaryenGlobal: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenGlobalRef: type = @*BinaryenGlobal
+global function BinaryenAddGlobal(module: BinaryenModuleRef, name: cstring, type: culong, mutable_: boolean, init: BinaryenExpressionRef): BinaryenGlobalRef <cimport,nodecl> end
+global function BinaryenGetGlobal(module: BinaryenModuleRef, name: cstring): BinaryenGlobalRef <cimport,nodecl> end
+global function BinaryenRemoveGlobal(module: BinaryenModuleRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenGetNumGlobals(module: BinaryenModuleRef): cuint <cimport,nodecl> end
+global function BinaryenGetGlobalByIndex(module: BinaryenModuleRef, index: cuint): BinaryenGlobalRef <cimport,nodecl> end
+global BinaryenTag: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenTagRef: type = @*BinaryenTag
+global function BinaryenAddTag(module: BinaryenModuleRef, name: cstring, params: culong, results: culong): BinaryenTagRef <cimport,nodecl> end
+global function BinaryenGetTag(module: BinaryenModuleRef, name: cstring): BinaryenTagRef <cimport,nodecl> end
+global function BinaryenRemoveTag(module: BinaryenModuleRef, name: cstring): void <cimport,nodecl> end
+global BinaryenTable: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenTableRef: type = @*BinaryenTable
+global function BinaryenAddTable(module: BinaryenModuleRef, table: cstring, initial: cuint, maximum: cuint, tableType: culong): BinaryenTableRef <cimport,nodecl> end
+global function BinaryenRemoveTable(module: BinaryenModuleRef, table: cstring): void <cimport,nodecl> end
+global function BinaryenGetNumTables(module: BinaryenModuleRef): cuint <cimport,nodecl> end
+global function BinaryenGetTable(module: BinaryenModuleRef, name: cstring): BinaryenTableRef <cimport,nodecl> end
+global function BinaryenGetTableByIndex(module: BinaryenModuleRef, index: cuint): BinaryenTableRef <cimport,nodecl> end
+global BinaryenElementSegment: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global BinaryenElementSegmentRef: type = @*BinaryenElementSegment
+global function BinaryenAddActiveElementSegment(module: BinaryenModuleRef, table: cstring, name: cstring, funcNames: *cstring, numFuncNames: cuint, offset: BinaryenExpressionRef): BinaryenElementSegmentRef <cimport,nodecl> end
+global function BinaryenAddPassiveElementSegment(module: BinaryenModuleRef, name: cstring, funcNames: *cstring, numFuncNames: cuint): BinaryenElementSegmentRef <cimport,nodecl> end
+global function BinaryenRemoveElementSegment(module: BinaryenModuleRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenGetNumElementSegments(module: BinaryenModuleRef): cuint <cimport,nodecl> end
+global function BinaryenGetElementSegment(module: BinaryenModuleRef, name: cstring): BinaryenElementSegmentRef <cimport,nodecl> end
+global function BinaryenGetElementSegmentByIndex(module: BinaryenModuleRef, index: cuint): BinaryenElementSegmentRef <cimport,nodecl> end
+global function BinaryenSetMemory(module: BinaryenModuleRef, initial: cuint, maximum: cuint, exportName: cstring, segments: *cstring, segmentPassive: *boolean, segmentOffsets: *BinaryenExpressionRef, segmentSizes: *cuint, numSegments: cuint, shared: boolean): void <cimport,nodecl> end
+global function BinaryenGetNumMemorySegments(module: BinaryenModuleRef): uint32 <cimport,nodecl> end
+global function BinaryenGetMemorySegmentByteOffset(module: BinaryenModuleRef, id: cuint): uint32 <cimport,nodecl> end
+global function BinaryenGetMemorySegmentByteLength(module: BinaryenModuleRef, id: cuint): csize <cimport,nodecl> end
+global function BinaryenGetMemorySegmentPassive(module: BinaryenModuleRef, id: cuint): boolean <cimport,nodecl> end
+global function BinaryenCopyMemorySegmentData(module: BinaryenModuleRef, id: cuint, buffer: cstring): void <cimport,nodecl> end
+global function BinaryenSetStart(module: BinaryenModuleRef, start: BinaryenFunctionRef): void <cimport,nodecl> end
+global function BinaryenModuleGetFeatures(module: BinaryenModuleRef): cuint <cimport,nodecl> end
+global function BinaryenModuleSetFeatures(module: BinaryenModuleRef, features: cuint): void <cimport,nodecl> end
+global function BinaryenModuleParse(text: cstring): BinaryenModuleRef <cimport,nodecl> end
+global function BinaryenModulePrint(module: BinaryenModuleRef): void <cimport,nodecl> end
+global function BinaryenModulePrintAsmjs(module: BinaryenModuleRef): void <cimport,nodecl> end
+global function BinaryenModuleValidate(module: BinaryenModuleRef): boolean <cimport,nodecl> end
+global function BinaryenModuleOptimize(module: BinaryenModuleRef): void <cimport,nodecl> end
+global function BinaryenModuleUpdateMaps(module: BinaryenModuleRef): void <cimport,nodecl> end
+global function BinaryenGetOptimizeLevel(): cint <cimport,nodecl> end
+global function BinaryenSetOptimizeLevel(level: cint): void <cimport,nodecl> end
+global function BinaryenGetShrinkLevel(): cint <cimport,nodecl> end
+global function BinaryenSetShrinkLevel(level: cint): void <cimport,nodecl> end
+global function BinaryenGetDebugInfo(): boolean <cimport,nodecl> end
+global function BinaryenSetDebugInfo(on: boolean): void <cimport,nodecl> end
+global function BinaryenGetLowMemoryUnused(): boolean <cimport,nodecl> end
+global function BinaryenSetLowMemoryUnused(on: boolean): void <cimport,nodecl> end
+global function BinaryenGetZeroFilledMemory(): boolean <cimport,nodecl> end
+global function BinaryenSetZeroFilledMemory(on: boolean): void <cimport,nodecl> end
+global function BinaryenGetFastMath(): boolean <cimport,nodecl> end
+global function BinaryenSetFastMath(value: boolean): void <cimport,nodecl> end
+global function BinaryenGetPassArgument(name: cstring): cstring <cimport,nodecl> end
+global function BinaryenSetPassArgument(name: cstring, value: cstring): void <cimport,nodecl> end
+global function BinaryenClearPassArguments(): void <cimport,nodecl> end
+global function BinaryenGetAlwaysInlineMaxSize(): cuint <cimport,nodecl> end
+global function BinaryenSetAlwaysInlineMaxSize(size: cuint): void <cimport,nodecl> end
+global function BinaryenGetFlexibleInlineMaxSize(): cuint <cimport,nodecl> end
+global function BinaryenSetFlexibleInlineMaxSize(size: cuint): void <cimport,nodecl> end
+global function BinaryenGetOneCallerInlineMaxSize(): cuint <cimport,nodecl> end
+global function BinaryenSetOneCallerInlineMaxSize(size: cuint): void <cimport,nodecl> end
+global function BinaryenGetAllowInliningFunctionsWithLoops(): boolean <cimport,nodecl> end
+global function BinaryenSetAllowInliningFunctionsWithLoops(enabled: boolean): void <cimport,nodecl> end
+global function BinaryenModuleRunPasses(module: BinaryenModuleRef, passes: *cstring, numPasses: cuint): void <cimport,nodecl> end
+global function BinaryenModuleAutoDrop(module: BinaryenModuleRef): void <cimport,nodecl> end
+global function BinaryenModuleWrite(module: BinaryenModuleRef, output: cstring, outputSize: csize): csize <cimport,nodecl> end
+global function BinaryenModuleWriteText(module: BinaryenModuleRef, output: cstring, outputSize: csize): csize <cimport,nodecl> end
+global BinaryenBufferSizes: type <cimport,nodecl> = @record{
+  outputBytes: csize,
+  sourceMapBytes: csize
+}
+global function BinaryenModuleWriteWithSourceMap(module: BinaryenModuleRef, url: cstring, output: cstring, outputSize: csize, sourceMap: cstring, sourceMapSize: csize): BinaryenBufferSizes <cimport,nodecl> end
+global BinaryenModuleAllocateAndWriteResult: type <cimport,nodecl> = @record{
+  binary: pointer,
+  binaryBytes: csize,
+  sourceMap: cstring
+}
+global function BinaryenModuleAllocateAndWrite(module: BinaryenModuleRef, sourceMapUrl: cstring): BinaryenModuleAllocateAndWriteResult <cimport,nodecl> end
+global function BinaryenModuleAllocateAndWriteText(module: BinaryenModuleRef): cstring <cimport,nodecl> end
+global function BinaryenModuleRead(input: cstring, inputSize: csize): BinaryenModuleRef <cimport,nodecl> end
+global function BinaryenModuleInterpret(module: BinaryenModuleRef): void <cimport,nodecl> end
+global function BinaryenModuleAddDebugInfoFileName(module: BinaryenModuleRef, filename: cstring): cuint <cimport,nodecl> end
+global function BinaryenModuleGetDebugInfoFileName(module: BinaryenModuleRef, index: cuint): cstring <cimport,nodecl> end
+global function BinaryenFunctionGetName(func: BinaryenFunctionRef): cstring <cimport,nodecl> end
+global function BinaryenFunctionGetParams(func: BinaryenFunctionRef): culong <cimport,nodecl> end
+global function BinaryenFunctionGetResults(func: BinaryenFunctionRef): culong <cimport,nodecl> end
+global function BinaryenFunctionGetNumVars(func: BinaryenFunctionRef): cuint <cimport,nodecl> end
+global function BinaryenFunctionGetVar(func: BinaryenFunctionRef, index: cuint): culong <cimport,nodecl> end
+global function BinaryenFunctionGetNumLocals(func: BinaryenFunctionRef): cuint <cimport,nodecl> end
+global function BinaryenFunctionHasLocalName(func: BinaryenFunctionRef, index: cuint): boolean <cimport,nodecl> end
+global function BinaryenFunctionGetLocalName(func: BinaryenFunctionRef, index: cuint): cstring <cimport,nodecl> end
+global function BinaryenFunctionSetLocalName(func: BinaryenFunctionRef, index: cuint, name: cstring): void <cimport,nodecl> end
+global function BinaryenFunctionGetBody(func: BinaryenFunctionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenFunctionSetBody(func: BinaryenFunctionRef, body: BinaryenExpressionRef): void <cimport,nodecl> end
+global function BinaryenFunctionOptimize(func: BinaryenFunctionRef, module: BinaryenModuleRef): void <cimport,nodecl> end
+global function BinaryenFunctionRunPasses(func: BinaryenFunctionRef, module: BinaryenModuleRef, passes: *cstring, numPasses: cuint): void <cimport,nodecl> end
+global function BinaryenFunctionSetDebugLocation(func: BinaryenFunctionRef, expr: BinaryenExpressionRef, fileIndex: cuint, lineNumber: cuint, columnNumber: cuint): void <cimport,nodecl> end
+global function BinaryenTableGetName(table: BinaryenTableRef): cstring <cimport,nodecl> end
+global function BinaryenTableSetName(table: BinaryenTableRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenTableGetInitial(table: BinaryenTableRef): cuint <cimport,nodecl> end
+global function BinaryenTableSetInitial(table: BinaryenTableRef, initial: cuint): void <cimport,nodecl> end
+global function BinaryenTableHasMax(table: BinaryenTableRef): boolean <cimport,nodecl> end
+global function BinaryenTableGetMax(table: BinaryenTableRef): cuint <cimport,nodecl> end
+global function BinaryenTableSetMax(table: BinaryenTableRef, max: cuint): void <cimport,nodecl> end
+global function BinaryenElementSegmentGetName(elem: BinaryenElementSegmentRef): cstring <cimport,nodecl> end
+global function BinaryenElementSegmentSetName(elem: BinaryenElementSegmentRef, name: cstring): void <cimport,nodecl> end
+global function BinaryenElementSegmentGetTable(elem: BinaryenElementSegmentRef): cstring <cimport,nodecl> end
+global function BinaryenElementSegmentSetTable(elem: BinaryenElementSegmentRef, table: cstring): void <cimport,nodecl> end
+global function BinaryenElementSegmentGetOffset(elem: BinaryenElementSegmentRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenElementSegmentGetLength(elem: BinaryenElementSegmentRef): cuint <cimport,nodecl> end
+global function BinaryenElementSegmentGetData(elem: BinaryenElementSegmentRef, dataId: cuint): cstring <cimport,nodecl> end
+global function BinaryenElementSegmentIsPassive(elem: BinaryenElementSegmentRef): boolean <cimport,nodecl> end
+global function BinaryenGlobalGetName(Global: BinaryenGlobalRef): cstring <cimport,nodecl> end
+global function BinaryenGlobalGetType(Global: BinaryenGlobalRef): culong <cimport,nodecl> end
+global function BinaryenGlobalIsMutable(Global: BinaryenGlobalRef): boolean <cimport,nodecl> end
+global function BinaryenGlobalGetInitExpr(Global: BinaryenGlobalRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenTagGetName(tag: BinaryenTagRef): cstring <cimport,nodecl> end
+global function BinaryenTagGetParams(tag: BinaryenTagRef): culong <cimport,nodecl> end
+global function BinaryenTagGetResults(tag: BinaryenTagRef): culong <cimport,nodecl> end
+global function BinaryenFunctionImportGetModule(import: BinaryenFunctionRef): cstring <cimport,nodecl> end
+global function BinaryenTableImportGetModule(import: BinaryenTableRef): cstring <cimport,nodecl> end
+global function BinaryenGlobalImportGetModule(import: BinaryenGlobalRef): cstring <cimport,nodecl> end
+global function BinaryenTagImportGetModule(import: BinaryenTagRef): cstring <cimport,nodecl> end
+global function BinaryenFunctionImportGetBase(import: BinaryenFunctionRef): cstring <cimport,nodecl> end
+global function BinaryenTableImportGetBase(import: BinaryenTableRef): cstring <cimport,nodecl> end
+global function BinaryenGlobalImportGetBase(import: BinaryenGlobalRef): cstring <cimport,nodecl> end
+global function BinaryenTagImportGetBase(import: BinaryenTagRef): cstring <cimport,nodecl> end
+global function BinaryenExportGetKind(export_: BinaryenExportRef): cuint <cimport,nodecl> end
+global function BinaryenExportGetName(export_: BinaryenExportRef): cstring <cimport,nodecl> end
+global function BinaryenExportGetValue(export_: BinaryenExportRef): cstring <cimport,nodecl> end
+global function BinaryenAddCustomSection(module: BinaryenModuleRef, name: cstring, contents: cstring, contentsSize: cuint): void <cimport,nodecl> end
+global function BinaryenSideEffectNone(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectBranches(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectCalls(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectReadsLocal(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectWritesLocal(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectReadsGlobal(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectWritesGlobal(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectReadsMemory(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectWritesMemory(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectReadsTable(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectWritesTable(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectImplicitTrap(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectTrapsNeverHappen(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectIsAtomic(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectThrows(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectDanglingPop(): cuint <cimport,nodecl> end
+global function BinaryenSideEffectAny(): cuint <cimport,nodecl> end
+global function BinaryenExpressionGetSideEffects(expr: BinaryenExpressionRef, module: BinaryenModuleRef): cuint <cimport,nodecl> end
+global Relooper: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global RelooperRef: type = @*Relooper
+global RelooperBlock: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global RelooperBlockRef: type = @*RelooperBlock
+global function RelooperCreate(module: BinaryenModuleRef): RelooperRef <cimport,nodecl> end
+global function RelooperAddBlock(relooper: RelooperRef, code: BinaryenExpressionRef): RelooperBlockRef <cimport,nodecl> end
+global function RelooperAddBranch(from: RelooperBlockRef, to: RelooperBlockRef, condition: BinaryenExpressionRef, code: BinaryenExpressionRef): void <cimport,nodecl> end
+global function RelooperAddBlockWithSwitch(relooper: RelooperRef, code: BinaryenExpressionRef, condition: BinaryenExpressionRef): RelooperBlockRef <cimport,nodecl> end
+global function RelooperAddBranchForSwitch(from: RelooperBlockRef, to: RelooperBlockRef, indexes: *cuint, numIndexes: cuint, code: BinaryenExpressionRef): void <cimport,nodecl> end
+global function RelooperRenderAndDispose(relooper: RelooperRef, entry: RelooperBlockRef, labelHelper: cuint): BinaryenExpressionRef <cimport,nodecl> end
+global CExpressionRunner: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global ExpressionRunnerRef: type = @*CExpressionRunner
+global function ExpressionRunnerFlagsDefault(): cuint <cimport,nodecl> end
+global function ExpressionRunnerFlagsPreserveSideeffects(): cuint <cimport,nodecl> end
+global function ExpressionRunnerFlagsTraverseCalls(): cuint <cimport,nodecl> end
+global function ExpressionRunnerCreate(module: BinaryenModuleRef, flags: cuint, maxDepth: cuint, maxLoopIterations: cuint): ExpressionRunnerRef <cimport,nodecl> end
+global function ExpressionRunnerSetLocalValue(runner: ExpressionRunnerRef, index: cuint, value: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function ExpressionRunnerSetGlobalValue(runner: ExpressionRunnerRef, name: cstring, value: BinaryenExpressionRef): boolean <cimport,nodecl> end
+global function ExpressionRunnerRunAndDispose(runner: ExpressionRunnerRef, expr: BinaryenExpressionRef): BinaryenExpressionRef <cimport,nodecl> end
+global function BinaryenSetColorsEnabled(enabled: boolean): void <cimport,nodecl> end
+global function BinaryenAreColorsEnabled(): boolean <cimport,nodecl> end

@@ -1,0 +1,1813 @@
+global dnnl_status_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_success = 0,
+  dnnl_out_of_memory = 1,
+  dnnl_invalid_arguments = 2,
+  dnnl_unimplemented = 3,
+  dnnl_iterator_ends = 4,
+  dnnl_runtime_error = 5,
+  dnnl_not_required = 6
+}
+global dnnl_data_type_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_data_type_undef = 0,
+  dnnl_f16 = 1,
+  dnnl_bf16 = 2,
+  dnnl_f32 = 3,
+  dnnl_s32 = 4,
+  dnnl_s8 = 5,
+  dnnl_u8 = 6
+}
+global dnnl_format_kind_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_format_kind_undef = 0,
+  dnnl_format_kind_any = 1,
+  dnnl_blocked = 2,
+  dnnl_format_kind_wino = 3,
+  dnnl_format_kind_rnn_packed = 4
+}
+global dnnl_format_tag_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_format_tag_undef = 0,
+  dnnl_format_tag_any = 1,
+  dnnl_a = 2,
+  dnnl_ab = 3,
+  dnnl_abc = 4,
+  dnnl_abcd = 5,
+  dnnl_acbd = 6,
+  dnnl_abcde = 7,
+  dnnl_abcdef = 8,
+  dnnl_abcdefg = 9,
+  dnnl_abcdefgh = 10,
+  dnnl_abcdefghi = 11,
+  dnnl_abcdefghij = 12,
+  dnnl_abcdefghijk = 13,
+  dnnl_abcdefghijkl = 14,
+  dnnl_abdc = 15,
+  dnnl_abdec = 16,
+  dnnl_acb = 17,
+  dnnl_acbde = 18,
+  dnnl_acbdef = 19,
+  dnnl_acdb = 20,
+  dnnl_acdeb = 21,
+  dnnl_ba = 22,
+  dnnl_bac = 23,
+  dnnl_bacd = 24,
+  dnnl_bacde = 25,
+  dnnl_bca = 26,
+  dnnl_bcda = 27,
+  dnnl_bcdea = 28,
+  dnnl_cba = 29,
+  dnnl_cdba = 30,
+  dnnl_dcab = 31,
+  dnnl_cdeba = 32,
+  dnnl_decab = 33,
+  dnnl_defcab = 34,
+  dnnl_abced = 35,
+  dnnl_abcdfe = 36,
+  dnnl_abcdegf = 37,
+  dnnl_abcdefhg = 38,
+  dnnl_abcdefgih = 39,
+  dnnl_abcdefghji = 40,
+  dnnl_abcdefghikj = 41,
+  dnnl_abcdefghijlk = 42,
+  dnnl_Abc16a = 43,
+  dnnl_ABc16a16b = 44,
+  dnnl_ABc32a32b = 45,
+  dnnl_ABc4a4b = 46,
+  dnnl_aBc16b = 47,
+  dnnl_ABc16b16a = 48,
+  dnnl_Abc4a = 49,
+  dnnl_aBc32b = 50,
+  dnnl_aBc4b = 51,
+  dnnl_ABc4b16a4b = 52,
+  dnnl_ABc2b8a4b = 53,
+  dnnl_ABc16b16a4b = 54,
+  dnnl_ABc16b16a2b = 55,
+  dnnl_ABc4b4a = 56,
+  dnnl_ABc8a16b2a = 57,
+  dnnl_ABc8a8b = 58,
+  dnnl_ABc8a4b = 59,
+  dnnl_aBc8b = 60,
+  dnnl_ABc8b16a2b = 61,
+  dnnl_BAc8a16b2a = 62,
+  dnnl_ABc8b8a = 63,
+  dnnl_Abcd16a = 64,
+  dnnl_Abcd8a = 65,
+  dnnl_ABcd16a16b = 66,
+  dnnl_Abcd32a = 67,
+  dnnl_ABcd32a32b = 68,
+  dnnl_aBcd16b = 69,
+  dnnl_ABcd16b16a = 70,
+  dnnl_aBCd16b16c = 71,
+  dnnl_aBCd16c16b = 72,
+  dnnl_Abcd4a = 73,
+  dnnl_aBcd32b = 74,
+  dnnl_aBcd4b = 75,
+  dnnl_ABcd4b16a4b = 76,
+  dnnl_ABcd16b16a4b = 77,
+  dnnl_ABcd16b16a2b = 78,
+  dnnl_ABcd4b4a = 79,
+  dnnl_ABcd4a4b = 80,
+  dnnl_aBCd2c4b2c = 81,
+  dnnl_aBCd4b8c2b = 82,
+  dnnl_aBCd4c16b4c = 83,
+  dnnl_aBCd2c8b4c = 84,
+  dnnl_aBCd16c16b4c = 85,
+  dnnl_aBCd16c16b2c = 86,
+  dnnl_aBCd4c4b = 87,
+  dnnl_aBCd4b4c = 88,
+  dnnl_ABcd8a16b2a = 89,
+  dnnl_ABcd2b8a4b = 90,
+  dnnl_ABcd8a8b = 91,
+  dnnl_ABcd8a4b = 92,
+  dnnl_aBcd8b = 93,
+  dnnl_aBCd4c8b2c = 94,
+  dnnl_ABcd8b16a2b = 95,
+  dnnl_aBCd8b16c2b = 96,
+  dnnl_BAcd8a16b2a = 97,
+  dnnl_ABcd8b8a = 98,
+  dnnl_aBCd8b8c = 99,
+  dnnl_aBCd8b4c = 100,
+  dnnl_aBCd8c16b2c = 101,
+  dnnl_ABcde8a16b2a = 102,
+  dnnl_aCBd8b16c2b = 103,
+  dnnl_aBCd8c8b = 104,
+  dnnl_Abcde16a = 105,
+  dnnl_Abcde32a = 106,
+  dnnl_ABcde16a16b = 107,
+  dnnl_BAcde8a16b2a = 108,
+  dnnl_aBCd2b4c2b = 109,
+  dnnl_ABcde4b16a4b = 110,
+  dnnl_ABcde2b8a4b = 111,
+  dnnl_aBcde16b = 112,
+  dnnl_ABcde16b16a = 113,
+  dnnl_aBCde16b16c = 114,
+  dnnl_aBCde16c16b = 115,
+  dnnl_aBCde2c8b4c = 116,
+  dnnl_Abcde4a = 117,
+  dnnl_aBcde32b = 118,
+  dnnl_aBcde4b = 119,
+  dnnl_ABcde4b4a = 120,
+  dnnl_ABcde4a4b = 121,
+  dnnl_aBCde4b4c = 122,
+  dnnl_aBCde2c4b2c = 123,
+  dnnl_aBCde4b8c2b = 124,
+  dnnl_aBCde4c16b4c = 125,
+  dnnl_aBCde16c16b4c = 126,
+  dnnl_aBCde16c16b2c = 127,
+  dnnl_aBCde4c4b = 128,
+  dnnl_Abcde8a = 129,
+  dnnl_ABcde8a8b = 130,
+  dnnl_ABcde8a4b = 131,
+  dnnl_BAcde16b16a = 132,
+  dnnl_aBcde8b = 133,
+  dnnl_ABcde8b16a2b = 134,
+  dnnl_aBCde8b16c2b = 135,
+  dnnl_aBCde4c8b2c = 136,
+  dnnl_aCBde8b16c2b = 137,
+  dnnl_ABcde8b8a = 138,
+  dnnl_ABcde32a32b = 139,
+  dnnl_aBCde8b8c = 140,
+  dnnl_aBCde8b4c = 141,
+  dnnl_ABc4a8b8a4b = 142,
+  dnnl_ABcd4a8b8a4b = 143,
+  dnnl_ABcde4a8b8a4b = 144,
+  dnnl_BAc4b8a8b4a = 145,
+  dnnl_BAcd4b8a8b4a = 146,
+  dnnl_BAcde4b8a8b4a = 147,
+  dnnl_ABcd2a8b8a2b = 148,
+  dnnl_aBCd4b8c8b4c = 149,
+  dnnl_aBCde4b8c8b4c = 150,
+  dnnl_aBCde2b8c8b2c = 151,
+  dnnl_aBCde8c16b2c = 152,
+  dnnl_aBCde8c8b = 153,
+  dnnl_aBCde2b4c2b = 154,
+  dnnl_aBcdef16b = 155,
+  dnnl_aBCdef16b16c = 156,
+  dnnl_aBCdef16c16b = 157,
+  dnnl_aBCdef4c16b4c = 158,
+  dnnl_aBCdef2c8b4c = 159,
+  dnnl_aBCdef4c8b2c = 160,
+  dnnl_aBCdef2b4c2b = 161,
+  dnnl_aBcdef4b = 162,
+  dnnl_aBCdef4c4b = 163,
+  dnnl_aBCdef4b4c = 164,
+  dnnl_aBCdef2c4b2c = 165,
+  dnnl_aBCdef4b8c2b = 166,
+  dnnl_aBCdef8b8c = 167,
+  dnnl_aBCdef8b4c = 168,
+  dnnl_aBCdef8c16b2c = 169,
+  dnnl_aBCdef4b8c8b4c = 170,
+  dnnl_aBCdef8b16c2b = 171,
+  dnnl_aCBdef8b16c2b = 172,
+  dnnl_aBCdef8c8b = 173,
+  dnnl_aBdc16b = 174,
+  dnnl_aBdC16b2c = 175,
+  dnnl_aBdC16b4c = 176,
+  dnnl_aBdc4b = 177,
+  dnnl_aBdc8b = 178,
+  dnnl_aBdec16b = 179,
+  dnnl_aBdeC16b2c = 180,
+  dnnl_aBdeC16b4c = 181,
+  dnnl_aBdec32b = 182,
+  dnnl_aBdec4b = 183,
+  dnnl_aBdec8b = 184,
+  dnnl_aBdefc16b = 185,
+  dnnl_aBdefC16b2c = 186,
+  dnnl_aCBdef16c16b = 187,
+  dnnl_aBdefc4b = 188,
+  dnnl_aBdefc8b = 189,
+  dnnl_Abcdef16a = 190,
+  dnnl_Abcdef32a = 191,
+  dnnl_aBedc16b = 192,
+  dnnl_Acb16a = 193,
+  dnnl_AcB16a2b = 194,
+  dnnl_AcB16a4b = 195,
+  dnnl_Acb4a = 196,
+  dnnl_Acb8a = 197,
+  dnnl_aCBd16b16c = 198,
+  dnnl_aCBd16c16b = 199,
+  dnnl_aCBde16b16c = 200,
+  dnnl_aCBde16c16b = 201,
+  dnnl_Acdb16a = 202,
+  dnnl_AcdB16a2b = 203,
+  dnnl_AcdB16a4b = 204,
+  dnnl_Acdb32a = 205,
+  dnnl_Acdb4a = 206,
+  dnnl_Acdb8a = 207,
+  dnnl_Acdeb16a = 208,
+  dnnl_AcdeB16a2b = 209,
+  dnnl_Acdeb4a = 210,
+  dnnl_Acdeb8a = 211,
+  dnnl_Adcb16a = 212,
+  dnnl_BAc16a16b = 213,
+  dnnl_BAc16b16a = 214,
+  dnnl_BAcd16a16b = 215,
+  dnnl_BAcd16b16a = 216,
+  dnnl_aCBd4c8b8c4b = 217,
+  dnnl_aCBde4c8b8c4b = 218,
+  dnnl_aCBdef4c8b8c4b = 219,
+  dnnl_BAcde16a16b = 220,
+  dnnl_aCBdef16b16c = 221,
+  dnnl_abdfce = 222,
+  dnnl_abdefc = 223,
+  dnnl_ABc16b32a = 224,
+  dnnl_ABc16b64a = 225,
+  dnnl_ABc4b32a4b = 226,
+  dnnl_ABc4b64a4b = 227,
+  dnnl_ABc8b32a2b = 228,
+  dnnl_ABc8b64a2b = 229,
+  dnnl_AB16b16a = 230,
+  dnnl_AB16b32a = 231,
+  dnnl_AB16b64a = 232,
+  dnnl_AB8b16a2b = 233,
+  dnnl_AB8b32a2b = 234,
+  dnnl_AB8b64a2b = 235,
+  dnnl_AB4b16a4b = 236,
+  dnnl_AB4b32a4b = 237,
+  dnnl_AB4b64a4b = 238,
+  dnnl_AB16b16a4b = 239,
+  dnnl_ABcd16b32a = 240,
+  dnnl_ABcd16b64a = 241,
+  dnnl_ABcd4b32a4b = 242,
+  dnnl_ABcd4b64a4b = 243,
+  dnnl_ABcd8b32a2b = 244,
+  dnnl_ABcd8b64a2b = 245,
+  dnnl_ABcde4b32a4b = 246,
+  dnnl_ABcde4b64a4b = 247,
+  dnnl_ABcde16b16a4b = 248,
+  dnnl_ABcde16b16a2b = 249,
+  dnnl_ABcde16b32a = 250,
+  dnnl_ABcde16b64a = 251,
+  dnnl_ABcde8b32a2b = 252,
+  dnnl_ABcde8b64a2b = 253,
+  dnnl_aBCdef16c16b4c = 254,
+  dnnl_aBCdef16c16b2c = 255,
+  dnnl_AB32a32b8a4b = 256,
+  dnnl_AB8a4b = 257,
+  dnnl_AB32a32b8a2b = 258,
+  dnnl_AB8a2b = 259,
+  dnnl_abDc32d = 260,
+  dnnl_abDC32d4c = 261,
+  dnnl_abdEc32e = 262,
+  dnnl_abdEC32e2c = 263,
+  dnnl_abdEC32e4c = 264,
+  dnnl_aBdefC16b4c = 265,
+  dnnl_AcdeB16a4b = 266,
+  dnnl_ABcd16a16b2a = 267,
+  dnnl_ABc16a16b2a = 268,
+  dnnl_aBCd16b16c2b = 269,
+  dnnl_aBCde16b16c2b = 270,
+  dnnl_Acb32a = 271,
+  dnnl_AcB32a2b = 272,
+  dnnl_AcB32a4b = 273,
+  dnnl_Acb48a = 274,
+  dnnl_AcB48a2b = 275,
+  dnnl_AcB48a4b = 276,
+  dnnl_Acb64a = 277,
+  dnnl_AcB64a2b = 278,
+  dnnl_AcB64a4b = 279,
+  dnnl_cBa2b = 280,
+  dnnl_cBa4b = 281,
+  dnnl_aBdc32b = 282,
+  dnnl_aBdC32b2c = 283,
+  dnnl_aBdC32b4c = 284,
+  dnnl_aBdc48b = 285,
+  dnnl_aBdC48b2c = 286,
+  dnnl_aBdC48b4c = 287,
+  dnnl_aBdc64b = 288,
+  dnnl_aBdC64b2c = 289,
+  dnnl_aBdC64b4c = 290,
+  dnnl_adcb = 291,
+  dnnl_adCb2c = 292,
+  dnnl_adCb4c = 293,
+  dnnl_AcdB32a2b = 294,
+  dnnl_AcdB32a4b = 295,
+  dnnl_Acdb48a = 296,
+  dnnl_AcdB48a2b = 297,
+  dnnl_AcdB48a4b = 298,
+  dnnl_Acdb64a = 299,
+  dnnl_AcdB64a2b = 300,
+  dnnl_AcdB64a4b = 301,
+  dnnl_cdBa2b = 302,
+  dnnl_cdBa4b = 303,
+  dnnl_aBdeC32b2c = 304,
+  dnnl_aBdeC32b4c = 305,
+  dnnl_aBdec48b = 306,
+  dnnl_aBdeC48b2c = 307,
+  dnnl_aBdeC48b4c = 308,
+  dnnl_aBdec64b = 309,
+  dnnl_aBdeC64b2c = 310,
+  dnnl_aBdeC64b4c = 311,
+  dnnl_adecb = 312,
+  dnnl_adeCb2c = 313,
+  dnnl_adeCb4c = 314,
+  dnnl_Acdeb32a = 315,
+  dnnl_AcdeB32a2b = 316,
+  dnnl_AcdeB32a4b = 317,
+  dnnl_Acdeb48a = 318,
+  dnnl_AcdeB48a2b = 319,
+  dnnl_AcdeB48a4b = 320,
+  dnnl_Acdeb64a = 321,
+  dnnl_AcdeB64a2b = 322,
+  dnnl_AcdeB64a4b = 323,
+  dnnl_cdeBa2b = 324,
+  dnnl_cdeBa4b = 325,
+  dnnl_aBdefc32b = 326,
+  dnnl_aBdefC32b2c = 327,
+  dnnl_aBdefC32b4c = 328,
+  dnnl_aBdefc48b = 329,
+  dnnl_aBdefC48b2c = 330,
+  dnnl_aBdefC48b4c = 331,
+  dnnl_aBdefc64b = 332,
+  dnnl_aBdefC64b2c = 333,
+  dnnl_aBdefC64b4c = 334,
+  dnnl_adefcb = 335,
+  dnnl_adefCb2c = 336,
+  dnnl_adefCb4c = 337,
+  dnnl_AB16b32a4b = 338,
+  dnnl_AB16b48a4b = 339,
+  dnnl_AB16b64a4b = 340,
+  dnnl_AB16b16a2b = 341,
+  dnnl_AB16b32a2b = 342,
+  dnnl_AB16b48a2b = 343,
+  dnnl_AB16b64a2b = 344,
+  dnnl_ABc16b32a4b = 345,
+  dnnl_ABc16b48a4b = 346,
+  dnnl_ABc16b64a4b = 347,
+  dnnl_ABc16b32a2b = 348,
+  dnnl_ABc16b48a2b = 349,
+  dnnl_ABc16b64a2b = 350,
+  dnnl_ABcd16b32a4b = 351,
+  dnnl_ABcd16b48a4b = 352,
+  dnnl_ABcd16b64a4b = 353,
+  dnnl_ABcd16b32a2b = 354,
+  dnnl_ABcd16b48a2b = 355,
+  dnnl_ABcd16b64a2b = 356,
+  dnnl_ABcde16b32a4b = 357,
+  dnnl_ABcde16b48a4b = 358,
+  dnnl_ABcde16b64a4b = 359,
+  dnnl_ABcde16b32a2b = 360,
+  dnnl_ABcde16b48a2b = 361,
+  dnnl_ABcde16b64a2b = 362,
+  dnnl_ABc32a16b = 363,
+  dnnl_ABcd32a16b = 364,
+  dnnl_ABcde32a16b = 365,
+  dnnl_AB48a16b = 366,
+  dnnl_AB48a32b = 367,
+  dnnl_ABc40a16b = 368,
+  dnnl_ABc40a32b = 369,
+  dnnl_aBC48b16c = 370,
+  dnnl_aBC48b32c = 371,
+  dnnl_ABcd40a16b = 372,
+  dnnl_ABcd40a32b = 373,
+  dnnl_abCd32c = 374,
+  dnnl_abdCe32c = 375,
+  dnnl_abdCE32c2e = 376,
+  dnnl_BA16a16b2a = 377,
+  dnnl_BA16a32b2a = 378,
+  dnnl_BA16a48b2a = 379,
+  dnnl_BA16a64b2a = 380,
+  dnnl_BA16a16b4a = 381,
+  dnnl_BA16a32b4a = 382,
+  dnnl_BA16a48b4a = 383,
+  dnnl_BA16a64b4a = 384,
+  dnnl_ABcd8a2b = 385,
+  dnnl_aBdeC16c16b2c = 386,
+  dnnl_aBdeC16c16b4c = 387,
+  dnnl_aBdefC16c16b2c = 388,
+  dnnl_AcB16b16a2b = 389,
+  dnnl_AcB16b16a4b = 390,
+  dnnl_AcdB16b16a2b = 391,
+  dnnl_AcdB16b16a4b = 392,
+  dnnl_AcdeB16b16a2b = 393,
+  dnnl_aBdefC16c16b4c = 394,
+  dnnl_AcdeB16b16a4b = 395,
+  dnnl_AcB16b32a2b = 396,
+  dnnl_AcB16b32a4b = 397,
+  dnnl_AcB16b48a2b = 398,
+  dnnl_AcB16b48a4b = 399,
+  dnnl_AcB16b64a2b = 400,
+  dnnl_AcB16b64a4b = 401,
+  dnnl_aBdC16c16b2c = 402,
+  dnnl_aBdC16c16b4c = 403,
+  dnnl_aBdC16c32b2c = 404,
+  dnnl_aBdC16c32b4c = 405,
+  dnnl_aBdC16c48b2c = 406,
+  dnnl_aBdC16c48b4c = 407,
+  dnnl_aBdC16c64b2c = 408,
+  dnnl_aBdC16c64b4c = 409,
+  dnnl_AcdB16b32a2b = 410,
+  dnnl_AcdB16b32a4b = 411,
+  dnnl_AcdB16b48a2b = 412,
+  dnnl_AcdB16b48a4b = 413,
+  dnnl_AcdB16b64a2b = 414,
+  dnnl_AcdB16b64a4b = 415,
+  dnnl_aBdeC16c32b2c = 416,
+  dnnl_aBdeC16c32b4c = 417,
+  dnnl_aBdeC16c48b2c = 418,
+  dnnl_aBdeC16c48b4c = 419,
+  dnnl_aBdeC16c64b2c = 420,
+  dnnl_aBdeC16c64b4c = 421,
+  dnnl_AcdeB16b32a2b = 422,
+  dnnl_AcdeB16b32a4b = 423,
+  dnnl_AcdeB16b48a2b = 424,
+  dnnl_AcdeB16b48a4b = 425,
+  dnnl_AcdeB16b64a2b = 426,
+  dnnl_AcdeB16b64a4b = 427,
+  dnnl_aBdefC16c32b2c = 428,
+  dnnl_aBdefC16c32b4c = 429,
+  dnnl_aBdefC16c48b2c = 430,
+  dnnl_aBdefC16c48b4c = 431,
+  dnnl_aBdefC16c64b2c = 432,
+  dnnl_aBdefC16c64b4c = 433,
+  dnnl_decbA16a = 434,
+  dnnl_ABc4a2b = 435,
+  dnnl_ABc8a2b = 436,
+  dnnl_aBCd8b2c = 437,
+  dnnl_ABcde4a2b = 438,
+  dnnl_ABcde8a2b = 439,
+  dnnl_ABcde40a16b = 440,
+  dnnl_ABcde40a32b = 441,
+  dnnl_aBCde8b2c = 442,
+  dnnl_ABcde4a8b8a2b = 443,
+  dnnl_ABcd4a8b8a2b = 444,
+  dnnl_ABc4a8b8a2b = 445,
+  dnnl_aBCdef4b8c8b2c = 446,
+  dnnl_aBCde4b8c8b2c = 447,
+  dnnl_aBCd4b8c8b2c = 448,
+  dnnl_BAcde4b8a8b2a = 449,
+  dnnl_BAcd4b8a8b2a = 450,
+  dnnl_BAc4b8a8b2a = 451,
+  dnnl_aCBdef4c8b8c2b = 452,
+  dnnl_aCBde4c8b8c2b = 453,
+  dnnl_aCBd4c8b8c2b = 454,
+  dnnl_aBCdef8b2c = 455,
+  dnnl_AB32a16b = 456,
+  dnnl_AB32a32b = 457,
+  dnnl_BA4b8a8b2a = 458,
+  dnnl_BA4b8a8b4a = 459,
+  dnnl_aBC32b16c = 460,
+  dnnl_aBC32b32c = 461,
+  dnnl_aCB4c8b8c2b = 462,
+  dnnl_aCB4c8b8c4b = 463,
+  dnnl_ABcd4a2b = 464,
+  dnnl_ABc2b8a16b4a = 465,
+  dnnl_ABcd2b8a16b4a = 466,
+  dnnl_ABcde2b8a16b4a = 467,
+  dnnl_ABc2a8b16a4b = 468,
+  dnnl_ABc2a8b16a2b = 469,
+  dnnl_ABc2b32a8b = 470,
+  dnnl_ABcd2a8b16a4b = 471,
+  dnnl_ABcd2a8b16a2b = 472,
+  dnnl_aCBd2c8b16c2b = 473,
+  dnnl_ABcd2b32a8b = 474,
+  dnnl_aBCd2c8b16c2b = 475,
+  dnnl_ABcde2a8b16a4b = 476,
+  dnnl_ABcde2a8b16a2b = 477,
+  dnnl_aCBde2c8b16c2b = 478,
+  dnnl_ABcde2b32a8b = 479,
+  dnnl_aBC2b8c16b2c = 480,
+  dnnl_aBCd2b8c16b2c = 481,
+  dnnl_aBCde2b8c16b2c = 482,
+  dnnl_aBCdef2b8c16b2c = 483,
+  dnnl_BAcde2b8a16b4a = 484,
+  dnnl_BAcd2b8a16b4a = 485,
+  dnnl_BAc2b8a16b4a = 486,
+  dnnl_BAcde2b8a16b2a = 487,
+  dnnl_BAcd2b8a16b2a = 488,
+  dnnl_BAc2b8a16b2a = 489,
+  dnnl_aBCde2c8b16c2b = 490,
+  dnnl_aBCdef2c8b16c2b = 491,
+  dnnl_aCBdef2c8b16c2b = 492,
+  dnnl_aBCd2b8c16b4c = 493,
+  dnnl_aBCde2b8c16b4c = 494,
+  dnnl_BA4b8a16b2a = 495,
+  dnnl_BA4b8a16b4a = 496,
+  dnnl_aCB4c8b16c2b = 497,
+  dnnl_aCB4c8b16c4b = 498,
+  dnnl_BA16a16b = 499,
+  dnnl_BA16a32b = 500,
+  dnnl_BA16a48b = 501,
+  dnnl_BA16a64b = 502,
+  dnnl_aCB16c2b = 503,
+  dnnl_aCB16c4b = 504,
+  dnnl_BA16b2a = 505,
+  dnnl_BA16b4a = 506,
+  dnnl_aBC16b16c = 507,
+  dnnl_aBC16b32c = 508,
+  dnnl_AB16a16b = 509,
+  dnnl_AB16a32b = 510,
+  dnnl_adbc = 511,
+  dnnl_ABcde16a16b2a = 512,
+  dnnl_aBCdef16b16c2b = 513,
+  dnnl_format_tag_last = 514,
+  dnnl_x = 2,
+  dnnl_nc = 3,
+  dnnl_cn = 22,
+  dnnl_tn = 3,
+  dnnl_nt = 22,
+  dnnl_ncw = 4,
+  dnnl_nwc = 17,
+  dnnl_nchw = 5,
+  dnnl_nhwc = 20,
+  dnnl_chwn = 27,
+  dnnl_ncdhw = 7,
+  dnnl_ndhwc = 21,
+  dnnl_oi = 3,
+  dnnl_io = 22,
+  dnnl_oiw = 4,
+  dnnl_owi = 17,
+  dnnl_wio = 29,
+  dnnl_iwo = 26,
+  dnnl_oihw = 5,
+  dnnl_hwio = 30,
+  dnnl_ohwi = 20,
+  dnnl_ihwo = 27,
+  dnnl_iohw = 24,
+  dnnl_oidhw = 7,
+  dnnl_iodhw = 25,
+  dnnl_dhwio = 32,
+  dnnl_odhwi = 21,
+  dnnl_idhwo = 28,
+  dnnl_goiw = 5,
+  dnnl_gowi = 15,
+  dnnl_wigo = 31,
+  dnnl_goihw = 7,
+  dnnl_gohwi = 16,
+  dnnl_hwigo = 33,
+  dnnl_giohw = 18,
+  dnnl_goidhw = 8,
+  dnnl_godhwi = 223,
+  dnnl_giodhw = 19,
+  dnnl_dhwigo = 34,
+  dnnl_tnc = 4,
+  dnnl_ntc = 23,
+  dnnl_ldnc = 5,
+  dnnl_ldigo = 7,
+  dnnl_ldgoi = 16,
+  dnnl_ldio = 5,
+  dnnl_ldoi = 15,
+  dnnl_ldgo = 5,
+  dnnl_ldOi32o = 260,
+  dnnl_ldOI32o4i = 261,
+  dnnl_ldIo32i = 374,
+  dnnl_ldgOi32o = 262,
+  dnnl_ldgOI32o2i = 263,
+  dnnl_ldgOI32o4i = 264,
+  dnnl_ldgIo32i = 375,
+  dnnl_ldgIO32i2o = 376,
+  dnnl_nCdhw32c = 118,
+  dnnl_nCdhw16c = 112,
+  dnnl_nCdhw4c = 119,
+  dnnl_nCdhw8c = 133,
+  dnnl_nChw32c = 74,
+  dnnl_nChw16c = 69,
+  dnnl_nChw4c = 75,
+  dnnl_nChw8c = 93,
+  dnnl_nCw32c = 50,
+  dnnl_nCw16c = 47,
+  dnnl_nCw4c = 51,
+  dnnl_nCw8c = 60,
+  dnnl_NCw16n16c = 44,
+  dnnl_NCdhw16n16c = 107,
+  dnnl_NChw16n16c = 66,
+  dnnl_NCw32n16c = 363,
+  dnnl_NChw32n16c = 364,
+  dnnl_NCdhw32n16c = 365,
+  dnnl_NCw32n32c = 45,
+  dnnl_NChw32n32c = 68,
+  dnnl_NCdhw32n32c = 139,
+  dnnl_OI16i16o = 230,
+  dnnl_OI16i32o = 231,
+  dnnl_OI16i64o = 232,
+  dnnl_OI8i16o2i = 233,
+  dnnl_OI8i32o2i = 234,
+  dnnl_OI8i64o2i = 235,
+  dnnl_OI4i16o4i = 236,
+  dnnl_OI4i32o4i = 237,
+  dnnl_OI4i64o4i = 238,
+  dnnl_OI16i16o4i = 239,
+  dnnl_IOw16o16i = 213,
+  dnnl_IOw16i16o = 214,
+  dnnl_OIw16i16o = 48,
+  dnnl_OIw16i32o = 224,
+  dnnl_OIw16i64o = 225,
+  dnnl_OIw16o16i = 44,
+  dnnl_Oiw16o = 43,
+  dnnl_OIw4i16o4i = 52,
+  dnnl_OIw4i32o4i = 226,
+  dnnl_OIw4i64o4i = 227,
+  dnnl_OIw2i8o4i = 53,
+  dnnl_OIw16i16o4i = 54,
+  dnnl_OIw16i16o2i = 55,
+  dnnl_OIw16o16i2o = 268,
+  dnnl_OIw4i4o = 56,
+  dnnl_OIw4o4i = 46,
+  dnnl_Oiw4o = 49,
+  dnnl_OIw8i16o2i = 61,
+  dnnl_OIw8i32o2i = 228,
+  dnnl_OIw8i64o2i = 229,
+  dnnl_OIw8i8o = 63,
+  dnnl_OIw8o16i2o = 57,
+  dnnl_IOw8o16i2o = 62,
+  dnnl_OIw8o8i = 58,
+  dnnl_OIw8o4i = 59,
+  dnnl_Owi16o = 193,
+  dnnl_OwI16o2i = 194,
+  dnnl_OwI16o4i = 195,
+  dnnl_Owi4o = 196,
+  dnnl_Owi8o = 197,
+  dnnl_IOhw16i16o = 216,
+  dnnl_IOhw16o16i = 215,
+  dnnl_Ohwi16o = 202,
+  dnnl_OhwI16o2i = 203,
+  dnnl_OhwI16o4i = 204,
+  dnnl_Ohwi32o = 205,
+  dnnl_Ohwi4o = 206,
+  dnnl_Ohwi8o = 207,
+  dnnl_OIhw16i16o = 70,
+  dnnl_OIhw16i32o = 240,
+  dnnl_OIhw16i64o = 241,
+  dnnl_OIhw16o16i = 66,
+  dnnl_Oihw16o = 64,
+  dnnl_OIhw4i16o4i = 76,
+  dnnl_OIhw4i32o4i = 242,
+  dnnl_OIhw4i64o4i = 243,
+  dnnl_OIhw16i16o4i = 77,
+  dnnl_OIhw16i16o2i = 78,
+  dnnl_OIhw16o16i2o = 267,
+  dnnl_OIhw4i4o = 79,
+  dnnl_OIhw4o4i = 80,
+  dnnl_Oihw4o = 73,
+  dnnl_OIhw8i16o2i = 95,
+  dnnl_OIhw8i32o2i = 244,
+  dnnl_OIhw8i64o2i = 245,
+  dnnl_OIhw8i8o = 98,
+  dnnl_OIhw8o16i2o = 89,
+  dnnl_OIhw2i8o4i = 90,
+  dnnl_IOhw8o16i2o = 97,
+  dnnl_OIhw8o8i = 91,
+  dnnl_OIhw8o4i = 92,
+  dnnl_Owhi16o = 212,
+  dnnl_Odhwi16o = 208,
+  dnnl_OdhwI16o2i = 209,
+  dnnl_OdhwI16o4i = 266,
+  dnnl_Odhwi4o = 210,
+  dnnl_Odhwi8o = 211,
+  dnnl_OIdhw16i16o = 113,
+  dnnl_OIdhw16i32o = 250,
+  dnnl_OIdhw16i64o = 251,
+  dnnl_OIdhw16o16i = 107,
+  dnnl_Oidhw16o = 105,
+  dnnl_OIdhw4i4o = 120,
+  dnnl_OIdhw4o4i = 121,
+  dnnl_Oidhw4o = 117,
+  dnnl_OIdhw8i16o2i = 134,
+  dnnl_OIdhw8i32o2i = 252,
+  dnnl_OIdhw8i64o2i = 253,
+  dnnl_OIdhw8i8o = 138,
+  dnnl_OIdhw8o16i2o = 102,
+  dnnl_IOdhw8o16i2o = 108,
+  dnnl_OIdhw4i16o4i = 110,
+  dnnl_OIdhw4i32o4i = 246,
+  dnnl_OIdhw4i64o4i = 247,
+  dnnl_OIdhw16i16o4i = 248,
+  dnnl_OIdhw16i16o2i = 249,
+  dnnl_OIdhw2i8o4i = 111,
+  dnnl_OIdhw8o8i = 130,
+  dnnl_OIdhw8o4i = 131,
+  dnnl_IOdhw16i16o = 132,
+  dnnl_OIdhw4o8i8o4i = 144,
+  dnnl_IOdhw16o16i = 220,
+  dnnl_OIdhw16o16i2o = 512,
+  dnnl_Goiw16g = 64,
+  dnnl_Goiw8g = 65,
+  dnnl_Goiw4g = 73,
+  dnnl_gIOw16o16i = 198,
+  dnnl_gIOw16i16o = 199,
+  dnnl_gOIw16i16o = 72,
+  dnnl_gOIw16o16i = 71,
+  dnnl_gOiw16o = 69,
+  dnnl_gOIw4i16o4i = 83,
+  dnnl_gOIw2i8o4i = 84,
+  dnnl_gOIw16i16o4i = 85,
+  dnnl_gOIw16i16o2i = 86,
+  dnnl_gOIw16o16i2o = 269,
+  dnnl_gOIw4i4o = 87,
+  dnnl_gOIw4o4i = 88,
+  dnnl_gOiw4o = 75,
+  dnnl_gOIw8i16o2i = 101,
+  dnnl_gOIw8i8o = 104,
+  dnnl_gOIw8o16i2o = 96,
+  dnnl_gIOw8o16i2o = 103,
+  dnnl_gOIw8o8i = 99,
+  dnnl_gOIw8o4i = 100,
+  dnnl_gOwi16o = 174,
+  dnnl_gOwI16o2i = 175,
+  dnnl_gOwI16o4i = 176,
+  dnnl_gOwi4o = 177,
+  dnnl_gOwi8o = 178,
+  dnnl_Goiw32g = 67,
+  dnnl_gOIw2i4o2i = 81,
+  dnnl_gOIw2o4i2o = 109,
+  dnnl_gOIw4i8o2i = 94,
+  dnnl_gOIw4o8i2o = 82,
+  dnnl_gIOhw16i16o = 201,
+  dnnl_gIOhw16o16i = 200,
+  dnnl_gOhwi16o = 179,
+  dnnl_gOhwI16o2i = 180,
+  dnnl_gOhwI16o4i = 181,
+  dnnl_gOhwi32o = 182,
+  dnnl_gOhwi4o = 183,
+  dnnl_gOhwi8o = 184,
+  dnnl_Goihw16g = 105,
+  dnnl_gOIhw16i16o = 115,
+  dnnl_gOIhw16o16i = 114,
+  dnnl_gOihw16o = 112,
+  dnnl_gOIhw2i8o4i = 116,
+  dnnl_gOIhw4i16o4i = 125,
+  dnnl_gOIhw16i16o4i = 126,
+  dnnl_gOIhw16i16o2i = 127,
+  dnnl_gOIhw16o16i2o = 270,
+  dnnl_gOIhw4i4o = 128,
+  dnnl_gOIhw4o4i = 122,
+  dnnl_gOihw4o = 119,
+  dnnl_Goihw8g = 129,
+  dnnl_Goihw4g = 117,
+  dnnl_gOIhw8i16o2i = 152,
+  dnnl_gOIhw8i8o = 153,
+  dnnl_gOIhw8o16i2o = 135,
+  dnnl_gIOhw8o16i2o = 137,
+  dnnl_gOIhw8o8i = 140,
+  dnnl_gOIhw8o4i = 141,
+  dnnl_Goihw32g = 106,
+  dnnl_gOwhi16o = 192,
+  dnnl_OIw4o8i8o4i = 142,
+  dnnl_OIhw4o8i8o4i = 143,
+  dnnl_IOw4i8o8i4o = 145,
+  dnnl_IOhw4i8o8i4o = 146,
+  dnnl_IOdhw4i8o8i4o = 147,
+  dnnl_OIhw2o8i8o2i = 148,
+  dnnl_gOIw4o8i8o4i = 149,
+  dnnl_gOIhw4o8i8o4i = 150,
+  dnnl_gOIdhw4o8i8o4i = 170,
+  dnnl_gIOw4i8o8i4o = 217,
+  dnnl_gIOhw4i8o8i4o = 218,
+  dnnl_gIOdhw4i8o8i4o = 219,
+  dnnl_gOIhw2o8i8o2i = 151,
+  dnnl_gOIhw2i4o2i = 123,
+  dnnl_gOIhw2o4i2o = 154,
+  dnnl_gOIhw4i8o2i = 136,
+  dnnl_gOIhw4o8i2o = 124,
+  dnnl_gIOdhw16i16o = 187,
+  dnnl_gIOdhw16o16i = 221,
+  dnnl_gOdhwi16o = 185,
+  dnnl_gOdhwI16o2i = 186,
+  dnnl_gOdhwI16o4i = 265,
+  dnnl_gOdhwi4o = 188,
+  dnnl_gOdhwi8o = 189,
+  dnnl_gOIdhw16i16o = 157,
+  dnnl_gOIdhw4i16o4i = 158,
+  dnnl_gOIdhw16i16o4i = 254,
+  dnnl_gOIdhw2i8o4i = 159,
+  dnnl_gOIdhw16i16o2i = 255,
+  dnnl_gOIdhw16o16i = 156,
+  dnnl_gOIdhw16o16i2o = 513,
+  dnnl_gOidhw16o = 155,
+  dnnl_gOIdhw4i4o = 163,
+  dnnl_gOIdhw4o4i = 164,
+  dnnl_gOidhw4o = 162,
+  dnnl_gOIdhw8i16o2i = 169,
+  dnnl_gOIdhw8i8o = 173,
+  dnnl_gOIdhw8o16i2o = 171,
+  dnnl_gIOdhw8o16i2o = 172,
+  dnnl_gOIdhw8o8i = 167,
+  dnnl_gOIdhw8o4i = 168,
+  dnnl_Goidhw16g = 190,
+  dnnl_Goidhw32g = 191,
+  dnnl_gOIdhw2i4o2i = 165,
+  dnnl_gOIdhw4i8o2i = 160,
+  dnnl_gOIdhw2o4i2o = 161,
+  dnnl_gOIdhw4o8i2o = 166,
+  dnnl_Owi32o = 271,
+  dnnl_OwI32o2i = 272,
+  dnnl_OwI32o4i = 273,
+  dnnl_Owi48o = 274,
+  dnnl_OwI48o2i = 275,
+  dnnl_OwI48o4i = 276,
+  dnnl_Owi64o = 277,
+  dnnl_OwI64o2i = 278,
+  dnnl_OwI64o4i = 279,
+  dnnl_wIo2i = 280,
+  dnnl_wIo4i = 281,
+  dnnl_gOwi32o = 282,
+  dnnl_gOwI32o2i = 283,
+  dnnl_gOwI32o4i = 284,
+  dnnl_gOwi48o = 285,
+  dnnl_gOwI48o2i = 286,
+  dnnl_gOwI48o4i = 287,
+  dnnl_gOwi64o = 288,
+  dnnl_gOwI64o2i = 289,
+  dnnl_gOwI64o4i = 290,
+  dnnl_gwio = 291,
+  dnnl_gwIo2i = 292,
+  dnnl_gwIo4i = 293,
+  dnnl_OhwI32o = 205,
+  dnnl_OhwI32o2i = 294,
+  dnnl_OhwI32o4i = 295,
+  dnnl_Ohwi48o = 296,
+  dnnl_OhwI48o2i = 297,
+  dnnl_OhwI48o4i = 298,
+  dnnl_Ohwi64o = 299,
+  dnnl_OhwI64o2i = 300,
+  dnnl_OhwI64o4i = 301,
+  dnnl_hwIo2i = 302,
+  dnnl_hwIo4i = 303,
+  dnnl_gOhwI32o = 182,
+  dnnl_gOhwI32o2i = 304,
+  dnnl_gOhwI32o4i = 305,
+  dnnl_gOhwi48o = 306,
+  dnnl_gOhwI48o2i = 307,
+  dnnl_gOhwI48o4i = 308,
+  dnnl_gOhwi64o = 309,
+  dnnl_gOhwI64o2i = 310,
+  dnnl_gOhwI64o4i = 311,
+  dnnl_ghwio = 312,
+  dnnl_ghwIo2i = 313,
+  dnnl_ghwIo4i = 314,
+  dnnl_Odhwi32o = 315,
+  dnnl_OdhwI32o2i = 316,
+  dnnl_OdhwI32o4i = 317,
+  dnnl_Odhwi48o = 318,
+  dnnl_OdhwI48o2i = 319,
+  dnnl_OdhwI48o4i = 320,
+  dnnl_Odhwi64o = 321,
+  dnnl_OdhwI64o2i = 322,
+  dnnl_OdhwI64o4i = 323,
+  dnnl_dhwIo2i = 324,
+  dnnl_dhwIo4i = 325,
+  dnnl_gOdhwi32o = 326,
+  dnnl_gOdhwI32o2i = 327,
+  dnnl_gOdhwI32o4i = 328,
+  dnnl_gOdhwi48o = 329,
+  dnnl_gOdhwI48o2i = 330,
+  dnnl_gOdhwI48o4i = 331,
+  dnnl_gOdhwi64o = 332,
+  dnnl_gOdhwI64o2i = 333,
+  dnnl_gOdhwI64o4i = 334,
+  dnnl_gdhwio = 335,
+  dnnl_gdhwIo2i = 336,
+  dnnl_gdhwIo4i = 337,
+  dnnl_OI16i32o4i = 338,
+  dnnl_OI16i48o4i = 339,
+  dnnl_OI16i64o4i = 340,
+  dnnl_OI16i16o2i = 341,
+  dnnl_OI16i32o2i = 342,
+  dnnl_OI16i48o2i = 343,
+  dnnl_OI16i64o2i = 344,
+  dnnl_OIw16i32o4i = 345,
+  dnnl_OIw16i48o4i = 346,
+  dnnl_OIw16i64o4i = 347,
+  dnnl_OIw16i32o2i = 348,
+  dnnl_OIw16i48o2i = 349,
+  dnnl_OIw16i64o2i = 350,
+  dnnl_OIhw16i32o4i = 351,
+  dnnl_OIhw16i48o4i = 352,
+  dnnl_OIhw16i64o4i = 353,
+  dnnl_OIhw16i32o2i = 354,
+  dnnl_OIhw16i48o2i = 355,
+  dnnl_OIhw16i64o2i = 356,
+  dnnl_OIdhw16i32o4i = 357,
+  dnnl_OIdhw16i48o4i = 358,
+  dnnl_OIdhw16i64o4i = 359,
+  dnnl_OIdhw16i32o2i = 360,
+  dnnl_OIdhw16i48o2i = 361,
+  dnnl_OIdhw16i64o2i = 362,
+  dnnl_OwI16i16o2i = 389,
+  dnnl_OwI16i16o4i = 390,
+  dnnl_OhwI16i16o2i = 391,
+  dnnl_OhwI16i16o4i = 392,
+  dnnl_OdhwI16i16o2i = 393,
+  dnnl_OdhwI16i16o4i = 395,
+  dnnl_gOwI16i16o2i = 402,
+  dnnl_gOwI16i16o4i = 403,
+  dnnl_gOhwI16i16o2i = 386,
+  dnnl_gOhwI16i16o4i = 387,
+  dnnl_gOdhwI16i16o2i = 388,
+  dnnl_gOdhwI16i16o4i = 394,
+  dnnl_OwI16i32o2i = 396,
+  dnnl_OwI16i32o4i = 397,
+  dnnl_OwI16i48o2i = 398,
+  dnnl_OwI16i48o4i = 399,
+  dnnl_OwI16i64o2i = 400,
+  dnnl_OwI16i64o4i = 401,
+  dnnl_gOwI16i32o2i = 404,
+  dnnl_gOwI16i32o4i = 405,
+  dnnl_gOwI16i48o2i = 406,
+  dnnl_gOwI16i48o4i = 407,
+  dnnl_gOwI16i64o2i = 408,
+  dnnl_gOwI16i64o4i = 409,
+  dnnl_OhwI16i32o2i = 410,
+  dnnl_OhwI16i32o4i = 411,
+  dnnl_OhwI16i48o2i = 412,
+  dnnl_OhwI16i48o4i = 413,
+  dnnl_OhwI16i64o2i = 414,
+  dnnl_OhwI16i64o4i = 415,
+  dnnl_gOhwI16i32o2i = 416,
+  dnnl_gOhwI16i32o4i = 417,
+  dnnl_gOhwI16i48o2i = 418,
+  dnnl_gOhwI16i48o4i = 419,
+  dnnl_gOhwI16i64o2i = 420,
+  dnnl_gOhwI16i64o4i = 421,
+  dnnl_OdhwI16i32o2i = 422,
+  dnnl_OdhwI16i32o4i = 423,
+  dnnl_OdhwI16i48o2i = 424,
+  dnnl_OdhwI16i48o4i = 425,
+  dnnl_OdhwI16i64o2i = 426,
+  dnnl_OdhwI16i64o4i = 427,
+  dnnl_gOdhwI16i32o2i = 428,
+  dnnl_gOdhwI16i32o4i = 429,
+  dnnl_gOdhwI16i48o2i = 430,
+  dnnl_gOdhwI16i48o4i = 431,
+  dnnl_gOdhwI16i64o2i = 432,
+  dnnl_gOdhwI16i64o4i = 433,
+  dnnl_hwioG16g = 434,
+  dnnl_NCdhw40n16c = 440,
+  dnnl_NCw40n16c = 368,
+  dnnl_NChw40n16c = 372,
+  dnnl_NCw40n32c = 369,
+  dnnl_NChw40n32c = 373,
+  dnnl_NCdhw40n32c = 441,
+  dnnl_OIdhw4o8i8o2i = 443,
+  dnnl_OIhw4o8i8o2i = 444,
+  dnnl_OIw4o8i8o2i = 445,
+  dnnl_gOIdhw4o8i8o2i = 446,
+  dnnl_gOIhw4o8i8o2i = 447,
+  dnnl_gOIw4o8i8o2i = 448,
+  dnnl_IOdhw4i8o8i2o = 449,
+  dnnl_IOhw4i8o8i2o = 450,
+  dnnl_IOw4i8o8i2o = 451,
+  dnnl_gIOdhw4i8o8i2o = 452,
+  dnnl_gIOhw4i8o8i2o = 453,
+  dnnl_gIOw4i8o8i2o = 454,
+  dnnl_NCw2c32n8c = 470,
+  dnnl_NChw2c32n8c = 474,
+  dnnl_NCdhw2c32n8c = 479,
+  dnnl_OIw2i8o16i4o = 465,
+  dnnl_OIhw2i8o16i4o = 466,
+  dnnl_OIdhw2i8o16i4o = 467,
+  dnnl_OIw2o8i16o4i = 468,
+  dnnl_OIw2o8i16o2i = 469,
+  dnnl_IOw2i8o16i4o = 486,
+  dnnl_IOw2i8o16i2o = 489,
+  dnnl_OIhw2o8i16o4i = 471,
+  dnnl_OIhw2o8i16o2i = 472,
+  dnnl_IOhw2i8o16i4o = 485,
+  dnnl_IOhw2i8o16i2o = 488,
+  dnnl_OIdhw2o8i16o4i = 476,
+  dnnl_OIdhw2o8i16o2i = 477,
+  dnnl_IOdhw2i8o16i4o = 484,
+  dnnl_IOdhw2i8o16i2o = 487,
+  dnnl_gOIw2o8i16o2i = 481,
+  dnnl_gIOw2i8o16i2o = 473,
+  dnnl_gIOhw2i8o16i2o = 490,
+  dnnl_gIOdhw2i8o16i2o = 491,
+  dnnl_gOIhw2o8i16o2i = 482,
+  dnnl_gOIdhw2o8i16o2i = 483,
+  dnnl_gOIw2o8i16o4i = 493,
+  dnnl_gOIhw2o8i16o4i = 494
+}
+global dnnl_prop_kind_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_prop_kind_undef = 0,
+  dnnl_forward_training = 64,
+  dnnl_forward_inference = 96,
+  dnnl_forward_scoring = 96,
+  dnnl_forward = 64,
+  dnnl_backward = 128,
+  dnnl_backward_data = 160,
+  dnnl_backward_weights = 192,
+  dnnl_backward_bias = 193
+}
+global dnnl_primitive_kind_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_undefined_primitive = 0,
+  dnnl_reorder = 1,
+  dnnl_shuffle = 2,
+  dnnl_concat = 3,
+  dnnl_sum = 4,
+  dnnl_convolution = 5,
+  dnnl_deconvolution = 6,
+  dnnl_eltwise = 7,
+  dnnl_softmax = 8,
+  dnnl_pooling = 9,
+  dnnl_lrn = 10,
+  dnnl_batch_normalization = 11,
+  dnnl_layer_normalization = 12,
+  dnnl_inner_product = 13,
+  dnnl_rnn = 14,
+  dnnl_gemm = 15,
+  dnnl_binary = 16,
+  dnnl_logsoftmax = 17,
+  dnnl_matmul = 18,
+  dnnl_resampling = 19,
+  dnnl_pooling_v2 = 20,
+  dnnl_reduction = 21,
+  dnnl_prelu = 22,
+  dnnl_softmax_v2 = 23,
+  dnnl_primitive_kind_max = 32767
+}
+global dnnl_alg_kind_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_alg_kind_undef = 0,
+  dnnl_convolution_direct = 1,
+  dnnl_convolution_winograd = 2,
+  dnnl_convolution_auto = 3,
+  dnnl_deconvolution_direct = 10,
+  dnnl_deconvolution_winograd = 11,
+  dnnl_eltwise_relu = 31,
+  dnnl_eltwise_tanh = 47,
+  dnnl_eltwise_elu = 63,
+  dnnl_eltwise_square = 79,
+  dnnl_eltwise_abs = 95,
+  dnnl_eltwise_sqrt = 111,
+  dnnl_eltwise_linear = 127,
+  dnnl_eltwise_bounded_relu = 143,
+  dnnl_eltwise_soft_relu = 159,
+  dnnl_eltwise_logistic = 175,
+  dnnl_eltwise_exp = 191,
+  dnnl_eltwise_gelu_tanh = 207,
+  dnnl_eltwise_gelu = 207,
+  dnnl_eltwise_swish = 223,
+  dnnl_eltwise_log = 239,
+  dnnl_eltwise_clip = 255,
+  dnnl_eltwise_clip_v2 = 16,
+  dnnl_eltwise_pow = 32,
+  dnnl_eltwise_gelu_erf = 48,
+  dnnl_eltwise_round = 64,
+  dnnl_eltwise_logsigmoid = 80,
+  dnnl_eltwise_mish = 96,
+  dnnl_eltwise_hardswish = 112,
+  dnnl_eltwise_relu_use_dst_for_bwd = 256,
+  dnnl_eltwise_tanh_use_dst_for_bwd = 257,
+  dnnl_eltwise_elu_use_dst_for_bwd = 258,
+  dnnl_eltwise_sqrt_use_dst_for_bwd = 259,
+  dnnl_eltwise_logistic_use_dst_for_bwd = 260,
+  dnnl_eltwise_exp_use_dst_for_bwd = 261,
+  dnnl_eltwise_clip_v2_use_dst_for_bwd = 262,
+  dnnl_pooling_max = 511,
+  dnnl_pooling_avg_include_padding = 767,
+  dnnl_pooling_avg_exclude_padding = 1023,
+  dnnl_pooling_avg = 1023,
+  dnnl_lrn_across_channels = 2815,
+  dnnl_lrn_within_channel = 3071,
+  dnnl_vanilla_rnn = 8191,
+  dnnl_vanilla_lstm = 12287,
+  dnnl_vanilla_gru = 16383,
+  dnnl_lbr_gru = 20479,
+  dnnl_vanilla_augru = 24575,
+  dnnl_lbr_augru = 28671,
+  dnnl_binary_add = 131056,
+  dnnl_binary_mul = 131057,
+  dnnl_binary_max = 131058,
+  dnnl_binary_min = 131059,
+  dnnl_binary_div = 131060,
+  dnnl_binary_sub = 131061,
+  dnnl_binary_ge = 131062,
+  dnnl_binary_gt = 131063,
+  dnnl_binary_le = 131064,
+  dnnl_binary_lt = 131065,
+  dnnl_binary_eq = 131066,
+  dnnl_binary_ne = 131067,
+  dnnl_resampling_nearest = 196592,
+  dnnl_resampling_linear = 196593,
+  dnnl_reduction_max = 196594,
+  dnnl_reduction_min = 196595,
+  dnnl_reduction_sum = 196596,
+  dnnl_reduction_mul = 196597,
+  dnnl_reduction_mean = 196598,
+  dnnl_reduction_norm_lp_max = 196599,
+  dnnl_reduction_norm_lp_sum = 196600,
+  dnnl_reduction_norm_lp_power_p_max = 196601,
+  dnnl_reduction_norm_lp_power_p_sum = 196602,
+  dnnl_softmax_accurate = 196608,
+  dnnl_softmax_log = 196609
+}
+global dnnl_normalization_flags_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_normalization_flags_none = 0,
+  dnnl_use_global_stats = 1,
+  dnnl_use_scaleshift = 2,
+  dnnl_fuse_norm_relu = 4,
+  dnnl_use_scale = 8,
+  dnnl_use_shift = 16
+}
+global dnnl_dim_t: type <cimport,nodecl> = @int64
+global dnnl_dims_t: type <cimport,nodecl> = @[12]dnnl_dim_t
+global dnnl_blocking_desc_t: type <cimport,nodecl> = @record{
+  strides: dnnl_dims_t,
+  inner_nblks: cint,
+  inner_blks: dnnl_dims_t,
+  inner_idxs: dnnl_dims_t
+}
+global dnnl_wino_memory_format_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_wino_undef = 0,
+  dnnl_wino_wei_aaOIoi = 1,
+  dnnl_wino_wei_aaOio = 2,
+  dnnl_wino_wei_aaOBiOo = 3,
+  dnnl_wino_wei_OBaaIBOIio = 4
+}
+global dnnl_wino_desc_t: type <cimport,nodecl> = @record{
+  wino_format: dnnl_wino_memory_format_t,
+  r: cint,
+  alpha: cint,
+  ic: cint,
+  oc: cint,
+  ic_block: cint,
+  oc_block: cint,
+  ic2_block: cint,
+  oc2_block: cint,
+  adj_scale: float32,
+  size: csize
+}
+global dnnl_rnn_packed_memory_format_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_packed_format_undef = 0,
+  dnnl_ldigo_p = 1,
+  dnnl_ldgoi_p = 2,
+  dnnl_ldio_p = 3
+}
+global dnnl_rnn_packed_desc_t: type <cimport,nodecl> = @record{
+  format: dnnl_rnn_packed_memory_format_t,
+  n_parts: cint,
+  n: cint,
+  ldb: cint,
+  parts: [4]cint,
+  part_pack_size: [4]csize,
+  pack_part: [4]cuint,
+  offset_compensation: csize,
+  size: csize,
+  reserved: [200]cchar
+}
+global dnnl_memory_extra_flags_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_memory_extra_flag_none = 0,
+  dnnl_memory_extra_flag_compensation_conv_s8s8 = 1,
+  dnnl_memory_extra_flag_scale_adjust = 2,
+  dnnl_memory_extra_flag_rnn_u8s8_compensation = 4,
+  dnnl_memory_extra_flag_gpu_rnn_u8s8_compensation = 4,
+  dnnl_memory_extra_flag_compensation_conv_asymmetric_src = 8,
+  dnnl_memory_extra_flag_rnn_s8s8_compensation = 22
+}
+global dnnl_memory_extra_desc_t: type <cimport,nodecl> = @record{
+  flags: uint64,
+  compensation_mask: cint,
+  scale_adjust: float32,
+  asymm_compensation_mask: cint,
+  reserved: [60]cchar
+}
+global dnnl_memory_desc_t: type <cimport,nodecl> = @record{
+  ndims: cint,
+  dims: dnnl_dims_t,
+  data_type: dnnl_data_type_t,
+  padded_dims: dnnl_dims_t,
+  padded_offsets: dnnl_dims_t,
+  offset0: dnnl_dim_t,
+  format_kind: dnnl_format_kind_t,
+  format_desc: union{
+    blocking: dnnl_blocking_desc_t,
+    wino_desc: dnnl_wino_desc_t,
+    rnn_packed_desc: dnnl_rnn_packed_desc_t
+  },
+  extra: dnnl_memory_extra_desc_t
+}
+global dnnl_memory: type <cimport,nodecl,ctypedef'dnnl_memory',forwarddecl> = @record{}
+global dnnl_memory_t: type <cimport,nodecl> = @*dnnl_memory
+global dnnl_op_desc_t: type <cimport,nodecl> = @pointer
+global dnnl_convolution_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  diff_src_desc: dnnl_memory_desc_t,
+  weights_desc: dnnl_memory_desc_t,
+  diff_weights_desc: dnnl_memory_desc_t,
+  bias_desc: dnnl_memory_desc_t,
+  diff_bias_desc: dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t,
+  diff_dst_desc: dnnl_memory_desc_t,
+  strides: dnnl_dims_t,
+  dilates: dnnl_dims_t,
+  padding: [2]dnnl_dims_t,
+  accum_data_type: dnnl_data_type_t
+}
+global dnnl_deconvolution_desc_t: type <cimport,nodecl> = @dnnl_convolution_desc_t
+global dnnl_shuffle_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  data_desc: dnnl_memory_desc_t,
+  axis: cint,
+  group_size: dnnl_dim_t
+}
+global dnnl_eltwise_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  data_desc: dnnl_memory_desc_t,
+  diff_data_desc: dnnl_memory_desc_t,
+  alpha: float32,
+  beta: float32
+}
+global dnnl_softmax_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  data_desc: dnnl_memory_desc_t,
+  diff_desc: dnnl_memory_desc_t,
+  softmax_axis: cint
+}
+global dnnl_softmax_v2_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  diff_src_desc: dnnl_memory_desc_t,
+  softmax_axis: cint,
+  alg_kind: dnnl_alg_kind_t,
+  dst_desc: dnnl_memory_desc_t,
+  diff_dst_desc: dnnl_memory_desc_t
+}
+global dnnl_logsoftmax_desc_t: type <cimport,nodecl> = @dnnl_softmax_desc_t
+global dnnl_pooling_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  diff_src_desc: dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t,
+  diff_dst_desc: dnnl_memory_desc_t,
+  strides: dnnl_dims_t,
+  kernel: dnnl_dims_t,
+  padding: [2]dnnl_dims_t,
+  accum_data_type: dnnl_data_type_t
+}
+global dnnl_pooling_v2_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  diff_src_desc: dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t,
+  diff_dst_desc: dnnl_memory_desc_t,
+  strides: dnnl_dims_t,
+  kernel: dnnl_dims_t,
+  padding: [2]dnnl_dims_t,
+  accum_data_type: dnnl_data_type_t,
+  dilation: dnnl_dims_t
+}
+global dnnl_prelu_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  data_desc: dnnl_memory_desc_t,
+  weights_desc: dnnl_memory_desc_t,
+  diff_data_desc: dnnl_memory_desc_t,
+  diff_weights_desc: dnnl_memory_desc_t
+}
+global dnnl_lrn_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  data_desc: dnnl_memory_desc_t,
+  diff_data_desc: dnnl_memory_desc_t,
+  local_size: dnnl_dim_t,
+  lrn_alpha: float32,
+  lrn_beta: float32,
+  lrn_k: float32
+}
+global dnnl_batch_normalization_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  data_desc: dnnl_memory_desc_t,
+  diff_data_desc: dnnl_memory_desc_t,
+  data_scaleshift_desc: dnnl_memory_desc_t,
+  diff_data_scaleshift_desc: dnnl_memory_desc_t,
+  stat_desc: dnnl_memory_desc_t,
+  batch_norm_epsilon: float32,
+  flags: cuint
+}
+global dnnl_layer_normalization_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  data_desc: dnnl_memory_desc_t,
+  diff_data_desc: dnnl_memory_desc_t,
+  data_scaleshift_desc: dnnl_memory_desc_t,
+  diff_data_scaleshift_desc: dnnl_memory_desc_t,
+  stat_desc: dnnl_memory_desc_t,
+  layer_norm_epsilon: float32,
+  flags: cuint
+}
+global dnnl_inner_product_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  diff_src_desc: dnnl_memory_desc_t,
+  weights_desc: dnnl_memory_desc_t,
+  diff_weights_desc: dnnl_memory_desc_t,
+  bias_desc: dnnl_memory_desc_t,
+  diff_bias_desc: dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t,
+  diff_dst_desc: dnnl_memory_desc_t,
+  accum_data_type: dnnl_data_type_t
+}
+global dnnl_rnn_flags_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_rnn_flags_undef = 0
+}
+global dnnl_rnn_direction_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_unidirectional_left2right = 0,
+  dnnl_unidirectional_right2left = 1,
+  dnnl_bidirectional_concat = 2,
+  dnnl_bidirectional_sum = 3,
+  dnnl_unidirectional = 0
+}
+global dnnl_rnn_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  cell_kind: dnnl_alg_kind_t,
+  direction: dnnl_rnn_direction_t,
+  src_layer_desc: dnnl_memory_desc_t,
+  src_iter_desc: dnnl_memory_desc_t,
+  src_iter_c_desc: dnnl_memory_desc_t,
+  weights_layer_desc: dnnl_memory_desc_t,
+  weights_iter_desc: dnnl_memory_desc_t,
+  bias_desc: dnnl_memory_desc_t,
+  dst_layer_desc: dnnl_memory_desc_t,
+  dst_iter_desc: dnnl_memory_desc_t,
+  dst_iter_c_desc: dnnl_memory_desc_t,
+  weights_peephole_desc: dnnl_memory_desc_t,
+  weights_projection_desc: dnnl_memory_desc_t,
+  diff_src_layer_desc: dnnl_memory_desc_t,
+  diff_src_iter_desc: dnnl_memory_desc_t,
+  diff_src_iter_c_desc: dnnl_memory_desc_t,
+  diff_weights_layer_desc: dnnl_memory_desc_t,
+  diff_weights_iter_desc: dnnl_memory_desc_t,
+  diff_bias_desc: dnnl_memory_desc_t,
+  diff_dst_layer_desc: dnnl_memory_desc_t,
+  diff_dst_iter_desc: dnnl_memory_desc_t,
+  diff_dst_iter_c_desc: dnnl_memory_desc_t,
+  diff_weights_peephole_desc: dnnl_memory_desc_t,
+  diff_weights_projection_desc: dnnl_memory_desc_t,
+  flags: cuint,
+  activation_kind: dnnl_alg_kind_t,
+  alpha: float32,
+  beta: float32
+}
+global dnnl_binary_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  src_desc: [2]dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t
+}
+global dnnl_matmul_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  weights_desc: dnnl_memory_desc_t,
+  bias_desc: dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t,
+  accum_data_type: dnnl_data_type_t
+}
+global dnnl_resampling_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  prop_kind: dnnl_prop_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  diff_src_desc: dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t,
+  diff_dst_desc: dnnl_memory_desc_t,
+  factors: [12]float32
+}
+global dnnl_reduction_desc_t: type <cimport,nodecl> = @record{
+  primitive_kind: dnnl_primitive_kind_t,
+  alg_kind: dnnl_alg_kind_t,
+  src_desc: dnnl_memory_desc_t,
+  dst_desc: dnnl_memory_desc_t,
+  p: float32,
+  eps: float32
+}
+global dnnl_engine_kind_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_any_engine = 0,
+  dnnl_cpu = 1,
+  dnnl_gpu = 2
+}
+global dnnl_engine: type <cimport,nodecl,ctypedef'dnnl_engine',forwarddecl> = @record{}
+global dnnl_engine_t: type <cimport,nodecl> = @*dnnl_engine
+global dnnl_primitive_desc_iterator: type <cimport,nodecl,ctypedef'dnnl_primitive_desc_iterator',forwarddecl> = @record{}
+global dnnl_primitive_desc_iterator_t: type <cimport,nodecl> = @*dnnl_primitive_desc_iterator
+global dnnl_primitive_desc: type <cimport,nodecl,ctypedef'dnnl_primitive_desc',forwarddecl> = @record{}
+global dnnl_primitive_desc_t: type <cimport,nodecl> = @*dnnl_primitive_desc
+global dnnl_fpmath_mode_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_fpmath_mode_strict = 0,
+  dnnl_fpmath_mode_bf16 = 1,
+  dnnl_fpmath_mode_f16 = 2,
+  dnnl_fpmath_mode_any = 3
+}
+global dnnl_scratchpad_mode_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_scratchpad_mode_library = 0,
+  dnnl_scratchpad_mode_user = 1
+}
+global dnnl_primitive_attr: type <cimport,nodecl,ctypedef'dnnl_primitive_attr',forwarddecl> = @record{}
+global dnnl_primitive_attr_t: type <cimport,nodecl> = @*dnnl_primitive_attr
+global dnnl_post_ops: type <cimport,nodecl,ctypedef'dnnl_post_ops',forwarddecl> = @record{}
+global dnnl_post_ops_t: type <cimport,nodecl> = @*dnnl_post_ops
+global dnnl_primitive: type <cimport,nodecl,ctypedef'dnnl_primitive',forwarddecl> = @record{}
+global dnnl_primitive_t: type <cimport,nodecl> = @*dnnl_primitive
+global dnnl_exec_arg_t: type <cimport,nodecl> = @record{
+  arg: cint,
+  memory: dnnl_memory_t
+}
+global dnnl_query_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_query_undef = 0,
+  dnnl_query_engine = 1,
+  dnnl_query_primitive_kind = 2,
+  dnnl_query_num_of_inputs_s32 = 3,
+  dnnl_query_num_of_outputs_s32 = 4,
+  dnnl_query_time_estimate_f64 = 5,
+  dnnl_query_memory_consumption_s64 = 6,
+  dnnl_query_scratchpad_engine = 7,
+  dnnl_query_impl_info_str = 8,
+  dnnl_query_reorder_src_engine = 9,
+  dnnl_query_reorder_dst_engine = 10,
+  dnnl_query_prop_kind = 11,
+  dnnl_query_cache_blob_id_size_s64 = 12,
+  dnnl_query_cache_blob_id = 13,
+  dnnl_query_some_d = 64,
+  dnnl_query_op_d = 65,
+  dnnl_query_convolution_d = 66,
+  dnnl_query_deconvolution_d = 67,
+  dnnl_query_shuffle_d = 68,
+  dnnl_query_eltwise_d = 69,
+  dnnl_query_softmax_d = 70,
+  dnnl_query_pooling_d = 71,
+  dnnl_query_lrn_d = 72,
+  dnnl_query_batch_normalization_d = 73,
+  dnnl_query_layer_normalization_d = 74,
+  dnnl_query_inner_product_d = 75,
+  dnnl_query_rnn_d = 76,
+  dnnl_query_gemm_d = 77,
+  dnnl_query_binary_d = 78,
+  dnnl_query_logsoftmax_d = 79,
+  dnnl_query_matmul_d = 80,
+  dnnl_query_resampling_d = 81,
+  dnnl_query_pooling_v2_d = 82,
+  dnnl_query_reduction_d = 83,
+  dnnl_query_prelu_d = 84,
+  dnnl_query_softmax_v2_d = 85,
+  dnnl_query_some_md = 128,
+  dnnl_query_src_md = 129,
+  dnnl_query_diff_src_md = 130,
+  dnnl_query_weights_md = 131,
+  dnnl_query_diff_weights_md = 132,
+  dnnl_query_dst_md = 133,
+  dnnl_query_diff_dst_md = 134,
+  dnnl_query_workspace_md = 135,
+  dnnl_query_scratchpad_md = 136,
+  dnnl_query_exec_arg_md = 255,
+  dnnl_query_max = 32767
+}
+global dnnl_stream_flags_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_stream_in_order = 1,
+  dnnl_stream_out_of_order = 2,
+  dnnl_stream_default_flags = 1
+}
+global dnnl_stream: type <cimport,nodecl,ctypedef'dnnl_stream',forwarddecl> = @record{}
+global dnnl_stream_t: type <cimport,nodecl> = @*dnnl_stream
+global dnnl_version_t: type <cimport,nodecl> = @record{
+  major: cint,
+  minor: cint,
+  patch: cint,
+  hash: cstring,
+  cpu_runtime: cuint,
+  gpu_runtime: cuint
+}
+global dnnl_cpu_isa_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_cpu_isa_all = 0,
+  dnnl_cpu_isa_sse41 = 1,
+  dnnl_cpu_isa_avx = 3,
+  dnnl_cpu_isa_avx2 = 7,
+  dnnl_cpu_isa_avx512_mic = 15,
+  dnnl_cpu_isa_avx512_mic_4ops = 31,
+  dnnl_cpu_isa_avx512_core = 39,
+  dnnl_cpu_isa_avx512_core_vnni = 103,
+  dnnl_cpu_isa_avx512_core_bf16 = 231,
+  dnnl_cpu_isa_avx512_core_amx = 999,
+  dnnl_cpu_isa_avx2_vnni = 1031
+}
+global dnnl_cpu_isa_hints_t: type <cimport,nodecl,using> = @enum(cint){
+  dnnl_cpu_isa_no_hints = 0,
+  dnnl_cpu_isa_prefer_ymm = 1
+}
+global DNNL_RUNTIME_F32_VAL_REP: union{
+  u: cuint,
+  f: float32
+} <cimport,nodecl>
+global DNNL_RUNTIME_S32_VAL_REP: cint <cimport,nodecl>
+global function dnnl_primitive_desc_iterator_create(iterator: *dnnl_primitive_desc_iterator_t, op_desc: pointer, attr: *dnnl_primitive_attr, engine: dnnl_engine_t, hint_forward_primitive_desc: *dnnl_primitive_desc): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_iterator_next(iterator: dnnl_primitive_desc_iterator_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_iterator_fetch(iterator: *dnnl_primitive_desc_iterator): dnnl_primitive_desc_t <cimport,nodecl> end
+global function dnnl_primitive_desc_iterator_destroy(iterator: dnnl_primitive_desc_iterator_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_create(primitive_desc: *dnnl_primitive_desc_t, op_desc: pointer, attr: *dnnl_primitive_attr, engine: dnnl_engine_t, hint_forward_primitive_desc: *dnnl_primitive_desc): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_clone(primitive_desc: *dnnl_primitive_desc_t, existing_primitive_desc: *dnnl_primitive_desc): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_get_attr(primitive_desc: *dnnl_primitive_desc, attr: **dnnl_primitive_attr): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_destroy(primitive_desc: dnnl_primitive_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_query(primitive_desc: *dnnl_primitive_desc, what: dnnl_query_t, index: cint, result: pointer): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_desc_query_md(primitive_desc: *dnnl_primitive_desc, what: dnnl_query_t, index: cint): *dnnl_memory_desc_t <cimport,nodecl> end
+global function dnnl_primitive_desc_query_s32(primitive_desc: *dnnl_primitive_desc, what: dnnl_query_t, index: cint): cint <cimport,nodecl> end
+global function dnnl_primitive_create(primitive: *dnnl_primitive_t, primitive_desc: *dnnl_primitive_desc): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_create_from_cache_blob(primitive: *dnnl_primitive_t, primitive_desc: *dnnl_primitive_desc, size: csize, cache_blob: *uint8): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_execute(primitive: *dnnl_primitive, stream: dnnl_stream_t, nargs: cint, args: *dnnl_exec_arg_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_get_primitive_desc(primitive: *dnnl_primitive, primitive_desc: **dnnl_primitive_desc): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_get_cache_blob(primitive: *dnnl_primitive, size: *csize, cache_blob: *uint8): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_destroy(primitive: dnnl_primitive_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_create(attr: *dnnl_primitive_attr_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_clone(attr: *dnnl_primitive_attr_t, existing_attr: *dnnl_primitive_attr): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_destroy(attr: dnnl_primitive_attr_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_fpmath_mode(attr: *dnnl_primitive_attr, mode: *dnnl_fpmath_mode_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_fpmath_mode(attr: dnnl_primitive_attr_t, mode: dnnl_fpmath_mode_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_scratchpad_mode(attr: *dnnl_primitive_attr, mode: *dnnl_scratchpad_mode_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_scratchpad_mode(attr: dnnl_primitive_attr_t, mode: dnnl_scratchpad_mode_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_output_scales(attr: *dnnl_primitive_attr, count: *dnnl_dim_t, mask: *cint, scales: **float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_output_scales(attr: dnnl_primitive_attr_t, count: dnnl_dim_t, mask: cint, scales: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_scales(attr: dnnl_primitive_attr_t, arg: cint, count: *dnnl_dim_t, mask: *cint, scales: **float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_scales(attr: dnnl_primitive_attr_t, arg: cint, count: dnnl_dim_t, mask: cint, scales: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_zero_points(attr: *dnnl_primitive_attr, arg: cint, count: *dnnl_dim_t, mask: *cint, zero_points: **int32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_zero_points(attr: dnnl_primitive_attr_t, arg: cint, count: dnnl_dim_t, mask: cint, zero_points: *int32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_post_ops(attr: *dnnl_primitive_attr, post_ops: **dnnl_post_ops): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_post_ops(attr: dnnl_primitive_attr_t, post_ops: *dnnl_post_ops): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_create(post_ops: *dnnl_post_ops_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_destroy(post_ops: dnnl_post_ops_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_len(post_ops: *dnnl_post_ops): cint <cimport,nodecl> end
+global function dnnl_post_ops_get_kind(post_ops: *dnnl_post_ops, index: cint): dnnl_primitive_kind_t <cimport,nodecl> end
+global function dnnl_post_ops_append_sum(post_ops: dnnl_post_ops_t, scale: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_append_sum_v2(post_ops: dnnl_post_ops_t, scale: float32, data_type: dnnl_data_type_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_append_sum_v3(post_ops: dnnl_post_ops_t, scale: float32, zero_point: int32, data_type: dnnl_data_type_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_sum(post_ops: *dnnl_post_ops, index: cint, scale: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_sum_v2(post_ops: *dnnl_post_ops, index: cint, scale: *float32, data_type: *dnnl_data_type_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_sum_v3(post_ops: *dnnl_post_ops, index: cint, scale: *float32, zero_point: *int32, data_type: *dnnl_data_type_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_append_eltwise(post_ops: dnnl_post_ops_t, scale: float32, alg_kind: dnnl_alg_kind_t, alpha: float32, beta: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_eltwise(post_ops: *dnnl_post_ops, index: cint, scale: *float32, alg_kind: *dnnl_alg_kind_t, alpha: *float32, beta: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_append_dw_k3s1p1(post_ops: dnnl_post_ops_t, weights_data_type: dnnl_data_type_t, bias_data_type: dnnl_data_type_t, dst_data_type: dnnl_data_type_t, count: dnnl_dim_t, mask: cint, scales: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_dw_k3s1p1(post_ops: *dnnl_post_ops, index: cint, weights_data_type: *dnnl_data_type_t, bias_data_type: *dnnl_data_type_t, dst_data_type: *dnnl_data_type_t, count: *dnnl_dim_t, mask: *cint, scales: **float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_append_dw_k3s2p1(post_ops: dnnl_post_ops_t, weights_data_type: dnnl_data_type_t, bias_data_type: dnnl_data_type_t, dst_data_type: dnnl_data_type_t, count: dnnl_dim_t, mask: cint, scales: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_dw_k3s2p1(post_ops: *dnnl_post_ops, index: cint, weights_data_type: *dnnl_data_type_t, bias_data_type: *dnnl_data_type_t, dst_data_type: *dnnl_data_type_t, count: *dnnl_dim_t, mask: *cint, scales: **float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_append_binary(post_ops: dnnl_post_ops_t, alg_kind: dnnl_alg_kind_t, src1_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_binary(post_ops: *dnnl_post_ops, index: cint, alg_kind: *dnnl_alg_kind_t, src1_desc: **dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_append_prelu(post_ops: dnnl_post_ops_t, mask: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_post_ops_get_params_prelu(post_ops: *dnnl_post_ops, index: cint, mask: *cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_desc_init_by_strides(memory_desc: *dnnl_memory_desc_t, ndims: cint, dims: *dnnl_dims_t, data_type: dnnl_data_type_t, strides: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_desc_init_by_tag(memory_desc: *dnnl_memory_desc_t, ndims: cint, dims: *dnnl_dims_t, data_type: dnnl_data_type_t, tag: dnnl_format_tag_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_desc_init_submemory(memory_desc: *dnnl_memory_desc_t, parent_memory_desc: *dnnl_memory_desc_t, dims: *dnnl_dims_t, offsets: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_desc_reshape(out_memory_desc: *dnnl_memory_desc_t, in_memory_desc: *dnnl_memory_desc_t, ndims: cint, dims: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_desc_permute_axes(out_memory_desc: *dnnl_memory_desc_t, in_memory_desc: *dnnl_memory_desc_t, permutation: *cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_desc_equal(lhs: *dnnl_memory_desc_t, rhs: *dnnl_memory_desc_t): cint <cimport,nodecl> end
+global function dnnl_memory_desc_get_size(memory_desc: *dnnl_memory_desc_t): csize <cimport,nodecl> end
+global function dnnl_data_type_size(data_type: dnnl_data_type_t): csize <cimport,nodecl> end
+global function dnnl_memory_create(memory: *dnnl_memory_t, memory_desc: *dnnl_memory_desc_t, engine: dnnl_engine_t, handle: pointer): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_get_memory_desc(memory: *dnnl_memory, memory_desc: **dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_get_engine(memory: *dnnl_memory, engine: *dnnl_engine_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_map_data(memory: *dnnl_memory, mapped_ptr: *pointer): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_unmap_data(memory: *dnnl_memory, mapped_ptr: pointer): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_get_data_handle(memory: *dnnl_memory, handle: *pointer): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_set_data_handle(memory: dnnl_memory_t, handle: pointer): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_set_data_handle_v2(memory: dnnl_memory_t, handle: pointer, stream: dnnl_stream_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_memory_destroy(memory: dnnl_memory_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_reorder_primitive_desc_create(reorder_primitive_desc: *dnnl_primitive_desc_t, src_desc: *dnnl_memory_desc_t, src_engine: dnnl_engine_t, dst_desc: *dnnl_memory_desc_t, dst_engine: dnnl_engine_t, attr: *dnnl_primitive_attr): dnnl_status_t <cimport,nodecl> end
+global function dnnl_concat_primitive_desc_create(concat_primitive_desc: *dnnl_primitive_desc_t, dst_desc: *dnnl_memory_desc_t, n: cint, concat_dimension: cint, src_descs: *dnnl_memory_desc_t, attr: *dnnl_primitive_attr, engine: dnnl_engine_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_sum_primitive_desc_create(sum_primitive_desc: *dnnl_primitive_desc_t, dst_desc: *dnnl_memory_desc_t, n: cint, scales: *float32, src_descs: *dnnl_memory_desc_t, attr: *dnnl_primitive_attr, engine: dnnl_engine_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_binary_desc_init(binary_desc: *dnnl_binary_desc_t, alg_kind: dnnl_alg_kind_t, src0_desc: *dnnl_memory_desc_t, src1_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_convolution_forward_desc_init(conv_desc: *dnnl_convolution_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_dilated_convolution_forward_desc_init(conv_desc: *dnnl_convolution_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, dilates: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_convolution_backward_data_desc_init(conv_desc: *dnnl_convolution_desc_t, alg_kind: dnnl_alg_kind_t, diff_src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_dilated_convolution_backward_data_desc_init(conv_desc: *dnnl_convolution_desc_t, alg_kind: dnnl_alg_kind_t, diff_src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, dilates: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_convolution_backward_weights_desc_init(conv_desc: *dnnl_convolution_desc_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, diff_weights_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_dilated_convolution_backward_weights_desc_init(conv_desc: *dnnl_convolution_desc_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, diff_weights_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, dilates: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_deconvolution_forward_desc_init(deconv_desc: *dnnl_deconvolution_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_dilated_deconvolution_forward_desc_init(deconv_desc: *dnnl_deconvolution_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, dilates: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_deconvolution_backward_data_desc_init(deconv_desc: *dnnl_deconvolution_desc_t, alg_kind: dnnl_alg_kind_t, diff_src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_dilated_deconvolution_backward_data_desc_init(deconv_desc: *dnnl_deconvolution_desc_t, alg_kind: dnnl_alg_kind_t, diff_src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, dilates: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_deconvolution_backward_weights_desc_init(deconv_desc: *dnnl_deconvolution_desc_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, diff_weights_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_dilated_deconvolution_backward_weights_desc_init(deconv_desc: *dnnl_deconvolution_desc_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, diff_weights_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, dilates: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_shuffle_forward_desc_init(shuffle_desc: *dnnl_shuffle_desc_t, prop_kind: dnnl_prop_kind_t, data_desc: *dnnl_memory_desc_t, axis: cint, group_size: dnnl_dim_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_shuffle_backward_desc_init(shuffle_desc: *dnnl_shuffle_desc_t, diff_data_desc: *dnnl_memory_desc_t, axis: cint, group_size: dnnl_dim_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_eltwise_forward_desc_init(eltwise_desc: *dnnl_eltwise_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, data_desc: *dnnl_memory_desc_t, alpha: float32, beta: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_eltwise_backward_desc_init(eltwise_desc: *dnnl_eltwise_desc_t, alg_kind: dnnl_alg_kind_t, diff_data_desc: *dnnl_memory_desc_t, data_desc: *dnnl_memory_desc_t, alpha: float32, beta: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_softmax_forward_desc_init(softmax_desc: *dnnl_softmax_desc_t, prop_kind: dnnl_prop_kind_t, data_desc: *dnnl_memory_desc_t, softmax_axis: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_softmax_backward_desc_init(softmax_desc: *dnnl_softmax_desc_t, diff_data_desc: *dnnl_memory_desc_t, data_desc: *dnnl_memory_desc_t, softmax_axis: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_softmax_v2_forward_desc_init(softmax_desc: *dnnl_softmax_v2_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, softmax_axis: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_softmax_v2_backward_desc_init(softmax_desc: *dnnl_softmax_v2_desc_t, alg_kind: dnnl_alg_kind_t, diff_src_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, softmax_axis: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_logsoftmax_forward_desc_init(logsoftmax_desc: *dnnl_logsoftmax_desc_t, prop_kind: dnnl_prop_kind_t, data_desc: *dnnl_memory_desc_t, logsoftmax_axis: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_logsoftmax_backward_desc_init(logsoftmax_desc: *dnnl_logsoftmax_desc_t, diff_data_desc: *dnnl_memory_desc_t, data_desc: *dnnl_memory_desc_t, logsoftmax_axis: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_pooling_forward_desc_init(pool_desc: *dnnl_pooling_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, kernel: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_pooling_backward_desc_init(pool_desc: *dnnl_pooling_desc_t, alg_kind: dnnl_alg_kind_t, diff_src_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, kernel: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_pooling_v2_forward_desc_init(pool_desc: *dnnl_pooling_v2_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, kernel: *dnnl_dims_t, dilation: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_pooling_v2_backward_desc_init(pool_desc: *dnnl_pooling_v2_desc_t, alg_kind: dnnl_alg_kind_t, diff_src_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t, strides: *dnnl_dims_t, kernel: *dnnl_dims_t, dilation: *dnnl_dims_t, padding_l: *dnnl_dims_t, padding_r: *dnnl_dims_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_prelu_forward_desc_init(prelu_desc: *dnnl_prelu_desc_t, prop_kind: dnnl_prop_kind_t, data_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_prelu_backward_desc_init(prelu_desc: *dnnl_prelu_desc_t, data_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, diff_data_desc: *dnnl_memory_desc_t, diff_weights_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lrn_forward_desc_init(lrn_desc: *dnnl_lrn_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, data_desc: *dnnl_memory_desc_t, local_size: dnnl_dim_t, alpha: float32, beta: float32, k: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lrn_backward_desc_init(lrn_desc: *dnnl_lrn_desc_t, alg_kind: dnnl_alg_kind_t, diff_data_desc: *dnnl_memory_desc_t, data_desc: *dnnl_memory_desc_t, local_size: dnnl_dim_t, alpha: float32, beta: float32, k: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_batch_normalization_forward_desc_init(bnrm_desc: *dnnl_batch_normalization_desc_t, prop_kind: dnnl_prop_kind_t, data_desc: *dnnl_memory_desc_t, epsilon: float32, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_batch_normalization_backward_desc_init(bnrm_desc: *dnnl_batch_normalization_desc_t, prop_kind: dnnl_prop_kind_t, diff_data_desc: *dnnl_memory_desc_t, data_desc: *dnnl_memory_desc_t, epsilon: float32, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_layer_normalization_forward_desc_init(lnrm_desc: *dnnl_layer_normalization_desc_t, prop_kind: dnnl_prop_kind_t, data_desc: *dnnl_memory_desc_t, stat_desc: *dnnl_memory_desc_t, epsilon: float32, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_layer_normalization_backward_desc_init(lnrm_desc: *dnnl_layer_normalization_desc_t, prop_kind: dnnl_prop_kind_t, diff_data_desc: *dnnl_memory_desc_t, data_desc: *dnnl_memory_desc_t, stat_desc: *dnnl_memory_desc_t, epsilon: float32, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_inner_product_forward_desc_init(ip_desc: *dnnl_inner_product_desc_t, prop_kind: dnnl_prop_kind_t, src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_inner_product_backward_data_desc_init(ip_desc: *dnnl_inner_product_desc_t, diff_src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_inner_product_backward_weights_desc_init(ip_desc: *dnnl_inner_product_desc_t, src_desc: *dnnl_memory_desc_t, diff_weights_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_rnn_data_qparams(attr: dnnl_primitive_attr_t, scale: float32, shift: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_rnn_data_qparams(attr: *dnnl_primitive_attr, scale: *float32, shift: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_rnn_weights_qparams(attr: dnnl_primitive_attr_t, count: dnnl_dim_t, mask: cint, scales: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_rnn_weights_qparams(attr: *dnnl_primitive_attr, count: *dnnl_dim_t, mask: *cint, scales: **float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_set_rnn_weights_projection_qparams(attr: dnnl_primitive_attr_t, count: dnnl_dim_t, mask: cint, scales: *float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_primitive_attr_get_rnn_weights_projection_qparams(attr: *dnnl_primitive_attr, count: *dnnl_dim_t, mask: *cint, scales: **float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_vanilla_rnn_forward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, activation: dnnl_alg_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, flags: cuint, alpha: float32, beta: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_vanilla_rnn_backward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, activation: dnnl_alg_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, flags: cuint, alpha: float32, beta: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lstm_forward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, src_iter_c_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, dst_iter_c_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lstm_forward_desc_init_v2(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, src_iter_c_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, weights_peephole_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, dst_iter_c_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lstm_forward_desc_init_v3(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, src_iter_c_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, weights_peephole_desc: *dnnl_memory_desc_t, weights_projection_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, dst_iter_c_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lstm_backward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, src_iter_c_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, dst_iter_c_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_src_iter_c_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, diff_dst_iter_c_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lstm_backward_desc_init_v2(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, src_iter_c_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, weights_peephole_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, dst_iter_c_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_src_iter_c_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_weights_peephole_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, diff_dst_iter_c_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lstm_backward_desc_init_v3(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, src_iter_c_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, weights_peephole_desc: *dnnl_memory_desc_t, weights_projection_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, dst_iter_c_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_src_iter_c_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_weights_peephole_desc: *dnnl_memory_desc_t, diff_weights_projection_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, diff_dst_iter_c_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_gru_forward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_gru_backward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lbr_gru_forward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lbr_gru_backward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_augru_forward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, attention_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_augru_backward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, attention_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_attention_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lbr_augru_forward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, attention_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_lbr_augru_backward_desc_init(rnn_desc: *dnnl_rnn_desc_t, prop_kind: dnnl_prop_kind_t, direction: dnnl_rnn_direction_t, src_layer_desc: *dnnl_memory_desc_t, src_iter_desc: *dnnl_memory_desc_t, attention_desc: *dnnl_memory_desc_t, weights_layer_desc: *dnnl_memory_desc_t, weights_iter_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_layer_desc: *dnnl_memory_desc_t, dst_iter_desc: *dnnl_memory_desc_t, diff_src_layer_desc: *dnnl_memory_desc_t, diff_src_iter_desc: *dnnl_memory_desc_t, diff_attention_desc: *dnnl_memory_desc_t, diff_weights_layer_desc: *dnnl_memory_desc_t, diff_weights_iter_desc: *dnnl_memory_desc_t, diff_bias_desc: *dnnl_memory_desc_t, diff_dst_layer_desc: *dnnl_memory_desc_t, diff_dst_iter_desc: *dnnl_memory_desc_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_matmul_desc_init(matmul_desc: *dnnl_matmul_desc_t, src_desc: *dnnl_memory_desc_t, weights_desc: *dnnl_memory_desc_t, bias_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_resampling_forward_desc_init(resampling_desc: *dnnl_resampling_desc_t, prop_kind: dnnl_prop_kind_t, alg_kind: dnnl_alg_kind_t, factors: *float32, src_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_resampling_backward_desc_init(resampling_desc: *dnnl_resampling_desc_t, alg_kind: dnnl_alg_kind_t, factors: *float32, diff_src_desc: *dnnl_memory_desc_t, diff_dst_desc: *dnnl_memory_desc_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_reduction_desc_init(desc: *dnnl_reduction_desc_t, alg_kind: dnnl_alg_kind_t, src_desc: *dnnl_memory_desc_t, dst_desc: *dnnl_memory_desc_t, p: float32, eps: float32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_engine_get_count(kind: dnnl_engine_kind_t): csize <cimport,nodecl> end
+global function dnnl_engine_create(engine: *dnnl_engine_t, kind: dnnl_engine_kind_t, index: csize): dnnl_status_t <cimport,nodecl> end
+global function dnnl_engine_get_kind(engine: dnnl_engine_t, kind: *dnnl_engine_kind_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_engine_destroy(engine: dnnl_engine_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_stream_create(stream: *dnnl_stream_t, engine: dnnl_engine_t, flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_stream_get_engine(stream: *dnnl_stream, engine: *dnnl_engine_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_stream_wait(stream: dnnl_stream_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_stream_destroy(stream: dnnl_stream_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_get_primitive_cache_capacity(capacity: *cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_set_primitive_cache_capacity(capacity: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_get_default_fpmath_mode(mode: *dnnl_fpmath_mode_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_set_default_fpmath_mode(mode: dnnl_fpmath_mode_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_set_verbose(level: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_set_jit_dump(enable: cint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_version(): *dnnl_version_t <cimport,nodecl> end
+global function dnnl_set_jit_profiling_flags(flags: cuint): dnnl_status_t <cimport,nodecl> end
+global function dnnl_set_jit_profiling_jitdumpdir(dir: cstring): dnnl_status_t <cimport,nodecl> end
+global function dnnl_set_max_cpu_isa(isa: dnnl_cpu_isa_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_get_effective_cpu_isa(): dnnl_cpu_isa_t <cimport,nodecl> end
+global function dnnl_set_cpu_isa_hints(isa_hints: dnnl_cpu_isa_hints_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_get_cpu_isa_hints(): dnnl_cpu_isa_hints_t <cimport,nodecl> end
+global function dnnl_sgemm(transa: cchar, transb: cchar, M: dnnl_dim_t, N: dnnl_dim_t, K: dnnl_dim_t, alpha: float32, A: *float32, lda: dnnl_dim_t, B: *float32, ldb: dnnl_dim_t, beta: float32, C: *float32, ldc: dnnl_dim_t): dnnl_status_t <cimport,nodecl> end
+global function dnnl_gemm_u8s8s32(transa: cchar, transb: cchar, offsetc: cchar, M: dnnl_dim_t, N: dnnl_dim_t, K: dnnl_dim_t, alpha: float32, A: *uint8, lda: dnnl_dim_t, ao: uint8, B: *int8, ldb: dnnl_dim_t, bo: int8, beta: float32, C: *int32, ldc: dnnl_dim_t, co: *int32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_gemm_s8s8s32(transa: cchar, transb: cchar, offsetc: cchar, M: dnnl_dim_t, N: dnnl_dim_t, K: dnnl_dim_t, alpha: float32, A: *int8, lda: dnnl_dim_t, ao: int8, B: *int8, ldb: dnnl_dim_t, bo: int8, beta: float32, C: *int32, ldc: dnnl_dim_t, co: *int32): dnnl_status_t <cimport,nodecl> end
+global function dnnl_status2str(v: dnnl_status_t): cstring <cimport,nodecl> end
+global function dnnl_dt2str(v: dnnl_data_type_t): cstring <cimport,nodecl> end
+global function dnnl_fmt_kind2str(v: dnnl_format_kind_t): cstring <cimport,nodecl> end
+global function dnnl_fmt_tag2str(v: dnnl_format_tag_t): cstring <cimport,nodecl> end
+global function dnnl_prop_kind2str(v: dnnl_prop_kind_t): cstring <cimport,nodecl> end
+global function dnnl_prim_kind2str(v: dnnl_primitive_kind_t): cstring <cimport,nodecl> end
+global function dnnl_alg_kind2str(v: dnnl_alg_kind_t): cstring <cimport,nodecl> end
+global function dnnl_rnn_flags2str(v: dnnl_rnn_flags_t): cstring <cimport,nodecl> end
+global function dnnl_rnn_direction2str(v: dnnl_rnn_direction_t): cstring <cimport,nodecl> end
+global function dnnl_engine_kind2str(v: dnnl_engine_kind_t): cstring <cimport,nodecl> end
+global function dnnl_fpmath_mode2str(v: dnnl_fpmath_mode_t): cstring <cimport,nodecl> end
+global function dnnl_scratchpad_mode2str(v: dnnl_scratchpad_mode_t): cstring <cimport,nodecl> end
+global function dnnl_cpu_isa2str(v: dnnl_cpu_isa_t): cstring <cimport,nodecl> end
+global function dnnl_cpu_isa_hints2str(v: dnnl_cpu_isa_hints_t): cstring <cimport,nodecl> end
+global function dnnl_runtime2str(v: cuint): cstring <cimport,nodecl> end
+global DNNL_MAX_NDIMS: cint <comptime> = 12
+global DNNL_RUNTIME_S32_VAL: cint <cimport,nodecl>
+global DNNL_RNN_MAX_N_PARTS: cint <comptime> = 4
+global DNNL_MEMORY_ALLOCATE: pointer <cimport,nodecl,const>
+global DNNL_ARG_SRC_0: cint <comptime> = 1
+global DNNL_ARG_SRC: cint <comptime> = 1
+global DNNL_ARG_SRC_LAYER: cint <comptime> = 1
+global DNNL_ARG_FROM: cint <comptime> = 1
+global DNNL_ARG_SRC_1: cint <comptime> = 2
+global DNNL_ARG_SRC_ITER: cint <comptime> = 2
+global DNNL_ARG_SRC_2: cint <comptime> = 3
+global DNNL_ARG_SRC_ITER_C: cint <comptime> = 3
+global DNNL_ARG_SRC_3: cint <comptime> = 4
+global DNNL_ARG_AUGRU_ATTENTION: cint <comptime> = 4
+global DNNL_ARG_DST_0: cint <comptime> = 17
+global DNNL_ARG_DST: cint <comptime> = 17
+global DNNL_ARG_TO: cint <comptime> = 17
+global DNNL_ARG_DST_LAYER: cint <comptime> = 17
+global DNNL_ARG_DST_1: cint <comptime> = 18
+global DNNL_ARG_DST_ITER: cint <comptime> = 18
+global DNNL_ARG_DST_2: cint <comptime> = 19
+global DNNL_ARG_DST_ITER_C: cint <comptime> = 19
+global DNNL_ARG_WEIGHTS_0: cint <comptime> = 33
+global DNNL_ARG_WEIGHTS: cint <comptime> = 33
+global DNNL_ARG_SCALE_SHIFT: cint <comptime> = 33
+global DNNL_ARG_WEIGHTS_LAYER: cint <comptime> = 33
+global DNNL_ARG_WEIGHTS_1: cint <comptime> = 34
+global DNNL_ARG_WEIGHTS_ITER: cint <comptime> = 34
+global DNNL_ARG_WEIGHTS_2: cint <comptime> = 35
+global DNNL_ARG_WEIGHTS_PEEPHOLE: cint <comptime> = 35
+global DNNL_ARG_WEIGHTS_3: cint <comptime> = 36
+global DNNL_ARG_WEIGHTS_PROJECTION: cint <comptime> = 36
+global DNNL_ARG_BIAS: cint <comptime> = 41
+global DNNL_ARG_MEAN: cint <comptime> = 49
+global DNNL_ARG_VARIANCE: cint <comptime> = 50
+global DNNL_ARG_SCALE: cint <comptime> = 51
+global DNNL_ARG_SHIFT: cint <comptime> = 52
+global DNNL_ARG_WORKSPACE: cint <comptime> = 64
+global DNNL_ARG_SCRATCHPAD: cint <comptime> = 80
+global DNNL_ARG_DIFF_SRC_0: cint <comptime> = 129
+global DNNL_ARG_DIFF_SRC: cint <comptime> = 129
+global DNNL_ARG_DIFF_SRC_LAYER: cint <comptime> = 129
+global DNNL_ARG_DIFF_SRC_1: cint <comptime> = 130
+global DNNL_ARG_DIFF_SRC_ITER: cint <comptime> = 130
+global DNNL_ARG_DIFF_SRC_2: cint <comptime> = 131
+global DNNL_ARG_DIFF_SRC_ITER_C: cint <comptime> = 131
+global DNNL_ARG_DIFF_SRC_3: cint <comptime> = 132
+global DNNL_ARG_DIFF_AUGRU_ATTENTION: cint <comptime> = 132
+global DNNL_ARG_DIFF_DST_0: cint <comptime> = 145
+global DNNL_ARG_DIFF_DST: cint <comptime> = 145
+global DNNL_ARG_DIFF_DST_LAYER: cint <comptime> = 145
+global DNNL_ARG_DIFF_DST_1: cint <comptime> = 146
+global DNNL_ARG_DIFF_DST_ITER: cint <comptime> = 146
+global DNNL_ARG_DIFF_DST_2: cint <comptime> = 147
+global DNNL_ARG_DIFF_DST_ITER_C: cint <comptime> = 147
+global DNNL_ARG_DIFF_WEIGHTS_0: cint <comptime> = 161
+global DNNL_ARG_DIFF_WEIGHTS: cint <comptime> = 161
+global DNNL_ARG_DIFF_SCALE_SHIFT: cint <comptime> = 161
+global DNNL_ARG_DIFF_WEIGHTS_LAYER: cint <comptime> = 161
+global DNNL_ARG_DIFF_WEIGHTS_1: cint <comptime> = 162
+global DNNL_ARG_DIFF_WEIGHTS_ITER: cint <comptime> = 162
+global DNNL_ARG_DIFF_WEIGHTS_2: cint <comptime> = 163
+global DNNL_ARG_DIFF_WEIGHTS_PEEPHOLE: cint <comptime> = 163
+global DNNL_ARG_DIFF_WEIGHTS_3: cint <comptime> = 164
+global DNNL_ARG_DIFF_WEIGHTS_PROJECTION: cint <comptime> = 164
+global DNNL_ARG_DIFF_BIAS: cint <comptime> = 169
+global DNNL_ARG_DIFF_SCALE: cint <comptime> = 255
+global DNNL_ARG_DIFF_SHIFT: cint <comptime> = 256
+global DNNL_ARG_ATTR_OUTPUT_SCALES: cint <comptime> = 513
+global DNNL_ARG_MULTIPLE_SRC: cint <comptime> = 1024
+global DNNL_ARG_MULTIPLE_DST: cint <comptime> = 2048
+global DNNL_ARG_ATTR_ZERO_POINTS: cint <comptime> = 4096
+global DNNL_ARG_ATTR_POST_OP_DW: cint <comptime> = 8192
+global DNNL_ARG_ATTR_MULTIPLE_POST_OP_BASE: cint <comptime> = 16384
+global DNNL_ARG_ATTR_INPUT_SCALES: cint <comptime> = 1048576
+global DNNL_RUNTIME_NONE: cuint <comptime> = 0
+global DNNL_RUNTIME_SEQ: cuint <comptime> = 1
+global DNNL_RUNTIME_OMP: cuint <comptime> = 2
+global DNNL_RUNTIME_TBB: cuint <comptime> = 4
+global DNNL_RUNTIME_THREADPOOL: cuint <comptime> = 8
+global DNNL_RUNTIME_OCL: cuint <comptime> = 256
+global DNNL_RUNTIME_SYCL: cuint <comptime> = 512
+global DNNL_RUNTIME_DPCPP: cuint <comptime> = 512
+global DNNL_JIT_PROFILE_NONE: cuint <comptime> = 0
+global DNNL_JIT_PROFILE_VTUNE: cuint <comptime> = 1
+global DNNL_JIT_PROFILE_LINUX_PERFMAP: cuint <comptime> = 2
+global DNNL_JIT_PROFILE_LINUX_JITDUMP: cuint <comptime> = 4
+global DNNL_JIT_PROFILE_LINUX_JITDUMP_USE_TSC: cuint <comptime> = 8
+global DNNL_JIT_PROFILE_LINUX_PERF: cuint <comptime> = 6
+global DNNL_CPU_THREADING_RUNTIME: cuint <comptime> = 2
+global DNNL_CPU_RUNTIME: cuint <comptime> = 2
+global DNNL_GPU_RUNTIME: cuint <comptime> = 512
+global DNNL_VERSION_MAJOR: cint <comptime> = 2
+global DNNL_VERSION_MINOR: cint <comptime> = 6
+global DNNL_VERSION_PATCH: cint <comptime> = 0
+global DNNL_VERSION_HASH: cstring <comptime> = "b7fd832ace0d893fe44ea3688de75ff04747eae0"

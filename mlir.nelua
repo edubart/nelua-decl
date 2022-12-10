@@ -1,0 +1,904 @@
+global MlirStringRef: type <cimport,nodecl> = @record{
+  data: cstring,
+  length: csize
+}
+global MlirLogicalResult: type <cimport,nodecl> = @record{
+  value: int8
+}
+global MlirContext: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirDialect: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirDialectRegistry: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirOperation: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirOpPrintingFlags: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirBlock: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirRegion: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirSymbolTable: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirAttribute: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirIdentifier: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirLocation: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirModule: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirType: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirTypeID: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirValue: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirNamedAttribute: type <cimport,nodecl> = @record{
+  name: MlirIdentifier,
+  attribute: MlirAttribute
+}
+global MlirOperationState: type <cimport,nodecl> = @record{
+  name: MlirStringRef,
+  location: MlirLocation,
+  nResults: isize,
+  results: *MlirType,
+  nOperands: isize,
+  operands: *MlirValue,
+  nRegions: isize,
+  regions: *MlirRegion,
+  nSuccessors: isize,
+  successors: *MlirBlock,
+  nAttributes: isize,
+  attributes: *MlirNamedAttribute,
+  enableResultTypeInference: boolean
+}
+global MlirAffineExpr: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirAffineMap: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirPass: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirPassManager: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirOpPassManager: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirDiagnostic: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirDiagnosticSeverity: type <cimport,nodecl,using> = @enum(cint){
+  MlirDiagnosticError = 0,
+  MlirDiagnosticWarning = 1,
+  MlirDiagnosticNote = 2,
+  MlirDiagnosticRemark = 3
+}
+global MlirExecutionEngine: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirIntegerSet: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirDialectHandle: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global MlirSparseTensorDimLevelType: type <cimport,nodecl,using,ctypedef'MlirSparseTensorDimLevelType'> = @enum(cint){
+  MLIR_SPARSE_TENSOR_DIM_LEVEL_DENSE = 0,
+  MLIR_SPARSE_TENSOR_DIM_LEVEL_COMPRESSED = 1,
+  MLIR_SPARSE_TENSOR_DIM_LEVEL_SINGLETON = 2
+}
+global IreeCompilerOptions: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global IREEPyDMSourceBundle: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global IREEPyDMLoweringOptions: type <cimport,nodecl> = @record{
+  ptr: pointer
+}
+global function mlirStringRefCreate(str: cstring, length: csize): MlirStringRef <cimport,nodecl> end
+global function mlirStringRefCreateFromCString(str: cstring): MlirStringRef <cimport,nodecl> end
+global function mlirStringRefEqual(string: MlirStringRef, other: MlirStringRef): boolean <cimport,nodecl> end
+global function mlirLogicalResultIsSuccess(res: MlirLogicalResult): boolean <cimport,nodecl> end
+global function mlirLogicalResultIsFailure(res: MlirLogicalResult): boolean <cimport,nodecl> end
+global function mlirLogicalResultSuccess(): MlirLogicalResult <cimport,nodecl> end
+global function mlirLogicalResultFailure(): MlirLogicalResult <cimport,nodecl> end
+global function mlirContextCreate(): MlirContext <cimport,nodecl> end
+global function mlirContextEqual(ctx1: MlirContext, ctx2: MlirContext): boolean <cimport,nodecl> end
+global function mlirContextIsNull(context: MlirContext): boolean <cimport,nodecl> end
+global function mlirContextDestroy(context: MlirContext): void <cimport,nodecl> end
+global function mlirContextSetAllowUnregisteredDialects(context: MlirContext, allow: boolean): void <cimport,nodecl> end
+global function mlirContextGetAllowUnregisteredDialects(context: MlirContext): boolean <cimport,nodecl> end
+global function mlirContextGetNumRegisteredDialects(context: MlirContext): isize <cimport,nodecl> end
+global function mlirContextAppendDialectRegistry(ctx: MlirContext, registry: MlirDialectRegistry): void <cimport,nodecl> end
+global function mlirContextGetNumLoadedDialects(context: MlirContext): isize <cimport,nodecl> end
+global function mlirContextGetOrLoadDialect(context: MlirContext, name: MlirStringRef): MlirDialect <cimport,nodecl> end
+global function mlirContextEnableMultithreading(context: MlirContext, enable: boolean): void <cimport,nodecl> end
+global function mlirContextIsRegisteredOperation(context: MlirContext, name: MlirStringRef): boolean <cimport,nodecl> end
+global function mlirDialectGetContext(dialect: MlirDialect): MlirContext <cimport,nodecl> end
+global function mlirDialectIsNull(dialect: MlirDialect): boolean <cimport,nodecl> end
+global function mlirDialectEqual(dialect1: MlirDialect, dialect2: MlirDialect): boolean <cimport,nodecl> end
+global function mlirDialectGetNamespace(dialect: MlirDialect): MlirStringRef <cimport,nodecl> end
+global function mlirDialectRegistryCreate(): MlirDialectRegistry <cimport,nodecl> end
+global function mlirDialectRegistryIsNull(registry: MlirDialectRegistry): boolean <cimport,nodecl> end
+global function mlirDialectRegistryDestroy(registry: MlirDialectRegistry): void <cimport,nodecl> end
+global function mlirLocationFileLineColGet(context: MlirContext, filename: MlirStringRef, line: cuint, col: cuint): MlirLocation <cimport,nodecl> end
+global function mlirLocationCallSiteGet(callee: MlirLocation, caller: MlirLocation): MlirLocation <cimport,nodecl> end
+global function mlirLocationFusedGet(ctx: MlirContext, nLocations: isize, locations: *MlirLocation, metadata: MlirAttribute): MlirLocation <cimport,nodecl> end
+global function mlirLocationNameGet(context: MlirContext, name: MlirStringRef, childLoc: MlirLocation): MlirLocation <cimport,nodecl> end
+global function mlirLocationUnknownGet(context: MlirContext): MlirLocation <cimport,nodecl> end
+global function mlirLocationGetContext(location: MlirLocation): MlirContext <cimport,nodecl> end
+global function mlirLocationIsNull(location: MlirLocation): boolean <cimport,nodecl> end
+global function mlirLocationEqual(l1: MlirLocation, l2: MlirLocation): boolean <cimport,nodecl> end
+global function mlirLocationPrint(location: MlirLocation, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirModuleCreateEmpty(location: MlirLocation): MlirModule <cimport,nodecl> end
+global function mlirModuleCreateParse(context: MlirContext, module: MlirStringRef): MlirModule <cimport,nodecl> end
+global function mlirModuleGetContext(module: MlirModule): MlirContext <cimport,nodecl> end
+global function mlirModuleGetBody(module: MlirModule): MlirBlock <cimport,nodecl> end
+global function mlirModuleIsNull(module: MlirModule): boolean <cimport,nodecl> end
+global function mlirModuleDestroy(module: MlirModule): void <cimport,nodecl> end
+global function mlirModuleGetOperation(module: MlirModule): MlirOperation <cimport,nodecl> end
+global function mlirModuleFromOperation(op: MlirOperation): MlirModule <cimport,nodecl> end
+global function mlirOperationStateGet(name: MlirStringRef, loc: MlirLocation): MlirOperationState <cimport,nodecl> end
+global function mlirOperationStateAddResults(state: *MlirOperationState, n: isize, results: *MlirType): void <cimport,nodecl> end
+global function mlirOperationStateAddOperands(state: *MlirOperationState, n: isize, operands: *MlirValue): void <cimport,nodecl> end
+global function mlirOperationStateAddOwnedRegions(state: *MlirOperationState, n: isize, regions: *MlirRegion): void <cimport,nodecl> end
+global function mlirOperationStateAddSuccessors(state: *MlirOperationState, n: isize, successors: *MlirBlock): void <cimport,nodecl> end
+global function mlirOperationStateAddAttributes(state: *MlirOperationState, n: isize, attributes: *MlirNamedAttribute): void <cimport,nodecl> end
+global function mlirOperationStateEnableResultTypeInference(state: *MlirOperationState): void <cimport,nodecl> end
+global function mlirOpPrintingFlagsCreate(): MlirOpPrintingFlags <cimport,nodecl> end
+global function mlirOpPrintingFlagsDestroy(flags: MlirOpPrintingFlags): void <cimport,nodecl> end
+global function mlirOpPrintingFlagsElideLargeElementsAttrs(flags: MlirOpPrintingFlags, largeElementLimit: isize): void <cimport,nodecl> end
+global function mlirOpPrintingFlagsEnableDebugInfo(flags: MlirOpPrintingFlags, prettyForm: boolean): void <cimport,nodecl> end
+global function mlirOpPrintingFlagsPrintGenericOpForm(flags: MlirOpPrintingFlags): void <cimport,nodecl> end
+global function mlirOpPrintingFlagsUseLocalScope(flags: MlirOpPrintingFlags): void <cimport,nodecl> end
+global function mlirOperationCreate(state: *MlirOperationState): MlirOperation <cimport,nodecl> end
+global function mlirOperationClone(op: MlirOperation): MlirOperation <cimport,nodecl> end
+global function mlirOperationDestroy(op: MlirOperation): void <cimport,nodecl> end
+global function mlirOperationRemoveFromParent(op: MlirOperation): void <cimport,nodecl> end
+global function mlirOperationIsNull(op: MlirOperation): boolean <cimport,nodecl> end
+global function mlirOperationEqual(op: MlirOperation, other: MlirOperation): boolean <cimport,nodecl> end
+global function mlirOperationGetContext(op: MlirOperation): MlirContext <cimport,nodecl> end
+global function mlirOperationGetLocation(op: MlirOperation): MlirLocation <cimport,nodecl> end
+global function mlirOperationGetTypeID(op: MlirOperation): MlirTypeID <cimport,nodecl> end
+global function mlirOperationGetName(op: MlirOperation): MlirIdentifier <cimport,nodecl> end
+global function mlirOperationGetBlock(op: MlirOperation): MlirBlock <cimport,nodecl> end
+global function mlirOperationGetParentOperation(op: MlirOperation): MlirOperation <cimport,nodecl> end
+global function mlirOperationGetNumRegions(op: MlirOperation): isize <cimport,nodecl> end
+global function mlirOperationGetRegion(op: MlirOperation, pos: isize): MlirRegion <cimport,nodecl> end
+global function mlirOperationGetNextInBlock(op: MlirOperation): MlirOperation <cimport,nodecl> end
+global function mlirOperationGetNumOperands(op: MlirOperation): isize <cimport,nodecl> end
+global function mlirOperationGetOperand(op: MlirOperation, pos: isize): MlirValue <cimport,nodecl> end
+global function mlirOperationSetOperand(op: MlirOperation, pos: isize, newValue: MlirValue): void <cimport,nodecl> end
+global function mlirOperationGetNumResults(op: MlirOperation): isize <cimport,nodecl> end
+global function mlirOperationGetResult(op: MlirOperation, pos: isize): MlirValue <cimport,nodecl> end
+global function mlirOperationGetNumSuccessors(op: MlirOperation): isize <cimport,nodecl> end
+global function mlirOperationGetSuccessor(op: MlirOperation, pos: isize): MlirBlock <cimport,nodecl> end
+global function mlirOperationGetNumAttributes(op: MlirOperation): isize <cimport,nodecl> end
+global function mlirOperationGetAttribute(op: MlirOperation, pos: isize): MlirNamedAttribute <cimport,nodecl> end
+global function mlirOperationGetAttributeByName(op: MlirOperation, name: MlirStringRef): MlirAttribute <cimport,nodecl> end
+global function mlirOperationSetAttributeByName(op: MlirOperation, name: MlirStringRef, attr: MlirAttribute): void <cimport,nodecl> end
+global function mlirOperationRemoveAttributeByName(op: MlirOperation, name: MlirStringRef): boolean <cimport,nodecl> end
+global function mlirOperationPrint(op: MlirOperation, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirOperationPrintWithFlags(op: MlirOperation, flags: MlirOpPrintingFlags, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirOperationDump(op: MlirOperation): void <cimport,nodecl> end
+global function mlirOperationVerify(op: MlirOperation): boolean <cimport,nodecl> end
+global function mlirOperationMoveAfter(op: MlirOperation, other: MlirOperation): void <cimport,nodecl> end
+global function mlirOperationMoveBefore(op: MlirOperation, other: MlirOperation): void <cimport,nodecl> end
+global function mlirRegionCreate(): MlirRegion <cimport,nodecl> end
+global function mlirRegionDestroy(region: MlirRegion): void <cimport,nodecl> end
+global function mlirRegionIsNull(region: MlirRegion): boolean <cimport,nodecl> end
+global function mlirRegionEqual(region: MlirRegion, other: MlirRegion): boolean <cimport,nodecl> end
+global function mlirRegionGetFirstBlock(region: MlirRegion): MlirBlock <cimport,nodecl> end
+global function mlirRegionAppendOwnedBlock(region: MlirRegion, block: MlirBlock): void <cimport,nodecl> end
+global function mlirRegionInsertOwnedBlock(region: MlirRegion, pos: isize, block: MlirBlock): void <cimport,nodecl> end
+global function mlirRegionInsertOwnedBlockAfter(region: MlirRegion, reference: MlirBlock, block: MlirBlock): void <cimport,nodecl> end
+global function mlirRegionInsertOwnedBlockBefore(region: MlirRegion, reference: MlirBlock, block: MlirBlock): void <cimport,nodecl> end
+global function mlirOperationGetFirstRegion(op: MlirOperation): MlirRegion <cimport,nodecl> end
+global function mlirRegionGetNextInOperation(region: MlirRegion): MlirRegion <cimport,nodecl> end
+global function mlirBlockCreate(nArgs: isize, args: *MlirType, locs: *MlirLocation): MlirBlock <cimport,nodecl> end
+global function mlirBlockDestroy(block: MlirBlock): void <cimport,nodecl> end
+global function mlirBlockIsNull(block: MlirBlock): boolean <cimport,nodecl> end
+global function mlirBlockEqual(block: MlirBlock, other: MlirBlock): boolean <cimport,nodecl> end
+global function mlirBlockGetParentOperation(a1: MlirBlock): MlirOperation <cimport,nodecl> end
+global function mlirBlockGetParentRegion(block: MlirBlock): MlirRegion <cimport,nodecl> end
+global function mlirBlockGetNextInRegion(block: MlirBlock): MlirBlock <cimport,nodecl> end
+global function mlirBlockGetFirstOperation(block: MlirBlock): MlirOperation <cimport,nodecl> end
+global function mlirBlockGetTerminator(block: MlirBlock): MlirOperation <cimport,nodecl> end
+global function mlirBlockAppendOwnedOperation(block: MlirBlock, operation: MlirOperation): void <cimport,nodecl> end
+global function mlirBlockInsertOwnedOperation(block: MlirBlock, pos: isize, operation: MlirOperation): void <cimport,nodecl> end
+global function mlirBlockInsertOwnedOperationAfter(block: MlirBlock, reference: MlirOperation, operation: MlirOperation): void <cimport,nodecl> end
+global function mlirBlockInsertOwnedOperationBefore(block: MlirBlock, reference: MlirOperation, operation: MlirOperation): void <cimport,nodecl> end
+global function mlirBlockGetNumArguments(block: MlirBlock): isize <cimport,nodecl> end
+global function mlirBlockAddArgument(block: MlirBlock, type: MlirType, loc: MlirLocation): MlirValue <cimport,nodecl> end
+global function mlirBlockGetArgument(block: MlirBlock, pos: isize): MlirValue <cimport,nodecl> end
+global function mlirBlockPrint(block: MlirBlock, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirValueIsNull(value: MlirValue): boolean <cimport,nodecl> end
+global function mlirValueEqual(value1: MlirValue, value2: MlirValue): boolean <cimport,nodecl> end
+global function mlirValueIsABlockArgument(value: MlirValue): boolean <cimport,nodecl> end
+global function mlirValueIsAOpResult(value: MlirValue): boolean <cimport,nodecl> end
+global function mlirBlockArgumentGetOwner(value: MlirValue): MlirBlock <cimport,nodecl> end
+global function mlirBlockArgumentGetArgNumber(value: MlirValue): isize <cimport,nodecl> end
+global function mlirBlockArgumentSetType(value: MlirValue, type: MlirType): void <cimport,nodecl> end
+global function mlirOpResultGetOwner(value: MlirValue): MlirOperation <cimport,nodecl> end
+global function mlirOpResultGetResultNumber(value: MlirValue): isize <cimport,nodecl> end
+global function mlirValueGetType(value: MlirValue): MlirType <cimport,nodecl> end
+global function mlirValueDump(value: MlirValue): void <cimport,nodecl> end
+global function mlirValuePrint(value: MlirValue, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirTypeParseGet(context: MlirContext, type: MlirStringRef): MlirType <cimport,nodecl> end
+global function mlirTypeGetContext(type: MlirType): MlirContext <cimport,nodecl> end
+global function mlirTypeGetTypeID(type: MlirType): MlirTypeID <cimport,nodecl> end
+global function mlirTypeIsNull(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeEqual(t1: MlirType, t2: MlirType): boolean <cimport,nodecl> end
+global function mlirTypePrint(type: MlirType, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirTypeDump(type: MlirType): void <cimport,nodecl> end
+global function mlirAttributeParseGet(context: MlirContext, attr: MlirStringRef): MlirAttribute <cimport,nodecl> end
+global function mlirAttributeGetContext(attribute: MlirAttribute): MlirContext <cimport,nodecl> end
+global function mlirAttributeGetType(attribute: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirAttributeGetTypeID(attribute: MlirAttribute): MlirTypeID <cimport,nodecl> end
+global function mlirAttributeIsNull(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAttributeEqual(a1: MlirAttribute, a2: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAttributePrint(attr: MlirAttribute, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirAttributeDump(attr: MlirAttribute): void <cimport,nodecl> end
+global function mlirNamedAttributeGet(name: MlirIdentifier, attr: MlirAttribute): MlirNamedAttribute <cimport,nodecl> end
+global function mlirIdentifierGet(context: MlirContext, str: MlirStringRef): MlirIdentifier <cimport,nodecl> end
+global function mlirIdentifierGetContext(a1: MlirIdentifier): MlirContext <cimport,nodecl> end
+global function mlirIdentifierEqual(ident: MlirIdentifier, other: MlirIdentifier): boolean <cimport,nodecl> end
+global function mlirIdentifierStr(ident: MlirIdentifier): MlirStringRef <cimport,nodecl> end
+global function mlirTypeIDIsNull(typeID: MlirTypeID): boolean <cimport,nodecl> end
+global function mlirTypeIDEqual(typeID1: MlirTypeID, typeID2: MlirTypeID): boolean <cimport,nodecl> end
+global function mlirTypeIDHashValue(typeID: MlirTypeID): csize <cimport,nodecl> end
+global function mlirSymbolTableGetSymbolAttributeName(): MlirStringRef <cimport,nodecl> end
+global function mlirSymbolTableGetVisibilityAttributeName(): MlirStringRef <cimport,nodecl> end
+global function mlirSymbolTableCreate(operation: MlirOperation): MlirSymbolTable <cimport,nodecl> end
+global function mlirSymbolTableIsNull(symbolTable: MlirSymbolTable): boolean <cimport,nodecl> end
+global function mlirSymbolTableDestroy(symbolTable: MlirSymbolTable): void <cimport,nodecl> end
+global function mlirSymbolTableLookup(symbolTable: MlirSymbolTable, name: MlirStringRef): MlirOperation <cimport,nodecl> end
+global function mlirSymbolTableInsert(symbolTable: MlirSymbolTable, operation: MlirOperation): MlirAttribute <cimport,nodecl> end
+global function mlirSymbolTableErase(symbolTable: MlirSymbolTable, operation: MlirOperation): void <cimport,nodecl> end
+global function mlirSymbolTableReplaceAllSymbolUses(oldSymbol: MlirStringRef, newSymbol: MlirStringRef, from: MlirOperation): MlirLogicalResult <cimport,nodecl> end
+global function mlirSymbolTableWalkSymbolTables(from: MlirOperation, allSymUsesVisible: boolean, callback: function(a1: MlirOperation, a2: boolean, userData: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirAffineExprGetContext(affineExpr: MlirAffineExpr): MlirContext <cimport,nodecl> end
+global function mlirAffineExprEqual(lhs: MlirAffineExpr, rhs: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineExprIsNull(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineExprPrint(affineExpr: MlirAffineExpr, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirAffineExprDump(affineExpr: MlirAffineExpr): void <cimport,nodecl> end
+global function mlirAffineExprIsSymbolicOrConstant(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineExprIsPureAffine(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineExprGetLargestKnownDivisor(affineExpr: MlirAffineExpr): int64 <cimport,nodecl> end
+global function mlirAffineExprIsMultipleOf(affineExpr: MlirAffineExpr, factor: int64): boolean <cimport,nodecl> end
+global function mlirAffineExprIsFunctionOfDim(affineExpr: MlirAffineExpr, position: isize): boolean <cimport,nodecl> end
+global function mlirAffineExprCompose(affineExpr: MlirAffineExpr, affineMap: MlirAffineMap): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineExprIsADim(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineDimExprGet(ctx: MlirContext, position: isize): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineDimExprGetPosition(affineExpr: MlirAffineExpr): isize <cimport,nodecl> end
+global function mlirAffineExprIsASymbol(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineSymbolExprGet(ctx: MlirContext, position: isize): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineSymbolExprGetPosition(affineExpr: MlirAffineExpr): isize <cimport,nodecl> end
+global function mlirAffineExprIsAConstant(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineConstantExprGet(ctx: MlirContext, constant: int64): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineConstantExprGetValue(affineExpr: MlirAffineExpr): int64 <cimport,nodecl> end
+global function mlirAffineExprIsAAdd(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineAddExprGet(lhs: MlirAffineExpr, rhs: MlirAffineExpr): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineExprIsAMul(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineMulExprGet(lhs: MlirAffineExpr, rhs: MlirAffineExpr): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineExprIsAMod(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineModExprGet(lhs: MlirAffineExpr, rhs: MlirAffineExpr): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineExprIsAFloorDiv(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineFloorDivExprGet(lhs: MlirAffineExpr, rhs: MlirAffineExpr): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineExprIsACeilDiv(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineCeilDivExprGet(lhs: MlirAffineExpr, rhs: MlirAffineExpr): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineExprIsABinary(affineExpr: MlirAffineExpr): boolean <cimport,nodecl> end
+global function mlirAffineBinaryOpExprGetLHS(affineExpr: MlirAffineExpr): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineBinaryOpExprGetRHS(affineExpr: MlirAffineExpr): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineMapGetContext(affineMap: MlirAffineMap): MlirContext <cimport,nodecl> end
+global function mlirAffineMapIsNull(affineMap: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapEqual(a1: MlirAffineMap, a2: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapPrint(affineMap: MlirAffineMap, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirAffineMapDump(affineMap: MlirAffineMap): void <cimport,nodecl> end
+global function mlirAffineMapEmptyGet(ctx: MlirContext): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapZeroResultGet(ctx: MlirContext, dimCount: isize, symbolCount: isize): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapGet(ctx: MlirContext, dimCount: isize, symbolCount: isize, nAffineExprs: isize, affineExprs: *MlirAffineExpr): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapConstantGet(ctx: MlirContext, val: int64): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapMultiDimIdentityGet(ctx: MlirContext, numDims: isize): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapMinorIdentityGet(ctx: MlirContext, dims: isize, results: isize): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapPermutationGet(ctx: MlirContext, size: isize, permutation: *cuint): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapIsIdentity(affineMap: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapIsMinorIdentity(affineMap: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapIsEmpty(affineMap: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapIsSingleConstant(affineMap: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapGetSingleConstantResult(affineMap: MlirAffineMap): int64 <cimport,nodecl> end
+global function mlirAffineMapGetNumDims(affineMap: MlirAffineMap): isize <cimport,nodecl> end
+global function mlirAffineMapGetNumSymbols(affineMap: MlirAffineMap): isize <cimport,nodecl> end
+global function mlirAffineMapGetNumResults(affineMap: MlirAffineMap): isize <cimport,nodecl> end
+global function mlirAffineMapGetResult(affineMap: MlirAffineMap, pos: isize): MlirAffineExpr <cimport,nodecl> end
+global function mlirAffineMapGetNumInputs(affineMap: MlirAffineMap): isize <cimport,nodecl> end
+global function mlirAffineMapIsProjectedPermutation(affineMap: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapIsPermutation(affineMap: MlirAffineMap): boolean <cimport,nodecl> end
+global function mlirAffineMapGetSubMap(affineMap: MlirAffineMap, size: isize, resultPos: *isize): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapGetMajorSubMap(affineMap: MlirAffineMap, numResults: isize): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapGetMinorSubMap(affineMap: MlirAffineMap, numResults: isize): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapReplace(affineMap: MlirAffineMap, expression: MlirAffineExpr, replacement: MlirAffineExpr, numResultDims: isize, numResultSyms: isize): MlirAffineMap <cimport,nodecl> end
+global function mlirAffineMapCompressUnusedSymbols(affineMaps: *MlirAffineMap, size: isize, result: pointer, populateResult: function(res: pointer, idx: isize, m: MlirAffineMap): void): void <cimport,nodecl> end
+global function mlirAttributeGetNull(): MlirAttribute <cimport,nodecl> end
+global function mlirAttributeIsAAffineMap(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAffineMapAttrGet(map: MlirAffineMap): MlirAttribute <cimport,nodecl> end
+global function mlirAffineMapAttrGetValue(attr: MlirAttribute): MlirAffineMap <cimport,nodecl> end
+global function mlirAttributeIsAArray(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirArrayAttrGet(ctx: MlirContext, numElements: isize, elements: *MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirArrayAttrGetNumElements(attr: MlirAttribute): isize <cimport,nodecl> end
+global function mlirArrayAttrGetElement(attr: MlirAttribute, pos: isize): MlirAttribute <cimport,nodecl> end
+global function mlirAttributeIsADictionary(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirDictionaryAttrGet(ctx: MlirContext, numElements: isize, elements: *MlirNamedAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirDictionaryAttrGetNumElements(attr: MlirAttribute): isize <cimport,nodecl> end
+global function mlirDictionaryAttrGetElement(attr: MlirAttribute, pos: isize): MlirNamedAttribute <cimport,nodecl> end
+global function mlirDictionaryAttrGetElementByName(attr: MlirAttribute, name: MlirStringRef): MlirAttribute <cimport,nodecl> end
+global function mlirAttributeIsAFloat(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirFloatAttrDoubleGet(ctx: MlirContext, type: MlirType, value: float64): MlirAttribute <cimport,nodecl> end
+global function mlirFloatAttrDoubleGetChecked(loc: MlirLocation, type: MlirType, value: float64): MlirAttribute <cimport,nodecl> end
+global function mlirFloatAttrGetValueDouble(attr: MlirAttribute): float64 <cimport,nodecl> end
+global function mlirAttributeIsAInteger(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirIntegerAttrGet(type: MlirType, value: int64): MlirAttribute <cimport,nodecl> end
+global function mlirIntegerAttrGetValueInt(attr: MlirAttribute): int64 <cimport,nodecl> end
+global function mlirIntegerAttrGetValueSInt(attr: MlirAttribute): int64 <cimport,nodecl> end
+global function mlirIntegerAttrGetValueUInt(attr: MlirAttribute): uint64 <cimport,nodecl> end
+global function mlirAttributeIsABool(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirBoolAttrGet(ctx: MlirContext, value: cint): MlirAttribute <cimport,nodecl> end
+global function mlirBoolAttrGetValue(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAttributeIsAIntegerSet(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAttributeIsAOpaque(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirOpaqueAttrGet(ctx: MlirContext, dialectNamespace: MlirStringRef, dataLength: isize, data: cstring, type: MlirType): MlirAttribute <cimport,nodecl> end
+global function mlirOpaqueAttrGetDialectNamespace(attr: MlirAttribute): MlirStringRef <cimport,nodecl> end
+global function mlirOpaqueAttrGetData(attr: MlirAttribute): MlirStringRef <cimport,nodecl> end
+global function mlirAttributeIsAString(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirStringAttrGet(ctx: MlirContext, str: MlirStringRef): MlirAttribute <cimport,nodecl> end
+global function mlirStringAttrTypedGet(type: MlirType, str: MlirStringRef): MlirAttribute <cimport,nodecl> end
+global function mlirStringAttrGetValue(attr: MlirAttribute): MlirStringRef <cimport,nodecl> end
+global function mlirAttributeIsASymbolRef(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirSymbolRefAttrGet(ctx: MlirContext, symbol: MlirStringRef, numReferences: isize, references: *MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirSymbolRefAttrGetRootReference(attr: MlirAttribute): MlirStringRef <cimport,nodecl> end
+global function mlirSymbolRefAttrGetLeafReference(attr: MlirAttribute): MlirStringRef <cimport,nodecl> end
+global function mlirSymbolRefAttrGetNumNestedReferences(attr: MlirAttribute): isize <cimport,nodecl> end
+global function mlirSymbolRefAttrGetNestedReference(attr: MlirAttribute, pos: isize): MlirAttribute <cimport,nodecl> end
+global function mlirAttributeIsAFlatSymbolRef(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirFlatSymbolRefAttrGet(ctx: MlirContext, symbol: MlirStringRef): MlirAttribute <cimport,nodecl> end
+global function mlirFlatSymbolRefAttrGetValue(attr: MlirAttribute): MlirStringRef <cimport,nodecl> end
+global function mlirAttributeIsAType(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirTypeAttrGet(type: MlirType): MlirAttribute <cimport,nodecl> end
+global function mlirTypeAttrGetValue(attr: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirAttributeIsAUnit(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirUnitAttrGet(ctx: MlirContext): MlirAttribute <cimport,nodecl> end
+global function mlirAttributeIsAElements(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirElementsAttrGetValue(attr: MlirAttribute, rank: isize, idxs: *uint64): MlirAttribute <cimport,nodecl> end
+global function mlirElementsAttrIsValidIndex(attr: MlirAttribute, rank: isize, idxs: *uint64): boolean <cimport,nodecl> end
+global function mlirElementsAttrGetNumElements(attr: MlirAttribute): int64 <cimport,nodecl> end
+global function mlirAttributeIsADenseElements(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAttributeIsADenseIntElements(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAttributeIsADenseFPElements(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirDenseElementsAttrGet(shapedType: MlirType, numElements: isize, elements: *MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrRawBufferGet(shapedType: MlirType, rawBufferSize: csize, rawBuffer: pointer): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrSplatGet(shapedType: MlirType, element: MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrBoolSplatGet(shapedType: MlirType, element: boolean): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrUInt8SplatGet(shapedType: MlirType, element: uint8): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrInt8SplatGet(shapedType: MlirType, element: int8): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrUInt32SplatGet(shapedType: MlirType, element: uint32): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrInt32SplatGet(shapedType: MlirType, element: int32): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrUInt64SplatGet(shapedType: MlirType, element: uint64): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrInt64SplatGet(shapedType: MlirType, element: int64): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrFloatSplatGet(shapedType: MlirType, element: float32): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrDoubleSplatGet(shapedType: MlirType, element: float64): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrBoolGet(shapedType: MlirType, numElements: isize, elements: *cint): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrUInt8Get(shapedType: MlirType, numElements: isize, elements: *uint8): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrInt8Get(shapedType: MlirType, numElements: isize, elements: *int8): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrUInt16Get(shapedType: MlirType, numElements: isize, elements: *uint16): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrInt16Get(shapedType: MlirType, numElements: isize, elements: *int16): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrUInt32Get(shapedType: MlirType, numElements: isize, elements: *uint32): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrInt32Get(shapedType: MlirType, numElements: isize, elements: *int32): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrUInt64Get(shapedType: MlirType, numElements: isize, elements: *uint64): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrInt64Get(shapedType: MlirType, numElements: isize, elements: *int64): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrFloatGet(shapedType: MlirType, numElements: isize, elements: *float32): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrDoubleGet(shapedType: MlirType, numElements: isize, elements: *float64): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrStringGet(shapedType: MlirType, numElements: isize, strs: *MlirStringRef): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrReshapeGet(attr: MlirAttribute, shapedType: MlirType): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrIsSplat(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirDenseElementsAttrGetSplatValue(attr: MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirDenseElementsAttrGetBoolSplatValue(attr: MlirAttribute): cint <cimport,nodecl> end
+global function mlirDenseElementsAttrGetInt8SplatValue(attr: MlirAttribute): int8 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetUInt8SplatValue(attr: MlirAttribute): uint8 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetInt32SplatValue(attr: MlirAttribute): int32 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetUInt32SplatValue(attr: MlirAttribute): uint32 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetInt64SplatValue(attr: MlirAttribute): int64 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetUInt64SplatValue(attr: MlirAttribute): uint64 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetFloatSplatValue(attr: MlirAttribute): float32 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetDoubleSplatValue(attr: MlirAttribute): float64 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetStringSplatValue(attr: MlirAttribute): MlirStringRef <cimport,nodecl> end
+global function mlirDenseElementsAttrGetBoolValue(attr: MlirAttribute, pos: isize): boolean <cimport,nodecl> end
+global function mlirDenseElementsAttrGetInt8Value(attr: MlirAttribute, pos: isize): int8 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetUInt8Value(attr: MlirAttribute, pos: isize): uint8 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetInt16Value(attr: MlirAttribute, pos: isize): int16 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetUInt16Value(attr: MlirAttribute, pos: isize): uint16 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetInt32Value(attr: MlirAttribute, pos: isize): int32 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetUInt32Value(attr: MlirAttribute, pos: isize): uint32 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetInt64Value(attr: MlirAttribute, pos: isize): int64 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetUInt64Value(attr: MlirAttribute, pos: isize): uint64 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetFloatValue(attr: MlirAttribute, pos: isize): float32 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetDoubleValue(attr: MlirAttribute, pos: isize): float64 <cimport,nodecl> end
+global function mlirDenseElementsAttrGetStringValue(attr: MlirAttribute, pos: isize): MlirStringRef <cimport,nodecl> end
+global function mlirDenseElementsAttrGetRawData(attr: MlirAttribute): pointer <cimport,nodecl> end
+global function mlirAttributeIsAOpaqueElements(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirAttributeIsASparseElements(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirSparseElementsAttribute(shapedType: MlirType, denseIndices: MlirAttribute, denseValues: MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirSparseElementsAttrGetIndices(attr: MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirSparseElementsAttrGetValues(attr: MlirAttribute): MlirAttribute <cimport,nodecl> end
+global function mlirTypeIsAInteger(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIntegerTypeGet(ctx: MlirContext, bitwidth: cuint): MlirType <cimport,nodecl> end
+global function mlirIntegerTypeSignedGet(ctx: MlirContext, bitwidth: cuint): MlirType <cimport,nodecl> end
+global function mlirIntegerTypeUnsignedGet(ctx: MlirContext, bitwidth: cuint): MlirType <cimport,nodecl> end
+global function mlirIntegerTypeGetWidth(type: MlirType): cuint <cimport,nodecl> end
+global function mlirIntegerTypeIsSignless(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIntegerTypeIsSigned(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIntegerTypeIsUnsigned(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsAIndex(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIndexTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsABF16(type: MlirType): boolean <cimport,nodecl> end
+global function mlirBF16TypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAF16(type: MlirType): boolean <cimport,nodecl> end
+global function mlirF16TypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAF32(type: MlirType): boolean <cimport,nodecl> end
+global function mlirF32TypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAF64(type: MlirType): boolean <cimport,nodecl> end
+global function mlirF64TypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsANone(type: MlirType): boolean <cimport,nodecl> end
+global function mlirNoneTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAComplex(type: MlirType): boolean <cimport,nodecl> end
+global function mlirComplexTypeGet(elementType: MlirType): MlirType <cimport,nodecl> end
+global function mlirComplexTypeGetElementType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirTypeIsAShaped(type: MlirType): boolean <cimport,nodecl> end
+global function mlirShapedTypeGetElementType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirShapedTypeHasRank(type: MlirType): boolean <cimport,nodecl> end
+global function mlirShapedTypeGetRank(type: MlirType): int64 <cimport,nodecl> end
+global function mlirShapedTypeHasStaticShape(type: MlirType): boolean <cimport,nodecl> end
+global function mlirShapedTypeIsDynamicDim(type: MlirType, dim: isize): boolean <cimport,nodecl> end
+global function mlirShapedTypeGetDimSize(type: MlirType, dim: isize): int64 <cimport,nodecl> end
+global function mlirShapedTypeIsDynamicSize(size: int64): boolean <cimport,nodecl> end
+global function mlirShapedTypeIsDynamicStrideOrOffset(val: int64): boolean <cimport,nodecl> end
+global function mlirTypeIsAVector(type: MlirType): boolean <cimport,nodecl> end
+global function mlirVectorTypeGet(rank: isize, shape: *int64, elementType: MlirType): MlirType <cimport,nodecl> end
+global function mlirVectorTypeGetChecked(loc: MlirLocation, rank: isize, shape: *int64, elementType: MlirType): MlirType <cimport,nodecl> end
+global function mlirTypeIsATensor(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsARankedTensor(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsAUnrankedTensor(type: MlirType): boolean <cimport,nodecl> end
+global function mlirRankedTensorTypeGet(rank: isize, shape: *int64, elementType: MlirType, encoding: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirRankedTensorTypeGetChecked(loc: MlirLocation, rank: isize, shape: *int64, elementType: MlirType, encoding: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirRankedTensorTypeGetEncoding(type: MlirType): MlirAttribute <cimport,nodecl> end
+global function mlirUnrankedTensorTypeGet(elementType: MlirType): MlirType <cimport,nodecl> end
+global function mlirUnrankedTensorTypeGetChecked(loc: MlirLocation, elementType: MlirType): MlirType <cimport,nodecl> end
+global function mlirTypeIsAMemRef(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsAUnrankedMemRef(type: MlirType): boolean <cimport,nodecl> end
+global function mlirMemRefTypeGet(elementType: MlirType, rank: isize, shape: *int64, layout: MlirAttribute, memorySpace: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirMemRefTypeGetChecked(loc: MlirLocation, elementType: MlirType, rank: isize, shape: *int64, layout: MlirAttribute, memorySpace: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirMemRefTypeContiguousGet(elementType: MlirType, rank: isize, shape: *int64, memorySpace: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirMemRefTypeContiguousGetChecked(loc: MlirLocation, elementType: MlirType, rank: isize, shape: *int64, memorySpace: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirUnrankedMemRefTypeGet(elementType: MlirType, memorySpace: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirUnrankedMemRefTypeGetChecked(loc: MlirLocation, elementType: MlirType, memorySpace: MlirAttribute): MlirType <cimport,nodecl> end
+global function mlirMemRefTypeGetLayout(type: MlirType): MlirAttribute <cimport,nodecl> end
+global function mlirMemRefTypeGetAffineMap(type: MlirType): MlirAffineMap <cimport,nodecl> end
+global function mlirMemRefTypeGetMemorySpace(type: MlirType): MlirAttribute <cimport,nodecl> end
+global function mlirUnrankedMemrefGetMemorySpace(type: MlirType): MlirAttribute <cimport,nodecl> end
+global function mlirTypeIsATuple(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTupleTypeGet(ctx: MlirContext, numElements: isize, elements: *MlirType): MlirType <cimport,nodecl> end
+global function mlirTupleTypeGetNumTypes(type: MlirType): isize <cimport,nodecl> end
+global function mlirTupleTypeGetType(type: MlirType, pos: isize): MlirType <cimport,nodecl> end
+global function mlirTypeIsAFunction(type: MlirType): boolean <cimport,nodecl> end
+global function mlirFunctionTypeGet(ctx: MlirContext, numInputs: isize, inputs: *MlirType, numResults: isize, results: *MlirType): MlirType <cimport,nodecl> end
+global function mlirFunctionTypeGetNumInputs(type: MlirType): isize <cimport,nodecl> end
+global function mlirFunctionTypeGetNumResults(type: MlirType): isize <cimport,nodecl> end
+global function mlirFunctionTypeGetInput(type: MlirType, pos: isize): MlirType <cimport,nodecl> end
+global function mlirFunctionTypeGetResult(type: MlirType, pos: isize): MlirType <cimport,nodecl> end
+global function mlirPassManagerCreate(ctx: MlirContext): MlirPassManager <cimport,nodecl> end
+global function mlirPassManagerDestroy(passManager: MlirPassManager): void <cimport,nodecl> end
+global function mlirPassManagerIsNull(passManager: MlirPassManager): boolean <cimport,nodecl> end
+global function mlirPassManagerGetAsOpPassManager(passManager: MlirPassManager): MlirOpPassManager <cimport,nodecl> end
+global function mlirPassManagerRun(passManager: MlirPassManager, module: MlirModule): MlirLogicalResult <cimport,nodecl> end
+global function mlirPassManagerEnableIRPrinting(passManager: MlirPassManager): void <cimport,nodecl> end
+global function mlirPassManagerEnableVerifier(passManager: MlirPassManager, enable: boolean): void <cimport,nodecl> end
+global function mlirPassManagerGetNestedUnder(passManager: MlirPassManager, operationName: MlirStringRef): MlirOpPassManager <cimport,nodecl> end
+global function mlirOpPassManagerGetNestedUnder(passManager: MlirOpPassManager, operationName: MlirStringRef): MlirOpPassManager <cimport,nodecl> end
+global function mlirPassManagerAddOwnedPass(passManager: MlirPassManager, pass: MlirPass): void <cimport,nodecl> end
+global function mlirOpPassManagerAddOwnedPass(passManager: MlirOpPassManager, pass: MlirPass): void <cimport,nodecl> end
+global function mlirPrintPassPipeline(passManager: MlirOpPassManager, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirParsePassPipeline(passManager: MlirOpPassManager, pipeline: MlirStringRef): MlirLogicalResult <cimport,nodecl> end
+global function mlirRegisterConversionPasses(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertAffineForToGPU(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertAffineForToGPU(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertAffineToStandard(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertAffineToStandard(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertArithmeticToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertArithmeticToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertArithmeticToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertArithmeticToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertArmNeon2dToIntr(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertArmNeon2dToIntr(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertAsyncToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertAsyncToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertBufferizationToMemRef(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertBufferizationToMemRef(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertComplexToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertComplexToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertComplexToStandard(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertComplexToStandard(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertControlFlowToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertControlFlowToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertControlFlowToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertControlFlowToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertFuncToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertFuncToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertFuncToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertFuncToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertGPUToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertGPUToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertGpuLaunchFuncToVulkanLaunchFunc(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertGpuLaunchFuncToVulkanLaunchFunc(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertGpuOpsToNVVMOps(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertGpuOpsToNVVMOps(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertGpuOpsToROCDLOps(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertGpuOpsToROCDLOps(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertLinalgToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertLinalgToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertLinalgToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertLinalgToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertLinalgToStandard(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertLinalgToStandard(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertMathToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertMathToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertMathToLibm(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertMathToLibm(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertMathToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertMathToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertMemRefToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertMemRefToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertMemRefToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertMemRefToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertOpenACCToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertOpenACCToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertOpenACCToSCF(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertOpenACCToSCF(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertOpenMPToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertOpenMPToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertPDLToPDLInterp(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertPDLToPDLInterp(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertParallelLoopToGpu(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertParallelLoopToGpu(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertSCFToOpenMP(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertSCFToOpenMP(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertSPIRVToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertSPIRVToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertShapeConstraints(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertShapeConstraints(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertShapeToStandard(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertShapeToStandard(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertTensorToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertTensorToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertVectorToGPU(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertVectorToGPU(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertVectorToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertVectorToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertVectorToROCDL(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertVectorToROCDL(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertVectorToSCF(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertVectorToSCF(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertVectorToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertVectorToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionConvertVulkanLaunchFuncToVulkanCalls(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionConvertVulkanLaunchFuncToVulkanCalls(): void <cimport,nodecl> end
+global function mlirCreateConversionGpuToLLVMConversionPass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionGpuToLLVMConversionPass(): void <cimport,nodecl> end
+global function mlirCreateConversionLowerHostCodeToLLVM(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionLowerHostCodeToLLVM(): void <cimport,nodecl> end
+global function mlirCreateConversionReconcileUnrealizedCasts(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionReconcileUnrealizedCasts(): void <cimport,nodecl> end
+global function mlirCreateConversionSCFToControlFlow(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionSCFToControlFlow(): void <cimport,nodecl> end
+global function mlirCreateConversionSCFToSPIRV(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionSCFToSPIRV(): void <cimport,nodecl> end
+global function mlirCreateConversionTosaToLinalg(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionTosaToLinalg(): void <cimport,nodecl> end
+global function mlirCreateConversionTosaToLinalgNamed(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionTosaToLinalgNamed(): void <cimport,nodecl> end
+global function mlirCreateConversionTosaToSCF(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionTosaToSCF(): void <cimport,nodecl> end
+global function mlirCreateConversionTosaToStandard(): MlirPass <cimport,nodecl> end
+global function mlirRegisterConversionTosaToStandard(): void <cimport,nodecl> end
+global function mlirEnableGlobalDebug(enable: boolean): void <cimport,nodecl> end
+global function mlirIsGlobalDebugEnabled(): boolean <cimport,nodecl> end
+global function mlirDiagnosticPrint(diagnostic: MlirDiagnostic, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirDiagnosticGetLocation(diagnostic: MlirDiagnostic): MlirLocation <cimport,nodecl> end
+global function mlirDiagnosticGetSeverity(diagnostic: MlirDiagnostic): MlirDiagnosticSeverity <cimport,nodecl> end
+global function mlirDiagnosticGetNumNotes(diagnostic: MlirDiagnostic): isize <cimport,nodecl> end
+global function mlirDiagnosticGetNote(diagnostic: MlirDiagnostic, pos: isize): MlirDiagnostic <cimport,nodecl> end
+global function mlirContextAttachDiagnosticHandler(context: MlirContext, handler: function(a1: MlirDiagnostic, userData: pointer): MlirLogicalResult, userData: pointer, deleteUserData: function(a1: pointer): void): uint64 <cimport,nodecl> end
+global function mlirContextDetachDiagnosticHandler(context: MlirContext, id: uint64): void <cimport,nodecl> end
+global function mlirEmitError(location: MlirLocation, message: cstring): void <cimport,nodecl> end
+global function mlirExecutionEngineCreate(op: MlirModule, optLevel: cint, numPaths: cint, sharedLibPaths: *MlirStringRef): MlirExecutionEngine <cimport,nodecl> end
+global function mlirExecutionEngineDestroy(jit: MlirExecutionEngine): void <cimport,nodecl> end
+global function mlirExecutionEngineIsNull(jit: MlirExecutionEngine): boolean <cimport,nodecl> end
+global function mlirExecutionEngineInvokePacked(jit: MlirExecutionEngine, name: MlirStringRef, arguments: *pointer): MlirLogicalResult <cimport,nodecl> end
+global function mlirExecutionEngineLookupPacked(jit: MlirExecutionEngine, name: MlirStringRef): pointer <cimport,nodecl> end
+global function mlirExecutionEngineLookup(jit: MlirExecutionEngine, name: MlirStringRef): pointer <cimport,nodecl> end
+global function mlirExecutionEngineRegisterSymbol(jit: MlirExecutionEngine, name: MlirStringRef, sym: pointer): void <cimport,nodecl> end
+global function mlirExecutionEngineDumpToObjectFile(jit: MlirExecutionEngine, fileName: MlirStringRef): void <cimport,nodecl> end
+global function mlirIntegerSetGetContext(set: MlirIntegerSet): MlirContext <cimport,nodecl> end
+global function mlirIntegerSetIsNull(set: MlirIntegerSet): boolean <cimport,nodecl> end
+global function mlirIntegerSetEqual(s1: MlirIntegerSet, s2: MlirIntegerSet): boolean <cimport,nodecl> end
+global function mlirIntegerSetPrint(set: MlirIntegerSet, callback: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function mlirIntegerSetDump(set: MlirIntegerSet): void <cimport,nodecl> end
+global function mlirIntegerSetEmptyGet(context: MlirContext, numDims: isize, numSymbols: isize): MlirIntegerSet <cimport,nodecl> end
+global function mlirIntegerSetGet(context: MlirContext, numDims: isize, numSymbols: isize, numConstraints: isize, constraints: *MlirAffineExpr, eqFlags: *boolean): MlirIntegerSet <cimport,nodecl> end
+global function mlirIntegerSetReplaceGet(set: MlirIntegerSet, dimReplacements: *MlirAffineExpr, symbolReplacements: *MlirAffineExpr, numResultDims: isize, numResultSymbols: isize): MlirIntegerSet <cimport,nodecl> end
+global function mlirIntegerSetIsCanonicalEmpty(set: MlirIntegerSet): boolean <cimport,nodecl> end
+global function mlirIntegerSetGetNumDims(set: MlirIntegerSet): isize <cimport,nodecl> end
+global function mlirIntegerSetGetNumSymbols(set: MlirIntegerSet): isize <cimport,nodecl> end
+global function mlirIntegerSetGetNumInputs(set: MlirIntegerSet): isize <cimport,nodecl> end
+global function mlirIntegerSetGetNumConstraints(set: MlirIntegerSet): isize <cimport,nodecl> end
+global function mlirIntegerSetGetNumEqualities(set: MlirIntegerSet): isize <cimport,nodecl> end
+global function mlirIntegerSetGetNumInequalities(set: MlirIntegerSet): isize <cimport,nodecl> end
+global function mlirIntegerSetGetConstraint(set: MlirIntegerSet, pos: isize): MlirAffineExpr <cimport,nodecl> end
+global function mlirIntegerSetIsConstraintEq(set: MlirIntegerSet, pos: isize): boolean <cimport,nodecl> end
+global function mlirOperationImplementsInterface(operation: MlirOperation, interfaceTypeID: MlirTypeID): boolean <cimport,nodecl> end
+global function mlirOperationImplementsInterfaceStatic(operationName: MlirStringRef, context: MlirContext, interfaceTypeID: MlirTypeID): boolean <cimport,nodecl> end
+global function mlirInferTypeOpInterfaceTypeID(): MlirTypeID <cimport,nodecl> end
+global function mlirInferTypeOpInterfaceInferReturnTypes(opName: MlirStringRef, context: MlirContext, location: MlirLocation, nOperands: isize, operands: *MlirValue, attributes: MlirAttribute, nRegions: isize, regions: *MlirRegion, callback: function(a1: isize, a2: *MlirType, a3: pointer): void, userData: pointer): MlirLogicalResult <cimport,nodecl> end
+global function mlirDialectHandleGetNamespace(a1: MlirDialectHandle): MlirStringRef <cimport,nodecl> end
+global function mlirDialectHandleInsertDialect(a1: MlirDialectHandle, a2: MlirDialectRegistry): void <cimport,nodecl> end
+global function mlirDialectHandleRegisterDialect(a1: MlirDialectHandle, a2: MlirContext): void <cimport,nodecl> end
+global function mlirDialectHandleLoadDialect(a1: MlirDialectHandle, a2: MlirContext): MlirDialect <cimport,nodecl> end
+global function mlirRegisterAllDialects(context: MlirContext): void <cimport,nodecl> end
+global function mlirRegisterAllLLVMTranslations(context: MlirContext): void <cimport,nodecl> end
+global function mlirRegisterAllPasses(): void <cimport,nodecl> end
+global function mlirRegisterTransformsPasses(): void <cimport,nodecl> end
+global function mlirCreateTransformsCSE(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsCSE(): void <cimport,nodecl> end
+global function mlirCreateTransformsCanonicalizer(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsCanonicalizer(): void <cimport,nodecl> end
+global function mlirCreateTransformsControlFlowSink(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsControlFlowSink(): void <cimport,nodecl> end
+global function mlirCreateTransformsInliner(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsInliner(): void <cimport,nodecl> end
+global function mlirCreateTransformsLocationSnapshot(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsLocationSnapshot(): void <cimport,nodecl> end
+global function mlirCreateTransformsLoopInvariantCodeMotion(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsLoopInvariantCodeMotion(): void <cimport,nodecl> end
+global function mlirCreateTransformsPrintOpStats(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsPrintOpStats(): void <cimport,nodecl> end
+global function mlirCreateTransformsSCCP(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsSCCP(): void <cimport,nodecl> end
+global function mlirCreateTransformsStripDebugInfo(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsStripDebugInfo(): void <cimport,nodecl> end
+global function mlirCreateTransformsSymbolDCE(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsSymbolDCE(): void <cimport,nodecl> end
+global function mlirCreateTransformsSymbolPrivatize(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsSymbolPrivatize(): void <cimport,nodecl> end
+global function mlirCreateTransformsViewOpGraph(): MlirPass <cimport,nodecl> end
+global function mlirRegisterTransformsViewOpGraph(): void <cimport,nodecl> end
+global function mlirGetDialectHandle__async__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirRegisterAsyncPasses(): void <cimport,nodecl> end
+global function mlirCreateAsyncAsyncParallelFor(): MlirPass <cimport,nodecl> end
+global function mlirRegisterAsyncAsyncParallelFor(): void <cimport,nodecl> end
+global function mlirCreateAsyncAsyncRuntimePolicyBasedRefCounting(): MlirPass <cimport,nodecl> end
+global function mlirRegisterAsyncAsyncRuntimePolicyBasedRefCounting(): void <cimport,nodecl> end
+global function mlirCreateAsyncAsyncRuntimeRefCounting(): MlirPass <cimport,nodecl> end
+global function mlirRegisterAsyncAsyncRuntimeRefCounting(): void <cimport,nodecl> end
+global function mlirCreateAsyncAsyncRuntimeRefCountingOpt(): MlirPass <cimport,nodecl> end
+global function mlirRegisterAsyncAsyncRuntimeRefCountingOpt(): void <cimport,nodecl> end
+global function mlirCreateAsyncAsyncToAsyncRuntime(): MlirPass <cimport,nodecl> end
+global function mlirRegisterAsyncAsyncToAsyncRuntime(): void <cimport,nodecl> end
+global function mlirGetDialectHandle__func__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirGetDialectHandle__gpu__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirRegisterGPUPasses(): void <cimport,nodecl> end
+global function mlirCreateGPUGpuAsyncRegionPass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterGPUGpuAsyncRegionPass(): void <cimport,nodecl> end
+global function mlirCreateGPUGpuKernelOutlining(): MlirPass <cimport,nodecl> end
+global function mlirRegisterGPUGpuKernelOutlining(): void <cimport,nodecl> end
+global function mlirCreateGPUGpuLaunchSinkIndexComputations(): MlirPass <cimport,nodecl> end
+global function mlirRegisterGPUGpuLaunchSinkIndexComputations(): void <cimport,nodecl> end
+global function mlirLinalgFillBuiltinNamedOpRegion(mlirOp: MlirOperation): void <cimport,nodecl> end
+global function mlirGetDialectHandle__linalg__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirRegisterLinalgPasses(): void <cimport,nodecl> end
+global function mlirCreateLinalgConvertElementwiseToLinalg(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgConvertElementwiseToLinalg(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgBufferize(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgBufferize(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgComprehensiveModuleBufferize(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgComprehensiveModuleBufferize(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgDetensorize(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgDetensorize(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgElementwiseOpFusion(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgElementwiseOpFusion(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgFoldReshapeOpsByLinearization(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgFoldReshapeOpsByLinearization(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgFoldUnitExtentDims(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgFoldUnitExtentDims(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgGeneralization(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgGeneralization(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgInlineScalarOperands(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgInlineScalarOperands(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgLowerToAffineLoops(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgLowerToAffineLoops(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgLowerToLoops(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgLowerToLoops(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgLowerToParallelLoops(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgLowerToParallelLoops(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgNamedOpConversion(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgNamedOpConversion(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgPromotion(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgPromotion(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyDecomposePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyDecomposePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyEnablePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyEnablePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyGeneralizePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyGeneralizePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyInterchangePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyInterchangePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyLowerVectorsPass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyLowerVectorsPass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyPadPass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyPadPass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyPromotePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyPromotePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyRemoveMarkersPass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyRemoveMarkersPass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyTileAndFusePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyTileAndFusePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyTilePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyTilePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgStrategyVectorizePass(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgStrategyVectorizePass(): void <cimport,nodecl> end
+global function mlirCreateLinalgLinalgTiling(): MlirPass <cimport,nodecl> end
+global function mlirRegisterLinalgLinalgTiling(): void <cimport,nodecl> end
+global function mlirGetDialectHandle__llvm__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirLLVMPointerTypeGet(pointee: MlirType, addressSpace: cuint): MlirType <cimport,nodecl> end
+global function mlirLLVMVoidTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirLLVMArrayTypeGet(elementType: MlirType, numElements: cuint): MlirType <cimport,nodecl> end
+global function mlirLLVMFunctionTypeGet(resultType: MlirType, nArgumentTypes: isize, argumentTypes: *MlirType, isVarArg: boolean): MlirType <cimport,nodecl> end
+global function mlirLLVMStructTypeLiteralGet(ctx: MlirContext, nFieldTypes: isize, fieldTypes: *MlirType, isPacked: boolean): MlirType <cimport,nodecl> end
+global function mlirGetDialectHandle__pdl__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirTypeIsAPDLType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsAPDLAttributeType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirPDLAttributeTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAPDLOperationType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirPDLOperationTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAPDLRangeType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirPDLRangeTypeGet(elementType: MlirType): MlirType <cimport,nodecl> end
+global function mlirPDLRangeTypeGetElementType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirTypeIsAPDLTypeType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirPDLTypeTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAPDLValueType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirPDLValueTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirGetDialectHandle__quant__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirTypeIsAQuantizedType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirQuantizedTypeGetSignedFlag(): cuint <cimport,nodecl> end
+global function mlirQuantizedTypeGetDefaultMinimumForInteger(isSigned: boolean, integralWidth: cuint): int64 <cimport,nodecl> end
+global function mlirQuantizedTypeGetDefaultMaximumForInteger(isSigned: boolean, integralWidth: cuint): int64 <cimport,nodecl> end
+global function mlirQuantizedTypeGetExpressedType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirQuantizedTypeGetFlags(type: MlirType): cuint <cimport,nodecl> end
+global function mlirQuantizedTypeIsSigned(type: MlirType): boolean <cimport,nodecl> end
+global function mlirQuantizedTypeGetStorageType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirQuantizedTypeGetStorageTypeMin(type: MlirType): int64 <cimport,nodecl> end
+global function mlirQuantizedTypeGetStorageTypeMax(type: MlirType): int64 <cimport,nodecl> end
+global function mlirQuantizedTypeGetStorageTypeIntegralWidth(type: MlirType): cuint <cimport,nodecl> end
+global function mlirQuantizedTypeIsCompatibleExpressedType(type: MlirType, candidate: MlirType): boolean <cimport,nodecl> end
+global function mlirQuantizedTypeGetQuantizedElementType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirQuantizedTypeCastFromStorageType(type: MlirType, candidate: MlirType): MlirType <cimport,nodecl> end
+global function mlirQuantizedTypeCastToStorageType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirQuantizedTypeCastFromExpressedType(type: MlirType, candidate: MlirType): MlirType <cimport,nodecl> end
+global function mlirQuantizedTypeCastToExpressedType(type: MlirType): MlirType <cimport,nodecl> end
+global function mlirQuantizedTypeCastExpressedToStorageType(type: MlirType, candidate: MlirType): MlirType <cimport,nodecl> end
+global function mlirTypeIsAAnyQuantizedType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirAnyQuantizedTypeGet(flags: cuint, storageType: MlirType, expressedType: MlirType, storageTypeMin: int64, storageTypeMax: int64): MlirType <cimport,nodecl> end
+global function mlirTypeIsAUniformQuantizedType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirUniformQuantizedTypeGet(flags: cuint, storageType: MlirType, expressedType: MlirType, scale: float64, zeroPoint: int64, storageTypeMin: int64, storageTypeMax: int64): MlirType <cimport,nodecl> end
+global function mlirUniformQuantizedTypeGetScale(type: MlirType): float64 <cimport,nodecl> end
+global function mlirUniformQuantizedTypeGetZeroPoint(type: MlirType): int64 <cimport,nodecl> end
+global function mlirUniformQuantizedTypeIsFixedPoint(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsAUniformQuantizedPerAxisType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirUniformQuantizedPerAxisTypeGet(flags: cuint, storageType: MlirType, expressedType: MlirType, nDims: isize, scales: *float64, zeroPoints: *int64, quantizedDimension: int32, storageTypeMin: int64, storageTypeMax: int64): MlirType <cimport,nodecl> end
+global function mlirUniformQuantizedPerAxisTypeGetNumDims(type: MlirType): isize <cimport,nodecl> end
+global function mlirUniformQuantizedPerAxisTypeGetScale(type: MlirType, pos: isize): float64 <cimport,nodecl> end
+global function mlirUniformQuantizedPerAxisTypeGetZeroPoint(type: MlirType, pos: isize): int64 <cimport,nodecl> end
+global function mlirUniformQuantizedPerAxisTypeGetQuantizedDimension(type: MlirType): int32 <cimport,nodecl> end
+global function mlirUniformQuantizedPerAxisTypeIsFixedPoint(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsACalibratedQuantizedType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirCalibratedQuantizedTypeGet(expressedType: MlirType, min: float64, max: float64): MlirType <cimport,nodecl> end
+global function mlirCalibratedQuantizedTypeGetMin(type: MlirType): float64 <cimport,nodecl> end
+global function mlirCalibratedQuantizedTypeGetMax(type: MlirType): float64 <cimport,nodecl> end
+global function mlirGetDialectHandle__scf__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirGetDialectHandle__shape__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirGetDialectHandle__sparse_tensor__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirAttributeIsASparseTensorEncodingAttr(attr: MlirAttribute): boolean <cimport,nodecl> end
+global function mlirSparseTensorEncodingAttrGet(ctx: MlirContext, numDimLevelTypes: isize, dimLevelTypes: *MlirSparseTensorDimLevelType, dimOrdering: MlirAffineMap, pointerBitWidth: cint, indexBitWidth: cint): MlirAttribute <cimport,nodecl> end
+global function mlirSparseTensorEncodingGetNumDimLevelTypes(attr: MlirAttribute): isize <cimport,nodecl> end
+global function mlirSparseTensorEncodingAttrGetDimLevelType(attr: MlirAttribute, pos: isize): MlirSparseTensorDimLevelType <cimport,nodecl> end
+global function mlirSparseTensorEncodingAttrGetDimOrdering(attr: MlirAttribute): MlirAffineMap <cimport,nodecl> end
+global function mlirSparseTensorEncodingAttrGetPointerBitWidth(attr: MlirAttribute): cint <cimport,nodecl> end
+global function mlirSparseTensorEncodingAttrGetIndexBitWidth(attr: MlirAttribute): cint <cimport,nodecl> end
+global function mlirRegisterSparseTensorPasses(): void <cimport,nodecl> end
+global function mlirCreateSparseTensorSparseTensorConversion(): MlirPass <cimport,nodecl> end
+global function mlirRegisterSparseTensorSparseTensorConversion(): void <cimport,nodecl> end
+global function mlirCreateSparseTensorSparsification(): MlirPass <cimport,nodecl> end
+global function mlirRegisterSparseTensorSparsification(): void <cimport,nodecl> end
+global function mlirGetDialectHandle__tensor__(): MlirDialectHandle <cimport,nodecl> end
+global function ireeCompilerRegisterAllDialects(context: MlirContext): void <cimport,nodecl> end
+global function ireeCompilerRegisterAllPasses(): void <cimport,nodecl> end
+global function ireeCompilerRegisterTargetBackends(): void <cimport,nodecl> end
+global function ireeCompilerOptionsCreate(): IreeCompilerOptions <cimport,nodecl> end
+global function ireeCompilerOptionsDestroy(options: IreeCompilerOptions): void <cimport,nodecl> end
+global function ireeCompilerOptionsSetFlags(options: IreeCompilerOptions, argc: cint, argv: *cstring, onError: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): MlirLogicalResult <cimport,nodecl> end
+global function ireeCompilerOptionsGetFlags(options: IreeCompilerOptions, nonDefaultOnly: boolean, onFlag: function(a1: MlirStringRef, a2: pointer): void, userData: pointer): void <cimport,nodecl> end
+global function ireeCompilerBuildXLACleanupPassPipeline(passManager: MlirOpPassManager): void <cimport,nodecl> end
+global function ireeCompilerBuildMHLOImportPassPipeline(passManager: MlirOpPassManager): void <cimport,nodecl> end
+global function ireeCompilerBuildTOSAImportPassPipeline(passManager: MlirOpPassManager): void <cimport,nodecl> end
+global function ireeCompilerBuildIREEVMPassPipeline(options: IreeCompilerOptions, passManager: MlirOpPassManager): void <cimport,nodecl> end
+global function ireeCompilerTranslateModuletoVMBytecode(options: IreeCompilerOptions, moduleOp: MlirOperation, dataCallback: function(a1: MlirStringRef, a2: pointer): void, dataUserObject: pointer): MlirLogicalResult <cimport,nodecl> end
+global function ireeCompilerRunMain(argc: cint, argv: *cstring): cint <cimport,nodecl> end
+global function ireeCompilerRunLldMain(argc: cint, argv: *cstring): cint <cimport,nodecl> end
+global function mlirGetDialectHandle__iree_input__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirGetDialectHandle__iree_linalg_ext__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirGetDialectHandle__iree_linalg_transform__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirGetDialectHandle__iree_pydm__(): MlirDialectHandle <cimport,nodecl> end
+global function mlirIREEPyDMRegisterPasses(): void <cimport,nodecl> end
+global function ireePyDMSourceBundleCreateAsm(asmString: MlirStringRef): IREEPyDMSourceBundle <cimport,nodecl> end
+global function ireePyDMSourceBundleCreateFile(filePath: MlirStringRef): IREEPyDMSourceBundle <cimport,nodecl> end
+global function ireePyDMSourceBundleDestroy(bundle: IREEPyDMSourceBundle): void <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMPrimitiveType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMBool(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMBoolTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMBytes(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMBytesTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMInteger(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMIntegerTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMExceptionResult(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMExceptionResultTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMFreeVarRef(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMFreeVarRefTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMList(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMListTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMNone(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMNoneTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMReal(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMRealTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMStr(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMStrTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMTuple(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMTupleTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMType(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMTypeTypeGet(ctx: MlirContext): MlirType <cimport,nodecl> end
+global function mlirIREEPyDMIntegerTypeGetExplicit(ctx: MlirContext, bitWidth: cint, isSigned: boolean): MlirType <cimport,nodecl> end
+global function mlirIREEPyDMRealTypeGetExplicit(fpType: MlirType): MlirType <cimport,nodecl> end
+global function mlirTypeIsAIREEPyDMObject(type: MlirType): boolean <cimport,nodecl> end
+global function mlirIREEPyDMObjectTypeGet(context: MlirContext, primitive: MlirType): MlirType <cimport,nodecl> end
+global function ireePyDMLoweringOptionsCreate(): IREEPyDMLoweringOptions <cimport,nodecl> end
+global function ireePyDMLoweringOptionsLinkRtl(options: IREEPyDMLoweringOptions, source: IREEPyDMSourceBundle): void <cimport,nodecl> end
+global function ireePyDMLoweringOptionsDestroy(options: IREEPyDMLoweringOptions): void <cimport,nodecl> end
+global function mlirIREEPyDMBuildPostImportPassPipeline(passManager: MlirOpPassManager): void <cimport,nodecl> end
+global function mlirIREEPyDMBuildLowerToIREEPassPipeline(passManager: MlirOpPassManager, options: IREEPyDMLoweringOptions): void <cimport,nodecl> end

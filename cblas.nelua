@@ -1,0 +1,174 @@
+global CBLAS_LAYOUT: type <cimport,nodecl,using> = @enum(cint){
+  CblasRowMajor = 101,
+  CblasColMajor = 102
+}
+global CBLAS_TRANSPOSE: type <cimport,nodecl,using> = @enum(cint){
+  CblasNoTrans = 111,
+  CblasTrans = 112,
+  CblasConjTrans = 113
+}
+global CBLAS_UPLO: type <cimport,nodecl,using> = @enum(cint){
+  CblasUpper = 121,
+  CblasLower = 122
+}
+global CBLAS_DIAG: type <cimport,nodecl,using> = @enum(cint){
+  CblasNonUnit = 131,
+  CblasUnit = 132
+}
+global CBLAS_SIDE: type <cimport,nodecl,using> = @enum(cint){
+  CblasLeft = 141,
+  CblasRight = 142
+}
+global function cblas_dcabs1(z: pointer): float64 <cimport,nodecl> end
+global function cblas_scabs1(c: pointer): float32 <cimport,nodecl> end
+global function cblas_sdsdot(N: int32, alpha: float32, X: *float32, incX: int32, Y: *float32, incY: int32): float32 <cimport,nodecl> end
+global function cblas_dsdot(N: int32, X: *float32, incX: int32, Y: *float32, incY: int32): float64 <cimport,nodecl> end
+global function cblas_sdot(N: int32, X: *float32, incX: int32, Y: *float32, incY: int32): float32 <cimport,nodecl> end
+global function cblas_ddot(N: int32, X: *float64, incX: int32, Y: *float64, incY: int32): float64 <cimport,nodecl> end
+global function cblas_cdotu_sub(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32, dotu: pointer): void <cimport,nodecl> end
+global function cblas_cdotc_sub(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32, dotc: pointer): void <cimport,nodecl> end
+global function cblas_zdotu_sub(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32, dotu: pointer): void <cimport,nodecl> end
+global function cblas_zdotc_sub(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32, dotc: pointer): void <cimport,nodecl> end
+global function cblas_snrm2(N: int32, X: *float32, incX: int32): float32 <cimport,nodecl> end
+global function cblas_sasum(N: int32, X: *float32, incX: int32): float32 <cimport,nodecl> end
+global function cblas_dnrm2(N: int32, X: *float64, incX: int32): float64 <cimport,nodecl> end
+global function cblas_dasum(N: int32, X: *float64, incX: int32): float64 <cimport,nodecl> end
+global function cblas_scnrm2(N: int32, X: pointer, incX: int32): float32 <cimport,nodecl> end
+global function cblas_scasum(N: int32, X: pointer, incX: int32): float32 <cimport,nodecl> end
+global function cblas_dznrm2(N: int32, X: pointer, incX: int32): float64 <cimport,nodecl> end
+global function cblas_dzasum(N: int32, X: pointer, incX: int32): float64 <cimport,nodecl> end
+global function cblas_isamax(N: int32, X: *float32, incX: int32): csize <cimport,nodecl> end
+global function cblas_idamax(N: int32, X: *float64, incX: int32): csize <cimport,nodecl> end
+global function cblas_icamax(N: int32, X: pointer, incX: int32): csize <cimport,nodecl> end
+global function cblas_izamax(N: int32, X: pointer, incX: int32): csize <cimport,nodecl> end
+global function cblas_sswap(N: int32, X: *float32, incX: int32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_scopy(N: int32, X: *float32, incX: int32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_saxpy(N: int32, alpha: float32, X: *float32, incX: int32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_dswap(N: int32, X: *float64, incX: int32, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_dcopy(N: int32, X: *float64, incX: int32, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_daxpy(N: int32, alpha: float64, X: *float64, incX: int32, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_cswap(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_ccopy(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_caxpy(N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_zswap(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_zcopy(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_zaxpy(N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_srotmg(d1: *float32, d2: *float32, b1: *float32, b2: float32, P: *float32): void <cimport,nodecl> end
+global function cblas_srotm(N: int32, X: *float32, incX: int32, Y: *float32, incY: int32, P: *float32): void <cimport,nodecl> end
+global function cblas_drotmg(d1: *float64, d2: *float64, b1: *float64, b2: float64, P: *float64): void <cimport,nodecl> end
+global function cblas_drotm(N: int32, X: *float64, incX: int32, Y: *float64, incY: int32, P: *float64): void <cimport,nodecl> end
+global function cblas_sscal(N: int32, alpha: float32, X: *float32, incX: int32): void <cimport,nodecl> end
+global function cblas_dscal(N: int32, alpha: float64, X: *float64, incX: int32): void <cimport,nodecl> end
+global function cblas_cscal(N: int32, alpha: pointer, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_zscal(N: int32, alpha: pointer, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_csscal(N: int32, alpha: float32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_zdscal(N: int32, alpha: float64, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_srotg(a: *float32, b: *float32, c: *float32, s: *float32): void <cimport,nodecl> end
+global function cblas_drotg(a: *float64, b: *float64, c: *float64, s: *float64): void <cimport,nodecl> end
+global function cblas_crotg(a: pointer, b: pointer, c: *float32, s: pointer): void <cimport,nodecl> end
+global function cblas_zrotg(a: pointer, b: pointer, c: *float64, s: pointer): void <cimport,nodecl> end
+global function cblas_srot(N: int32, X: *float32, incX: int32, Y: *float32, incY: int32, c: float32, s: float32): void <cimport,nodecl> end
+global function cblas_drot(N: int32, X: *float64, incX: int32, Y: *float64, incY: int32, c: float64, s: float64): void <cimport,nodecl> end
+global function cblas_csrot(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32, c: float32, s: float32): void <cimport,nodecl> end
+global function cblas_zdrot(N: int32, X: pointer, incX: int32, Y: pointer, incY: int32, c: float64, s: float64): void <cimport,nodecl> end
+global function cblas_sgemv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, alpha: float32, A: *float32, lda: int32, X: *float32, incX: int32, beta: float32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_sgbmv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, KL: int32, KU: int32, alpha: float32, A: *float32, lda: int32, X: *float32, incX: int32, beta: float32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_strmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: *float32, lda: int32, X: *float32, incX: int32): void <cimport,nodecl> end
+global function cblas_stbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: *float32, lda: int32, X: *float32, incX: int32): void <cimport,nodecl> end
+global function cblas_stpmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: *float32, X: *float32, incX: int32): void <cimport,nodecl> end
+global function cblas_strsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: *float32, lda: int32, X: *float32, incX: int32): void <cimport,nodecl> end
+global function cblas_stbsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: *float32, lda: int32, X: *float32, incX: int32): void <cimport,nodecl> end
+global function cblas_stpsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: *float32, X: *float32, incX: int32): void <cimport,nodecl> end
+global function cblas_dgemv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, alpha: float64, A: *float64, lda: int32, X: *float64, incX: int32, beta: float64, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_dgbmv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, KL: int32, KU: int32, alpha: float64, A: *float64, lda: int32, X: *float64, incX: int32, beta: float64, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_dtrmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: *float64, lda: int32, X: *float64, incX: int32): void <cimport,nodecl> end
+global function cblas_dtbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: *float64, lda: int32, X: *float64, incX: int32): void <cimport,nodecl> end
+global function cblas_dtpmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: *float64, X: *float64, incX: int32): void <cimport,nodecl> end
+global function cblas_dtrsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: *float64, lda: int32, X: *float64, incX: int32): void <cimport,nodecl> end
+global function cblas_dtbsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: *float64, lda: int32, X: *float64, incX: int32): void <cimport,nodecl> end
+global function cblas_dtpsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: *float64, X: *float64, incX: int32): void <cimport,nodecl> end
+global function cblas_cgemv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_cgbmv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, KL: int32, KU: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_ctrmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ctbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ctpmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: pointer, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ctrsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ctbsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ctpsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: pointer, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_zgemv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_zgbmv(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, M: int32, N: int32, KL: int32, KU: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_ztrmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ztbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ztpmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: pointer, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ztrsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ztbsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, K: int32, A: pointer, lda: int32, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ztpsv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, N: int32, Ap: pointer, X: pointer, incX: int32): void <cimport,nodecl> end
+global function cblas_ssymv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, A: *float32, lda: int32, X: *float32, incX: int32, beta: float32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_ssbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, K: int32, alpha: float32, A: *float32, lda: int32, X: *float32, incX: int32, beta: float32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_sspmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, Ap: *float32, X: *float32, incX: int32, beta: float32, Y: *float32, incY: int32): void <cimport,nodecl> end
+global function cblas_sger(layout: CBLAS_LAYOUT, M: int32, N: int32, alpha: float32, X: *float32, incX: int32, Y: *float32, incY: int32, A: *float32, lda: int32): void <cimport,nodecl> end
+global function cblas_ssyr(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, X: *float32, incX: int32, A: *float32, lda: int32): void <cimport,nodecl> end
+global function cblas_sspr(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, X: *float32, incX: int32, Ap: *float32): void <cimport,nodecl> end
+global function cblas_ssyr2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, X: *float32, incX: int32, Y: *float32, incY: int32, A: *float32, lda: int32): void <cimport,nodecl> end
+global function cblas_sspr2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, X: *float32, incX: int32, Y: *float32, incY: int32, A: *float32): void <cimport,nodecl> end
+global function cblas_dsymv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, A: *float64, lda: int32, X: *float64, incX: int32, beta: float64, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_dsbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, K: int32, alpha: float64, A: *float64, lda: int32, X: *float64, incX: int32, beta: float64, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_dspmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, Ap: *float64, X: *float64, incX: int32, beta: float64, Y: *float64, incY: int32): void <cimport,nodecl> end
+global function cblas_dger(layout: CBLAS_LAYOUT, M: int32, N: int32, alpha: float64, X: *float64, incX: int32, Y: *float64, incY: int32, A: *float64, lda: int32): void <cimport,nodecl> end
+global function cblas_dsyr(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, X: *float64, incX: int32, A: *float64, lda: int32): void <cimport,nodecl> end
+global function cblas_dspr(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, X: *float64, incX: int32, Ap: *float64): void <cimport,nodecl> end
+global function cblas_dsyr2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, X: *float64, incX: int32, Y: *float64, incY: int32, A: *float64, lda: int32): void <cimport,nodecl> end
+global function cblas_dspr2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, X: *float64, incX: int32, Y: *float64, incY: int32, A: *float64): void <cimport,nodecl> end
+global function cblas_chemv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_chbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_chpmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, Ap: pointer, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_cgeru(layout: CBLAS_LAYOUT, M: int32, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_cgerc(layout: CBLAS_LAYOUT, M: int32, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_cher(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, X: pointer, incX: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_chpr(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float32, X: pointer, incX: int32, A: pointer): void <cimport,nodecl> end
+global function cblas_cher2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_chpr2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, Ap: pointer): void <cimport,nodecl> end
+global function cblas_zhemv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_zhbmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_zhpmv(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, Ap: pointer, X: pointer, incX: int32, beta: pointer, Y: pointer, incY: int32): void <cimport,nodecl> end
+global function cblas_zgeru(layout: CBLAS_LAYOUT, M: int32, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_zgerc(layout: CBLAS_LAYOUT, M: int32, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_zher(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, X: pointer, incX: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_zhpr(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: float64, X: pointer, incX: int32, A: pointer): void <cimport,nodecl> end
+global function cblas_zher2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, A: pointer, lda: int32): void <cimport,nodecl> end
+global function cblas_zhpr2(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, N: int32, alpha: pointer, X: pointer, incX: int32, Y: pointer, incY: int32, Ap: pointer): void <cimport,nodecl> end
+global function cblas_sgemm(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, TransB: CBLAS_TRANSPOSE, M: int32, N: int32, K: int32, alpha: float32, A: *float32, lda: int32, B: *float32, ldb: int32, beta: float32, C: *float32, ldc: int32): void <cimport,nodecl> end
+global function cblas_ssymm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, M: int32, N: int32, alpha: float32, A: *float32, lda: int32, B: *float32, ldb: int32, beta: float32, C: *float32, ldc: int32): void <cimport,nodecl> end
+global function cblas_ssyrk(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: float32, A: *float32, lda: int32, beta: float32, C: *float32, ldc: int32): void <cimport,nodecl> end
+global function cblas_ssyr2k(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: float32, A: *float32, lda: int32, B: *float32, ldb: int32, beta: float32, C: *float32, ldc: int32): void <cimport,nodecl> end
+global function cblas_strmm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: float32, A: *float32, lda: int32, B: *float32, ldb: int32): void <cimport,nodecl> end
+global function cblas_strsm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: float32, A: *float32, lda: int32, B: *float32, ldb: int32): void <cimport,nodecl> end
+global function cblas_dgemm(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, TransB: CBLAS_TRANSPOSE, M: int32, N: int32, K: int32, alpha: float64, A: *float64, lda: int32, B: *float64, ldb: int32, beta: float64, C: *float64, ldc: int32): void <cimport,nodecl> end
+global function cblas_dsymm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, M: int32, N: int32, alpha: float64, A: *float64, lda: int32, B: *float64, ldb: int32, beta: float64, C: *float64, ldc: int32): void <cimport,nodecl> end
+global function cblas_dsyrk(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: float64, A: *float64, lda: int32, beta: float64, C: *float64, ldc: int32): void <cimport,nodecl> end
+global function cblas_dsyr2k(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: float64, A: *float64, lda: int32, B: *float64, ldb: int32, beta: float64, C: *float64, ldc: int32): void <cimport,nodecl> end
+global function cblas_dtrmm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: float64, A: *float64, lda: int32, B: *float64, ldb: int32): void <cimport,nodecl> end
+global function cblas_dtrsm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: float64, A: *float64, lda: int32, B: *float64, ldb: int32): void <cimport,nodecl> end
+global function cblas_cgemm(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, TransB: CBLAS_TRANSPOSE, M: int32, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_csymm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_csyrk(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_csyr2k(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_ctrmm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32): void <cimport,nodecl> end
+global function cblas_ctrsm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32): void <cimport,nodecl> end
+global function cblas_zgemm(layout: CBLAS_LAYOUT, TransA: CBLAS_TRANSPOSE, TransB: CBLAS_TRANSPOSE, M: int32, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_zsymm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_zsyrk(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_zsyr2k(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_ztrmm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32): void <cimport,nodecl> end
+global function cblas_ztrsm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, TransA: CBLAS_TRANSPOSE, Diag: CBLAS_DIAG, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32): void <cimport,nodecl> end
+global function cblas_chemm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_cherk(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: float32, A: pointer, lda: int32, beta: float32, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_cher2k(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: float32, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_zhemm(layout: CBLAS_LAYOUT, Side: CBLAS_SIDE, Uplo: CBLAS_UPLO, M: int32, N: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: pointer, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_zherk(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: float64, A: pointer, lda: int32, beta: float64, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_zher2k(layout: CBLAS_LAYOUT, Uplo: CBLAS_UPLO, Trans: CBLAS_TRANSPOSE, N: int32, K: int32, alpha: pointer, A: pointer, lda: int32, B: pointer, ldb: int32, beta: float64, C: pointer, ldc: int32): void <cimport,nodecl> end
+global function cblas_xerbla(p: int32, rout: cstring, form: cstring, ...: cvarargs): void <cimport,nodecl> end
+global CBLAS_INDEX: type = csize
+global CBLAS_INT: type = int32
+global CBLAS_IFMT: cstring <comptime> = "d"
+global CBLAS_ORDER: type = CBLAS_LAYOUT

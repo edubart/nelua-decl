@@ -1,0 +1,403 @@
+global cm_hash: type <cimport,nodecl> = @[32]uint8
+global cm_hash_array: type <cimport,nodecl> = @record{
+  entry: *cm_hash,
+  count: csize
+}
+global CM_ERROR: type <cimport,nodecl,using> = @enum(cint){
+  CM_ERROR_OK = 0,
+  CM_ERROR_INVALID_ARGUMENT = 1,
+  CM_ERROR_DOMAIN_ERROR = 2,
+  CM_ERROR_LENGTH_ERROR = 3,
+  CM_ERROR_OUT_OF_RANGE = 4,
+  CM_ERROR_FUTURE_ERROR = 5,
+  CM_ERROR_LOGIC_ERROR = 6,
+  CM_LOGIC_ERROR_END = 7,
+  CM_ERROR_BAD_OPTIONAL_ACCESS = 8,
+  CM_ERROR_RUNTIME_ERROR = 9,
+  CM_ERROR_RANGE_ERROR = 10,
+  CM_ERROR_OVERFLOW_ERROR = 11,
+  CM_ERROR_UNDERFLOW_ERROR = 12,
+  CM_ERROR_REGEX_ERROR = 13,
+  CM_ERROR_SYSTEM_IOS_BASE_FAILURE = 14,
+  CM_ERROR_FILESYSTEM_ERROR = 15,
+  CM_ERROR_ATOMIC_TX_ERROR = 16,
+  CM_ERROR_NONEXISTING_LOCAL_TIME = 17,
+  CM_ERROR_AMBIGOUS_LOCAL_TIME = 18,
+  CM_ERROR_FORMAT_ERROR = 19,
+  CM_RUNTIME_ERROR_END = 20,
+  CM_ERROR_BAD_TYPEID = 21,
+  CM_ERROR_BAD_CAST = 22,
+  CM_ERROR_BAD_ANY_CAST = 23,
+  CM_ERROR_BAD_WEAK_PTR = 24,
+  CM_ERROR_BAD_FUNCTION_CALL = 25,
+  CM_ERROR_BAD_ALLOC = 26,
+  CM_ERROR_BAD_ARRAY_NEW_LENGTH = 27,
+  CM_ERROR_BAD_EXCEPTION = 28,
+  CM_ERROR_BAD_VARIANT_ACCESS = 29,
+  CM_ERROR_EXCEPTION = 30,
+  CM_OTHER_ERROR_END = 31,
+  CM_ERROR_UNKNOWN = 32
+}
+global CM_BREAK_REASON: type <cimport,nodecl,using> = @enum(cint){
+  CM_BREAK_REASON_FAILED = 0,
+  CM_BREAK_REASON_HALTED = 1,
+  CM_BREAK_REASON_YIELDED_MANUALLY = 2,
+  CM_BREAK_REASON_YIELDED_AUTOMATICALLY = 3,
+  CM_BREAK_REASON_REACHED_TARGET_MCYCLE = 4
+}
+global CM_PROC_CSR: type <cimport,nodecl,using> = @enum(cint){
+  CM_PROC_PC = 0,
+  CM_PROC_FCSR = 1,
+  CM_PROC_MVENDORID = 2,
+  CM_PROC_MARCHID = 3,
+  CM_PROC_MIMPID = 4,
+  CM_PROC_MCYCLE = 5,
+  CM_PROC_ICYCLEINSTRET = 6,
+  CM_PROC_MSTATUS = 7,
+  CM_PROC_MTVEC = 8,
+  CM_PROC_MSCRATCH = 9,
+  CM_PROC_MEPC = 10,
+  CM_PROC_MCAUSE = 11,
+  CM_PROC_MTVAL = 12,
+  CM_PROC_MISA = 13,
+  CM_PROC_MIE = 14,
+  CM_PROC_MIP = 15,
+  CM_PROC_MEDELEG = 16,
+  CM_PROC_MIDELEG = 17,
+  CM_PROC_MCOUNTEREN = 18,
+  CM_PROC_MENVCFG = 19,
+  CM_PROC_STVEC = 20,
+  CM_PROC_SSCRATCH = 21,
+  CM_PROC_SEPC = 22,
+  CM_PROC_SCAUSE = 23,
+  CM_PROC_STVAL = 24,
+  CM_PROC_SATP = 25,
+  CM_PROC_SCOUNTEREN = 26,
+  CM_PROC_SENVCFG = 27,
+  CM_PROC_ILRSC = 28,
+  CM_PROC_IFLAGS = 29,
+  CM_PROC_CLINT_MTIMECMP = 30,
+  CM_PROC_PLIC_GIRQPEND = 31,
+  CM_PROC_PLIC_GIRQSRVD = 32,
+  CM_PROC_HTIF_TOHOST = 33,
+  CM_PROC_HTIF_FROMHOST = 34,
+  CM_PROC_HTIF_IHALT = 35,
+  CM_PROC_HTIF_ICONSOLE = 36,
+  CM_PROC_HTIF_IYIELD = 37,
+  CM_PROC_UARCH_CYCLE = 38,
+  CM_PROC_UARCH_PC = 39,
+  CM_PROC_UARCH_ROM_LENGTH = 40,
+  CM_PROC_UARCH_RAM_LENGTH = 41,
+  CM_PROC_UNKNOWN = 42
+}
+global cm_processor_config: type <cimport,nodecl> = @record{
+  x: [32]uint64,
+  f: [32]uint64,
+  pc: uint64,
+  fcsr: uint64,
+  mvendorid: uint64,
+  marchid: uint64,
+  mimpid: uint64,
+  mcycle: uint64,
+  icycleinstret: uint64,
+  mstatus: uint64,
+  mtvec: uint64,
+  mscratch: uint64,
+  mepc: uint64,
+  mcause: uint64,
+  mtval: uint64,
+  misa: uint64,
+  mie: uint64,
+  mip: uint64,
+  medeleg: uint64,
+  mideleg: uint64,
+  mcounteren: uint64,
+  menvcfg: uint64,
+  stvec: uint64,
+  sscratch: uint64,
+  sepc: uint64,
+  scause: uint64,
+  stval: uint64,
+  satp: uint64,
+  scounteren: uint64,
+  senvcfg: uint64,
+  ilrsc: uint64,
+  iflags: uint64
+}
+global cm_ram_config: type <cimport,nodecl> = @record{
+  length: uint64,
+  image_filename: cstring
+}
+global cm_rom_config: type <cimport,nodecl> = @record{
+  bootargs: cstring,
+  image_filename: cstring
+}
+global cm_memory_range_config: type <cimport,nodecl> = @record{
+  start: uint64,
+  length: uint64,
+  shared: boolean,
+  image_filename: cstring
+}
+global cm_memory_range_config_array: type <cimport,nodecl> = @record{
+  entry: *cm_memory_range_config,
+  count: csize
+}
+global cm_tlb_config: type <cimport,nodecl> = @record{
+  image_filename: cstring
+}
+global cm_clint_config: type <cimport,nodecl> = @record{
+  mtimecmp: uint64
+}
+global cm_plic_config: type <cimport,nodecl> = @record{
+  girqpend: uint64,
+  girqsrvd: uint64
+}
+global cm_htif_config: type <cimport,nodecl> = @record{
+  fromhost: uint64,
+  tohost: uint64,
+  console_getchar: boolean,
+  yield_manual: boolean,
+  yield_automatic: boolean
+}
+global cm_rollup_config: type <cimport,nodecl> = @record{
+  has_value: boolean,
+  rx_buffer: cm_memory_range_config,
+  tx_buffer: cm_memory_range_config,
+  input_metadata: cm_memory_range_config,
+  voucher_hashes: cm_memory_range_config,
+  notice_hashes: cm_memory_range_config
+}
+global cm_uarch_ram_config: type <cimport,nodecl> = @record{
+  length: uint64,
+  image_filename: cstring
+}
+global cm_uarch_rom_config: type <cimport,nodecl> = @record{
+  length: uint64,
+  image_filename: cstring
+}
+global cm_uarch_processor_config: type <cimport,nodecl> = @record{
+  x: [32]uint64,
+  pc: uint64,
+  cycle: uint64
+}
+global cm_uarch_config: type <cimport,nodecl> = @record{
+  processor: cm_uarch_processor_config,
+  rom: cm_uarch_rom_config,
+  ram: cm_uarch_ram_config
+}
+global cm_machine_config: type <cimport,nodecl> = @record{
+  processor: cm_processor_config,
+  ram: cm_ram_config,
+  rom: cm_rom_config,
+  flash_drive: cm_memory_range_config_array,
+  tlb: cm_tlb_config,
+  clint: cm_clint_config,
+  plic: cm_plic_config,
+  htif: cm_htif_config,
+  rollup: cm_rollup_config,
+  uarch: cm_uarch_config
+}
+global cm_merkle_tree_proof: type <cimport,nodecl> = @record{
+  target_address: uint64,
+  log2_target_size: csize,
+  target_hash: cm_hash,
+  log2_root_size: csize,
+  root_hash: cm_hash,
+  sibling_hashes: cm_hash_array
+}
+global CM_ACCESS_TYPE: type <cimport,nodecl,using> = @enum(cint){
+  CM_ACCESS_READ = 0,
+  CM_ACCESS_WRITE = 1
+}
+global cm_access_log_type: type <cimport,nodecl> = @record{
+  proofs: boolean,
+  annotations: boolean
+}
+global CM_BRACKET_TYPE: type <cimport,nodecl,using> = @enum(cint){
+  CM_BRACKET_BEGIN = 0,
+  CM_BRACKET_END = 1
+}
+global cm_bracket_note: type <cimport,nodecl> = @record{
+  type: CM_BRACKET_TYPE,
+  where: uint64,
+  text: cstring
+}
+global cm_access: type <cimport,nodecl> = @record{
+  type: CM_ACCESS_TYPE,
+  address: uint64,
+  log2_size: cint,
+  read_data: *uint8,
+  read_data_size: csize,
+  written_data: *uint8,
+  written_data_size: csize,
+  proof: *cm_merkle_tree_proof
+}
+global cm_access_array: type <cimport,nodecl> = @record{
+  entry: *cm_access,
+  count: csize
+}
+global cm_bracket_note_array: type <cimport,nodecl> = @record{
+  entry: *cm_bracket_note,
+  count: csize
+}
+global cm_note_array: type <cimport,nodecl> = @record{
+  entry: *cstring,
+  count: csize
+}
+global cm_access_log: type <cimport,nodecl> = @record{
+  accesses: cm_access_array,
+  brackets: cm_bracket_note_array,
+  notes: cm_note_array,
+  log_type: cm_access_log_type
+}
+global cm_concurrency_config: type <cimport,nodecl> = @record{
+  update_merkle_tree: uint64
+}
+global cm_machine_runtime_config: type <cimport,nodecl> = @record{
+  concurrency: cm_concurrency_config
+}
+global cm_machine: type <cimport,nodecl,forwarddecl> = @record{}
+global function cm_new_default_machine_config(): *cm_machine_config <cimport,nodecl> end
+global function cm_delete_machine_config(config: *cm_machine_config): void <cimport,nodecl> end
+global function cm_create_machine(config: *cm_machine_config, runtime_config: *cm_machine_runtime_config, new_machine: **cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_load_machine(dir: cstring, runtime_config: *cm_machine_runtime_config, new_machine: **cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_store(m: *cm_machine, dir: cstring, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_delete_machine(m: *cm_machine): void <cimport,nodecl> end
+global function cm_machine_run(m: *cm_machine, mcycle_end: uint64, break_reason_result: *CM_BREAK_REASON, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_step(m: *cm_machine, log_type: cm_access_log_type, one_based: boolean, access_log: **cm_access_log, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_delete_access_log(acc_log: *cm_access_log): void <cimport,nodecl> end
+global function cm_verify_access_log(log: *cm_access_log, runtime_config: *cm_machine_runtime_config, one_based: boolean, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_verify_state_transition(root_hash_before: *cm_hash, log: *cm_access_log, root_hash_after: *cm_hash, runtime_config: *cm_machine_runtime_config, one_based: boolean, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_get_proof(m: *cm_machine, address: uint64, log2_size: cint, proof: **cm_merkle_tree_proof, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_delete_merkle_tree_proof(proof: *cm_merkle_tree_proof): void <cimport,nodecl> end
+global function cm_get_root_hash(m: *cm_machine, hash: *cm_hash, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_verify_merkle_tree(m: *cm_machine, result: *boolean, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_csr(m: *cm_machine, r: CM_PROC_CSR, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_csr(m: *cm_machine, w: CM_PROC_CSR, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_get_csr_address(w: CM_PROC_CSR): uint64 <cimport,nodecl> end
+global function cm_read_word(m: *cm_machine, word_address: uint64, word_value: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_memory(m: *cm_machine, address: uint64, data: *cuchar, length: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_memory(m: *cm_machine, address: uint64, data: *cuchar, length: csize, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_virtual_memory(m: *cm_machine, address: uint64, data: *cuchar, length: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_virtual_memory(m: *cm_machine, address: uint64, data: *cuchar, length: csize, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_x(m: *cm_machine, i: cint, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_x(m: *cm_machine, i: cint, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_get_x_address(i: cint): uint64 <cimport,nodecl> end
+global function cm_get_uarch_x_address(i: cint): uint64 <cimport,nodecl> end
+global function cm_read_f(m: *cm_machine, i: cint, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_f(m: *cm_machine, i: cint, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_get_f_address(i: cint): uint64 <cimport,nodecl> end
+global function cm_read_pc(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_pc(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_fcsr(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_fcsr(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mvendorid(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_marchid(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mimpid(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mcycle(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mcycle(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_icycleinstret(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_icycleinstret(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mstatus(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mstatus(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_menvcfg(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_menvcfg(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mtvec(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mtvec(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mscratch(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mscratch(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mepc(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mepc(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mcause(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mcause(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mtval(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mtval(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_misa(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_misa(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mie(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mie(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mip(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mip(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_medeleg(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_medeleg(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mideleg(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mideleg(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_mcounteren(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_mcounteren(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_stvec(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_stvec(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_sscratch(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_sscratch(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_sepc(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_sepc(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_scause(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_scause(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_stval(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_stval(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_satp(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_satp(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_scounteren(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_scounteren(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_senvcfg(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_senvcfg(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_ilrsc(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_ilrsc(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_iflags(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_packed_iflags(PRV: cint, X: cint, Y: cint, H: cint): uint64 <cimport,nodecl> end
+global function cm_write_iflags(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_tohost(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_tohost_dev(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_tohost_cmd(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_tohost_data(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_htif_tohost(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_fromhost(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_htif_fromhost(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_htif_fromhost_data(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_ihalt(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_htif_ihalt(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_iconsole(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_htif_iconsole(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_htif_iyield(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_htif_iyield(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_clint_mtimecmp(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_clint_mtimecmp(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_plic_girqpend(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_plic_girqpend(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_plic_girqsrvd(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_plic_girqsrvd(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_iflags_X(m: *cm_machine, val: *boolean, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_reset_iflags_X(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_set_iflags_X(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_iflags_Y(m: *cm_machine, val: *boolean, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_reset_iflags_Y(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_set_iflags_Y(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_iflags_H(m: *cm_machine, val: *boolean, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_set_iflags_H(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_dump_pmas(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_verify_dirty_page_maps(m: *cm_machine, result: *boolean, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_get_initial_config(m: *cm_machine, config: **cm_machine_config, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_get_default_config(config: **cm_machine_config, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_replace_memory_range(m: *cm_machine, new_range: *cm_memory_range_config, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_delete_memory_range_config(config: *cm_memory_range_config): void <cimport,nodecl> end
+global function cm_delete_error_message(err_msg: cstring): void <cimport,nodecl> end
+global function cm_delete_machine_runtime_config(config: *cm_machine_runtime_config): void <cimport,nodecl> end
+global function cm_destroy(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_snapshot(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_rollback(m: *cm_machine, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_uarch_x(m: *cm_machine, i: cint, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_uarch_x(m: *cm_machine, i: cint, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_uarch_pc(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_uarch_pc(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_uarch_cycle(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_uarch_rom_length(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_read_uarch_ram_length(m: *cm_machine, val: *uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_write_uarch_cycle(m: *cm_machine, val: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global function cm_machine_uarch_run(m: *cm_machine, uarch_cycle_end: uint64, err_msg: *cstring): cint <cimport,nodecl> end
+global CM_MACHINE_HASH_BYTE_SIZE: cint <comptime> = 32
+global CM_MACHINE_X_REG_COUNT: cint <comptime> = 32
+global CM_MACHINE_F_REG_COUNT: cint <comptime> = 32
+global CM_MACHINE_UARCH_X_REG_COUNT: cint <comptime> = 32
+global CM_TREE_LOG2_WORD_SIZE: cint <comptime> = 3
+global CM_TREE_LOG2_PAGE_SIZE: cint <comptime> = 12
+global CM_TREE_LOG2_ROOT_SIZE: cint <comptime> = 64
+global CM_FLASH_DRIVE_CONFIGS_MAX_SIZE: cint <comptime> = 8

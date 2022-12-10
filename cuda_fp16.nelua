@@ -1,0 +1,18 @@
+global __half: type <cimport> = @record{
+  x: uint16
+}
+global __half2: type <cimport> = @record{
+  x: uint16,
+  y: uint16
+}
+global function __double2half(a: float64): __half <cimport> end
+global function __float2half(a: float32): __half <cimport> end
+global function __float2half_rn(a: float32): __half <cimport> end
+global function __float2half_rz(a: float32): __half <cimport> end
+global function __float2half_rd(a: float32): __half <cimport> end
+global function __float2half_ru(a: float32): __half <cimport> end
+global function __half2float(a: __half): float32 <cimport> end
+global function __float2half2_rn(a: float32): __half2 <cimport> end
+global function __floats2half2_rn(a: float32, b: float32): __half2 <cimport> end
+global function __low2float(a: __half2): float32 <cimport> end
+global function __high2float(a: __half2): float32 <cimport> end

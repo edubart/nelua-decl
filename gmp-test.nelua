@@ -1,0 +1,171 @@
+## cinclude '<stdio.h>'
+## linklib 'mimalloc'
+## cinclude 'gmp.h'
+## linklib 'gmp'
+-- ## cinclude 'mini-gmp.h'
+-- ## cinclude 'mini-gmp.c'
+require 'C.stdio'
+require 'C.stdlib'
+require 'gmp'
+require 'string'
+
+function __mpz_struct:__gc()
+  mpz_clear(self)
+end
+
+local MPInt = @record{
+  mpz: *__mpz_struct
+}
+
+function MPInt.new(): MPInt
+  local x: MPInt = {mpz = new(@__mpz_struct)}
+  mpz_init(x.mpz)
+  return x
+end
+
+function MPInt:destroy()
+  if self.mpz then
+    ## if pragmas.nogc then
+      mpz_clear(self.mpz)
+    ## end
+    delete(self.mpz)
+    self.mpz = nilptr
+  end
+end
+
+function MPInt:__close()
+  self:destroy()
+end
+
+function MPInt.fromstring(s: string): MPInt
+  local x: MPInt = MPInt.new()
+  assert(mpz_set_str(x.mpz, s, 10) == 0)
+  return x
+end
+
+function MPInt.__tostring(x: MPInt): string
+  local cs: cstring = mpz_get_str(nilptr, 10, x.mpz)
+  local s: string = string.copy(cs)
+  C.free(cs)
+  return s
+end
+
+function MPInt.__add(a: MPInt, b: MPInt): MPInt
+  local res: MPInt = MPInt.new()
+  mpz_add(res.mpz, a.mpz, b.mpz)
+  return res
+end
+
+function MPInt.__sub(a: MPInt, b: MPInt): MPInt
+  local res: MPInt = MPInt.new()
+  mpz_sub(res.mpz, a.mpz, b.mpz)
+  return res
+end
+
+function MPInt.submul(a: MPInt, b: MPInt): MPInt
+  local res: MPInt = MPInt.new()
+  mpz_submul(res.mpz, a.mpz, b.mpz)
+  return res
+end
+
+function MPInt.sub_(a: MPInt, b: MPInt): MPInt
+  mpz_sub(a.mpz, a.mpz, b.mpz)
+  return a
+end
+
+function MPInt.__mul(a: MPInt, b: MPInt): MPInt
+  local res: MPInt = MPInt.new()
+  mpz_mul(res.mpz, a.mpz, b.mpz)
+  return res
+end
+
+function MPInt.mul_(a: MPInt, b: MPInt): MPInt
+  mpz_mul(a.mpz, a.mpz, b.mpz)
+  return a
+end
+
+function MPInt.__mod(a: MPInt, b: MPInt): MPInt
+  local res: MPInt = MPInt.new()
+  mpz_mod(res.mpz, a.mpz, b.mpz)
+  return res
+end
+
+function MPInt.mod_(a: MPInt, b: MPInt): MPInt
+  mpz_mod(a.mpz, a.mpz, b.mpz)
+  return a
+end
+
+function MPInt.invmod(a: MPInt, b: MPInt): MPInt
+  local res: MPInt = MPInt.new()
+  mpz_invert(res.mpz, a.mpz, b.mpz)
+  return res
+end
+
+function MPInt.invmod_(a: MPInt, b: MPInt): MPInt
+  mpz_invert(a.mpz, a.mpz, b.mpz)
+  return a
+end
+
+local BigInt = require 'bigint'
+
+local function ec_add_bigint(A: [2]BigInt, B: [2]BigInt, P: BigInt): [2]BigInt
+  local inv: BigInt = (A[0] - B[0]):invmod(P)
+  local M: BigInt = ((A[1] - B[1]) * inv) % P
+  local X: BigInt = (M * M - A[0] - B[0]) % P
+  local Y: BigInt = (M * (A[0] - X) - A[1]) % P
+  return {X, Y}
+end
+
+local function ec_add_mpint(A: [2]MPInt, B: [2]MPInt, P: MPInt): [2]MPInt
+  local AB0inv: MPInt <close> = (A[0] - B[0]):invmod_(P)
+  local M: MPInt <close> = (A[1] - B[1]):mul_(AB0inv):mod_(P)
+  local X: MPInt = (M * M):sub_(A[0]):sub_(B[0]):mod_(P)
+  local Y: MPInt = (A[0] - X):mul_(M):sub_(A[1]):mod_(P)
+  return {X, Y}
+end
+
+require 'io'
+require 'os'
+
+local function test_bigint()
+  local A: [2]BigInt = {
+    BigInt.fromstring('3096294630419135176326210070148213973138391367442120853182353436511328329595'),
+    BigInt.fromstring('-2025331639774525604169673937321509794394187309953833264416856064497286019664')
+  }
+  local B: [2]BigInt = {
+    BigInt.fromstring('958740504301613688526614902955971923282735882762427544770668882582144756278'),
+    BigInt.fromstring('1648715733425449195104866742590789175535499260400395501324113794510596751843')
+  }
+  local P = BigInt.fromstring('3618502788666131213697322783095070105623107215331596699973092056135872020481')
+  local C: [2]BigInt
+  local start = os.now()
+  for i=1,10000 do
+    C = ec_add_bigint(A,B,P)
+  end
+  local elapsed = os.now() - start
+  print('bigint', elapsed, C[0] + C[1])
+end
+
+local function test_mpint()
+  local A_X: MPInt <close> = MPInt.fromstring('3096294630419135176326210070148213973138391367442120853182353436511328329595')
+  local A_Y: MPInt <close> = MPInt.fromstring('-2025331639774525604169673937321509794394187309953833264416856064497286019664')
+  local B_X: MPInt <close> = MPInt.fromstring('958740504301613688526614902955971923282735882762427544770668882582144756278')
+  local B_Y: MPInt <close> = MPInt.fromstring('1648715733425449195104866742590789175535499260400395501324113794510596751843')
+  local P: MPInt <close> = MPInt.fromstring('3618502788666131213697322783095070105623107215331596699973092056135872020481')
+  local res: MPInt
+  local start = os.now()
+  for i=1,10000 do
+    local C: [2]MPInt = ec_add_mpint({A_X,A_Y},{B_X,B_Y},P)
+    res:destroy()
+    res = C[0] + C[1]
+    C[0]:destroy() C[1]:destroy()
+  end
+  local elapsed = os.now() - start
+  io.print('mpint', elapsed, res)
+  res:destroy()
+end
+
+test_bigint()
+test_mpint()
+test_bigint()
+test_mpint()

@@ -1,0 +1,27 @@
+require 'binaryen'
+
+local module: BinaryenModuleRef = BinaryenModuleCreate()
+
+-- Create a function type for  i32 (i32, i32)
+local ii: [2]BinaryenType = {BinaryenTypeInt32(), BinaryenTypeInt32()}
+local params: BinaryenType = BinaryenTypeCreate(&ii, 2)
+local results: BinaryenType = BinaryenTypeInt32()
+
+-- Get the 0 and 1 arguments, and add them
+local x: BinaryenExpressionRef = BinaryenLocalGet(module, 0, BinaryenTypeInt32())
+local y: BinaryenExpressionRef = BinaryenLocalGet(module, 1, BinaryenTypeInt32())
+local add: BinaryenExpressionRef = BinaryenBinary(module, BinaryenAddInt32(), x, y)
+
+-- Create the add function
+-- Note: no additional local variables
+-- Note: no basic blocks here, we are an AST. The function body is just an
+-- expression node.
+local adder: BinaryenFunctionRef = BinaryenAddFunction(module, "adder", params, results, nilptr, 0, add)
+
+-- Print it out
+BinaryenModulePrint(module)
+
+BinaryenModuleInterpret(module)
+
+-- Clean up the module, which owns all the objects we created above
+BinaryenModuleDispose(module)

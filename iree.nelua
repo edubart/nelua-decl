@@ -1,0 +1,1795 @@
+global iree_host_size_t: type <cimport,nodecl> = @csize
+global iree_device_size_t: type <cimport,nodecl> = @uint64
+global FILE: type <cimport,nodecl,cincomplete> = @record{}
+global iree_string_view_t: type <cimport,nodecl> = @record{
+  data: cstring,
+  size: iree_host_size_t
+}
+global iree_status_code_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_STATUS_OK = 0,
+  IREE_STATUS_CANCELLED = 1,
+  IREE_STATUS_UNKNOWN = 2,
+  IREE_STATUS_INVALID_ARGUMENT = 3,
+  IREE_STATUS_DEADLINE_EXCEEDED = 4,
+  IREE_STATUS_NOT_FOUND = 5,
+  IREE_STATUS_ALREADY_EXISTS = 6,
+  IREE_STATUS_PERMISSION_DENIED = 7,
+  IREE_STATUS_RESOURCE_EXHAUSTED = 8,
+  IREE_STATUS_FAILED_PRECONDITION = 9,
+  IREE_STATUS_ABORTED = 10,
+  IREE_STATUS_OUT_OF_RANGE = 11,
+  IREE_STATUS_UNIMPLEMENTED = 12,
+  IREE_STATUS_INTERNAL = 13,
+  IREE_STATUS_UNAVAILABLE = 14,
+  IREE_STATUS_DATA_LOSS = 15,
+  IREE_STATUS_UNAUTHENTICATED = 16,
+  IREE_STATUS_DEFERRED = 17,
+  IREE_STATUS_CODE_MASK = 31
+}
+global iree_status_handle_t: type <cimport,nodecl,ctypedef'iree_status_handle_t',forwarddecl> = @record{}
+global iree_status_t: type <cimport,nodecl> = @*iree_status_handle_t
+global iree_byte_span_t: type <cimport,nodecl> = @record{
+  data: *uint8,
+  data_length: iree_host_size_t
+}
+global iree_const_byte_span_t: type <cimport,nodecl> = @record{
+  data: *uint8,
+  data_length: iree_host_size_t
+}
+global iree_allocator_command_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_ALLOCATOR_COMMAND_MALLOC = 0,
+  IREE_ALLOCATOR_COMMAND_CALLOC = 1,
+  IREE_ALLOCATOR_COMMAND_REALLOC = 2,
+  IREE_ALLOCATOR_COMMAND_FREE = 3
+}
+global iree_allocator_alloc_params_t: type <cimport,nodecl> = @record{
+  byte_length: iree_host_size_t
+}
+global iree_allocator_ctl_fn_t: type <cimport,nodecl> = @function(self: pointer, command: iree_allocator_command_t, params: pointer, inout_ptr: *pointer): iree_status_t
+global iree_allocator_t: type <cimport,nodecl> = @record{
+  self: pointer,
+  ctl: iree_allocator_ctl_fn_t
+}
+global iree_string_builder_t: type <cimport,nodecl> = @record{
+  allocator: iree_allocator_t,
+  buffer: cstring,
+  size: iree_host_size_t,
+  capacity: iree_host_size_t
+}
+global iree_bitfield_string_mapping_t: type <cimport,nodecl> = @record{
+  bits: uint32,
+  string: iree_string_view_t
+}
+global iree_bitfield_string_temp_t: type <cimport,nodecl> = @record{
+  buffer: [128]cchar
+}
+global iree_time_t: type <cimport,nodecl> = @int64
+global iree_duration_t: type <cimport,nodecl> = @int64
+global iree_timeout_type_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_TIMEOUT_ABSOLUTE = 0,
+  IREE_TIMEOUT_RELATIVE = 1
+}
+global iree_timeout_t: type <cimport,nodecl> = @record{
+  type: iree_timeout_type_t,
+  nanos: iree_time_t
+}
+global iree_wait_primitive_type_bits_t: type <cimport,nodecl,using,ctypedef'iree_wait_primitive_type_bits_t'> = @enum(cint){
+  IREE_WAIT_PRIMITIVE_TYPE_NONE = 0,
+  IREE_WAIT_PRIMITIVE_TYPE_EVENT_FD = 1,
+  IREE_WAIT_PRIMITIVE_TYPE_SYNC_FILE = 2,
+  IREE_WAIT_PRIMITIVE_TYPE_PIPE = 3,
+  IREE_WAIT_PRIMITIVE_TYPE_WIN32_HANDLE = 4,
+  IREE_WAIT_PRIMITIVE_TYPE_LOCAL_FUTEX = 5,
+  IREE_WAIT_PRIMITIVE_TYPE_ANY = 255
+}
+global iree_wait_primitive_type_t: type <cimport,nodecl> = @uint8
+global iree_wait_primitive_value_t: type <cimport,nodecl> = @union{
+  reserved: cint,
+  event: record{
+    fd: cint
+  },
+  pipe: union{
+    __unnamed1: record{
+      read_fd: cint,
+      write_fd: cint
+    },
+    fds: [2]cint
+  },
+  local_futex: pointer
+}
+global iree_wait_primitive_t: type <cimport,nodecl> = @record{
+  type: iree_wait_primitive_type_t,
+  value: iree_wait_primitive_value_t
+}
+global iree_wait_source_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_wait_source_command_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_WAIT_SOURCE_COMMAND_QUERY = 0,
+  IREE_WAIT_SOURCE_COMMAND_WAIT_ONE = 1,
+  IREE_WAIT_SOURCE_COMMAND_EXPORT = 2
+}
+global iree_wait_source_wait_params_t: type <cimport,nodecl> = @record{
+  timeout: iree_timeout_t
+}
+global iree_wait_source_export_params_t: type <cimport,nodecl> = @record{
+  target_type: iree_wait_primitive_type_t,
+  timeout: iree_timeout_t
+}
+global iree_wait_source_ctl_fn_t: type <cimport,nodecl> = @function(wait_source: iree_wait_source_t, command: iree_wait_source_command_t, params: pointer, inout_ptr: *pointer): iree_status_t
+iree_wait_source_t = @record{
+  __unnamed1: union{
+    __unnamed1: record{
+      self: pointer,
+      data: uint64
+    },
+    storage: [2]uint64
+  },
+  ctl: iree_wait_source_ctl_fn_t
+}
+global iree_loop_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_loop_command_t: type <cimport,nodecl> = @uint32
+global iree_loop_priority_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_LOOP_PRIORITY_DEFAULT = 0
+}
+global iree_loop_callback_fn_t: type <cimport,nodecl> = @function(user_data: pointer, loop: iree_loop_t, status: iree_status_t): iree_status_t
+global iree_loop_workgroup_fn_t: type <cimport,nodecl> = @function(user_data: pointer, loop: iree_loop_t, workgroup_x: uint32, workgroup_y: uint32, workgroup_z: uint32): iree_status_t
+global iree_loop_ctl_fn_t: type <cimport,nodecl> = @function(self: pointer, command: iree_loop_command_t, params: pointer, inout_ptr: *pointer): iree_status_t
+iree_loop_t = @record{
+  self: pointer,
+  ctl: iree_loop_ctl_fn_t
+}
+global iree_loop_command_e: type <cimport,nodecl,using,ctypedef'iree_loop_command_e'> = @enum(cint){
+  IREE_LOOP_COMMAND_CALL = 0,
+  IREE_LOOP_COMMAND_DISPATCH = 1,
+  IREE_LOOP_COMMAND_WAIT_UNTIL = 2,
+  IREE_LOOP_COMMAND_WAIT_ONE = 3,
+  IREE_LOOP_COMMAND_WAIT_ANY = 4,
+  IREE_LOOP_COMMAND_WAIT_ALL = 5,
+  IREE_LOOP_COMMAND_DRAIN = 6,
+  IREE_LOOP_COMMAND_MAX = 6
+}
+global iree_loop_callback_t: type <cimport,nodecl> = @record{
+  fn: iree_loop_callback_fn_t,
+  user_data: pointer
+}
+global iree_loop_call_params_t: type <cimport,nodecl> = @record{
+  callback: iree_loop_callback_t,
+  priority: iree_loop_priority_t
+}
+global iree_loop_dispatch_params_t: type <cimport,nodecl> = @record{
+  callback: iree_loop_callback_t,
+  workgroup_fn: iree_loop_workgroup_fn_t,
+  workgroup_count_xyz: [3]uint32
+}
+global iree_loop_wait_until_params_t: type <cimport,nodecl> = @record{
+  callback: iree_loop_callback_t,
+  deadline_ns: iree_time_t
+}
+global iree_loop_wait_one_params_t: type <cimport,nodecl> = @record{
+  callback: iree_loop_callback_t,
+  deadline_ns: iree_time_t,
+  wait_source: iree_wait_source_t
+}
+global iree_loop_wait_multi_params_t: type <cimport,nodecl> = @record{
+  callback: iree_loop_callback_t,
+  deadline_ns: iree_time_t,
+  count: iree_host_size_t,
+  wait_sources: *iree_wait_source_t
+}
+global iree_loop_drain_params_t: type <cimport,nodecl> = @record{
+  deadline_ns: iree_time_t
+}
+global iree_loop_inline_storage_t: type <cimport,nodecl> = @record{
+  opaque: [512]uint8,
+  status: iree_status_t
+}
+global iree_api_version_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_API_VERSION_0 = 0,
+  IREE_API_VERSION_LATEST = 0
+}
+global iree_memory_order_t: type <cimport,nodecl,using> = @enum(cint){
+  iree_memory_order_relaxed = 0,
+  iree_memory_order_consume = 1,
+  iree_memory_order_acquire = 2,
+  iree_memory_order_release = 3,
+  iree_memory_order_acq_rel = 4,
+  iree_memory_order_seq_cst = 5
+}
+global iree_atomic_int32_t: type <cimport,nodecl> = @int32
+global iree_atomic_int64_t: type <cimport,nodecl> = @int64
+global iree_atomic_intptr_t: type <cimport,nodecl> = @isize
+global iree_atomic_ref_count_t: type <cimport,nodecl> = @iree_atomic_int32_t
+global iree_vm_ref_type_bits_t: type <cimport,nodecl,using,ctypedef'iree_vm_ref_type_bits_t'> = @enum(cint){
+  IREE_VM_REF_TYPE_NULL = 0,
+  IREE_VM_REF_TYPE_MAX_VALUE = 16777214,
+  IREE_VM_REF_TYPE_ANY = 16777215
+}
+global iree_vm_ref_type_t: type <cimport,nodecl> = @uint32
+global iree_vm_ref_object_t: type <cimport,nodecl> = @record{
+  counter: iree_atomic_ref_count_t
+}
+global iree_vm_ref_t: type <cimport,nodecl> = @record{
+  ptr: pointer,
+  offsetof_counter: uint32,
+  type: iree_vm_ref_type_t
+}
+global iree_vm_ref_destroy_t: type <cimport,nodecl> = @function(ptr: pointer): void
+global iree_vm_ref_type_descriptor_t: type <cimport,nodecl> = @record{
+  destroy: iree_vm_ref_destroy_t,
+  offsetof_counter: uint32,
+  type: iree_vm_ref_type_t,
+  type_name: iree_string_view_t
+}
+global iree_vm_buffer_access_bits_t: type <cimport,nodecl,using,ctypedef'iree_vm_buffer_access_bits_t'> = @enum(cint){
+  IREE_VM_BUFFER_ACCESS_MUTABLE = 1,
+  IREE_VM_BUFFER_ACCESS_ORIGIN_MODULE = 2,
+  IREE_VM_BUFFER_ACCESS_ORIGIN_GUEST = 4,
+  IREE_VM_BUFFER_ACCESS_ORIGIN_HOST = 8
+}
+global iree_vm_buffer_access_t: type <cimport,nodecl> = @uint32
+global iree_vm_buffer_t: type <cimport,nodecl> = @record{
+  ref_object: iree_vm_ref_object_t,
+  access: iree_vm_buffer_access_t,
+  data: iree_byte_span_t,
+  allocator: iree_allocator_t
+}
+global iree_vm_instance_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_module_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_stack_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_stack_frame_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_reflection_attr_t: type <cimport,nodecl> = @record{
+  key: iree_string_view_t,
+  value: iree_string_view_t
+}
+global iree_vm_function_linkage_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_VM_FUNCTION_LINKAGE_INTERNAL = 0,
+  IREE_VM_FUNCTION_LINKAGE_IMPORT = 1,
+  IREE_VM_FUNCTION_LINKAGE_EXPORT = 2
+}
+global iree_vm_function_t: type <cimport,nodecl> = @record{
+  module: *iree_vm_module_t,
+  linkage: uint16,
+  ordinal: uint16
+}
+global iree_vm_function_signature_t: type <cimport,nodecl> = @record{
+  calling_convention: iree_string_view_t
+}
+global iree_vm_module_signature_t: type <cimport,nodecl> = @record{
+  import_function_count: iree_host_size_t,
+  export_function_count: iree_host_size_t,
+  internal_function_count: iree_host_size_t
+}
+global iree_vm_module_state_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_register_list_t: type <cimport,nodecl> = @record{
+  size: uint16,
+  registers: [0]uint16
+}
+global iree_vm_function_call_t: type <cimport,nodecl> = @record{
+  function_: iree_vm_function_t,
+  arguments: iree_byte_span_t,
+  results: iree_byte_span_t
+}
+global iree_vm_execution_result_t: type <cimport,nodecl> = @record{
+  reserved: cint
+}
+global iree_vm_source_offset_t: type <cimport,nodecl> = @int64
+global iree_vm_source_location_format_flag_bits_e: type <cimport,nodecl,using,ctypedef'iree_vm_source_location_format_flag_bits_e'> = @enum(cint){
+  IREE_VM_SOURCE_LOCATION_FORMAT_FLAG_NONE = 0,
+  IREE_VM_SOURCE_LOCATION_FORMAT_FLAG_SINGLE_LINE = 1
+}
+global iree_vm_source_location_format_flags_t: type <cimport,nodecl> = @uint32
+global iree_vm_source_location_t: type <cimport,nodecl> = @record{
+  self: pointer,
+  data: [2]uint64,
+  format: function(self: pointer, data: *[2]uint64, flags: iree_vm_source_location_format_flags_t, builder: *iree_string_builder_t): iree_status_t
+}
+global iree_vm_signal_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_VM_SIGNAL_RESUME = 0,
+  IREE_VM_SIGNAL_SUSPEND = 1,
+  IREE_VM_SIGNAL_LOW_MEMORY = 2
+}
+iree_vm_module_t = @record{
+  self: pointer,
+  ref_count: iree_atomic_ref_count_t,
+  destroy: function(self: pointer): void,
+  name: function(self: pointer): iree_string_view_t,
+  signature: function(self: pointer): iree_vm_module_signature_t,
+  get_function: function(self: pointer, linkage: iree_vm_function_linkage_t, ordinal: iree_host_size_t, out_function: *iree_vm_function_t, out_name: *iree_string_view_t, out_signature: *iree_vm_function_signature_t): iree_status_t,
+  lookup_function: function(self: pointer, linkage: iree_vm_function_linkage_t, name: iree_string_view_t, out_function: *iree_vm_function_t): iree_status_t,
+  resolve_source_location: function(self: pointer, frame: *iree_vm_stack_frame_t, out_source_location: *iree_vm_source_location_t): iree_status_t,
+  alloc_state: function(self: pointer, allocator: iree_allocator_t, out_module_state: **iree_vm_module_state_t): iree_status_t,
+  free_state: function(self: pointer, module_state: *iree_vm_module_state_t): void,
+  resolve_import: function(self: pointer, module_state: *iree_vm_module_state_t, ordinal: iree_host_size_t, function_: *iree_vm_function_t, signature: *iree_vm_function_signature_t): iree_status_t,
+  notify: function(self: pointer, module_state: *iree_vm_module_state_t, signal: iree_vm_signal_t): iree_status_t,
+  begin_call: function(self: pointer, stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, out_result: *iree_vm_execution_result_t): iree_status_t,
+  resume_call: function(self: pointer, stack: *iree_vm_stack_t, out_result: *iree_vm_execution_result_t): iree_status_t,
+  get_function_reflection_attr: function(self: pointer, linkage: iree_vm_function_linkage_t, ordinal: iree_host_size_t, index: iree_host_size_t, key: *iree_string_view_t, value: *iree_string_view_t): iree_status_t
+}
+global iree_zone_id_t: type <cimport,nodecl> = @uint32
+global IREE_TRACING_PLOT_TYPE_NUMBER: cint <comptime> = 0
+global IREE_TRACING_PLOT_TYPE_MEMORY: cint <comptime> = 1
+global IREE_TRACING_PLOT_TYPE_PERCENTAGE: cint <comptime> = 2
+global IREE_TRACING_MESSAGE_LEVEL_ERROR: cint <comptime> = 16711680
+global IREE_TRACING_MESSAGE_LEVEL_WARNING: cint <comptime> = 16776960
+global IREE_TRACING_MESSAGE_LEVEL_INFO: cint <comptime> = 16777215
+global IREE_TRACING_MESSAGE_LEVEL_VERBOSE: cint <comptime> = 12632256
+global IREE_TRACING_MESSAGE_LEVEL_DEBUG: cint <comptime> = 65280
+global iree_vm_invocation_flag_bits_t: type <cimport,nodecl,using,ctypedef'iree_vm_invocation_flag_bits_t'> = @enum(cint){
+  IREE_VM_INVOCATION_FLAG_NONE = 0,
+  IREE_VM_INVOCATION_FLAG_TRACE_EXECUTION = 1
+}
+global iree_vm_invocation_flags_t: type <cimport,nodecl> = @uint32
+global iree_vm_stack_frame_type_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_VM_STACK_FRAME_EXTERNAL = 0,
+  IREE_VM_STACK_FRAME_NATIVE = 1,
+  IREE_VM_STACK_FRAME_BYTECODE = 2
+}
+iree_vm_stack_frame_t = @record{
+  function_: iree_vm_function_t,
+  module_state: *iree_vm_module_state_t,
+  pc: iree_vm_source_offset_t,
+  depth: int32
+}
+global iree_vm_stack_frame_cleanup_fn_t: type <cimport,nodecl> = @function(frame: *iree_vm_stack_frame_t): void
+global iree_vm_state_resolver_t: type <cimport,nodecl> = @record{
+  self: pointer,
+  query_module_state: function(state_resolver: pointer, module: *iree_vm_module_t, out_module_state: **iree_vm_module_state_t): iree_status_t
+}
+global iree_vm_context_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_context_flag_bits_t: type <cimport,nodecl,using,ctypedef'iree_vm_context_flag_bits_t'> = @enum(cint){
+  IREE_VM_CONTEXT_FLAG_NONE = 0,
+  IREE_VM_CONTEXT_FLAG_TRACE_EXECUTION = 1
+}
+global iree_vm_context_flags_t: type <cimport,nodecl> = @uint32
+global iree_vm_size_t: type <cimport,nodecl> = @int32
+global iree_vm_value_type_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_VM_VALUE_TYPE_NONE = 0,
+  IREE_VM_VALUE_TYPE_I8 = 1,
+  IREE_VM_VALUE_TYPE_I16 = 2,
+  IREE_VM_VALUE_TYPE_I32 = 3,
+  IREE_VM_VALUE_TYPE_I64 = 4,
+  IREE_VM_VALUE_TYPE_F32 = 5,
+  IREE_VM_VALUE_TYPE_F64 = 6,
+  IREE_VM_VALUE_TYPE_MAX = 6,
+  IREE_VM_VALUE_TYPE_COUNT = 7
+}
+global iree_vm_value_t: type <cimport,nodecl> = @record{
+  type: iree_vm_value_type_t,
+  __unnamed2: union{
+    i8: int8,
+    i16: int16,
+    i32: int32,
+    i64: int64,
+    f32: float32,
+    f64: float64,
+    value_storage: [8]uint8
+  }
+}
+global iree_vm_type_def_t: type <cimport,nodecl> = @record{
+  value_type: iree_vm_value_type_t,
+  ref_type: iree_vm_ref_type_t
+}
+global iree_vm_variant_t: type <cimport,nodecl> = @record{
+  type: iree_vm_type_def_t,
+  __unnamed2: union{
+    i8: int8,
+    i16: int16,
+    i32: int32,
+    i64: int64,
+    f32: float32,
+    f64: float64,
+    ref: iree_vm_ref_t,
+    value_storage: [8]uint8
+  }
+}
+global iree_vm_list_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_invocation_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_invocation_policy_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_vm_native_import_descriptor_t: type <cimport,nodecl> = @record{
+  full_name: iree_string_view_t
+}
+global iree_vm_native_export_descriptor_t: type <cimport,nodecl> = @record{
+  local_name: iree_string_view_t,
+  calling_convention: iree_string_view_t,
+  reflection_attr_count: iree_host_size_t,
+  reflection_attrs: *iree_vm_reflection_attr_t
+}
+global iree_vm_native_function_target_t: type <cimport,nodecl> = @function(stack: *iree_vm_stack_t, module: pointer, module_state: pointer): iree_status_t
+global iree_vm_native_function_shim_t: type <cimport,nodecl> = @function(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t
+global iree_vm_native_function_ptr_t: type <cimport,nodecl> = @record{
+  shim: iree_vm_native_function_shim_t,
+  target: iree_vm_native_function_target_t
+}
+global iree_vm_native_module_descriptor_t: type <cimport,nodecl> = @record{
+  module_name: iree_string_view_t,
+  import_count: iree_host_size_t,
+  imports: *iree_vm_native_import_descriptor_t,
+  export_count: iree_host_size_t,
+  exports: *iree_vm_native_export_descriptor_t,
+  function_count: iree_host_size_t,
+  functions: *iree_vm_native_function_ptr_t,
+  reflection_attr_count: iree_host_size_t,
+  reflection_attrs: *iree_vm_reflection_attr_t
+}
+global iree_vm_native_function_target2_t: type <cimport,nodecl> = @function(stack: *iree_vm_stack_t, module: pointer, module_state: pointer, args: pointer, rets: pointer): iree_status_t
+global iree_vm_abi_v_t: type <cimport,nodecl> = @record{
+  unused: cint
+}
+global iree_vm_abi_i_t: type <cimport,nodecl> = @record{
+  i0: int32
+}
+global iree_vm_abi_f_t: type <cimport,nodecl> = @record{
+  f0: float32
+}
+global iree_vm_abi_ii_t: type <cimport,nodecl> = @record{
+  i0: int32,
+  i1: int32
+}
+global iree_vm_abi_iii_t: type <cimport,nodecl> = @record{
+  i0: int32,
+  i1: int32,
+  i2: int32
+}
+global iree_vm_abi_iiii_t: type <cimport,nodecl> = @record{
+  i0: int32,
+  i1: int32,
+  i2: int32,
+  i3: int32
+}
+global iree_vm_abi_irii_t: type <cimport,nodecl> = @record{
+  i0: int32,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  i3: int32
+}
+global iree_vm_abi_r_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t
+}
+global iree_vm_abi_rr_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t
+}
+global iree_vm_abi_rrr_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  r2: iree_vm_ref_t
+}
+global iree_vm_abi_ri_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32
+}
+global iree_vm_abi_ririi_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  r2: iree_vm_ref_t,
+  i3: int32,
+  i4: int32
+}
+global iree_vm_abi_rii_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  i2: int32
+}
+global iree_vm_abi_rif_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  f2: float32
+}
+global iree_vm_abi_riii_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  i2: int32,
+  i3: int32
+}
+global iree_vm_abi_riirii_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  i2: int32,
+  r3: iree_vm_ref_t,
+  i4: int32,
+  i5: int32
+}
+global iree_vm_abi_riiirii_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  i2: int32,
+  i3: int32,
+  r4: iree_vm_ref_t,
+  i5: int32,
+  i6: int32
+}
+global iree_vm_abi_rriiii_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  i3: int32,
+  i4: int32,
+  i5: int32
+}
+global iree_vm_abi_rriri_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  r3: iree_vm_ref_t,
+  i4: int32
+}
+global iree_vm_abi_rririi_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  r3: iree_vm_ref_t,
+  i4: int32,
+  i5: int32
+}
+global iree_vm_abi_rrriii_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  r2: iree_vm_ref_t,
+  i3: int32,
+  i4: int32,
+  i5: int32
+}
+global iree_vm_abi_rCiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  a1_count: iree_vm_size_t,
+  a1: [0]iree_vm_abi_i_t
+}
+global iree_vm_abi_rCrD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  a1_count: iree_vm_size_t,
+  a1: [0]iree_vm_abi_r_t
+}
+global iree_vm_abi_riCiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  a2_count: iree_vm_size_t,
+  a2: [0]iree_vm_abi_i_t
+}
+global iree_vm_abi_riiCiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  i2: int32,
+  a3_count: iree_vm_size_t,
+  a3: [0]iree_vm_abi_i_t
+}
+global iree_vm_abi_rriiCiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  i3: int32,
+  a4_count: iree_vm_size_t,
+  a4: [0]iree_vm_abi_i_t
+}
+global iree_vm_abi_riCrD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  a2_count: iree_vm_size_t,
+  a2: [0]iree_vm_abi_r_t
+}
+global iree_vm_abi_riiCriD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  i2: int32,
+  a3_count: iree_vm_size_t,
+  a3: [0]iree_vm_abi_ri_t
+}
+global iree_vm_abi_rirCrD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  r2: iree_vm_ref_t,
+  a3_count: iree_vm_size_t,
+  a3: [0]iree_vm_abi_r_t
+}
+global iree_vm_abi_rrrrCrD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  r2: iree_vm_ref_t,
+  r3: iree_vm_ref_t,
+  a4_count: iree_vm_size_t,
+  a4: [0]iree_vm_abi_r_t
+}
+global iree_vm_abi_rriCiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  a3_count: iree_vm_size_t,
+  a3: [0]iree_vm_abi_i_t
+}
+global iree_vm_abi_rrirCiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  r3: iree_vm_ref_t,
+  a4_count: iree_vm_size_t,
+  a4: [0]iree_vm_abi_i_t
+}
+global iree_vm_abi_riCiiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  i1: int32,
+  a2_count: iree_vm_size_t,
+  a2: [0]iree_vm_abi_ii_t
+}
+global iree_vm_abi_rrCiriiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  a2_count: iree_vm_size_t,
+  a2: [0]iree_vm_abi_irii_t
+}
+global iree_vm_abi_rriCiriiD_t: type <cimport,nodecl> = @record{
+  r0: iree_vm_ref_t,
+  r1: iree_vm_ref_t,
+  i2: int32,
+  a3_count: iree_vm_size_t,
+  a3: [0]iree_vm_abi_irii_t
+}
+global iree_hal_resource_t: type <cimport,nodecl> = @record{
+  ref_count: iree_atomic_ref_count_t,
+  vtable: pointer
+}
+global iree_hal_resource_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(resource: *iree_hal_resource_t): void
+}
+global iree_hal_allocator_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_memory_type_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_memory_type_bits_t'> = @enum(cint){
+  IREE_HAL_MEMORY_TYPE_NONE = 0,
+  IREE_HAL_MEMORY_TYPE_TRANSIENT = 1,
+  IREE_HAL_MEMORY_TYPE_HOST_VISIBLE = 2,
+  IREE_HAL_MEMORY_TYPE_HOST_COHERENT = 4,
+  IREE_HAL_MEMORY_TYPE_HOST_CACHED = 8,
+  IREE_HAL_MEMORY_TYPE_HOST_LOCAL = 6,
+  IREE_HAL_MEMORY_TYPE_DEVICE_VISIBLE = 16,
+  IREE_HAL_MEMORY_TYPE_DEVICE_LOCAL = 48
+}
+global iree_hal_memory_type_t: type <cimport,nodecl> = @uint32
+global iree_hal_memory_access_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_memory_access_bits_t'> = @enum(cint){
+  IREE_HAL_MEMORY_ACCESS_NONE = 0,
+  IREE_HAL_MEMORY_ACCESS_READ = 1,
+  IREE_HAL_MEMORY_ACCESS_WRITE = 2,
+  IREE_HAL_MEMORY_ACCESS_DISCARD = 4,
+  IREE_HAL_MEMORY_ACCESS_DISCARD_WRITE = 6,
+  IREE_HAL_MEMORY_ACCESS_MAY_ALIAS = 8,
+  IREE_HAL_MEMORY_ACCESS_ANY = 16,
+  IREE_HAL_MEMORY_ACCESS_ALL = 7
+}
+global iree_hal_memory_access_t: type <cimport,nodecl> = @uint16
+global iree_hal_buffer_usage_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_buffer_usage_bits_t'> = @enum(cint){
+  IREE_HAL_BUFFER_USAGE_NONE = 0,
+  IREE_HAL_BUFFER_USAGE_CONSTANT = 1,
+  IREE_HAL_BUFFER_USAGE_TRANSFER = 2,
+  IREE_HAL_BUFFER_USAGE_MAPPING = 4,
+  IREE_HAL_BUFFER_USAGE_DISPATCH = 8,
+  IREE_HAL_BUFFER_USAGE_ALL = 14
+}
+global iree_hal_buffer_usage_t: type <cimport,nodecl> = @uint32
+global iree_hal_buffer_overlap_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_HAL_BUFFER_OVERLAP_DISJOINT = 0,
+  IREE_HAL_BUFFER_OVERLAP_PARTIAL = 1,
+  IREE_HAL_BUFFER_OVERLAP_COMPLETE = 2
+}
+global iree_hal_transfer_buffer_flag_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_transfer_buffer_flag_bits_t'> = @enum(cint){
+  IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT = 0
+}
+global iree_hal_transfer_buffer_flags_t: type <cimport,nodecl> = @uint32
+global iree_hal_mapping_mode_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_mapping_mode_bits_t'> = @enum(cint){
+  IREE_HAL_MAPPING_MODE_SCOPED = 1,
+  IREE_HAL_MAPPING_MODE_PERSISTENT = 2
+}
+global iree_hal_mapping_mode_t: type <cimport,nodecl> = @uint32
+global iree_hal_buffer_mapping_impl_t: type <cimport,nodecl> = @record{
+  byte_offset: iree_device_size_t,
+  allowed_access: iree_hal_memory_access_t,
+  is_persistent: uint32,
+  reserved_flags: uint32,
+  reserved: [1]uint64
+}
+global iree_hal_buffer_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_buffer_mapping_t: type <cimport,nodecl> = @record{
+  contents: iree_byte_span_t,
+  buffer: *iree_hal_buffer_t,
+  impl: iree_hal_buffer_mapping_impl_t
+}
+global iree_hal_buffer_vtable_t: type <cimport,nodecl> = @record{
+  recycle: function(buffer: *iree_hal_buffer_t): void,
+  destroy: function(buffer: *iree_hal_buffer_t): void,
+  map_range: function(buffer: *iree_hal_buffer_t, mapping_mode: iree_hal_mapping_mode_t, memory_access: iree_hal_memory_access_t, local_byte_offset: iree_device_size_t, local_byte_length: iree_device_size_t, mapping: *iree_hal_buffer_mapping_t): iree_status_t,
+  unmap_range: function(buffer: *iree_hal_buffer_t, local_byte_offset: iree_device_size_t, local_byte_length: iree_device_size_t, mapping: *iree_hal_buffer_mapping_t): iree_status_t,
+  invalidate_range: function(buffer: *iree_hal_buffer_t, local_byte_offset: iree_device_size_t, local_byte_length: iree_device_size_t): iree_status_t,
+  flush_range: function(buffer: *iree_hal_buffer_t, local_byte_offset: iree_device_size_t, local_byte_length: iree_device_size_t): iree_status_t
+}
+iree_hal_buffer_t = @record{
+  resource: iree_hal_resource_t,
+  allocated_buffer: *iree_hal_buffer_t,
+  allocation_size: iree_device_size_t,
+  byte_offset: iree_device_size_t,
+  byte_length: iree_device_size_t,
+  host_allocator: iree_allocator_t,
+  device_allocator: *iree_hal_allocator_t,
+  memory_type: iree_hal_memory_type_t,
+  allowed_usage: iree_hal_buffer_usage_t,
+  allowed_access: iree_hal_memory_access_t,
+  flags: uint16
+}
+global iree_hal_queue_affinity_t: type <cimport,nodecl> = @uint64
+global iree_hal_buffer_params_t: type <cimport,nodecl> = @record{
+  usage: iree_hal_buffer_usage_t,
+  access: iree_hal_memory_access_t,
+  type: iree_hal_memory_type_t,
+  queue_affinity: iree_hal_queue_affinity_t,
+  min_alignment: iree_device_size_t
+}
+global iree_hal_buffer_compatibility_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_buffer_compatibility_bits_t'> = @enum(cint){
+  IREE_HAL_BUFFER_COMPATIBILITY_NONE = 0,
+  IREE_HAL_BUFFER_COMPATIBILITY_ALLOCATABLE = 1,
+  IREE_HAL_BUFFER_COMPATIBILITY_IMPORTABLE = 2,
+  IREE_HAL_BUFFER_COMPATIBILITY_EXPORTABLE = 4,
+  IREE_HAL_BUFFER_COMPATIBILITY_QUEUE_TRANSFER = 1024,
+  IREE_HAL_BUFFER_COMPATIBILITY_QUEUE_DISPATCH = 2048
+}
+global iree_hal_buffer_compatibility_t: type <cimport,nodecl> = @uint32
+global iree_hal_external_buffer_type_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_HAL_EXTERNAL_BUFFER_TYPE_NONE = 0,
+  IREE_HAL_EXTERNAL_BUFFER_TYPE_HOST_ALLOCATION = 1,
+  IREE_HAL_EXTERNAL_BUFFER_TYPE_OPAQUE_FD = 2,
+  IREE_HAL_EXTERNAL_BUFFER_TYPE_OPAQUE_WIN32 = 3
+}
+global iree_hal_external_buffer_flag_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_external_buffer_flag_bits_t'> = @enum(cint){
+  IREE_HAL_EXTERNAL_BUFFER_FLAG_NONE = 0
+}
+global iree_hal_external_buffer_flags_t: type <cimport,nodecl> = @uint32
+global iree_hal_external_buffer_t: type <cimport,nodecl> = @record{
+  type: iree_hal_external_buffer_type_t,
+  flags: iree_hal_external_buffer_flags_t,
+  size: iree_device_size_t,
+  handle: union{
+    host_allocation: record{
+      ptr: pointer
+    },
+    opaque_fd: record{
+      fd: cint
+    },
+    opaque_win32: record{
+      handle: pointer
+    }
+  }
+}
+global iree_hal_buffer_release_fn_t: type <cimport,nodecl> = @function(user_data: pointer, buffer: *iree_hal_buffer_t): void
+global iree_hal_buffer_release_callback_t: type <cimport,nodecl> = @record{
+  fn: iree_hal_buffer_release_fn_t,
+  user_data: pointer
+}
+global iree_hal_allocator_statistics_t: type <cimport,nodecl> = @record{
+  host_bytes_peak: iree_device_size_t,
+  host_bytes_allocated: iree_device_size_t,
+  host_bytes_freed: iree_device_size_t,
+  device_bytes_peak: iree_device_size_t,
+  device_bytes_allocated: iree_device_size_t,
+  device_bytes_freed: iree_device_size_t
+}
+global iree_hal_allocator_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(allocator: *iree_hal_allocator_t): void,
+  host_allocator: function(allocator: *iree_hal_allocator_t): iree_allocator_t,
+  trim: function(allocator: *iree_hal_allocator_t): iree_status_t,
+  query_statistics: function(allocator: *iree_hal_allocator_t, out_statistics: *iree_hal_allocator_statistics_t): void,
+  query_compatibility: function(allocator: *iree_hal_allocator_t, params: *iree_hal_buffer_params_t, allocation_size: iree_device_size_t): iree_hal_buffer_compatibility_t,
+  allocate_buffer: function(allocator: *iree_hal_allocator_t, params: *iree_hal_buffer_params_t, allocation_size: iree_device_size_t, initial_data: iree_const_byte_span_t, out_buffer: **iree_hal_buffer_t): iree_status_t,
+  deallocate_buffer: function(allocator: *iree_hal_allocator_t, buffer: *iree_hal_buffer_t): void,
+  import_buffer: function(allocator: *iree_hal_allocator_t, params: *iree_hal_buffer_params_t, external_buffer: *iree_hal_external_buffer_t, release_callback: iree_hal_buffer_release_callback_t, out_buffer: **iree_hal_buffer_t): iree_status_t,
+  export_buffer: function(allocator: *iree_hal_allocator_t, buffer: *iree_hal_buffer_t, requested_type: iree_hal_external_buffer_type_t, requested_flags: iree_hal_external_buffer_flags_t, out_external_buffer: *iree_hal_external_buffer_t): iree_status_t
+}
+global iree_hal_numerical_type_bits_t: type = @cint
+global IREE_HAL_NUMERICAL_TYPE_UNKNOWN: cint <cimport,nodecl,const>
+global IREE_HAL_NUMERICAL_TYPE_INTEGER: cint <cimport,nodecl,const>
+global IREE_HAL_NUMERICAL_TYPE_INTEGER_SIGNED: cint <cimport,nodecl,const>
+global IREE_HAL_NUMERICAL_TYPE_INTEGER_UNSIGNED: cint <cimport,nodecl,const>
+global IREE_HAL_NUMERICAL_TYPE_FLOAT: cint <cimport,nodecl,const>
+global IREE_HAL_NUMERICAL_TYPE_FLOAT_IEEE: cint <cimport,nodecl,const>
+global IREE_HAL_NUMERICAL_TYPE_FLOAT_BRAIN: cint <cimport,nodecl,const>
+global iree_hal_numerical_type_t: type <cimport,nodecl> = @uint8
+global iree_hal_element_types_t: type = @cint
+global IREE_HAL_ELEMENT_TYPE_NONE: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_OPAQUE_8: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_OPAQUE_16: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_OPAQUE_32: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_OPAQUE_64: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_INT_4: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_SINT_4: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_UINT_4: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_INT_8: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_SINT_8: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_UINT_8: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_INT_16: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_SINT_16: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_UINT_16: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_INT_32: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_SINT_32: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_UINT_32: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_INT_64: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_SINT_64: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_UINT_64: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_FLOAT_16: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_FLOAT_32: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_FLOAT_64: cint <cimport,nodecl,const>
+global IREE_HAL_ELEMENT_TYPE_BFLOAT_16: cint <cimport,nodecl,const>
+global iree_hal_element_type_t: type <cimport,nodecl> = @uint32
+global iree_hal_encoding_types_t: type <cimport,nodecl,using,ctypedef'iree_hal_encoding_types_t'> = @enum(cint){
+  IREE_HAL_ENCODING_TYPE_OPAQUE = 0,
+  IREE_HAL_ENCODING_TYPE_DENSE_ROW_MAJOR = 1
+}
+global iree_hal_encoding_type_t: type <cimport,nodecl> = @uint32
+global iree_hal_dim_t: type <cimport,nodecl> = @int32
+global iree_hal_buffer_view_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_buffer_view_generator_callback_t: type <cimport,nodecl> = @function(mapping: *iree_hal_buffer_mapping_t, user_data: pointer): iree_status_t
+global iree_hal_device_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_descriptor_type_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_HAL_DESCRIPTOR_TYPE_UNIFORM_BUFFER = 6,
+  IREE_HAL_DESCRIPTOR_TYPE_STORAGE_BUFFER = 7,
+  IREE_HAL_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC = 8,
+  IREE_HAL_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC = 9
+}
+global iree_hal_descriptor_set_layout_usage_type_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_HAL_DESCRIPTOR_SET_LAYOUT_USAGE_TYPE_IMMUTABLE = 0,
+  IREE_HAL_DESCRIPTOR_SET_LAYOUT_USAGE_TYPE_PUSH_ONLY = 1
+}
+global iree_hal_descriptor_set_layout_binding_t: type <cimport,nodecl> = @record{
+  binding: uint32,
+  type: iree_hal_descriptor_type_t
+}
+global iree_hal_descriptor_set_layout_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_descriptor_set_layout_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(descriptor_set_layout: *iree_hal_descriptor_set_layout_t): void
+}
+global iree_hal_descriptor_set_binding_t: type <cimport,nodecl> = @record{
+  binding: uint32,
+  buffer: *iree_hal_buffer_t,
+  offset: iree_device_size_t,
+  length: iree_device_size_t
+}
+global iree_hal_descriptor_set_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_descriptor_set_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(descriptor_set: *iree_hal_descriptor_set_t): void
+}
+global iree_hal_event_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_event_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(event: *iree_hal_event_t): void
+}
+global iree_hal_executable_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_executable_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(executable: *iree_hal_executable_t): void
+}
+global iree_hal_executable_layout_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_executable_layout_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(executable_layout: *iree_hal_executable_layout_t): void
+}
+global iree_hal_command_buffer_mode_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_command_buffer_mode_bits_t'> = @enum(cint){
+  IREE_HAL_COMMAND_BUFFER_MODE_ONE_SHOT = 1,
+  IREE_HAL_COMMAND_BUFFER_MODE_ALLOW_INLINE_EXECUTION = 16,
+  IREE_HAL_COMMAND_BUFFER_MODE_UNVALIDATED = 32
+}
+global iree_hal_command_buffer_mode_t: type <cimport,nodecl> = @uint32
+global iree_hal_command_category_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_command_category_bits_t'> = @enum(cint){
+  IREE_HAL_COMMAND_CATEGORY_TRANSFER = 1,
+  IREE_HAL_COMMAND_CATEGORY_DISPATCH = 2,
+  IREE_HAL_COMMAND_CATEGORY_ANY = 3
+}
+global iree_hal_command_category_t: type <cimport,nodecl> = @uint32
+global iree_hal_execution_stage_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_execution_stage_bits_t'> = @enum(cint){
+  IREE_HAL_EXECUTION_STAGE_COMMAND_ISSUE = 1,
+  IREE_HAL_EXECUTION_STAGE_COMMAND_PROCESS = 2,
+  IREE_HAL_EXECUTION_STAGE_DISPATCH = 4,
+  IREE_HAL_EXECUTION_STAGE_TRANSFER = 8,
+  IREE_HAL_EXECUTION_STAGE_COMMAND_RETIRE = 16,
+  IREE_HAL_EXECUTION_STAGE_HOST = 32
+}
+global iree_hal_execution_stage_t: type <cimport,nodecl> = @uint32
+global iree_hal_execution_barrier_flag_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_execution_barrier_flag_bits_t'> = @enum(cint){
+  IREE_HAL_EXECUTION_BARRIER_FLAG_NONE = 0
+}
+global iree_hal_execution_barrier_flags_t: type <cimport,nodecl> = @uint32
+global iree_hal_access_scope_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_access_scope_bits_t'> = @enum(cint){
+  IREE_HAL_ACCESS_SCOPE_INDIRECT_COMMAND_READ = 1,
+  IREE_HAL_ACCESS_SCOPE_CONSTANT_READ = 2,
+  IREE_HAL_ACCESS_SCOPE_DISPATCH_READ = 4,
+  IREE_HAL_ACCESS_SCOPE_DISPATCH_WRITE = 8,
+  IREE_HAL_ACCESS_SCOPE_TRANSFER_READ = 16,
+  IREE_HAL_ACCESS_SCOPE_TRANSFER_WRITE = 32,
+  IREE_HAL_ACCESS_SCOPE_HOST_READ = 64,
+  IREE_HAL_ACCESS_SCOPE_HOST_WRITE = 128,
+  IREE_HAL_ACCESS_SCOPE_MEMORY_READ = 256,
+  IREE_HAL_ACCESS_SCOPE_MEMORY_WRITE = 512
+}
+global iree_hal_access_scope_t: type <cimport,nodecl> = @uint32
+global iree_hal_memory_barrier_t: type <cimport,nodecl> = @record{
+  source_scope: iree_hal_access_scope_t,
+  target_scope: iree_hal_access_scope_t
+}
+global iree_hal_buffer_barrier_t: type <cimport,nodecl> = @record{
+  source_scope: iree_hal_access_scope_t,
+  target_scope: iree_hal_access_scope_t,
+  buffer: *iree_hal_buffer_t,
+  offset: iree_device_size_t,
+  length: iree_device_size_t
+}
+global iree_hal_label_color_t: type <cimport,nodecl> = @record{
+  r: uint8,
+  g: uint8,
+  b: uint8,
+  a: uint8
+}
+global iree_hal_label_location_t: type <cimport,nodecl> = @record{
+  file: iree_string_view_t,
+  line: cint
+}
+global iree_hal_command_buffer_validation_state_t: type <cimport,nodecl> = @record{
+  device: *iree_hal_device_t,
+  is_recording: boolean,
+  debug_group_depth: int32
+}
+global iree_hal_command_buffer_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_transfer_command_type_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_HAL_TRANSFER_COMMAND_TYPE_FILL = 0,
+  IREE_HAL_TRANSFER_COMMAND_TYPE_COPY = 1,
+  IREE_HAL_TRANSFER_COMMAND_TYPE_UPDATE = 2
+}
+global iree_hal_transfer_command_t: type <cimport,nodecl> = @record{
+  type: iree_hal_transfer_command_type_t,
+  __unnamed2: union{
+    fill: record{
+      target_buffer: *iree_hal_buffer_t,
+      target_offset: iree_device_size_t,
+      length: iree_device_size_t,
+      pattern: pointer,
+      pattern_length: iree_host_size_t
+    },
+    copy: record{
+      source_buffer: *iree_hal_buffer_t,
+      source_offset: iree_device_size_t,
+      target_buffer: *iree_hal_buffer_t,
+      target_offset: iree_device_size_t,
+      length: iree_device_size_t
+    },
+    update: record{
+      source_buffer: pointer,
+      source_offset: iree_host_size_t,
+      target_buffer: *iree_hal_buffer_t,
+      target_offset: iree_device_size_t,
+      length: iree_device_size_t
+    }
+  }
+}
+global iree_hal_command_buffer_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(command_buffer: *iree_hal_command_buffer_t): void,
+  dyn_cast: function(command_buffer: *iree_hal_command_buffer_t, vtable: pointer): pointer,
+  begin: function(command_buffer: *iree_hal_command_buffer_t): iree_status_t,
+  end_: function(command_buffer: *iree_hal_command_buffer_t): iree_status_t,
+  begin_debug_group: function(command_buffer: *iree_hal_command_buffer_t, label: iree_string_view_t, label_color: iree_hal_label_color_t, location: *iree_hal_label_location_t): void,
+  end_debug_group: function(command_buffer: *iree_hal_command_buffer_t): void,
+  execution_barrier: function(command_buffer: *iree_hal_command_buffer_t, source_stage_mask: iree_hal_execution_stage_t, target_stage_mask: iree_hal_execution_stage_t, flags: iree_hal_execution_barrier_flags_t, memory_barrier_count: iree_host_size_t, memory_barriers: *iree_hal_memory_barrier_t, buffer_barrier_count: iree_host_size_t, buffer_barriers: *iree_hal_buffer_barrier_t): iree_status_t,
+  signal_event: function(command_buffer: *iree_hal_command_buffer_t, event: *iree_hal_event_t, source_stage_mask: iree_hal_execution_stage_t): iree_status_t,
+  reset_event: function(command_buffer: *iree_hal_command_buffer_t, event: *iree_hal_event_t, source_stage_mask: iree_hal_execution_stage_t): iree_status_t,
+  wait_events: function(command_buffer: *iree_hal_command_buffer_t, event_count: iree_host_size_t, events: **iree_hal_event_t, source_stage_mask: iree_hal_execution_stage_t, target_stage_mask: iree_hal_execution_stage_t, memory_barrier_count: iree_host_size_t, memory_barriers: *iree_hal_memory_barrier_t, buffer_barrier_count: iree_host_size_t, buffer_barriers: *iree_hal_buffer_barrier_t): iree_status_t,
+  discard_buffer: function(command_buffer: *iree_hal_command_buffer_t, buffer: *iree_hal_buffer_t): iree_status_t,
+  fill_buffer: function(command_buffer: *iree_hal_command_buffer_t, target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, length: iree_device_size_t, pattern: pointer, pattern_length: iree_host_size_t): iree_status_t,
+  update_buffer: function(command_buffer: *iree_hal_command_buffer_t, source_buffer: pointer, source_offset: iree_host_size_t, target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, length: iree_device_size_t): iree_status_t,
+  copy_buffer: function(command_buffer: *iree_hal_command_buffer_t, source_buffer: *iree_hal_buffer_t, source_offset: iree_device_size_t, target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, length: iree_device_size_t): iree_status_t,
+  push_constants: function(command_buffer: *iree_hal_command_buffer_t, executable_layout: *iree_hal_executable_layout_t, offset: iree_host_size_t, values: pointer, values_length: iree_host_size_t): iree_status_t,
+  push_descriptor_set: function(command_buffer: *iree_hal_command_buffer_t, executable_layout: *iree_hal_executable_layout_t, set: uint32, binding_count: iree_host_size_t, bindings: *iree_hal_descriptor_set_binding_t): iree_status_t,
+  bind_descriptor_set: function(command_buffer: *iree_hal_command_buffer_t, executable_layout: *iree_hal_executable_layout_t, set: uint32, descriptor_set: *iree_hal_descriptor_set_t, dynamic_offset_count: iree_host_size_t, dynamic_offsets: *iree_device_size_t): iree_status_t,
+  dispatch: function(command_buffer: *iree_hal_command_buffer_t, executable: *iree_hal_executable_t, entry_point: int32, workgroup_x: uint32, workgroup_y: uint32, workgroup_z: uint32): iree_status_t,
+  dispatch_indirect: function(command_buffer: *iree_hal_command_buffer_t, executable: *iree_hal_executable_t, entry_point: int32, workgroups_buffer: *iree_hal_buffer_t, workgroups_offset: iree_device_size_t): iree_status_t
+}
+iree_hal_command_buffer_t = @record{
+  resource: iree_hal_resource_t,
+  mode: iree_hal_command_buffer_mode_t,
+  allowed_categories: iree_hal_command_category_t,
+  queue_affinity: iree_hal_queue_affinity_t,
+  validation: iree_hal_command_buffer_validation_state_t
+}
+global iree_hal_executable_caching_mode_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_executable_caching_mode_bits_t'> = @enum(cint){
+  IREE_HAL_EXECUTABLE_CACHING_MODE_ALIAS_PROVIDED_DATA = 1,
+  IREE_HAL_EXECUTABLE_CACHING_MODE_ALLOW_PERSISTENT_CACHING = 2,
+  IREE_HAL_EXECUTABLE_CACHING_MODE_ALLOW_OPTIMIZATION = 4,
+  IREE_HAL_EXECUTABLE_CACHING_MODE_ENABLE_DEBUGGING = 8,
+  IREE_HAL_EXECUTABLE_CACHING_MODE_ENABLE_COVERAGE = 16,
+  IREE_HAL_EXECUTABLE_CACHING_MODE_ENABLE_PROFILING = 32,
+  IREE_HAL_EXECUTABLE_CACHING_MODE_DISABLE_VERIFICATION = 64
+}
+global iree_hal_executable_caching_mode_t: type <cimport,nodecl> = @uint32
+global iree_hal_executable_params_t: type <cimport,nodecl> = @record{
+  caching_mode: iree_hal_executable_caching_mode_t,
+  executable_format: iree_string_view_t,
+  executable_data: iree_const_byte_span_t,
+  executable_layout_count: iree_host_size_t,
+  executable_layouts: **iree_hal_executable_layout_t,
+  constant_count: iree_host_size_t,
+  constants: *uint32
+}
+global iree_hal_executable_cache_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_executable_cache_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(executable_cache: *iree_hal_executable_cache_t): void,
+  can_prepare_format: function(executable_cache: *iree_hal_executable_cache_t, caching_mode: iree_hal_executable_caching_mode_t, executable_format: iree_string_view_t): boolean,
+  prepare_executable: function(executable_cache: *iree_hal_executable_cache_t, executable_params: *iree_hal_executable_params_t, out_executable: **iree_hal_executable_t): iree_status_t
+}
+global iree_hal_semaphore_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_semaphore_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(semaphore: *iree_hal_semaphore_t): void,
+  query: function(semaphore: *iree_hal_semaphore_t, out_value: *uint64): iree_status_t,
+  signal: function(semaphore: *iree_hal_semaphore_t, new_value: uint64): iree_status_t,
+  fail: function(semaphore: *iree_hal_semaphore_t, status: iree_status_t): void,
+  wait: function(semaphore: *iree_hal_semaphore_t, value: uint64, timeout: iree_timeout_t): iree_status_t
+}
+global iree_hal_device_id_t: type <cimport,nodecl> = @usize
+global iree_hal_device_feature_bits_t: type <cimport,nodecl,using,ctypedef'iree_hal_device_feature_bits_t'> = @enum(cint){
+  IREE_HAL_DEVICE_FEATURE_NONE = 0,
+  IREE_HAL_DEVICE_FEATURE_SUPPORTS_DEBUGGING = 1,
+  IREE_HAL_DEVICE_FEATURE_SUPPORTS_COVERAGE = 2,
+  IREE_HAL_DEVICE_FEATURE_SUPPORTS_PROFILING = 4
+}
+global iree_hal_device_feature_t: type <cimport,nodecl> = @uint32
+global iree_hal_device_info_t: type <cimport,nodecl> = @record{
+  device_id: iree_hal_device_id_t,
+  name: iree_string_view_t
+}
+global iree_hal_transfer_buffer_t: type <cimport,nodecl> = @record{
+  host_buffer: iree_byte_span_t,
+  device_buffer: *iree_hal_buffer_t
+}
+global iree_hal_semaphore_list_t: type <cimport,nodecl> = @record{
+  count: iree_host_size_t,
+  semaphores: **iree_hal_semaphore_t,
+  payload_values: *uint64
+}
+global iree_hal_submission_batch_t: type <cimport,nodecl> = @record{
+  wait_semaphores: iree_hal_semaphore_list_t,
+  command_buffer_count: iree_host_size_t,
+  command_buffers: **iree_hal_command_buffer_t,
+  signal_semaphores: iree_hal_semaphore_list_t
+}
+global iree_hal_wait_mode_t: type <cimport,nodecl,using> = @enum(cint){
+  IREE_HAL_WAIT_MODE_ALL = 0,
+  IREE_HAL_WAIT_MODE_ANY = 1
+}
+global iree_hal_device_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(device: *iree_hal_device_t): void,
+  id: function(device: *iree_hal_device_t): iree_string_view_t,
+  host_allocator: function(device: *iree_hal_device_t): iree_allocator_t,
+  device_allocator: function(device: *iree_hal_device_t): *iree_hal_allocator_t,
+  trim: function(device: *iree_hal_device_t): iree_status_t,
+  query_i32: function(device: *iree_hal_device_t, category: iree_string_view_t, key: iree_string_view_t, out_value: *int32): iree_status_t,
+  create_command_buffer: function(device: *iree_hal_device_t, mode: iree_hal_command_buffer_mode_t, command_categories: iree_hal_command_category_t, queue_affinity: iree_hal_queue_affinity_t, out_command_buffer: **iree_hal_command_buffer_t): iree_status_t,
+  create_descriptor_set: function(device: *iree_hal_device_t, set_layout: *iree_hal_descriptor_set_layout_t, binding_count: iree_host_size_t, bindings: *iree_hal_descriptor_set_binding_t, out_descriptor_set: **iree_hal_descriptor_set_t): iree_status_t,
+  create_descriptor_set_layout: function(device: *iree_hal_device_t, usage_type: iree_hal_descriptor_set_layout_usage_type_t, binding_count: iree_host_size_t, bindings: *iree_hal_descriptor_set_layout_binding_t, out_descriptor_set_layout: **iree_hal_descriptor_set_layout_t): iree_status_t,
+  create_event: function(device: *iree_hal_device_t, out_event: **iree_hal_event_t): iree_status_t,
+  create_executable_cache: function(device: *iree_hal_device_t, identifier: iree_string_view_t, out_executable_cache: **iree_hal_executable_cache_t): iree_status_t,
+  create_executable_layout: function(device: *iree_hal_device_t, push_constants: iree_host_size_t, set_layout_count: iree_host_size_t, set_layouts: **iree_hal_descriptor_set_layout_t, out_executable_layout: **iree_hal_executable_layout_t): iree_status_t,
+  create_semaphore: function(device: *iree_hal_device_t, initial_value: uint64, out_semaphore: **iree_hal_semaphore_t): iree_status_t,
+  transfer_range: function(device: *iree_hal_device_t, source: iree_hal_transfer_buffer_t, source_offset: iree_device_size_t, target: iree_hal_transfer_buffer_t, target_offset: iree_device_size_t, data_length: iree_device_size_t, flags: iree_hal_transfer_buffer_flags_t, timeout: iree_timeout_t): iree_status_t,
+  queue_submit: function(device: *iree_hal_device_t, command_categories: iree_hal_command_category_t, queue_affinity: iree_hal_queue_affinity_t, batch_count: iree_host_size_t, batches: *iree_hal_submission_batch_t): iree_status_t,
+  submit_and_wait: function(device: *iree_hal_device_t, command_categories: iree_hal_command_category_t, queue_affinity: iree_hal_queue_affinity_t, batch_count: iree_host_size_t, batches: *iree_hal_submission_batch_t, wait_semaphore: *iree_hal_semaphore_t, wait_value: uint64, timeout: iree_timeout_t): iree_status_t,
+  wait_semaphores: function(device: *iree_hal_device_t, wait_mode: iree_hal_wait_mode_t, semaphore_list: *iree_hal_semaphore_list_t, timeout: iree_timeout_t): iree_status_t,
+  wait_idle: function(device: *iree_hal_device_t, timeout: iree_timeout_t): iree_status_t
+}
+global iree_hal_driver_id_t: type <cimport,nodecl> = @uint64
+global iree_hal_driver_info_t: type <cimport,nodecl> = @record{
+  driver_id: iree_hal_driver_id_t,
+  driver_name: iree_string_view_t,
+  full_name: iree_string_view_t
+}
+global iree_hal_driver_t: type <cimport,nodecl,forwarddecl> = @record{}
+global iree_hal_driver_vtable_t: type <cimport,nodecl> = @record{
+  destroy: function(driver: *iree_hal_driver_t): void,
+  query_available_devices: function(driver: *iree_hal_driver_t, allocator: iree_allocator_t, out_device_infos: **iree_hal_device_info_t, out_device_info_count: *iree_host_size_t): iree_status_t,
+  create_device: function(driver: *iree_hal_driver_t, device_id: iree_hal_device_id_t, allocator: iree_allocator_t, out_device: **iree_hal_device_t): iree_status_t
+}
+global iree_hal_driver_factory_t: type <cimport,nodecl> = @record{
+  self: pointer,
+  enumerate: function(self: pointer, out_driver_infos: **iree_hal_driver_info_t, out_driver_info_count: *iree_host_size_t): iree_status_t,
+  try_create: function(self: pointer, driver_id: iree_hal_driver_id_t, allocator: iree_allocator_t, out_driver: **iree_hal_driver_t): iree_status_t
+}
+global iree_hal_driver_registry_t: type <cimport,nodecl,forwarddecl> = @record{}
+global function iree_host_align(value: iree_host_size_t, alignment: iree_host_size_t): iree_host_size_t <cimport,nodecl> end
+global function iree_host_size_has_alignment(value: iree_host_size_t, alignment: iree_host_size_t): boolean <cimport,nodecl> end
+global function iree_device_align(value: iree_device_size_t, alignment: iree_device_size_t): iree_device_size_t <cimport,nodecl> end
+global function iree_device_size_has_alignment(value: iree_device_size_t, alignment: iree_device_size_t): boolean <cimport,nodecl> end
+global function iree_string_view_empty(): iree_string_view_t <cimport,nodecl> end
+global function iree_make_string_view(str: cstring, str_length: iree_host_size_t): iree_string_view_t <cimport,nodecl> end
+global function iree_make_cstring_view(str: cstring): iree_string_view_t <cimport,nodecl> end
+global function iree_string_view_equal(lhs: iree_string_view_t, rhs: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_string_view_compare(lhs: iree_string_view_t, rhs: iree_string_view_t): cint <cimport,nodecl> end
+global function iree_string_view_find_char(value: iree_string_view_t, c: cchar, pos: iree_host_size_t): iree_host_size_t <cimport,nodecl> end
+global function iree_string_view_find_first_of(value: iree_string_view_t, s: iree_string_view_t, pos: iree_host_size_t): iree_host_size_t <cimport,nodecl> end
+global function iree_string_view_find_last_of(value: iree_string_view_t, s: iree_string_view_t, pos: iree_host_size_t): iree_host_size_t <cimport,nodecl> end
+global function iree_string_view_starts_with(value: iree_string_view_t, prefix: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_string_view_ends_with(value: iree_string_view_t, suffix: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_string_view_remove_prefix(value: iree_string_view_t, n: iree_host_size_t): iree_string_view_t <cimport,nodecl> end
+global function iree_string_view_remove_suffix(value: iree_string_view_t, n: iree_host_size_t): iree_string_view_t <cimport,nodecl> end
+global function iree_string_view_strip_prefix(value: iree_string_view_t, prefix: iree_string_view_t): iree_string_view_t <cimport,nodecl> end
+global function iree_string_view_strip_suffix(value: iree_string_view_t, suffix: iree_string_view_t): iree_string_view_t <cimport,nodecl> end
+global function iree_string_view_consume_prefix(value: *iree_string_view_t, prefix: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_string_view_consume_suffix(value: *iree_string_view_t, suffix: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_string_view_trim(value: iree_string_view_t): iree_string_view_t <cimport,nodecl> end
+global function iree_string_view_substr(value: iree_string_view_t, pos: iree_host_size_t, n: iree_host_size_t): iree_string_view_t <cimport,nodecl> end
+global function iree_string_view_split(value: iree_string_view_t, split_char: cchar, out_lhs: *iree_string_view_t, out_rhs: *iree_string_view_t): isize <cimport,nodecl> end
+global function iree_string_view_replace_char(value: iree_string_view_t, old_char: cchar, new_char: cchar): void <cimport,nodecl> end
+global function iree_string_view_match_pattern(value: iree_string_view_t, pattern: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_string_view_append_to_buffer(source_value: iree_string_view_t, target_value: *iree_string_view_t, buffer: cstring): iree_host_size_t <cimport,nodecl> end
+global function iree_string_view_atoi_int32(value: iree_string_view_t, out_value: *int32): boolean <cimport,nodecl> end
+global function iree_string_view_atoi_uint32(value: iree_string_view_t, out_value: *uint32): boolean <cimport,nodecl> end
+global function iree_string_view_atoi_int64(value: iree_string_view_t, out_value: *int64): boolean <cimport,nodecl> end
+global function iree_string_view_atoi_uint64(value: iree_string_view_t, out_value: *uint64): boolean <cimport,nodecl> end
+global function iree_string_view_atof(value: iree_string_view_t, out_value: *float32): boolean <cimport,nodecl> end
+global function iree_string_view_atod(value: iree_string_view_t, out_value: *float64): boolean <cimport,nodecl> end
+global function iree_status_code_from_errno(error_number: cint): iree_status_code_t <cimport,nodecl> end
+global function iree_status_code_string(code: iree_status_code_t): cstring <cimport,nodecl> end
+global function iree_status_allocate(code: iree_status_code_t, file: cstring, line: uint32, message: iree_string_view_t): iree_status_t <cimport,nodecl> end
+global function iree_status_allocate_f(code: iree_status_code_t, file: cstring, line: uint32, format: cstring, ...: cvarargs): iree_status_t <cimport,nodecl> end
+global function iree_status_allocate_vf(code: iree_status_code_t, file: cstring, line: uint32, format: cstring, varargs_0: cvalist, varargs_1: cvalist): iree_status_t <cimport,nodecl> end
+global function iree_status_clone(status: iree_status_t): iree_status_t <cimport,nodecl> end
+global function iree_status_free(status: iree_status_t): void <cimport,nodecl> end
+global function iree_status_ignore(status: iree_status_t): iree_status_t <cimport,nodecl> end
+global function iree_status_join(base_status: iree_status_t, new_status: iree_status_t): iree_status_t <cimport,nodecl> end
+global function iree_status_abort(status: iree_status_t): void <cimport,nodecl> end
+global function iree_status_consume_code(status: iree_status_t): iree_status_code_t <cimport,nodecl> end
+global function iree_status_annotate(base_status: iree_status_t, message: iree_string_view_t): iree_status_t <cimport,nodecl> end
+global function iree_status_annotate_f(base_status: iree_status_t, format: cstring, ...: cvarargs): iree_status_t <cimport,nodecl> end
+global function iree_status_format(status: iree_status_t, buffer_capacity: iree_host_size_t, buffer: cstring, out_buffer_length: *iree_host_size_t): boolean <cimport,nodecl> end
+global function iree_status_fprint(file: *FILE, status: iree_status_t): void <cimport,nodecl> end
+global function iree_make_byte_span(data: pointer, data_length: iree_host_size_t): iree_byte_span_t <cimport,nodecl> end
+global function iree_byte_span_empty(): iree_byte_span_t <cimport,nodecl> end
+global function iree_byte_span_is_empty(span: iree_byte_span_t): boolean <cimport,nodecl> end
+global function iree_make_const_byte_span(data: pointer, data_length: iree_host_size_t): iree_const_byte_span_t <cimport,nodecl> end
+global function iree_const_byte_span_empty(): iree_const_byte_span_t <cimport,nodecl> end
+global function iree_const_byte_span_is_empty(span: iree_const_byte_span_t): boolean <cimport,nodecl> end
+global function iree_allocator_malloc(allocator: iree_allocator_t, byte_length: iree_host_size_t, out_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_allocator_malloc_uninitialized(allocator: iree_allocator_t, byte_length: iree_host_size_t, out_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_allocator_realloc(allocator: iree_allocator_t, byte_length: iree_host_size_t, inout_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_allocator_clone(allocator: iree_allocator_t, source_bytes: iree_const_byte_span_t, out_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_allocator_free(allocator: iree_allocator_t, ptr: pointer): void <cimport,nodecl> end
+global function iree_allocator_system_ctl(self: pointer, command: iree_allocator_command_t, params: pointer, inout_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_allocator_system(): iree_allocator_t <cimport,nodecl> end
+global function iree_allocator_null(): iree_allocator_t <cimport,nodecl> end
+global function iree_allocator_is_null(allocator: iree_allocator_t): boolean <cimport,nodecl> end
+global function iree_allocator_malloc_aligned(allocator: iree_allocator_t, byte_length: iree_host_size_t, min_alignment: iree_host_size_t, offset: iree_host_size_t, out_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_allocator_realloc_aligned(allocator: iree_allocator_t, byte_length: iree_host_size_t, min_alignment: iree_host_size_t, offset: iree_host_size_t, inout_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_allocator_free_aligned(allocator: iree_allocator_t, ptr: pointer): void <cimport,nodecl> end
+global function iree_string_builder_initialize(allocator: iree_allocator_t, out_builder: *iree_string_builder_t): void <cimport,nodecl> end
+global function iree_string_builder_initialize_with_storage(buffer: cstring, buffer_capacity: iree_host_size_t, out_builder: *iree_string_builder_t): void <cimport,nodecl> end
+global function iree_string_builder_deinitialize(builder: *iree_string_builder_t): void <cimport,nodecl> end
+global function iree_string_builder_buffer(builder: *iree_string_builder_t): cstring <cimport,nodecl> end
+global function iree_string_builder_size(builder: *iree_string_builder_t): iree_host_size_t <cimport,nodecl> end
+global function iree_string_builder_capacity(builder: *iree_string_builder_t): iree_host_size_t <cimport,nodecl> end
+global function iree_string_builder_view(builder: *iree_string_builder_t): iree_string_view_t <cimport,nodecl> end
+global function iree_string_builder_take_storage(builder: *iree_string_builder_t): cstring <cimport,nodecl> end
+global function iree_string_builder_reserve(builder: *iree_string_builder_t, minimum_capacity: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_string_builder_append_string(builder: *iree_string_builder_t, value: iree_string_view_t): iree_status_t <cimport,nodecl> end
+global function iree_string_builder_append_cstring(builder: *iree_string_builder_t, value: cstring): iree_status_t <cimport,nodecl> end
+global function iree_string_builder_append_format(builder: *iree_string_builder_t, format: cstring, ...: cvarargs): iree_status_t <cimport,nodecl> end
+global function iree_bitfield_format(value: uint32, mappings: *iree_bitfield_string_mapping_t, mapping_count: iree_host_size_t, string_builder: *iree_string_builder_t): iree_status_t <cimport,nodecl> end
+global function iree_bitfield_format_inline(value: uint32, mappings: *iree_bitfield_string_mapping_t, mapping_count: iree_host_size_t, out_temp: *iree_bitfield_string_temp_t): iree_string_view_t <cimport,nodecl> end
+global function iree_time_now(): iree_time_t <cimport,nodecl> end
+global function iree_relative_timeout_to_deadline_ns(timeout_ns: iree_duration_t): iree_time_t <cimport,nodecl> end
+global function iree_absolute_deadline_to_timeout_ns(deadline_ns: iree_time_t): iree_duration_t <cimport,nodecl> end
+global function iree_absolute_deadline_to_timeout_ms(deadline_ns: iree_time_t): uint32 <cimport,nodecl> end
+global function iree_immediate_timeout(): iree_timeout_t <cimport,nodecl> end
+global function iree_timeout_is_immediate(timeout: iree_timeout_t): boolean <cimport,nodecl> end
+global function iree_infinite_timeout(): iree_timeout_t <cimport,nodecl> end
+global function iree_timeout_is_infinite(timeout: iree_timeout_t): boolean <cimport,nodecl> end
+global function iree_make_deadline(deadline_ns: iree_time_t): iree_timeout_t <cimport,nodecl> end
+global function iree_make_timeout_ns(timeout_ns: iree_duration_t): iree_timeout_t <cimport,nodecl> end
+global function iree_make_timeout_ms(timeout_ms: iree_duration_t): iree_timeout_t <cimport,nodecl> end
+global function iree_convert_timeout_to_absolute(timeout: *iree_timeout_t): void <cimport,nodecl> end
+global function iree_timeout_as_deadline_ns(timeout: iree_timeout_t): iree_time_t <cimport,nodecl> end
+global function iree_timeout_min(lhs: iree_timeout_t, rhs: iree_timeout_t): iree_timeout_t <cimport,nodecl> end
+global function iree_wait_until(deadline_ns: iree_time_t): boolean <cimport,nodecl> end
+global function iree_make_wait_primitive(type: iree_wait_primitive_type_t, value: iree_wait_primitive_value_t): iree_wait_primitive_t <cimport,nodecl> end
+global function iree_wait_primitive_immediate(): iree_wait_primitive_t <cimport,nodecl> end
+global function iree_wait_primitive_is_immediate(wait_primitive: iree_wait_primitive_t): boolean <cimport,nodecl> end
+global function iree_wait_source_immediate(): iree_wait_source_t <cimport,nodecl> end
+global function iree_wait_source_is_immediate(wait_source: iree_wait_source_t): boolean <cimport,nodecl> end
+global function iree_wait_source_delay_ctl(wait_source: iree_wait_source_t, command: iree_wait_source_command_t, params: pointer, inout_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_wait_source_delay(deadline_ns: iree_time_t): iree_wait_source_t <cimport,nodecl> end
+global function iree_wait_source_is_delay(wait_source: iree_wait_source_t): boolean <cimport,nodecl> end
+global function iree_wait_source_import(wait_primitive: iree_wait_primitive_t, out_wait_source: *iree_wait_source_t): iree_status_t <cimport,nodecl> end
+global function iree_wait_source_export(wait_source: iree_wait_source_t, target_type: iree_wait_primitive_type_t, timeout: iree_timeout_t, out_wait_primitive: *iree_wait_primitive_t): iree_status_t <cimport,nodecl> end
+global function iree_wait_source_query(wait_source: iree_wait_source_t, out_wait_status_code: *iree_status_code_t): iree_status_t <cimport,nodecl> end
+global function iree_wait_source_wait_one(wait_source: iree_wait_source_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_loop_null(): iree_loop_t <cimport,nodecl> end
+global function iree_loop_call(loop: iree_loop_t, priority: iree_loop_priority_t, callback: iree_loop_callback_fn_t, user_data: pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_dispatch(loop: iree_loop_t, workgroup_count_xyz: *[3]uint32, workgroup_callback: iree_loop_workgroup_fn_t, completion_callback: iree_loop_callback_fn_t, user_data: pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_wait_until(loop: iree_loop_t, timeout: iree_timeout_t, callback: iree_loop_callback_fn_t, user_data: pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_wait_one(loop: iree_loop_t, wait_source: iree_wait_source_t, timeout: iree_timeout_t, callback: iree_loop_callback_fn_t, user_data: pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_wait_any(loop: iree_loop_t, count: iree_host_size_t, wait_sources: *iree_wait_source_t, timeout: iree_timeout_t, callback: iree_loop_callback_fn_t, user_data: pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_wait_all(loop: iree_loop_t, count: iree_host_size_t, wait_sources: *iree_wait_source_t, timeout: iree_timeout_t, callback: iree_loop_callback_fn_t, user_data: pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_drain(loop: iree_loop_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_loop_inline_ctl(self: pointer, command: iree_loop_command_t, params: pointer, inout_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_inline_using_storage_ctl(self: pointer, command: iree_loop_command_t, params: pointer, inout_ptr: *pointer): iree_status_t <cimport,nodecl> end
+global function iree_loop_inline(out_status: *iree_status_t): iree_loop_t <cimport,nodecl> end
+global function iree_loop_inline_initialize(storage: *iree_loop_inline_storage_t): iree_loop_t <cimport,nodecl> end
+global function iree_loop_inline_deinitialize(storage: *iree_loop_inline_storage_t): void <cimport,nodecl> end
+global function iree_api_version_check(expected_version: iree_api_version_t, out_actual_version: *iree_api_version_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_ref_object_retain(ptr: pointer, type_descriptor: *iree_vm_ref_type_descriptor_t): void <cimport,nodecl> end
+global function iree_vm_ref_object_release(ptr: pointer, type_descriptor: *iree_vm_ref_type_descriptor_t): void <cimport,nodecl> end
+global function iree_vm_ref_register_type(descriptor: *iree_vm_ref_type_descriptor_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_ref_type_name(type: iree_vm_ref_type_t): iree_string_view_t <cimport,nodecl> end
+global function iree_vm_ref_lookup_registered_type(full_name: iree_string_view_t): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_vm_ref_wrap_assign(ptr: pointer, type: iree_vm_ref_type_t, out_ref: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_ref_wrap_retain(ptr: pointer, type: iree_vm_ref_type_t, out_ref: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_ref_check(ref: iree_vm_ref_t, type: iree_vm_ref_type_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_ref_retain(ref: *iree_vm_ref_t, out_ref: *iree_vm_ref_t): void <cimport,nodecl> end
+global function iree_vm_ref_retain_checked(ref: *iree_vm_ref_t, type: iree_vm_ref_type_t, out_ref: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_ref_retain_or_move(is_move: cint, ref: *iree_vm_ref_t, out_ref: *iree_vm_ref_t): void <cimport,nodecl> end
+global function iree_vm_ref_retain_or_move_checked(is_move: cint, ref: *iree_vm_ref_t, type: iree_vm_ref_type_t, out_ref: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_ref_release(ref: *iree_vm_ref_t): void <cimport,nodecl> end
+global function iree_vm_ref_assign(ref: *iree_vm_ref_t, out_ref: *iree_vm_ref_t): void <cimport,nodecl> end
+global function iree_vm_ref_move(ref: *iree_vm_ref_t, out_ref: *iree_vm_ref_t): void <cimport,nodecl> end
+global function iree_vm_ref_is_null(ref: *iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_vm_ref_equal(lhs: *iree_vm_ref_t, rhs: *iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_vm_buffer_initialize(access: iree_vm_buffer_access_t, data: iree_byte_span_t, allocator: iree_allocator_t, out_buffer: *iree_vm_buffer_t): void <cimport,nodecl> end
+global function iree_vm_buffer_deinitialize(buffer: *iree_vm_buffer_t): void <cimport,nodecl> end
+global function iree_vm_buffer_create(access: iree_vm_buffer_access_t, length: iree_host_size_t, allocator: iree_allocator_t, out_buffer: **iree_vm_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_retain(buffer: *iree_vm_buffer_t): void <cimport,nodecl> end
+global function iree_vm_buffer_release(buffer: *iree_vm_buffer_t): void <cimport,nodecl> end
+global function iree_vm_buffer_clone(access: iree_vm_buffer_access_t, source_buffer: *iree_vm_buffer_t, source_offset: iree_host_size_t, length: iree_host_size_t, allocator: iree_allocator_t, out_buffer: **iree_vm_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_length(buffer: *iree_vm_buffer_t): iree_host_size_t <cimport,nodecl> end
+global function iree_vm_buffer_data(buffer: *iree_vm_buffer_t): iree_byte_span_t <cimport,nodecl> end
+global function iree_vm_buffer_copy_bytes(source_buffer: *iree_vm_buffer_t, source_offset: iree_host_size_t, target_buffer: *iree_vm_buffer_t, target_offset: iree_host_size_t, length: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_compare_bytes(lhs_buffer: *iree_vm_buffer_t, lhs_offset: iree_host_size_t, rhs_buffer: *iree_vm_buffer_t, rhs_offset: iree_host_size_t, length: iree_host_size_t, out_result: *boolean): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_fill_bytes(target_buffer: *iree_vm_buffer_t, target_offset: iree_host_size_t, length: iree_host_size_t, value: uint8): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_fill_elements(target_buffer: *iree_vm_buffer_t, target_offset: iree_host_size_t, element_count: iree_host_size_t, element_length: iree_host_size_t, value: pointer): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_read_elements(source_buffer: *iree_vm_buffer_t, source_offset: iree_host_size_t, target_ptr: pointer, element_count: iree_host_size_t, element_length: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_write_elements(source_ptr: pointer, target_buffer: *iree_vm_buffer_t, target_offset: iree_host_size_t, element_count: iree_host_size_t, element_length: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_as_string(value: *iree_vm_buffer_t): iree_string_view_t <cimport,nodecl> end
+global function iree_vm_buffer_retain_ref(value: *iree_vm_buffer_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_vm_buffer_move_ref(value: *iree_vm_buffer_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_vm_buffer_deref(ref: iree_vm_ref_t): *iree_vm_buffer_t <cimport,nodecl> end
+global function iree_vm_buffer_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_vm_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_buffer_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_vm_buffer_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_vm_buffer_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_vm_register_builtin_types(): iree_status_t <cimport,nodecl> end
+global function iree_vm_instance_create(allocator: iree_allocator_t, out_instance: **iree_vm_instance_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_instance_retain(instance: *iree_vm_instance_t): void <cimport,nodecl> end
+global function iree_vm_instance_release(instance: *iree_vm_instance_t): void <cimport,nodecl> end
+global function iree_vm_function_is_null(function_: iree_vm_function_t): boolean <cimport,nodecl> end
+global function iree_vm_function_call_get_cconv_fragments(signature: *iree_vm_function_signature_t, out_arguments: *iree_string_view_t, out_results: *iree_string_view_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_function_call_is_variadic_cconv(cconv: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_vm_function_call_count_arguments_and_results(signature: *iree_vm_function_signature_t, out_argument_count: *iree_host_size_t, out_result_count: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_function_call_compute_cconv_fragment_size(cconv_fragment: iree_string_view_t, segment_size_list: *iree_vm_register_list_t, out_required_size: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_function_call_release(call: *iree_vm_function_call_t, signature: *iree_vm_function_signature_t): void <cimport,nodecl> end
+global function iree_vm_source_location_format(source_location: *iree_vm_source_location_t, flags: iree_vm_source_location_format_flags_t, builder: *iree_string_builder_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_module_initialize(module: *iree_vm_module_t, self: pointer): iree_status_t <cimport,nodecl> end
+global function iree_vm_module_retain(module: *iree_vm_module_t): void <cimport,nodecl> end
+global function iree_vm_module_release(module: *iree_vm_module_t): void <cimport,nodecl> end
+global function iree_vm_module_name(module: *iree_vm_module_t): iree_string_view_t <cimport,nodecl> end
+global function iree_vm_module_signature(module: *iree_vm_module_t): iree_vm_module_signature_t <cimport,nodecl> end
+global function iree_vm_module_lookup_function_by_name(module: *iree_vm_module_t, linkage: iree_vm_function_linkage_t, name: iree_string_view_t, out_function: *iree_vm_function_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_module_lookup_function_by_ordinal(module: *iree_vm_module_t, linkage: iree_vm_function_linkage_t, ordinal: iree_host_size_t, out_function: *iree_vm_function_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_module_resolve_source_location(module: *iree_vm_module_t, frame: *iree_vm_stack_frame_t, out_source_location: *iree_vm_source_location_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_function_name(function_: *iree_vm_function_t): iree_string_view_t <cimport,nodecl> end
+global function iree_vm_function_signature(function_: *iree_vm_function_t): iree_vm_function_signature_t <cimport,nodecl> end
+global function iree_vm_function_reflection_attr(function_: *iree_vm_function_t, key: iree_string_view_t): iree_string_view_t <cimport,nodecl> end
+global function iree_vm_get_function_reflection_attr(function_: iree_vm_function_t, index: iree_host_size_t, key: *iree_string_view_t, value: *iree_string_view_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_stack_frame_storage(frame: *iree_vm_stack_frame_t): pointer <cimport,nodecl> end
+global function iree_vm_stack_initialize(storage: iree_byte_span_t, flags: iree_vm_invocation_flags_t, state_resolver: iree_vm_state_resolver_t, allocator: iree_allocator_t, out_stack: **iree_vm_stack_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_stack_deinitialize(stack: *iree_vm_stack_t): void <cimport,nodecl> end
+global function iree_vm_stack_allocate(flags: iree_vm_invocation_flags_t, state_resolver: iree_vm_state_resolver_t, allocator: iree_allocator_t, out_stack: **iree_vm_stack_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_stack_free(stack: *iree_vm_stack_t): void <cimport,nodecl> end
+global function iree_vm_stack_invocation_flags(stack: *iree_vm_stack_t): iree_vm_invocation_flags_t <cimport,nodecl> end
+global function iree_vm_stack_current_frame(stack: *iree_vm_stack_t): *iree_vm_stack_frame_t <cimport,nodecl> end
+global function iree_vm_stack_parent_frame(stack: *iree_vm_stack_t): *iree_vm_stack_frame_t <cimport,nodecl> end
+global function iree_vm_stack_query_module_state(stack: *iree_vm_stack_t, module: *iree_vm_module_t, out_module_state: **iree_vm_module_state_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_stack_function_enter(stack: *iree_vm_stack_t, function_: *iree_vm_function_t, frame_type: iree_vm_stack_frame_type_t, frame_size: iree_host_size_t, frame_cleanup_fn: iree_vm_stack_frame_cleanup_fn_t, out_callee_frame: **iree_vm_stack_frame_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_stack_function_leave(stack: *iree_vm_stack_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_stack_format_backtrace(stack: *iree_vm_stack_t, builder: *iree_string_builder_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_stack_annotate_backtrace(stack: *iree_vm_stack_t, base_status: iree_status_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_context_create(instance: *iree_vm_instance_t, flags: iree_vm_context_flags_t, allocator: iree_allocator_t, out_context: **iree_vm_context_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_context_create_with_modules(instance: *iree_vm_instance_t, flags: iree_vm_context_flags_t, modules: **iree_vm_module_t, module_count: iree_host_size_t, allocator: iree_allocator_t, out_context: **iree_vm_context_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_context_retain(context: *iree_vm_context_t): void <cimport,nodecl> end
+global function iree_vm_context_release(context: *iree_vm_context_t): void <cimport,nodecl> end
+global function iree_vm_context_id(context: *iree_vm_context_t): isize <cimport,nodecl> end
+global function iree_vm_context_flags(context: *iree_vm_context_t): iree_vm_context_flags_t <cimport,nodecl> end
+global function iree_vm_context_register_modules(context: *iree_vm_context_t, modules: **iree_vm_module_t, module_count: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_context_freeze(context: *iree_vm_context_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_context_state_resolver(context: *iree_vm_context_t): iree_vm_state_resolver_t <cimport,nodecl> end
+global function iree_vm_context_resolve_module_state(context: *iree_vm_context_t, module: *iree_vm_module_t, out_module_state: **iree_vm_module_state_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_context_resolve_function(context: *iree_vm_context_t, full_name: iree_string_view_t, out_function: *iree_vm_function_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_context_notify(context: *iree_vm_context_t, signal: iree_vm_signal_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_value_make_none(): iree_vm_value_t <cimport,nodecl> end
+global function iree_vm_value_make_i8(value: int8): iree_vm_value_t <cimport,nodecl> end
+global function iree_vm_value_make_i16(value: int16): iree_vm_value_t <cimport,nodecl> end
+global function iree_vm_value_make_i32(value: int32): iree_vm_value_t <cimport,nodecl> end
+global function iree_vm_value_get_i32(value: *iree_vm_value_t): int32 <cimport,nodecl> end
+global function iree_vm_value_make_i64(value: int64): iree_vm_value_t <cimport,nodecl> end
+global function iree_vm_value_get_i64(value: *iree_vm_value_t): int64 <cimport,nodecl> end
+global function iree_vm_value_make_f32(value: float32): iree_vm_value_t <cimport,nodecl> end
+global function iree_vm_value_get_f32(value: *iree_vm_value_t): float32 <cimport,nodecl> end
+global function iree_vm_value_make_f64(value: float64): iree_vm_value_t <cimport,nodecl> end
+global function iree_vm_value_get_f64(value: *iree_vm_value_t): float64 <cimport,nodecl> end
+global function iree_vm_type_def_make_variant_type(): iree_vm_type_def_t <cimport,nodecl> end
+global function iree_vm_type_def_make_value_type(value_type: iree_vm_value_type_t): iree_vm_type_def_t <cimport,nodecl> end
+global function iree_vm_type_def_make_ref_type(ref_type: iree_vm_ref_type_t): iree_vm_type_def_t <cimport,nodecl> end
+global function iree_vm_list_storage_size(element_type: *iree_vm_type_def_t, capacity: iree_host_size_t): iree_host_size_t <cimport,nodecl> end
+global function iree_vm_list_initialize(storage: iree_byte_span_t, element_type: *iree_vm_type_def_t, capacity: iree_host_size_t, out_list: **iree_vm_list_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_deinitialize(list: *iree_vm_list_t): void <cimport,nodecl> end
+global function iree_vm_list_create(element_type: *iree_vm_type_def_t, initial_capacity: iree_host_size_t, allocator: iree_allocator_t, out_list: **iree_vm_list_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_retain(list: *iree_vm_list_t): void <cimport,nodecl> end
+global function iree_vm_list_release(list: *iree_vm_list_t): void <cimport,nodecl> end
+global function iree_vm_list_element_type(list: *iree_vm_list_t, out_element_type: *iree_vm_type_def_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_capacity(list: *iree_vm_list_t): iree_host_size_t <cimport,nodecl> end
+global function iree_vm_list_reserve(list: *iree_vm_list_t, minimum_capacity: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_size(list: *iree_vm_list_t): iree_host_size_t <cimport,nodecl> end
+global function iree_vm_list_resize(list: *iree_vm_list_t, new_size: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_get_value(list: *iree_vm_list_t, i: iree_host_size_t, out_value: *iree_vm_value_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_get_value_as(list: *iree_vm_list_t, i: iree_host_size_t, value_type: iree_vm_value_type_t, out_value: *iree_vm_value_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_set_value(list: *iree_vm_list_t, i: iree_host_size_t, value: *iree_vm_value_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_push_value(list: *iree_vm_list_t, value: *iree_vm_value_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_get_ref_deref(list: *iree_vm_list_t, i: iree_host_size_t, type_descriptor: *iree_vm_ref_type_descriptor_t): pointer <cimport,nodecl> end
+global function iree_vm_list_get_ref_assign(list: *iree_vm_list_t, i: iree_host_size_t, out_value: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_get_ref_retain(list: *iree_vm_list_t, i: iree_host_size_t, out_value: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_set_ref_retain(list: *iree_vm_list_t, i: iree_host_size_t, value: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_push_ref_retain(list: *iree_vm_list_t, value: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_set_ref_move(list: *iree_vm_list_t, i: iree_host_size_t, value: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_push_ref_move(list: *iree_vm_list_t, value: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_pop_front_ref_move(list: *iree_vm_list_t, out_value: *iree_vm_ref_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_get_variant(list: *iree_vm_list_t, i: iree_host_size_t, out_value: *iree_vm_variant_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_set_variant(list: *iree_vm_list_t, i: iree_host_size_t, value: *iree_vm_variant_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_push_variant(list: *iree_vm_list_t, value: *iree_vm_variant_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_retain_ref(value: *iree_vm_list_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_vm_list_move_ref(value: *iree_vm_list_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_vm_list_deref(ref: iree_vm_ref_t): *iree_vm_list_t <cimport,nodecl> end
+global function iree_vm_list_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_vm_list_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_list_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_vm_list_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_vm_list_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_vm_invoke(context: *iree_vm_context_t, function_: iree_vm_function_t, flags: iree_vm_invocation_flags_t, policy: *iree_vm_invocation_policy_t, inputs: *iree_vm_list_t, outputs: *iree_vm_list_t, allocator: iree_allocator_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_invocation_create(context: *iree_vm_context_t, function_: iree_vm_function_t, flags: iree_vm_invocation_flags_t, policy: *iree_vm_invocation_policy_t, inputs: *iree_vm_list_t, allocator: iree_allocator_t, out_invocation: **iree_vm_invocation_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_invocation_retain(invocation: *iree_vm_invocation_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_invocation_release(invocation: *iree_vm_invocation_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_invocation_query_status(invocation: *iree_vm_invocation_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_invocation_output(invocation: *iree_vm_invocation_t): *iree_vm_list_t <cimport,nodecl> end
+global function iree_vm_invocation_await(invocation: *iree_vm_invocation_t, deadline: iree_time_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_invocation_abort(invocation: *iree_vm_invocation_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_native_module_size(): iree_host_size_t <cimport,nodecl> end
+global function iree_vm_native_module_create(interface: *iree_vm_module_t, module_descriptor: *iree_vm_native_module_descriptor_t, allocator: iree_allocator_t, out_module: **iree_vm_module_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_native_module_initialize(interface: *iree_vm_module_t, module_descriptor: *iree_vm_native_module_descriptor_t, allocator: iree_allocator_t, module: *iree_vm_module_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_abi_v_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_v_t <cimport,nodecl> end
+global function iree_vm_abi_v_reset(value: *iree_vm_abi_v_t): void <cimport,nodecl> end
+global function iree_vm_abi_i_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_i_t <cimport,nodecl> end
+global function iree_vm_abi_i_reset(value: *iree_vm_abi_i_t): void <cimport,nodecl> end
+global function iree_vm_abi_f_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_f_t <cimport,nodecl> end
+global function iree_vm_abi_f_reset(value: *iree_vm_abi_f_t): void <cimport,nodecl> end
+global function iree_vm_abi_ii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_ii_t <cimport,nodecl> end
+global function iree_vm_abi_ii_reset(value: *iree_vm_abi_ii_t): void <cimport,nodecl> end
+global function iree_vm_abi_iii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_iii_t <cimport,nodecl> end
+global function iree_vm_abi_iii_reset(value: *iree_vm_abi_iii_t): void <cimport,nodecl> end
+global function iree_vm_abi_iiii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_iiii_t <cimport,nodecl> end
+global function iree_vm_abi_iiii_reset(value: *iree_vm_abi_iiii_t): void <cimport,nodecl> end
+global function iree_vm_abi_irii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_irii_t <cimport,nodecl> end
+global function iree_vm_abi_irii_reset(value: *iree_vm_abi_irii_t): void <cimport,nodecl> end
+global function iree_vm_abi_r_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_r_t <cimport,nodecl> end
+global function iree_vm_abi_r_reset(value: *iree_vm_abi_r_t): void <cimport,nodecl> end
+global function iree_vm_abi_rr_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rr_t <cimport,nodecl> end
+global function iree_vm_abi_rr_reset(value: *iree_vm_abi_rr_t): void <cimport,nodecl> end
+global function iree_vm_abi_rrr_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rrr_t <cimport,nodecl> end
+global function iree_vm_abi_rrr_reset(value: *iree_vm_abi_rrr_t): void <cimport,nodecl> end
+global function iree_vm_abi_ri_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_ri_t <cimport,nodecl> end
+global function iree_vm_abi_ri_reset(value: *iree_vm_abi_ri_t): void <cimport,nodecl> end
+global function iree_vm_abi_ririi_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_ririi_t <cimport,nodecl> end
+global function iree_vm_abi_ririi_reset(value: *iree_vm_abi_ririi_t): void <cimport,nodecl> end
+global function iree_vm_abi_rii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rii_t <cimport,nodecl> end
+global function iree_vm_abi_rii_reset(value: *iree_vm_abi_rii_t): void <cimport,nodecl> end
+global function iree_vm_abi_rif_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rif_t <cimport,nodecl> end
+global function iree_vm_abi_rif_reset(value: *iree_vm_abi_rif_t): void <cimport,nodecl> end
+global function iree_vm_abi_riii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riii_t <cimport,nodecl> end
+global function iree_vm_abi_riii_reset(value: *iree_vm_abi_riii_t): void <cimport,nodecl> end
+global function iree_vm_abi_riirii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riirii_t <cimport,nodecl> end
+global function iree_vm_abi_riirii_reset(value: *iree_vm_abi_riirii_t): void <cimport,nodecl> end
+global function iree_vm_abi_riiirii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riiirii_t <cimport,nodecl> end
+global function iree_vm_abi_riiirii_reset(value: *iree_vm_abi_riiirii_t): void <cimport,nodecl> end
+global function iree_vm_abi_rriiii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rriiii_t <cimport,nodecl> end
+global function iree_vm_abi_rriiii_reset(value: *iree_vm_abi_rriiii_t): void <cimport,nodecl> end
+global function iree_vm_abi_rriri_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rriri_t <cimport,nodecl> end
+global function iree_vm_abi_rriri_reset(value: *iree_vm_abi_rriri_t): void <cimport,nodecl> end
+global function iree_vm_abi_rririi_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rririi_t <cimport,nodecl> end
+global function iree_vm_abi_rririi_reset(value: *iree_vm_abi_rririi_t): void <cimport,nodecl> end
+global function iree_vm_abi_rrriii_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rrriii_t <cimport,nodecl> end
+global function iree_vm_abi_rrriii_reset(value: *iree_vm_abi_rrriii_t): void <cimport,nodecl> end
+global function iree_vm_abi_rCiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rCiD_t <cimport,nodecl> end
+global function iree_vm_abi_rCrD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rCrD_t <cimport,nodecl> end
+global function iree_vm_abi_riCiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riCiD_t <cimport,nodecl> end
+global function iree_vm_abi_riiCiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riiCiD_t <cimport,nodecl> end
+global function iree_vm_abi_rriiCiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rriiCiD_t <cimport,nodecl> end
+global function iree_vm_abi_riCrD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riCrD_t <cimport,nodecl> end
+global function iree_vm_abi_riiCriD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riiCriD_t <cimport,nodecl> end
+global function iree_vm_abi_rirCrD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rirCrD_t <cimport,nodecl> end
+global function iree_vm_abi_rrrrCrD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rrrrCrD_t <cimport,nodecl> end
+global function iree_vm_abi_rriCiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rriCiD_t <cimport,nodecl> end
+global function iree_vm_abi_rrirCiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rrirCiD_t <cimport,nodecl> end
+global function iree_vm_abi_riCiiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_riCiiD_t <cimport,nodecl> end
+global function iree_vm_abi_rrCiriiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rrCiriiD_t <cimport,nodecl> end
+global function iree_vm_abi_rriCiriiD_checked_deref(buffer: iree_byte_span_t): *iree_vm_abi_rriCiriiD_t <cimport,nodecl> end
+global function iree_vm_shim_irii_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_r_i(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_r_ii(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_r_iii(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_r_iiii(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_r_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_r_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rCiD_i(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rCrD_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_ri_i(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_ri_f(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_ri_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_ri_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riCiD_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riiCiD_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riCiiD_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riCrD_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rii_i(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rii_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rii_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rif_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riii_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riii_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riirii_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_riiirii_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rrrrCrD_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_ririi_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rr_i(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rr_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rr_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rr_ii(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rrr_ii(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rrCiriiD_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rriCiD_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rriiCiD_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rriCiriiD_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rriiii_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rrirCiD_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rriri_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rririi_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_rrriii_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_v_i(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_v_r(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_shim_v_v(stack: *iree_vm_stack_t, call: *iree_vm_function_call_t, target_fn: iree_vm_native_function_target2_t, module: pointer, module_state: pointer, out_result: *iree_vm_execution_result_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_resource_initialize(vtable: pointer, out_resource: *iree_hal_resource_t): void <cimport,nodecl> end
+global function iree_hal_resource_retain(any_resource: pointer): void <cimport,nodecl> end
+global function iree_hal_resource_release(any_resource: pointer): void <cimport,nodecl> end
+global function iree_hal_resource_is(resource: pointer, vtable: pointer): boolean <cimport,nodecl> end
+global function iree_hal_memory_type_format(value: iree_hal_memory_type_t, out_temp: *iree_bitfield_string_temp_t): iree_string_view_t <cimport,nodecl> end
+global function iree_hal_memory_access_format(value: iree_hal_memory_access_t, out_temp: *iree_bitfield_string_temp_t): iree_string_view_t <cimport,nodecl> end
+global function iree_hal_buffer_usage_format(value: iree_hal_buffer_usage_t, out_temp: *iree_bitfield_string_temp_t): iree_string_view_t <cimport,nodecl> end
+global function iree_hal_buffer_validate_memory_type(actual_memory_type: iree_hal_memory_type_t, expected_memory_type: iree_hal_memory_type_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_validate_access(allowed_memory_access: iree_hal_memory_access_t, required_memory_access: iree_hal_memory_access_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_validate_usage(allowed_usage: iree_hal_buffer_usage_t, required_usage: iree_hal_buffer_usage_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_validate_range(buffer: *iree_hal_buffer_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_test_overlap(lhs_buffer: *iree_hal_buffer_t, lhs_offset: iree_device_size_t, lhs_length: iree_device_size_t, rhs_buffer: *iree_hal_buffer_t, rhs_offset: iree_device_size_t, rhs_length: iree_device_size_t): iree_hal_buffer_overlap_t <cimport,nodecl> end
+global function iree_hal_buffer_subspan(buffer: *iree_hal_buffer_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t, out_buffer: **iree_hal_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_retain(buffer: *iree_hal_buffer_t): void <cimport,nodecl> end
+global function iree_hal_buffer_release(buffer: *iree_hal_buffer_t): void <cimport,nodecl> end
+global function iree_hal_buffer_allocated_buffer(buffer: *iree_hal_buffer_t): *iree_hal_buffer_t <cimport,nodecl> end
+global function iree_hal_buffer_allocation_size(buffer: *iree_hal_buffer_t): iree_device_size_t <cimport,nodecl> end
+global function iree_hal_buffer_byte_offset(buffer: *iree_hal_buffer_t): iree_device_size_t <cimport,nodecl> end
+global function iree_hal_buffer_byte_length(buffer: *iree_hal_buffer_t): iree_device_size_t <cimport,nodecl> end
+global function iree_hal_buffer_memory_type(buffer: *iree_hal_buffer_t): iree_hal_memory_type_t <cimport,nodecl> end
+global function iree_hal_buffer_allowed_access(buffer: *iree_hal_buffer_t): iree_hal_memory_access_t <cimport,nodecl> end
+global function iree_hal_buffer_allowed_usage(buffer: *iree_hal_buffer_t): iree_hal_buffer_usage_t <cimport,nodecl> end
+global function iree_hal_buffer_map_zero(buffer: *iree_hal_buffer_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_map_fill(buffer: *iree_hal_buffer_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t, pattern: pointer, pattern_length: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_map_read(source_buffer: *iree_hal_buffer_t, source_offset: iree_device_size_t, target_buffer: pointer, data_length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_map_write(target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, source_buffer: pointer, data_length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_map_copy(source_buffer: *iree_hal_buffer_t, source_offset: iree_device_size_t, target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, data_length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_map_range(buffer: *iree_hal_buffer_t, mapping_mode: iree_hal_mapping_mode_t, memory_access: iree_hal_memory_access_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t, out_buffer_mapping: *iree_hal_buffer_mapping_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_unmap_range(buffer_mapping: *iree_hal_buffer_mapping_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_invalidate_range(buffer_mapping: *iree_hal_buffer_mapping_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_flush_range(buffer_mapping: *iree_hal_buffer_mapping_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_mapping_subspan(buffer_mapping: *iree_hal_buffer_mapping_t, memory_access: iree_hal_memory_access_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t, out_span: *iree_byte_span_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_subspan_buffer_create(allocated_buffer: *iree_hal_buffer_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t, device_allocator: *iree_hal_allocator_t, host_allocator: iree_allocator_t, out_buffer: **iree_hal_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_initialize(host_allocator: iree_allocator_t, device_allocator: *iree_hal_allocator_t, allocated_buffer: *iree_hal_buffer_t, allocation_size: iree_device_size_t, byte_offset: iree_device_size_t, byte_length: iree_device_size_t, memory_type: iree_hal_memory_type_t, allowed_access: iree_hal_memory_access_t, allowed_usage: iree_hal_buffer_usage_t, vtable: *iree_hal_buffer_vtable_t, buffer: *iree_hal_buffer_t): void <cimport,nodecl> end
+global function iree_hal_buffer_recycle(buffer: *iree_hal_buffer_t): void <cimport,nodecl> end
+global function iree_hal_buffer_destroy(buffer: *iree_hal_buffer_t): void <cimport,nodecl> end
+global function iree_hal_buffer_params_canonicalize(params: *iree_hal_buffer_params_t): void <cimport,nodecl> end
+global function iree_hal_buffer_params_with_usage(params: iree_hal_buffer_params_t, usage: iree_hal_buffer_usage_t): iree_hal_buffer_params_t <cimport,nodecl> end
+global function iree_hal_buffer_release_callback_null(): iree_hal_buffer_release_callback_t <cimport,nodecl> end
+global function iree_hal_allocator_statistics_format(statistics: *iree_hal_allocator_statistics_t, builder: *iree_string_builder_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_retain(allocator: *iree_hal_allocator_t): void <cimport,nodecl> end
+global function iree_hal_allocator_release(allocator: *iree_hal_allocator_t): void <cimport,nodecl> end
+global function iree_hal_allocator_host_allocator(allocator: *iree_hal_allocator_t): iree_allocator_t <cimport,nodecl> end
+global function iree_hal_allocator_trim(allocator: *iree_hal_allocator_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_query_statistics(allocator: *iree_hal_allocator_t, out_statistics: *iree_hal_allocator_statistics_t): void <cimport,nodecl> end
+global function iree_hal_allocator_statistics_fprint(file: *FILE, allocator: *iree_hal_allocator_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_query_compatibility(allocator: *iree_hal_allocator_t, params: iree_hal_buffer_params_t, allocation_size: iree_device_size_t): iree_hal_buffer_compatibility_t <cimport,nodecl> end
+global function iree_hal_allocator_allocate_buffer(allocator: *iree_hal_allocator_t, params: iree_hal_buffer_params_t, allocation_size: iree_device_size_t, initial_data: iree_const_byte_span_t, out_buffer: **iree_hal_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_import_buffer(allocator: *iree_hal_allocator_t, params: iree_hal_buffer_params_t, external_buffer: *iree_hal_external_buffer_t, release_callback: iree_hal_buffer_release_callback_t, out_buffer: **iree_hal_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_export_buffer(allocator: *iree_hal_allocator_t, buffer: *iree_hal_buffer_t, requested_type: iree_hal_external_buffer_type_t, requested_flags: iree_hal_external_buffer_flags_t, out_external_buffer: *iree_hal_external_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_create_heap(identifier: iree_string_view_t, data_allocator: iree_allocator_t, host_allocator: iree_allocator_t, out_allocator: **iree_hal_allocator_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_destroy(allocator: *iree_hal_allocator_t): void <cimport,nodecl> end
+global function iree_hal_allocator_deallocate_buffer(allocator: *iree_hal_allocator_t, buffer: *iree_hal_buffer_t): void <cimport,nodecl> end
+global function iree_hal_allocator_statistics_record_alloc(statistics: *iree_hal_allocator_statistics_t, memory_type: iree_hal_memory_type_t, allocation_size: iree_device_size_t): void <cimport,nodecl> end
+global function iree_hal_allocator_statistics_record_free(statistics: *iree_hal_allocator_statistics_t, memory_type: iree_hal_memory_type_t, allocation_size: iree_device_size_t): void <cimport,nodecl> end
+global function iree_hal_buffer_view_create(buffer: *iree_hal_buffer_t, shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, element_type: iree_hal_element_type_t, encoding_type: iree_hal_encoding_type_t, host_allocator: iree_allocator_t, out_buffer_view: **iree_hal_buffer_view_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_retain(buffer_view: *iree_hal_buffer_view_t): void <cimport,nodecl> end
+global function iree_hal_buffer_view_release(buffer_view: *iree_hal_buffer_view_t): void <cimport,nodecl> end
+global function iree_hal_buffer_view_buffer(buffer_view: *iree_hal_buffer_view_t): *iree_hal_buffer_t <cimport,nodecl> end
+global function iree_hal_buffer_view_shape_rank(buffer_view: *iree_hal_buffer_view_t): iree_host_size_t <cimport,nodecl> end
+global function iree_hal_buffer_view_shape_dims(buffer_view: *iree_hal_buffer_view_t): *iree_hal_dim_t <cimport,nodecl> end
+global function iree_hal_buffer_view_shape_dim(buffer_view: *iree_hal_buffer_view_t, index: iree_host_size_t): iree_hal_dim_t <cimport,nodecl> end
+global function iree_hal_buffer_view_shape(buffer_view: *iree_hal_buffer_view_t, rank_capacity: iree_host_size_t, out_shape: *iree_hal_dim_t, out_shape_rank: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_reshape(buffer_view: *iree_hal_buffer_view_t, shape: *iree_hal_dim_t, shape_rank: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_element_count(buffer_view: *iree_hal_buffer_view_t): iree_host_size_t <cimport,nodecl> end
+global function iree_hal_buffer_view_element_type(buffer_view: *iree_hal_buffer_view_t): iree_hal_element_type_t <cimport,nodecl> end
+global function iree_hal_buffer_view_element_size(buffer_view: *iree_hal_buffer_view_t): iree_host_size_t <cimport,nodecl> end
+global function iree_hal_buffer_view_encoding_type(buffer_view: *iree_hal_buffer_view_t): iree_hal_encoding_type_t <cimport,nodecl> end
+global function iree_hal_buffer_view_byte_length(buffer_view: *iree_hal_buffer_view_t): iree_device_size_t <cimport,nodecl> end
+global function iree_hal_buffer_view_compute_offset(buffer_view: *iree_hal_buffer_view_t, indices: *iree_hal_dim_t, indices_count: iree_host_size_t, out_offset: *iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_compute_range(buffer_view: *iree_hal_buffer_view_t, start_indices: *iree_hal_dim_t, indices_count: iree_host_size_t, lengths: *iree_hal_dim_t, lengths_count: iree_host_size_t, out_start_offset: *iree_device_size_t, out_length: *iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_destroy(buffer_view: *iree_hal_buffer_view_t): void <cimport,nodecl> end
+global function iree_hal_buffer_compute_view_size(shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, element_type: iree_hal_element_type_t, encoding_type: iree_hal_encoding_type_t, out_allocation_size: *iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_compute_view_offset(shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, element_type: iree_hal_element_type_t, encoding_type: iree_hal_encoding_type_t, indices: *iree_hal_dim_t, indices_count: csize, out_offset: *iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_compute_view_range(shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, element_type: iree_hal_element_type_t, encoding_type: iree_hal_encoding_type_t, start_indices: *iree_hal_dim_t, indices_count: iree_host_size_t, lengths: *iree_hal_dim_t, lengths_count: iree_host_size_t, out_start_offset: *iree_device_size_t, out_length: *iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_allocate_buffer(allocator: *iree_hal_allocator_t, shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, element_type: iree_hal_element_type_t, encoding_type: iree_hal_encoding_type_t, buffer_params: iree_hal_buffer_params_t, initial_data: iree_const_byte_span_t, out_buffer_view: **iree_hal_buffer_view_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_generate_buffer(allocator: *iree_hal_allocator_t, shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, element_type: iree_hal_element_type_t, encoding_type: iree_hal_encoding_type_t, buffer_params: iree_hal_buffer_params_t, callback: iree_hal_buffer_view_generator_callback_t, user_data: pointer, out_buffer_view: **iree_hal_buffer_view_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_parse(value: iree_string_view_t, buffer_allocator: *iree_hal_allocator_t, out_buffer_view: **iree_hal_buffer_view_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_format(buffer_view: *iree_hal_buffer_view_t, max_element_count: iree_host_size_t, buffer_capacity: iree_host_size_t, buffer: cstring, out_buffer_length: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_fprint(file: *FILE, buffer_view: *iree_hal_buffer_view_t, max_element_count: iree_host_size_t, host_allocator: iree_allocator_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_create(device: *iree_hal_device_t, usage_type: iree_hal_descriptor_set_layout_usage_type_t, binding_count: iree_host_size_t, bindings: *iree_hal_descriptor_set_layout_binding_t, out_descriptor_set_layout: **iree_hal_descriptor_set_layout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_retain(descriptor_set_layout: *iree_hal_descriptor_set_layout_t): void <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_release(descriptor_set_layout: *iree_hal_descriptor_set_layout_t): void <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_destroy(descriptor_set_layout: *iree_hal_descriptor_set_layout_t): void <cimport,nodecl> end
+global function iree_hal_descriptor_set_create(device: *iree_hal_device_t, set_layout: *iree_hal_descriptor_set_layout_t, binding_count: iree_host_size_t, bindings: *iree_hal_descriptor_set_binding_t, out_descriptor_set: **iree_hal_descriptor_set_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_retain(descriptor_set: *iree_hal_descriptor_set_t): void <cimport,nodecl> end
+global function iree_hal_descriptor_set_release(descriptor_set: *iree_hal_descriptor_set_t): void <cimport,nodecl> end
+global function iree_hal_descriptor_set_destroy(descriptor_set: *iree_hal_descriptor_set_t): void <cimport,nodecl> end
+global function iree_hal_event_create(device: *iree_hal_device_t, out_event: **iree_hal_event_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_event_retain(event: *iree_hal_event_t): void <cimport,nodecl> end
+global function iree_hal_event_release(event: *iree_hal_event_t): void <cimport,nodecl> end
+global function iree_hal_event_destroy(event: *iree_hal_event_t): void <cimport,nodecl> end
+global function iree_hal_executable_retain(executable: *iree_hal_executable_t): void <cimport,nodecl> end
+global function iree_hal_executable_release(executable: *iree_hal_executable_t): void <cimport,nodecl> end
+global function iree_hal_executable_destroy(executable: *iree_hal_executable_t): void <cimport,nodecl> end
+global function iree_hal_executable_layout_create(device: *iree_hal_device_t, push_constants: iree_host_size_t, set_layout_count: iree_host_size_t, set_layouts: **iree_hal_descriptor_set_layout_t, out_executable_layout: **iree_hal_executable_layout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_executable_layout_retain(executable_layout: *iree_hal_executable_layout_t): void <cimport,nodecl> end
+global function iree_hal_executable_layout_release(executable_layout: *iree_hal_executable_layout_t): void <cimport,nodecl> end
+global function iree_hal_executable_layout_destroy(executable_layout: *iree_hal_executable_layout_t): void <cimport,nodecl> end
+global function iree_hal_label_color_unspecified(): iree_hal_label_color_t <cimport,nodecl> end
+global function iree_hal_command_buffer_mode_format(value: iree_hal_command_buffer_mode_t, out_temp: *iree_bitfield_string_temp_t): iree_string_view_t <cimport,nodecl> end
+global function iree_hal_command_category_format(value: iree_hal_command_category_t, out_temp: *iree_bitfield_string_temp_t): iree_string_view_t <cimport,nodecl> end
+global function iree_hal_command_buffer_create(device: *iree_hal_device_t, mode: iree_hal_command_buffer_mode_t, command_categories: iree_hal_command_category_t, queue_affinity: iree_hal_queue_affinity_t, out_command_buffer: **iree_hal_command_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_retain(command_buffer: *iree_hal_command_buffer_t): void <cimport,nodecl> end
+global function iree_hal_command_buffer_release(command_buffer: *iree_hal_command_buffer_t): void <cimport,nodecl> end
+global function iree_hal_command_buffer_dyn_cast(command_buffer: *iree_hal_command_buffer_t, vtable: pointer): pointer <cimport,nodecl> end
+global function iree_hal_command_buffer_mode(command_buffer: *iree_hal_command_buffer_t): iree_hal_command_buffer_mode_t <cimport,nodecl> end
+global function iree_hal_command_buffer_allowed_categories(command_buffer: *iree_hal_command_buffer_t): iree_hal_command_category_t <cimport,nodecl> end
+global function iree_hal_command_buffer_begin(command_buffer: *iree_hal_command_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_end(command_buffer: *iree_hal_command_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_begin_debug_group(command_buffer: *iree_hal_command_buffer_t, label: iree_string_view_t, label_color: iree_hal_label_color_t, location: *iree_hal_label_location_t): void <cimport,nodecl> end
+global function iree_hal_command_buffer_end_debug_group(command_buffer: *iree_hal_command_buffer_t): void <cimport,nodecl> end
+global function iree_hal_command_buffer_execution_barrier(command_buffer: *iree_hal_command_buffer_t, source_stage_mask: iree_hal_execution_stage_t, target_stage_mask: iree_hal_execution_stage_t, flags: iree_hal_execution_barrier_flags_t, memory_barrier_count: iree_host_size_t, memory_barriers: *iree_hal_memory_barrier_t, buffer_barrier_count: iree_host_size_t, buffer_barriers: *iree_hal_buffer_barrier_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_signal_event(command_buffer: *iree_hal_command_buffer_t, event: *iree_hal_event_t, source_stage_mask: iree_hal_execution_stage_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_reset_event(command_buffer: *iree_hal_command_buffer_t, event: *iree_hal_event_t, source_stage_mask: iree_hal_execution_stage_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_wait_events(command_buffer: *iree_hal_command_buffer_t, event_count: iree_host_size_t, events: **iree_hal_event_t, source_stage_mask: iree_hal_execution_stage_t, target_stage_mask: iree_hal_execution_stage_t, memory_barrier_count: iree_host_size_t, memory_barriers: *iree_hal_memory_barrier_t, buffer_barrier_count: iree_host_size_t, buffer_barriers: *iree_hal_buffer_barrier_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_discard_buffer(command_buffer: *iree_hal_command_buffer_t, buffer: *iree_hal_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_fill_buffer(command_buffer: *iree_hal_command_buffer_t, target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, length: iree_device_size_t, pattern: pointer, pattern_length: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_update_buffer(command_buffer: *iree_hal_command_buffer_t, source_buffer: pointer, source_offset: iree_host_size_t, target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_copy_buffer(command_buffer: *iree_hal_command_buffer_t, source_buffer: *iree_hal_buffer_t, source_offset: iree_device_size_t, target_buffer: *iree_hal_buffer_t, target_offset: iree_device_size_t, length: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_push_constants(command_buffer: *iree_hal_command_buffer_t, executable_layout: *iree_hal_executable_layout_t, offset: iree_host_size_t, values: pointer, values_length: iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_push_descriptor_set(command_buffer: *iree_hal_command_buffer_t, executable_layout: *iree_hal_executable_layout_t, set: uint32, binding_count: iree_host_size_t, bindings: *iree_hal_descriptor_set_binding_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_bind_descriptor_set(command_buffer: *iree_hal_command_buffer_t, executable_layout: *iree_hal_executable_layout_t, set: uint32, descriptor_set: *iree_hal_descriptor_set_t, dynamic_offset_count: iree_host_size_t, dynamic_offsets: *iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_dispatch(command_buffer: *iree_hal_command_buffer_t, executable: *iree_hal_executable_t, entry_point: int32, workgroup_x: uint32, workgroup_y: uint32, workgroup_z: uint32): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_dispatch_indirect(command_buffer: *iree_hal_command_buffer_t, executable: *iree_hal_executable_t, entry_point: int32, workgroups_buffer: *iree_hal_buffer_t, workgroups_offset: iree_device_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_create_transfer_command_buffer(device: *iree_hal_device_t, mode: iree_hal_command_buffer_mode_t, queue_affinity: iree_hal_queue_affinity_t, transfer_count: iree_host_size_t, transfer_commands: *iree_hal_transfer_command_t, out_command_buffer: **iree_hal_command_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_wrap_validation(device: *iree_hal_device_t, target_command_buffer: *iree_hal_command_buffer_t, out_command_buffer: **iree_hal_command_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_initialize(device: *iree_hal_device_t, mode: iree_hal_command_buffer_mode_t, command_categories: iree_hal_command_category_t, queue_affinity: iree_hal_queue_affinity_t, vtable: *iree_hal_command_buffer_vtable_t, command_buffer: *iree_hal_command_buffer_t): void <cimport,nodecl> end
+global function iree_hal_command_buffer_destroy(command_buffer: *iree_hal_command_buffer_t): void <cimport,nodecl> end
+global function iree_hal_executable_params_initialize(out_executable_params: *iree_hal_executable_params_t): void <cimport,nodecl> end
+global function iree_hal_executable_cache_create(device: *iree_hal_device_t, identifier: iree_string_view_t, out_executable_cache: **iree_hal_executable_cache_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_executable_cache_retain(executable_cache: *iree_hal_executable_cache_t): void <cimport,nodecl> end
+global function iree_hal_executable_cache_release(executable_cache: *iree_hal_executable_cache_t): void <cimport,nodecl> end
+global function iree_hal_executable_cache_can_prepare_format(executable_cache: *iree_hal_executable_cache_t, caching_mode: iree_hal_executable_caching_mode_t, executable_format: iree_string_view_t): boolean <cimport,nodecl> end
+global function iree_hal_executable_cache_prepare_executable(executable_cache: *iree_hal_executable_cache_t, executable_params: *iree_hal_executable_params_t, out_executable: **iree_hal_executable_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_executable_cache_destroy(executable_cache: *iree_hal_executable_cache_t): void <cimport,nodecl> end
+global function iree_hal_semaphore_create(device: *iree_hal_device_t, initial_value: uint64, out_semaphore: **iree_hal_semaphore_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_semaphore_retain(semaphore: *iree_hal_semaphore_t): void <cimport,nodecl> end
+global function iree_hal_semaphore_release(semaphore: *iree_hal_semaphore_t): void <cimport,nodecl> end
+global function iree_hal_semaphore_query(semaphore: *iree_hal_semaphore_t, out_value: *uint64): iree_status_t <cimport,nodecl> end
+global function iree_hal_semaphore_signal(semaphore: *iree_hal_semaphore_t, new_value: uint64): iree_status_t <cimport,nodecl> end
+global function iree_hal_semaphore_fail(semaphore: *iree_hal_semaphore_t, status: iree_status_t): void <cimport,nodecl> end
+global function iree_hal_semaphore_wait(semaphore: *iree_hal_semaphore_t, value: uint64, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_semaphore_destroy(semaphore: *iree_hal_semaphore_t): void <cimport,nodecl> end
+global function iree_hal_make_host_transfer_buffer(host_buffer: iree_byte_span_t): iree_hal_transfer_buffer_t <cimport,nodecl> end
+global function iree_hal_make_host_transfer_buffer_span(ptr: pointer, length: iree_host_size_t): iree_hal_transfer_buffer_t <cimport,nodecl> end
+global function iree_hal_make_device_transfer_buffer(device_buffer: *iree_hal_buffer_t): iree_hal_transfer_buffer_t <cimport,nodecl> end
+global function iree_hal_device_retain(device: *iree_hal_device_t): void <cimport,nodecl> end
+global function iree_hal_device_release(device: *iree_hal_device_t): void <cimport,nodecl> end
+global function iree_hal_device_id(device: *iree_hal_device_t): iree_string_view_t <cimport,nodecl> end
+global function iree_hal_device_host_allocator(device: *iree_hal_device_t): iree_allocator_t <cimport,nodecl> end
+global function iree_hal_device_allocator(device: *iree_hal_device_t): *iree_hal_allocator_t <cimport,nodecl> end
+global function iree_hal_device_trim(device: *iree_hal_device_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_query_i32(device: *iree_hal_device_t, category: iree_string_view_t, key: iree_string_view_t, out_value: *int32): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_transfer_range(device: *iree_hal_device_t, source: iree_hal_transfer_buffer_t, source_offset: iree_device_size_t, target: iree_hal_transfer_buffer_t, target_offset: iree_device_size_t, data_length: iree_device_size_t, flags: iree_hal_transfer_buffer_flags_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_transfer_h2d(device: *iree_hal_device_t, source: pointer, target: *iree_hal_buffer_t, target_offset: iree_device_size_t, data_length: iree_device_size_t, flags: iree_hal_transfer_buffer_flags_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_transfer_d2h(device: *iree_hal_device_t, source: *iree_hal_buffer_t, source_offset: iree_device_size_t, target: pointer, data_length: iree_device_size_t, flags: iree_hal_transfer_buffer_flags_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_transfer_d2d(device: *iree_hal_device_t, source: *iree_hal_buffer_t, source_offset: iree_device_size_t, target: *iree_hal_buffer_t, target_offset: iree_device_size_t, data_length: iree_device_size_t, flags: iree_hal_transfer_buffer_flags_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_transfer_and_wait(device: *iree_hal_device_t, wait_semaphore: *iree_hal_semaphore_t, wait_value: uint64, transfer_count: iree_host_size_t, transfer_commands: *iree_hal_transfer_command_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_queue_submit(device: *iree_hal_device_t, command_categories: iree_hal_command_category_t, queue_affinity: iree_hal_queue_affinity_t, batch_count: iree_host_size_t, batches: *iree_hal_submission_batch_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_submit_and_wait(device: *iree_hal_device_t, command_categories: iree_hal_command_category_t, queue_affinity: iree_hal_queue_affinity_t, batch_count: iree_host_size_t, batches: *iree_hal_submission_batch_t, wait_semaphore: *iree_hal_semaphore_t, wait_value: uint64, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_wait_semaphores(device: *iree_hal_device_t, wait_mode: iree_hal_wait_mode_t, semaphore_list: *iree_hal_semaphore_list_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_wait_idle(device: *iree_hal_device_t, timeout: iree_timeout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_destroy(device: *iree_hal_device_t): void <cimport,nodecl> end
+global function iree_hal_driver_retain(driver: *iree_hal_driver_t): void <cimport,nodecl> end
+global function iree_hal_driver_release(driver: *iree_hal_driver_t): void <cimport,nodecl> end
+global function iree_hal_driver_query_available_devices(driver: *iree_hal_driver_t, allocator: iree_allocator_t, out_device_infos: **iree_hal_device_info_t, out_device_info_count: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_create_device(driver: *iree_hal_driver_t, device_id: iree_hal_device_id_t, allocator: iree_allocator_t, out_device: **iree_hal_device_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_create_default_device(driver: *iree_hal_driver_t, allocator: iree_allocator_t, out_device: **iree_hal_device_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_destroy(driver: *iree_hal_driver_t): void <cimport,nodecl> end
+global function iree_hal_driver_registry_default(): *iree_hal_driver_registry_t <cimport,nodecl> end
+global function iree_hal_driver_registry_allocate(host_allocator: iree_allocator_t, out_registry: **iree_hal_driver_registry_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_registry_free(registry: *iree_hal_driver_registry_t): void <cimport,nodecl> end
+global function iree_hal_driver_registry_register_factory(registry: *iree_hal_driver_registry_t, factory: *iree_hal_driver_factory_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_registry_unregister_factory(registry: *iree_hal_driver_registry_t, factory: *iree_hal_driver_factory_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_registry_enumerate(registry: *iree_hal_driver_registry_t, allocator: iree_allocator_t, out_driver_infos: **iree_hal_driver_info_t, out_driver_info_count: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_registry_try_create(registry: *iree_hal_driver_registry_t, driver_id: iree_hal_driver_id_t, allocator: iree_allocator_t, out_driver: **iree_hal_driver_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_driver_registry_try_create_by_name(registry: *iree_hal_driver_registry_t, driver_name: iree_string_view_t, allocator: iree_allocator_t, out_driver: **iree_hal_driver_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_parse_shape(value: iree_string_view_t, shape_capacity: iree_host_size_t, out_shape: *iree_hal_dim_t, out_shape_rank: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_format_shape(shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, buffer_capacity: iree_host_size_t, buffer: cstring, out_buffer_length: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_parse_element_type(value: iree_string_view_t, out_element_type: *iree_hal_element_type_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_format_element_type(element_type: iree_hal_element_type_t, buffer_capacity: iree_host_size_t, buffer: cstring, out_buffer_length: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_parse_element(data_str: iree_string_view_t, element_type: iree_hal_element_type_t, data_ptr: iree_byte_span_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_format_element(data: iree_const_byte_span_t, element_type: iree_hal_element_type_t, buffer_capacity: iree_host_size_t, buffer: cstring, out_buffer_length: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_parse_buffer_elements(data_str: iree_string_view_t, element_type: iree_hal_element_type_t, data_ptr: iree_byte_span_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_format_buffer_elements(data: iree_const_byte_span_t, shape: *iree_hal_dim_t, shape_rank: iree_host_size_t, element_type: iree_hal_element_type_t, max_element_count: iree_host_size_t, buffer_capacity: iree_host_size_t, buffer: cstring, out_buffer_length: *iree_host_size_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_retain_ref(value: *iree_hal_allocator_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_allocator_move_ref(value: *iree_hal_allocator_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_allocator_deref(ref: iree_vm_ref_t): *iree_hal_allocator_t <cimport,nodecl> end
+global function iree_hal_allocator_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_allocator_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_allocator_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_allocator_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_allocator_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_buffer_retain_ref(value: *iree_hal_buffer_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_buffer_move_ref(value: *iree_hal_buffer_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_buffer_deref(ref: iree_vm_ref_t): *iree_hal_buffer_t <cimport,nodecl> end
+global function iree_hal_buffer_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_buffer_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_buffer_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_buffer_view_retain_ref(value: *iree_hal_buffer_view_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_buffer_view_move_ref(value: *iree_hal_buffer_view_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_buffer_view_deref(ref: iree_vm_ref_t): *iree_hal_buffer_view_t <cimport,nodecl> end
+global function iree_hal_buffer_view_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_buffer_view_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_buffer_view_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_buffer_view_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_buffer_view_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_command_buffer_retain_ref(value: *iree_hal_command_buffer_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_command_buffer_move_ref(value: *iree_hal_command_buffer_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_command_buffer_deref(ref: iree_vm_ref_t): *iree_hal_command_buffer_t <cimport,nodecl> end
+global function iree_hal_command_buffer_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_command_buffer_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_command_buffer_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_command_buffer_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_command_buffer_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_retain_ref(value: *iree_hal_descriptor_set_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_move_ref(value: *iree_hal_descriptor_set_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_deref(ref: iree_vm_ref_t): *iree_hal_descriptor_set_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_descriptor_set_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_descriptor_set_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_retain_ref(value: *iree_hal_descriptor_set_layout_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_move_ref(value: *iree_hal_descriptor_set_layout_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_deref(ref: iree_vm_ref_t): *iree_hal_descriptor_set_layout_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_descriptor_set_layout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_descriptor_set_layout_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_device_retain_ref(value: *iree_hal_device_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_device_move_ref(value: *iree_hal_device_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_device_deref(ref: iree_vm_ref_t): *iree_hal_device_t <cimport,nodecl> end
+global function iree_hal_device_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_device_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_device_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_device_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_device_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_event_retain_ref(value: *iree_hal_event_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_event_move_ref(value: *iree_hal_event_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_event_deref(ref: iree_vm_ref_t): *iree_hal_event_t <cimport,nodecl> end
+global function iree_hal_event_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_event_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_event_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_event_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_event_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_executable_retain_ref(value: *iree_hal_executable_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_executable_move_ref(value: *iree_hal_executable_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_executable_deref(ref: iree_vm_ref_t): *iree_hal_executable_t <cimport,nodecl> end
+global function iree_hal_executable_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_executable_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_executable_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_executable_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_executable_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_executable_cache_retain_ref(value: *iree_hal_executable_cache_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_executable_cache_move_ref(value: *iree_hal_executable_cache_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_executable_cache_deref(ref: iree_vm_ref_t): *iree_hal_executable_cache_t <cimport,nodecl> end
+global function iree_hal_executable_cache_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_executable_cache_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_executable_cache_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_executable_cache_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_executable_cache_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_executable_layout_retain_ref(value: *iree_hal_executable_layout_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_executable_layout_move_ref(value: *iree_hal_executable_layout_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_executable_layout_deref(ref: iree_vm_ref_t): *iree_hal_executable_layout_t <cimport,nodecl> end
+global function iree_hal_executable_layout_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_executable_layout_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_executable_layout_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_executable_layout_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_executable_layout_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_semaphore_retain_ref(value: *iree_hal_semaphore_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_semaphore_move_ref(value: *iree_hal_semaphore_t): iree_vm_ref_t <cimport,nodecl> end
+global function iree_hal_semaphore_deref(ref: iree_vm_ref_t): *iree_hal_semaphore_t <cimport,nodecl> end
+global function iree_hal_semaphore_check_deref(ref: iree_vm_ref_t, out_ptr: **iree_hal_semaphore_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_semaphore_get_descriptor(): *iree_vm_ref_type_descriptor_t <cimport,nodecl> end
+global function iree_hal_semaphore_isa(ref: iree_vm_ref_t): boolean <cimport,nodecl> end
+global function iree_hal_semaphore_type_id(): iree_vm_ref_type_t <cimport,nodecl> end
+global function iree_hal_module_register_types(): iree_status_t <cimport,nodecl> end
+global function iree_hal_module_create(device: *iree_hal_device_t, allocator: iree_allocator_t, out_module: **iree_vm_module_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_module_state_device(module_state: *iree_vm_module_state_t): *iree_hal_device_t <cimport,nodecl> end
+global function iree_vm_list_get_buffer_view_assign(list: *iree_vm_list_t, i: iree_host_size_t): *iree_hal_buffer_view_t <cimport,nodecl> end
+global function iree_vm_list_get_buffer_view_retain(list: *iree_vm_list_t, i: iree_host_size_t): *iree_hal_buffer_view_t <cimport,nodecl> end
+global function iree_vm_list_set_buffer_view_retain(list: *iree_vm_list_t, i: iree_host_size_t, value: *iree_hal_buffer_view_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_dylib_driver_module_register(registry: *iree_hal_driver_registry_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_vmvx_driver_module_register(registry: *iree_hal_driver_registry_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_vulkan_driver_module_register(registry: *iree_hal_driver_registry_t): iree_status_t <cimport,nodecl> end
+global function iree_hal_cuda_driver_module_register(registry: *iree_hal_driver_registry_t): iree_status_t <cimport,nodecl> end
+global function iree_vm_bytecode_module_create(flatbuffer_data: iree_const_byte_span_t, flatbuffer_allocator: iree_allocator_t, allocator: iree_allocator_t, out_module: **iree_vm_module_t): iree_status_t <cimport,nodecl> end
+global IREE_ARCH: cstring <comptime> = "x86_64"
+global IREE_ARCH_X86_64: cint <comptime> = 1
+global IREE_PTR_SIZE: cint <comptime> = 8
+global IREE_ENDIANNESS_LITTLE: cint <comptime> = 1
+global IREE_COMPILER_GCC: cint <comptime> = 1
+global IREE_COMPILER_GCC_COMPAT: cint <comptime> = 1
+global IREE_PLATFORM_LINUX: cint <comptime> = 1
+global IREE_HOST_SIZE_T: type = csize
+global IREE_DEVICE_SIZE_T: type = uint64
+global IREE_STATUS_MODE: cint <comptime> = 3
+global IREE_SYNCHRONIZATION_DISABLE_UNSAFE: cint <comptime> = 0
+global IREE_FILE_IO_ENABLE: cint <comptime> = 1
+global IREE_STATISTICS_ENABLE: cint <comptime> = 1
+global IREE_HAL_HEAP_BUFFER_ALIGNMENT: cint <comptime> = 64
+global IREE_HAL_COMMAND_BUFFER_VALIDATION_ENABLE: cint <comptime> = 1
+global IREE_HAL_MODULE_STRING_UTIL_ENABLE: cint <comptime> = 1
+global IREE_VM_BACKTRACE_ENABLE: cint <comptime> = 1
+global IREE_VM_EXECUTION_TRACING_ENABLE: cint <comptime> = 1
+global IREE_VM_EXECUTION_TRACING_FORCE_ENABLE: cint <comptime> = 0
+global IREE_VM_EXECUTION_TRACING_SRC_LOC_ENABLE: cint <comptime> = 0
+global IREE_VM_EXT_I64_ENABLE: cint <comptime> = 1
+global IREE_VM_EXT_F32_ENABLE: cint <comptime> = 1
+global IREE_VM_EXT_F64_ENABLE: cint <comptime> = 0
+global iree_max_align_t: cuint <cimport,nodecl,const>
+global IREE_STRING_VIEW_NPOS: culong <cimport,nodecl,const>
+global IREE_STATUS_FEATURE_SOURCE_LOCATION: cint <comptime> = 1
+global IREE_STATUS_FEATURE_ANNOTATIONS: cint <comptime> = 2
+global IREE_STATUS_FEATURE_STACK_TRACE: cint <comptime> = 4
+global IREE_STATUS_FEATURES: cint <comptime> = 7
+global IREE_DURATION_ZERO: cint <comptime> = 0
+global IREE_HAVE_WAIT_TYPE_EVENTFD: cint <comptime> = 1
+global IREE_HAVE_WAIT_TYPE_PIPE: cint <comptime> = 1
+global IREE_HAVE_WAIT_TYPE_LOCAL_FUTEX: cint <comptime> = 1
+global IREE_LOOP_INLINE_STORAGE_SIZE: cint <comptime> = 512
+global iree_hardware_destructive_interference_size: cint <comptime> = 64
+global iree_hardware_constructive_interference_size: cint <comptime> = 64
+global IREE_VM_CCONV_TYPE_VOID: cchar <comptime> = 118
+global IREE_VM_CCONV_TYPE_I32: cchar <comptime> = 105
+global IREE_VM_CCONV_TYPE_I64: cchar <comptime> = 73
+global IREE_VM_CCONV_TYPE_F32: cchar <comptime> = 102
+global IREE_VM_CCONV_TYPE_F64: cchar <comptime> = 70
+global IREE_VM_CCONV_TYPE_REF: cchar <comptime> = 114
+global IREE_VM_CCONV_TYPE_SPAN_START: cchar <comptime> = 67
+global IREE_VM_CCONV_TYPE_SPAN_END: cchar <comptime> = 68
+global IREE_TRACING_FEATURE_INSTRUMENTATION: cint <comptime> = 1
+global IREE_TRACING_FEATURE_INSTRUMENTATION_CALLSTACKS: cint <comptime> = 2
+global IREE_TRACING_FEATURE_ALLOCATION_TRACKING: cint <comptime> = 4
+global IREE_TRACING_FEATURE_ALLOCATION_CALLSTACKS: cint <comptime> = 8
+global IREE_TRACING_FEATURE_FAST_LOCKS: cint <comptime> = 16
+global IREE_TRACING_FEATURE_SLOW_LOCKS: cint <comptime> = 32
+global IREE_TRACING_FEATURE_LOG_MESSAGES: cint <comptime> = 64
+global IREE_TRACING_MAX_CALLSTACK_DEPTH: cint <comptime> = 16
+global IREE_TRACING_FEATURES: cint <comptime> = 0
+global IREE_VM_STACK_DEFAULT_SIZE: cint <comptime> = 8192
+global IREE_VM_STACK_MIN_SIZE: cint <comptime> = 1024
+global IREE_VM_STACK_MAX_SIZE: cint <comptime> = 1048576
+global IREE_VM_VALUE_STORAGE_SIZE: cint <comptime> = 8
+global IREE_WHOLE_BUFFER: iree_device_size_t <cimport,nodecl,const>
+global IREE_HAL_QUEUE_AFFINITY_ANY: iree_hal_queue_affinity_t <cimport,nodecl,const>
+global IREE_HAL_COMMAND_BUFFER_MAX_UPDATE_SIZE: iree_device_size_t <comptime> = 65536
+global IREE_HAL_DEVICE_ID_INVALID: culonglong <comptime> = 0
+global IREE_HAL_DRIVER_ID_INVALID: culonglong <comptime> = 0

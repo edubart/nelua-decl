@@ -1,0 +1,87 @@
+require 'rpng'
+
+require 'stb_image'
+require 'stb_image_write'
+require 'stb_image_resize'
+require 'stb_truetype'
+require 'stb_vorbis'
+require 'C.stdio'
+require 'C.stdlib'
+require 'C.string'
+
+do -- stb_image/stb_image_write
+  -- Create a test image
+  local cR: [3]byte = {255,0,0}
+  local cG: [3]byte = {0,255,0}
+  local cB: [3]byte = {0,0,255}
+  local cW: [3]byte = {255,255,255}
+  local image: [4][4][3]byte = {
+    {cR,cR,cG,cG},
+    {cR,cR,cG,cG},
+    {cB,cB,cW,cW},
+    {cB,cB,cW,cW},
+  }
+
+  -- Save the image
+  rpng_save_image("test_image.png", &image[0][0][0], 4*3);
+
+  -- Load the image and compare
+  local x: cint, y: cint, c: cint
+  local data = stbi_load("test_image.png", &x, &y, &c, 3)
+  assert(x == 4 and y == 4 and c == 3)
+  -- assert(C.memcmp(&image, data, 4*4*3) == 0)
+  stbi_image_free(data)
+
+  -- Delete the image file
+  C.remove("test_image.png")
+end
+
+local function readfile(name: string): (*[0]byte, isize)
+  local fp: *C.FILE = C.fopen(name, 'rb')
+  assert(fp, 'unable to open file')
+  C.fseek(fp, 0, C.SEEK_END)
+  local size: isize = C.ftell(fp)
+  C.fseek(fp, 0, C.SEEK_SET)
+  local buffer: *byte = (@*[0]byte)(C.malloc(size))
+  local read: isize = C.fread(buffer, 1, size, fp)
+  assert(size == read, 'file read incomplete')
+  C.fclose(fp)
+  return buffer, size
+end
+
+do -- stb_truetype
+  local ttf_buffer = readfile('verabd.ttf')
+
+  local offset = stbtt_GetFontOffsetForIndex(&ttf_buffer[0], 0)
+  local font: stbtt_fontinfo
+  stbtt_InitFont(&font, &ttf_buffer[0], offset)
+  local w: cint, h: cint
+  local scale: float32 = stbtt_ScaleForPixelHeight(&font, 20)
+  local bitmap: *[0]byte = stbtt_GetCodepointBitmap(&font, 0, scale, 'a'_b, &w, &h, nilptr, nilptr)
+  C.free(ttf_buffer)
+
+  local glyphs: string = " .:ioVM@"
+  for j=0,<h do
+    for i=0,<w do
+      local c = glyphs.data[bitmap[j*w+i]>>5]
+      C.putchar(c)
+    end
+    C.putchar('\n'_b)
+  end
+end
+
+do -- stb_vorbis
+  local chan: cint, samplerate: cint
+  local output: *int16
+  local samples = stb_vorbis_decode_filename('pluck.ogg', &chan, &samplerate, &output)
+  assert(samples > 0)
+  assert(chan >= 1)
+  assert(samplerate >= 11025)
+  assert(output ~= nilptr)
+  C.free(output)
+end
+
+print("STB OK!")
+
+
+print 'rpng OK!'

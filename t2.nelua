@@ -1,0 +1,47 @@
+require 't'
+## cflags '-I/usr/include/libadwaita-1 -I/usr/include/gtk-4.0 -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-4 -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/lzo -I/usr/include/pixman-1 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/graphene-1.0 -I/usr/lib/graphene-1.0/include -I/usr/include/gio-unix-2.0 -pthread -ladwaita-1 -lgtk-4 -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -lgdk_pixbuf-2.0 -lcairo-gobject -lcairo -lgraphene-1.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0'
+## cinclude '<adwaita.h>'
+
+print 'hello'
+
+--[[
+static void
+activate_cb (GtkApplication *app)
+{
+  GtkWidget *window = gtk_application_window_new (app);
+  GtkWidget *label = gtk_label_new ("Hello World");
+
+  gtk_window_set_title (GTK_WINDOW (window), "Hello");
+  gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
+  gtk_window_set_child (GTK_WINDOW (window), label);
+  gtk_window_present (GTK_WINDOW (window));
+}
+
+int
+main (int   argc,
+      char *argv[])
+{
+  g_autoptr (AdwApplication) app = NULL;
+
+  app = adw_application_new ("org.example.Hello", G_APPLICATION_FLAGS_NONE);
+
+  g_signal_connect (app, "activate", G_CALLBACK (activate_cb), NULL);
+
+  return g_application_run (G_APPLICATION (app), argc, argv);
+}
+
+]]
+
+local function activate_cb(app: *GtkApplication)
+  local window: *GtkWidget = gtk_application_window_new(app)
+  local label: *GtkWidget = gtk_label_new("Hello World")
+  gtk_window_set_title((@*GtkWindow)(window), "Hello")
+  gtk_window_set_default_size((@*GtkWindow)(window), 200, 200)
+  gtk_window_set_child((@*GtkWindow)(window), label)
+  gtk_window_present((@*GtkWindow)(window))
+end
+
+local app: *AdwApplication = adw_application_new("org.example.Hello", G_APPLICATION_FLAGS_NONE)
+-- defer glib_autoptr_cleanup_AdwApplication(&app) end
+g_signal_connect_data(app, "activate", (@GCallback)(activate_cb), nilptr, nilptr, 0)
+return g_application_run((@*GApplication)(app), 0, nilptr)

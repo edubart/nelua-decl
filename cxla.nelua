@@ -1,0 +1,67 @@
+global cxla_status: type <cimport,nodecl,forwarddecl> = @record{}
+global cxla_client: type <cimport,nodecl,forwarddecl> = @record{}
+global cxla_device: type <cimport,nodecl,forwarddecl> = @record{}
+global cxla_buffer: type <cimport,nodecl,forwarddecl> = @record{}
+global cxla_executable: type <cimport,nodecl,forwarddecl> = @record{}
+global cxla_element_type: type <cimport,nodecl,using> = @enum(cint){
+  CXLA_ELEMENT_TYPE_INVALID = 0,
+  CXLA_ELEMENT_TYPE_PRED = 1,
+  CXLA_ELEMENT_TYPE_S8 = 2,
+  CXLA_ELEMENT_TYPE_S16 = 3,
+  CXLA_ELEMENT_TYPE_S32 = 4,
+  CXLA_ELEMENT_TYPE_S64 = 5,
+  CXLA_ELEMENT_TYPE_U8 = 6,
+  CXLA_ELEMENT_TYPE_U16 = 7,
+  CXLA_ELEMENT_TYPE_U32 = 8,
+  CXLA_ELEMENT_TYPE_U64 = 9,
+  CXLA_ELEMENT_TYPE_F16 = 10,
+  CXLA_ELEMENT_TYPE_F32 = 11,
+  CXLA_ELEMENT_TYPE_F64 = 12,
+  CXLA_ELEMENT_TYPE_TUPLE = 13,
+  CXLA_ELEMENT_TYPE_OPAQUE_TYPE = 14,
+  CXLA_ELEMENT_TYPE_C64 = 15,
+  CXLA_ELEMENT_TYPE_BF16 = 16,
+  CXLA_ELEMENT_TYPE_TOKEN = 17,
+  CXLA_ELEMENT_TYPE_C128 = 18
+}
+global cxla_gpu_allocator_kind: type <cimport,nodecl,using> = @enum(cint){
+  CXLA_GPU_ALLOCATOR_KIND_DEFAULT = 0,
+  CXLA_GPU_ALLOCATOR_KIND_PLATFORM = 1,
+  CXLA_GPU_ALLOCATOR_KIND_BFC = 2,
+  CXLA_GPU_ALLOCATOR_KIND_CUDA_ASYNC = 3
+}
+global cxla_gpu_allocator_desc: type <cimport,nodecl> = @record{
+  kind: cxla_gpu_allocator_kind,
+  memory_fraction: float64,
+  preallocate: boolean
+}
+global cxla_buffer_usage: type <cimport,nodecl,using> = @enum(cint){
+  CXLA_BUFFER_USAGE_SYNC_COPY = 0,
+  CXLA_BUFFER_USAGE_ASYNC_COPY = 1,
+  CXLA_BUFFER_USAGE_NO_COPY = 2
+}
+global function cxla_status_ok(status: *cxla_status): boolean <cimport,nodecl> end
+global function cxla_status_code(status: *cxla_status): int32 <cimport,nodecl> end
+global function cxla_status_error_message(status: *cxla_status): cstring <cimport,nodecl> end
+global function cxla_status_destroy(status: *cxla_status): void <cimport,nodecl> end
+global function cxla_client_get_gpu(client: **cxla_client, asynchronous: boolean, allocator: cxla_gpu_allocator_desc): *cxla_status <cimport,nodecl> end
+global function cxla_client_get_cpu(client: **cxla_client, asynchronous: boolean): *cxla_status <cimport,nodecl> end
+global function cxla_client_lookup_device(client: *cxla_client, device_id: int32, out_device: **cxla_device): *cxla_status <cimport,nodecl> end
+global function cxla_client_destroy(client: *cxla_client): void <cimport,nodecl> end
+global function cxla_device_get_client(device: *cxla_device): *cxla_client <cimport,nodecl> end
+global function cxla_device_get_name(device: *cxla_device): cstring <cimport,nodecl> end
+global function cxla_device_get_vendor(device: *cxla_device): cstring <cimport,nodecl> end
+global function cxla_free_string(s: cstring): void <cimport,nodecl> end
+global function cxla_executable_compile(code: cstring, code_len: csize, client: *cxla_client, out_executable: **cxla_executable): *cxla_status <cimport,nodecl> end
+global function cxla_executable_invoke(executable: *cxla_executable, device: *cxla_device, input_buffers: *[0]*cxla_buffer, num_inputs: int32, output_buffers: *[0]*cxla_buffer, num_outputs: int32): *cxla_status <cimport,nodecl> end
+global function cxla_executable_destroy(executable: *cxla_executable): void <cimport,nodecl> end
+global function cxla_buffer_create_from_host_buffer(data: pointer, element_type: cxla_element_type, dims: *[0]int64, byte_strides: *[0]int64, rank: int64, usage: uint32, client: *cxla_client, device: *cxla_device, out_buffer: **cxla_buffer): *cxla_status <cimport,nodecl> end
+global function cxla_buffer_block_until_ready(buffer: *cxla_buffer): *cxla_status <cimport,nodecl> end
+global function cxla_buffer_transfer_d2h(buffer: *cxla_buffer, data: pointer, data_size: int64): *cxla_status <cimport,nodecl> end
+global function cxla_buffer_shape_rank(buffer: *cxla_buffer): int64 <cimport,nodecl> end
+global function cxla_buffer_shape_dim(buffer: *cxla_buffer, dim: int64): int64 <cimport,nodecl> end
+global function cxla_buffer_element_type(buffer: *cxla_buffer): cxla_element_type <cimport,nodecl> end
+global function cxla_buffer_element_count(buffer: *cxla_buffer): int64 <cimport,nodecl> end
+global function cxla_buffer_element_size(buffer: *cxla_buffer): int64 <cimport,nodecl> end
+global function cxla_buffer_byte_size(buffer: *cxla_buffer): int64 <cimport,nodecl> end
+global function cxla_buffer_destroy(buffer: *cxla_buffer): void <cimport,nodecl> end

@@ -1,28 +1,30 @@
-require 'sdl2'
+##[==[
+require'nldecl2'.generate_bindings_file{
+  output_file = 'sdl2.nelua',
+  parse_includes = {'SDL2/SDL.h'},
+  include_names = {'^SDL_'},
+  output_head = [[
+## cdefine 'SDL_MAIN_HANDLED'
+## linklib 'SDL2'
+## cinclude '<SDL2/SDL.h>'
+]]}
+]==]
 
-if SDL_Init(SDL_INIT_VIDEO) ~= 0 then
-  error 'Could not initialize SDL'
-end
-local window = SDL_CreateWindow(
-  "An SDL2 Window",
+require(#[cbind 'SDL2/SDL.h']#)
+
+assert(SDL_Init(SDL_INIT_VIDEO) == 0, 'Could not initialize SDL')
+local window = SDL_CreateWindow("An SDL2 Window",
   SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
   512, 512,
   0)
-if not window then
-  error 'Could not create SDL Window'
-end
-
+assert(window, 'Could not create SDL Window')
 local renderer = SDL_CreateRenderer(window, -1, 0)
-if not renderer then
-  error 'Could not create SDL Renderer'
-end
-
-SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+assert(renderer, 'Could not create SDL Renderer')
+SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
 SDL_RenderClear(renderer)
 SDL_RenderPresent(renderer)
 SDL_Delay(1000)
 SDL_DestroyRenderer(renderer)
 SDL_DestroyWindow(window)
 SDL_Quit()
-
 print("SDL2 OK!")

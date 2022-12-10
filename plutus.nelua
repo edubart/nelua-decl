@@ -1,0 +1,147 @@
+require 'dnnl'
+require 'span'
+require 'memory'
+
+-- print('ver', dnnl_runtime2str(dnnl_version().gpu_runtime))
+
+local function CHECK(status: dnnl_status_t)
+  assert(status == dnnl_success, dnnl_status2str(status))
+end
+
+-- dnnl_set_verbose(0)
+local engine_kind = dnnl_cpu
+print(dnnl_engine_get_count(engine_kind))
+
+local engine: dnnl_engine_t
+local stream: dnnl_stream_t
+CHECK(dnnl_engine_create(&engine, engine_kind, 0))
+CHECK(dnnl_stream_create(&stream, engine, dnnl_stream_default_flags))
+
+local Tensor = @record{
+  mem: *dnnl_memory
+}
+
+function Tensor:destroy()
+  if self.mem then
+    CHECK(dnnl_memory_destroy(self.mem))
+    self.mem = nilptr
+  end
+end
+
+function Tensor:__close()
+  self:destroy()
+end
+
+function Tensor:ndims()
+  local mem_desc: *dnnl_memory_desc_t
+  CHECK(dnnl_memory_get_memory_desc(self.mem, &mem_desc))
+  return mem_desc.ndims
+end
+
+function Tensor:dims(): span(int64)
+  local mem_desc: *dnnl_memory_desc_t
+  CHECK(dnnl_memory_get_memory_desc(self.mem, &mem_desc))
+  return {data=&mem_desc.dims[0], size=mem_desc.ndims}
+end
+
+function Tensor:nelems(): int64
+  local dims = self:dims()
+  if #dims == 0 then return 0 end
+  local nelems = dims[0]
+  for i=1,<#dims do
+    nelems = nelems * dims[i]
+  end
+  return nelems
+end
+
+function Tensor:map_data(): span(float32)
+  local ptr: pointer
+  CHECK(dnnl_memory_map_data(self.mem, &ptr))
+  local spn: span(float32) = {data=(@*[0]float32)(ptr), size=self:nelems()}
+  return spn
+end
+
+function Tensor:unmap_data(data: span(float32))
+  CHECK(dnnl_memory_unmap_data(self.mem, data.data))
+end
+
+function Tensor:zeros_()
+  local data = self:map_data()
+  memory.spanzero(data)
+  self:unmap_data(data)
+end
+
+function Tensor:ones_()
+  local data = self:map_data()
+  memory.spanset(data, 1.0_f32)
+  self:unmap_data(data)
+end
+
+function Tensor.empty(dims: span(int64)): Tensor
+  local self: Tensor
+  local mem_desc: dnnl_memory_desc_t
+  local format_tag: dnnl_format_tag_t = #dims + 1
+  CHECK(dnnl_memory_desc_init_by_tag(&mem_desc, dims.size, (@*dnnl_dims_t)(dims.data), dnnl_f32, format_tag))
+  CHECK(dnnl_memory_create(&self.mem, &mem_desc, engine, DNNL_MEMORY_ALLOCATE))
+  return self
+end
+
+function Tensor.zeros(dims: span(int64)): Tensor
+  local self: Tensor = Tensor.empty(dims)
+  self:zeros_()
+  return self
+end
+
+function Tensor.ones(dims: span(int64)): Tensor
+  local self: Tensor = Tensor.empty(dims)
+  self:ones_()
+  return self
+end
+
+function Tensor.__add(a: Tensor, b: Tensor): Tensor
+  local a_mem_desc: *dnnl_memory_desc_t
+  local b_mem_desc: *dnnl_memory_desc_t
+  local c_mem_desc: *dnnl_memory_desc_t
+  local op_desc: dnnl_binary_desc_t
+  local prim_desc: dnnl_primitive_desc_t
+  local prim: dnnl_primitive_t
+  local c: Tensor = Tensor.empty(a:dims())
+  CHECK(dnnl_memory_get_memory_desc(a.mem, &a_mem_desc))
+  CHECK(dnnl_memory_get_memory_desc(b.mem, &b_mem_desc))
+  CHECK(dnnl_memory_get_memory_desc(c.mem, &c_mem_desc))
+  CHECK(dnnl_binary_desc_init(&op_desc, dnnl_binary_add, a_mem_desc, b_mem_desc, c_mem_desc))
+  CHECK(dnnl_primitive_desc_create(&prim_desc, &op_desc, nilptr, engine, nilptr))
+  CHECK(dnnl_primitive_create(&prim, prim_desc))
+  CHECK(dnnl_primitive_execute(prim, stream, 3, &(@[]dnnl_exec_arg_t){
+    {DNNL_ARG_SRC_0, a.mem},
+    {DNNL_ARG_SRC_1, b.mem},
+    {DNNL_ARG_DST_0, c.mem},
+  }))
+  CHECK(dnnl_stream_wait(stream))
+  CHECK(dnnl_primitive_desc_destroy(prim_desc))
+  CHECK(dnnl_primitive_destroy(prim))
+  return c
+end
+
+require 'os'
+
+local function go_test()
+  local a <close> = Tensor.ones{1000,1000}
+  local b <close> = Tensor.ones{1000,1000}
+  local start = os.now()
+  local c <close> = a + b
+  print(os.now() - start)
+  local start = os.now()
+  local c <close> = a + b
+  print(os.now() - start)
+
+  local data = c:map_data()
+  local x = data[0]
+  c:unmap_data(data)
+  print(x)
+end
+
+go_test()
+
+CHECK(dnnl_stream_destroy(stream))
+CHECK(dnnl_engine_destroy(engine))

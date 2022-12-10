@@ -1,0 +1,471 @@
+global TF_AttrType: type <cimport,nodecl,using> = @enum(cint){
+  TF_ATTR_STRING = 0,
+  TF_ATTR_INT = 1,
+  TF_ATTR_FLOAT = 2,
+  TF_ATTR_BOOL = 3,
+  TF_ATTR_TYPE = 4,
+  TF_ATTR_SHAPE = 5,
+  TF_ATTR_TENSOR = 6,
+  TF_ATTR_PLACEHOLDER = 7,
+  TF_ATTR_FUNC = 8
+}
+global TF_Buffer: type <cimport,nodecl> = @record{
+  data: pointer,
+  length: csize,
+  data_deallocator: function(data: pointer, length: csize): void
+}
+global TF_DataType: type <cimport,nodecl,using> = @enum(cint){
+  TF_FLOAT = 1,
+  TF_DOUBLE = 2,
+  TF_INT32 = 3,
+  TF_UINT8 = 4,
+  TF_INT16 = 5,
+  TF_INT8 = 6,
+  TF_STRING = 7,
+  TF_COMPLEX64 = 8,
+  TF_COMPLEX = 8,
+  TF_INT64 = 9,
+  TF_BOOL = 10,
+  TF_QINT8 = 11,
+  TF_QUINT8 = 12,
+  TF_QINT32 = 13,
+  TF_BFLOAT16 = 14,
+  TF_QINT16 = 15,
+  TF_QUINT16 = 16,
+  TF_UINT16 = 17,
+  TF_COMPLEX128 = 18,
+  TF_HALF = 19,
+  TF_RESOURCE = 20,
+  TF_VARIANT = 21,
+  TF_UINT32 = 22,
+  TF_UINT64 = 23,
+  TF_FLOAT8_E5M2 = 24,
+  TF_FLOAT8_E4M3FN = 25
+}
+global TF_Status: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_Code: type <cimport,nodecl,using> = @enum(cint){
+  TSL_OK = 0,
+  TSL_CANCELLED = 1,
+  TSL_UNKNOWN = 2,
+  TSL_INVALID_ARGUMENT = 3,
+  TSL_DEADLINE_EXCEEDED = 4,
+  TSL_NOT_FOUND = 5,
+  TSL_ALREADY_EXISTS = 6,
+  TSL_PERMISSION_DENIED = 7,
+  TSL_UNAUTHENTICATED = 16,
+  TSL_RESOURCE_EXHAUSTED = 8,
+  TSL_FAILED_PRECONDITION = 9,
+  TSL_ABORTED = 10,
+  TSL_OUT_OF_RANGE = 11,
+  TSL_UNIMPLEMENTED = 12,
+  TSL_INTERNAL = 13,
+  TSL_UNAVAILABLE = 14,
+  TSL_DATA_LOSS = 15
+}
+global TF_AllocatorAttributes: type <cimport,nodecl> = @record{
+  struct_size: csize,
+  on_host: cuchar
+}
+global TF_Tensor: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_TString_Type: type <cimport,nodecl,using> = @enum(cint){
+  TF_TSTR_SMALL = 0,
+  TF_TSTR_LARGE = 1,
+  TF_TSTR_OFFSET = 2,
+  TF_TSTR_VIEW = 3,
+  TF_TSTR_TYPE_MASK = 3
+}
+global TF_TString_Large: type <cimport,nodecl> = @record{
+  size: csize,
+  cap: csize,
+  ptr: cstring
+}
+global TF_TString_Offset: type <cimport,nodecl> = @record{
+  size: uint32,
+  offset: uint32,
+  count: uint32
+}
+global TF_TString_View: type <cimport,nodecl> = @record{
+  size: csize,
+  ptr: cstring
+}
+global TF_TString_Raw: type <cimport,nodecl> = @record{
+  raw: [24]uint8
+}
+global TF_TString_Union: type <cimport,nodecl> = @union{
+  large: TF_TString_Large,
+  offset: TF_TString_Offset,
+  view: TF_TString_View,
+  raw: TF_TString_Raw
+}
+global TF_TString_SmallCapacity: cint <cimport,nodecl,const>
+global TF_TString_Small: type <cimport,nodecl> = @record{
+  size: uint8,
+  str: [0]cchar
+}
+global TF_TString: type <cimport,nodecl> = @record{
+  u: union{
+    smll: TF_TString_Small,
+    large: TF_TString_Large,
+    offset: TF_TString_Offset,
+    view: TF_TString_View,
+    raw: TF_TString_Raw
+  }
+}
+global TF_StringView: type <cimport,nodecl> = @record{
+  data: cstring,
+  len: csize
+}
+global TF_SessionOptions: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_Graph: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_OperationDescription: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_Operation: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_Input: type <cimport,nodecl> = @record{
+  oper: *TF_Operation,
+  index: cint
+}
+global TF_Output: type <cimport,nodecl> = @record{
+  oper: *TF_Operation,
+  index: cint
+}
+global TF_Function: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_FunctionOptions: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_AttrMetadata: type <cimport,nodecl> = @record{
+  is_list: cuchar,
+  list_size: int64,
+  type: TF_AttrType,
+  total_size: int64
+}
+global TF_ImportGraphDefOptions: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_ImportGraphDefResults: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_WhileParams: type <cimport,nodecl> = @record{
+  ninputs: cint,
+  cond_graph: *TF_Graph,
+  cond_inputs: *TF_Output,
+  cond_output: TF_Output,
+  body_graph: *TF_Graph,
+  body_inputs: *TF_Output,
+  body_outputs: *TF_Output,
+  name: cstring
+}
+global TF_Session: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_DeprecatedSession: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_DeviceList: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_Library: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_ApiDefMap: type <cimport,nodecl,forwarddecl> = @record{}
+global TF_Server: type <cimport,nodecl,forwarddecl> = @record{}
+global TFE_ContextOptions: type <cimport,nodecl,forwarddecl> = @record{}
+global TFE_ContextDevicePlacementPolicy: type <cimport,nodecl,using> = @enum(cint){
+  TFE_DEVICE_PLACEMENT_EXPLICIT = 0,
+  TFE_DEVICE_PLACEMENT_WARN = 1,
+  TFE_DEVICE_PLACEMENT_SILENT = 2,
+  TFE_DEVICE_PLACEMENT_SILENT_FOR_INT32 = 3
+}
+global TFE_Context: type <cimport,nodecl,forwarddecl> = @record{}
+global TFE_TensorHandle: type <cimport,nodecl,forwarddecl> = @record{}
+global TFE_TensorDebugInfo: type <cimport,nodecl,forwarddecl> = @record{}
+global TFE_Op: type <cimport,nodecl,forwarddecl> = @record{}
+global function TF_NewBufferFromString(proto: pointer, proto_len: csize): *TF_Buffer <cimport,nodecl> end
+global function TF_NewBuffer(): *TF_Buffer <cimport,nodecl> end
+global function TF_DeleteBuffer(a1: *TF_Buffer): void <cimport,nodecl> end
+global function TF_GetBuffer(buffer: *TF_Buffer): TF_Buffer <cimport,nodecl> end
+global function TF_DataTypeSize(dt: TF_DataType): csize <cimport,nodecl> end
+global function TF_NewStatus(): *TF_Status <cimport,nodecl> end
+global function TF_DeleteStatus(a1: *TF_Status): void <cimport,nodecl> end
+global function TF_SetStatus(s: *TF_Status, code: TF_Code, msg: cstring): void <cimport,nodecl> end
+global function TF_SetPayload(s: *TF_Status, key: cstring, value: cstring): void <cimport,nodecl> end
+global function TF_SetStatusFromIOError(s: *TF_Status, error_code: cint, context: cstring): void <cimport,nodecl> end
+global function TF_GetCode(s: *TF_Status): TF_Code <cimport,nodecl> end
+global function TF_Message(s: *TF_Status): cstring <cimport,nodecl> end
+global function TF_NewTensor(a1: TF_DataType, dims: *int64, num_dims: cint, data: pointer, len: csize, deallocator: function(data: pointer, len: csize, arg: pointer): void, deallocator_arg: pointer): *TF_Tensor <cimport,nodecl> end
+global function TF_AllocateTensor(a1: TF_DataType, dims: *int64, num_dims: cint, len: csize): *TF_Tensor <cimport,nodecl> end
+global function TF_TensorMaybeMove(tensor: *TF_Tensor): *TF_Tensor <cimport,nodecl> end
+global function TF_DeleteTensor(a1: *TF_Tensor): void <cimport,nodecl> end
+global function TF_TensorType(a1: *TF_Tensor): TF_DataType <cimport,nodecl> end
+global function TF_SetShape(tensor: *TF_Tensor, dims: *int64, num_dims: cint): void <cimport,nodecl> end
+global function TF_NumDims(a1: *TF_Tensor): cint <cimport,nodecl> end
+global function TF_Dim(tensor: *TF_Tensor, dim_index: cint): int64 <cimport,nodecl> end
+global function TF_TensorByteSize(a1: *TF_Tensor): csize <cimport,nodecl> end
+global function TF_TensorData(a1: *TF_Tensor): pointer <cimport,nodecl> end
+global function TF_TensorElementCount(tensor: *TF_Tensor): int64 <cimport,nodecl> end
+global function TF_TensorBitcastFrom(from: *TF_Tensor, type: TF_DataType, to: *TF_Tensor, new_dims: *int64, num_new_dims: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_TensorIsAligned(a1: *TF_Tensor): boolean <cimport,nodecl> end
+global function TF_swap32(host_int: uint32): uint32 <cimport,nodecl> end
+global function TF_align16(i: csize): csize <cimport,nodecl> end
+global function TF_max(a: csize, b: csize): csize <cimport,nodecl> end
+global function TF_min(a: csize, b: csize): csize <cimport,nodecl> end
+global function TF_TString_ToActualSizeT(size: csize): csize <cimport,nodecl> end
+global function TF_TString_ToInternalSizeT(size: csize, type: TF_TString_Type): csize <cimport,nodecl> end
+global function TF_TString_Init(str: *TF_TString): void <cimport,nodecl> end
+global function TF_TString_Dealloc(str: *TF_TString): void <cimport,nodecl> end
+global function TF_TString_Resize(str: *TF_TString, new_size: csize, c: cchar): cstring <cimport,nodecl> end
+global function TF_TString_ResizeUninitialized(str: *TF_TString, new_size: csize): cstring <cimport,nodecl> end
+global function TF_TString_Reserve(str: *TF_TString, new_cap: csize): void <cimport,nodecl> end
+global function TF_TString_ReserveAmortized(str: *TF_TString, new_cap: csize): void <cimport,nodecl> end
+global function TF_TString_GetSize(str: *TF_TString): csize <cimport,nodecl> end
+global function TF_TString_GetCapacity(str: *TF_TString): csize <cimport,nodecl> end
+global function TF_TString_GetType(str: *TF_TString): TF_TString_Type <cimport,nodecl> end
+global function TF_TString_GetDataPointer(str: *TF_TString): cstring <cimport,nodecl> end
+global function TF_TString_GetMutableDataPointer(str: *TF_TString): cstring <cimport,nodecl> end
+global function TF_TString_AssignView(dst: *TF_TString, src: cstring, size: csize): void <cimport,nodecl> end
+global function TF_TString_Append(dst: *TF_TString, src: *TF_TString): void <cimport,nodecl> end
+global function TF_TString_AppendN(dst: *TF_TString, src: cstring, size: csize): void <cimport,nodecl> end
+global function TF_TString_Copy(dst: *TF_TString, src: cstring, size: csize): void <cimport,nodecl> end
+global function TF_TString_Assign(dst: *TF_TString, src: *TF_TString): void <cimport,nodecl> end
+global function TF_TString_Move(dst: *TF_TString, src: *TF_TString): void <cimport,nodecl> end
+global function TF_StringInit(t: *TF_TString): void <cimport,nodecl> end
+global function TF_StringCopy(dst: *TF_TString, src: cstring, size: csize): void <cimport,nodecl> end
+global function TF_StringAssignView(dst: *TF_TString, src: cstring, size: csize): void <cimport,nodecl> end
+global function TF_StringGetDataPointer(tstr: *TF_TString): cstring <cimport,nodecl> end
+global function TF_StringGetType(str: *TF_TString): TF_TString_Type <cimport,nodecl> end
+global function TF_StringGetSize(tstr: *TF_TString): csize <cimport,nodecl> end
+global function TF_StringGetCapacity(str: *TF_TString): csize <cimport,nodecl> end
+global function TF_StringDealloc(tstr: *TF_TString): void <cimport,nodecl> end
+global function TF_Version(): cstring <cimport,nodecl> end
+global function TF_TensorFromProto(from: *TF_Buffer, to: *TF_Tensor, status: *TF_Status): void <cimport,nodecl> end
+global function TF_NewSessionOptions(): *TF_SessionOptions <cimport,nodecl> end
+global function TF_SetTarget(options: *TF_SessionOptions, target: cstring): void <cimport,nodecl> end
+global function TF_SetConfig(options: *TF_SessionOptions, proto: pointer, proto_len: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TF_DeleteSessionOptions(a1: *TF_SessionOptions): void <cimport,nodecl> end
+global function TF_NewGraph(): *TF_Graph <cimport,nodecl> end
+global function TF_DeleteGraph(a1: *TF_Graph): void <cimport,nodecl> end
+global function TF_GraphSetTensorShape(graph: *TF_Graph, output: TF_Output, dims: *int64, num_dims: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_GraphGetTensorNumDims(graph: *TF_Graph, output: TF_Output, status: *TF_Status): cint <cimport,nodecl> end
+global function TF_GraphGetTensorShape(graph: *TF_Graph, output: TF_Output, dims: *int64, num_dims: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_NewOperationLocked(graph: *TF_Graph, op_type: cstring, oper_name: cstring): *TF_OperationDescription <cimport,nodecl> end
+global function TF_NewOperation(graph: *TF_Graph, op_type: cstring, oper_name: cstring): *TF_OperationDescription <cimport,nodecl> end
+global function TF_SetDevice(desc: *TF_OperationDescription, device: cstring): void <cimport,nodecl> end
+global function TF_AddInput(desc: *TF_OperationDescription, input: TF_Output): void <cimport,nodecl> end
+global function TF_AddInputList(desc: *TF_OperationDescription, inputs: *TF_Output, num_inputs: cint): void <cimport,nodecl> end
+global function TF_AddControlInput(desc: *TF_OperationDescription, input: *TF_Operation): void <cimport,nodecl> end
+global function TF_ColocateWith(desc: *TF_OperationDescription, op: *TF_Operation): void <cimport,nodecl> end
+global function TF_SetAttrString(desc: *TF_OperationDescription, attr_name: cstring, value: pointer, length: csize): void <cimport,nodecl> end
+global function TF_SetAttrStringList(desc: *TF_OperationDescription, attr_name: cstring, values: *pointer, lengths: *csize, num_values: cint): void <cimport,nodecl> end
+global function TF_SetAttrInt(desc: *TF_OperationDescription, attr_name: cstring, value: int64): void <cimport,nodecl> end
+global function TF_SetAttrIntList(desc: *TF_OperationDescription, attr_name: cstring, values: *int64, num_values: cint): void <cimport,nodecl> end
+global function TF_SetAttrFloat(desc: *TF_OperationDescription, attr_name: cstring, value: float32): void <cimport,nodecl> end
+global function TF_SetAttrFloatList(desc: *TF_OperationDescription, attr_name: cstring, values: *float32, num_values: cint): void <cimport,nodecl> end
+global function TF_SetAttrBool(desc: *TF_OperationDescription, attr_name: cstring, value: cuchar): void <cimport,nodecl> end
+global function TF_SetAttrBoolList(desc: *TF_OperationDescription, attr_name: cstring, values: *cuchar, num_values: cint): void <cimport,nodecl> end
+global function TF_SetAttrType(desc: *TF_OperationDescription, attr_name: cstring, value: TF_DataType): void <cimport,nodecl> end
+global function TF_SetAttrTypeList(desc: *TF_OperationDescription, attr_name: cstring, values: *TF_DataType, num_values: cint): void <cimport,nodecl> end
+global function TF_SetAttrPlaceholder(desc: *TF_OperationDescription, attr_name: cstring, placeholder: cstring): void <cimport,nodecl> end
+global function TF_SetAttrFuncName(desc: *TF_OperationDescription, attr_name: cstring, value: cstring, length: csize): void <cimport,nodecl> end
+global function TF_SetAttrShape(desc: *TF_OperationDescription, attr_name: cstring, dims: *int64, num_dims: cint): void <cimport,nodecl> end
+global function TF_SetAttrShapeList(desc: *TF_OperationDescription, attr_name: cstring, dims: **int64, num_dims: *cint, num_shapes: cint): void <cimport,nodecl> end
+global function TF_SetAttrTensorShapeProto(desc: *TF_OperationDescription, attr_name: cstring, proto: pointer, proto_len: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TF_SetAttrTensorShapeProtoList(desc: *TF_OperationDescription, attr_name: cstring, protos: *pointer, proto_lens: *csize, num_shapes: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_SetAttrTensor(desc: *TF_OperationDescription, attr_name: cstring, value: *TF_Tensor, status: *TF_Status): void <cimport,nodecl> end
+global function TF_SetAttrTensorList(desc: *TF_OperationDescription, attr_name: cstring, values: **TF_Tensor, num_values: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_SetAttrValueProto(desc: *TF_OperationDescription, attr_name: cstring, proto: pointer, proto_len: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TF_FinishOperationLocked(desc: *TF_OperationDescription, status: *TF_Status): *TF_Operation <cimport,nodecl> end
+global function TF_FinishOperation(desc: *TF_OperationDescription, status: *TF_Status): *TF_Operation <cimport,nodecl> end
+global function TF_OperationName(oper: *TF_Operation): cstring <cimport,nodecl> end
+global function TF_OperationOpType(oper: *TF_Operation): cstring <cimport,nodecl> end
+global function TF_OperationDevice(oper: *TF_Operation): cstring <cimport,nodecl> end
+global function TF_OperationNumOutputs(oper: *TF_Operation): cint <cimport,nodecl> end
+global function TF_OperationOutputType(oper_out: TF_Output): TF_DataType <cimport,nodecl> end
+global function TF_OperationOutputListLength(oper: *TF_Operation, arg_name: cstring, status: *TF_Status): cint <cimport,nodecl> end
+global function TF_OperationNumInputs(oper: *TF_Operation): cint <cimport,nodecl> end
+global function TF_OperationInputType(oper_in: TF_Input): TF_DataType <cimport,nodecl> end
+global function TF_OperationInputListLength(oper: *TF_Operation, arg_name: cstring, status: *TF_Status): cint <cimport,nodecl> end
+global function TF_OperationInput(oper_in: TF_Input): TF_Output <cimport,nodecl> end
+global function TF_OperationAllInputs(oper: *TF_Operation, inputs: *TF_Output, max_inputs: cint): void <cimport,nodecl> end
+global function TF_OperationOutputNumConsumers(oper_out: TF_Output): cint <cimport,nodecl> end
+global function TF_OperationOutputConsumers(oper_out: TF_Output, consumers: *TF_Input, max_consumers: cint): cint <cimport,nodecl> end
+global function TF_OperationNumControlInputs(oper: *TF_Operation): cint <cimport,nodecl> end
+global function TF_OperationGetControlInputs(oper: *TF_Operation, control_inputs: **TF_Operation, max_control_inputs: cint): cint <cimport,nodecl> end
+global function TF_OperationNumControlOutputs(oper: *TF_Operation): cint <cimport,nodecl> end
+global function TF_OperationGetControlOutputs(oper: *TF_Operation, control_outputs: **TF_Operation, max_control_outputs: cint): cint <cimport,nodecl> end
+global function TF_OperationGetAttrMetadata(oper: *TF_Operation, attr_name: cstring, status: *TF_Status): TF_AttrMetadata <cimport,nodecl> end
+global function TF_OperationGetAttrString(oper: *TF_Operation, attr_name: cstring, value: pointer, max_length: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrStringList(oper: *TF_Operation, attr_name: cstring, values: *pointer, lengths: *csize, max_values: cint, storage: pointer, storage_size: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrInt(oper: *TF_Operation, attr_name: cstring, value: *int64, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrIntList(oper: *TF_Operation, attr_name: cstring, values: *int64, max_values: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrFloat(oper: *TF_Operation, attr_name: cstring, value: *float32, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrFloatList(oper: *TF_Operation, attr_name: cstring, values: *float32, max_values: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrBool(oper: *TF_Operation, attr_name: cstring, value: *cuchar, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrBoolList(oper: *TF_Operation, attr_name: cstring, values: *cuchar, max_values: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrType(oper: *TF_Operation, attr_name: cstring, value: *TF_DataType, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrTypeList(oper: *TF_Operation, attr_name: cstring, values: *TF_DataType, max_values: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrShape(oper: *TF_Operation, attr_name: cstring, value: *int64, num_dims: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrShapeList(oper: *TF_Operation, attr_name: cstring, dims: **int64, num_dims: *cint, num_shapes: cint, storage: *int64, storage_size: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrTensorShapeProto(oper: *TF_Operation, attr_name: cstring, value: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrTensorShapeProtoList(oper: *TF_Operation, attr_name: cstring, values: **TF_Buffer, max_values: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrTensor(oper: *TF_Operation, attr_name: cstring, value: **TF_Tensor, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrTensorList(oper: *TF_Operation, attr_name: cstring, values: **TF_Tensor, max_values: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetAttrValueProto(oper: *TF_Operation, attr_name: cstring, output_attr_value: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_OperationGetNumAttrs(oper: *TF_Operation): cint <cimport,nodecl> end
+global function TF_OperationGetAttrNameLength(oper: *TF_Operation, i: cint): cint <cimport,nodecl> end
+global function TF_OperationGetAttrName(oper: *TF_Operation, i: cint, output: cstring, status: *TF_Status): void <cimport,nodecl> end
+global function TF_GraphOperationByName(graph: *TF_Graph, oper_name: cstring): *TF_Operation <cimport,nodecl> end
+global function TF_GraphNextOperation(graph: *TF_Graph, pos: *csize): *TF_Operation <cimport,nodecl> end
+global function TF_GraphToGraphDef(graph: *TF_Graph, output_graph_def: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_GraphGetOpDef(graph: *TF_Graph, op_name: cstring, output_op_def: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_GraphVersions(graph: *TF_Graph, output_version_def: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_NewImportGraphDefOptions(): *TF_ImportGraphDefOptions <cimport,nodecl> end
+global function TF_DeleteImportGraphDefOptions(opts: *TF_ImportGraphDefOptions): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsSetPrefix(opts: *TF_ImportGraphDefOptions, prefix: cstring): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsSetDefaultDevice(opts: *TF_ImportGraphDefOptions, device: cstring): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsSetUniquifyNames(opts: *TF_ImportGraphDefOptions, uniquify_names: cuchar): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsSetUniquifyPrefix(opts: *TF_ImportGraphDefOptions, uniquify_prefix: cuchar): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsAddInputMapping(opts: *TF_ImportGraphDefOptions, src_name: cstring, src_index: cint, dst: TF_Output): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsRemapControlDependency(opts: *TF_ImportGraphDefOptions, src_name: cstring, dst: *TF_Operation): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsAddControlDependency(opts: *TF_ImportGraphDefOptions, oper: *TF_Operation): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsAddReturnOutput(opts: *TF_ImportGraphDefOptions, oper_name: cstring, index: cint): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsNumReturnOutputs(opts: *TF_ImportGraphDefOptions): cint <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsAddReturnOperation(opts: *TF_ImportGraphDefOptions, oper_name: cstring): void <cimport,nodecl> end
+global function TF_ImportGraphDefOptionsNumReturnOperations(opts: *TF_ImportGraphDefOptions): cint <cimport,nodecl> end
+global function TF_ImportGraphDefResultsReturnOutputs(results: *TF_ImportGraphDefResults, num_outputs: *cint, outputs: **TF_Output): void <cimport,nodecl> end
+global function TF_ImportGraphDefResultsReturnOperations(results: *TF_ImportGraphDefResults, num_opers: *cint, opers: ***TF_Operation): void <cimport,nodecl> end
+global function TF_ImportGraphDefResultsMissingUnusedInputMappings(results: *TF_ImportGraphDefResults, num_missing_unused_input_mappings: *cint, src_names: **cstring, src_indexes: **cint): void <cimport,nodecl> end
+global function TF_DeleteImportGraphDefResults(results: *TF_ImportGraphDefResults): void <cimport,nodecl> end
+global function TF_GraphImportGraphDefWithResults(graph: *TF_Graph, graph_def: *TF_Buffer, options: *TF_ImportGraphDefOptions, status: *TF_Status): *TF_ImportGraphDefResults <cimport,nodecl> end
+global function TF_GraphImportGraphDefWithReturnOutputs(graph: *TF_Graph, graph_def: *TF_Buffer, options: *TF_ImportGraphDefOptions, return_outputs: *TF_Output, num_return_outputs: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_GraphImportGraphDef(graph: *TF_Graph, graph_def: *TF_Buffer, options: *TF_ImportGraphDefOptions, status: *TF_Status): void <cimport,nodecl> end
+global function TF_GraphCopyFunction(g: *TF_Graph, func: *TF_Function, grad: *TF_Function, status: *TF_Status): void <cimport,nodecl> end
+global function TF_GraphNumFunctions(g: *TF_Graph): cint <cimport,nodecl> end
+global function TF_GraphGetFunctions(g: *TF_Graph, funcs: **TF_Function, max_func: cint, status: *TF_Status): cint <cimport,nodecl> end
+global function TF_OperationToNodeDef(oper: *TF_Operation, output_node_def: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_NewWhile(g: *TF_Graph, inputs: *TF_Output, ninputs: cint, status: *TF_Status): TF_WhileParams <cimport,nodecl> end
+global function TF_FinishWhile(params: *TF_WhileParams, status: *TF_Status, outputs: *TF_Output): void <cimport,nodecl> end
+global function TF_AbortWhile(params: *TF_WhileParams): void <cimport,nodecl> end
+global function TF_AddGradients(g: *TF_Graph, y: *TF_Output, ny: cint, x: *TF_Output, nx: cint, dx: *TF_Output, status: *TF_Status, dy: *TF_Output): void <cimport,nodecl> end
+global function TF_AddGradientsWithPrefix(g: *TF_Graph, prefix: cstring, y: *TF_Output, ny: cint, x: *TF_Output, nx: cint, dx: *TF_Output, status: *TF_Status, dy: *TF_Output): void <cimport,nodecl> end
+global function TF_GraphToFunction(fn_body: *TF_Graph, fn_name: cstring, append_hash_to_fn_name: cuchar, num_opers: cint, opers: **TF_Operation, ninputs: cint, inputs: *TF_Output, noutputs: cint, outputs: *TF_Output, output_names: *cstring, opts: *TF_FunctionOptions, description: cstring, status: *TF_Status): *TF_Function <cimport,nodecl> end
+global function TF_GraphToFunctionWithControlOutputs(fn_body: *TF_Graph, fn_name: cstring, append_hash_to_fn_name: cuchar, num_opers: cint, opers: **TF_Operation, ninputs: cint, inputs: *TF_Output, noutputs: cint, outputs: *TF_Output, output_names: *cstring, ncontrol_outputs: cint, control_outputs: **TF_Operation, control_output_names: *cstring, opts: *TF_FunctionOptions, description: cstring, status: *TF_Status): *TF_Function <cimport,nodecl> end
+global function TF_FunctionName(func: *TF_Function): cstring <cimport,nodecl> end
+global function TF_FunctionToFunctionDef(func: *TF_Function, output_func_def: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_FunctionImportFunctionDef(proto: pointer, proto_len: csize, status: *TF_Status): *TF_Function <cimport,nodecl> end
+global function TF_FunctionSetAttrValueProto(func: *TF_Function, attr_name: cstring, proto: pointer, proto_len: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TF_FunctionGetAttrValueProto(func: *TF_Function, attr_name: cstring, output_attr_value: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TF_DeleteFunction(func: *TF_Function): void <cimport,nodecl> end
+global function TF_TryEvaluateConstant(graph: *TF_Graph, output: TF_Output, result: **TF_Tensor, status: *TF_Status): cuchar <cimport,nodecl> end
+global function TF_NewSession(graph: *TF_Graph, opts: *TF_SessionOptions, status: *TF_Status): *TF_Session <cimport,nodecl> end
+global function TF_LoadSessionFromSavedModel(session_options: *TF_SessionOptions, run_options: *TF_Buffer, export_dir: cstring, tags: *cstring, tags_len: cint, graph: *TF_Graph, meta_graph_def: *TF_Buffer, status: *TF_Status): *TF_Session <cimport,nodecl> end
+global function TF_CloseSession(a1: *TF_Session, status: *TF_Status): void <cimport,nodecl> end
+global function TF_DeleteSession(a1: *TF_Session, status: *TF_Status): void <cimport,nodecl> end
+global function TF_SessionRun(session: *TF_Session, run_options: *TF_Buffer, inputs: *TF_Output, input_values: **TF_Tensor, ninputs: cint, outputs: *TF_Output, output_values: **TF_Tensor, noutputs: cint, target_opers: **TF_Operation, ntargets: cint, run_metadata: *TF_Buffer, a12: *TF_Status): void <cimport,nodecl> end
+global function TF_SessionPRunSetup(a1: *TF_Session, inputs: *TF_Output, ninputs: cint, outputs: *TF_Output, noutputs: cint, target_opers: **TF_Operation, ntargets: cint, handle: *cstring, a9: *TF_Status): void <cimport,nodecl> end
+global function TF_SessionPRun(a1: *TF_Session, handle: cstring, inputs: *TF_Output, input_values: **TF_Tensor, ninputs: cint, outputs: *TF_Output, output_values: **TF_Tensor, noutputs: cint, target_opers: **TF_Operation, ntargets: cint, a11: *TF_Status): void <cimport,nodecl> end
+global function TF_DeletePRunHandle(handle: cstring): void <cimport,nodecl> end
+global function TF_NewDeprecatedSession(a1: *TF_SessionOptions, status: *TF_Status): *TF_DeprecatedSession <cimport,nodecl> end
+global function TF_CloseDeprecatedSession(a1: *TF_DeprecatedSession, status: *TF_Status): void <cimport,nodecl> end
+global function TF_DeleteDeprecatedSession(a1: *TF_DeprecatedSession, status: *TF_Status): void <cimport,nodecl> end
+global function TF_Reset(opt: *TF_SessionOptions, containers: *cstring, ncontainers: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TF_ExtendGraph(a1: *TF_DeprecatedSession, proto: pointer, proto_len: csize, a4: *TF_Status): void <cimport,nodecl> end
+global function TF_Run(a1: *TF_DeprecatedSession, run_options: *TF_Buffer, input_names: *cstring, inputs: **TF_Tensor, ninputs: cint, output_names: *cstring, outputs: **TF_Tensor, noutputs: cint, target_oper_names: *cstring, ntargets: cint, run_metadata: *TF_Buffer, a12: *TF_Status): void <cimport,nodecl> end
+global function TF_PRunSetup(a1: *TF_DeprecatedSession, input_names: *cstring, ninputs: cint, output_names: *cstring, noutputs: cint, target_oper_names: *cstring, ntargets: cint, handle: *cstring, a9: *TF_Status): void <cimport,nodecl> end
+global function TF_PRun(a1: *TF_DeprecatedSession, handle: cstring, input_names: *cstring, inputs: **TF_Tensor, ninputs: cint, output_names: *cstring, outputs: **TF_Tensor, noutputs: cint, target_oper_names: *cstring, ntargets: cint, a11: *TF_Status): void <cimport,nodecl> end
+global function TF_SessionListDevices(session: *TF_Session, status: *TF_Status): *TF_DeviceList <cimport,nodecl> end
+global function TF_DeprecatedSessionListDevices(session: *TF_DeprecatedSession, status: *TF_Status): *TF_DeviceList <cimport,nodecl> end
+global function TF_DeleteDeviceList(list: *TF_DeviceList): void <cimport,nodecl> end
+global function TF_DeviceListCount(list: *TF_DeviceList): cint <cimport,nodecl> end
+global function TF_DeviceListName(list: *TF_DeviceList, index: cint, status: *TF_Status): cstring <cimport,nodecl> end
+global function TF_DeviceListType(list: *TF_DeviceList, index: cint, status: *TF_Status): cstring <cimport,nodecl> end
+global function TF_DeviceListMemoryBytes(list: *TF_DeviceList, index: cint, status: *TF_Status): int64 <cimport,nodecl> end
+global function TF_DeviceListIncarnation(list: *TF_DeviceList, index: cint, status: *TF_Status): uint64 <cimport,nodecl> end
+global function TF_LoadLibrary(library_filename: cstring, status: *TF_Status): *TF_Library <cimport,nodecl> end
+global function TF_GetOpList(lib_handle: *TF_Library): TF_Buffer <cimport,nodecl> end
+global function TF_DeleteLibraryHandle(lib_handle: *TF_Library): void <cimport,nodecl> end
+global function TF_GetAllOpList(): *TF_Buffer <cimport,nodecl> end
+global function TF_NewApiDefMap(op_list_buffer: *TF_Buffer, status: *TF_Status): *TF_ApiDefMap <cimport,nodecl> end
+global function TF_DeleteApiDefMap(apimap: *TF_ApiDefMap): void <cimport,nodecl> end
+global function TF_ApiDefMapPut(api_def_map: *TF_ApiDefMap, text: cstring, text_len: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TF_ApiDefMapGet(api_def_map: *TF_ApiDefMap, name: cstring, name_len: csize, status: *TF_Status): *TF_Buffer <cimport,nodecl> end
+global function TF_GetAllRegisteredKernels(status: *TF_Status): *TF_Buffer <cimport,nodecl> end
+global function TF_GetRegisteredKernelsForOp(name: cstring, status: *TF_Status): *TF_Buffer <cimport,nodecl> end
+global function TF_UpdateEdge(graph: *TF_Graph, new_src: TF_Output, dst: TF_Input, status: *TF_Status): void <cimport,nodecl> end
+global function TF_NewServer(proto: pointer, proto_len: csize, status: *TF_Status): *TF_Server <cimport,nodecl> end
+global function TF_ServerStart(server: *TF_Server, status: *TF_Status): void <cimport,nodecl> end
+global function TF_ServerStop(server: *TF_Server, status: *TF_Status): void <cimport,nodecl> end
+global function TF_ServerJoin(server: *TF_Server, status: *TF_Status): void <cimport,nodecl> end
+global function TF_ServerTarget(server: *TF_Server): cstring <cimport,nodecl> end
+global function TF_DeleteServer(server: *TF_Server): void <cimport,nodecl> end
+global function TF_RegisterLogListener(listener: function(a1: cstring): void): void <cimport,nodecl> end
+global function TF_RegisterFilesystemPlugin(plugin_filename: cstring, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_NewContextOptions(): *TFE_ContextOptions <cimport,nodecl> end
+global function TFE_ContextOptionsSetConfig(options: *TFE_ContextOptions, proto: pointer, proto_len: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_ContextOptionsSetAsync(a1: *TFE_ContextOptions, enable: cuchar): void <cimport,nodecl> end
+global function TFE_ContextOptionsSetDevicePlacementPolicy(a1: *TFE_ContextOptions, a2: TFE_ContextDevicePlacementPolicy): void <cimport,nodecl> end
+global function TFE_DeleteContextOptions(a1: *TFE_ContextOptions): void <cimport,nodecl> end
+global function TFE_NewContext(opts: *TFE_ContextOptions, status: *TF_Status): *TFE_Context <cimport,nodecl> end
+global function TFE_DeleteContext(ctx: *TFE_Context): void <cimport,nodecl> end
+global function TFE_ContextListDevices(ctx: *TFE_Context, status: *TF_Status): *TF_DeviceList <cimport,nodecl> end
+global function TFE_ContextClearCaches(ctx: *TFE_Context): void <cimport,nodecl> end
+global function TFE_ContextSetThreadLocalDevicePlacementPolicy(ctx: *TFE_Context, policy: TFE_ContextDevicePlacementPolicy): void <cimport,nodecl> end
+global function TFE_ContextGetDevicePlacementPolicy(ctx: *TFE_Context): TFE_ContextDevicePlacementPolicy <cimport,nodecl> end
+global function TFE_ContextSetServerDef(ctx: *TFE_Context, keep_alive_secs: cint, proto: pointer, proto_len: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_NewTensorHandle(t: *TF_Tensor, status: *TF_Status): *TFE_TensorHandle <cimport,nodecl> end
+global function TFE_DeleteTensorHandle(h: *TFE_TensorHandle): void <cimport,nodecl> end
+global function TFE_TensorHandleDataType(h: *TFE_TensorHandle): TF_DataType <cimport,nodecl> end
+global function TFE_TensorHandleNumDims(h: *TFE_TensorHandle, status: *TF_Status): cint <cimport,nodecl> end
+global function TFE_TensorHandleNumElements(h: *TFE_TensorHandle, status: *TF_Status): int64 <cimport,nodecl> end
+global function TFE_TensorHandleDim(h: *TFE_TensorHandle, dim_index: cint, status: *TF_Status): int64 <cimport,nodecl> end
+global function TFE_TensorHandleDeviceName(h: *TFE_TensorHandle, status: *TF_Status): cstring <cimport,nodecl> end
+global function TFE_TensorHandleBackingDeviceName(h: *TFE_TensorHandle, status: *TF_Status): cstring <cimport,nodecl> end
+global function TFE_TensorHandleCopySharingTensor(h: *TFE_TensorHandle, status: *TF_Status): *TFE_TensorHandle <cimport,nodecl> end
+global function TFE_TensorHandleResolve(h: *TFE_TensorHandle, status: *TF_Status): *TF_Tensor <cimport,nodecl> end
+global function TFE_TensorHandleCopyToDevice(h: *TFE_TensorHandle, ctx: *TFE_Context, device_name: cstring, status: *TF_Status): *TFE_TensorHandle <cimport,nodecl> end
+global function TFE_TensorHandleTensorDebugInfo(h: *TFE_TensorHandle, status: *TF_Status): *TFE_TensorDebugInfo <cimport,nodecl> end
+global function TFE_DeleteTensorDebugInfo(debug_info: *TFE_TensorDebugInfo): void <cimport,nodecl> end
+global function TFE_TensorDebugInfoOnDeviceNumDims(debug_info: *TFE_TensorDebugInfo): cint <cimport,nodecl> end
+global function TFE_TensorDebugInfoOnDeviceDim(debug_info: *TFE_TensorDebugInfo, dim_index: cint): int64 <cimport,nodecl> end
+global function TFE_NewOp(ctx: *TFE_Context, op_or_function_name: cstring, status: *TF_Status): *TFE_Op <cimport,nodecl> end
+global function TFE_DeleteOp(op: *TFE_Op): void <cimport,nodecl> end
+global function TFE_OpGetName(op: *TFE_Op, status: *TF_Status): cstring <cimport,nodecl> end
+global function TFE_OpGetContext(op: *TFE_Op, status: *TF_Status): *TFE_Context <cimport,nodecl> end
+global function TFE_OpSetDevice(op: *TFE_Op, device_name: cstring, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_OpGetDevice(op: *TFE_Op, status: *TF_Status): cstring <cimport,nodecl> end
+global function TFE_OpAddInput(op: *TFE_Op, input: *TFE_TensorHandle, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_OpAddInputList(op: *TFE_Op, inputs: **TFE_TensorHandle, num_inputs: cint, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_OpGetFlatInputCount(op: *TFE_Op, status: *TF_Status): cint <cimport,nodecl> end
+global function TFE_OpGetFlatInput(op: *TFE_Op, index: cint, status: *TF_Status): *TFE_TensorHandle <cimport,nodecl> end
+global function TFE_OpGetAttrType(op: *TFE_Op, attr_name: cstring, is_list: *cuchar, status: *TF_Status): TF_AttrType <cimport,nodecl> end
+global function TFE_OpNameGetAttrType(ctx: *TFE_Context, op_or_function_name: cstring, attr_name: cstring, is_list: *cuchar, status: *TF_Status): TF_AttrType <cimport,nodecl> end
+global function TFE_OpSetAttrString(op: *TFE_Op, attr_name: cstring, value: pointer, length: csize): void <cimport,nodecl> end
+global function TFE_OpSetAttrInt(op: *TFE_Op, attr_name: cstring, value: int64): void <cimport,nodecl> end
+global function TFE_OpSetAttrFloat(op: *TFE_Op, attr_name: cstring, value: float32): void <cimport,nodecl> end
+global function TFE_OpSetAttrBool(op: *TFE_Op, attr_name: cstring, value: cuchar): void <cimport,nodecl> end
+global function TFE_OpSetAttrType(op: *TFE_Op, attr_name: cstring, value: TF_DataType): void <cimport,nodecl> end
+global function TFE_OpSetAttrShape(op: *TFE_Op, attr_name: cstring, dims: *int64, num_dims: cint, out_status: *TF_Status): void <cimport,nodecl> end
+global function TFE_OpSetAttrFunction(op: *TFE_Op, attr_name: cstring, value: *TFE_Op): void <cimport,nodecl> end
+global function TFE_OpSetAttrFunctionName(op: *TFE_Op, attr_name: cstring, data: cstring, length: csize): void <cimport,nodecl> end
+global function TFE_OpSetAttrTensor(op: *TFE_Op, attr_name: cstring, tensor: *TF_Tensor, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_OpSetAttrStringList(op: *TFE_Op, attr_name: cstring, values: *pointer, lengths: *csize, num_values: cint): void <cimport,nodecl> end
+global function TFE_OpSetAttrIntList(op: *TFE_Op, attr_name: cstring, values: *int64, num_values: cint): void <cimport,nodecl> end
+global function TFE_OpSetAttrFloatList(op: *TFE_Op, attr_name: cstring, values: *float32, num_values: cint): void <cimport,nodecl> end
+global function TFE_OpSetAttrBoolList(op: *TFE_Op, attr_name: cstring, values: *cuchar, num_values: cint): void <cimport,nodecl> end
+global function TFE_OpSetAttrTypeList(op: *TFE_Op, attr_name: cstring, values: *TF_DataType, num_values: cint): void <cimport,nodecl> end
+global function TFE_OpSetAttrShapeList(op: *TFE_Op, attr_name: cstring, dims: **int64, num_dims: *cint, num_values: cint, out_status: *TF_Status): void <cimport,nodecl> end
+global function TFE_OpSetAttrFunctionList(op: *TFE_Op, attr_name: cstring, value: **TFE_Op, num_values: cint): void <cimport,nodecl> end
+global function TFE_OpGetInputLength(op: *TFE_Op, input_name: cstring, status: *TF_Status): cint <cimport,nodecl> end
+global function TFE_OpGetOutputLength(op: *TFE_Op, output_name: cstring, status: *TF_Status): cint <cimport,nodecl> end
+global function TFE_Execute(op: *TFE_Op, retvals: **TFE_TensorHandle, num_retvals: *cint, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_ContextAddFunctionDef(ctx: *TFE_Context, serialized_function_def: cstring, size: csize, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_ContextAddFunction(ctx: *TFE_Context, function_: *TF_Function, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_ContextRemoveFunction(ctx: *TFE_Context, name: cstring, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_ContextHasFunction(ctx: *TFE_Context, name: cstring): cuchar <cimport,nodecl> end
+global function TFE_ContextEnableRunMetadata(ctx: *TFE_Context): void <cimport,nodecl> end
+global function TFE_ContextDisableRunMetadata(ctx: *TFE_Context): void <cimport,nodecl> end
+global function TFE_ContextExportRunMetadata(ctx: *TFE_Context, buf: *TF_Buffer, status: *TF_Status): void <cimport,nodecl> end
+global function TFE_ContextStartStep(ctx: *TFE_Context): void <cimport,nodecl> end
+global function TFE_ContextEndStep(ctx: *TFE_Context): void <cimport,nodecl> end
+global TF_OK: cint <comptime> = 0
+global TF_CANCELLED: cint <comptime> = 1
+global TF_UNKNOWN: cint <comptime> = 2
+global TF_INVALID_ARGUMENT: cint <comptime> = 3
+global TF_DEADLINE_EXCEEDED: cint <comptime> = 4
+global TF_NOT_FOUND: cint <comptime> = 5
+global TF_ALREADY_EXISTS: cint <comptime> = 6
+global TF_PERMISSION_DENIED: cint <comptime> = 7
+global TF_UNAUTHENTICATED: cint <comptime> = 16
+global TF_RESOURCE_EXHAUSTED: cint <comptime> = 8
+global TF_FAILED_PRECONDITION: cint <comptime> = 9
+global TF_ABORTED: cint <comptime> = 10
+global TF_OUT_OF_RANGE: cint <comptime> = 11
+global TF_UNIMPLEMENTED: cint <comptime> = 12
+global TF_INTERNAL: cint <comptime> = 13
+global TF_UNAVAILABLE: cint <comptime> = 14
+global TF_DATA_LOSS: cint <comptime> = 15
+global TF_Bool: type = cuchar
+global TF_TSTRING_LITTLE_ENDIAN: cint <comptime> = 1

@@ -135,6 +135,7 @@ global function sqlite3_extended_errcode(db: *sqlite3): cint <cimport,nodecl> en
 global function sqlite3_errmsg(a1: *sqlite3): cstring <cimport,nodecl> end
 global function sqlite3_errmsg16(a1: *sqlite3): pointer <cimport,nodecl> end
 global function sqlite3_errstr(a1: cint): cstring <cimport,nodecl> end
+global function sqlite3_error_offset(db: *sqlite3): cint <cimport,nodecl> end
 global sqlite3_stmt: type <cimport,nodecl,forwarddecl> = @record{}
 global function sqlite3_limit(a1: *sqlite3, id: cint, newVal: cint): cint <cimport,nodecl> end
 global function sqlite3_prepare(db: *sqlite3, zSql: cstring, nByte: cint, ppStmt: **sqlite3_stmt, pzTail: *cstring): cint <cimport,nodecl> end
@@ -459,6 +460,11 @@ global function sqlite3_vtab_config(a1: *sqlite3, op: cint, ...: cvarargs): cint
 global function sqlite3_vtab_on_conflict(a1: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_vtab_nochange(a1: *sqlite3_context): cint <cimport,nodecl> end
 global function sqlite3_vtab_collation(a1: *sqlite3_index_info, a2: cint): cstring <cimport,nodecl> end
+global function sqlite3_vtab_distinct(a1: *sqlite3_index_info): cint <cimport,nodecl> end
+global function sqlite3_vtab_in(a1: *sqlite3_index_info, iCons: cint, bHandle: cint): cint <cimport,nodecl> end
+global function sqlite3_vtab_in_first(pVal: *sqlite3_value, ppOut: **sqlite3_value): cint <cimport,nodecl> end
+global function sqlite3_vtab_in_next(pVal: *sqlite3_value, ppOut: **sqlite3_value): cint <cimport,nodecl> end
+global function sqlite3_vtab_rhs_value(a1: *sqlite3_index_info, a2: cint, ppVal: **sqlite3_value): cint <cimport,nodecl> end
 global function sqlite3_stmt_scanstatus(pStmt: *sqlite3_stmt, idx: cint, iScanStatusOp: cint, pOut: pointer): cint <cimport,nodecl> end
 global function sqlite3_stmt_scanstatus_reset(a1: *sqlite3_stmt): void <cimport,nodecl> end
 global function sqlite3_db_cacheflush(a1: *sqlite3): cint <cimport,nodecl> end
@@ -502,9 +508,9 @@ sqlite3_rtree_query_info = @record{
   rScore: float64,
   apSqlParam: **sqlite3_value
 }
-global SQLITE_VERSION: cstring <comptime> = "3.37.2"
-global SQLITE_VERSION_NUMBER: cint <comptime> = 3037002
-global SQLITE_SOURCE_ID: cstring <comptime> = "2022-01-06 13:25:41 872ba256cbf61d9290b571c0e6d82a20c224ca3ad82971edc46b29818d5dalt1"
+global SQLITE_VERSION: cstring <comptime> = "3.38.0"
+global SQLITE_VERSION_NUMBER: cint <comptime> = 3038000
+global SQLITE_SOURCE_ID: cstring <comptime> = "2022-02-22 18:58:40 40fa792d359f84c3b9e9d6623743e1a59826274e221df1bde8f47086968aalt1"
 global SQLITE_OK: cint <comptime> = 0
 global SQLITE_ERROR: cint <comptime> = 1
 global SQLITE_INTERNAL: cint <comptime> = 2
@@ -847,6 +853,8 @@ global SQLITE_INDEX_CONSTRAINT_ISNOT: cint <comptime> = 69
 global SQLITE_INDEX_CONSTRAINT_ISNOTNULL: cint <comptime> = 70
 global SQLITE_INDEX_CONSTRAINT_ISNULL: cint <comptime> = 71
 global SQLITE_INDEX_CONSTRAINT_IS: cint <comptime> = 72
+global SQLITE_INDEX_CONSTRAINT_LIMIT: cint <comptime> = 73
+global SQLITE_INDEX_CONSTRAINT_OFFSET: cint <comptime> = 74
 global SQLITE_INDEX_CONSTRAINT_FUNCTION: cint <comptime> = 150
 global SQLITE_MUTEX_FAST: cint <comptime> = 0
 global SQLITE_MUTEX_RECURSIVE: cint <comptime> = 1
@@ -896,7 +904,8 @@ global SQLITE_TESTCTRL_EXTRA_SCHEMA_CHECKS: cint <comptime> = 29
 global SQLITE_TESTCTRL_SEEK_COUNT: cint <comptime> = 30
 global SQLITE_TESTCTRL_TRACEFLAGS: cint <comptime> = 31
 global SQLITE_TESTCTRL_TUNE: cint <comptime> = 32
-global SQLITE_TESTCTRL_LAST: cint <comptime> = 32
+global SQLITE_TESTCTRL_LOGEST: cint <comptime> = 33
+global SQLITE_TESTCTRL_LAST: cint <comptime> = 33
 global SQLITE_STATUS_MEMORY_USED: cint <comptime> = 0
 global SQLITE_STATUS_PAGECACHE_USED: cint <comptime> = 1
 global SQLITE_STATUS_PAGECACHE_OVERFLOW: cint <comptime> = 2
@@ -927,6 +936,8 @@ global SQLITE_STMTSTATUS_AUTOINDEX: cint <comptime> = 3
 global SQLITE_STMTSTATUS_VM_STEP: cint <comptime> = 4
 global SQLITE_STMTSTATUS_REPREPARE: cint <comptime> = 5
 global SQLITE_STMTSTATUS_RUN: cint <comptime> = 6
+global SQLITE_STMTSTATUS_FILTER_MISS: cint <comptime> = 7
+global SQLITE_STMTSTATUS_FILTER_HIT: cint <comptime> = 8
 global SQLITE_STMTSTATUS_MEMUSED: cint <comptime> = 99
 global SQLITE_CHECKPOINT_PASSIVE: cint <comptime> = 0
 global SQLITE_CHECKPOINT_FULL: cint <comptime> = 1

@@ -1,0 +1,165 @@
+global mp_limb_t: type <cimport,nodecl> = @culong
+global mp_size_t: type <cimport,nodecl> = @clong
+global mp_bitcnt_t: type <cimport,nodecl> = @culong
+global mp_ptr: type <cimport,nodecl> = @*mp_limb_t
+global mp_srcptr: type <cimport,nodecl> = @*mp_limb_t
+global __mpz_struct: type <cimport,nodecl> = @record{
+  _mp_alloc: cint,
+  _mp_size: cint,
+  _mp_d: *mp_limb_t
+}
+global mpz_t: type <cimport,nodecl> = @[1]__mpz_struct
+global mpz_ptr: type <cimport,nodecl> = @*__mpz_struct
+global mpz_srcptr: type <cimport,nodecl> = @*__mpz_struct
+global function mp_set_memory_functions(a1: function(a1: csize): pointer, a2: function(a1: pointer, a2: csize, a3: csize): pointer, a3: function(a1: pointer, a2: csize): void): void <cimport,nodecl> end
+global function mp_get_memory_functions(a1: *function(a1: csize): pointer, a2: *function(a1: pointer, a2: csize, a3: csize): pointer, a3: *function(a1: pointer, a2: csize): void): void <cimport,nodecl> end
+global mp_bits_per_limb: cint <cimport,nodecl>
+global function mpn_copyi(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t): void <cimport,nodecl> end
+global function mpn_copyd(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t): void <cimport,nodecl> end
+global function mpn_zero(a1: mp_ptr, a2: mp_size_t): void <cimport,nodecl> end
+global function mpn_cmp(a1: mp_srcptr, a2: mp_srcptr, a3: mp_size_t): cint <cimport,nodecl> end
+global function mpn_zero_p(a1: mp_srcptr, a2: mp_size_t): cint <cimport,nodecl> end
+global function mpn_add_1(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_limb_t): mp_limb_t <cimport,nodecl> end
+global function mpn_add_n(a1: mp_ptr, a2: mp_srcptr, a3: mp_srcptr, a4: mp_size_t): mp_limb_t <cimport,nodecl> end
+global function mpn_add(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_srcptr, a5: mp_size_t): mp_limb_t <cimport,nodecl> end
+global function mpn_sub_1(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_limb_t): mp_limb_t <cimport,nodecl> end
+global function mpn_sub_n(a1: mp_ptr, a2: mp_srcptr, a3: mp_srcptr, a4: mp_size_t): mp_limb_t <cimport,nodecl> end
+global function mpn_sub(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_srcptr, a5: mp_size_t): mp_limb_t <cimport,nodecl> end
+global function mpn_mul_1(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_limb_t): mp_limb_t <cimport,nodecl> end
+global function mpn_addmul_1(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_limb_t): mp_limb_t <cimport,nodecl> end
+global function mpn_submul_1(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_limb_t): mp_limb_t <cimport,nodecl> end
+global function mpn_mul(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: mp_srcptr, a5: mp_size_t): mp_limb_t <cimport,nodecl> end
+global function mpn_mul_n(a1: mp_ptr, a2: mp_srcptr, a3: mp_srcptr, a4: mp_size_t): void <cimport,nodecl> end
+global function mpn_sqr(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t): void <cimport,nodecl> end
+global function mpn_perfect_square_p(a1: mp_srcptr, a2: mp_size_t): cint <cimport,nodecl> end
+global function mpn_sqrtrem(a1: mp_ptr, a2: mp_ptr, a3: mp_srcptr, a4: mp_size_t): mp_size_t <cimport,nodecl> end
+global function mpn_lshift(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: cuint): mp_limb_t <cimport,nodecl> end
+global function mpn_rshift(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t, a4: cuint): mp_limb_t <cimport,nodecl> end
+global function mpn_scan0(a1: mp_srcptr, a2: mp_bitcnt_t): mp_bitcnt_t <cimport,nodecl> end
+global function mpn_scan1(a1: mp_srcptr, a2: mp_bitcnt_t): mp_bitcnt_t <cimport,nodecl> end
+global function mpn_com(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t): void <cimport,nodecl> end
+global function mpn_neg(a1: mp_ptr, a2: mp_srcptr, a3: mp_size_t): mp_limb_t <cimport,nodecl> end
+global function mpn_popcount(a1: mp_srcptr, a2: mp_size_t): mp_bitcnt_t <cimport,nodecl> end
+global function mpn_invert_3by2(a1: mp_limb_t, a2: mp_limb_t): mp_limb_t <cimport,nodecl> end
+global function mpn_get_str(a1: *cuchar, a2: cint, a3: mp_ptr, a4: mp_size_t): csize <cimport,nodecl> end
+global function mpn_set_str(a1: mp_ptr, a2: *cuchar, a3: csize, a4: cint): mp_size_t <cimport,nodecl> end
+global function mpz_init(a1: *mpz_t): void <cimport,nodecl> end
+global function mpz_init2(a1: *mpz_t, a2: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_clear(a1: *mpz_t): void <cimport,nodecl> end
+global function mpz_sgn(a1: *mpz_t): cint <cimport,nodecl> end
+global function mpz_cmp_si(a1: *mpz_t, a2: clong): cint <cimport,nodecl> end
+global function mpz_cmp_ui(a1: *mpz_t, a2: culong): cint <cimport,nodecl> end
+global function mpz_cmp(a1: *mpz_t, a2: *mpz_t): cint <cimport,nodecl> end
+global function mpz_cmpabs_ui(a1: *mpz_t, a2: culong): cint <cimport,nodecl> end
+global function mpz_cmpabs(a1: *mpz_t, a2: *mpz_t): cint <cimport,nodecl> end
+global function mpz_cmp_d(a1: *mpz_t, a2: float64): cint <cimport,nodecl> end
+global function mpz_cmpabs_d(a1: *mpz_t, a2: float64): cint <cimport,nodecl> end
+global function mpz_abs(a1: *mpz_t, a2: *mpz_t): void <cimport,nodecl> end
+global function mpz_neg(a1: *mpz_t, a2: *mpz_t): void <cimport,nodecl> end
+global function mpz_swap(a1: *mpz_t, a2: *mpz_t): void <cimport,nodecl> end
+global function mpz_add_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_add(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_sub_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_ui_sub(a1: *mpz_t, a2: culong, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_sub(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_mul_si(a1: *mpz_t, a2: *mpz_t, a3: clong): void <cimport,nodecl> end
+global function mpz_mul_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_mul(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_mul_2exp(a1: *mpz_t, a2: *mpz_t, a3: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_addmul_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_addmul(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_submul_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_submul(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_cdiv_qr(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: *mpz_t): void <cimport,nodecl> end
+global function mpz_fdiv_qr(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: *mpz_t): void <cimport,nodecl> end
+global function mpz_tdiv_qr(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: *mpz_t): void <cimport,nodecl> end
+global function mpz_cdiv_q(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_fdiv_q(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_tdiv_q(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_cdiv_r(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_fdiv_r(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_tdiv_r(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_cdiv_q_2exp(a1: *mpz_t, a2: *mpz_t, a3: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_fdiv_q_2exp(a1: *mpz_t, a2: *mpz_t, a3: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_tdiv_q_2exp(a1: *mpz_t, a2: *mpz_t, a3: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_cdiv_r_2exp(a1: *mpz_t, a2: *mpz_t, a3: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_fdiv_r_2exp(a1: *mpz_t, a2: *mpz_t, a3: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_tdiv_r_2exp(a1: *mpz_t, a2: *mpz_t, a3: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_mod(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_divexact(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_divisible_p(a1: *mpz_t, a2: *mpz_t): cint <cimport,nodecl> end
+global function mpz_congruent_p(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): cint <cimport,nodecl> end
+global function mpz_cdiv_qr_ui(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: culong): culong <cimport,nodecl> end
+global function mpz_fdiv_qr_ui(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: culong): culong <cimport,nodecl> end
+global function mpz_tdiv_qr_ui(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: culong): culong <cimport,nodecl> end
+global function mpz_cdiv_q_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_fdiv_q_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_tdiv_q_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_cdiv_r_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_fdiv_r_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_tdiv_r_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_cdiv_ui(a1: *mpz_t, a2: culong): culong <cimport,nodecl> end
+global function mpz_fdiv_ui(a1: *mpz_t, a2: culong): culong <cimport,nodecl> end
+global function mpz_tdiv_ui(a1: *mpz_t, a2: culong): culong <cimport,nodecl> end
+global function mpz_mod_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_divexact_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_divisible_ui_p(a1: *mpz_t, a2: culong): cint <cimport,nodecl> end
+global function mpz_gcd_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): culong <cimport,nodecl> end
+global function mpz_gcd(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_gcdext(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: *mpz_t, a5: *mpz_t): void <cimport,nodecl> end
+global function mpz_lcm_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_lcm(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_invert(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): cint <cimport,nodecl> end
+global function mpz_sqrtrem(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_sqrt(a1: *mpz_t, a2: *mpz_t): void <cimport,nodecl> end
+global function mpz_perfect_square_p(a1: *mpz_t): cint <cimport,nodecl> end
+global function mpz_pow_ui(a1: *mpz_t, a2: *mpz_t, a3: culong): void <cimport,nodecl> end
+global function mpz_ui_pow_ui(a1: *mpz_t, a2: culong, a3: culong): void <cimport,nodecl> end
+global function mpz_powm(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: *mpz_t): void <cimport,nodecl> end
+global function mpz_powm_ui(a1: *mpz_t, a2: *mpz_t, a3: culong, a4: *mpz_t): void <cimport,nodecl> end
+global function mpz_rootrem(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t, a4: culong): void <cimport,nodecl> end
+global function mpz_root(a1: *mpz_t, a2: *mpz_t, a3: culong): cint <cimport,nodecl> end
+global function mpz_fac_ui(a1: *mpz_t, a2: culong): void <cimport,nodecl> end
+global function mpz_2fac_ui(a1: *mpz_t, a2: culong): void <cimport,nodecl> end
+global function mpz_mfac_uiui(a1: *mpz_t, a2: culong, a3: culong): void <cimport,nodecl> end
+global function mpz_bin_uiui(a1: *mpz_t, a2: culong, a3: culong): void <cimport,nodecl> end
+global function mpz_probab_prime_p(a1: *mpz_t, a2: cint): cint <cimport,nodecl> end
+global function mpz_tstbit(a1: *mpz_t, a2: mp_bitcnt_t): cint <cimport,nodecl> end
+global function mpz_setbit(a1: *mpz_t, a2: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_clrbit(a1: *mpz_t, a2: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_combit(a1: *mpz_t, a2: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_com(a1: *mpz_t, a2: *mpz_t): void <cimport,nodecl> end
+global function mpz_and(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_ior(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_xor(a1: *mpz_t, a2: *mpz_t, a3: *mpz_t): void <cimport,nodecl> end
+global function mpz_popcount(a1: *mpz_t): mp_bitcnt_t <cimport,nodecl> end
+global function mpz_hamdist(a1: *mpz_t, a2: *mpz_t): mp_bitcnt_t <cimport,nodecl> end
+global function mpz_scan0(a1: *mpz_t, a2: mp_bitcnt_t): mp_bitcnt_t <cimport,nodecl> end
+global function mpz_scan1(a1: *mpz_t, a2: mp_bitcnt_t): mp_bitcnt_t <cimport,nodecl> end
+global function mpz_fits_slong_p(a1: *mpz_t): cint <cimport,nodecl> end
+global function mpz_fits_ulong_p(a1: *mpz_t): cint <cimport,nodecl> end
+global function mpz_get_si(a1: *mpz_t): clong <cimport,nodecl> end
+global function mpz_get_ui(a1: *mpz_t): culong <cimport,nodecl> end
+global function mpz_get_d(a1: *mpz_t): float64 <cimport,nodecl> end
+global function mpz_size(a1: *mpz_t): csize <cimport,nodecl> end
+global function mpz_getlimbn(a1: *mpz_t, a2: mp_size_t): mp_limb_t <cimport,nodecl> end
+global function mpz_realloc2(a1: *mpz_t, a2: mp_bitcnt_t): void <cimport,nodecl> end
+global function mpz_limbs_read(a1: mpz_srcptr): mp_srcptr <cimport,nodecl> end
+global function mpz_limbs_modify(a1: *mpz_t, a2: mp_size_t): mp_ptr <cimport,nodecl> end
+global function mpz_limbs_write(a1: *mpz_t, a2: mp_size_t): mp_ptr <cimport,nodecl> end
+global function mpz_limbs_finish(a1: *mpz_t, a2: mp_size_t): void <cimport,nodecl> end
+global function mpz_roinit_n(a1: *mpz_t, a2: mp_srcptr, a3: mp_size_t): mpz_srcptr <cimport,nodecl> end
+global function mpz_set_si(a1: *mpz_t, a2: clong): void <cimport,nodecl> end
+global function mpz_set_ui(a1: *mpz_t, a2: culong): void <cimport,nodecl> end
+global function mpz_set(a1: *mpz_t, a2: *mpz_t): void <cimport,nodecl> end
+global function mpz_set_d(a1: *mpz_t, a2: float64): void <cimport,nodecl> end
+global function mpz_init_set_si(a1: *mpz_t, a2: clong): void <cimport,nodecl> end
+global function mpz_init_set_ui(a1: *mpz_t, a2: culong): void <cimport,nodecl> end
+global function mpz_init_set(a1: *mpz_t, a2: *mpz_t): void <cimport,nodecl> end
+global function mpz_init_set_d(a1: *mpz_t, a2: float64): void <cimport,nodecl> end
+global function mpz_sizeinbase(a1: *mpz_t, a2: cint): csize <cimport,nodecl> end
+global function mpz_get_str(a1: cstring, a2: cint, a3: *mpz_t): cstring <cimport,nodecl> end
+global function mpz_set_str(a1: *mpz_t, a2: cstring, a3: cint): cint <cimport,nodecl> end
+global function mpz_init_set_str(a1: *mpz_t, a2: cstring, a3: cint): cint <cimport,nodecl> end
+global function mpz_import(a1: *mpz_t, a2: csize, a3: cint, a4: csize, a5: cint, a6: csize, a7: pointer): void <cimport,nodecl> end
+global function mpz_export(a1: pointer, a2: *csize, a3: cint, a4: csize, a5: cint, a6: csize, a7: *mpz_t): pointer <cimport,nodecl> end
