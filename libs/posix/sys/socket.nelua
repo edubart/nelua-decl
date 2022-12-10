@@ -15,6 +15,13 @@ global __fsid_t: type <cimport,nodecl> = @record{
 global __timer_t: type = @pointer
 global __caddr_t: type = @cstring
 global timer_t: type = @pointer
+global __atomic_wide_counter: type <cimport,nodecl> = @union{
+  __value64: culonglong,
+  __value32: record{
+    __low: cuint,
+    __high: cuint
+  }
+}
 global __pthread_internal_list: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
 __pthread_internal_list = @record{
   __prev: *__pthread_internal_list,
@@ -51,20 +58,8 @@ global __pthread_rwlock_arch_t: type <cimport,nodecl,ctypedef> = @record{
   __flags: cuint
 }
 global __pthread_cond_s: type <cimport,nodecl,ctypedef> = @record{
-  __unnamed1: union{
-    __wseq: culonglong,
-    __wseq32: record{
-      __low: cuint,
-      __high: cuint
-    }
-  },
-  __unnamed2: union{
-    __g1_start: culonglong,
-    __g1_start32: record{
-      __low: cuint,
-      __high: cuint
-    }
-  },
+  __wseq: __atomic_wide_counter,
+  __g1_start: __atomic_wide_counter,
   __g_refs: [2]cuint,
   __g_size: [2]cuint,
   __g1_orig_size: cuint,
@@ -388,6 +383,7 @@ global AF_KCM: cint <cimport,nodecl,const>
 global AF_QIPCRTR: cint <cimport,nodecl,const>
 global AF_SMC: cint <cimport,nodecl,const>
 global AF_XDP: cint <cimport,nodecl,const>
+global AF_MCTP: cint <cimport,nodecl,const>
 global AF_MAX: cint <cimport,nodecl,const>
 global SO_DEBUG: cint <comptime> = 1
 global SO_REUSEADDR: cint <comptime> = 2
@@ -459,6 +455,10 @@ global SO_SNDTIMEO_NEW: cint <comptime> = 67
 global SO_DETACH_REUSEPORT_BPF: cint <comptime> = 68
 global SO_PREFER_BUSY_POLL: cint <comptime> = 69
 global SO_BUSY_POLL_BUDGET: cint <comptime> = 70
+global SO_NETNS_COOKIE: cint <comptime> = 71
+global SO_BUF_LOCK: cint <comptime> = 72
+global SO_RESERVE_MEM: cint <comptime> = 73
+global SO_TXREHASH: cint <comptime> = 74
 global SO_TIMESTAMP: cint <comptime> = SO_TIMESTAMP_OLD
 global SO_TIMESTAMPNS: cint <comptime> = SO_TIMESTAMPNS_OLD
 global SO_TIMESTAMPING: cint <comptime> = SO_TIMESTAMPING_OLD

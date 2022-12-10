@@ -4,6 +4,7 @@ nldecl.include_names = {
   '^epoll',
   '^EPOLL',
   __sigset_t = true,
+  timespec = true,
 }
 
 nldecl.include_macros = {

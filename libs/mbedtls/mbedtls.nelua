@@ -930,8 +930,6 @@ global mbedtls_pk_context: type <cimport,nodecl> = @record{
   pk_info: *mbedtls_pk_info_t,
   pk_ctx: pointer
 }
-global function mbedtls_pk_rsa(pk: mbedtls_pk_context): *mbedtls_rsa_context <cimport,nodecl> end
-global function mbedtls_pk_ec(pk: mbedtls_pk_context): *mbedtls_ecp_keypair <cimport,nodecl> end
 global mbedtls_pk_rsa_alt_decrypt_func: type <cimport,nodecl> = @function(pointer, cint, *csize, *cuchar, *cuchar, csize): cint
 global mbedtls_pk_rsa_alt_sign_func: type <cimport,nodecl> = @function(pointer, function(pointer, *cuchar, csize): cint, pointer, cint, mbedtls_md_type_t, cuint, *cuchar, *cuchar): cint
 global mbedtls_pk_rsa_alt_key_len_func: type <cimport,nodecl> = @function(pointer): csize
@@ -954,6 +952,8 @@ global function mbedtls_pk_check_pair(pub: *mbedtls_pk_context, prv: *mbedtls_pk
 global function mbedtls_pk_debug(ctx: *mbedtls_pk_context, items: *mbedtls_pk_debug_item): cint <cimport,nodecl> end
 global function mbedtls_pk_get_name(ctx: *mbedtls_pk_context): cstring <cimport,nodecl> end
 global function mbedtls_pk_get_type(ctx: *mbedtls_pk_context): mbedtls_pk_type_t <cimport,nodecl> end
+global function mbedtls_pk_rsa(pk: mbedtls_pk_context): *mbedtls_rsa_context <cimport,nodecl> end
+global function mbedtls_pk_ec(pk: mbedtls_pk_context): *mbedtls_ecp_keypair <cimport,nodecl> end
 global function mbedtls_pk_parse_key(ctx: *mbedtls_pk_context, key: *cuchar, keylen: csize, pwd: *cuchar, pwdlen: csize): cint <cimport,nodecl> end
 global function mbedtls_pk_parse_public_key(ctx: *mbedtls_pk_context, key: *cuchar, keylen: csize): cint <cimport,nodecl> end
 global function mbedtls_pk_parse_keyfile(ctx: *mbedtls_pk_context, path: cstring, password: cstring): cint <cimport,nodecl> end

@@ -5,11 +5,17 @@ if not SOKOL_ARGS_NO_IMPL then
 end
 cinclude 'sokol_args.h'
 ]]
+global sargs_allocator: type <cimport,nodecl> = @record{
+  alloc: function(csize, pointer): pointer,
+  free: function(pointer, pointer): void,
+  user_data: pointer
+}
 global sargs_desc: type <cimport,nodecl> = @record{
   argc: cint,
   argv: *cstring,
   max_args: cint,
-  buf_size: cint
+  buf_size: cint,
+  allocator: sargs_allocator
 }
 global function sargs_setup(desc: *sargs_desc): void <cimport,nodecl> end
 global function sargs_shutdown(): void <cimport,nodecl> end

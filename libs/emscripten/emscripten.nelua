@@ -2,6 +2,7 @@
 cinclude '<emscripten.h>'
 ]]
 global function emscripten_asm_const_int(code: cstring, arg_sigs: cstring, ...: cvarargs): cint <cimport,nodecl> end
+global function emscripten_asm_const_ptr(code: cstring, arg_sigs: cstring, ...: cvarargs): pointer <cimport,nodecl> end
 global function emscripten_asm_const_double(code: cstring, arg_sigs: cstring, ...: cvarargs): float64 <cimport,nodecl> end
 global function emscripten_asm_const_int_sync_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs): cint <cimport,nodecl> end
 global function emscripten_asm_const_double_sync_on_main_thread(code: cstring, arg_sigs: cstring, ...: cvarargs): float64 <cimport,nodecl> end
@@ -63,7 +64,7 @@ global function emscripten_call_worker(worker: cint, funcname: cstring, data: cs
 global function emscripten_worker_respond(data: cstring, size: cint): void <cimport,nodecl> end
 global function emscripten_worker_respond_provisionally(data: cstring, size: cint): void <cimport,nodecl> end
 global function emscripten_get_worker_queue_size(worker: cint): cint <cimport,nodecl> end
-global function emscripten_get_compiler_setting(name: cstring): cint <cimport,nodecl> end
+global function emscripten_get_compiler_setting(name: cstring): clong <cimport,nodecl> end
 global function emscripten_has_asyncify(): cint <cimport,nodecl> end
 global function emscripten_debugger(): void <cimport,nodecl> end
 global FILE: type <cimport,nodecl,forwarddecl> = @record{}

@@ -5,7 +5,8 @@ global subprocess_option_e: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   subprocess_option_combined_stdout_stderr = 1,
   subprocess_option_inherit_environment = 2,
   subprocess_option_enable_async = 4,
-  subprocess_option_no_window = 8
+  subprocess_option_no_window = 8,
+  subprocess_option_search_user_path = 16
 }
 global function subprocess_create(command_line: *cstring, options: cint, out_process: *subprocess_s): cint <cimport,nodecl> end
 global function subprocess_create_ex(command_line: *cstring, options: cint, environment: *cstring, out_process: *subprocess_s): cint <cimport,nodecl> end

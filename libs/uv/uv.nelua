@@ -882,8 +882,8 @@ uv_interface_address_s = @record{
 }
 uv_passwd_s = @record{
   username: cstring,
-  uid: clong,
-  gid: clong,
+  uid: culong,
+  gid: culong,
   shell: cstring,
   homedir: cstring
 }
@@ -959,6 +959,7 @@ global function uv_os_getpid(): uv_pid_t <cimport,nodecl> end
 global function uv_os_getppid(): uv_pid_t <cimport,nodecl> end
 global function uv_os_getpriority(pid: uv_pid_t, priority: *cint): cint <cimport,nodecl> end
 global function uv_os_setpriority(pid: uv_pid_t, priority: cint): cint <cimport,nodecl> end
+global function uv_available_parallelism(): cuint <cimport,nodecl> end
 global function uv_cpu_info(cpu_infos: **uv_cpu_info_t, count: *cint): cint <cimport,nodecl> end
 global function uv_free_cpu_info(cpu_infos: *uv_cpu_info_t, count: cint): void <cimport,nodecl> end
 global function uv_interface_addresses(addresses: **uv_interface_address_t, count: *cint): cint <cimport,nodecl> end

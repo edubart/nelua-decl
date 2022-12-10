@@ -30,7 +30,7 @@ end
 
 local mgr: mg_mgr
 local done: boolean = false
-mg_log_set('3')
+mg_log_set(MG_LL_DEBUG)
 mg_mgr_init(&mgr)
 mg_http_connect(&mgr, s_url, fn, &done)
 repeat

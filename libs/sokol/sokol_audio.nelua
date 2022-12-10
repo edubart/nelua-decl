@@ -11,6 +11,15 @@ elseif ccinfo.is_linux then
   cflags '-pthread'
 end
 ]]
+global saudio_allocator: type <cimport,nodecl> = @record{
+  alloc: function(csize, pointer): pointer,
+  free: function(pointer, pointer): void,
+  user_data: pointer
+}
+global saudio_logger: type <cimport,nodecl> = @record{
+  log_cb: function(cstring, pointer): void,
+  user_data: pointer
+}
 global saudio_desc: type <cimport,nodecl> = @record{
   sample_rate: cint,
   num_channels: cint,
@@ -19,7 +28,9 @@ global saudio_desc: type <cimport,nodecl> = @record{
   num_packets: cint,
   stream_cb: function(*float32, cint, cint): void,
   stream_userdata_cb: function(*float32, cint, cint, pointer): void,
-  user_data: pointer
+  user_data: pointer,
+  allocator: saudio_allocator,
+  logger: saudio_logger
 }
 global function saudio_setup(desc: *saudio_desc): void <cimport,nodecl> end
 global function saudio_shutdown(): void <cimport,nodecl> end

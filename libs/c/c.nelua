@@ -296,11 +296,23 @@ global function fromfpx(x: float64, round: cint, width: cuint): clong <cimport,n
 global function __fromfpx(x: float64, round: cint, width: cuint): clong <cimport,nodecl> end
 global function ufromfpx(x: float64, round: cint, width: cuint): culong <cimport,nodecl> end
 global function __ufromfpx(x: float64, round: cint, width: cuint): culong <cimport,nodecl> end
-global function fmaxmag(x: float64, y: float64): float64 <cimport,nodecl> end
-global function __fmaxmag(x: float64, y: float64): float64 <cimport,nodecl> end
-global function fminmag(x: float64, y: float64): float64 <cimport,nodecl> end
-global function __fminmag(x: float64, y: float64): float64 <cimport,nodecl> end
 global function canonicalize(cx: *float64, x: *float64): cint <cimport,nodecl> end
+global function fmaximum(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fmaximum(x: float64, y: float64): float64 <cimport,nodecl> end
+global function fminimum(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fminimum(x: float64, y: float64): float64 <cimport,nodecl> end
+global function fmaximum_num(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fmaximum_num(x: float64, y: float64): float64 <cimport,nodecl> end
+global function fminimum_num(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fminimum_num(x: float64, y: float64): float64 <cimport,nodecl> end
+global function fmaximum_mag(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fmaximum_mag(x: float64, y: float64): float64 <cimport,nodecl> end
+global function fminimum_mag(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fminimum_mag(x: float64, y: float64): float64 <cimport,nodecl> end
+global function fmaximum_mag_num(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fmaximum_mag_num(x: float64, y: float64): float64 <cimport,nodecl> end
+global function fminimum_mag_num(x: float64, y: float64): float64 <cimport,nodecl> end
+global function __fminimum_mag_num(x: float64, y: float64): float64 <cimport,nodecl> end
 global function __fpclassifyf(value: float32): cint <cimport,nodecl> end
 global function __signbitf(value: float32): cint <cimport,nodecl> end
 global function __isinff(value: float32): cint <cimport,nodecl> end
@@ -440,11 +452,23 @@ global function fromfpxf(x: float32, round: cint, width: cuint): clong <cimport,
 global function __fromfpxf(x: float32, round: cint, width: cuint): clong <cimport,nodecl> end
 global function ufromfpxf(x: float32, round: cint, width: cuint): culong <cimport,nodecl> end
 global function __ufromfpxf(x: float32, round: cint, width: cuint): culong <cimport,nodecl> end
-global function fmaxmagf(x: float32, y: float32): float32 <cimport,nodecl> end
-global function __fmaxmagf(x: float32, y: float32): float32 <cimport,nodecl> end
-global function fminmagf(x: float32, y: float32): float32 <cimport,nodecl> end
-global function __fminmagf(x: float32, y: float32): float32 <cimport,nodecl> end
 global function canonicalizef(cx: *float32, x: *float32): cint <cimport,nodecl> end
+global function fmaximumf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fmaximumf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function fminimumf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fminimumf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function fmaximum_numf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fmaximum_numf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function fminimum_numf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fminimum_numf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function fmaximum_magf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fmaximum_magf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function fminimum_magf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fminimum_magf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function fmaximum_mag_numf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fmaximum_mag_numf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function fminimum_mag_numf(x: float32, y: float32): float32 <cimport,nodecl> end
+global function __fminimum_mag_numf(x: float32, y: float32): float32 <cimport,nodecl> end
 global function __fpclassifyl(value: clongdouble): cint <cimport,nodecl> end
 global function __signbitl(value: clongdouble): cint <cimport,nodecl> end
 global function __isinfl(value: clongdouble): cint <cimport,nodecl> end
@@ -584,11 +608,23 @@ global function fromfpxl(x: clongdouble, round: cint, width: cuint): clong <cimp
 global function __fromfpxl(x: clongdouble, round: cint, width: cuint): clong <cimport,nodecl> end
 global function ufromfpxl(x: clongdouble, round: cint, width: cuint): culong <cimport,nodecl> end
 global function __ufromfpxl(x: clongdouble, round: cint, width: cuint): culong <cimport,nodecl> end
-global function fmaxmagl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
-global function __fmaxmagl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
-global function fminmagl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
-global function __fminmagl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
 global function canonicalizel(cx: *clongdouble, x: *clongdouble): cint <cimport,nodecl> end
+global function fmaximuml(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fmaximuml(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function fminimuml(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fminimuml(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function fmaximum_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fmaximum_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function fminimum_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fminimum_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function fmaximum_magl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fmaximum_magl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function fminimum_magl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fminimum_magl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function fmaximum_mag_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fmaximum_mag_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function fminimum_mag_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
+global function __fminimum_mag_numl(x: clongdouble, y: clongdouble): clongdouble <cimport,nodecl> end
 global function __fpclassifyf128(value: float128): cint <cimport,nodecl> end
 global function __signbitf128(value: float128): cint <cimport,nodecl> end
 global function __isinff128(value: float128): cint <cimport,nodecl> end
@@ -598,15 +634,21 @@ global function __iseqsigf128(x: float128, y: float128): cint <cimport,nodecl> e
 global function __issignalingf128(value: float128): cint <cimport,nodecl> end
 global function fadd(x: float64, y: float64): float32 <cimport,nodecl> end
 global function fdiv(x: float64, y: float64): float32 <cimport,nodecl> end
+global function ffma(x: float64, y: float64, z: float64): float32 <cimport,nodecl> end
 global function fmul(x: float64, y: float64): float32 <cimport,nodecl> end
+global function fsqrt(x: float64): float32 <cimport,nodecl> end
 global function fsub(x: float64, y: float64): float32 <cimport,nodecl> end
 global function faddl(x: clongdouble, y: clongdouble): float32 <cimport,nodecl> end
 global function fdivl(x: clongdouble, y: clongdouble): float32 <cimport,nodecl> end
+global function ffmal(x: clongdouble, y: clongdouble, z: clongdouble): float32 <cimport,nodecl> end
 global function fmull(x: clongdouble, y: clongdouble): float32 <cimport,nodecl> end
+global function fsqrtl(x: clongdouble): float32 <cimport,nodecl> end
 global function fsubl(x: clongdouble, y: clongdouble): float32 <cimport,nodecl> end
 global function daddl(x: clongdouble, y: clongdouble): float64 <cimport,nodecl> end
 global function ddivl(x: clongdouble, y: clongdouble): float64 <cimport,nodecl> end
+global function dfmal(x: clongdouble, y: clongdouble, z: clongdouble): float64 <cimport,nodecl> end
 global function dmull(x: clongdouble, y: clongdouble): float64 <cimport,nodecl> end
+global function dsqrtl(x: clongdouble): float64 <cimport,nodecl> end
 global function dsubl(x: clongdouble, y: clongdouble): float64 <cimport,nodecl> end
 global FP_NAN: cint <comptime> = 0
 global FP_INFINITE: cint <comptime> = 1
@@ -696,9 +738,9 @@ global stdout: *FILE <cimport,nodecl>
 global stderr: *FILE <cimport,nodecl>
 global function remove(filename: cstring): cint <cimport,nodecl> end
 global function rename(old: cstring, new: cstring): cint <cimport,nodecl> end
-global function tmpfile(): *FILE <cimport,nodecl> end
-global function tmpnam(s: cstring): cstring <cimport,nodecl> end
 global function fclose(stream: *FILE): cint <cimport,nodecl> end
+global function tmpfile(): *FILE <cimport,nodecl> end
+global function tmpnam(a1: cstring): cstring <cimport,nodecl> end
 global function fflush(stream: *FILE): cint <cimport,nodecl> end
 global function fopen(filename: cstring, modes: cstring): *FILE <cimport,nodecl> end
 global function freopen(filename: cstring, modes: cstring, stream: *FILE): *FILE <cimport,nodecl> end
@@ -802,6 +844,7 @@ global function memmove(dest: pointer, src: pointer, n: csize): pointer <cimport
 global function memccpy(dest: pointer, src: pointer, c: cint, n: csize): pointer <cimport,nodecl> end
 global function memset(s: pointer, c: cint, n: csize): pointer <cimport,nodecl> end
 global function memcmp(s1: pointer, s2: pointer, n: csize): cint <cimport,nodecl> end
+global function __memcmpeq(s1: pointer, s2: pointer, n: csize): cint <cimport,nodecl> end
 global function memchr(s: pointer, c: cint, n: csize): pointer <cimport,nodecl> end
 global function strcpy(dest: cstring, src: cstring): cstring <cimport,nodecl> end
 global function strncpy(dest: cstring, src: cstring, n: csize): cstring <cimport,nodecl> end
@@ -851,13 +894,15 @@ global function gmtime_r(timer: *ctime_t, tp: *tm): *tm <cimport,nodecl> end
 global function localtime_r(timer: *ctime_t, tp: *tm): *tm <cimport,nodecl> end
 global function asctime(tp: *tm): cstring <cimport,nodecl> end
 global function ctime(timer: *ctime_t): cstring <cimport,nodecl> end
-global function asctime_r(tp: *tm, buf: cstring): cstring <cimport,nodecl> end
-global function ctime_r(timer: *ctime_t, buf: cstring): cstring <cimport,nodecl> end
 global __tzname: [2]cstring <cimport,nodecl>
 global __daylight: cint <cimport,nodecl>
 global __timezone: clong <cimport,nodecl>
+global function timegm(tp: *tm): ctime_t <cimport,nodecl> end
 global function timespec_get(ts: *timespec, base: cint): cint <cimport,nodecl> end
+global function timespec_getres(ts: *timespec, base: cint): cint <cimport,nodecl> end
 global mbstate_t: type = @__mbstate_t
+global function mbrtoc8(pc8: *cuchar, s: cstring, n: csize, p: *mbstate_t): csize <cimport,nodecl> end
+global function c8rtomb(s: cstring, c8: cuchar, ps: *mbstate_t): csize <cimport,nodecl> end
 global function mbrtoc16(pc16: *cushort, s: cstring, n: csize, p: *mbstate_t): csize <cimport,nodecl> end
 global function c16rtomb(s: cstring, c16: cushort, ps: *mbstate_t): csize <cimport,nodecl> end
 global function mbrtoc32(pc32: *cuint, s: cstring, n: csize, p: *mbstate_t): csize <cimport,nodecl> end

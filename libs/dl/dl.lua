@@ -4,6 +4,7 @@ nldecl.include_names = {
   '^dl',
   '^Dl',
   '^RTLD',
+  link_map = true,
 }
 
 nldecl.include_macros = {

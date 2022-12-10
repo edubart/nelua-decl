@@ -2,6 +2,10 @@
 global __sigset_t: type <cimport,nodecl> = @record{
   __val: [16]culong
 }
+global timespec: type <cimport,nodecl,ctypedef> = @record{
+  tv_sec: ctime_t,
+  tv_nsec: clong
+}
 global EPOLL_CLOEXEC: cint <comptime> = 524288
 global EPOLL_EVENTS: type <cimport,nodecl,using,ctypedef> = @enum(cuint){
   EPOLLIN = 1,
@@ -36,6 +40,7 @@ global function epoll_create1(flags: cint): cint <cimport,nodecl> end
 global function epoll_ctl(epfd: cint, op: cint, fd: cint, event: *epoll_event): cint <cimport,nodecl> end
 global function epoll_wait(epfd: cint, events: *epoll_event, maxevents: cint, timeout: cint): cint <cimport,nodecl> end
 global function epoll_pwait(epfd: cint, events: *epoll_event, maxevents: cint, timeout: cint, ss: *__sigset_t): cint <cimport,nodecl> end
+global function epoll_pwait2(epfd: cint, events: *epoll_event, maxevents: cint, timeout: *timespec, ss: *__sigset_t): cint <cimport,nodecl> end
 global EPOLL_CTL_ADD: cint <comptime> = 1
 global EPOLL_CTL_DEL: cint <comptime> = 2
 global EPOLL_CTL_MOD: cint <comptime> = 3

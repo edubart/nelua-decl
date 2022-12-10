@@ -251,7 +251,7 @@ NK_convert_config = @record{
   circle_segment_count: cuint,
   arc_segment_count: cuint,
   curve_segment_count: cuint,
-  null: NK_draw_null_texture,
+  tex_null: NK_draw_null_texture,
   vertex_layout: *NK_draw_vertex_layout_element,
   vertex_size: culong,
   vertex_alignment: culong
@@ -1245,6 +1245,7 @@ global NK_input: type <cimport,nodecl,ctypedef'nk_input'> = @record{
 }
 global function nk_input_has_mouse_click(a1: *NK_input, a2: NK_buttons): cint <cimport,nodecl> end
 global function nk_input_has_mouse_click_in_rect(a1: *NK_input, a2: NK_buttons, a3: NK_rect): cint <cimport,nodecl> end
+global function nk_input_has_mouse_click_in_button_rect(a1: *NK_input, a2: NK_buttons, a3: NK_rect): cint <cimport,nodecl> end
 global function nk_input_has_mouse_click_down_in_rect(a1: *NK_input, a2: NK_buttons, a3: NK_rect, down: cint): cint <cimport,nodecl> end
 global function nk_input_is_mouse_click_in_rect(a1: *NK_input, a2: NK_buttons, a3: NK_rect): cint <cimport,nodecl> end
 global function nk_input_is_mouse_click_down_in_rect(i: *NK_input, id: NK_buttons, b: NK_rect, down: cint): cint <cimport,nodecl> end

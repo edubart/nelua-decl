@@ -42,6 +42,7 @@ sqlite3_io_methods = @record{
 }
 global sqlite3_mutex: type <cimport,nodecl,forwarddecl> = @record{}
 global sqlite3_api_routines: type <cimport,nodecl,forwarddecl> = @record{}
+global sqlite3_filename: type = @cstring
 global sqlite3_vfs: type <cimport,nodecl,forwarddecl> = @record{}
 global sqlite3_syscall_ptr: type <cimport,nodecl> = @function(): void
 sqlite3_vfs = @record{
@@ -51,7 +52,7 @@ sqlite3_vfs = @record{
   pNext: *sqlite3_vfs,
   zName: cstring,
   pAppData: pointer,
-  xOpen: function(*sqlite3_vfs, cstring, *sqlite3_file, cint, *cint): cint,
+  xOpen: function(*sqlite3_vfs, sqlite3_filename, *sqlite3_file, cint, *cint): cint,
   xDelete: function(*sqlite3_vfs, cstring, cint): cint,
   xAccess: function(*sqlite3_vfs, cstring, cint, *cint): cint,
   xFullPathname: function(*sqlite3_vfs, cstring, cint, cstring): cint,
@@ -120,21 +121,22 @@ global function sqlite3_progress_handler(a1: *sqlite3, a2: cint, a3: function(po
 global function sqlite3_open(filename: cstring, ppDb: **sqlite3): cint <cimport,nodecl> end
 global function sqlite3_open16(filename: pointer, ppDb: **sqlite3): cint <cimport,nodecl> end
 global function sqlite3_open_v2(filename: cstring, ppDb: **sqlite3, flags: cint, zVfs: cstring): cint <cimport,nodecl> end
-global function sqlite3_uri_parameter(zFilename: cstring, zParam: cstring): cstring <cimport,nodecl> end
-global function sqlite3_uri_boolean(zFile: cstring, zParam: cstring, bDefault: cint): cint <cimport,nodecl> end
-global function sqlite3_uri_int64(a1: cstring, a2: cstring, a3: int64): int64 <cimport,nodecl> end
-global function sqlite3_uri_key(zFilename: cstring, N: cint): cstring <cimport,nodecl> end
-global function sqlite3_filename_database(a1: cstring): cstring <cimport,nodecl> end
-global function sqlite3_filename_journal(a1: cstring): cstring <cimport,nodecl> end
-global function sqlite3_filename_wal(a1: cstring): cstring <cimport,nodecl> end
+global function sqlite3_uri_parameter(z: sqlite3_filename, zParam: cstring): cstring <cimport,nodecl> end
+global function sqlite3_uri_boolean(z: sqlite3_filename, zParam: cstring, bDefault: cint): cint <cimport,nodecl> end
+global function sqlite3_uri_int64(a1: sqlite3_filename, a2: cstring, a3: int64): int64 <cimport,nodecl> end
+global function sqlite3_uri_key(z: sqlite3_filename, N: cint): cstring <cimport,nodecl> end
+global function sqlite3_filename_database(a1: sqlite3_filename): cstring <cimport,nodecl> end
+global function sqlite3_filename_journal(a1: sqlite3_filename): cstring <cimport,nodecl> end
+global function sqlite3_filename_wal(a1: sqlite3_filename): cstring <cimport,nodecl> end
 global function sqlite3_database_file_object(a1: cstring): *sqlite3_file <cimport,nodecl> end
-global function sqlite3_create_filename(zDatabase: cstring, zJournal: cstring, zWal: cstring, nParam: cint, azParam: *cstring): cstring <cimport,nodecl> end
-global function sqlite3_free_filename(a1: cstring): void <cimport,nodecl> end
+global function sqlite3_create_filename(zDatabase: cstring, zJournal: cstring, zWal: cstring, nParam: cint, azParam: *cstring): sqlite3_filename <cimport,nodecl> end
+global function sqlite3_free_filename(a1: sqlite3_filename): void <cimport,nodecl> end
 global function sqlite3_errcode(db: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_extended_errcode(db: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_errmsg(a1: *sqlite3): cstring <cimport,nodecl> end
 global function sqlite3_errmsg16(a1: *sqlite3): pointer <cimport,nodecl> end
 global function sqlite3_errstr(a1: cint): cstring <cimport,nodecl> end
+global function sqlite3_error_offset(db: *sqlite3): cint <cimport,nodecl> end
 global sqlite3_stmt: type <cimport,nodecl,forwarddecl> = @record{}
 global function sqlite3_limit(a1: *sqlite3, id: cint, newVal: cint): cint <cimport,nodecl> end
 global function sqlite3_prepare(db: *sqlite3, zSql: cstring, nByte: cint, ppStmt: **sqlite3_stmt, pzTail: *cstring): cint <cimport,nodecl> end
@@ -217,6 +219,7 @@ global function sqlite3_value_type(a1: *sqlite3_value): cint <cimport,nodecl> en
 global function sqlite3_value_numeric_type(a1: *sqlite3_value): cint <cimport,nodecl> end
 global function sqlite3_value_nochange(a1: *sqlite3_value): cint <cimport,nodecl> end
 global function sqlite3_value_frombind(a1: *sqlite3_value): cint <cimport,nodecl> end
+global function sqlite3_value_encoding(a1: *sqlite3_value): cint <cimport,nodecl> end
 global function sqlite3_value_subtype(a1: *sqlite3_value): cuint <cimport,nodecl> end
 global function sqlite3_value_dup(a1: *sqlite3_value): *sqlite3_value <cimport,nodecl> end
 global function sqlite3_value_free(a1: *sqlite3_value): void <cimport,nodecl> end
@@ -260,7 +263,8 @@ global function sqlite3_win32_set_directory8(type: culong, zValue: cstring): cin
 global function sqlite3_win32_set_directory16(type: culong, zValue: pointer): cint <cimport,nodecl> end
 global function sqlite3_get_autocommit(a1: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_db_handle(a1: *sqlite3_stmt): *sqlite3 <cimport,nodecl> end
-global function sqlite3_db_filename(db: *sqlite3, zDbName: cstring): cstring <cimport,nodecl> end
+global function sqlite3_db_name(db: *sqlite3, N: cint): cstring <cimport,nodecl> end
+global function sqlite3_db_filename(db: *sqlite3, zDbName: cstring): sqlite3_filename <cimport,nodecl> end
 global function sqlite3_db_readonly(db: *sqlite3, zDbName: cstring): cint <cimport,nodecl> end
 global function sqlite3_txn_state(a1: *sqlite3, zSchema: cstring): cint <cimport,nodecl> end
 global function sqlite3_next_stmt(pDb: *sqlite3, pStmt: *sqlite3_stmt): *sqlite3_stmt <cimport,nodecl> end
@@ -459,6 +463,11 @@ global function sqlite3_vtab_config(a1: *sqlite3, op: cint, ...: cvarargs): cint
 global function sqlite3_vtab_on_conflict(a1: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_vtab_nochange(a1: *sqlite3_context): cint <cimport,nodecl> end
 global function sqlite3_vtab_collation(a1: *sqlite3_index_info, a2: cint): cstring <cimport,nodecl> end
+global function sqlite3_vtab_distinct(a1: *sqlite3_index_info): cint <cimport,nodecl> end
+global function sqlite3_vtab_in(a1: *sqlite3_index_info, iCons: cint, bHandle: cint): cint <cimport,nodecl> end
+global function sqlite3_vtab_in_first(pVal: *sqlite3_value, ppOut: **sqlite3_value): cint <cimport,nodecl> end
+global function sqlite3_vtab_in_next(pVal: *sqlite3_value, ppOut: **sqlite3_value): cint <cimport,nodecl> end
+global function sqlite3_vtab_rhs_value(a1: *sqlite3_index_info, a2: cint, ppVal: **sqlite3_value): cint <cimport,nodecl> end
 global function sqlite3_stmt_scanstatus(pStmt: *sqlite3_stmt, idx: cint, iScanStatusOp: cint, pOut: pointer): cint <cimport,nodecl> end
 global function sqlite3_stmt_scanstatus_reset(a1: *sqlite3_stmt): void <cimport,nodecl> end
 global function sqlite3_db_cacheflush(a1: *sqlite3): cint <cimport,nodecl> end
@@ -502,9 +511,9 @@ sqlite3_rtree_query_info = @record{
   rScore: float64,
   apSqlParam: **sqlite3_value
 }
-global SQLITE_VERSION: cstring <comptime> = "3.37.2"
-global SQLITE_VERSION_NUMBER: cint <comptime> = 3037002
-global SQLITE_SOURCE_ID: cstring <comptime> = "2022-01-06 13:25:41 872ba256cbf61d9290b571c0e6d82a20c224ca3ad82971edc46b29818d5dalt1"
+global SQLITE_VERSION: cstring <comptime> = "3.40.0"
+global SQLITE_VERSION_NUMBER: cint <comptime> = 3040000
+global SQLITE_SOURCE_ID: cstring <comptime> = "2022-11-16 12:10:08 89c459e766ea7e9165d0beeb124708b955a4950d0f4792f457465d71b158alt1"
 global SQLITE_OK: cint <comptime> = 0
 global SQLITE_ERROR: cint <comptime> = 1
 global SQLITE_INTERNAL: cint <comptime> = 2
@@ -847,6 +856,8 @@ global SQLITE_INDEX_CONSTRAINT_ISNOT: cint <comptime> = 69
 global SQLITE_INDEX_CONSTRAINT_ISNOTNULL: cint <comptime> = 70
 global SQLITE_INDEX_CONSTRAINT_ISNULL: cint <comptime> = 71
 global SQLITE_INDEX_CONSTRAINT_IS: cint <comptime> = 72
+global SQLITE_INDEX_CONSTRAINT_LIMIT: cint <comptime> = 73
+global SQLITE_INDEX_CONSTRAINT_OFFSET: cint <comptime> = 74
 global SQLITE_INDEX_CONSTRAINT_FUNCTION: cint <comptime> = 150
 global SQLITE_MUTEX_FAST: cint <comptime> = 0
 global SQLITE_MUTEX_RECURSIVE: cint <comptime> = 1
@@ -896,7 +907,8 @@ global SQLITE_TESTCTRL_EXTRA_SCHEMA_CHECKS: cint <comptime> = 29
 global SQLITE_TESTCTRL_SEEK_COUNT: cint <comptime> = 30
 global SQLITE_TESTCTRL_TRACEFLAGS: cint <comptime> = 31
 global SQLITE_TESTCTRL_TUNE: cint <comptime> = 32
-global SQLITE_TESTCTRL_LAST: cint <comptime> = 32
+global SQLITE_TESTCTRL_LOGEST: cint <comptime> = 33
+global SQLITE_TESTCTRL_LAST: cint <comptime> = 33
 global SQLITE_STATUS_MEMORY_USED: cint <comptime> = 0
 global SQLITE_STATUS_PAGECACHE_USED: cint <comptime> = 1
 global SQLITE_STATUS_PAGECACHE_OVERFLOW: cint <comptime> = 2
@@ -927,6 +939,8 @@ global SQLITE_STMTSTATUS_AUTOINDEX: cint <comptime> = 3
 global SQLITE_STMTSTATUS_VM_STEP: cint <comptime> = 4
 global SQLITE_STMTSTATUS_REPREPARE: cint <comptime> = 5
 global SQLITE_STMTSTATUS_RUN: cint <comptime> = 6
+global SQLITE_STMTSTATUS_FILTER_MISS: cint <comptime> = 7
+global SQLITE_STMTSTATUS_FILTER_HIT: cint <comptime> = 8
 global SQLITE_STMTSTATUS_MEMUSED: cint <comptime> = 99
 global SQLITE_CHECKPOINT_PASSIVE: cint <comptime> = 0
 global SQLITE_CHECKPOINT_FULL: cint <comptime> = 1

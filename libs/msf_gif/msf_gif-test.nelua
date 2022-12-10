@@ -41,7 +41,7 @@ for frame=0,FRAMES-1 do
   msf_gif_frame(&gif_state, &frames[frame][0][0][0], DELAY, BPP, WIDTH * CHANNELS)
 end
 local result: MsfGifResult = msf_gif_end(&gif_state)
-local data: span(byte) = {(@*[0]byte)(result.data), result.dataSize}
+local data: span(byte) = {data=(@*[0]byte)(result.data), size=result.dataSize}
 assert(not data:empty(), 'failed to encode gif')
 local file = io.open('mygif.gif', 'w')
 assert(file:isopen(), 'failed to write gif')

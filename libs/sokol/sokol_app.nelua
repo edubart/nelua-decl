@@ -48,11 +48,10 @@ global sapp_event_type: type <cimport,nodecl,using> = @enum(cint){
   SAPP_EVENTTYPE_UNFOCUSED = 18,
   SAPP_EVENTTYPE_SUSPENDED = 19,
   SAPP_EVENTTYPE_RESUMED = 20,
-  SAPP_EVENTTYPE_UPDATE_CURSOR = 21,
-  SAPP_EVENTTYPE_QUIT_REQUESTED = 22,
-  SAPP_EVENTTYPE_CLIPBOARD_PASTED = 23,
-  SAPP_EVENTTYPE_FILES_DROPPED = 24,
-  _SAPP_EVENTTYPE_NUM = 25,
+  SAPP_EVENTTYPE_QUIT_REQUESTED = 21,
+  SAPP_EVENTTYPE_CLIPBOARD_PASTED = 22,
+  SAPP_EVENTTYPE_FILES_DROPPED = 23,
+  _SAPP_EVENTTYPE_NUM = 24,
   _SAPP_EVENTTYPE_FORCE_U32 = 2147483647
 }
 global sapp_keycode: type <cimport,nodecl,using> = @enum(cint){
@@ -178,10 +177,17 @@ global sapp_keycode: type <cimport,nodecl,using> = @enum(cint){
   SAPP_KEYCODE_RIGHT_SUPER = 347,
   SAPP_KEYCODE_MENU = 348
 }
+global sapp_android_tooltype: type <cimport,nodecl,using> = @enum(cint){
+  SAPP_ANDROIDTOOLTYPE_UNKNOWN = 0,
+  SAPP_ANDROIDTOOLTYPE_FINGER = 1,
+  SAPP_ANDROIDTOOLTYPE_STYLUS = 2,
+  SAPP_ANDROIDTOOLTYPE_MOUSE = 3
+}
 global sapp_touchpoint: type <cimport,nodecl> = @record{
   identifier: usize,
   pos_x: float32,
   pos_y: float32,
+  android_tooltype: sapp_android_tooltype,
   changed: boolean
 }
 global sapp_mousebutton: type <cimport,nodecl,using> = @enum(cint){
@@ -231,6 +237,15 @@ global sapp_icon_desc: type <cimport,nodecl> = @record{
   sokol_default: boolean,
   images: [8]sapp_image_desc
 }
+global sapp_allocator: type <cimport,nodecl> = @record{
+  alloc: function(csize, pointer): pointer,
+  free: function(pointer, pointer): void,
+  user_data: pointer
+}
+global sapp_logger: type <cimport,nodecl> = @record{
+  log_cb: function(cstring, pointer): void,
+  user_data: pointer
+}
 global sapp_desc: type <cimport,nodecl> = @record{
   init_cb: function(): void,
   frame_cb: function(): void,
@@ -251,14 +266,17 @@ global sapp_desc: type <cimport,nodecl> = @record{
   fullscreen: boolean,
   alpha: boolean,
   window_title: cstring,
-  user_cursor: boolean,
   enable_clipboard: boolean,
   clipboard_size: cint,
   enable_dragndrop: boolean,
   max_dropped_files: cint,
   max_dropped_file_path_length: cint,
   icon: sapp_icon_desc,
+  allocator: sapp_allocator,
+  logger: sapp_logger,
   gl_force_gles2: boolean,
+  gl_major_version: cint,
+  gl_minor_version: cint,
   win32_console_utf8: boolean,
   win32_console_create: boolean,
   win32_console_attach: boolean,
@@ -278,17 +296,29 @@ global sapp_html5_fetch_response: type <cimport,nodecl> = @record{
   succeeded: boolean,
   error_code: sapp_html5_fetch_error,
   file_index: cint,
-  fetched_size: uint32,
-  buffer_ptr: pointer,
-  buffer_size: uint32,
+  data: sapp_range,
+  buffer: sapp_range,
   user_data: pointer
 }
 global sapp_html5_fetch_request: type <cimport,nodecl> = @record{
   dropped_file_index: cint,
   callback: function(*sapp_html5_fetch_response): void,
-  buffer_ptr: pointer,
-  buffer_size: uint32,
+  buffer: sapp_range,
   user_data: pointer
+}
+global sapp_mouse_cursor: type <cimport,nodecl,using> = @enum(cint){
+  SAPP_MOUSECURSOR_DEFAULT = 0,
+  SAPP_MOUSECURSOR_ARROW = 1,
+  SAPP_MOUSECURSOR_IBEAM = 2,
+  SAPP_MOUSECURSOR_CROSSHAIR = 3,
+  SAPP_MOUSECURSOR_POINTING_HAND = 4,
+  SAPP_MOUSECURSOR_RESIZE_EW = 5,
+  SAPP_MOUSECURSOR_RESIZE_NS = 6,
+  SAPP_MOUSECURSOR_RESIZE_NWSE = 7,
+  SAPP_MOUSECURSOR_RESIZE_NESW = 8,
+  SAPP_MOUSECURSOR_RESIZE_ALL = 9,
+  SAPP_MOUSECURSOR_NOT_ALLOWED = 10,
+  _SAPP_MOUSECURSOR_NUM = 11
 }
 global function sapp_isvalid(): boolean <cimport,nodecl> end
 global function sapp_width(): cint <cimport,nodecl> end
@@ -308,6 +338,8 @@ global function sapp_show_mouse(show: boolean): void <cimport,nodecl> end
 global function sapp_mouse_shown(): boolean <cimport,nodecl> end
 global function sapp_lock_mouse(lock: boolean): void <cimport,nodecl> end
 global function sapp_mouse_locked(): boolean <cimport,nodecl> end
+global function sapp_set_mouse_cursor(cursor: sapp_mouse_cursor): void <cimport,nodecl> end
+global function sapp_get_mouse_cursor(): sapp_mouse_cursor <cimport,nodecl> end
 global function sapp_userdata(): pointer <cimport,nodecl> end
 global function sapp_query_desc(): sapp_desc <cimport,nodecl> end
 global function sapp_request_quit(): void <cimport,nodecl> end
@@ -323,6 +355,8 @@ global function sapp_set_icon(icon_desc: *sapp_icon_desc): void <cimport,nodecl>
 global function sapp_get_num_dropped_files(): cint <cimport,nodecl> end
 global function sapp_get_dropped_file_path(index: cint): cstring <cimport,nodecl> end
 global function sapp_run(desc: *sapp_desc): void <cimport,nodecl> end
+global function sapp_egl_get_display(): pointer <cimport,nodecl> end
+global function sapp_egl_get_context(): pointer <cimport,nodecl> end
 global function sapp_gles2(): boolean <cimport,nodecl> end
 global function sapp_html5_ask_leave_site(ask: boolean): void <cimport,nodecl> end
 global function sapp_html5_get_dropped_file_size(index: cint): uint32 <cimport,nodecl> end

@@ -15,7 +15,8 @@ global wasm_byte_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: cstring,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_byte_vec_new_empty(out: *wasm_byte_vec_t): void <cimport,nodecl> end
 global function wasm_byte_vec_new_uninitialized(out: *wasm_byte_vec_t, a2: csize): void <cimport,nodecl> end
@@ -45,7 +46,8 @@ global MemAllocOption: type <cimport,nodecl> = @union{
   allocator: record{
     malloc_func: pointer,
     realloc_func: pointer,
-    free_func: pointer
+    free_func: pointer,
+    user_data: pointer
   }
 }
 global function wasm_engine_new_with_args(type: mem_alloc_type_t, opts: *MemAllocOption): *wasm_engine_t <cimport,nodecl> end
@@ -67,7 +69,8 @@ global wasm_valtype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_valtype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_valtype_vec_new_empty(out: *wasm_valtype_vec_t): void <cimport,nodecl> end
 global function wasm_valtype_vec_new_uninitialized(out: *wasm_valtype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -95,7 +98,8 @@ global wasm_functype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_functype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_functype_vec_new_empty(out: *wasm_functype_vec_t): void <cimport,nodecl> end
 global function wasm_functype_vec_new_uninitialized(out: *wasm_functype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -112,7 +116,8 @@ global wasm_globaltype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_globaltype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_globaltype_vec_new_empty(out: *wasm_globaltype_vec_t): void <cimport,nodecl> end
 global function wasm_globaltype_vec_new_uninitialized(out: *wasm_globaltype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -129,7 +134,8 @@ global wasm_tabletype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_tabletype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_tabletype_vec_new_empty(out: *wasm_tabletype_vec_t): void <cimport,nodecl> end
 global function wasm_tabletype_vec_new_uninitialized(out: *wasm_tabletype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -146,7 +152,8 @@ global wasm_memorytype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_memorytype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_memorytype_vec_new_empty(out: *wasm_memorytype_vec_t): void <cimport,nodecl> end
 global function wasm_memorytype_vec_new_uninitialized(out: *wasm_memorytype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -162,7 +169,8 @@ global wasm_externtype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_externtype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_externtype_vec_new_empty(out: *wasm_externtype_vec_t): void <cimport,nodecl> end
 global function wasm_externtype_vec_new_uninitialized(out: *wasm_externtype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -199,7 +207,8 @@ global wasm_importtype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_importtype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_importtype_vec_new_empty(out: *wasm_importtype_vec_t): void <cimport,nodecl> end
 global function wasm_importtype_vec_new_uninitialized(out: *wasm_importtype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -217,7 +226,8 @@ global wasm_exporttype_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_exporttype_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_exporttype_vec_new_empty(out: *wasm_exporttype_vec_t): void <cimport,nodecl> end
 global function wasm_exporttype_vec_new_uninitialized(out: *wasm_exporttype_vec_t, a2: csize): void <cimport,nodecl> end
@@ -245,7 +255,8 @@ global wasm_val_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: *wasm_val_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_val_vec_new_empty(out: *wasm_val_vec_t): void <cimport,nodecl> end
 global function wasm_val_vec_new_uninitialized(out: *wasm_val_vec_t, a2: csize): void <cimport,nodecl> end
@@ -264,7 +275,8 @@ global wasm_frame_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_frame_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_frame_vec_new_empty(out: *wasm_frame_vec_t): void <cimport,nodecl> end
 global function wasm_frame_vec_new_uninitialized(out: *wasm_frame_vec_t, a2: csize): void <cimport,nodecl> end
@@ -314,6 +326,10 @@ global function wasm_module_imports(a1: *wasm_module_t, out: *wasm_importtype_ve
 global function wasm_module_exports(a1: *wasm_module_t, out: *wasm_exporttype_vec_t): void <cimport,nodecl> end
 global function wasm_module_serialize(a1: *wasm_module_t, out: *wasm_byte_vec_t): void <cimport,nodecl> end
 global function wasm_module_deserialize(a1: *wasm_store_t, a2: *wasm_byte_vec_t): *wasm_module_t <cimport,nodecl> end
+global wasm_shared_module_t: type = @*WASMModuleCommon
+global function wasm_module_share(a1: *wasm_module_t): *wasm_shared_module_t <cimport,nodecl> end
+global function wasm_module_obtain(a1: *wasm_store_t, a2: *wasm_shared_module_t): *wasm_module_t <cimport,nodecl> end
+global function wasm_shared_module_delete(a1: *wasm_shared_module_t): void <cimport,nodecl> end
 global wasm_func_t: type <cimport,nodecl,forwarddecl> = @record{}
 global function wasm_func_delete(a1: *wasm_func_t): void <cimport,nodecl> end
 global function wasm_func_copy(a1: *wasm_func_t): *wasm_func_t <cimport,nodecl> end
@@ -397,7 +413,8 @@ global wasm_extern_vec_t: type <cimport,nodecl> = @record{
   size: csize,
   data: **wasm_extern_t,
   num_elems: csize,
-  size_of_elem: csize
+  size_of_elem: csize,
+  lock: pointer
 }
 global function wasm_extern_vec_new_empty(out: *wasm_extern_vec_t): void <cimport,nodecl> end
 global function wasm_extern_vec_new_uninitialized(out: *wasm_extern_vec_t, a2: csize): void <cimport,nodecl> end
@@ -432,8 +449,8 @@ global function wasm_instance_as_ref(a1: *wasm_instance_t): *wasm_ref_t <cimport
 global function wasm_ref_as_instance(a1: *wasm_ref_t): *wasm_instance_t <cimport,nodecl> end
 global function wasm_instance_as_ref_const(a1: *wasm_instance_t): *wasm_ref_t <cimport,nodecl> end
 global function wasm_ref_as_instance_const(a1: *wasm_ref_t): *wasm_instance_t <cimport,nodecl> end
-global function wasm_instance_new(a1: *wasm_store_t, a2: *wasm_module_t, imports: *wasm_extern_vec_t, a4: **wasm_trap_t): *wasm_instance_t <cimport,nodecl> end
-global function wasm_instance_new_with_args(a1: *wasm_store_t, a2: *wasm_module_t, imports: *wasm_extern_vec_t, a4: **wasm_trap_t, stack_size: uint32, heap_size: uint32): *wasm_instance_t <cimport,nodecl> end
+global function wasm_instance_new(a1: *wasm_store_t, a2: *wasm_module_t, imports: *wasm_extern_vec_t, trap: **wasm_trap_t): *wasm_instance_t <cimport,nodecl> end
+global function wasm_instance_new_with_args(a1: *wasm_store_t, a2: *wasm_module_t, imports: *wasm_extern_vec_t, trap: **wasm_trap_t, stack_size: uint32, heap_size: uint32): *wasm_instance_t <cimport,nodecl> end
 global function wasm_instance_exports(a1: *wasm_instance_t, out: *wasm_extern_vec_t): void <cimport,nodecl> end
 global function wasm_valtype_new_i32(): *wasm_valtype_t <cimport,nodecl> end
 global function wasm_valtype_new_i64(): *wasm_valtype_t <cimport,nodecl> end
@@ -480,7 +497,11 @@ global RuntimeInitArgs: type <cimport,nodecl> = @record{
   native_module_name: cstring,
   native_symbols: *NativeSymbol,
   n_native_symbols: uint32,
-  max_thread_num: uint32
+  max_thread_num: uint32,
+  ip_addr: [128]cchar,
+  unused: cint,
+  instance_port: cint,
+  fast_jit_code_cache_size: uint32
 }
 global function wasm_runtime_init(): boolean <cimport,nodecl> end
 global function wasm_runtime_full_init(init_args: *RuntimeInitArgs): boolean <cimport,nodecl> end
@@ -488,6 +509,7 @@ global function wasm_runtime_destroy(): void <cimport,nodecl> end
 global function wasm_runtime_malloc(size: cuint): pointer <cimport,nodecl> end
 global function wasm_runtime_realloc(ptr: pointer, size: cuint): pointer <cimport,nodecl> end
 global function wasm_runtime_free(ptr: pointer): void <cimport,nodecl> end
+global function wasm_runtime_get_mem_alloc_info(mem_alloc_info: *mem_alloc_info_t): boolean <cimport,nodecl> end
 global function wasm_runtime_is_xip_file(buf: *uint8, size: uint32): boolean <cimport,nodecl> end
 global function wasm_runtime_set_module_reader(reader: function(cstring, **uint8, *uint32): boolean, destroyer: function(*uint8, uint32): void): void <cimport,nodecl> end
 global function wasm_runtime_register_module(module_name: cstring, module: wasm_module_t, error_buf: cstring, error_buf_size: uint32): boolean <cimport,nodecl> end
@@ -495,19 +517,32 @@ global function wasm_runtime_find_module_registered(module_name: cstring): wasm_
 global function wasm_runtime_load(buf: *uint8, size: uint32, error_buf: cstring, error_buf_size: uint32): wasm_module_t <cimport,nodecl> end
 global function wasm_runtime_load_from_sections(section_list: wasm_section_list_t, is_aot: boolean, error_buf: cstring, error_buf_size: uint32): wasm_module_t <cimport,nodecl> end
 global function wasm_runtime_unload(module: wasm_module_t): void <cimport,nodecl> end
+global function wasm_runtime_get_module_hash(module: wasm_module_t): cstring <cimport,nodecl> end
 global function wasm_runtime_set_wasi_args_ex(module: wasm_module_t, dir_list: *cstring, dir_count: uint32, map_dir_list: *cstring, map_dir_count: uint32, env: *cstring, env_count: uint32, argv: *cstring, argc: cint, stdinfd: cint, stdoutfd: cint, stderrfd: cint): void <cimport,nodecl> end
 global function wasm_runtime_set_wasi_args(module: wasm_module_t, dir_list: *cstring, dir_count: uint32, map_dir_list: *cstring, map_dir_count: uint32, env: *cstring, env_count: uint32, argv: *cstring, argc: cint): void <cimport,nodecl> end
+global function wasm_runtime_set_wasi_addr_pool(module: wasm_module_t, addr_pool: *cstring, addr_pool_size: uint32): void <cimport,nodecl> end
+global function wasm_runtime_set_wasi_ns_lookup_pool(module: wasm_module_t, ns_lookup_pool: *cstring, ns_lookup_pool_size: uint32): void <cimport,nodecl> end
 global function wasm_runtime_instantiate(module: wasm_module_t, stack_size: uint32, heap_size: uint32, error_buf: cstring, error_buf_size: uint32): wasm_module_inst_t <cimport,nodecl> end
 global function wasm_runtime_deinstantiate(module_inst: wasm_module_inst_t): void <cimport,nodecl> end
+global function wasm_runtime_get_module(module_inst: wasm_module_inst_t): wasm_module_t <cimport,nodecl> end
 global function wasm_runtime_is_wasi_mode(module_inst: wasm_module_inst_t): boolean <cimport,nodecl> end
 global function wasm_runtime_lookup_wasi_start_function(module_inst: wasm_module_inst_t): wasm_function_inst_t <cimport,nodecl> end
+global function wasm_runtime_get_wasi_exit_code(module_inst: wasm_module_inst_t): uint32 <cimport,nodecl> end
 global function wasm_runtime_lookup_function(module_inst: wasm_module_inst_t, name: cstring, signature: cstring): wasm_function_inst_t <cimport,nodecl> end
+global function wasm_func_get_param_count(func_inst: wasm_function_inst_t, module_inst: wasm_module_inst_t): uint32 <cimport,nodecl> end
+global function wasm_func_get_result_count(func_inst: wasm_function_inst_t, module_inst: wasm_module_inst_t): uint32 <cimport,nodecl> end
+global function wasm_func_get_param_types(func_inst: wasm_function_inst_t, module_inst: wasm_module_inst_t, param_types: *cuchar): void <cimport,nodecl> end
+global function wasm_func_get_result_types(func_inst: wasm_function_inst_t, module_inst: wasm_module_inst_t, result_types: *cuchar): void <cimport,nodecl> end
 global function wasm_runtime_create_exec_env(module_inst: wasm_module_inst_t, stack_size: uint32): wasm_exec_env_t <cimport,nodecl> end
 global function wasm_runtime_destroy_exec_env(exec_env: wasm_exec_env_t): void <cimport,nodecl> end
+global function wasm_runtime_get_exec_env_singleton(module_inst: wasm_module_inst_t): wasm_exec_env_t <cimport,nodecl> end
+global function wasm_runtime_start_debug_instance_with_port(exec_env: wasm_exec_env_t, port: int32): uint32 <cimport,nodecl> end
 global function wasm_runtime_start_debug_instance(exec_env: wasm_exec_env_t): uint32 <cimport,nodecl> end
 global function wasm_runtime_init_thread_env(): boolean <cimport,nodecl> end
 global function wasm_runtime_destroy_thread_env(): void <cimport,nodecl> end
+global function wasm_runtime_thread_env_inited(): boolean <cimport,nodecl> end
 global function wasm_runtime_get_module_inst(exec_env: wasm_exec_env_t): wasm_module_inst_t <cimport,nodecl> end
+global function wasm_runtime_set_module_inst(exec_env: wasm_exec_env_t, module_inst: wasm_module_inst_t): void <cimport,nodecl> end
 global function wasm_runtime_call_wasm(exec_env: wasm_exec_env_t, Function: wasm_function_inst_t, argc: uint32, argv: *uint32): boolean <cimport,nodecl> end
 global function wasm_runtime_call_wasm_a(exec_env: wasm_exec_env_t, Function: wasm_function_inst_t, num_results: uint32, results: *wasm_val_t, num_args: uint32, args: *wasm_val_t): boolean <cimport,nodecl> end
 global function wasm_runtime_call_wasm_v(exec_env: wasm_exec_env_t, Function: wasm_function_inst_t, num_results: uint32, results: *wasm_val_t, num_args: uint32, ...: cvarargs): boolean <cimport,nodecl> end
@@ -530,6 +565,7 @@ global function wasm_runtime_get_app_addr_range(module_inst: wasm_module_inst_t,
 global function wasm_runtime_get_native_addr_range(module_inst: wasm_module_inst_t, native_ptr: *uint8, p_native_start_addr: **uint8, p_native_end_addr: **uint8): boolean <cimport,nodecl> end
 global function wasm_runtime_register_natives(module_name: cstring, native_symbols: *NativeSymbol, n_native_symbols: uint32): boolean <cimport,nodecl> end
 global function wasm_runtime_register_natives_raw(module_name: cstring, native_symbols: *NativeSymbol, n_native_symbols: uint32): boolean <cimport,nodecl> end
+global function wasm_runtime_unregister_natives(module_name: cstring, native_symbols: *NativeSymbol): boolean <cimport,nodecl> end
 global function wasm_runtime_get_function_attachment(exec_env: wasm_exec_env_t): pointer <cimport,nodecl> end
 global function wasm_runtime_set_user_data(exec_env: wasm_exec_env_t, user_data: pointer): void <cimport,nodecl> end
 global function wasm_runtime_get_user_data(exec_env: wasm_exec_env_t): pointer <cimport,nodecl> end
@@ -545,3 +581,7 @@ global function wasm_externref_obj2ref(module_inst: wasm_module_inst_t, extern_o
 global function wasm_externref_ref2obj(externref_idx: uint32, p_extern_obj: *pointer): boolean <cimport,nodecl> end
 global function wasm_externref_retain(externref_idx: uint32): boolean <cimport,nodecl> end
 global function wasm_runtime_dump_call_stack(exec_env: wasm_exec_env_t): void <cimport,nodecl> end
+global function wasm_runtime_get_call_stack_buf_size(exec_env: wasm_exec_env_t): uint32 <cimport,nodecl> end
+global function wasm_runtime_dump_call_stack_to_buf(exec_env: wasm_exec_env_t, buf: cstring, len: uint32): uint32 <cimport,nodecl> end
+global function wasm_runtime_get_custom_section(module_comm: wasm_module_t, name: cstring, len: *uint32): *uint8 <cimport,nodecl> end
+global function wasm_runtime_get_version(major: *uint32, minor: *uint32, patch: *uint32): void <cimport,nodecl> end

@@ -22,6 +22,12 @@ global msghdr: type <cimport,nodecl,ctypedef> = @record{
   msg_controllen: csize,
   msg_flags: cint
 }
+global cmsghdr: type <cimport,nodecl,ctypedef> = @record{
+  cmsg_len: csize,
+  cmsg_level: cint,
+  cmsg_type: cint,
+  __cmsg_data: [0]cuchar
+}
 global statx: type <cimport,nodecl,cincomplete,ctypedef> = @record{
   stx_mask: cuint,
   stx_blksize: cuint,
@@ -51,9 +57,9 @@ global __kernel_timespec: type <cimport,nodecl,ctypedef> = @record{
   tv_nsec: clonglong
 }
 global open_how: type <cimport,nodecl,ctypedef> = @record{
-  flags: uint64,
-  mode: uint64,
-  resolve: uint64
+  flags: culonglong,
+  mode: culonglong,
+  resolve: culonglong
 }
 global io_uring_sqe: type <cimport,nodecl,ctypedef> = @record{
   opcode: cuchar,
@@ -62,7 +68,11 @@ global io_uring_sqe: type <cimport,nodecl,ctypedef> = @record{
   fd: cint,
   __unnamed1: union{
     off: culonglong,
-    addr2: culonglong
+    addr2: culonglong,
+    __unnamed1: record{
+      cmd_op: cuint,
+      __pad1: cuint
+    }
   },
   __unnamed2: union{
     addr: culonglong,
@@ -85,7 +95,10 @@ global io_uring_sqe: type <cimport,nodecl,ctypedef> = @record{
     splice_flags: cuint,
     rename_flags: cuint,
     unlink_flags: cuint,
-    hardlink_flags: cuint
+    hardlink_flags: cuint,
+    xattr_flags: cuint,
+    msg_ring_flags: cuint,
+    uring_cmd_flags: cuint
   },
   user_data: culonglong,
   __unnamed4: union{
@@ -95,14 +108,77 @@ global io_uring_sqe: type <cimport,nodecl,ctypedef> = @record{
   personality: cushort,
   __unnamed5: union{
     splice_fd_in: cint,
-    file_index: cuint
+    file_index: cuint,
+    __unnamed1: record{
+      addr_len: cushort,
+      __pad3: [1]cushort
+    }
   },
-  __pad2: [2]culonglong
+  __unnamed6: union{
+    __unnamed1: record{
+      addr3: culonglong,
+      __pad2: [1]culonglong
+    },
+    cmd: [0]cuchar
+  }
+}
+global io_uring_op: type <cimport,nodecl,using,ctypedef> = @enum(cint){
+  IORING_OP_NOP = 0,
+  IORING_OP_READV = 1,
+  IORING_OP_WRITEV = 2,
+  IORING_OP_FSYNC = 3,
+  IORING_OP_READ_FIXED = 4,
+  IORING_OP_WRITE_FIXED = 5,
+  IORING_OP_POLL_ADD = 6,
+  IORING_OP_POLL_REMOVE = 7,
+  IORING_OP_SYNC_FILE_RANGE = 8,
+  IORING_OP_SENDMSG = 9,
+  IORING_OP_RECVMSG = 10,
+  IORING_OP_TIMEOUT = 11,
+  IORING_OP_TIMEOUT_REMOVE = 12,
+  IORING_OP_ACCEPT = 13,
+  IORING_OP_ASYNC_CANCEL = 14,
+  IORING_OP_LINK_TIMEOUT = 15,
+  IORING_OP_CONNECT = 16,
+  IORING_OP_FALLOCATE = 17,
+  IORING_OP_OPENAT = 18,
+  IORING_OP_CLOSE = 19,
+  IORING_OP_FILES_UPDATE = 20,
+  IORING_OP_STATX = 21,
+  IORING_OP_READ = 22,
+  IORING_OP_WRITE = 23,
+  IORING_OP_FADVISE = 24,
+  IORING_OP_MADVISE = 25,
+  IORING_OP_SEND = 26,
+  IORING_OP_RECV = 27,
+  IORING_OP_OPENAT2 = 28,
+  IORING_OP_EPOLL_CTL = 29,
+  IORING_OP_SPLICE = 30,
+  IORING_OP_PROVIDE_BUFFERS = 31,
+  IORING_OP_REMOVE_BUFFERS = 32,
+  IORING_OP_TEE = 33,
+  IORING_OP_SHUTDOWN = 34,
+  IORING_OP_RENAMEAT = 35,
+  IORING_OP_UNLINKAT = 36,
+  IORING_OP_MKDIRAT = 37,
+  IORING_OP_SYMLINKAT = 38,
+  IORING_OP_LINKAT = 39,
+  IORING_OP_MSG_RING = 40,
+  IORING_OP_FSETXATTR = 41,
+  IORING_OP_SETXATTR = 42,
+  IORING_OP_FGETXATTR = 43,
+  IORING_OP_GETXATTR = 44,
+  IORING_OP_SOCKET = 45,
+  IORING_OP_URING_CMD = 46,
+  IORING_OP_SEND_ZC = 47,
+  IORING_OP_SENDMSG_ZC = 48,
+  IORING_OP_LAST = 49
 }
 global io_uring_cqe: type <cimport,nodecl,ctypedef> = @record{
   user_data: culonglong,
   res: cint,
-  flags: cuint
+  flags: cuint,
+  big_cqe: [0]culonglong
 }
 global io_uring_params: type <cimport,nodecl,cincomplete,ctypedef> = @record{
   sq_entries: cuint,
@@ -121,7 +197,7 @@ global io_uring_files_update: type <cimport,nodecl,aligned(8),ctypedef> = @recor
 }
 global io_uring_rsrc_register: type <cimport,nodecl,aligned(8),ctypedef> = @record{
   nr: cuint,
-  resv: cuint,
+  flags: cuint,
   resv2: culonglong,
   data: culonglong,
   tags: culonglong
@@ -138,6 +214,17 @@ global io_uring_rsrc_update2: type <cimport,nodecl,aligned(8),ctypedef> = @recor
   tags: culonglong,
   nr: cuint,
   resv2: cuint
+}
+global io_uring_notification_slot: type <cimport,nodecl,ctypedef> = @record{
+  tag: culonglong,
+  resv: [3]culonglong
+}
+global io_uring_notification_register: type <cimport,nodecl,ctypedef> = @record{
+  nr_slots: cuint,
+  resv: cuint,
+  resv2: culonglong,
+  data: culonglong,
+  resv3: culonglong
 }
 global io_uring_probe_op: type <cimport,nodecl,ctypedef> = @record{
   op: cuchar,
@@ -162,11 +249,53 @@ global io_uring_restriction: type <cimport,nodecl,ctypedef> = @record{
   resv: cuchar,
   resv2: [3]cuint
 }
+global io_uring_buf: type <cimport,nodecl,ctypedef> = @record{
+  addr: culonglong,
+  len: cuint,
+  bid: cushort,
+  resv: cushort
+}
+global io_uring_buf_ring: type <cimport,nodecl,ctypedef> = @record{
+  __unnamed1: union{
+    __unnamed1: record{
+      resv1: culonglong,
+      resv2: cuint,
+      resv3: cushort,
+      tail: cushort
+    },
+    bufs: [0]io_uring_buf
+  }
+}
+global io_uring_buf_reg: type <cimport,nodecl,ctypedef> = @record{
+  ring_addr: culonglong,
+  ring_entries: cuint,
+  bgid: cushort,
+  pad: cushort,
+  resv: [3]culonglong
+}
 global io_uring_getevents_arg: type <cimport,nodecl,ctypedef> = @record{
   sigmask: culonglong,
   sigmask_sz: cuint,
   pad: cuint,
   ts: culonglong
+}
+global io_uring_sync_cancel_reg: type <cimport,nodecl,ctypedef> = @record{
+  addr: culonglong,
+  fd: cint,
+  flags: cuint,
+  timeout: __kernel_timespec,
+  pad: [4]culonglong
+}
+global io_uring_file_index_range: type <cimport,nodecl,ctypedef> = @record{
+  off: cuint,
+  len: cuint,
+  resv: culonglong
+}
+global io_uring_recvmsg_out: type <cimport,nodecl,ctypedef> = @record{
+  namelen: cuint,
+  controllen: cuint,
+  payloadlen: cuint,
+  flags: cuint
 }
 global io_uring_sq: type <cimport,nodecl,ctypedef> = @record{
   khead: *cuint,
@@ -181,7 +310,9 @@ global io_uring_sq: type <cimport,nodecl,ctypedef> = @record{
   sqe_tail: cuint,
   ring_sz: csize,
   ring_ptr: pointer,
-  pad: [4]cuint
+  ring_mask: cuint,
+  ring_entries: cuint,
+  pad: [2]cuint
 }
 global io_uring_cq: type <cimport,nodecl,ctypedef> = @record{
   khead: *cuint,
@@ -193,7 +324,9 @@ global io_uring_cq: type <cimport,nodecl,ctypedef> = @record{
   cqes: *io_uring_cqe,
   ring_sz: csize,
   ring_ptr: pointer,
-  pad: [4]cuint
+  ring_mask: cuint,
+  ring_entries: cuint,
+  pad: [2]cuint
 }
 global io_uring: type <cimport,nodecl,ctypedef> = @record{
   sq: io_uring_sq,
@@ -201,7 +334,10 @@ global io_uring: type <cimport,nodecl,ctypedef> = @record{
   flags: cuint,
   ring_fd: cint,
   features: cuint,
-  pad: [3]cuint
+  enter_ring_fd: cint,
+  int_flags: cuchar,
+  pad: [3]cuchar,
+  pad2: cuint
 }
 global function io_uring_get_probe_ring(ring: *io_uring): *io_uring_probe <cimport,nodecl> end
 global function io_uring_get_probe(): *io_uring_probe <cimport,nodecl> end
@@ -217,13 +353,15 @@ global function io_uring_wait_cqes(ring: *io_uring, cqe_ptr: **io_uring_cqe, wai
 global function io_uring_wait_cqe_timeout(ring: *io_uring, cqe_ptr: **io_uring_cqe, ts: *__kernel_timespec): cint <cimport,nodecl> end
 global function io_uring_submit(ring: *io_uring): cint <cimport,nodecl> end
 global function io_uring_submit_and_wait(ring: *io_uring, wait_nr: cuint): cint <cimport,nodecl> end
-global function io_uring_get_sqe(ring: *io_uring): *io_uring_sqe <cimport,nodecl> end
+global function io_uring_submit_and_wait_timeout(ring: *io_uring, cqe_ptr: **io_uring_cqe, wait_nr: cuint, ts: *__kernel_timespec, sigmask: *sigset_t): cint <cimport,nodecl> end
 global function io_uring_register_buffers(ring: *io_uring, iovecs: *iovec, nr_iovecs: cuint): cint <cimport,nodecl> end
 global function io_uring_register_buffers_tags(ring: *io_uring, iovecs: *iovec, tags: *culonglong, nr: cuint): cint <cimport,nodecl> end
+global function io_uring_register_buffers_sparse(ring: *io_uring, nr: cuint): cint <cimport,nodecl> end
 global function io_uring_register_buffers_update_tag(ring: *io_uring, off: cuint, iovecs: *iovec, tags: *culonglong, nr: cuint): cint <cimport,nodecl> end
 global function io_uring_unregister_buffers(ring: *io_uring): cint <cimport,nodecl> end
 global function io_uring_register_files(ring: *io_uring, files: *cint, nr_files: cuint): cint <cimport,nodecl> end
 global function io_uring_register_files_tags(ring: *io_uring, files: *cint, tags: *culonglong, nr: cuint): cint <cimport,nodecl> end
+global function io_uring_register_files_sparse(ring: *io_uring, nr: cuint): cint <cimport,nodecl> end
 global function io_uring_register_files_update_tag(ring: *io_uring, off: cuint, files: *cint, tags: *culonglong, nr_files: cuint): cint <cimport,nodecl> end
 global function io_uring_unregister_files(ring: *io_uring): cint <cimport,nodecl> end
 global function io_uring_register_files_update(ring: *io_uring, off: cuint, files: *cint, nr_files: cuint): cint <cimport,nodecl> end
@@ -238,24 +376,41 @@ global function io_uring_enable_rings(ring: *io_uring): cint <cimport,nodecl> en
 global function io_uring_register_iowq_aff(ring: *io_uring, cpusz: csize, mask: *cpu_set_t): cint <cimport,nodecl> end
 global function io_uring_unregister_iowq_aff(ring: *io_uring): cint <cimport,nodecl> end
 global function io_uring_register_iowq_max_workers(ring: *io_uring, values: *cuint): cint <cimport,nodecl> end
+global function io_uring_register_ring_fd(ring: *io_uring): cint <cimport,nodecl> end
+global function io_uring_unregister_ring_fd(ring: *io_uring): cint <cimport,nodecl> end
+global function io_uring_register_buf_ring(ring: *io_uring, reg: *io_uring_buf_reg, flags: cuint): cint <cimport,nodecl> end
+global function io_uring_unregister_buf_ring(ring: *io_uring, bgid: cint): cint <cimport,nodecl> end
+global function io_uring_register_sync_cancel(ring: *io_uring, reg: *io_uring_sync_cancel_reg): cint <cimport,nodecl> end
+global function io_uring_register_file_alloc_range(ring: *io_uring, off: cuint, len: cuint): cint <cimport,nodecl> end
+global function io_uring_get_events(ring: *io_uring): cint <cimport,nodecl> end
+global function io_uring_submit_and_get_events(ring: *io_uring): cint <cimport,nodecl> end
+global function io_uring_enter(fd: cuint, to_submit: cuint, min_complete: cuint, flags: cuint, sig: *sigset_t): cint <cimport,nodecl> end
+global function io_uring_enter2(fd: cuint, to_submit: cuint, min_complete: cuint, flags: cuint, sig: *sigset_t, sz: csize): cint <cimport,nodecl> end
+global function io_uring_setup(entries: cuint, p: *io_uring_params): cint <cimport,nodecl> end
+global function io_uring_register(fd: cuint, opcode: cuint, arg: pointer, nr_args: cuint): cint <cimport,nodecl> end
 global function io_uring_cq_advance(ring: *io_uring, nr: cuint): void <cimport,nodecl> end
 global function io_uring_cqe_seen(ring: *io_uring, cqe: *io_uring_cqe): void <cimport,nodecl> end
 global function io_uring_sqe_set_data(sqe: *io_uring_sqe, data: pointer): void <cimport,nodecl> end
 global function io_uring_cqe_get_data(cqe: *io_uring_cqe): pointer <cimport,nodecl> end
+global function io_uring_sqe_set_data64(sqe: *io_uring_sqe, data: culonglong): void <cimport,nodecl> end
+global function io_uring_cqe_get_data64(cqe: *io_uring_cqe): culonglong <cimport,nodecl> end
 global function io_uring_sqe_set_flags(sqe: *io_uring_sqe, flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_rw(op: cint, sqe: *io_uring_sqe, fd: cint, addr: pointer, len: cuint, offset: culonglong): void <cimport,nodecl> end
 global function io_uring_prep_splice(sqe: *io_uring_sqe, fd_in: cint, off_in: int64, fd_out: cint, off_out: int64, nbytes: cuint, splice_flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_tee(sqe: *io_uring_sqe, fd_in: cint, fd_out: cint, nbytes: cuint, splice_flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_readv(sqe: *io_uring_sqe, fd: cint, iovecs: *iovec, nr_vecs: cuint, offset: culonglong): void <cimport,nodecl> end
+global function io_uring_prep_readv2(sqe: *io_uring_sqe, fd: cint, iovecs: *iovec, nr_vecs: cuint, offset: culonglong, flags: cint): void <cimport,nodecl> end
 global function io_uring_prep_read_fixed(sqe: *io_uring_sqe, fd: cint, buf: pointer, nbytes: cuint, offset: culonglong, buf_index: cint): void <cimport,nodecl> end
 global function io_uring_prep_writev(sqe: *io_uring_sqe, fd: cint, iovecs: *iovec, nr_vecs: cuint, offset: culonglong): void <cimport,nodecl> end
+global function io_uring_prep_writev2(sqe: *io_uring_sqe, fd: cint, iovecs: *iovec, nr_vecs: cuint, offset: culonglong, flags: cint): void <cimport,nodecl> end
 global function io_uring_prep_write_fixed(sqe: *io_uring_sqe, fd: cint, buf: pointer, nbytes: cuint, offset: culonglong, buf_index: cint): void <cimport,nodecl> end
 global function io_uring_prep_recvmsg(sqe: *io_uring_sqe, fd: cint, msg: *msghdr, flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_recvmsg_multishot(sqe: *io_uring_sqe, fd: cint, msg: *msghdr, flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_sendmsg(sqe: *io_uring_sqe, fd: cint, msg: *msghdr, flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_poll_add(sqe: *io_uring_sqe, fd: cint, poll_mask: cuint): void <cimport,nodecl> end
 global function io_uring_prep_poll_multishot(sqe: *io_uring_sqe, fd: cint, poll_mask: cuint): void <cimport,nodecl> end
-global function io_uring_prep_poll_remove(sqe: *io_uring_sqe, user_data: pointer): void <cimport,nodecl> end
-global function io_uring_prep_poll_update(sqe: *io_uring_sqe, old_user_data: pointer, new_user_data: pointer, poll_mask: cuint, flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_poll_remove(sqe: *io_uring_sqe, user_data: culonglong): void <cimport,nodecl> end
+global function io_uring_prep_poll_update(sqe: *io_uring_sqe, old_user_data: culonglong, new_user_data: culonglong, poll_mask: cuint, flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_fsync(sqe: *io_uring_sqe, fd: cint, fsync_flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_nop(sqe: *io_uring_sqe): void <cimport,nodecl> end
 global function io_uring_prep_timeout(sqe: *io_uring_sqe, ts: *__kernel_timespec, count: cuint, flags: cuint): void <cimport,nodecl> end
@@ -263,7 +418,11 @@ global function io_uring_prep_timeout_remove(sqe: *io_uring_sqe, user_data: culo
 global function io_uring_prep_timeout_update(sqe: *io_uring_sqe, ts: *__kernel_timespec, user_data: culonglong, flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_accept(sqe: *io_uring_sqe, fd: cint, addr: *sockaddr, addrlen: *cuint, flags: cint): void <cimport,nodecl> end
 global function io_uring_prep_accept_direct(sqe: *io_uring_sqe, fd: cint, addr: *sockaddr, addrlen: *cuint, flags: cint, file_index: cuint): void <cimport,nodecl> end
+global function io_uring_prep_multishot_accept(sqe: *io_uring_sqe, fd: cint, addr: *sockaddr, addrlen: *cuint, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_multishot_accept_direct(sqe: *io_uring_sqe, fd: cint, addr: *sockaddr, addrlen: *cuint, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_cancel64(sqe: *io_uring_sqe, user_data: culonglong, flags: cint): void <cimport,nodecl> end
 global function io_uring_prep_cancel(sqe: *io_uring_sqe, user_data: pointer, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_cancel_fd(sqe: *io_uring_sqe, fd: cint, flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_link_timeout(sqe: *io_uring_sqe, ts: *__kernel_timespec, flags: cuint): void <cimport,nodecl> end
 global function io_uring_prep_connect(sqe: *io_uring_sqe, fd: cint, addr: *sockaddr, addrlen: cuint): void <cimport,nodecl> end
 global function io_uring_prep_files_update(sqe: *io_uring_sqe, fds: *cint, nr_fds: cuint, offset: cint): void <cimport,nodecl> end
@@ -271,13 +430,25 @@ global function io_uring_prep_fallocate(sqe: *io_uring_sqe, fd: cint, mode: cint
 global function io_uring_prep_openat(sqe: *io_uring_sqe, dfd: cint, path: cstring, flags: cint, mode: cuint): void <cimport,nodecl> end
 global function io_uring_prep_openat_direct(sqe: *io_uring_sqe, dfd: cint, path: cstring, flags: cint, mode: cuint, file_index: cuint): void <cimport,nodecl> end
 global function io_uring_prep_close(sqe: *io_uring_sqe, fd: cint): void <cimport,nodecl> end
+global function io_uring_prep_close_direct(sqe: *io_uring_sqe, file_index: cuint): void <cimport,nodecl> end
 global function io_uring_prep_read(sqe: *io_uring_sqe, fd: cint, buf: pointer, nbytes: cuint, offset: culonglong): void <cimport,nodecl> end
 global function io_uring_prep_write(sqe: *io_uring_sqe, fd: cint, buf: pointer, nbytes: cuint, offset: culonglong): void <cimport,nodecl> end
 global function io_uring_prep_statx(sqe: *io_uring_sqe, dfd: cint, path: cstring, flags: cint, mask: cuint, statxbuf: *statx): void <cimport,nodecl> end
 global function io_uring_prep_fadvise(sqe: *io_uring_sqe, fd: cint, offset: culonglong, len: clong, advice: cint): void <cimport,nodecl> end
 global function io_uring_prep_madvise(sqe: *io_uring_sqe, addr: pointer, length: clong, advice: cint): void <cimport,nodecl> end
 global function io_uring_prep_send(sqe: *io_uring_sqe, sockfd: cint, buf: pointer, len: csize, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_send_zc(sqe: *io_uring_sqe, sockfd: cint, buf: pointer, len: csize, flags: cint, zc_flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_send_zc_fixed(sqe: *io_uring_sqe, sockfd: cint, buf: pointer, len: csize, flags: cint, zc_flags: cuint, buf_index: cuint): void <cimport,nodecl> end
+global function io_uring_prep_sendmsg_zc(sqe: *io_uring_sqe, fd: cint, msg: *msghdr, flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_send_set_addr(sqe: *io_uring_sqe, dest_addr: *sockaddr, addr_len: cushort): void <cimport,nodecl> end
 global function io_uring_prep_recv(sqe: *io_uring_sqe, sockfd: cint, buf: pointer, len: csize, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_recv_multishot(sqe: *io_uring_sqe, sockfd: cint, buf: pointer, len: csize, flags: cint): void <cimport,nodecl> end
+global function io_uring_recvmsg_validate(buf: pointer, buf_len: cint, msgh: *msghdr): *io_uring_recvmsg_out <cimport,nodecl> end
+global function io_uring_recvmsg_name(o: *io_uring_recvmsg_out): pointer <cimport,nodecl> end
+global function io_uring_recvmsg_cmsg_firsthdr(o: *io_uring_recvmsg_out, msgh: *msghdr): *cmsghdr <cimport,nodecl> end
+global function io_uring_recvmsg_cmsg_nexthdr(o: *io_uring_recvmsg_out, msgh: *msghdr, cmsg: *cmsghdr): *cmsghdr <cimport,nodecl> end
+global function io_uring_recvmsg_payload(o: *io_uring_recvmsg_out, msgh: *msghdr): pointer <cimport,nodecl> end
+global function io_uring_recvmsg_payload_length(o: *io_uring_recvmsg_out, buf_len: cint, msgh: *msghdr): cuint <cimport,nodecl> end
 global function io_uring_prep_openat2(sqe: *io_uring_sqe, dfd: cint, path: cstring, how: *open_how): void <cimport,nodecl> end
 global function io_uring_prep_openat2_direct(sqe: *io_uring_sqe, dfd: cint, path: cstring, how: *open_how, file_index: cuint): void <cimport,nodecl> end
 global function io_uring_prep_epoll_ctl(sqe: *io_uring_sqe, epfd: cint, fd: cint, op: cint, ev: *epoll_event): void <cimport,nodecl> end
@@ -285,19 +456,39 @@ global function io_uring_prep_provide_buffers(sqe: *io_uring_sqe, addr: pointer,
 global function io_uring_prep_remove_buffers(sqe: *io_uring_sqe, nr: cint, bgid: cint): void <cimport,nodecl> end
 global function io_uring_prep_shutdown(sqe: *io_uring_sqe, fd: cint, how: cint): void <cimport,nodecl> end
 global function io_uring_prep_unlinkat(sqe: *io_uring_sqe, dfd: cint, path: cstring, flags: cint): void <cimport,nodecl> end
-global function io_uring_prep_renameat(sqe: *io_uring_sqe, olddfd: cint, oldpath: cstring, newdfd: cint, newpath: cstring, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_unlink(sqe: *io_uring_sqe, path: cstring, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_renameat(sqe: *io_uring_sqe, olddfd: cint, oldpath: cstring, newdfd: cint, newpath: cstring, flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_rename(sqe: *io_uring_sqe, oldpath: cstring, newpath: cstring): void <cimport,nodecl> end
 global function io_uring_prep_sync_file_range(sqe: *io_uring_sqe, fd: cint, len: cuint, offset: culonglong, flags: cint): void <cimport,nodecl> end
 global function io_uring_prep_mkdirat(sqe: *io_uring_sqe, dfd: cint, path: cstring, mode: cuint): void <cimport,nodecl> end
+global function io_uring_prep_mkdir(sqe: *io_uring_sqe, path: cstring, mode: cuint): void <cimport,nodecl> end
 global function io_uring_prep_symlinkat(sqe: *io_uring_sqe, target: cstring, newdirfd: cint, linkpath: cstring): void <cimport,nodecl> end
+global function io_uring_prep_symlink(sqe: *io_uring_sqe, target: cstring, linkpath: cstring): void <cimport,nodecl> end
 global function io_uring_prep_linkat(sqe: *io_uring_sqe, olddfd: cint, oldpath: cstring, newdfd: cint, newpath: cstring, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_link(sqe: *io_uring_sqe, oldpath: cstring, newpath: cstring, flags: cint): void <cimport,nodecl> end
+global function io_uring_prep_msg_ring(sqe: *io_uring_sqe, fd: cint, len: cuint, data: culonglong, flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_getxattr(sqe: *io_uring_sqe, name: cstring, value: cstring, path: cstring, len: cuint): void <cimport,nodecl> end
+global function io_uring_prep_setxattr(sqe: *io_uring_sqe, name: cstring, value: cstring, path: cstring, flags: cint, len: cuint): void <cimport,nodecl> end
+global function io_uring_prep_fgetxattr(sqe: *io_uring_sqe, fd: cint, name: cstring, value: cstring, len: cuint): void <cimport,nodecl> end
+global function io_uring_prep_fsetxattr(sqe: *io_uring_sqe, fd: cint, name: cstring, value: cstring, flags: cint, len: cuint): void <cimport,nodecl> end
+global function io_uring_prep_socket(sqe: *io_uring_sqe, domain: cint, type: cint, protocol: cint, flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_socket_direct(sqe: *io_uring_sqe, domain: cint, type: cint, protocol: cint, file_index: cuint, flags: cuint): void <cimport,nodecl> end
+global function io_uring_prep_socket_direct_alloc(sqe: *io_uring_sqe, domain: cint, type: cint, protocol: cint, flags: cuint): void <cimport,nodecl> end
 global function io_uring_sq_ready(ring: *io_uring): cuint <cimport,nodecl> end
 global function io_uring_sq_space_left(ring: *io_uring): cuint <cimport,nodecl> end
 global function io_uring_sqring_wait(ring: *io_uring): cint <cimport,nodecl> end
 global function io_uring_cq_ready(ring: *io_uring): cuint <cimport,nodecl> end
+global function io_uring_cq_has_overflow(ring: *io_uring): boolean <cimport,nodecl> end
 global function io_uring_cq_eventfd_enabled(ring: *io_uring): boolean <cimport,nodecl> end
 global function io_uring_cq_eventfd_toggle(ring: *io_uring, enabled: boolean): cint <cimport,nodecl> end
 global function io_uring_wait_cqe_nr(ring: *io_uring, cqe_ptr: **io_uring_cqe, wait_nr: cuint): cint <cimport,nodecl> end
 global function io_uring_peek_cqe(ring: *io_uring, cqe_ptr: **io_uring_cqe): cint <cimport,nodecl> end
 global function io_uring_wait_cqe(ring: *io_uring, cqe_ptr: **io_uring_cqe): cint <cimport,nodecl> end
+global function io_uring_buf_ring_mask(ring_entries: cuint): cint <cimport,nodecl> end
+global function io_uring_buf_ring_init(br: *io_uring_buf_ring): void <cimport,nodecl> end
+global function io_uring_buf_ring_add(br: *io_uring_buf_ring, addr: pointer, len: cuint, bid: cushort, mask: cint, buf_offset: cint): void <cimport,nodecl> end
+global function io_uring_buf_ring_advance(br: *io_uring_buf_ring, count: cint): void <cimport,nodecl> end
+global function io_uring_buf_ring_cq_advance(ring: *io_uring, br: *io_uring_buf_ring, count: cint): void <cimport,nodecl> end
+global function io_uring_get_sqe(ring: *io_uring): *io_uring_sqe <cimport,nodecl> end
 global function io_uring_mlock_size(entries: cuint, flags: cuint): clong <cimport,nodecl> end
 global function io_uring_mlock_size_params(entries: cuint, p: *io_uring_params): clong <cimport,nodecl> end

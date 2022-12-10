@@ -7,7 +7,9 @@ global IMG_InitFlags: type <cimport,nodecl,using> = @enum(cint){
   IMG_INIT_JPG = 1,
   IMG_INIT_PNG = 2,
   IMG_INIT_TIF = 4,
-  IMG_INIT_WEBP = 8
+  IMG_INIT_WEBP = 8,
+  IMG_INIT_JXL = 16,
+  IMG_INIT_AVIF = 32
 }
 global function IMG_Init(flags: cint): cint <cimport,nodecl> end
 global function IMG_Quit(): void <cimport,nodecl> end
@@ -17,42 +19,62 @@ global function IMG_Load_RW(src: *SDL_RWops, freesrc: cint): *SDL_Surface <cimpo
 global function IMG_LoadTexture(renderer: *SDL_Renderer, file: cstring): *SDL_Texture <cimport,nodecl> end
 global function IMG_LoadTexture_RW(renderer: *SDL_Renderer, src: *SDL_RWops, freesrc: cint): *SDL_Texture <cimport,nodecl> end
 global function IMG_LoadTextureTyped_RW(renderer: *SDL_Renderer, src: *SDL_RWops, freesrc: cint, type: cstring): *SDL_Texture <cimport,nodecl> end
+global function IMG_isAVIF(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isICO(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isCUR(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isBMP(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isGIF(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isJPG(src: *SDL_RWops): cint <cimport,nodecl> end
+global function IMG_isJXL(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isLBM(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isPCX(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isPNG(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isPNM(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isSVG(src: *SDL_RWops): cint <cimport,nodecl> end
+global function IMG_isQOI(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isTIF(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isXCF(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isXPM(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isXV(src: *SDL_RWops): cint <cimport,nodecl> end
 global function IMG_isWEBP(src: *SDL_RWops): cint <cimport,nodecl> end
+global function IMG_LoadAVIF_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadICO_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadCUR_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadBMP_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadGIF_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadJPG_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
+global function IMG_LoadJXL_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadLBM_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadPCX_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadPNG_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadPNM_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadSVG_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
+global function IMG_LoadQOI_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadTGA_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadTIF_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadXCF_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadXPM_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadXV_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
 global function IMG_LoadWEBP_RW(src: *SDL_RWops): *SDL_Surface <cimport,nodecl> end
+global function IMG_LoadSizedSVG_RW(src: *SDL_RWops, width: cint, height: cint): *SDL_Surface <cimport,nodecl> end
 global function IMG_ReadXPMFromArray(xpm: *cstring): *SDL_Surface <cimport,nodecl> end
+global function IMG_ReadXPMFromArrayToRGB888(xpm: *cstring): *SDL_Surface <cimport,nodecl> end
 global function IMG_SavePNG(surface: *SDL_Surface, file: cstring): cint <cimport,nodecl> end
 global function IMG_SavePNG_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: cint): cint <cimport,nodecl> end
 global function IMG_SaveJPG(surface: *SDL_Surface, file: cstring, quality: cint): cint <cimport,nodecl> end
 global function IMG_SaveJPG_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: cint, quality: cint): cint <cimport,nodecl> end
+global IMG_Animation: type <cimport,nodecl> = @record{
+  w: cint,
+  h: cint,
+  count: cint,
+  frames: **SDL_Surface,
+  delays: *cint
+}
+global function IMG_LoadAnimation(file: cstring): *IMG_Animation <cimport,nodecl> end
+global function IMG_LoadAnimation_RW(src: *SDL_RWops, freesrc: cint): *IMG_Animation <cimport,nodecl> end
+global function IMG_LoadAnimationTyped_RW(src: *SDL_RWops, freesrc: cint, type: cstring): *IMG_Animation <cimport,nodecl> end
+global function IMG_FreeAnimation(anim: *IMG_Animation): void <cimport,nodecl> end
+global function IMG_LoadGIFAnimation_RW(src: *SDL_RWops): *IMG_Animation <cimport,nodecl> end
 global SDL_IMAGE_MAJOR_VERSION: cint <cimport,nodecl,const>
 global SDL_IMAGE_MINOR_VERSION: cint <cimport,nodecl,const>
 global SDL_IMAGE_PATCHLEVEL: cint <cimport,nodecl,const>

@@ -40,9 +40,10 @@ global Mix_MusicType: type <cimport,nodecl,using> = @enum(cint){
 global Mix_Music: type <cimport,nodecl,forwarddecl> = @record{}
 global function Mix_OpenAudio(frequency: cint, format: uint16, channels: cint, chunksize: cint): cint <cimport,nodecl> end
 global function Mix_OpenAudioDevice(frequency: cint, format: uint16, channels: cint, chunksize: cint, device: cstring, allowed_changes: cint): cint <cimport,nodecl> end
-global function Mix_AllocateChannels(numchans: cint): cint <cimport,nodecl> end
 global function Mix_QuerySpec(frequency: *cint, format: *uint16, channels: *cint): cint <cimport,nodecl> end
+global function Mix_AllocateChannels(numchans: cint): cint <cimport,nodecl> end
 global function Mix_LoadWAV_RW(src: *SDL_RWops, freesrc: cint): *Mix_Chunk <cimport,nodecl> end
+global function Mix_LoadWAV(file: cstring): *Mix_Chunk <cimport,nodecl> end
 global function Mix_LoadMUS(file: cstring): *Mix_Music <cimport,nodecl> end
 global function Mix_LoadMUS_RW(src: *SDL_RWops, freesrc: cint): *Mix_Music <cimport,nodecl> end
 global function Mix_LoadMUSType_RW(src: *SDL_RWops, type: Mix_MusicType, freesrc: cint): *Mix_Music <cimport,nodecl> end
@@ -57,6 +58,11 @@ global function Mix_GetNumMusicDecoders(): cint <cimport,nodecl> end
 global function Mix_GetMusicDecoder(index: cint): cstring <cimport,nodecl> end
 global function Mix_HasMusicDecoder(name: cstring): SDL_bool <cimport,nodecl> end
 global function Mix_GetMusicType(music: *Mix_Music): Mix_MusicType <cimport,nodecl> end
+global function Mix_GetMusicTitle(music: *Mix_Music): cstring <cimport,nodecl> end
+global function Mix_GetMusicTitleTag(music: *Mix_Music): cstring <cimport,nodecl> end
+global function Mix_GetMusicArtistTag(music: *Mix_Music): cstring <cimport,nodecl> end
+global function Mix_GetMusicAlbumTag(music: *Mix_Music): cstring <cimport,nodecl> end
+global function Mix_GetMusicCopyrightTag(music: *Mix_Music): cstring <cimport,nodecl> end
 global function Mix_SetPostMix(mix_func: function(pointer, *uint8, cint): void, arg: pointer): void <cimport,nodecl> end
 global function Mix_HookMusic(mix_func: function(pointer, *uint8, cint): void, arg: pointer): void <cimport,nodecl> end
 global function Mix_HookMusicFinished(music_finished: function(): void): void <cimport,nodecl> end
@@ -78,14 +84,18 @@ global function Mix_GroupAvailable(tag: cint): cint <cimport,nodecl> end
 global function Mix_GroupCount(tag: cint): cint <cimport,nodecl> end
 global function Mix_GroupOldest(tag: cint): cint <cimport,nodecl> end
 global function Mix_GroupNewer(tag: cint): cint <cimport,nodecl> end
+global function Mix_PlayChannel(channel: cint, chunk: *Mix_Chunk, loops: cint): cint <cimport,nodecl> end
 global function Mix_PlayChannelTimed(channel: cint, chunk: *Mix_Chunk, loops: cint, ticks: cint): cint <cimport,nodecl> end
 global function Mix_PlayMusic(music: *Mix_Music, loops: cint): cint <cimport,nodecl> end
 global function Mix_FadeInMusic(music: *Mix_Music, loops: cint, ms: cint): cint <cimport,nodecl> end
 global function Mix_FadeInMusicPos(music: *Mix_Music, loops: cint, ms: cint, position: float64): cint <cimport,nodecl> end
+global function Mix_FadeInChannel(channel: cint, chunk: *Mix_Chunk, loops: cint, ms: cint): cint <cimport,nodecl> end
 global function Mix_FadeInChannelTimed(channel: cint, chunk: *Mix_Chunk, loops: cint, ms: cint, ticks: cint): cint <cimport,nodecl> end
 global function Mix_Volume(channel: cint, volume: cint): cint <cimport,nodecl> end
 global function Mix_VolumeChunk(chunk: *Mix_Chunk, volume: cint): cint <cimport,nodecl> end
 global function Mix_VolumeMusic(volume: cint): cint <cimport,nodecl> end
+global function Mix_GetMusicVolume(music: *Mix_Music): cint <cimport,nodecl> end
+global function Mix_MasterVolume(volume: cint): cint <cimport,nodecl> end
 global function Mix_HaltChannel(channel: cint): cint <cimport,nodecl> end
 global function Mix_HaltGroup(tag: cint): cint <cimport,nodecl> end
 global function Mix_HaltMusic(): cint <cimport,nodecl> end
@@ -102,7 +112,13 @@ global function Mix_PauseMusic(): void <cimport,nodecl> end
 global function Mix_ResumeMusic(): void <cimport,nodecl> end
 global function Mix_RewindMusic(): void <cimport,nodecl> end
 global function Mix_PausedMusic(): cint <cimport,nodecl> end
+global function Mix_ModMusicJumpToOrder(order: cint): cint <cimport,nodecl> end
 global function Mix_SetMusicPosition(position: float64): cint <cimport,nodecl> end
+global function Mix_GetMusicPosition(music: *Mix_Music): float64 <cimport,nodecl> end
+global function Mix_MusicDuration(music: *Mix_Music): float64 <cimport,nodecl> end
+global function Mix_GetMusicLoopStartTime(music: *Mix_Music): float64 <cimport,nodecl> end
+global function Mix_GetMusicLoopEndTime(music: *Mix_Music): float64 <cimport,nodecl> end
+global function Mix_GetMusicLoopLengthTime(music: *Mix_Music): float64 <cimport,nodecl> end
 global function Mix_Playing(channel: cint): cint <cimport,nodecl> end
 global function Mix_PlayingMusic(): cint <cimport,nodecl> end
 global function Mix_SetMusicCMD(command: cstring): cint <cimport,nodecl> end
@@ -111,6 +127,8 @@ global function Mix_GetSynchroValue(): cint <cimport,nodecl> end
 global function Mix_SetSoundFonts(paths: cstring): cint <cimport,nodecl> end
 global function Mix_GetSoundFonts(): cstring <cimport,nodecl> end
 global function Mix_EachSoundFont(Function: function(cstring, pointer): cint, data: pointer): cint <cimport,nodecl> end
+global function Mix_SetTimidityCfg(path: cstring): cint <cimport,nodecl> end
+global function Mix_GetTimidityCfg(): cstring <cimport,nodecl> end
 global function Mix_GetChunk(channel: cint): *Mix_Chunk <cimport,nodecl> end
 global function Mix_CloseAudio(): void <cimport,nodecl> end
 global SDL_MIXER_MAJOR_VERSION: cint <cimport,nodecl,const>
@@ -118,7 +136,7 @@ global SDL_MIXER_MINOR_VERSION: cint <cimport,nodecl,const>
 global SDL_MIXER_PATCHLEVEL: cint <cimport,nodecl,const>
 global SDL_MIXER_COMPILEDVERSION: cint <cimport,nodecl,const>
 global MIX_CHANNELS: cint <comptime> = 8
-global MIX_DEFAULT_FREQUENCY: cint <comptime> = 22050
+global MIX_DEFAULT_FREQUENCY: cint <comptime> = 44100
 global MIX_DEFAULT_FORMAT: cint <cimport,nodecl,const>
 global MIX_DEFAULT_CHANNELS: cint <comptime> = 2
 global MIX_MAX_VOLUME: cint <cimport,nodecl,const>

@@ -28,12 +28,14 @@ global SDL_malloc_func: type <cimport,nodecl> = @function(csize): pointer
 global SDL_calloc_func: type <cimport,nodecl> = @function(csize, csize): pointer
 global SDL_realloc_func: type <cimport,nodecl> = @function(pointer, csize): pointer
 global SDL_free_func: type <cimport,nodecl> = @function(pointer): void
+global function SDL_GetOriginalMemoryFunctions(malloc_func: *SDL_malloc_func, calloc_func: *SDL_calloc_func, realloc_func: *SDL_realloc_func, free_func: *SDL_free_func): void <cimport,nodecl> end
 global function SDL_GetMemoryFunctions(malloc_func: *SDL_malloc_func, calloc_func: *SDL_calloc_func, realloc_func: *SDL_realloc_func, free_func: *SDL_free_func): void <cimport,nodecl> end
 global function SDL_SetMemoryFunctions(malloc_func: SDL_malloc_func, calloc_func: SDL_calloc_func, realloc_func: SDL_realloc_func, free_func: SDL_free_func): cint <cimport,nodecl> end
 global function SDL_GetNumAllocations(): cint <cimport,nodecl> end
 global function SDL_getenv(name: cstring): cstring <cimport,nodecl> end
 global function SDL_setenv(name: cstring, value: cstring, overwrite: cint): cint <cimport,nodecl> end
 global function SDL_qsort(base: pointer, nmemb: csize, size: csize, compare: function(pointer, pointer): cint): void <cimport,nodecl> end
+global function SDL_bsearch(key: pointer, base: pointer, nmemb: csize, size: csize, compare: function(pointer, pointer): cint): pointer <cimport,nodecl> end
 global function SDL_abs(x: cint): cint <cimport,nodecl> end
 global function SDL_isalpha(x: cint): cint <cimport,nodecl> end
 global function SDL_isalnum(x: cint): cint <cimport,nodecl> end
@@ -49,6 +51,7 @@ global function SDL_isprint(x: cint): cint <cimport,nodecl> end
 global function SDL_isgraph(x: cint): cint <cimport,nodecl> end
 global function SDL_toupper(x: cint): cint <cimport,nodecl> end
 global function SDL_tolower(x: cint): cint <cimport,nodecl> end
+global function SDL_crc16(crc: uint16, data: pointer, len: csize): uint16 <cimport,nodecl> end
 global function SDL_crc32(crc: uint32, data: pointer, len: csize): uint32 <cimport,nodecl> end
 global function SDL_memset(dst: pointer, c: cint, len: csize): pointer <cimport,nodecl> end
 global function SDL_memset4(dst: pointer, val: uint32, dwords: csize): void <cimport,nodecl> end
@@ -75,8 +78,10 @@ global function SDL_strlwr(str: cstring): cstring <cimport,nodecl> end
 global function SDL_strchr(str: cstring, c: cint): cstring <cimport,nodecl> end
 global function SDL_strrchr(str: cstring, c: cint): cstring <cimport,nodecl> end
 global function SDL_strstr(haystack: cstring, needle: cstring): cstring <cimport,nodecl> end
+global function SDL_strcasestr(haystack: cstring, needle: cstring): cstring <cimport,nodecl> end
 global function SDL_strtokr(s1: cstring, s2: cstring, saveptr: *cstring): cstring <cimport,nodecl> end
 global function SDL_utf8strlen(str: cstring): csize <cimport,nodecl> end
+global function SDL_utf8strnlen(str: cstring, bytes: csize): csize <cimport,nodecl> end
 global function SDL_itoa(value: cint, str: cstring, radix: cint): cstring <cimport,nodecl> end
 global function SDL_uitoa(value: cuint, str: cstring, radix: cint): cstring <cimport,nodecl> end
 global function SDL_ltoa(value: clong, str: cstring, radix: cint): cstring <cimport,nodecl> end
@@ -149,6 +154,8 @@ global function SDL_iconv_close(cd: SDL_iconv_t): cint <cimport,nodecl> end
 global function SDL_iconv(cd: SDL_iconv_t, inbuf: *cstring, inbytesleft: *csize, outbuf: *cstring, outbytesleft: *csize): csize <cimport,nodecl> end
 global function SDL_iconv_string(tocode: cstring, fromcode: cstring, inbuf: cstring, inbytesleft: csize): cstring <cimport,nodecl> end
 global function SDL_memcpy4(dst: pointer, src: pointer, dwords: csize): pointer <cimport,nodecl> end
+global function SDL_size_mul_overflow(a: csize, b: csize, ret: *csize): cint <cimport,nodecl> end
+global function SDL_size_add_overflow(a: csize, b: csize, ret: *csize): cint <cimport,nodecl> end
 global SDL_main_func: type <cimport,nodecl> = @function(cint, *cstring): cint
 global function SDL_main(argc: cint, argv: *cstring): cint <cimport,nodecl> end
 global function SDL_SetMainReady(): void <cimport,nodecl> end
@@ -335,6 +342,7 @@ global function SDL_OpenAudio(desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec)
 global function SDL_GetNumAudioDevices(iscapture: cint): cint <cimport,nodecl> end
 global function SDL_GetAudioDeviceName(index: cint, iscapture: cint): cstring <cimport,nodecl> end
 global function SDL_GetAudioDeviceSpec(index: cint, iscapture: cint, spec: *SDL_AudioSpec): cint <cimport,nodecl> end
+global function SDL_GetDefaultAudioInfo(name: *cstring, spec: *SDL_AudioSpec, iscapture: cint): cint <cimport,nodecl> end
 global function SDL_OpenAudioDevice(device: cstring, iscapture: cint, desired: *SDL_AudioSpec, obtained: *SDL_AudioSpec, allowed_changes: cint): cuint <cimport,nodecl> end
 global SDL_AudioStatus: type <cimport,nodecl,using> = @enum(cint){
   SDL_AUDIO_STOPPED = 0,
@@ -372,6 +380,9 @@ global function SDL_CloseAudioDevice(dev: cuint): void <cimport,nodecl> end
 global function SDL_SetClipboardText(text: cstring): cint <cimport,nodecl> end
 global function SDL_GetClipboardText(): cstring <cimport,nodecl> end
 global function SDL_HasClipboardText(): SDL_bool <cimport,nodecl> end
+global function SDL_SetPrimarySelectionText(text: cstring): cint <cimport,nodecl> end
+global function SDL_GetPrimarySelectionText(): cstring <cimport,nodecl> end
+global function SDL_HasPrimarySelectionText(): SDL_bool <cimport,nodecl> end
 global function SDL_GetCPUCount(): cint <cimport,nodecl> end
 global function SDL_GetCPUCacheLineSize(): cint <cimport,nodecl> end
 global function SDL_HasRDTSC(): SDL_bool <cimport,nodecl> end
@@ -388,6 +399,8 @@ global function SDL_HasAVX2(): SDL_bool <cimport,nodecl> end
 global function SDL_HasAVX512F(): SDL_bool <cimport,nodecl> end
 global function SDL_HasARMSIMD(): SDL_bool <cimport,nodecl> end
 global function SDL_HasNEON(): SDL_bool <cimport,nodecl> end
+global function SDL_HasLSX(): SDL_bool <cimport,nodecl> end
+global function SDL_HasLASX(): SDL_bool <cimport,nodecl> end
 global function SDL_GetSystemRAM(): cint <cimport,nodecl> end
 global function SDL_SIMDGetAlignment(): csize <cimport,nodecl> end
 global function SDL_SIMDAlloc(len: csize): pointer <cimport,nodecl> end
@@ -571,6 +584,15 @@ global function SDL_IntersectRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect)
 global function SDL_UnionRect(A: *SDL_Rect, B: *SDL_Rect, result: *SDL_Rect): void <cimport,nodecl> end
 global function SDL_EnclosePoints(points: *SDL_Point, count: cint, clip: *SDL_Rect, result: *SDL_Rect): SDL_bool <cimport,nodecl> end
 global function SDL_IntersectRectAndLine(rect: *SDL_Rect, X1: *cint, Y1: *cint, X2: *cint, Y2: *cint): SDL_bool <cimport,nodecl> end
+global function SDL_PointInFRect(p: *SDL_FPoint, r: *SDL_FRect): SDL_bool <cimport,nodecl> end
+global function SDL_FRectEmpty(r: *SDL_FRect): SDL_bool <cimport,nodecl> end
+global function SDL_FRectEqualsEpsilon(a: *SDL_FRect, b: *SDL_FRect, epsilon: float32): SDL_bool <cimport,nodecl> end
+global function SDL_FRectEquals(a: *SDL_FRect, b: *SDL_FRect): SDL_bool <cimport,nodecl> end
+global function SDL_HasIntersectionF(A: *SDL_FRect, B: *SDL_FRect): SDL_bool <cimport,nodecl> end
+global function SDL_IntersectFRect(A: *SDL_FRect, B: *SDL_FRect, result: *SDL_FRect): SDL_bool <cimport,nodecl> end
+global function SDL_UnionFRect(A: *SDL_FRect, B: *SDL_FRect, result: *SDL_FRect): void <cimport,nodecl> end
+global function SDL_EncloseFPoints(points: *SDL_FPoint, count: cint, clip: *SDL_FRect, result: *SDL_FRect): SDL_bool <cimport,nodecl> end
+global function SDL_IntersectFRectAndLine(rect: *SDL_FRect, X1: *float32, Y1: *float32, X2: *float32, Y2: *float32): SDL_bool <cimport,nodecl> end
 global SDL_BlendMode: type <cimport,nodecl,using> = @enum(cint){
   SDL_BLENDMODE_NONE = 0,
   SDL_BLENDMODE_BLEND = 1,
@@ -599,7 +621,7 @@ global SDL_BlendFactor: type <cimport,nodecl,using> = @enum(cint){
   SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA = 10
 }
 global function SDL_ComposeCustomBlendMode(srcColorFactor: SDL_BlendFactor, dstColorFactor: SDL_BlendFactor, colorOperation: SDL_BlendOperation, srcAlphaFactor: SDL_BlendFactor, dstAlphaFactor: SDL_BlendFactor, alphaOperation: SDL_BlendOperation): SDL_BlendMode <cimport,nodecl> end
-global SDL_BlitMap: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global SDL_BlitMap: type <cimport,nodecl,forwarddecl> = @record{}
 global SDL_Surface: type <cimport,nodecl> = @record{
   flags: uint32,
   format: *SDL_PixelFormat,
@@ -761,7 +783,8 @@ global SDL_GLattr: type <cimport,nodecl,using> = @enum(cint){
   SDL_GL_FRAMEBUFFER_SRGB_CAPABLE = 23,
   SDL_GL_CONTEXT_RELEASE_BEHAVIOR = 24,
   SDL_GL_CONTEXT_RESET_NOTIFICATION = 25,
-  SDL_GL_CONTEXT_NO_ERROR = 26
+  SDL_GL_CONTEXT_NO_ERROR = 26,
+  SDL_GL_FLOATBUFFERS = 27
 }
 global SDL_GLprofile: type <cimport,nodecl,using> = @enum(cint){
   SDL_GL_CONTEXT_PROFILE_CORE = 1,
@@ -798,6 +821,8 @@ global function SDL_GetDisplayMode(displayIndex: cint, modeIndex: cint, mode: *S
 global function SDL_GetDesktopDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode): cint <cimport,nodecl> end
 global function SDL_GetCurrentDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode): cint <cimport,nodecl> end
 global function SDL_GetClosestDisplayMode(displayIndex: cint, mode: *SDL_DisplayMode, closest: *SDL_DisplayMode): *SDL_DisplayMode <cimport,nodecl> end
+global function SDL_GetPointDisplayIndex(point: *SDL_Point): cint <cimport,nodecl> end
+global function SDL_GetRectDisplayIndex(rect: *SDL_Rect): cint <cimport,nodecl> end
 global function SDL_GetWindowDisplayIndex(window: *SDL_Window): cint <cimport,nodecl> end
 global function SDL_SetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint <cimport,nodecl> end
 global function SDL_GetWindowDisplayMode(window: *SDL_Window, mode: *SDL_DisplayMode): cint <cimport,nodecl> end
@@ -818,6 +843,7 @@ global function SDL_GetWindowPosition(window: *SDL_Window, x: *cint, y: *cint): 
 global function SDL_SetWindowSize(window: *SDL_Window, w: cint, h: cint): void <cimport,nodecl> end
 global function SDL_GetWindowSize(window: *SDL_Window, w: *cint, h: *cint): void <cimport,nodecl> end
 global function SDL_GetWindowBordersSize(window: *SDL_Window, top: *cint, left: *cint, bottom: *cint, right: *cint): cint <cimport,nodecl> end
+global function SDL_GetWindowSizeInPixels(window: *SDL_Window, w: *cint, h: *cint): void <cimport,nodecl> end
 global function SDL_SetWindowMinimumSize(window: *SDL_Window, min_w: cint, min_h: cint): void <cimport,nodecl> end
 global function SDL_GetWindowMinimumSize(window: *SDL_Window, w: *cint, h: *cint): void <cimport,nodecl> end
 global function SDL_SetWindowMaximumSize(window: *SDL_Window, max_w: cint, max_h: cint): void <cimport,nodecl> end
@@ -1131,6 +1157,10 @@ global SDL_Scancode: type <cimport,nodecl,using> = @enum(cint){
   SDL_SCANCODE_APP2 = 284,
   SDL_SCANCODE_AUDIOREWIND = 285,
   SDL_SCANCODE_AUDIOFASTFORWARD = 286,
+  SDL_SCANCODE_SOFTLEFT = 287,
+  SDL_SCANCODE_SOFTRIGHT = 288,
+  SDL_SCANCODE_CALL = 289,
+  SDL_SCANCODE_ENDCALL = 290,
   SDL_NUM_SCANCODES = 512
 }
 global SDL_KeyCode: type <cimport,nodecl,using> = @enum(cint){
@@ -1373,7 +1403,11 @@ global SDL_KeyCode: type <cimport,nodecl,using> = @enum(cint){
   SDLK_APP1 = 1073742107,
   SDLK_APP2 = 1073742108,
   SDLK_AUDIOREWIND = 1073742109,
-  SDLK_AUDIOFASTFORWARD = 1073742110
+  SDLK_AUDIOFASTFORWARD = 1073742110,
+  SDLK_SOFTLEFT = 1073742111,
+  SDLK_SOFTRIGHT = 1073742112,
+  SDLK_CALL = 1073742113,
+  SDLK_ENDCALL = 1073742114
 }
 global SDL_Keymod: type <cimport,nodecl,using> = @enum(cint){
   KMOD_NONE = 0,
@@ -1403,6 +1437,7 @@ global SDL_Keysym: type <cimport,nodecl> = @record{
 }
 global function SDL_GetKeyboardFocus(): *SDL_Window <cimport,nodecl> end
 global function SDL_GetKeyboardState(numkeys: *cint): *uint8 <cimport,nodecl> end
+global function SDL_ResetKeyboard(): void <cimport,nodecl> end
 global function SDL_GetModState(): SDL_Keymod <cimport,nodecl> end
 global function SDL_SetModState(modstate: SDL_Keymod): void <cimport,nodecl> end
 global function SDL_GetKeyFromScancode(scancode: SDL_Scancode): cint <cimport,nodecl> end
@@ -1414,6 +1449,8 @@ global function SDL_GetKeyFromName(name: cstring): cint <cimport,nodecl> end
 global function SDL_StartTextInput(): void <cimport,nodecl> end
 global function SDL_IsTextInputActive(): SDL_bool <cimport,nodecl> end
 global function SDL_StopTextInput(): void <cimport,nodecl> end
+global function SDL_ClearComposition(): void <cimport,nodecl> end
+global function SDL_IsTextInputShown(): SDL_bool <cimport,nodecl> end
 global function SDL_SetTextInputRect(rect: *SDL_Rect): void <cimport,nodecl> end
 global function SDL_HasScreenKeyboardSupport(): SDL_bool <cimport,nodecl> end
 global function SDL_IsScreenKeyboardShown(window: *SDL_Window): SDL_bool <cimport,nodecl> end
@@ -1454,10 +1491,13 @@ global function SDL_GetCursor(): *SDL_Cursor <cimport,nodecl> end
 global function SDL_GetDefaultCursor(): *SDL_Cursor <cimport,nodecl> end
 global function SDL_FreeCursor(cursor: *SDL_Cursor): void <cimport,nodecl> end
 global function SDL_ShowCursor(toggle: cint): cint <cimport,nodecl> end
-global SDL_Joystick: type <cimport,nodecl,forwarddecl> = @record{}
-global SDL_JoystickGUID: type <cimport,nodecl> = @record{
+global SDL_GUID: type <cimport,nodecl> = @record{
   data: [16]uint8
 }
+global function SDL_GUIDToString(guid: SDL_GUID, pszGUID: cstring, cbGUID: cint): void <cimport,nodecl> end
+global function SDL_GUIDFromString(pchGUID: cstring): SDL_GUID <cimport,nodecl> end
+global SDL_Joystick: type <cimport,nodecl,forwarddecl> = @record{}
+global SDL_JoystickGUID: type = @SDL_GUID
 global SDL_JoystickType: type <cimport,nodecl,using> = @enum(cint){
   SDL_JOYSTICK_TYPE_UNKNOWN = 0,
   SDL_JOYSTICK_TYPE_GAMECONTROLLER = 1,
@@ -1483,6 +1523,7 @@ global function SDL_LockJoysticks(): void <cimport,nodecl> end
 global function SDL_UnlockJoysticks(): void <cimport,nodecl> end
 global function SDL_NumJoysticks(): cint <cimport,nodecl> end
 global function SDL_JoystickNameForIndex(device_index: cint): cstring <cimport,nodecl> end
+global function SDL_JoystickPathForIndex(device_index: cint): cstring <cimport,nodecl> end
 global function SDL_JoystickGetDevicePlayerIndex(device_index: cint): cint <cimport,nodecl> end
 global function SDL_JoystickGetDeviceGUID(device_index: cint): SDL_JoystickGUID <cimport,nodecl> end
 global function SDL_JoystickGetDeviceVendor(device_index: cint): uint16 <cimport,nodecl> end
@@ -1494,22 +1535,46 @@ global function SDL_JoystickOpen(device_index: cint): *SDL_Joystick <cimport,nod
 global function SDL_JoystickFromInstanceID(instance_id: cint): *SDL_Joystick <cimport,nodecl> end
 global function SDL_JoystickFromPlayerIndex(player_index: cint): *SDL_Joystick <cimport,nodecl> end
 global function SDL_JoystickAttachVirtual(type: SDL_JoystickType, naxes: cint, nbuttons: cint, nhats: cint): cint <cimport,nodecl> end
+global SDL_VirtualJoystickDesc: type <cimport,nodecl> = @record{
+  version: uint16,
+  type: uint16,
+  naxes: uint16,
+  nbuttons: uint16,
+  nhats: uint16,
+  vendor_id: uint16,
+  product_id: uint16,
+  padding: uint16,
+  button_mask: uint32,
+  axis_mask: uint32,
+  name: cstring,
+  userdata: pointer,
+  Update: function(pointer): void,
+  SetPlayerIndex: function(pointer, cint): void,
+  Rumble: function(pointer, uint16, uint16): cint,
+  RumbleTriggers: function(pointer, uint16, uint16): cint,
+  SetLED: function(pointer, uint8, uint8, uint8): cint,
+  SendEffect: function(pointer, pointer, cint): cint
+}
+global function SDL_JoystickAttachVirtualEx(desc: *SDL_VirtualJoystickDesc): cint <cimport,nodecl> end
 global function SDL_JoystickDetachVirtual(device_index: cint): cint <cimport,nodecl> end
 global function SDL_JoystickIsVirtual(device_index: cint): SDL_bool <cimport,nodecl> end
 global function SDL_JoystickSetVirtualAxis(joystick: *SDL_Joystick, axis: cint, value: int16): cint <cimport,nodecl> end
 global function SDL_JoystickSetVirtualButton(joystick: *SDL_Joystick, button: cint, value: uint8): cint <cimport,nodecl> end
 global function SDL_JoystickSetVirtualHat(joystick: *SDL_Joystick, hat: cint, value: uint8): cint <cimport,nodecl> end
 global function SDL_JoystickName(joystick: *SDL_Joystick): cstring <cimport,nodecl> end
+global function SDL_JoystickPath(joystick: *SDL_Joystick): cstring <cimport,nodecl> end
 global function SDL_JoystickGetPlayerIndex(joystick: *SDL_Joystick): cint <cimport,nodecl> end
 global function SDL_JoystickSetPlayerIndex(joystick: *SDL_Joystick, player_index: cint): void <cimport,nodecl> end
 global function SDL_JoystickGetGUID(joystick: *SDL_Joystick): SDL_JoystickGUID <cimport,nodecl> end
 global function SDL_JoystickGetVendor(joystick: *SDL_Joystick): uint16 <cimport,nodecl> end
 global function SDL_JoystickGetProduct(joystick: *SDL_Joystick): uint16 <cimport,nodecl> end
 global function SDL_JoystickGetProductVersion(joystick: *SDL_Joystick): uint16 <cimport,nodecl> end
+global function SDL_JoystickGetFirmwareVersion(joystick: *SDL_Joystick): uint16 <cimport,nodecl> end
 global function SDL_JoystickGetSerial(joystick: *SDL_Joystick): cstring <cimport,nodecl> end
 global function SDL_JoystickGetType(joystick: *SDL_Joystick): SDL_JoystickType <cimport,nodecl> end
 global function SDL_JoystickGetGUIDString(guid: SDL_JoystickGUID, pszGUID: cstring, cbGUID: cint): void <cimport,nodecl> end
 global function SDL_JoystickGetGUIDFromString(pchGUID: cstring): SDL_JoystickGUID <cimport,nodecl> end
+global function SDL_GetJoystickGUIDInfo(guid: SDL_JoystickGUID, vendor: *uint16, product: *uint16, version: *uint16, crc16: *uint16): void <cimport,nodecl> end
 global function SDL_JoystickGetAttached(joystick: *SDL_Joystick): SDL_bool <cimport,nodecl> end
 global function SDL_JoystickInstanceID(joystick: *SDL_Joystick): cint <cimport,nodecl> end
 global function SDL_JoystickNumAxes(joystick: *SDL_Joystick): cint <cimport,nodecl> end
@@ -1537,7 +1602,11 @@ global SDL_SensorType: type <cimport,nodecl,using> = @enum(cint){
   SDL_SENSOR_INVALID = -1,
   SDL_SENSOR_UNKNOWN = 0,
   SDL_SENSOR_ACCEL = 1,
-  SDL_SENSOR_GYRO = 2
+  SDL_SENSOR_GYRO = 2,
+  SDL_SENSOR_ACCEL_L = 3,
+  SDL_SENSOR_GYRO_L = 4,
+  SDL_SENSOR_ACCEL_R = 5,
+  SDL_SENSOR_GYRO_R = 6
 }
 global function SDL_LockSensors(): void <cimport,nodecl> end
 global function SDL_UnlockSensors(): void <cimport,nodecl> end
@@ -1553,6 +1622,7 @@ global function SDL_SensorGetType(sensor: *SDL_Sensor): SDL_SensorType <cimport,
 global function SDL_SensorGetNonPortableType(sensor: *SDL_Sensor): cint <cimport,nodecl> end
 global function SDL_SensorGetInstanceID(sensor: *SDL_Sensor): cint <cimport,nodecl> end
 global function SDL_SensorGetData(sensor: *SDL_Sensor, data: *float32, num_values: cint): cint <cimport,nodecl> end
+global function SDL_SensorGetDataWithTimestamp(sensor: *SDL_Sensor, timestamp: *uint64, data: *float32, num_values: cint): cint <cimport,nodecl> end
 global function SDL_SensorClose(sensor: *SDL_Sensor): void <cimport,nodecl> end
 global function SDL_SensorUpdate(): void <cimport,nodecl> end
 global SDL_GameController: type <cimport,nodecl,forwarddecl> = @record{}
@@ -1566,7 +1636,11 @@ global SDL_GameControllerType: type <cimport,nodecl,using> = @enum(cint){
   SDL_CONTROLLER_TYPE_VIRTUAL = 6,
   SDL_CONTROLLER_TYPE_PS5 = 7,
   SDL_CONTROLLER_TYPE_AMAZON_LUNA = 8,
-  SDL_CONTROLLER_TYPE_GOOGLE_STADIA = 9
+  SDL_CONTROLLER_TYPE_GOOGLE_STADIA = 9,
+  SDL_CONTROLLER_TYPE_NVIDIA_SHIELD = 10,
+  SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_LEFT = 11,
+  SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT = 12,
+  SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_PAIR = 13
 }
 global SDL_GameControllerBindType: type <cimport,nodecl,using> = @enum(cint){
   SDL_CONTROLLER_BINDTYPE_NONE = 0,
@@ -1593,18 +1667,21 @@ global function SDL_GameControllerMappingForGUID(guid: SDL_JoystickGUID): cstrin
 global function SDL_GameControllerMapping(gamecontroller: *SDL_GameController): cstring <cimport,nodecl> end
 global function SDL_IsGameController(joystick_index: cint): SDL_bool <cimport,nodecl> end
 global function SDL_GameControllerNameForIndex(joystick_index: cint): cstring <cimport,nodecl> end
+global function SDL_GameControllerPathForIndex(joystick_index: cint): cstring <cimport,nodecl> end
 global function SDL_GameControllerTypeForIndex(joystick_index: cint): SDL_GameControllerType <cimport,nodecl> end
 global function SDL_GameControllerMappingForDeviceIndex(joystick_index: cint): cstring <cimport,nodecl> end
 global function SDL_GameControllerOpen(joystick_index: cint): *SDL_GameController <cimport,nodecl> end
 global function SDL_GameControllerFromInstanceID(joyid: cint): *SDL_GameController <cimport,nodecl> end
 global function SDL_GameControllerFromPlayerIndex(player_index: cint): *SDL_GameController <cimport,nodecl> end
 global function SDL_GameControllerName(gamecontroller: *SDL_GameController): cstring <cimport,nodecl> end
+global function SDL_GameControllerPath(gamecontroller: *SDL_GameController): cstring <cimport,nodecl> end
 global function SDL_GameControllerGetType(gamecontroller: *SDL_GameController): SDL_GameControllerType <cimport,nodecl> end
 global function SDL_GameControllerGetPlayerIndex(gamecontroller: *SDL_GameController): cint <cimport,nodecl> end
 global function SDL_GameControllerSetPlayerIndex(gamecontroller: *SDL_GameController, player_index: cint): void <cimport,nodecl> end
 global function SDL_GameControllerGetVendor(gamecontroller: *SDL_GameController): uint16 <cimport,nodecl> end
 global function SDL_GameControllerGetProduct(gamecontroller: *SDL_GameController): uint16 <cimport,nodecl> end
 global function SDL_GameControllerGetProductVersion(gamecontroller: *SDL_GameController): uint16 <cimport,nodecl> end
+global function SDL_GameControllerGetFirmwareVersion(gamecontroller: *SDL_GameController): uint16 <cimport,nodecl> end
 global function SDL_GameControllerGetSerial(gamecontroller: *SDL_GameController): cstring <cimport,nodecl> end
 global function SDL_GameControllerGetAttached(gamecontroller: *SDL_GameController): SDL_bool <cimport,nodecl> end
 global function SDL_GameControllerGetJoystick(gamecontroller: *SDL_GameController): *SDL_Joystick <cimport,nodecl> end
@@ -1663,6 +1740,7 @@ global function SDL_GameControllerSetSensorEnabled(gamecontroller: *SDL_GameCont
 global function SDL_GameControllerIsSensorEnabled(gamecontroller: *SDL_GameController, type: SDL_SensorType): SDL_bool <cimport,nodecl> end
 global function SDL_GameControllerGetSensorDataRate(gamecontroller: *SDL_GameController, type: SDL_SensorType): float32 <cimport,nodecl> end
 global function SDL_GameControllerGetSensorData(gamecontroller: *SDL_GameController, type: SDL_SensorType, data: *float32, num_values: cint): cint <cimport,nodecl> end
+global function SDL_GameControllerGetSensorDataWithTimestamp(gamecontroller: *SDL_GameController, type: SDL_SensorType, timestamp: *uint64, data: *float32, num_values: cint): cint <cimport,nodecl> end
 global function SDL_GameControllerRumble(gamecontroller: *SDL_GameController, low_frequency_rumble: uint16, high_frequency_rumble: uint16, duration_ms: uint32): cint <cimport,nodecl> end
 global function SDL_GameControllerRumbleTriggers(gamecontroller: *SDL_GameController, left_rumble: uint16, right_rumble: uint16, duration_ms: uint32): cint <cimport,nodecl> end
 global function SDL_GameControllerHasLED(gamecontroller: *SDL_GameController): SDL_bool <cimport,nodecl> end
@@ -1687,6 +1765,7 @@ global SDL_Finger: type <cimport,nodecl> = @record{
 }
 global function SDL_GetNumTouchDevices(): cint <cimport,nodecl> end
 global function SDL_GetTouchDevice(index: cint): clong <cimport,nodecl> end
+global function SDL_GetTouchName(index: cint): cstring <cimport,nodecl> end
 global function SDL_GetTouchDeviceType(touchID: clong): SDL_TouchDeviceType <cimport,nodecl> end
 global function SDL_GetNumTouchFingers(touchID: clong): cint <cimport,nodecl> end
 global function SDL_GetTouchFinger(touchID: clong, index: cint): *SDL_Finger <cimport,nodecl> end
@@ -1712,6 +1791,7 @@ global SDL_EventType: type <cimport,nodecl,using> = @enum(cint){
   SDL_TEXTEDITING = 770,
   SDL_TEXTINPUT = 771,
   SDL_KEYMAPCHANGED = 772,
+  SDL_TEXTEDITING_EXT = 773,
   SDL_MOUSEMOTION = 1024,
   SDL_MOUSEBUTTONDOWN = 1025,
   SDL_MOUSEBUTTONUP = 1026,
@@ -1723,6 +1803,7 @@ global SDL_EventType: type <cimport,nodecl,using> = @enum(cint){
   SDL_JOYBUTTONUP = 1540,
   SDL_JOYDEVICEADDED = 1541,
   SDL_JOYDEVICEREMOVED = 1542,
+  SDL_JOYBATTERYUPDATED = 1543,
   SDL_CONTROLLERAXISMOTION = 1616,
   SDL_CONTROLLERBUTTONDOWN = 1617,
   SDL_CONTROLLERBUTTONUP = 1618,
@@ -1796,6 +1877,14 @@ global SDL_TextEditingEvent: type <cimport,nodecl> = @record{
   start: int32,
   length: int32
 }
+global SDL_TextEditingExtEvent: type <cimport,nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  windowID: uint32,
+  text: cstring,
+  start: int32,
+  length: int32
+}
 global SDL_TextInputEvent: type <cimport,nodecl> = @record{
   type: uint32,
   timestamp: uint32,
@@ -1834,7 +1923,9 @@ global SDL_MouseWheelEvent: type <cimport,nodecl> = @record{
   y: int32,
   direction: uint32,
   preciseX: float32,
-  preciseY: float32
+  preciseY: float32,
+  mouseX: int32,
+  mouseY: int32
 }
 global SDL_JoyAxisEvent: type <cimport,nodecl> = @record{
   type: uint32,
@@ -1881,6 +1972,12 @@ global SDL_JoyDeviceEvent: type <cimport,nodecl> = @record{
   timestamp: uint32,
   which: int32
 }
+global SDL_JoyBatteryEvent: type <cimport,nodecl> = @record{
+  type: uint32,
+  timestamp: uint32,
+  which: cint,
+  level: SDL_JoystickPowerLevel
+}
 global SDL_ControllerAxisEvent: type <cimport,nodecl> = @record{
   type: uint32,
   timestamp: uint32,
@@ -1921,7 +2018,8 @@ global SDL_ControllerSensorEvent: type <cimport,nodecl> = @record{
   timestamp: uint32,
   which: cint,
   sensor: int32,
-  data: [3]float32
+  data: [3]float32,
+  timestamp_us: uint64
 }
 global SDL_AudioDeviceEvent: type <cimport,nodecl> = @record{
   type: uint32,
@@ -1975,7 +2073,8 @@ global SDL_SensorEvent: type <cimport,nodecl> = @record{
   type: uint32,
   timestamp: uint32,
   which: int32,
-  data: [6]float32
+  data: [6]float32,
+  timestamp_us: uint64
 }
 global SDL_QuitEvent: type <cimport,nodecl> = @record{
   type: uint32,
@@ -2006,6 +2105,7 @@ global SDL_Event: type <cimport,nodecl> = @union{
   window: SDL_WindowEvent,
   key: SDL_KeyboardEvent,
   edit: SDL_TextEditingEvent,
+  editExt: SDL_TextEditingExtEvent,
   text: SDL_TextInputEvent,
   motion: SDL_MouseMotionEvent,
   button: SDL_MouseButtonEvent,
@@ -2015,6 +2115,7 @@ global SDL_Event: type <cimport,nodecl> = @union{
   jhat: SDL_JoyHatEvent,
   jbutton: SDL_JoyButtonEvent,
   jdevice: SDL_JoyDeviceEvent,
+  jbattery: SDL_JoyBatteryEvent,
   caxis: SDL_ControllerAxisEvent,
   cbutton: SDL_ControllerButtonEvent,
   cdevice: SDL_ControllerDeviceEvent,
@@ -2224,6 +2325,8 @@ global SDL_HintPriority: type <cimport,nodecl,using> = @enum(cint){
 }
 global function SDL_SetHintWithPriority(name: cstring, value: cstring, priority: SDL_HintPriority): SDL_bool <cimport,nodecl> end
 global function SDL_SetHint(name: cstring, value: cstring): SDL_bool <cimport,nodecl> end
+global function SDL_ResetHint(name: cstring): SDL_bool <cimport,nodecl> end
+global function SDL_ResetHints(): void <cimport,nodecl> end
 global function SDL_GetHint(name: cstring): cstring <cimport,nodecl> end
 global function SDL_GetHintBoolean(name: cstring, default_value: SDL_bool): SDL_bool <cimport,nodecl> end
 global SDL_HintCallback: type <cimport,nodecl> = @function(pointer, cstring, cstring, cstring): void
@@ -2383,6 +2486,7 @@ global function SDL_CreateWindowAndRenderer(width: cint, height: cint, window_fl
 global function SDL_CreateRenderer(window: *SDL_Window, index: cint, flags: uint32): *SDL_Renderer <cimport,nodecl> end
 global function SDL_CreateSoftwareRenderer(surface: *SDL_Surface): *SDL_Renderer <cimport,nodecl> end
 global function SDL_GetRenderer(window: *SDL_Window): *SDL_Renderer <cimport,nodecl> end
+global function SDL_RenderGetWindow(renderer: *SDL_Renderer): *SDL_Window <cimport,nodecl> end
 global function SDL_GetRendererInfo(renderer: *SDL_Renderer, info: *SDL_RendererInfo): cint <cimport,nodecl> end
 global function SDL_GetRendererOutputSize(renderer: *SDL_Renderer, w: *cint, h: *cint): cint <cimport,nodecl> end
 global function SDL_CreateTexture(renderer: *SDL_Renderer, format: uint32, access: cint, w: cint, h: cint): *SDL_Texture <cimport,nodecl> end
@@ -2626,6 +2730,7 @@ global SDL_HINT_EMSCRIPTEN_ASYNCIFY: cstring <comptime> = "SDL_EMSCRIPTEN_ASYNCI
 global SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT: cstring <comptime> = "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
 global SDL_HINT_ENABLE_STEAM_CONTROLLERS: cstring <comptime> = "SDL_ENABLE_STEAM_CONTROLLERS"
 global SDL_HINT_EVENT_LOGGING: cstring <comptime> = "SDL_EVENT_LOGGING"
+global SDL_HINT_FORCE_RAISEWINDOW: cstring <comptime> = "SDL_HINT_FORCE_RAISEWINDOW"
 global SDL_HINT_FRAMEBUFFER_ACCELERATION: cstring <comptime> = "SDL_FRAMEBUFFER_ACCELERATION"
 global SDL_HINT_GAMECONTROLLERCONFIG: cstring <comptime> = "SDL_GAMECONTROLLERCONFIG"
 global SDL_HINT_GAMECONTROLLERCONFIG_FILE: cstring <comptime> = "SDL_GAMECONTROLLERCONFIG_FILE"
@@ -2634,15 +2739,23 @@ global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES: cstring <comptime> = "SDL_GAMECON
 global SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT: cstring <comptime> = "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
 global SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS: cstring <comptime> = "SDL_GAMECONTROLLER_USE_BUTTON_LABELS"
 global SDL_HINT_GRAB_KEYBOARD: cstring <comptime> = "SDL_GRAB_KEYBOARD"
+global SDL_HINT_HIDAPI_IGNORE_DEVICES: cstring <comptime> = "SDL_HIDAPI_IGNORE_DEVICES"
 global SDL_HINT_IDLE_TIMER_DISABLED: cstring <comptime> = "SDL_IOS_IDLE_TIMER_DISABLED"
 global SDL_HINT_IME_INTERNAL_EDITING: cstring <comptime> = "SDL_IME_INTERNAL_EDITING"
 global SDL_HINT_IME_SHOW_UI: cstring <comptime> = "SDL_IME_SHOW_UI"
+global SDL_HINT_IME_SUPPORT_EXTENDED_TEXT: cstring <comptime> = "SDL_IME_SUPPORT_EXTENDED_TEXT"
 global SDL_HINT_IOS_HIDE_HOME_INDICATOR: cstring <comptime> = "SDL_IOS_HIDE_HOME_INDICATOR"
 global SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS: cstring <comptime> = "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS"
 global SDL_HINT_JOYSTICK_HIDAPI: cstring <comptime> = "SDL_JOYSTICK_HIDAPI"
 global SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_GAMECUBE"
+global SDL_HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE: cstring <comptime> = "SDL_JOYSTICK_GAMECUBE_RUMBLE_BRAKE"
 global SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_JOY_CONS"
+global SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS"
+global SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
 global SDL_HINT_JOYSTICK_HIDAPI_LUNA: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_LUNA"
+global SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC"
+global SDL_HINT_JOYSTICK_HIDAPI_SHIELD: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_SHIELD"
+global SDL_HINT_JOYSTICK_HIDAPI_PS3: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS3"
 global SDL_HINT_JOYSTICK_HIDAPI_PS4: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS4"
 global SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS4_RUMBLE"
 global SDL_HINT_JOYSTICK_HIDAPI_PS5: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_PS5"
@@ -2652,24 +2765,41 @@ global SDL_HINT_JOYSTICK_HIDAPI_STADIA: cstring <comptime> = "SDL_JOYSTICK_HIDAP
 global SDL_HINT_JOYSTICK_HIDAPI_STEAM: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_STEAM"
 global SDL_HINT_JOYSTICK_HIDAPI_SWITCH: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_SWITCH"
 global SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED"
+global SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED"
+global SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
+global SDL_HINT_JOYSTICK_HIDAPI_WII: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_WII"
+global SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED"
 global SDL_HINT_JOYSTICK_HIDAPI_XBOX: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX"
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_360: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX_360"
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED"
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS"
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX_ONE"
+global SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED: cstring <comptime> = "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
 global SDL_HINT_JOYSTICK_RAWINPUT: cstring <comptime> = "SDL_JOYSTICK_RAWINPUT"
 global SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT: cstring <comptime> = "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
+global SDL_HINT_JOYSTICK_ROG_CHAKRAM: cstring <comptime> = "SDL_JOYSTICK_ROG_CHAKRAM"
 global SDL_HINT_JOYSTICK_THREAD: cstring <comptime> = "SDL_JOYSTICK_THREAD"
 global SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER: cstring <comptime> = "SDL_KMSDRM_REQUIRE_DRM_MASTER"
 global SDL_HINT_JOYSTICK_DEVICE: cstring <comptime> = "SDL_JOYSTICK_DEVICE"
+global SDL_HINT_LINUX_DIGITAL_HATS: cstring <comptime> = "SDL_LINUX_DIGITAL_HATS"
+global SDL_HINT_LINUX_HAT_DEADZONES: cstring <comptime> = "SDL_LINUX_HAT_DEADZONES"
 global SDL_HINT_LINUX_JOYSTICK_CLASSIC: cstring <comptime> = "SDL_LINUX_JOYSTICK_CLASSIC"
 global SDL_HINT_LINUX_JOYSTICK_DEADZONES: cstring <comptime> = "SDL_LINUX_JOYSTICK_DEADZONES"
 global SDL_HINT_MAC_BACKGROUND_APP: cstring <comptime> = "SDL_MAC_BACKGROUND_APP"
 global SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK: cstring <comptime> = "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
+global SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH: cstring <comptime> = "SDL_MAC_OPENGL_ASYNC_DISPATCH"
 global SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_RADIUS"
 global SDL_HINT_MOUSE_DOUBLE_CLICK_TIME: cstring <comptime> = "SDL_MOUSE_DOUBLE_CLICK_TIME"
 global SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH: cstring <comptime> = "SDL_MOUSE_FOCUS_CLICKTHROUGH"
 global SDL_HINT_MOUSE_NORMAL_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_NORMAL_SPEED_SCALE"
+global SDL_HINT_MOUSE_RELATIVE_MODE_CENTER: cstring <comptime> = "SDL_MOUSE_RELATIVE_MODE_CENTER"
 global SDL_HINT_MOUSE_RELATIVE_MODE_WARP: cstring <comptime> = "SDL_MOUSE_RELATIVE_MODE_WARP"
 global SDL_HINT_MOUSE_RELATIVE_SCALING: cstring <comptime> = "SDL_MOUSE_RELATIVE_SCALING"
 global SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE: cstring <comptime> = "SDL_MOUSE_RELATIVE_SPEED_SCALE"
+global SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE: cstring <comptime> = "SDL_MOUSE_RELATIVE_SYSTEM_SCALE"
+global SDL_HINT_MOUSE_RELATIVE_WARP_MOTION: cstring <comptime> = "SDL_MOUSE_RELATIVE_WARP_MOTION"
 global SDL_HINT_MOUSE_TOUCH_EVENTS: cstring <comptime> = "SDL_MOUSE_TOUCH_EVENTS"
+global SDL_HINT_MOUSE_AUTO_CAPTURE: cstring <comptime> = "SDL_MOUSE_AUTO_CAPTURE"
 global SDL_HINT_NO_SIGNAL_HANDLERS: cstring <comptime> = "SDL_NO_SIGNAL_HANDLERS"
 global SDL_HINT_OPENGL_ES_DRIVER: cstring <comptime> = "SDL_OPENGL_ES_DRIVER"
 global SDL_HINT_ORIENTATIONS: cstring <comptime> = "SDL_IOS_ORIENTATIONS"
@@ -2686,6 +2816,7 @@ global SDL_HINT_RENDER_LOGICAL_SIZE_MODE: cstring <comptime> = "SDL_RENDER_LOGIC
 global SDL_HINT_RENDER_OPENGL_SHADERS: cstring <comptime> = "SDL_RENDER_OPENGL_SHADERS"
 global SDL_HINT_RENDER_SCALE_QUALITY: cstring <comptime> = "SDL_RENDER_SCALE_QUALITY"
 global SDL_HINT_RENDER_VSYNC: cstring <comptime> = "SDL_RENDER_VSYNC"
+global SDL_HINT_PS2_DYNAMIC_VSYNC: cstring <comptime> = "SDL_PS2_DYNAMIC_VSYNC"
 global SDL_HINT_RETURN_KEY_HIDES_IME: cstring <comptime> = "SDL_RETURN_KEY_HIDES_IME"
 global SDL_HINT_RPI_VIDEO_LAYER: cstring <comptime> = "SDL_RPI_VIDEO_LAYER"
 global SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME: cstring <comptime> = "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME"
@@ -2694,6 +2825,7 @@ global SDL_HINT_THREAD_PRIORITY_POLICY: cstring <comptime> = "SDL_THREAD_PRIORIT
 global SDL_HINT_THREAD_STACK_SIZE: cstring <comptime> = "SDL_THREAD_STACK_SIZE"
 global SDL_HINT_TIMER_RESOLUTION: cstring <comptime> = "SDL_TIMER_RESOLUTION"
 global SDL_HINT_TOUCH_MOUSE_EVENTS: cstring <comptime> = "SDL_TOUCH_MOUSE_EVENTS"
+global SDL_HINT_VITA_TOUCH_MOUSE_DEVICE: cstring <comptime> = "SDL_HINT_VITA_TOUCH_MOUSE_DEVICE"
 global SDL_HINT_TV_REMOTE_AS_JOYSTICK: cstring <comptime> = "SDL_TV_REMOTE_AS_JOYSTICK"
 global SDL_HINT_VIDEO_ALLOW_SCREENSAVER: cstring <comptime> = "SDL_VIDEO_ALLOW_SCREENSAVER"
 global SDL_HINT_VIDEO_DOUBLE_BUFFER: cstring <comptime> = "SDL_VIDEO_DOUBLE_BUFFER"
@@ -2703,7 +2835,12 @@ global SDL_HINT_VIDEO_HIGHDPI_DISABLED: cstring <comptime> = "SDL_VIDEO_HIGHDPI_
 global SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES: cstring <comptime> = "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
 global SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS: cstring <comptime> = "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS"
 global SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR: cstring <comptime> = "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR"
+global SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR: cstring <comptime> = "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR"
+global SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION: cstring <comptime> = "SDL_VIDEO_WAYLAND_MODE_EMULATION"
+global SDL_HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP: cstring <comptime> = "SDL_VIDEO_WAYLAND_EMULATE_MOUSE_WARP"
 global SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT: cstring <comptime> = "SDL_VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
+global SDL_HINT_VIDEO_FOREIGN_WINDOW_OPENGL: cstring <comptime> = "SDL_VIDEO_FOREIGN_WINDOW_OPENGL"
+global SDL_HINT_VIDEO_FOREIGN_WINDOW_VULKAN: cstring <comptime> = "SDL_VIDEO_FOREIGN_WINDOW_VULKAN"
 global SDL_HINT_VIDEO_WIN_D3DCOMPILER: cstring <comptime> = "SDL_VIDEO_WIN_D3DCOMPILER"
 global SDL_HINT_VIDEO_X11_FORCE_EGL: cstring <comptime> = "SDL_VIDEO_X11_FORCE_EGL"
 global SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR: cstring <comptime> = "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
@@ -2723,6 +2860,8 @@ global SDL_HINT_WINDOWS_INTRESOURCE_ICON: cstring <comptime> = "SDL_WINDOWS_INTR
 global SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL: cstring <comptime> = "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
 global SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4: cstring <comptime> = "SDL_WINDOWS_NO_CLOSE_ON_ALT_F4"
 global SDL_HINT_WINDOWS_USE_D3D9EX: cstring <comptime> = "SDL_WINDOWS_USE_D3D9EX"
+global SDL_HINT_WINDOWS_DPI_AWARENESS: cstring <comptime> = "SDL_WINDOWS_DPI_AWARENESS"
+global SDL_HINT_WINDOWS_DPI_SCALING: cstring <comptime> = "SDL_WINDOWS_DPI_SCALING"
 global SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN: cstring <comptime> = "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
 global SDL_HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN: cstring <comptime> = "SDL_WINDOW_NO_ACTIVATION_WHEN_SHOWN"
 global SDL_HINT_WINRT_HANDLE_BACK_BUTTON: cstring <comptime> = "SDL_WINRT_HANDLE_BACK_BUTTON"
@@ -2730,8 +2869,15 @@ global SDL_HINT_WINRT_PRIVACY_POLICY_LABEL: cstring <comptime> = "SDL_WINRT_PRIV
 global SDL_HINT_WINRT_PRIVACY_POLICY_URL: cstring <comptime> = "SDL_WINRT_PRIVACY_POLICY_URL"
 global SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT: cstring <comptime> = "SDL_X11_FORCE_OVERRIDE_REDIRECT"
 global SDL_HINT_XINPUT_ENABLED: cstring <comptime> = "SDL_XINPUT_ENABLED"
+global SDL_HINT_DIRECTINPUT_ENABLED: cstring <comptime> = "SDL_DIRECTINPUT_ENABLED"
 global SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING: cstring <comptime> = "SDL_XINPUT_USE_OLD_JOYSTICK_MAPPING"
 global SDL_HINT_AUDIO_INCLUDE_MONITORS: cstring <comptime> = "SDL_AUDIO_INCLUDE_MONITORS"
+global SDL_HINT_X11_WINDOW_TYPE: cstring <comptime> = "SDL_X11_WINDOW_TYPE"
+global SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE: cstring <comptime> = "SDL_QUIT_ON_LAST_WINDOW_CLOSE"
+global SDL_HINT_VIDEODRIVER: cstring <comptime> = "SDL_VIDEODRIVER"
+global SDL_HINT_AUDIODRIVER: cstring <comptime> = "SDL_AUDIODRIVER"
+global SDL_HINT_KMSDRM_DEVICE_INDEX: cstring <comptime> = "SDL_KMSDRM_DEVICE_INDEX"
+global SDL_HINT_TRACKPAD_IS_TOUCH_ONLY: cstring <comptime> = "SDL_TRACKPAD_IS_TOUCH_ONLY"
 global SDL_MAX_LOG_MESSAGE: cint <comptime> = 4096
 global SDL_NONSHAPEABLE_WINDOW: cint <comptime> = -1
 global SDL_INVALID_SHAPE_ARGUMENT: cint <comptime> = -2

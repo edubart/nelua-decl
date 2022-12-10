@@ -265,6 +265,7 @@ global function ma_biquad_init_preallocated(pConfig: *ma_biquad_config, pHeap: p
 global function ma_biquad_init(pConfig: *ma_biquad_config, pAllocationCallbacks: *ma_allocation_callbacks, pBQ: *ma_biquad): ma_result <cimport,nodecl> end
 global function ma_biquad_uninit(pBQ: *ma_biquad, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
 global function ma_biquad_reinit(pConfig: *ma_biquad_config, pBQ: *ma_biquad): ma_result <cimport,nodecl> end
+global function ma_biquad_clear_cache(pBQ: *ma_biquad): ma_result <cimport,nodecl> end
 global function ma_biquad_process_pcm_frames(pBQ: *ma_biquad, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport,nodecl> end
 global function ma_biquad_get_latency(pBQ: *ma_biquad): uint32 <cimport,nodecl> end
 global ma_lpf1_config: type <cimport,nodecl> = @record{
@@ -290,6 +291,7 @@ global function ma_lpf1_init_preallocated(pConfig: *ma_lpf1_config, pHeap: point
 global function ma_lpf1_init(pConfig: *ma_lpf1_config, pAllocationCallbacks: *ma_allocation_callbacks, pLPF: *ma_lpf1): ma_result <cimport,nodecl> end
 global function ma_lpf1_uninit(pLPF: *ma_lpf1, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
 global function ma_lpf1_reinit(pConfig: *ma_lpf1_config, pLPF: *ma_lpf1): ma_result <cimport,nodecl> end
+global function ma_lpf1_clear_cache(pLPF: *ma_lpf1): ma_result <cimport,nodecl> end
 global function ma_lpf1_process_pcm_frames(pLPF: *ma_lpf1, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport,nodecl> end
 global function ma_lpf1_get_latency(pLPF: *ma_lpf1): uint32 <cimport,nodecl> end
 global ma_lpf2: type <cimport,nodecl> = @record{
@@ -300,6 +302,7 @@ global function ma_lpf2_init_preallocated(pConfig: *ma_lpf2_config, pHeap: point
 global function ma_lpf2_init(pConfig: *ma_lpf2_config, pAllocationCallbacks: *ma_allocation_callbacks, pLPF: *ma_lpf2): ma_result <cimport,nodecl> end
 global function ma_lpf2_uninit(pLPF: *ma_lpf2, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
 global function ma_lpf2_reinit(pConfig: *ma_lpf2_config, pLPF: *ma_lpf2): ma_result <cimport,nodecl> end
+global function ma_lpf2_clear_cache(pLPF: *ma_lpf2): ma_result <cimport,nodecl> end
 global function ma_lpf2_process_pcm_frames(pLPF: *ma_lpf2, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport,nodecl> end
 global function ma_lpf2_get_latency(pLPF: *ma_lpf2): uint32 <cimport,nodecl> end
 global ma_lpf_config: type <cimport,nodecl> = @record{
@@ -326,6 +329,7 @@ global function ma_lpf_init_preallocated(pConfig: *ma_lpf_config, pHeap: pointer
 global function ma_lpf_init(pConfig: *ma_lpf_config, pAllocationCallbacks: *ma_allocation_callbacks, pLPF: *ma_lpf): ma_result <cimport,nodecl> end
 global function ma_lpf_uninit(pLPF: *ma_lpf, pAllocationCallbacks: *ma_allocation_callbacks): void <cimport,nodecl> end
 global function ma_lpf_reinit(pConfig: *ma_lpf_config, pLPF: *ma_lpf): ma_result <cimport,nodecl> end
+global function ma_lpf_clear_cache(pLPF: *ma_lpf): ma_result <cimport,nodecl> end
 global function ma_lpf_process_pcm_frames(pLPF: *ma_lpf, pFramesOut: pointer, pFramesIn: pointer, frameCount: uint64): ma_result <cimport,nodecl> end
 global function ma_lpf_get_latency(pLPF: *ma_lpf): uint32 <cimport,nodecl> end
 global ma_hpf1_config: type <cimport,nodecl> = @record{
@@ -772,6 +776,7 @@ global function ma_linear_resampler_get_input_latency(pResampler: *ma_linear_res
 global function ma_linear_resampler_get_output_latency(pResampler: *ma_linear_resampler): uint64 <cimport,nodecl> end
 global function ma_linear_resampler_get_required_input_frame_count(pResampler: *ma_linear_resampler, outputFrameCount: uint64, pInputFrameCount: *uint64): ma_result <cimport,nodecl> end
 global function ma_linear_resampler_get_expected_output_frame_count(pResampler: *ma_linear_resampler, inputFrameCount: uint64, pOutputFrameCount: *uint64): ma_result <cimport,nodecl> end
+global function ma_linear_resampler_reset(pResampler: *ma_linear_resampler): ma_result <cimport,nodecl> end
 global ma_resampler_config: type <cimport,nodecl,forwarddecl> = @record{}
 global ma_resampling_backend_vtable: type <cimport,nodecl> = @record{
   onGetHeapSize: function(pointer, *ma_resampler_config, *csize): ma_result,
@@ -782,7 +787,8 @@ global ma_resampling_backend_vtable: type <cimport,nodecl> = @record{
   onGetInputLatency: function(pointer, pointer): uint64,
   onGetOutputLatency: function(pointer, pointer): uint64,
   onGetRequiredInputFrameCount: function(pointer, pointer, uint64, *uint64): ma_result,
-  onGetExpectedOutputFrameCount: function(pointer, pointer, uint64, *uint64): ma_result
+  onGetExpectedOutputFrameCount: function(pointer, pointer, uint64, *uint64): ma_result,
+  onReset: function(pointer, pointer): ma_result
 }
 global ma_resample_algorithm: type <cimport,nodecl,using> = @enum(cint){
   ma_resample_algorithm_linear = 0,
@@ -826,6 +832,7 @@ global function ma_resampler_get_input_latency(pResampler: *ma_resampler): uint6
 global function ma_resampler_get_output_latency(pResampler: *ma_resampler): uint64 <cimport,nodecl> end
 global function ma_resampler_get_required_input_frame_count(pResampler: *ma_resampler, outputFrameCount: uint64, pInputFrameCount: *uint64): ma_result <cimport,nodecl> end
 global function ma_resampler_get_expected_output_frame_count(pResampler: *ma_resampler, inputFrameCount: uint64, pOutputFrameCount: *uint64): ma_result <cimport,nodecl> end
+global function ma_resampler_reset(pResampler: *ma_resampler): ma_result <cimport,nodecl> end
 global ma_channel_conversion_path: type <cimport,nodecl,using> = @enum(cint){
   ma_channel_conversion_path_unknown = 0,
   ma_channel_conversion_path_passthrough = 1,
@@ -847,6 +854,7 @@ global ma_channel_converter_config: type <cimport,nodecl> = @record{
   pChannelMapIn: *ma_channel,
   pChannelMapOut: *ma_channel,
   mixingMode: ma_channel_mix_mode,
+  calculateLFEFromSpatialChannels: ma_bool32,
   ppWeights: **float32
 }
 global function ma_channel_converter_config_init(format: ma_format, channelsIn: uint32, pChannelMapIn: *ma_channel, channelsOut: uint32, pChannelMapOut: *ma_channel, mixingMode: ma_channel_mix_mode): ma_channel_converter_config <cimport,nodecl> end
@@ -884,6 +892,7 @@ global ma_data_converter_config: type <cimport,nodecl> = @record{
   pChannelMapOut: *ma_channel,
   ditherMode: ma_dither_mode,
   channelMixMode: ma_channel_mix_mode,
+  calculateLFEFromSpatialChannels: ma_bool32,
   ppChannelWeights: **float32,
   allowDynamicSampleRate: ma_bool32,
   resampling: ma_resampler_config
@@ -930,6 +939,7 @@ global function ma_data_converter_get_required_input_frame_count(pConverter: *ma
 global function ma_data_converter_get_expected_output_frame_count(pConverter: *ma_data_converter, inputFrameCount: uint64, pOutputFrameCount: *uint64): ma_result <cimport,nodecl> end
 global function ma_data_converter_get_input_channel_map(pConverter: *ma_data_converter, pChannelMap: *ma_channel, channelMapCap: csize): ma_result <cimport,nodecl> end
 global function ma_data_converter_get_output_channel_map(pConverter: *ma_data_converter, pChannelMap: *ma_channel, channelMapCap: csize): ma_result <cimport,nodecl> end
+global function ma_data_converter_reset(pConverter: *ma_data_converter): ma_result <cimport,nodecl> end
 global function ma_pcm_u8_to_s16(pOut: pointer, pIn: pointer, count: uint64, ditherMode: ma_dither_mode): void <cimport,nodecl> end
 global function ma_pcm_u8_to_s24(pOut: pointer, pIn: pointer, count: uint64, ditherMode: ma_dither_mode): void <cimport,nodecl> end
 global function ma_pcm_u8_to_s32(pOut: pointer, pIn: pointer, count: uint64, ditherMode: ma_dither_mode): void <cimport,nodecl> end
@@ -963,6 +973,9 @@ global function ma_channel_map_is_valid(pChannelMap: *ma_channel, channels: uint
 global function ma_channel_map_is_equal(pChannelMapA: *ma_channel, pChannelMapB: *ma_channel, channels: uint32): ma_bool32 <cimport,nodecl> end
 global function ma_channel_map_is_blank(pChannelMap: *ma_channel, channels: uint32): ma_bool32 <cimport,nodecl> end
 global function ma_channel_map_contains_channel_position(channels: uint32, pChannelMap: *ma_channel, channelPosition: ma_channel): ma_bool32 <cimport,nodecl> end
+global function ma_channel_map_find_channel_position(channels: uint32, pChannelMap: *ma_channel, channelPosition: ma_channel, pChannelIndex: *uint32): ma_bool32 <cimport,nodecl> end
+global function ma_channel_map_to_string(pChannelMap: *ma_channel, channels: uint32, pBufferOut: cstring, bufferCap: csize): csize <cimport,nodecl> end
+global function ma_channel_position_to_string(channel: ma_channel): cstring <cimport,nodecl> end
 global function ma_convert_frames(pOut: pointer, frameCountOut: uint64, formatOut: ma_format, channelsOut: uint32, sampleRateOut: uint32, pIn: pointer, frameCountIn: uint64, formatIn: ma_format, channelsIn: uint32, sampleRateIn: uint32): uint64 <cimport,nodecl> end
 global function ma_convert_frames_ex(pOut: pointer, frameCountOut: uint64, pIn: pointer, frameCountIn: uint64, pConfig: *ma_data_converter_config): uint64 <cimport,nodecl> end
 global ma_rb: type <cimport,nodecl,aligned(8)> = @record{
@@ -1129,7 +1142,7 @@ ma_job = @record{
         pDataBufferNode: pointer,
         pFilePath: cstring,
         pFilePathW: *cwchar_t,
-        decode: ma_bool32,
+        flags: uint32,
         pInitNotification: pointer,
         pDoneNotification: pointer,
         pInitFence: *ma_fence,
@@ -1153,7 +1166,12 @@ ma_job = @record{
         pInitNotification: pointer,
         pDoneNotification: pointer,
         pInitFence: *ma_fence,
-        pDoneFence: *ma_fence
+        pDoneFence: *ma_fence,
+        rangeBegInPCMFrames: uint64,
+        rangeEndInPCMFrames: uint64,
+        loopPointBegInPCMFrames: uint64,
+        loopPointEndInPCMFrames: uint64,
+        isLooping: uint32
       },
       freeDataBuffer: record{
         pDataBuffer: pointer,
@@ -1332,39 +1350,44 @@ global ma_opensl_recording_preset: type <cimport,nodecl,using> = @enum(cint){
   ma_opensl_recording_preset_voice_communication = 4,
   ma_opensl_recording_preset_voice_unprocessed = 5
 }
+global ma_wasapi_usage: type <cimport,nodecl,using> = @enum(cint){
+  ma_wasapi_usage_default = 0,
+  ma_wasapi_usage_games = 1,
+  ma_wasapi_usage_pro_audio = 2
+}
 global ma_aaudio_usage: type <cimport,nodecl,using> = @enum(cint){
   ma_aaudio_usage_default = 0,
-  ma_aaudio_usage_announcement = 1,
-  ma_aaudio_usage_emergency = 2,
-  ma_aaudio_usage_safety = 3,
-  ma_aaudio_usage_vehicle_status = 4,
-  ma_aaudio_usage_alarm = 5,
-  ma_aaudio_usage_assistance_accessibility = 6,
-  ma_aaudio_usage_assistance_navigation_guidance = 7,
-  ma_aaudio_usage_assistance_sonification = 8,
-  ma_aaudio_usage_assitant = 9,
-  ma_aaudio_usage_game = 10,
-  ma_aaudio_usage_media = 11,
-  ma_aaudio_usage_notification = 12,
-  ma_aaudio_usage_notification_event = 13,
-  ma_aaudio_usage_notification_ringtone = 14,
-  ma_aaudio_usage_voice_communication = 15,
-  ma_aaudio_usage_voice_communication_signalling = 16
+  ma_aaudio_usage_media = 1,
+  ma_aaudio_usage_voice_communication = 2,
+  ma_aaudio_usage_voice_communication_signalling = 3,
+  ma_aaudio_usage_alarm = 4,
+  ma_aaudio_usage_notification = 5,
+  ma_aaudio_usage_notification_ringtone = 6,
+  ma_aaudio_usage_notification_event = 7,
+  ma_aaudio_usage_assistance_accessibility = 8,
+  ma_aaudio_usage_assistance_navigation_guidance = 9,
+  ma_aaudio_usage_assistance_sonification = 10,
+  ma_aaudio_usage_game = 11,
+  ma_aaudio_usage_assitant = 12,
+  ma_aaudio_usage_emergency = 13,
+  ma_aaudio_usage_safety = 14,
+  ma_aaudio_usage_vehicle_status = 15,
+  ma_aaudio_usage_announcement = 16
 }
 global ma_aaudio_content_type: type <cimport,nodecl,using> = @enum(cint){
   ma_aaudio_content_type_default = 0,
-  ma_aaudio_content_type_movie = 1,
+  ma_aaudio_content_type_speech = 1,
   ma_aaudio_content_type_music = 2,
-  ma_aaudio_content_type_sonification = 3,
-  ma_aaudio_content_type_speech = 4
+  ma_aaudio_content_type_movie = 3,
+  ma_aaudio_content_type_sonification = 4
 }
 global ma_aaudio_input_preset: type <cimport,nodecl,using> = @enum(cint){
   ma_aaudio_input_preset_default = 0,
   ma_aaudio_input_preset_generic = 1,
   ma_aaudio_input_preset_camcorder = 2,
-  ma_aaudio_input_preset_unprocessed = 3,
-  ma_aaudio_input_preset_voice_recognition = 4,
-  ma_aaudio_input_preset_voice_communication = 5,
+  ma_aaudio_input_preset_voice_recognition = 3,
+  ma_aaudio_input_preset_voice_communication = 4,
+  ma_aaudio_input_preset_unprocessed = 5,
   ma_aaudio_input_preset_voice_performance = 6
 }
 global ma_timer: type <cimport,nodecl> = @union{
@@ -1429,6 +1452,7 @@ ma_device_config = @record{
     channels: uint32,
     pChannelMap: *ma_channel,
     channelMixMode: ma_channel_mix_mode,
+    calculateLFEFromSpatialChannels: ma_bool32,
     shareMode: ma_share_mode
   },
   capture: record{
@@ -1437,13 +1461,17 @@ ma_device_config = @record{
     channels: uint32,
     pChannelMap: *ma_channel,
     channelMixMode: ma_channel_mix_mode,
+    calculateLFEFromSpatialChannels: ma_bool32,
     shareMode: ma_share_mode
   },
   wasapi: record{
+    usage: ma_wasapi_usage,
     noAutoConvertSRC: ma_bool8,
     noDefaultQualitySRC: ma_bool8,
     noAutoStreamRouting: ma_bool8,
-    noHardwareOffloading: ma_bool8
+    noHardwareOffloading: ma_bool8,
+    loopbackProcessID: uint32,
+    loopbackProcessExclude: ma_bool8
   },
   alsa: record{
     noMMap: ma_bool32,
@@ -1781,6 +1809,7 @@ ma_device = @record{
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
+    calculateLFEFromSpatialChannels: ma_bool32,
     converter: ma_data_converter,
     pIntermediaryBuffer: pointer,
     intermediaryBufferCap: uint32,
@@ -1805,6 +1834,7 @@ ma_device = @record{
     internalPeriodSizeInFrames: uint32,
     internalPeriods: uint32,
     channelMixMode: ma_channel_mix_mode,
+    calculateLFEFromSpatialChannels: ma_bool32,
     converter: ma_data_converter,
     pIntermediaryBuffer: pointer,
     intermediaryBufferCap: uint32,
@@ -1978,6 +2008,7 @@ global ma_audio_buffer_ref: type <cimport,nodecl,aligned(8)> = @record{
   ds: ma_data_source_base,
   format: ma_format,
   channels: uint32,
+  sampleRate: uint32,
   cursor: uint64,
   sizeInFrames: uint64,
   pData: pointer
@@ -1996,6 +2027,7 @@ global function ma_audio_buffer_ref_get_available_frames(pAudioBufferRef: *ma_au
 global ma_audio_buffer_config: type <cimport,nodecl> = @record{
   format: ma_format,
   channels: uint32,
+  sampleRate: uint32,
   sizeInFrames: uint64,
   pData: pointer,
   allocationCallbacks: ma_allocation_callbacks
@@ -2299,7 +2331,8 @@ global ma_resource_manager_data_source_flags: type <cimport,nodecl,using> = @enu
   MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_STREAM = 1,
   MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_DECODE = 2,
   MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_ASYNC = 4,
-  MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_WAIT_INIT = 8
+  MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_WAIT_INIT = 8,
+  MA_RESOURCE_MANAGER_DATA_SOURCE_FLAG_UNKNOWN_LENGTH = 16
 }
 global ma_resource_manager_pipeline_stage_notification: type <cimport,nodecl> = @record{
   pNotification: pointer,
@@ -2622,7 +2655,8 @@ global function ma_data_source_node_set_looping(pDataSourceNode: *ma_data_source
 global function ma_data_source_node_is_looping(pDataSourceNode: *ma_data_source_node): ma_bool32 <cimport,nodecl> end
 global ma_splitter_node_config: type <cimport,nodecl> = @record{
   nodeConfig: ma_node_config,
-  channels: uint32
+  channels: uint32,
+  outputBusCount: uint32
 }
 global function ma_splitter_node_config_init(channels: uint32): ma_splitter_node_config <cimport,nodecl> end
 global ma_splitter_node: type <cimport,nodecl,aligned(8)> = @record{
@@ -2764,6 +2798,7 @@ global ma_engine_node_config: type <cimport,nodecl> = @record{
   channelsIn: uint32,
   channelsOut: uint32,
   sampleRate: uint32,
+  monoExpansionMode: ma_mono_expansion_mode,
   isPitchDisabled: ma_bool8,
   isSpatializationDisabled: ma_bool8,
   pinnedListenerIndex: uint8
@@ -2773,6 +2808,7 @@ global ma_engine_node: type <cimport,nodecl,aligned(8)> = @record{
   baseNode: ma_node_base,
   pEngine: *ma_engine,
   sampleRate: uint32,
+  monoExpansionMode: ma_mono_expansion_mode,
   fader: ma_fader,
   resampler: ma_linear_resampler,
   spatializer: ma_spatializer,
@@ -2798,6 +2834,7 @@ global ma_sound_config: type <cimport,nodecl> = @record{
   initialAttachmentInputBusIndex: uint32,
   channelsIn: uint32,
   channelsOut: uint32,
+  monoExpansionMode: ma_mono_expansion_mode,
   flags: uint32,
   initialSeekPointInPCMFrames: uint64,
   rangeBegInPCMFrames: uint64,
@@ -2808,6 +2845,7 @@ global ma_sound_config: type <cimport,nodecl> = @record{
   pDoneFence: *ma_fence
 }
 global function ma_sound_config_init(): ma_sound_config <cimport,nodecl> end
+global function ma_sound_config_init_2(pEngine: *ma_engine): ma_sound_config <cimport,nodecl> end
 ma_sound = @record{
   engineNode: ma_engine_node,
   pDataSource: pointer,
@@ -2825,11 +2863,13 @@ ma_sound_inlined = @record{
 global ma_sound_group_config: type = @ma_sound_config
 global ma_sound_group: type = @ma_sound
 global function ma_sound_group_config_init(): ma_sound_group_config <cimport,nodecl> end
+global function ma_sound_group_config_init_2(pEngine: *ma_engine): ma_sound_group_config <cimport,nodecl> end
 global ma_engine_config: type <cimport,nodecl> = @record{
   pResourceManager: *ma_resource_manager,
   pContext: *ma_context,
   pDevice: *ma_device,
   pPlaybackDeviceID: *ma_device_id,
+  notificationCallback: ma_device_notification_proc,
   pLog: *ma_log,
   listenerCount: uint32,
   channels: uint32,
@@ -3024,6 +3064,7 @@ global MA_VERSION_STRING: cstring <cimport,nodecl,const>
 global MA_SIZEOF_PTR: cint <comptime> = 8
 global MA_TRUE: cint <comptime> = 1
 global MA_FALSE: cint <comptime> = 0
+global MA_GNUC_INLINE_HINT: cint <cimport,nodecl,const>
 global MA_MIN_CHANNELS: cint <comptime> = 1
 global MA_MAX_CHANNELS: cint <comptime> = 254
 global MA_MAX_FILTER_ORDER: cint <comptime> = 8

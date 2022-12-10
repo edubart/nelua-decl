@@ -32,7 +32,8 @@ global RTLD_DI_PROFILENAME: cint <comptime> = 7
 global RTLD_DI_PROFILEOUT: cint <comptime> = 8
 global RTLD_DI_TLS_MODID: cint <comptime> = 9
 global RTLD_DI_TLS_DATA: cint <comptime> = 10
-global RTLD_DI_MAX: cint <comptime> = 10
+global RTLD_DI_PHDR: cint <comptime> = 11
+global RTLD_DI_MAX: cint <comptime> = 11
 global Dl_serpath: type <cimport,nodecl> = @record{
   dls_name: cstring,
   dls_flags: cuint
@@ -44,6 +45,15 @@ global Dl_serinfo: type <cimport,nodecl> = @record{
     dls_serpath: [0]Dl_serpath,
     __dls_serpath_pad: [1]Dl_serpath
   }
+}
+global link_map: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global dl_find_object: type <cimport,nodecl,ctypedef> = @record{
+  dlfo_flags: culonglong,
+  dlfo_map_start: pointer,
+  dlfo_map_end: pointer,
+  dlfo_link_map: *link_map,
+  dlfo_eh_frame: pointer,
+  __dflo_reserved: [7]culonglong
 }
 global RTLD_LAZY: cint <comptime> = 0x00001
 global RTLD_NOW: cint <comptime> = 0x00002

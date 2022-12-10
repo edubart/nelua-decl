@@ -118,7 +118,6 @@ end
 -- Initialize Mongoose.
 local function setup()
   print 'Initializing...'
-  mg_log_set('0')
   mg_mgr_init(&mgr)
   running = true
 end

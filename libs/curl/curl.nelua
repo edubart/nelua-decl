@@ -194,7 +194,7 @@ global CURLcode: type <cimport,nodecl,using> = @enum(cint){
   CURLE_SSL_CIPHER = 59,
   CURLE_PEER_FAILED_VERIFICATION = 60,
   CURLE_BAD_CONTENT_ENCODING = 61,
-  CURLE_LDAP_INVALID_URL = 62,
+  CURLE_OBSOLETE62 = 62,
   CURLE_FILESIZE_EXCEEDED = 63,
   CURLE_USE_SSL_FAILED = 64,
   CURLE_SEND_FAIL_REWIND = 65,
@@ -207,8 +207,8 @@ global CURLcode: type <cimport,nodecl,using> = @enum(cint){
   CURLE_TFTP_UNKNOWNID = 72,
   CURLE_REMOTE_FILE_EXISTS = 73,
   CURLE_TFTP_NOSUCHUSER = 74,
-  CURLE_CONV_FAILED = 75,
-  CURLE_CONV_REQD = 76,
+  CURLE_OBSOLETE75 = 75,
+  CURLE_OBSOLETE76 = 76,
   CURLE_SSL_CACERT_BADFILE = 77,
   CURLE_REMOTE_FILE_NOT_FOUND = 78,
   CURLE_SSH = 79,
@@ -231,7 +231,8 @@ global CURLcode: type <cimport,nodecl,using> = @enum(cint){
   CURLE_QUIC_CONNECT_ERROR = 96,
   CURLE_PROXY = 97,
   CURLE_SSL_CLIENTCERT = 98,
-  CURL_LAST = 99
+  CURLE_UNRECOVERABLE_POLL = 99,
+  CURL_LAST = 100
 }
 global CURLproxycode: type <cimport,nodecl,using> = @enum(cint){
   CURLPX_OK = 0,
@@ -309,6 +310,7 @@ global curl_khmatch: type <cimport,nodecl,using,ctypedef> = @enum(cint){
   CURLKHMATCH_LAST = 3
 }
 global curl_sshkeycallback: type <cimport,nodecl> = @function(pointer, *curl_khkey, *curl_khkey, curl_khmatch, pointer): cint
+global curl_sshhostkeycallback: type <cimport,nodecl> = @function(pointer, cint, cstring, csize): cint
 global curl_usessl: type <cimport,nodecl,using> = @enum(cint){
   CURLUSESSL_NONE = 0,
   CURLUSESSL_TRY = 1,
@@ -461,7 +463,7 @@ global CURLoption: type <cimport,nodecl,using> = @enum(cint){
   CURLOPT_SSL_CTX_DATA = 10109,
   CURLOPT_FTP_CREATE_MISSING_DIRS = 110,
   CURLOPT_PROXYAUTH = 111,
-  CURLOPT_FTP_RESPONSE_TIMEOUT = 112,
+  CURLOPT_SERVER_RESPONSE_TIMEOUT = 112,
   CURLOPT_IPRESOLVE = 113,
   CURLOPT_MAXFILESIZE = 114,
   CURLOPT_INFILESIZE_LARGE = 30115,
@@ -656,7 +658,12 @@ global CURLoption: type <cimport,nodecl,using> = @enum(cint){
   CURLOPT_PREREQDATA = 10313,
   CURLOPT_MAXLIFETIME_CONN = 314,
   CURLOPT_MIME_OPTIONS = 315,
-  CURLOPT_LASTENTRY = 316
+  CURLOPT_SSH_HOSTKEYFUNCTION = 20316,
+  CURLOPT_SSH_HOSTKEYDATA = 10317,
+  CURLOPT_PROTOCOLS_STR = 10318,
+  CURLOPT_REDIR_PROTOCOLS_STR = 10319,
+  CURLOPT_WS_OPTIONS = 320,
+  CURLOPT_LASTENTRY = 321
 }
 global CURL_HTTP_VERSION_NONE: cint <comptime> = 0
 global CURL_HTTP_VERSION_1_0: cint <comptime> = 1
@@ -877,7 +884,9 @@ global CURLINFO: type <cimport,nodecl,using> = @enum(cint){
   CURLINFO_EFFECTIVE_METHOD = 1048634,
   CURLINFO_PROXY_ERROR = 2097211,
   CURLINFO_REFERER = 1048636,
-  CURLINFO_LASTONE = 60
+  CURLINFO_CAINFO = 1048637,
+  CURLINFO_CAPATH = 1048638,
+  CURLINFO_LASTONE = 62
 }
 global curl_closepolicy: type <cimport,nodecl,using> = @enum(cint){
   CURLCLOSEPOLICY_NONE = 0,
@@ -1000,7 +1009,8 @@ global CURLMcode: type <cimport,nodecl,using> = @enum(cint){
   CURLM_WAKEUP_FAILURE = 9,
   CURLM_BAD_FUNCTION_ARGUMENT = 10,
   CURLM_ABORTED_BY_CALLBACK = 11,
-  CURLM_LAST = 12
+  CURLM_UNRECOVERABLE_POLL = 12,
+  CURLM_LAST = 13
 }
 global CURLMSG: type <cimport,nodecl,using> = @enum(cint){
   CURLMSG_NONE = 0,
@@ -1135,3 +1145,32 @@ global curl_easyoption: type <cimport,nodecl,ctypedef> = @record{
 global function curl_easy_option_by_name(name: cstring): *curl_easyoption <cimport,nodecl> end
 global function curl_easy_option_by_id(id: CURLoption): *curl_easyoption <cimport,nodecl> end
 global function curl_easy_option_next(prev: *curl_easyoption): *curl_easyoption <cimport,nodecl> end
+global curl_header: type <cimport,nodecl,ctypedef> = @record{
+  name: cstring,
+  value: cstring,
+  amount: csize,
+  index: csize,
+  origin: cuint,
+  anchor: pointer
+}
+global CURLHcode: type <cimport,nodecl,using> = @enum(cint){
+  CURLHE_OK = 0,
+  CURLHE_BADINDEX = 1,
+  CURLHE_MISSING = 2,
+  CURLHE_NOHEADERS = 3,
+  CURLHE_NOREQUEST = 4,
+  CURLHE_OUT_OF_MEMORY = 5,
+  CURLHE_BAD_ARGUMENT = 6,
+  CURLHE_NOT_BUILT_IN = 7
+}
+global function curl_easy_header(easy: pointer, name: cstring, index: csize, origin: cuint, request: cint, hout: **curl_header): CURLHcode <cimport,nodecl> end
+global function curl_easy_nextheader(easy: pointer, origin: cuint, request: cint, prev: *curl_header): *curl_header <cimport,nodecl> end
+global curl_ws_frame: type <cimport,nodecl,ctypedef> = @record{
+  age: cint,
+  flags: cint,
+  offset: clong,
+  bytesleft: clong
+}
+global function curl_ws_recv(curl: pointer, buffer: pointer, buflen: csize, recv: *csize, metap: **curl_ws_frame): CURLcode <cimport,nodecl> end
+global function curl_ws_send(curl: pointer, buffer: pointer, buflen: csize, sent: *csize, framesize: clong, sendflags: cuint): CURLcode <cimport,nodecl> end
+global function curl_ws_meta(curl: pointer): *curl_ws_frame <cimport,nodecl> end
