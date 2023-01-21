@@ -214,7 +214,7 @@ mg_connection = @record{
   fn_data: pointer,
   pfn: mg_event_handler_t,
   pfn_data: pointer,
-  label: [50]cchar,
+  data: [32]cchar,
   tls: pointer,
   is_listening: cuint,
   is_client: cuint,
@@ -461,6 +461,7 @@ global MG_ENABLE_CUSTOM_MILLIS: cint <comptime> = 0
 global MG_ENABLE_PACKED_FS: cint <comptime> = 0
 global MG_IO_SIZE: cint <comptime> = 2048
 global MG_MAX_RECV_SIZE: cint <cimport,nodecl,const>
+global MG_DATA_SIZE: cint <comptime> = 32
 global MG_MAX_HTTP_HEADERS: cint <comptime> = 30
 global MG_HTTP_INDEX: cstring <comptime> = "index.html"
 global MG_SOCK_LISTEN_BACKLOG_SIZE: cint <comptime> = 3

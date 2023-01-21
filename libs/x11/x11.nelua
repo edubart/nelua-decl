@@ -903,6 +903,7 @@ global function XScreenResourceString(a1: *Screen): cstring <cimport,nodecl> end
 global function XDisplayMotionBufferSize(a1: *Display): culong <cimport,nodecl> end
 global function XVisualIDFromVisual(a1: *Visual): VisualID <cimport,nodecl> end
 global function XInitThreads(): cint <cimport,nodecl> end
+global function XFreeThreads(): cint <cimport,nodecl> end
 global function XLockDisplay(a1: *Display): void <cimport,nodecl> end
 global function XUnlockDisplay(a1: *Display): void <cimport,nodecl> end
 global function XInitExtension(a1: *Display, a2: cstring): *XExtCodes <cimport,nodecl> end

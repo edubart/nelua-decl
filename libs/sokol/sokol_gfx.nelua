@@ -266,7 +266,9 @@ global sg_vertex_format: type <cimport,nodecl,using> = @enum(cint){
   SG_VERTEXFORMAT_SHORT4N = 13,
   SG_VERTEXFORMAT_USHORT4N = 14,
   SG_VERTEXFORMAT_UINT10_N2 = 15,
-  _SG_VERTEXFORMAT_NUM = 16,
+  SG_VERTEXFORMAT_HALF2 = 16,
+  SG_VERTEXFORMAT_HALF4 = 17,
+  _SG_VERTEXFORMAT_NUM = 18,
   _SG_VERTEXFORMAT_FORCE_U32 = 2147483647
 }
 global sg_vertex_step: type <cimport,nodecl,using> = @enum(cint){

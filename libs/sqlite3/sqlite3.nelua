@@ -511,9 +511,9 @@ sqlite3_rtree_query_info = @record{
   rScore: float64,
   apSqlParam: **sqlite3_value
 }
-global SQLITE_VERSION: cstring <comptime> = "3.40.0"
-global SQLITE_VERSION_NUMBER: cint <comptime> = 3040000
-global SQLITE_SOURCE_ID: cstring <comptime> = "2022-11-16 12:10:08 89c459e766ea7e9165d0beeb124708b955a4950d0f4792f457465d71b158alt1"
+global SQLITE_VERSION: cstring <comptime> = "3.40.1"
+global SQLITE_VERSION_NUMBER: cint <comptime> = 3040001
+global SQLITE_SOURCE_ID: cstring <comptime> = "2022-12-28 14:03:47 df5c253c0b3dd24916e4ec7cf77d3db5294cc9fd45ae7b9c5e82ad8197f3alt1"
 global SQLITE_OK: cint <comptime> = 0
 global SQLITE_ERROR: cint <comptime> = 1
 global SQLITE_INTERNAL: cint <comptime> = 2
@@ -706,6 +706,7 @@ global SQLITE_FCNTL_RESERVE_BYTES: cint <comptime> = 38
 global SQLITE_FCNTL_CKPT_START: cint <comptime> = 39
 global SQLITE_FCNTL_EXTERNAL_READER: cint <comptime> = 40
 global SQLITE_FCNTL_CKSM_FILE: cint <comptime> = 41
+global SQLITE_FCNTL_RESET_CACHE: cint <comptime> = 42
 global SQLITE_GET_LOCKPROXYFILE: cint <comptime> = SQLITE_FCNTL_GET_LOCKPROXYFILE
 global SQLITE_SET_LOCKPROXYFILE: cint <comptime> = SQLITE_FCNTL_SET_LOCKPROXYFILE
 global SQLITE_LAST_ERRNO: cint <comptime> = SQLITE_FCNTL_LAST_ERRNO

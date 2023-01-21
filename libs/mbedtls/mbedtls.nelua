@@ -155,7 +155,7 @@ global function mbedtls_mpi_shrink(X: *mbedtls_mpi, nblimbs: csize): cint <cimpo
 global function mbedtls_mpi_copy(X: *mbedtls_mpi, Y: *mbedtls_mpi): cint <cimport,nodecl> end
 global function mbedtls_mpi_swap(X: *mbedtls_mpi, Y: *mbedtls_mpi): void <cimport,nodecl> end
 global function mbedtls_mpi_safe_cond_assign(X: *mbedtls_mpi, Y: *mbedtls_mpi, assign: cuchar): cint <cimport,nodecl> end
-global function mbedtls_mpi_safe_cond_swap(X: *mbedtls_mpi, Y: *mbedtls_mpi, assign: cuchar): cint <cimport,nodecl> end
+global function mbedtls_mpi_safe_cond_swap(X: *mbedtls_mpi, Y: *mbedtls_mpi, swap: cuchar): cint <cimport,nodecl> end
 global function mbedtls_mpi_lset(X: *mbedtls_mpi, z: clong): cint <cimport,nodecl> end
 global function mbedtls_mpi_get_bit(X: *mbedtls_mpi, pos: csize): cint <cimport,nodecl> end
 global function mbedtls_mpi_set_bit(X: *mbedtls_mpi, pos: csize, val: cuchar): cint <cimport,nodecl> end

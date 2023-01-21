@@ -663,7 +663,9 @@ global CURLoption: type <cimport,nodecl,using> = @enum(cint){
   CURLOPT_PROTOCOLS_STR = 10318,
   CURLOPT_REDIR_PROTOCOLS_STR = 10319,
   CURLOPT_WS_OPTIONS = 320,
-  CURLOPT_LASTENTRY = 321
+  CURLOPT_CA_CACHE_TIMEOUT = 321,
+  CURLOPT_QUICK_EXIT = 322,
+  CURLOPT_LASTENTRY = 323
 }
 global CURL_HTTP_VERSION_NONE: cint <comptime> = 0
 global CURL_HTTP_VERSION_1_0: cint <comptime> = 1
@@ -804,8 +806,8 @@ global CURLsslset: type <cimport,nodecl,using> = @enum(cint){
   CURLSSLSET_NO_BACKENDS = 3
 }
 global function curl_global_sslset(id: curl_sslbackend, name: cstring, avail: ***curl_ssl_backend): CURLsslset <cimport,nodecl> end
-global function curl_slist_append(a1: *curl_slist, a2: cstring): *curl_slist <cimport,nodecl> end
-global function curl_slist_free_all(a1: *curl_slist): void <cimport,nodecl> end
+global function curl_slist_append(list: *curl_slist, data: cstring): *curl_slist <cimport,nodecl> end
+global function curl_slist_free_all(list: *curl_slist): void <cimport,nodecl> end
 global function curl_getdate(p: cstring, unused: *ctime_t): ctime_t <cimport,nodecl> end
 global curl_certinfo: type <cimport,nodecl,ctypedef> = @record{
   num_of_certs: cint,
@@ -934,8 +936,8 @@ global CURLSHoption: type <cimport,nodecl,using> = @enum(cint){
   CURLSHOPT_LAST = 6
 }
 global function curl_share_init(): pointer <cimport,nodecl> end
-global function curl_share_setopt(a1: pointer, option: CURLSHoption, ...: cvarargs): CURLSHcode <cimport,nodecl> end
-global function curl_share_cleanup(a1: pointer): CURLSHcode <cimport,nodecl> end
+global function curl_share_setopt(share: pointer, option: CURLSHoption, ...: cvarargs): CURLSHcode <cimport,nodecl> end
+global function curl_share_cleanup(share: pointer): CURLSHcode <cimport,nodecl> end
 global CURLversion: type <cimport,nodecl,using> = @enum(cint){
   CURLVERSION_FIRST = 0,
   CURLVERSION_SECOND = 1,
@@ -947,7 +949,8 @@ global CURLversion: type <cimport,nodecl,using> = @enum(cint){
   CURLVERSION_EIGHTH = 7,
   CURLVERSION_NINTH = 8,
   CURLVERSION_TENTH = 9,
-  CURLVERSION_LAST = 10
+  CURLVERSION_ELEVENTH = 10,
+  CURLVERSION_LAST = 11
 }
 global curl_version_info_data: type <cimport,nodecl> = @record{
   age: CURLversion,
@@ -974,7 +977,8 @@ global curl_version_info_data: type <cimport,nodecl> = @record{
   zstd_ver_num: cuint,
   zstd_version: cstring,
   hyper_version: cstring,
-  gsasl_version: cstring
+  gsasl_version: cstring,
+  feature_names: *cstring
 }
 global function curl_version_info(a1: CURLversion): *curl_version_info_data <cimport,nodecl> end
 global function curl_easy_strerror(a1: CURLcode): cstring <cimport,nodecl> end

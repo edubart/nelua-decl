@@ -27,17 +27,16 @@ global c89thrd_nomem: cint <comptime> = -2
 global c89thrd_timedout: cint <comptime> = -3
 global c89thrd_busy: cint <comptime> = -4
 global c89thrd_error: cint <comptime> = -5
-global c89thread_allocation_type: type <cimport,nodecl,using> = @enum(cint){
-  c89thread_allocation_type_general = 0
-}
 global c89thread_allocation_callbacks: type <cimport,nodecl> = @record{
   pUserData: pointer,
-  onMalloc: function(csize, c89thread_allocation_type, pointer): pointer,
-  onFree: function(pointer, c89thread_allocation_type, pointer): void
+  onMalloc: function(csize, pointer): pointer,
+  onRealloc: function(pointer, csize, pointer): pointer,
+  onFree: function(pointer, pointer): void
 }
 global function c89thread_set_allocation_callbacks(pCallbacks: *c89thread_allocation_callbacks): void <cimport,nodecl> end
-global function c89thread_malloc(sz: csize, type: c89thread_allocation_type, pCallbacks: *c89thread_allocation_callbacks): pointer <cimport,nodecl> end
-global function c89thread_free(p: pointer, type: c89thread_allocation_type, pCallbacks: *c89thread_allocation_callbacks): void <cimport,nodecl> end
+global function c89thread_malloc(sz: csize, pCallbacks: *c89thread_allocation_callbacks): pointer <cimport,nodecl> end
+global function c89thread_realloc(p: pointer, sz: csize, pCallbacks: *c89thread_allocation_callbacks): pointer <cimport,nodecl> end
+global function c89thread_free(p: pointer, pCallbacks: *c89thread_allocation_callbacks): void <cimport,nodecl> end
 global c89thrd_t: type <cimport,nodecl,cincomplete> = @record{}
 global c89thrd_start_t: type <cimport,nodecl> = @function(pointer): cint
 global c89thread_entry_exit_callbacks: type <cimport,nodecl> = @record{
