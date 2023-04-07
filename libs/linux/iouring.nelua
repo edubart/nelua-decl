@@ -46,7 +46,8 @@ global statx: type <cimport,nodecl,cincomplete,ctypedef> = @record{
   stx_dev_major: cuint,
   stx_dev_minor: cuint,
   stx_mnt_id: culonglong,
-  __spare2: culonglong,
+  stx_dio_mem_align: cuint,
+  stx_dio_offset_align: cuint,
   __spare3: [12]culonglong
 }
 global cpu_set_t: type <cimport,nodecl> = @record{

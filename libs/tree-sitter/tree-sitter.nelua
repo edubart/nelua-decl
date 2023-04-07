@@ -116,9 +116,10 @@ global function ts_tree_delete(self: *TSTree): void <cimport,nodecl> end
 global function ts_tree_root_node(self: *TSTree): TSNode <cimport,nodecl> end
 global function ts_tree_root_node_with_offset(self: *TSTree, offset_bytes: uint32, offset_point: TSPoint): TSNode <cimport,nodecl> end
 global function ts_tree_language(a1: *TSTree): *TSLanguage <cimport,nodecl> end
+global function ts_tree_included_ranges(a1: *TSTree, length: *uint32): *TSRange <cimport,nodecl> end
 global function ts_tree_edit(self: *TSTree, edit: *TSInputEdit): void <cimport,nodecl> end
 global function ts_tree_get_changed_ranges(old_tree: *TSTree, new_tree: *TSTree, length: *uint32): *TSRange <cimport,nodecl> end
-global function ts_tree_print_dot_graph(a1: *TSTree, a2: *FILE): void <cimport,nodecl> end
+global function ts_tree_print_dot_graph(a1: *TSTree, file_descriptor: cint): void <cimport,nodecl> end
 global function ts_node_type(a1: TSNode): cstring <cimport,nodecl> end
 global function ts_node_symbol(a1: TSNode): cushort <cimport,nodecl> end
 global function ts_node_start_byte(a1: TSNode): uint32 <cimport,nodecl> end
@@ -172,6 +173,7 @@ global function ts_query_string_count(a1: *TSQuery): uint32 <cimport,nodecl> end
 global function ts_query_start_byte_for_pattern(a1: *TSQuery, a2: uint32): uint32 <cimport,nodecl> end
 global function ts_query_predicates_for_pattern(self: *TSQuery, pattern_index: uint32, length: *uint32): *TSQueryPredicateStep <cimport,nodecl> end
 global function ts_query_is_pattern_rooted(self: *TSQuery, pattern_index: uint32): boolean <cimport,nodecl> end
+global function ts_query_is_pattern_non_local(self: *TSQuery, pattern_index: uint32): boolean <cimport,nodecl> end
 global function ts_query_is_pattern_guaranteed_at_step(self: *TSQuery, byte_offset: uint32): boolean <cimport,nodecl> end
 global function ts_query_capture_name_for_id(a1: *TSQuery, id: uint32, length: *uint32): cstring <cimport,nodecl> end
 global function ts_query_capture_quantifier_for_id(a1: *TSQuery, pattern_id: uint32, capture_id: uint32): TSQuantifier <cimport,nodecl> end

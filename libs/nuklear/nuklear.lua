@@ -30,5 +30,8 @@ if not NUKLEAR_NO_IMPL then
   cdefine 'NK_IMPLEMENTATION'
 end
 cinclude 'nuklear.h'
+if ccinfo.is_linux then
+  linklib 'm'
+end
 ]]
 ]=]

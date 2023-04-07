@@ -48,15 +48,34 @@ global function mg_check_ip_acl(acl: mg_str, remote_ip: uint32): cint <cimport,n
 global function mg_to64(str: mg_str): int64 <cimport,nodecl> end
 global function mg_tou64(str: mg_str): uint64 <cimport,nodecl> end
 global function mg_remove_double_dots(s: cstring): cstring <cimport,nodecl> end
+global mg_queue: type <cimport,nodecl,ctypedef> = @record{
+  buf: cstring,
+  size: csize,
+  tail: csize,
+  head: csize
+}
+global function mg_queue_init(a1: *mg_queue, a2: cstring, a3: csize): void <cimport,nodecl> end
+global function mg_queue_book(a1: *mg_queue, buf: *cstring, a3: csize): csize <cimport,nodecl> end
+global function mg_queue_add(a1: *mg_queue, a2: csize): void <cimport,nodecl> end
+global function mg_queue_next(a1: *mg_queue, a2: *cstring): csize <cimport,nodecl> end
+global function mg_queue_del(a1: *mg_queue, a2: csize): void <cimport,nodecl> end
 global mg_pfn_t: type <cimport,nodecl> = @function(cchar, pointer): void
 global mg_pm_t: type <cimport,nodecl> = @function(mg_pfn_t, pointer, *cvalist): csize
-global function mg_pfn_iobuf(ch: cchar, param: pointer): void <cimport,nodecl> end
 global function mg_vxprintf(a1: function(cchar, pointer): void, a2: pointer, fmt: cstring, a4: *cvalist): csize <cimport,nodecl> end
 global function mg_xprintf(fn: function(cchar, pointer): void, a2: pointer, fmt: cstring, ...: cvarargs): csize <cimport,nodecl> end
 global function mg_vsnprintf(buf: cstring, len: csize, fmt: cstring, ap: *cvalist): csize <cimport,nodecl> end
 global function mg_snprintf(a1: cstring, a2: csize, fmt: cstring, ...: cvarargs): csize <cimport,nodecl> end
 global function mg_vmprintf(fmt: cstring, ap: *cvalist): cstring <cimport,nodecl> end
 global function mg_mprintf(fmt: cstring, ...: cvarargs): cstring <cimport,nodecl> end
+global function mg_queue_vprintf(a1: *mg_queue, fmt: cstring, a3: *cvalist): csize <cimport,nodecl> end
+global function mg_queue_printf(a1: *mg_queue, fmt: cstring, ...: cvarargs): csize <cimport,nodecl> end
+global function mg_print_ip(out: function(cchar, pointer): void, arg: pointer, ap: *cvalist): csize <cimport,nodecl> end
+global function mg_print_ip_port(out: function(cchar, pointer): void, arg: pointer, ap: *cvalist): csize <cimport,nodecl> end
+global function mg_print_ip4(out: function(cchar, pointer): void, arg: pointer, ap: *cvalist): csize <cimport,nodecl> end
+global function mg_print_ip6(out: function(cchar, pointer): void, arg: pointer, ap: *cvalist): csize <cimport,nodecl> end
+global function mg_print_mac(out: function(cchar, pointer): void, arg: pointer, ap: *cvalist): csize <cimport,nodecl> end
+global function mg_pfn_iobuf(ch: cchar, param: pointer): void <cimport,nodecl> end
+global function mg_pfn_stdout(c: cchar, param: pointer): void <cimport,nodecl> end
 global MG_LL_NONE: cint <comptime> = 0
 global MG_LL_ERROR: cint <comptime> = 1
 global MG_LL_INFO: cint <comptime> = 2
@@ -220,6 +239,7 @@ mg_connection = @record{
   is_client: cuint,
   is_accepted: cuint,
   is_resolving: cuint,
+  is_arplooking: cuint,
   is_connecting: cuint,
   is_tls: cuint,
   is_tls_hs: cuint,
@@ -423,7 +443,65 @@ global function mg_rpc_vok(a1: *mg_rpc_req, fmt: cstring, ap: *cvalist): void <c
 global function mg_rpc_err(a1: *mg_rpc_req, code: cint, fmt: cstring, ...: cvarargs): void <cimport,nodecl> end
 global function mg_rpc_verr(a1: *mg_rpc_req, code: cint, fmt: cstring, a4: *cvalist): void <cimport,nodecl> end
 global function mg_rpc_list(r: *mg_rpc_req): void <cimport,nodecl> end
-global MG_VERSION: cstring <comptime> = "7.8"
+global mg_tcpip_if: type <cimport,nodecl,forwarddecl,ctypedef> = @record{}
+global mg_tcpip_driver: type <cimport,nodecl,ctypedef> = @record{
+  init: function(*mg_tcpip_if): boolean,
+  tx: function(pointer, csize, *mg_tcpip_if): csize,
+  rx: function(pointer, csize, *mg_tcpip_if): csize,
+  up: function(*mg_tcpip_if): boolean
+}
+mg_tcpip_if = @record{
+  mac: [6]uint8,
+  ip: uint32,
+  mask: uint32,
+  gw: uint32,
+  tx: mg_str,
+  enable_dhcp_client: boolean,
+  enable_dhcp_server: boolean,
+  enable_crc32_check: boolean,
+  enable_mac_check: boolean,
+  driver: *mg_tcpip_driver,
+  driver_data: pointer,
+  mgr: *mg_mgr,
+  recv_queue: mg_queue,
+  gwmac: [6]uint8,
+  now: uint64,
+  timer_1000ms: uint64,
+  lease_expire: uint64,
+  eport: uint16,
+  ndrop: uint32,
+  nrecv: uint32,
+  nsent: uint32,
+  nerr: uint32,
+  state: uint8
+}
+global function mg_tcpip_init(a1: *mg_mgr, a2: *mg_tcpip_if): void <cimport,nodecl> end
+global function mg_tcpip_free(a1: *mg_tcpip_if): void <cimport,nodecl> end
+global function mg_tcpip_qwrite(buf: pointer, len: csize, ifp: *mg_tcpip_if): void <cimport,nodecl> end
+global mg_tcpip_driver_stm32: mg_tcpip_driver <cimport,nodecl>
+global mg_tcpip_driver_w5500: mg_tcpip_driver <cimport,nodecl>
+global mg_tcpip_driver_tm4c: mg_tcpip_driver <cimport,nodecl>
+global mg_tcpip_driver_stm32h: mg_tcpip_driver <cimport,nodecl>
+global mg_tcpip_driver_imxrt: mg_tcpip_driver <cimport,nodecl>
+global mg_tcpip_spi: type <cimport,nodecl,ctypedef> = @record{
+  spi: pointer,
+  begin: function(pointer): void,
+  End: function(pointer): void,
+  txn: function(pointer, uint8): uint8
+}
+global mg_tcpip_driver_imxrt1020_data: type <cimport,nodecl,ctypedef> = @record{
+  mdc_cr: cint
+}
+global mg_tcpip_driver_stm32_data: type <cimport,nodecl,ctypedef> = @record{
+  mdc_cr: cint
+}
+global mg_tcpip_driver_stm32h_data: type <cimport,nodecl,ctypedef> = @record{
+  mdc_cr: cint
+}
+global mg_tcpip_driver_tm4c_data: type <cimport,nodecl,ctypedef> = @record{
+  mdc_cr: cint
+}
+global MG_VERSION: cstring <comptime> = "7.9"
 global MG_ARCH_CUSTOM: cint <comptime> = 0
 global MG_ARCH_UNIX: cint <comptime> = 1
 global MG_ARCH_WIN32: cint <comptime> = 2
@@ -433,16 +511,18 @@ global MG_ARCH_FREERTOS: cint <comptime> = 5
 global MG_ARCH_AZURERTOS: cint <comptime> = 6
 global MG_ARCH_ZEPHYR: cint <comptime> = 7
 global MG_ARCH_NEWLIB: cint <comptime> = 8
-global MG_ARCH_RTX: cint <comptime> = 9
+global MG_ARCH_CMSIS_RTOS1: cint <comptime> = 9
 global MG_ARCH_TIRTOS: cint <comptime> = 10
 global MG_ARCH_RP2040: cint <comptime> = 11
+global MG_ARCH_ARMCC: cint <comptime> = 12
+global MG_ARCH_CMSIS_RTOS2: cint <comptime> = 13
 global MG_ARCH: cint <comptime> = MG_ARCH_UNIX
 global MG_BIG_ENDIAN: cint <cimport,nodecl,const>
 global MG_ENABLE_EPOLL: cint <comptime> = 1
 global MG_ENABLE_DIRLIST: cint <comptime> = 1
 global MG_PATH_MAX: cint <cimport,nodecl,const>
 global MG_ENABLE_LOG: cint <comptime> = 1
-global MG_ENABLE_MIP: cint <comptime> = 0
+global MG_ENABLE_TCPIP: cint <comptime> = 0
 global MG_ENABLE_LWIP: cint <comptime> = 0
 global MG_ENABLE_FREERTOS_TCP: cint <comptime> = 0
 global MG_ENABLE_RL: cint <comptime> = 0
@@ -459,6 +539,7 @@ global MG_ENABLE_WINSOCK: cint <comptime> = 1
 global MG_ENABLE_CUSTOM_RANDOM: cint <comptime> = 0
 global MG_ENABLE_CUSTOM_MILLIS: cint <comptime> = 0
 global MG_ENABLE_PACKED_FS: cint <comptime> = 0
+global MG_ENABLE_ASSERT: cint <comptime> = 0
 global MG_IO_SIZE: cint <comptime> = 2048
 global MG_MAX_RECV_SIZE: cint <cimport,nodecl,const>
 global MG_DATA_SIZE: cint <comptime> = 32
@@ -481,3 +562,6 @@ global WEBSOCKET_OP_CLOSE: cint <comptime> = 8
 global WEBSOCKET_OP_PING: cint <comptime> = 9
 global WEBSOCKET_OP_PONG: cint <comptime> = 10
 global MG_JSON_MAX_DEPTH: cint <comptime> = 30
+global MG_TCPIP_STATE_DOWN: cint <comptime> = 0
+global MG_TCPIP_STATE_UP: cint <comptime> = 1
+global MG_TCPIP_STATE_READY: cint <comptime> = 2

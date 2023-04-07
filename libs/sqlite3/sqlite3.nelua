@@ -94,6 +94,7 @@ global function sqlite3_changes64(a1: *sqlite3): int64 <cimport,nodecl> end
 global function sqlite3_total_changes(a1: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_total_changes64(a1: *sqlite3): int64 <cimport,nodecl> end
 global function sqlite3_interrupt(a1: *sqlite3): void <cimport,nodecl> end
+global function sqlite3_is_interrupted(a1: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_complete(sql: cstring): cint <cimport,nodecl> end
 global function sqlite3_complete16(sql: pointer): cint <cimport,nodecl> end
 global function sqlite3_busy_handler(a1: *sqlite3, a2: function(pointer, cint): cint, a3: pointer): cint <cimport,nodecl> end
@@ -469,6 +470,7 @@ global function sqlite3_vtab_in_first(pVal: *sqlite3_value, ppOut: **sqlite3_val
 global function sqlite3_vtab_in_next(pVal: *sqlite3_value, ppOut: **sqlite3_value): cint <cimport,nodecl> end
 global function sqlite3_vtab_rhs_value(a1: *sqlite3_index_info, a2: cint, ppVal: **sqlite3_value): cint <cimport,nodecl> end
 global function sqlite3_stmt_scanstatus(pStmt: *sqlite3_stmt, idx: cint, iScanStatusOp: cint, pOut: pointer): cint <cimport,nodecl> end
+global function sqlite3_stmt_scanstatus_v2(pStmt: *sqlite3_stmt, idx: cint, iScanStatusOp: cint, flags: cint, pOut: pointer): cint <cimport,nodecl> end
 global function sqlite3_stmt_scanstatus_reset(a1: *sqlite3_stmt): void <cimport,nodecl> end
 global function sqlite3_db_cacheflush(a1: *sqlite3): cint <cimport,nodecl> end
 global function sqlite3_system_errno(a1: *sqlite3): cint <cimport,nodecl> end
@@ -511,9 +513,9 @@ sqlite3_rtree_query_info = @record{
   rScore: float64,
   apSqlParam: **sqlite3_value
 }
-global SQLITE_VERSION: cstring <comptime> = "3.40.1"
-global SQLITE_VERSION_NUMBER: cint <comptime> = 3040001
-global SQLITE_SOURCE_ID: cstring <comptime> = "2022-12-28 14:03:47 df5c253c0b3dd24916e4ec7cf77d3db5294cc9fd45ae7b9c5e82ad8197f3alt1"
+global SQLITE_VERSION: cstring <comptime> = "3.41.2"
+global SQLITE_VERSION_NUMBER: cint <comptime> = 3041002
+global SQLITE_SOURCE_ID: cstring <comptime> = "2023-03-22 11:56:21 0d1fc92f94cb6b76bffe3ec34d69cffde2924203304e8ffc4155597af0c1alt1"
 global SQLITE_OK: cint <comptime> = 0
 global SQLITE_ERROR: cint <comptime> = 1
 global SQLITE_INTERNAL: cint <comptime> = 2
@@ -616,6 +618,7 @@ global SQLITE_CONSTRAINT_PINNED: cint <cimport,nodecl,const>
 global SQLITE_CONSTRAINT_DATATYPE: cint <cimport,nodecl,const>
 global SQLITE_NOTICE_RECOVER_WAL: cint <cimport,nodecl,const>
 global SQLITE_NOTICE_RECOVER_ROLLBACK: cint <cimport,nodecl,const>
+global SQLITE_NOTICE_RBU: cint <cimport,nodecl,const>
 global SQLITE_WARNING_AUTOINDEX: cint <cimport,nodecl,const>
 global SQLITE_AUTH_USER: cint <cimport,nodecl,const>
 global SQLITE_OK_LOAD_PERMANENTLY: cint <cimport,nodecl,const>
@@ -959,6 +962,9 @@ global SQLITE_SCANSTAT_EST: cint <comptime> = 2
 global SQLITE_SCANSTAT_NAME: cint <comptime> = 3
 global SQLITE_SCANSTAT_EXPLAIN: cint <comptime> = 4
 global SQLITE_SCANSTAT_SELECTID: cint <comptime> = 5
+global SQLITE_SCANSTAT_PARENTID: cint <comptime> = 6
+global SQLITE_SCANSTAT_NCYCLE: cint <comptime> = 7
+global SQLITE_SCANSTAT_COMPLEX: cint <comptime> = 0x0001
 global SQLITE_SERIALIZE_NOCOPY: cint <comptime> = 0x001
 global SQLITE_DESERIALIZE_FREEONCLOSE: cint <comptime> = 1
 global SQLITE_DESERIALIZE_RESIZEABLE: cint <comptime> = 2

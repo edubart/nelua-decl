@@ -11,6 +11,9 @@ if not NUKLEAR_NO_IMPL then
   cdefine 'NK_IMPLEMENTATION'
 end
 cinclude 'nuklear.h'
+if ccinfo.is_linux then
+  linklib 'm'
+end
 ]]
 global NK_buffer: type <cimport,nodecl,forwarddecl,ctypedef'nk_buffer'> = @record{}
 global NK_allocator: type <cimport,nodecl,forwarddecl,ctypedef'nk_allocator'> = @record{}

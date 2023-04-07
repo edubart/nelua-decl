@@ -674,7 +674,8 @@ global CURL_HTTP_VERSION_2_0: cint <comptime> = 3
 global CURL_HTTP_VERSION_2TLS: cint <comptime> = 4
 global CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE: cint <comptime> = 5
 global CURL_HTTP_VERSION_3: cint <comptime> = 30
-global CURL_HTTP_VERSION_LAST: cint <comptime> = 31
+global CURL_HTTP_VERSION_3ONLY: cint <comptime> = 31
+global CURL_HTTP_VERSION_LAST: cint <comptime> = 32
 global CURL_RTSPREQ_NONE: cint <comptime> = 0
 global CURL_RTSPREQ_OPTIONS: cint <comptime> = 1
 global CURL_RTSPREQ_DESCRIBE: cint <comptime> = 2
@@ -907,7 +908,8 @@ global curl_lock_data: type <cimport,nodecl,using> = @enum(cint){
   CURL_LOCK_DATA_SSL_SESSION = 4,
   CURL_LOCK_DATA_CONNECT = 5,
   CURL_LOCK_DATA_PSL = 6,
-  CURL_LOCK_DATA_LAST = 7
+  CURL_LOCK_DATA_HSTS = 7,
+  CURL_LOCK_DATA_LAST = 8
 }
 global curl_lock_access: type <cimport,nodecl,using> = @enum(cint){
   CURL_LOCK_ACCESS_NONE = 0,
@@ -1107,7 +1109,8 @@ global CURLUcode: type <cimport,nodecl,using> = @enum(cint){
   CURLUE_BAD_SCHEME = 27,
   CURLUE_BAD_SLASHES = 28,
   CURLUE_BAD_USER = 29,
-  CURLUE_LAST = 30
+  CURLUE_LACKS_IDN = 30,
+  CURLUE_LAST = 31
 }
 global CURLUPart: type <cimport,nodecl,using> = @enum(cint){
   CURLUPART_URL = 0,
@@ -1173,7 +1176,8 @@ global curl_ws_frame: type <cimport,nodecl,ctypedef> = @record{
   age: cint,
   flags: cint,
   offset: clong,
-  bytesleft: clong
+  bytesleft: clong,
+  len: csize
 }
 global function curl_ws_recv(curl: pointer, buffer: pointer, buflen: csize, recv: *csize, metap: **curl_ws_frame): CURLcode <cimport,nodecl> end
 global function curl_ws_send(curl: pointer, buffer: pointer, buflen: csize, sent: *csize, framesize: clong, sendflags: cuint): CURLcode <cimport,nodecl> end

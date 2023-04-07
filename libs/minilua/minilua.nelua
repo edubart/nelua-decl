@@ -5,6 +5,7 @@ end
 cinclude 'minilua.h'
 if ccinfo.is_linux then
   linklib 'dl'
+  linklib 'm'
 end
 ]]
 global lua_State: type <cimport,nodecl,forwarddecl> = @record{}

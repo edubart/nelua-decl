@@ -65,6 +65,7 @@ end
 cinclude 'minilua.h'
 if ccinfo.is_linux then
   linklib 'dl'
+  linklib 'm'
 end
 ]]
 ]=]

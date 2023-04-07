@@ -5,6 +5,19 @@ if not SOKOL_GL_NO_IMPL then
 end
 cinclude 'sokol_gl.h'
 ]]
+global sgl_log_item_t: type <cimport,nodecl,using> = @enum(cint){
+  SGL_LOGITEM_OK = 0,
+  SGL_LOGITEM_MALLOC_FAILED = 1,
+  SGL_LOGITEM_MAKE_PIPELINE_FAILED = 2,
+  SGL_LOGITEM_PIPELINE_POOL_EXHAUSTED = 3,
+  SGL_LOGITEM_ADD_COMMIT_LISTENER_FAILED = 4,
+  SGL_LOGITEM_CONTEXT_POOL_EXHAUSTED = 5,
+  SGL_LOGITEM_CANNOT_DESTROY_DEFAULT_CONTEXT = 6
+}
+global sgl_logger_t: type <cimport,nodecl> = @record{
+  func: function(cstring, uint32, uint32, cstring, uint32, cstring, pointer): void,
+  user_data: pointer
+}
 global sgl_pipeline: type <cimport,nodecl> = @record{
   id: uint32
 }
@@ -30,10 +43,6 @@ global sgl_context_desc_t: type <cimport,nodecl> = @record{
 global sgl_allocator_t: type <cimport,nodecl> = @record{
   alloc: function(csize, pointer): pointer,
   free: function(pointer, pointer): void,
-  user_data: pointer
-}
-global sgl_logger_t: type <cimport,nodecl> = @record{
-  log_cb: function(cstring, pointer): void,
   user_data: pointer
 }
 global sgl_desc_t: type <cimport,nodecl> = @record{

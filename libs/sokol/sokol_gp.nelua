@@ -88,6 +88,7 @@ global sgp_state: type <cimport,nodecl,cincomplete> = @record{
   proj: sgp_mat2x3,
   transform: sgp_mat2x3,
   mvp: sgp_mat2x3,
+  thickness: float32,
   color: sgp_color,
   images: sgp_images_uniform,
   uniform: sgp_uniform,
